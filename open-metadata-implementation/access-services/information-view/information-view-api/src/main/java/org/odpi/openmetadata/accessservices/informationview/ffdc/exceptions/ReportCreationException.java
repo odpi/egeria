@@ -17,4 +17,9 @@ public class ReportCreationException extends InformationViewExceptionBase{
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
         this.reportName = reportName;
     }
+
+    public ReportCreationException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction, Throwable throwable, String reportName) {
+        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, throwable);
+        this.reportName = reportName;
+    }
 }

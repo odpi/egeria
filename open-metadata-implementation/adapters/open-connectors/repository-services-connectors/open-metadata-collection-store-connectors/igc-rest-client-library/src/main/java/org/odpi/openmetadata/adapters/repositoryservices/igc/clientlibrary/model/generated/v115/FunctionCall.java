@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class FunctionCall extends Reference {
 
     public static String getIgcTypeId() { return "function_call"; }
+    public static String getIgcTypeDisplayName() { return "Function Call"; }
 
     /**
      * The 'function_name' property, displayed as 'Function Name' in the IGC UI.
@@ -90,6 +93,27 @@ public class FunctionCall extends Reference {
     /** @see #used_in_filter_constraint */ @JsonProperty("used_in_filter_constraint")  public Reference getUsedInFilterConstraint() { return this.used_in_filter_constraint; }
     /** @see #used_in_filter_constraint */ @JsonProperty("used_in_filter_constraint")  public void setUsedInFilterConstraint(Reference used_in_filter_constraint) { this.used_in_filter_constraint = used_in_filter_constraint; }
 
-    public static final Boolean isFunctionCall(Object obj) { return (obj.getClass() == FunctionCall.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "function_name",
+        "for_transforms",
+        "stage_trigger",
+        "call_context"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "function_name",
+        "for_transforms",
+        "stage_trigger",
+        "call_context",
+        "executes_function",
+        "used_in_function",
+        "used_in_filter_constraint"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isFunctionCall(Object obj) { return (obj.getClass() == FunctionCall.class); }
 
 }

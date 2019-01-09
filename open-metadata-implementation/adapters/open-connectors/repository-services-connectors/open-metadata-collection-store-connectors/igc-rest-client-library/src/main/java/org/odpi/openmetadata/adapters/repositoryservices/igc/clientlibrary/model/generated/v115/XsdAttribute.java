@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class XsdAttribute extends Reference {
 
     public static String getIgcTypeId() { return "xsd_attribute"; }
+    public static String getIgcTypeDisplayName() { return "XSD Attribute"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -347,6 +350,92 @@ public class XsdAttribute extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isXsdAttribute(Object obj) { return (obj.getClass() == XsdAttribute.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "namespace",
+        "data_type",
+        "default_value",
+        "usage",
+        "inheritable",
+        "fixed_value",
+        "length",
+        "max_length",
+        "min_length",
+        "fraction_digits",
+        "total_digits",
+        "white_space",
+        "timezone",
+        "name_form",
+        "pattern_expression",
+        "minimum_range",
+        "is_minimum_range_inclusive",
+        "maximum_range",
+        "is_maximum_range_inclusive",
+        "enumeration_value",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "context",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "referenced_by_xsd_elements",
+        "referenced_by_xsd_complex_type",
+        "referenced_by_xsd_attribute_groups",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "context",
+        "namespace",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "referenced_by_xsd_elements",
+        "referenced_by_xsd_complex_type",
+        "referenced_by_xsd_attribute_groups",
+        "xsd_simple_type_definition",
+        "data_type",
+        "default_value",
+        "usage",
+        "inheritable",
+        "fixed_value",
+        "length",
+        "max_length",
+        "min_length",
+        "fraction_digits",
+        "total_digits",
+        "white_space",
+        "timezone",
+        "name_form",
+        "pattern_expression",
+        "minimum_range",
+        "is_minimum_range_inclusive",
+        "maximum_range",
+        "is_maximum_range_inclusive",
+        "enumeration_value",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isXsdAttribute(Object obj) { return (obj.getClass() == XsdAttribute.class); }
 
 }

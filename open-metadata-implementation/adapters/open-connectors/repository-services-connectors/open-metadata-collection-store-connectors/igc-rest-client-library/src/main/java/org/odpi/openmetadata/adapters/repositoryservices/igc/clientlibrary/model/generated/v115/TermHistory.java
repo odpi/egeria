@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class TermHistory extends Reference {
 
     public static String getIgcTypeId() { return "term_history"; }
+    public static String getIgcTypeDisplayName() { return "Term History"; }
 
     /**
      * The 'term' property, displayed as 'Term' in the IGC UI.
@@ -65,6 +68,26 @@ public class TermHistory extends Reference {
     /** @see #changed_properties */ @JsonProperty("changed_properties")  public ReferenceList getChangedProperties() { return this.changed_properties; }
     /** @see #changed_properties */ @JsonProperty("changed_properties")  public void setChangedProperties(ReferenceList changed_properties) { this.changed_properties = changed_properties; }
 
-    public static final Boolean isTermHistory(Object obj) { return (obj.getClass() == TermHistory.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "date",
+        "comment",
+        "edited_by"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "changed_properties"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "term",
+        "date",
+        "comment",
+        "edited_by",
+        "changed_properties"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isTermHistory(Object obj) { return (obj.getClass() == TermHistory.class); }
 
 }

@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class StageType extends Reference {
 
     public static String getIgcTypeId() { return "stage_type"; }
+    public static String getIgcTypeDisplayName() { return "Stage Type"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -79,6 +82,31 @@ public class StageType extends Reference {
     /** @see #copyright */ @JsonProperty("copyright")  public String getCopyright() { return this.copyright; }
     /** @see #copyright */ @JsonProperty("copyright")  public void setCopyright(String copyright) { this.copyright = copyright; }
 
-    public static final Boolean isStageType(Object obj) { return (obj.getClass() == StageType.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "long_description",
+        "vendor",
+        "version",
+        "author",
+        "copyright"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "steward"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "long_description",
+        "steward",
+        "vendor",
+        "version",
+        "author",
+        "copyright"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isStageType(Object obj) { return (obj.getClass() == StageType.class); }
 
 }

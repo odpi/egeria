@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class DatabaseColumn extends Reference {
 
     public static String getIgcTypeId() { return "database_column"; }
+    public static String getIgcTypeDisplayName() { return "Database Column"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -700,8 +703,8 @@ public class DatabaseColumn extends Reference {
     /** @see #database_table_or_view */ @JsonProperty("database_table_or_view")  public Reference getDatabaseTableOrView() { return this.database_table_or_view; }
     /** @see #database_table_or_view */ @JsonProperty("database_table_or_view")  public void setDatabaseTableOrView(Reference database_table_or_view) { this.database_table_or_view = database_table_or_view; }
 
-    /** @see #qualityScore */ @JsonProperty("qualityScore")  public String getQualityScore() { return this.qualityScore; }
-    /** @see #qualityScore */ @JsonProperty("qualityScore")  public void setQualityScore(String qualityScore) { this.qualityScore = qualityScore; }
+    /** @see #qualityScore */ @JsonProperty("qualityScore")  public String getQualityscore() { return this.qualityScore; }
+    /** @see #qualityScore */ @JsonProperty("qualityScore")  public void setQualityscore(String qualityScore) { this.qualityScore = qualityScore; }
 
     /** @see #labels */ @JsonProperty("labels")  public ReferenceList getLabels() { return this.labels; }
     /** @see #labels */ @JsonProperty("labels")  public void setLabels(ReferenceList labels) { this.labels = labels; }
@@ -832,71 +835,71 @@ public class DatabaseColumn extends Reference {
     /** @see #validity_tables */ @JsonProperty("validity_tables")  public ReferenceList getValidityTables() { return this.validity_tables; }
     /** @see #validity_tables */ @JsonProperty("validity_tables")  public void setValidityTables(ReferenceList validity_tables) { this.validity_tables = validity_tables; }
 
-    /** @see #uniqueFlag */ @JsonProperty("uniqueFlag")  public Boolean getUniqueFlag() { return this.uniqueFlag; }
-    /** @see #uniqueFlag */ @JsonProperty("uniqueFlag")  public void setUniqueFlag(Boolean uniqueFlag) { this.uniqueFlag = uniqueFlag; }
+    /** @see #uniqueFlag */ @JsonProperty("uniqueFlag")  public Boolean getUniqueflag() { return this.uniqueFlag; }
+    /** @see #uniqueFlag */ @JsonProperty("uniqueFlag")  public void setUniqueflag(Boolean uniqueFlag) { this.uniqueFlag = uniqueFlag; }
 
-    /** @see #nullabilityFlag */ @JsonProperty("nullabilityFlag")  public Boolean getNullabilityFlag() { return this.nullabilityFlag; }
-    /** @see #nullabilityFlag */ @JsonProperty("nullabilityFlag")  public void setNullabilityFlag(Boolean nullabilityFlag) { this.nullabilityFlag = nullabilityFlag; }
+    /** @see #nullabilityFlag */ @JsonProperty("nullabilityFlag")  public Boolean getNullabilityflag() { return this.nullabilityFlag; }
+    /** @see #nullabilityFlag */ @JsonProperty("nullabilityFlag")  public void setNullabilityflag(Boolean nullabilityFlag) { this.nullabilityFlag = nullabilityFlag; }
 
-    /** @see #constantFlag */ @JsonProperty("constantFlag")  public Boolean getConstantFlag() { return this.constantFlag; }
-    /** @see #constantFlag */ @JsonProperty("constantFlag")  public void setConstantFlag(Boolean constantFlag) { this.constantFlag = constantFlag; }
+    /** @see #constantFlag */ @JsonProperty("constantFlag")  public Boolean getConstantflag() { return this.constantFlag; }
+    /** @see #constantFlag */ @JsonProperty("constantFlag")  public void setConstantflag(Boolean constantFlag) { this.constantFlag = constantFlag; }
 
-    /** @see #domainType */ @JsonProperty("domainType")  public ArrayList<String> getDomainType() { return this.domainType; }
-    /** @see #domainType */ @JsonProperty("domainType")  public void setDomainType(ArrayList<String> domainType) { this.domainType = domainType; }
+    /** @see #domainType */ @JsonProperty("domainType")  public ArrayList<String> getDomaintype() { return this.domainType; }
+    /** @see #domainType */ @JsonProperty("domainType")  public void setDomaintype(ArrayList<String> domainType) { this.domainType = domainType; }
 
-    /** @see #numberCompleteValues */ @JsonProperty("numberCompleteValues")  public ArrayList<Number> getNumberCompleteValues() { return this.numberCompleteValues; }
-    /** @see #numberCompleteValues */ @JsonProperty("numberCompleteValues")  public void setNumberCompleteValues(ArrayList<Number> numberCompleteValues) { this.numberCompleteValues = numberCompleteValues; }
+    /** @see #numberCompleteValues */ @JsonProperty("numberCompleteValues")  public ArrayList<Number> getNumbercompletevalues() { return this.numberCompleteValues; }
+    /** @see #numberCompleteValues */ @JsonProperty("numberCompleteValues")  public void setNumbercompletevalues(ArrayList<Number> numberCompleteValues) { this.numberCompleteValues = numberCompleteValues; }
 
-    /** @see #numberValidValues */ @JsonProperty("numberValidValues")  public ArrayList<Number> getNumberValidValues() { return this.numberValidValues; }
-    /** @see #numberValidValues */ @JsonProperty("numberValidValues")  public void setNumberValidValues(ArrayList<Number> numberValidValues) { this.numberValidValues = numberValidValues; }
+    /** @see #numberValidValues */ @JsonProperty("numberValidValues")  public ArrayList<Number> getNumbervalidvalues() { return this.numberValidValues; }
+    /** @see #numberValidValues */ @JsonProperty("numberValidValues")  public void setNumbervalidvalues(ArrayList<Number> numberValidValues) { this.numberValidValues = numberValidValues; }
 
-    /** @see #numberEmptyValues */ @JsonProperty("numberEmptyValues")  public ArrayList<Number> getNumberEmptyValues() { return this.numberEmptyValues; }
-    /** @see #numberEmptyValues */ @JsonProperty("numberEmptyValues")  public void setNumberEmptyValues(ArrayList<Number> numberEmptyValues) { this.numberEmptyValues = numberEmptyValues; }
+    /** @see #numberEmptyValues */ @JsonProperty("numberEmptyValues")  public ArrayList<Number> getNumberemptyvalues() { return this.numberEmptyValues; }
+    /** @see #numberEmptyValues */ @JsonProperty("numberEmptyValues")  public void setNumberemptyvalues(ArrayList<Number> numberEmptyValues) { this.numberEmptyValues = numberEmptyValues; }
 
-    /** @see #numberNullValues */ @JsonProperty("numberNullValues")  public ArrayList<Number> getNumberNullValues() { return this.numberNullValues; }
-    /** @see #numberNullValues */ @JsonProperty("numberNullValues")  public void setNumberNullValues(ArrayList<Number> numberNullValues) { this.numberNullValues = numberNullValues; }
+    /** @see #numberNullValues */ @JsonProperty("numberNullValues")  public ArrayList<Number> getNumbernullvalues() { return this.numberNullValues; }
+    /** @see #numberNullValues */ @JsonProperty("numberNullValues")  public void setNumbernullvalues(ArrayList<Number> numberNullValues) { this.numberNullValues = numberNullValues; }
 
-    /** @see #numberDistinctValues */ @JsonProperty("numberDistinctValues")  public ArrayList<Number> getNumberDistinctValues() { return this.numberDistinctValues; }
-    /** @see #numberDistinctValues */ @JsonProperty("numberDistinctValues")  public void setNumberDistinctValues(ArrayList<Number> numberDistinctValues) { this.numberDistinctValues = numberDistinctValues; }
+    /** @see #numberDistinctValues */ @JsonProperty("numberDistinctValues")  public ArrayList<Number> getNumberdistinctvalues() { return this.numberDistinctValues; }
+    /** @see #numberDistinctValues */ @JsonProperty("numberDistinctValues")  public void setNumberdistinctvalues(ArrayList<Number> numberDistinctValues) { this.numberDistinctValues = numberDistinctValues; }
 
-    /** @see #numberFormats */ @JsonProperty("numberFormats")  public ArrayList<Number> getNumberFormats() { return this.numberFormats; }
-    /** @see #numberFormats */ @JsonProperty("numberFormats")  public void setNumberFormats(ArrayList<Number> numberFormats) { this.numberFormats = numberFormats; }
+    /** @see #numberFormats */ @JsonProperty("numberFormats")  public ArrayList<Number> getNumberformats() { return this.numberFormats; }
+    /** @see #numberFormats */ @JsonProperty("numberFormats")  public void setNumberformats(ArrayList<Number> numberFormats) { this.numberFormats = numberFormats; }
 
-    /** @see #numberZeroValues */ @JsonProperty("numberZeroValues")  public ArrayList<Number> getNumberZeroValues() { return this.numberZeroValues; }
-    /** @see #numberZeroValues */ @JsonProperty("numberZeroValues")  public void setNumberZeroValues(ArrayList<Number> numberZeroValues) { this.numberZeroValues = numberZeroValues; }
+    /** @see #numberZeroValues */ @JsonProperty("numberZeroValues")  public ArrayList<Number> getNumberzerovalues() { return this.numberZeroValues; }
+    /** @see #numberZeroValues */ @JsonProperty("numberZeroValues")  public void setNumberzerovalues(ArrayList<Number> numberZeroValues) { this.numberZeroValues = numberZeroValues; }
 
-    /** @see #inferredDataType */ @JsonProperty("inferredDataType")  public ArrayList<String> getInferredDataType() { return this.inferredDataType; }
-    /** @see #inferredDataType */ @JsonProperty("inferredDataType")  public void setInferredDataType(ArrayList<String> inferredDataType) { this.inferredDataType = inferredDataType; }
+    /** @see #inferredDataType */ @JsonProperty("inferredDataType")  public ArrayList<String> getInferreddatatype() { return this.inferredDataType; }
+    /** @see #inferredDataType */ @JsonProperty("inferredDataType")  public void setInferreddatatype(ArrayList<String> inferredDataType) { this.inferredDataType = inferredDataType; }
 
-    /** @see #inferredLength */ @JsonProperty("inferredLength")  public ArrayList<Number> getInferredLength() { return this.inferredLength; }
-    /** @see #inferredLength */ @JsonProperty("inferredLength")  public void setInferredLength(ArrayList<Number> inferredLength) { this.inferredLength = inferredLength; }
+    /** @see #inferredLength */ @JsonProperty("inferredLength")  public ArrayList<Number> getInferredlength() { return this.inferredLength; }
+    /** @see #inferredLength */ @JsonProperty("inferredLength")  public void setInferredlength(ArrayList<Number> inferredLength) { this.inferredLength = inferredLength; }
 
-    /** @see #inferredFormat */ @JsonProperty("inferredFormat")  public ArrayList<String> getInferredFormat() { return this.inferredFormat; }
-    /** @see #inferredFormat */ @JsonProperty("inferredFormat")  public void setInferredFormat(ArrayList<String> inferredFormat) { this.inferredFormat = inferredFormat; }
+    /** @see #inferredFormat */ @JsonProperty("inferredFormat")  public ArrayList<String> getInferredformat() { return this.inferredFormat; }
+    /** @see #inferredFormat */ @JsonProperty("inferredFormat")  public void setInferredformat(ArrayList<String> inferredFormat) { this.inferredFormat = inferredFormat; }
 
-    /** @see #inferredScale */ @JsonProperty("inferredScale")  public ArrayList<Number> getInferredScale() { return this.inferredScale; }
-    /** @see #inferredScale */ @JsonProperty("inferredScale")  public void setInferredScale(ArrayList<Number> inferredScale) { this.inferredScale = inferredScale; }
+    /** @see #inferredScale */ @JsonProperty("inferredScale")  public ArrayList<Number> getInferredscale() { return this.inferredScale; }
+    /** @see #inferredScale */ @JsonProperty("inferredScale")  public void setInferredscale(ArrayList<Number> inferredScale) { this.inferredScale = inferredScale; }
 
-    /** @see #inferredPrecision */ @JsonProperty("inferredPrecision")  public ArrayList<Number> getInferredPrecision() { return this.inferredPrecision; }
-    /** @see #inferredPrecision */ @JsonProperty("inferredPrecision")  public void setInferredPrecision(ArrayList<Number> inferredPrecision) { this.inferredPrecision = inferredPrecision; }
+    /** @see #inferredPrecision */ @JsonProperty("inferredPrecision")  public ArrayList<Number> getInferredprecision() { return this.inferredPrecision; }
+    /** @see #inferredPrecision */ @JsonProperty("inferredPrecision")  public void setInferredprecision(ArrayList<Number> inferredPrecision) { this.inferredPrecision = inferredPrecision; }
 
-    /** @see #averageValue */ @JsonProperty("averageValue")  public ArrayList<String> getAverageValue() { return this.averageValue; }
-    /** @see #averageValue */ @JsonProperty("averageValue")  public void setAverageValue(ArrayList<String> averageValue) { this.averageValue = averageValue; }
+    /** @see #averageValue */ @JsonProperty("averageValue")  public ArrayList<String> getAveragevalue() { return this.averageValue; }
+    /** @see #averageValue */ @JsonProperty("averageValue")  public void setAveragevalue(ArrayList<String> averageValue) { this.averageValue = averageValue; }
 
-    /** @see #isInferredForeignKey */ @JsonProperty("isInferredForeignKey")  public Boolean getIsInferredForeignKey() { return this.isInferredForeignKey; }
-    /** @see #isInferredForeignKey */ @JsonProperty("isInferredForeignKey")  public void setIsInferredForeignKey(Boolean isInferredForeignKey) { this.isInferredForeignKey = isInferredForeignKey; }
+    /** @see #isInferredForeignKey */ @JsonProperty("isInferredForeignKey")  public Boolean getIsinferredforeignkey() { return this.isInferredForeignKey; }
+    /** @see #isInferredForeignKey */ @JsonProperty("isInferredForeignKey")  public void setIsinferredforeignkey(Boolean isInferredForeignKey) { this.isInferredForeignKey = isInferredForeignKey; }
 
-    /** @see #isInferredPrimaryKey */ @JsonProperty("isInferredPrimaryKey")  public Boolean getIsInferredPrimaryKey() { return this.isInferredPrimaryKey; }
-    /** @see #isInferredPrimaryKey */ @JsonProperty("isInferredPrimaryKey")  public void setIsInferredPrimaryKey(Boolean isInferredPrimaryKey) { this.isInferredPrimaryKey = isInferredPrimaryKey; }
+    /** @see #isInferredPrimaryKey */ @JsonProperty("isInferredPrimaryKey")  public Boolean getIsinferredprimarykey() { return this.isInferredPrimaryKey; }
+    /** @see #isInferredPrimaryKey */ @JsonProperty("isInferredPrimaryKey")  public void setIsinferredprimarykey(Boolean isInferredPrimaryKey) { this.isInferredPrimaryKey = isInferredPrimaryKey; }
 
-    /** @see #has_DataClassifications */ @JsonProperty("has_DataClassifications")  public ReferenceList getHasDataClassifications() { return this.has_DataClassifications; }
-    /** @see #has_DataClassifications */ @JsonProperty("has_DataClassifications")  public void setHasDataClassifications(ReferenceList has_DataClassifications) { this.has_DataClassifications = has_DataClassifications; }
+    /** @see #has_DataClassifications */ @JsonProperty("has_DataClassifications")  public ReferenceList getHasDataclassifications() { return this.has_DataClassifications; }
+    /** @see #has_DataClassifications */ @JsonProperty("has_DataClassifications")  public void setHasDataclassifications(ReferenceList has_DataClassifications) { this.has_DataClassifications = has_DataClassifications; }
 
-    /** @see #nbRecordsTested */ @JsonProperty("nbRecordsTested")  public ArrayList<Number> getNbRecordsTested() { return this.nbRecordsTested; }
-    /** @see #nbRecordsTested */ @JsonProperty("nbRecordsTested")  public void setNbRecordsTested(ArrayList<Number> nbRecordsTested) { this.nbRecordsTested = nbRecordsTested; }
+    /** @see #nbRecordsTested */ @JsonProperty("nbRecordsTested")  public ArrayList<Number> getNbrecordstested() { return this.nbRecordsTested; }
+    /** @see #nbRecordsTested */ @JsonProperty("nbRecordsTested")  public void setNbrecordstested(ArrayList<Number> nbRecordsTested) { this.nbRecordsTested = nbRecordsTested; }
 
-    /** @see #qualityScore_bubble */ @JsonProperty("qualityScore_bubble")  public String getQualityScoreBubble() { return this.qualityScore_bubble; }
-    /** @see #qualityScore_bubble */ @JsonProperty("qualityScore_bubble")  public void setQualityScoreBubble(String qualityScore_bubble) { this.qualityScore_bubble = qualityScore_bubble; }
+    /** @see #qualityScore_bubble */ @JsonProperty("qualityScore_bubble")  public String getQualityscoreBubble() { return this.qualityScore_bubble; }
+    /** @see #qualityScore_bubble */ @JsonProperty("qualityScore_bubble")  public void setQualityscoreBubble(String qualityScore_bubble) { this.qualityScore_bubble = qualityScore_bubble; }
 
     /** @see #quality_dimension */ @JsonProperty("quality_dimension")  public ReferenceList getQualityDimension() { return this.quality_dimension; }
     /** @see #quality_dimension */ @JsonProperty("quality_dimension")  public void setQualityDimension(ReferenceList quality_dimension) { this.quality_dimension = quality_dimension; }
@@ -979,6 +982,206 @@ public class DatabaseColumn extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isDatabaseColumn(Object obj) { return (obj.getClass() == DatabaseColumn.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "qualityScore",
+        "type",
+        "odbc_type",
+        "data_type",
+        "default_value",
+        "length",
+        "minimum_length",
+        "fraction",
+        "position",
+        "level",
+        "occurs",
+        "start_end_columns",
+        "allows_null_values",
+        "unique",
+        "selected_primary_key",
+        "selected_natural_key",
+        "defined_foreign_key",
+        "selected_foreign_key",
+        "uniqueFlag",
+        "nullabilityFlag",
+        "constantFlag",
+        "domainType",
+        "numberCompleteValues",
+        "numberValidValues",
+        "numberEmptyValues",
+        "numberNullValues",
+        "numberDistinctValues",
+        "numberFormats",
+        "numberZeroValues",
+        "inferredDataType",
+        "inferredLength",
+        "inferredFormat",
+        "inferredScale",
+        "inferredPrecision",
+        "averageValue",
+        "isInferredForeignKey",
+        "isInferredPrimaryKey",
+        "nbRecordsTested",
+        "qualityScore_bubble",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "view",
+        "implements_entity_attributes",
+        "implements_design_columns",
+        "referenced_by_database_columns",
+        "detected_classifications",
+        "same_as_data_sources",
+        "references_database_columns",
+        "defined_primary_key",
+        "defined_non_primary_key",
+        "implemented_key",
+        "defined_foreign_key_references",
+        "defined_foreign_key_referenced",
+        "selected_foreign_key_references",
+        "selected_foreign_key_referenced",
+        "database_indexes",
+        "index",
+        "validity_tables",
+        "has_DataClassifications",
+        "quality_dimension",
+        "column_definitions",
+        "mapped_to_physical_object_attributes",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "used_by_analytics_objects",
+        "bi_report_query_items",
+        "bi_collection_members",
+        "suggested_term_assignments",
+        "data_rule_definitions",
+        "data_rule_set_definitions",
+        "data_rules",
+        "data_rule_sets",
+        "data_policies",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "database_table_or_view",
+        "qualityScore",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "database_table",
+        "view",
+        "database_alias",
+        "implements_entity_attributes",
+        "implements_design_columns",
+        "type",
+        "odbc_type",
+        "data_type",
+        "default_value",
+        "database_domains",
+        "referenced_by_database_columns",
+        "selected_classification",
+        "detected_classifications",
+        "length",
+        "minimum_length",
+        "fraction",
+        "position",
+        "level",
+        "occurs",
+        "start_end_columns",
+        "allows_null_values",
+        "unique",
+        "same_as_data_sources",
+        "references_database_columns",
+        "defined_primary_key",
+        "defined_non_primary_key",
+        "implemented_key",
+        "selected_primary_key",
+        "selected_natural_key",
+        "defined_foreign_key",
+        "defined_foreign_key_references",
+        "defined_foreign_key_referenced",
+        "selected_foreign_key",
+        "selected_foreign_key_references",
+        "selected_foreign_key_referenced",
+        "database_indexes",
+        "index",
+        "validity_tables",
+        "uniqueFlag",
+        "nullabilityFlag",
+        "constantFlag",
+        "domainType",
+        "numberCompleteValues",
+        "numberValidValues",
+        "numberEmptyValues",
+        "numberNullValues",
+        "numberDistinctValues",
+        "numberFormats",
+        "numberZeroValues",
+        "inferredDataType",
+        "inferredLength",
+        "inferredFormat",
+        "inferredScale",
+        "inferredPrecision",
+        "averageValue",
+        "isInferredForeignKey",
+        "isInferredPrimaryKey",
+        "has_DataClassifications",
+        "nbRecordsTested",
+        "qualityScore_bubble",
+        "quality_dimension",
+        "column_definitions",
+        "mapped_to_physical_object_attributes",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "used_by_analytics_objects",
+        "bi_report_query_items",
+        "bi_collection_members",
+        "suggested_term_assignments",
+        "data_rule_definitions",
+        "data_rule_set_definitions",
+        "data_rules",
+        "data_rule_sets",
+        "data_policies",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isDatabaseColumn(Object obj) { return (obj.getClass() == DatabaseColumn.class); }
 
 }
