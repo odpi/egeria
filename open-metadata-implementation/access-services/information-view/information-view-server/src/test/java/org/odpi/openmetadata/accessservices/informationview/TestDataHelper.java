@@ -399,7 +399,7 @@ public class TestDataHelper {
 
         DerivedColumn columnClientName = new DerivedColumn();
         columnClientName.setPosition(1);
-        columnClientName.setColumnName("client_name");
+        columnClientName.setName("client_name");
         columnClientName.setSourceColumn(realColumn);
         businessTerm.setName("clientName");
         businessTerm.setQuery("query");

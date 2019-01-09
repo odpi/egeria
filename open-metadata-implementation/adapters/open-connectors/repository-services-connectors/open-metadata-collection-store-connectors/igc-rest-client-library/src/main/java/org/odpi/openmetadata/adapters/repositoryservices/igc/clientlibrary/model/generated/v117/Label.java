@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class Label extends Reference {
 
     public static String getIgcTypeId() { return "label"; }
+    public static String getIgcTypeDisplayName() { return "Label"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -47,6 +50,23 @@ public class Label extends Reference {
     /** @see #labeled_assets */ @JsonProperty("labeled_assets")  public ReferenceList getLabeledAssets() { return this.labeled_assets; }
     /** @see #labeled_assets */ @JsonProperty("labeled_assets")  public void setLabeledAssets(ReferenceList labeled_assets) { this.labeled_assets = labeled_assets; }
 
-    public static final Boolean isLabel(Object obj) { return (obj.getClass() == Label.class); }
+    public static Boolean canBeCreated() { return true; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "description"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labeled_assets"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "description",
+        "labeled_assets"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isLabel(Object obj) { return (obj.getClass() == Label.class); }
 
 }

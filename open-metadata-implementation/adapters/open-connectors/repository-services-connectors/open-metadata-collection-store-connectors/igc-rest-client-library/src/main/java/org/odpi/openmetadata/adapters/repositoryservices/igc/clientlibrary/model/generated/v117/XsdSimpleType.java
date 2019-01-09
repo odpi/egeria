@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class XsdSimpleType extends Reference {
 
     public static String getIgcTypeId() { return "xsd_simple_type"; }
+    public static String getIgcTypeDisplayName() { return "XSD Simple Type"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -357,6 +360,90 @@ public class XsdSimpleType extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isXsdSimpleType(Object obj) { return (obj.getClass() == XsdSimpleType.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "base_type",
+        "length",
+        "max_length",
+        "min_length",
+        "fraction",
+        "total_digits",
+        "whitespace",
+        "timezone",
+        "final",
+        "restriction_pattern",
+        "restriction_minimum_value",
+        "restriction_minimum_inclusive",
+        "restriction_maximum_value",
+        "restriction_maximum_inclusive",
+        "restriction_enumeration_values",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "defines_xsd_elements",
+        "defines_xsd_attributes",
+        "extended_by_xsd_simple_type",
+        "restricted_by_xsd_simple_type",
+        "extends_xsd_element",
+        "restricts_xsd_element",
+        "extended_by_xsd_complex_type",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "xsd_schema",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "defines_xsd_elements",
+        "defines_xsd_attributes",
+        "extends_xsd_simple_type",
+        "extended_by_xsd_simple_type",
+        "restricts_xsd_simple_type",
+        "restricted_by_xsd_simple_type",
+        "extends_xsd_element",
+        "restricts_xsd_element",
+        "extended_by_xsd_complex_type",
+        "base_type",
+        "length",
+        "max_length",
+        "min_length",
+        "fraction",
+        "total_digits",
+        "whitespace",
+        "timezone",
+        "final",
+        "restriction_pattern",
+        "restriction_minimum_value",
+        "restriction_minimum_inclusive",
+        "restriction_maximum_value",
+        "restriction_maximum_inclusive",
+        "restriction_enumeration_values",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isXsdSimpleType(Object obj) { return (obj.getClass() == XsdSimpleType.class); }
 
 }

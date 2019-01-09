@@ -110,9 +110,9 @@ public class ViewsConstructor {
             if (databaseColumn.getBusinessTerm() != null) {
                 DerivedColumn column = new DerivedColumn();
                 if (viewType.equals(GaianQueryConstructor.BUSINESS_PREFIX)) {
-                    column.setColumnName(databaseColumn.getBusinessTerm().getName());
+                    column.setName(databaseColumn.getBusinessTerm().getName());
                 } else {
-                    column.setColumnName(databaseColumn.getName());
+                    column.setName(databaseColumn.getName());
                 }
                 column.setPosition(databaseColumn.getPosition());
                 column.setType(databaseColumn.getType());

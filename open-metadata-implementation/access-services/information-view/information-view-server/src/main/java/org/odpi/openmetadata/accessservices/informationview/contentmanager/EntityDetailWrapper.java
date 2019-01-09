@@ -35,7 +35,7 @@ public class EntityDetailWrapper {
     public enum EntityStatus {
         NEW,
         UPDATED,
-        DELETED;
+        DELETED
 
     }
 
