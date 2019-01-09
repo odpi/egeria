@@ -236,7 +236,7 @@
 							"pm.test(\"IGC endpoint configured\", function () {",
 							"    var jsonData = pm.response.json();",
 							"    pm.expect(jsonData.omagserverConfig.repositoryServicesConfig.localRepositoryConfig.localRepositoryLocalConnection.qualifiedName).to.equal(\"IBMIGCRepository.Connection.myserver\");",
-							"    pm.expect(jsonData.omagserverConfig.repositoryServicesConfig.localRepositoryConfig.localRepositoryLocalConnection.additionalProperties.igcBaseURL).to.equal(host + \":\" + port);",
+							"    pm.expect(jsonData.omagserverConfig.repositoryServicesConfig.localRepositoryConfig.localRepositoryLocalConnection.additionalProperties.igcBaseURL).to.equal(\"https://\" + environment.host + \":\" + environment.port);",
 							"});"
 						],
 						"type": "text/javascript"
