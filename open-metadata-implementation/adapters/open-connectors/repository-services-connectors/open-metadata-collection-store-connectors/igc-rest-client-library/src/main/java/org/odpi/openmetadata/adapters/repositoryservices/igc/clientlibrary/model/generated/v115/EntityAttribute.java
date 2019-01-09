@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class EntityAttribute extends Reference {
 
     public static String getIgcTypeId() { return "entity_attribute"; }
+    public static String getIgcTypeDisplayName() { return "Entity Attribute"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -240,8 +243,8 @@ public class EntityAttribute extends Reference {
     /** @see #logical_keys */ @JsonProperty("logical_keys")  public ReferenceList getLogicalKeys() { return this.logical_keys; }
     /** @see #logical_keys */ @JsonProperty("logical_keys")  public void setLogicalKeys(ReferenceList logical_keys) { this.logical_keys = logical_keys; }
 
-    /** @see #parent_logical_foreignKey */ @JsonProperty("parent_logical_foreignKey")  public ReferenceList getParentLogicalForeignKey() { return this.parent_logical_foreignKey; }
-    /** @see #parent_logical_foreignKey */ @JsonProperty("parent_logical_foreignKey")  public void setParentLogicalForeignKey(ReferenceList parent_logical_foreignKey) { this.parent_logical_foreignKey = parent_logical_foreignKey; }
+    /** @see #parent_logical_foreignKey */ @JsonProperty("parent_logical_foreignKey")  public ReferenceList getParentLogicalForeignkey() { return this.parent_logical_foreignKey; }
+    /** @see #parent_logical_foreignKey */ @JsonProperty("parent_logical_foreignKey")  public void setParentLogicalForeignkey(ReferenceList parent_logical_foreignKey) { this.parent_logical_foreignKey = parent_logical_foreignKey; }
 
     /** @see #child_logical_foreign_keys */ @JsonProperty("child_logical_foreign_keys")  public ReferenceList getChildLogicalForeignKeys() { return this.child_logical_foreign_keys; }
     /** @see #child_logical_foreign_keys */ @JsonProperty("child_logical_foreign_keys")  public void setChildLogicalForeignKeys(ReferenceList child_logical_foreign_keys) { this.child_logical_foreign_keys = child_logical_foreign_keys; }
@@ -291,6 +294,73 @@ public class EntityAttribute extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isEntityAttribute(Object obj) { return (obj.getClass() == EntityAttribute.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "primary_key",
+        "physical_name",
+        "native_type",
+        "data_type",
+        "length",
+        "scale",
+        "required",
+        "sequence",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "implemented_by_design_columns",
+        "implemented_by_database_columns",
+        "logical_keys",
+        "parent_logical_foreignKey",
+        "child_logical_foreign_keys",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "logical_entity",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "implemented_by_design_columns",
+        "implemented_by_database_columns",
+        "primary_key",
+        "logical_keys",
+        "parent_logical_foreignKey",
+        "child_logical_foreign_keys",
+        "validation_rule",
+        "validation_range",
+        "validation_list",
+        "physical_name",
+        "native_type",
+        "data_type",
+        "length",
+        "scale",
+        "required",
+        "sequence",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isEntityAttribute(Object obj) { return (obj.getClass() == EntityAttribute.class); }
 
 }

@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class DataItemProperties extends Reference {
 
     public static String getIgcTypeId() { return "data_item_properties"; }
+    public static String getIgcTypeDisplayName() { return "Data Item Properties"; }
 
     /**
      * The 'belonging_to_parameter_definition' property, displayed as 'Belonging to Parameter Definition' in the IGC UI.
@@ -179,6 +182,51 @@ public class DataItemProperties extends Reference {
     /** @see #pad_char */ @JsonProperty("pad_char")  public String getPadChar() { return this.pad_char; }
     /** @see #pad_char */ @JsonProperty("pad_char")  public void setPadChar(String pad_char) { this.pad_char = pad_char; }
 
-    public static final Boolean isDataItemProperties(Object obj) { return (obj.getClass() == DataItemProperties.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "filler_parents",
+        "nls_map",
+        "sync_indicator",
+        "redefined_field",
+        "association",
+        "depend_field",
+        "scd_purpose",
+        "field_type",
+        "date_mask",
+        "apt_field_prop",
+        "has_sign_indicator",
+        "usage",
+        "scale",
+        "is_u_string",
+        "sign_option",
+        "pad_char"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "belonging_to_parameter_definition",
+        "flow_variable",
+        "column_definition",
+        "filler_parents",
+        "nls_map",
+        "sync_indicator",
+        "redefined_field",
+        "association",
+        "depend_field",
+        "scd_purpose",
+        "field_type",
+        "date_mask",
+        "apt_field_prop",
+        "has_sign_indicator",
+        "usage",
+        "scale",
+        "is_u_string",
+        "sign_option",
+        "pad_char"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isDataItemProperties(Object obj) { return (obj.getClass() == DataItemProperties.class); }
 
 }

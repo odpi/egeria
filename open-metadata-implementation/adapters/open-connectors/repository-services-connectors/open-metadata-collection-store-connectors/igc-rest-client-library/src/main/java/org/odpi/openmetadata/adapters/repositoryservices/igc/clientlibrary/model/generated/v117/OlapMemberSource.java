@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class OlapMemberSource extends Reference {
 
     public static String getIgcTypeId() { return "olap_member_source"; }
+    public static String getIgcTypeDisplayName() { return "OLAP Member Source"; }
 
     /**
      * The 'olap_member' property, displayed as 'OLAP Member' in the IGC UI.
@@ -41,6 +44,17 @@ public class OlapMemberSource extends Reference {
     /** @see #data_field */ @JsonProperty("data_field")  public Reference getDataField() { return this.data_field; }
     /** @see #data_field */ @JsonProperty("data_field")  public void setDataField(Reference data_field) { this.data_field = data_field; }
 
-    public static final Boolean isOlapMemberSource(Object obj) { return (obj.getClass() == OlapMemberSource.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = new ArrayList<>();
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "olap_member",
+        "data_field"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isOlapMemberSource(Object obj) { return (obj.getClass() == OlapMemberSource.class); }
 
 }

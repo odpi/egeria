@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class ValidValueRange extends Reference {
 
     public static String getIgcTypeId() { return "valid_value_range"; }
+    public static String getIgcTypeDisplayName() { return "Valid Value Range"; }
 
     /**
      * The 'is_max_inclusive' property, displayed as 'Is Max Inclusive' in the IGC UI.
@@ -89,6 +92,32 @@ public class ValidValueRange extends Reference {
     /** @see #design_column */ @JsonProperty("design_column")  public ReferenceList getDesignColumn() { return this.design_column; }
     /** @see #design_column */ @JsonProperty("design_column")  public void setDesignColumn(ReferenceList design_column) { this.design_column = design_column; }
 
-    public static final Boolean isValidValueRange(Object obj) { return (obj.getClass() == ValidValueRange.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "is_max_inclusive",
+        "minimum_value",
+        "is_min_inclusive",
+        "maximum_value",
+        "name",
+        "short_description"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "design_column"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "is_max_inclusive",
+        "minimum_value",
+        "is_min_inclusive",
+        "maximum_value",
+        "name",
+        "short_description",
+        "valid_value_list",
+        "design_column"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isValidValueRange(Object obj) { return (obj.getClass() == ValidValueRange.class); }
 
 }
