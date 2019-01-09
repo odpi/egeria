@@ -7,7 +7,6 @@ package org.odpi.openmetadata.accessservices.informationview.listeners;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;

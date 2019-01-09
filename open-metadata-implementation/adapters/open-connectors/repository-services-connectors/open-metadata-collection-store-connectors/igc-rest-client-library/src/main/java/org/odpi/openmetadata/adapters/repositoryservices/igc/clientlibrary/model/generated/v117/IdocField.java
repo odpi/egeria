@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class IdocField extends Reference {
 
     public static String getIgcTypeId() { return "idoc_field"; }
+    public static String getIgcTypeDisplayName() { return "IDoc Field"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -345,6 +348,75 @@ public class IdocField extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isIdocField(Object obj) { return (obj.getClass() == IdocField.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "odbc_type",
+        "data_type",
+        "type",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "idoc_segment_type",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "idoc_type",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "used_by_analytics_objects",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "idoc_segment_type",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "odbc_type",
+        "data_type",
+        "type",
+        "idoc_type",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "used_by_analytics_objects",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isIdocField(Object obj) { return (obj.getClass() == IdocField.class); }
 
 }

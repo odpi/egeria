@@ -16,6 +16,7 @@ public class Identity {
 
     private String assetType;
     private String assetName;
+    private String rid;
 
     /**
      * Creates a new empty identity.
@@ -24,6 +25,7 @@ public class Identity {
         context = new ArrayList<>();
         assetType = "";
         assetName = "";
+        rid = null;
     }
 
     /**
@@ -34,10 +36,24 @@ public class Identity {
      * @param assetName the name of the asset
      */
     public Identity(List<Reference> context, String assetType, String assetName) {
+        this(context, assetType, assetName, null);
+    }
+
+    /**
+     * Creates a new identity based on the identity characteristics provided.
+     * (Also keeps a record of Repository ID (RID) for potential efficiency of parent traversal)
+     *
+     * @param context the populated '_context' array from an asset
+     * @param assetType the type of the asset
+     * @param assetName the name of the asset
+     * @param rid the Repository ID (RID) of the asset
+     */
+    public Identity(List<Reference> context, String assetType, String assetName, String rid) {
         this();
         this.context = context;
         this.assetType = assetType;
         this.assetName = assetName;
+        this.rid = rid;
     }
 
     /**
@@ -64,10 +80,17 @@ public class Identity {
             Integer lastIndex = context.size() - 1;
             Reference endOfCtx = context.get(lastIndex);
             List<Reference> parentCtx = context.subList(0, lastIndex);
-            parent = new Identity(parentCtx, endOfCtx.getType(), endOfCtx.getName());
+            parent = new Identity(parentCtx, endOfCtx.getType(), endOfCtx.getName(), endOfCtx.getId());
         }
         return parent;
     }
+
+    /**
+     * Returns the Repository ID (RID) of this identity (if available), or null.
+     *
+     * @return String
+     */
+    public String getRid() { return this.rid; }
 
     @Override
     public String toString() {
