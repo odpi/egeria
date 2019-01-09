@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.io.Serializable;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -24,14 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = InformationViewEvent.class, name = "InformationViewEvent"),
         @JsonSubTypes.Type(value = TableContextEvent.class, name = "TableContextEvent")
 })
-public abstract class InformationViewHeader implements Serializable {
-
-
-    private static final long serialVersionUID = 1L;
-
+public abstract class InformationViewHeader {
 
     private long eventVersionId = 1L;
-
 
     public long getEventVersionId() {
         return eventVersionId;
