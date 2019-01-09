@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class BiReportSection extends Reference {
 
     public static String getIgcTypeId() { return "bi_report_section"; }
+    public static String getIgcTypeDisplayName() { return "BI Report Section"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -123,6 +126,35 @@ public class BiReportSection extends Reference {
     /** @see #contained_in_report_section */ @JsonProperty("contained_in_report_section")  public Reference getContainedInReportSection() { return this.contained_in_report_section; }
     /** @see #contained_in_report_section */ @JsonProperty("contained_in_report_section")  public void setContainedInReportSection(Reference contained_in_report_section) { this.contained_in_report_section = contained_in_report_section; }
 
-    public static final Boolean isBiReportSection(Object obj) { return (obj.getClass() == BiReportSection.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "alias_(business_name)",
+        "type",
+        "label",
+        "short_description",
+        "sequence"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "bi_report_fields",
+        "contains_sub_section"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "alias_(business_name)",
+        "type",
+        "label",
+        "short_description",
+        "sequence",
+        "bi_report",
+        "bi_report_fields",
+        "contains_sub_section",
+        "contained_in_report_section"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isBiReportSection(Object obj) { return (obj.getClass() == BiReportSection.class); }
 
 }

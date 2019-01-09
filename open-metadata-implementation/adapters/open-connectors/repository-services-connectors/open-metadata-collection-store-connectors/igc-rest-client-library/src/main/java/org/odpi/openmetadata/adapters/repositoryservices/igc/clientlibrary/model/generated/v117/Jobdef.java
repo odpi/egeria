@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class Jobdef extends Reference {
 
     public static String getIgcTypeId() { return "jobdef"; }
+    public static String getIgcTypeDisplayName() { return "JobDef"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -105,6 +108,35 @@ public class Jobdef extends Reference {
     /** @see #alias */ @JsonProperty("alias")  public ReferenceList getAlias() { return this.alias; }
     /** @see #alias */ @JsonProperty("alias")  public void setAlias(ReferenceList alias) { this.alias = alias; }
 
-    public static final Boolean isJobdef(Object obj) { return (obj.getClass() == Jobdef.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "alias"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "alias"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isJobdef(Object obj) { return (obj.getClass() == Jobdef.class); }
 
 }

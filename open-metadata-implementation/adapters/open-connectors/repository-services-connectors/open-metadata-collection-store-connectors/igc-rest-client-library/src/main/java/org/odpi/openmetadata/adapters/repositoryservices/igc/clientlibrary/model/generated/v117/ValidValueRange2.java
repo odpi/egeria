@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class ValidValueRange2 extends Reference {
 
     public static String getIgcTypeId() { return "validvaluerange"; }
+    public static String getIgcTypeDisplayName() { return "ValidValueRange"; }
 
     /**
      * The 'is_max_inclusive' property, displayed as 'Is Max Inclusive' in the IGC UI.
@@ -129,6 +132,43 @@ public class ValidValueRange2 extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isValidValueRange2(Object obj) { return (obj.getClass() == ValidValueRange2.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "is_max_inclusive",
+        "minimum_value",
+        "is_min_inclusive",
+        "maximum_value",
+        "is_not",
+        "sequence",
+        "is_case_sensitive",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "valid_value_list_of_contains_valid_values_inverse",
+        "custom_attribute_def_of_has_valid_values_inverse"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "is_max_inclusive",
+        "minimum_value",
+        "is_min_inclusive",
+        "maximum_value",
+        "valid_value_list_of_contains_valid_values_inverse",
+        "is_not",
+        "sequence",
+        "is_case_sensitive",
+        "custom_attribute_def_of_has_valid_values_inverse",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isValidValueRange2(Object obj) { return (obj.getClass() == ValidValueRange2.class); }
 
 }

@@ -95,8 +95,7 @@ public enum InformationViewAuditCode {
     public String getFormattedLogMessage(String... params) {
         log.debug(String.format("<== OMRS Audit Code.getMessage(%s)", Arrays.toString(params)));
 
-        MessageFormat mf = new MessageFormat(logMessage);
-        String result = mf.format(params);
+        String result = MessageFormat.format(logMessage, params);
 
         log.debug(String.format("==> OMRS Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
 

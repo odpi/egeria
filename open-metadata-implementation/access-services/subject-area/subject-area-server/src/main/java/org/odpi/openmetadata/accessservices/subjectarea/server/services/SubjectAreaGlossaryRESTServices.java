@@ -57,12 +57,16 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
     /**
      * Create a Glossary. There are specializations of glossaries that can also be created using this operation.
      * To create a specialization, you should specify a nodeType other than Glossary in the supplied glossary.
+     *
+     * Glossaries with the same name can be confusing. Best practise is to createGlossaries that have unique names.
+     * This Create call does not police that glossary names are unique. So it is possible to create Glossaries with the same name as each other.
+     *
      * <p>
      * Valid nodeTypes for this request are:
      * <ul>
      *     <li>Taxonomy to create a Taxonomy </li>
      *     <li>CanonicalGlossary to create a canonical glossary </li>
-     *     <li>TaxonomyAndCanonicalGlossary to create a glossary that is both a taxonomy and a canonical glosary </li>
+     *     <li>TaxonomyAndCanonicalGlossary to create a glossary that is both a taxonomy and a canonical glossary </li>
      *     <li>Glossary to create a glossary that is not a taxonomy or a canonical glossary</li>
      * </ul>
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -107,31 +111,9 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
                         errorCode.getSystemAction(),
                         errorCode.getUserAction());
             } else {
-                SubjectAreaOMASAPIResponse getGlossaryResponse = glossaryRESTServices.getGlossaryByName(serverName,userId, suppliedGlossaryName);
-                if (getGlossaryResponse.getResponseCategory().equals(ResponseCategory.Glossary)) {
-                    // glossary found
-                    SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_CREATE_FAILED_NAME_ALREADY_EXISTS;
-                    String errorMessage = errorCode.getErrorMessageId()
-                            + errorCode.getFormattedErrorMessage(
-                            suppliedGlossaryName);
-                    log.error(errorMessage);
-                    throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                            className,
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
-                } else {
-                    if (getGlossaryResponse.getResponseCategory().equals(ResponseCategory.UnrecognizedNameException)) {
-                        // this means that there were no errors and a glossary was not found by this name so we are ok to create one.
-                        org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary newGeneratedGlossary =  subjectAreaOmasREST.createGlossary(userId, generatedGlossary);
-                        org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary newGlossary = GlossaryMapper.mapOMRSBeantoGlossary(newGeneratedGlossary);
-                        response = new GlossaryResponse(newGlossary);
-                    } else {
-                        // an error occurred so do not continue
-                        response = getGlossaryResponse;
-                    }
-                }
+                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary newGeneratedGlossary =  subjectAreaOmasREST.createGlossary(userId, generatedGlossary);
+                org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary newGlossary = GlossaryMapper.mapOMRSBeantoGlossary(newGeneratedGlossary);
+                response = new GlossaryResponse(newGlossary);
             }
         } catch (MetadataServerUncontactableException e) {
             response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
@@ -316,115 +298,6 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
     }
 
     /**
-     * Get a Glossary by name
-     * <p>
-     * Glossaries should have unique names. If repositories were not able to contact each other on the network, it is possible that glossaries of the same
-     * name might be added. If this has occured this operation may not retun the glossary you are interested in. The guid of the glossary is the way to
-     * uniquely identify a glossary; a get for glossary by guid can be issued to find glossaries with particular guids.
-     *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param name   find the glossary with this name.
-     * @return the requested glossary.
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse getGlossaryByName(String serverName, String userId, String name) {
-        final String methodName = "getGlossaryByName";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",name=" + name);
-        }
-        SubjectAreaOMASAPIResponse response = null;
-        List<EntityDetail> omrsEntityDetails = null;
-        org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary gotGlossary = null;
-        try
-        {
-            // initialise omrs API helper with the right instance based on the server name
-            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
-            InputValidator.validateNameNotNull(className, methodName, name, "name");
-
-
-            MatchCriteria matchCriteria = MatchCriteria.ALL;
-            // guid for the Glossary Type.
-            String entityTypeGUID = GLOSSARY_TYPE_GUID;
-            InstanceProperties matchProperties = new InstanceProperties();
-            PrimitivePropertyValue nameValue = new PrimitivePropertyValue();
-            nameValue.setPrimitiveValue(name);
-            nameValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            matchProperties.setProperty("displayName", nameValue);
-
-            // Look for all statuses apart from DELETED.
-            List<InstanceStatus> limitResultsByStatus = new ArrayList<>();
-            limitResultsByStatus.add(InstanceStatus.ACTIVE);
-            limitResultsByStatus.add(InstanceStatus.DRAFT);
-            limitResultsByStatus.add(InstanceStatus.PREPARED);
-            limitResultsByStatus.add(InstanceStatus.PROPOSED);
-            limitResultsByStatus.add(InstanceStatus.UNKNOWN);
-
-
-            omrsEntityDetails = oMRSAPIHelper.callFindEntitiesByProperty(
-                    userId,
-                    entityTypeGUID,
-                    matchProperties,
-                    matchCriteria,
-                    0,
-                    limitResultsByStatus,
-                    null,
-                    null,
-                    null,
-                    null,
-                    0
-
-            );
-            if (omrsEntityDetails != null && omrsEntityDetails.size() > 0) {
-                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary gotGeneratedGlossary = null;
-
-                gotGeneratedGlossary = org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.GlossaryMapper.mapOmrsEntityDetailToGlossary(omrsEntityDetails.get(0));
-
-                gotGlossary = GlossaryMapper.mapOMRSBeantoGlossary(gotGeneratedGlossary);
-                response = new GlossaryResponse(gotGlossary);
-
-            } else {
-                // did not find a glossary of this name
-                SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_NAME_DOES_NOT_EXIST;
-                String errorMessage = errorCode.getErrorMessageId()
-                        + errorCode.getFormattedErrorMessage(className,
-                        name);
-                throw new UnrecognizedNameException(errorCode.getHTTPErrorCode(),
-                        className,
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction(),
-                        name);
-
-            }
-        } catch (MetadataServerUncontactableException e) {
-            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-        } catch (UserNotAuthorizedException e) {
-            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-        } catch (FunctionNotSupportedException e) {
-            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        } catch (UnrecognizedNameException e)
-        {
-            response = OMASExceptionToResponse.convertUnrecognizedNameException(e);
-        }
-        //If there are more than one then pick the first one. We could be more sophisticated with this in the future maybe identify a primary icon.
-
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
-        }
-        return response;
-    }
-
-    /**
      * Delete a Glossary instance
      * <p>
      * The deletion of a glossary is only allowed if there is no glossary content (i.e. no terms or categories).
@@ -522,7 +395,6 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         {
             response = OMASExceptionToResponse.convertEntityNotDeletedException(e);
         }
-
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }

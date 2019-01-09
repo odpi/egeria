@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class ParameterSet2 extends Reference {
 
     public static String getIgcTypeId() { return "parameterset"; }
+    public static String getIgcTypeDisplayName() { return "ParameterSet"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -115,6 +118,37 @@ public class ParameterSet2 extends Reference {
     /** @see #used_as_parameter_def */ @JsonProperty("used_as_parameter_def")  public ReferenceList getUsedAsParameterDef() { return this.used_as_parameter_def; }
     /** @see #used_as_parameter_def */ @JsonProperty("used_as_parameter_def")  public void setUsedAsParameterDef(ReferenceList used_as_parameter_def) { this.used_as_parameter_def = used_as_parameter_def; }
 
-    public static final Boolean isParameterSet2(Object obj) { return (obj.getClass() == ParameterSet2.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "has_parameter_def",
+        "used_as_parameter_def"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "has_parameter_def",
+        "used_as_parameter_def"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isParameterSet2(Object obj) { return (obj.getClass() == ParameterSet2.class); }
 
 }

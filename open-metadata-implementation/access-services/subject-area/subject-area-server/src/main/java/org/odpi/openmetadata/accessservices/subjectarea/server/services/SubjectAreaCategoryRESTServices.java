@@ -72,13 +72,11 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      *     <li>Category to create a category that is not a subject area</li>
      * </ul>
      *
-     * A category is always associated with a glossary so there needs to be a named existing glossary name supplied with this request.
+     * The qualifiedName can be specified and will be honoured. If it is specified then the caller may wish to ensure that it is
+     * unique. If this qualifiedName is not specified then one will be generated as GlossaryCategory concatinated with the the guid.
      *
-     * A category may have a category parent, the create looks at the Category parent guid property, if this is null then
-     * the category is a top level category in the glossary; if this is not null then this needs to be a valid
-     * guid of a Category.
-     *
-     * The name of the requested category needs to be unique within its sibling categories i.e. categories with the same category parent.
+     * <p>
+     * Failure to create the Categories classifications, link to its glossary or its icon, results in the create failing and the category being deleted
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed

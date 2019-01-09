@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class LineageReportTemplate extends Reference {
 
     public static String getIgcTypeId() { return "lineage_report_template"; }
+    public static String getIgcTypeDisplayName() { return "Lineage Report Template"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -57,6 +60,24 @@ public class LineageReportTemplate extends Reference {
     /** @see #asset_display_properties */ @JsonProperty("asset_display_properties")  public Reference getAssetDisplayProperties() { return this.asset_display_properties; }
     /** @see #asset_display_properties */ @JsonProperty("asset_display_properties")  public void setAssetDisplayProperties(Reference asset_display_properties) { this.asset_display_properties = asset_display_properties; }
 
-    public static final Boolean isLineageReportTemplate(Object obj) { return (obj.getClass() == LineageReportTemplate.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "long_description"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "uses_lineage_filter"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "long_description",
+        "uses_lineage_filter",
+        "asset_display_properties"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isLineageReportTemplate(Object obj) { return (obj.getClass() == LineageReportTemplate.class); }
 
 }

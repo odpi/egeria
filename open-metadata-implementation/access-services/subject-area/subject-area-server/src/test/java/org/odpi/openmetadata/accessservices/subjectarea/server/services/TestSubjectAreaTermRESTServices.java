@@ -63,39 +63,23 @@ public class TestSubjectAreaTermRESTServices {
         String abbreviation = "test abbrev";
         String examples = "test examples";
         // set up the mocks
-        EntityDetail mockEntityAdd = createMockGlossaryTerm(displayName,summary,description,testtermguid, abbreviation, examples);
-        EntityDetail mockEntityGet = createMockGlossaryTerm(displayName,summary,description,testtermguid, abbreviation, examples);
-        List<EntityDetail> mockGlossaryList = new ArrayList<>();
+        EntityDetail mockGlossaryTermAdd = createMockGlossaryTerm(displayName,summary,description,testtermguid, abbreviation, examples);
+        EntityDetail mockGlossaryTermGet = createMockGlossaryTerm(displayName,summary,description,testtermguid, abbreviation, examples);
         EntityDetail mockGlossary= createMockGlossary(displayName);
-        mockGlossaryList.add(mockGlossary);
-
         TermAnchor termAnchor = new TermAnchor();
         termAnchor.setEntity1Guid(testglossaryguid);
         termAnchor.setEntity2Guid(testglossaryguid);
         Relationship mockRelationship =   TermAnchorMapper.mapTermAnchorToOmrsRelationship(termAnchor);
 
-        // mock out the get the glossary by name
-        when( oMRSAPIHelper.callFindEntitiesByProperty(
+        // mock out the get the glossary and term gets
+        when( oMRSAPIHelper.callOMRSGetEntityByGuid(
                 any(),
-                any(),
-                any(),
-                any(),
-                anyInt(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                anyInt()
-
-        )).thenReturn(mockGlossaryList);
+                any()
+        )).thenReturn(mockGlossary,mockGlossaryTermGet);
         // mock out the add entity
-        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntityAdd);
+        when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockGlossaryTermAdd);
         // mock out the creation of the relationship to the glossary
         when (oMRSAPIHelper.callOMRSAddRelationship(anyString(),any())).thenReturn(mockRelationship);
-        // mock out the get entity
-        when( oMRSAPIHelper.callOMRSGetEntityByGuid(anyString(),any())).thenReturn(mockEntityGet);
-
         // set the mock omrs in to the rest file.
         subjectAreaTermOmasREST.setOMRSAPIHelper(oMRSAPIHelper);
         Term requestedTerm = new Term();
@@ -103,7 +87,7 @@ public class TestSubjectAreaTermRESTServices {
         requestedTerm.setSummary(summary);
         requestedTerm.setDescription(description);
         GlossarySummary glossary = new GlossarySummary();
-        glossary.setName(testGlossaryName);
+        glossary.setGuid(testglossaryguid);
         requestedTerm.setGlossary(glossary);
         SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(TEST_SERVER_NAME, testuserid, requestedTerm);
 
@@ -273,61 +257,6 @@ public class TestSubjectAreaTermRESTServices {
         invalidParameterExceptionResponse = (InvalidParameterExceptionResponse)response;
         assertTrue(invalidParameterExceptionResponse.getExceptionErrorMessage().contains("OMAS-SUBJECTAREA-400-015"));
 
-
-    }
-    @Test
-    public void testCreateTermNonExistantNamedGlossary() throws Exception {
-        OMRSMetadataCollection  mockMetadataCollection = getMockOmrsMetadataCollection();
-        when(repositoryConnector.getMetadataCollection()).thenReturn(mockMetadataCollection);
-        when(repositoryConnector.getServerName()).thenReturn(TEST_SERVER_NAME);
-        // initialise the map
-        new SubjectAreaServicesInstance(repositoryConnector);
-        String testuserid = "userid1";
-        String testtermguid = "term-guid-1";
-        String testglossaryguid = "glossary-guid-1";
-        final String testGlossaryName = "TestGlossary";
-        SubjectAreaTermRESTServices subjectAreaTermOmasREST = new SubjectAreaTermRESTServices();
-        // set the mock omrs in to the rest file.
-        subjectAreaTermOmasREST.setOMRSAPIHelper(oMRSAPIHelper);
-        String displayName = "string0";
-        String summary = "string1";
-        String description = "string2 fsdgsdg";
-        // set up the mocks
-        List<EntityDetail> mockGlossaryList = new ArrayList<>();
-
-        // mock out the get the glossary by name
-        when( oMRSAPIHelper.callFindEntitiesByProperty(
-                any(),
-                any(),
-                any(),
-                any(),
-                anyInt(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                anyInt()
-
-        )).thenReturn(mockGlossaryList);
-
-
-
-        // set the mock omrs in to the rest file.
-        subjectAreaTermOmasREST.setOMRSAPIHelper(oMRSAPIHelper);
-        Term requestedTerm = new Term();
-        requestedTerm.setName(displayName);
-        requestedTerm.setSummary(summary);
-        requestedTerm.setDescription(description);
-        requestedTerm.setDescription(description);
-        GlossarySummary glossary = new GlossarySummary();
-        glossary.setName(testGlossaryName);
-        requestedTerm.setGlossary(glossary);
-        SubjectAreaOMASAPIResponse response = subjectAreaTermOmasREST.createTerm(TEST_SERVER_NAME, testuserid, requestedTerm);
-        assertNotNull(response);
-        assertTrue(response.getResponseCategory().equals(ResponseCategory.InvalidParameterException));
-        InvalidParameterExceptionResponse invalidParameterExceptionResponse = (InvalidParameterExceptionResponse)response;
-        assertTrue(invalidParameterExceptionResponse.getExceptionErrorMessage().contains("OMAS-SUBJECTAREA-400-025"));
 
     }
 
