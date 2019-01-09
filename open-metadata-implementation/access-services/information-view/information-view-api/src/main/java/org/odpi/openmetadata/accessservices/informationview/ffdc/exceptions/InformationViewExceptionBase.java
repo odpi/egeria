@@ -29,6 +29,24 @@ public abstract class InformationViewExceptionBase extends Exception {
         this.reportedUserAction = userAction;
     }
 
+    public InformationViewExceptionBase(int    httpCode,
+                                             String className,
+                                             String actionDescription,
+                                             String errorMessage,
+                                             String systemAction,
+                                             String userAction,
+                                             Throwable throwable)
+    {
+        super(errorMessage);
+        this.reportedHTTPCode = httpCode;
+        this.reportingClassName = className;
+        this.reportingActionDescription = actionDescription;
+        this.reportedErrorMessage = errorMessage;
+        this.reportedSystemAction = systemAction;
+        this.reportedUserAction = userAction;
+        this.reportedCaughtException = throwable;
+    }
+
 
 
     public int getReportedHTTPCode() {
