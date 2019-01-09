@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class DataFileRecord extends Reference {
 
     public static String getIgcTypeId() { return "data_file_record"; }
+    public static String getIgcTypeDisplayName() { return "Data File Record"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -279,8 +282,8 @@ public class DataFileRecord extends Reference {
     /** @see #data_file */ @JsonProperty("data_file")  public Reference getDataFile() { return this.data_file; }
     /** @see #data_file */ @JsonProperty("data_file")  public void setDataFile(Reference data_file) { this.data_file = data_file; }
 
-    /** @see #qualityScore */ @JsonProperty("qualityScore")  public String getQualityScore() { return this.qualityScore; }
-    /** @see #qualityScore */ @JsonProperty("qualityScore")  public void setQualityScore(String qualityScore) { this.qualityScore = qualityScore; }
+    /** @see #qualityScore */ @JsonProperty("qualityScore")  public String getQualityscore() { return this.qualityScore; }
+    /** @see #qualityScore */ @JsonProperty("qualityScore")  public void setQualityscore(String qualityScore) { this.qualityScore = qualityScore; }
 
     /** @see #labels */ @JsonProperty("labels")  public ReferenceList getLabels() { return this.labels; }
     /** @see #labels */ @JsonProperty("labels")  public void setLabels(ReferenceList labels) { this.labels = labels; }
@@ -318,23 +321,23 @@ public class DataFileRecord extends Reference {
     /** @see #imported_from */ @JsonProperty("imported_from")  public String getImportedFrom() { return this.imported_from; }
     /** @see #imported_from */ @JsonProperty("imported_from")  public void setImportedFrom(String imported_from) { this.imported_from = imported_from; }
 
-    /** @see #reviewDate */ @JsonProperty("reviewDate")  public ArrayList<Date> getReviewDate() { return this.reviewDate; }
-    /** @see #reviewDate */ @JsonProperty("reviewDate")  public void setReviewDate(ArrayList<Date> reviewDate) { this.reviewDate = reviewDate; }
+    /** @see #reviewDate */ @JsonProperty("reviewDate")  public ArrayList<Date> getReviewdate() { return this.reviewDate; }
+    /** @see #reviewDate */ @JsonProperty("reviewDate")  public void setReviewdate(ArrayList<Date> reviewDate) { this.reviewDate = reviewDate; }
 
-    /** @see #fieldCount */ @JsonProperty("fieldCount")  public ArrayList<Number> getFieldCount() { return this.fieldCount; }
-    /** @see #fieldCount */ @JsonProperty("fieldCount")  public void setFieldCount(ArrayList<Number> fieldCount) { this.fieldCount = fieldCount; }
+    /** @see #fieldCount */ @JsonProperty("fieldCount")  public ArrayList<Number> getFieldcount() { return this.fieldCount; }
+    /** @see #fieldCount */ @JsonProperty("fieldCount")  public void setFieldcount(ArrayList<Number> fieldCount) { this.fieldCount = fieldCount; }
 
-    /** @see #rowCount */ @JsonProperty("rowCount")  public ArrayList<Number> getRowCount() { return this.rowCount; }
-    /** @see #rowCount */ @JsonProperty("rowCount")  public void setRowCount(ArrayList<Number> rowCount) { this.rowCount = rowCount; }
+    /** @see #rowCount */ @JsonProperty("rowCount")  public ArrayList<Number> getRowcount() { return this.rowCount; }
+    /** @see #rowCount */ @JsonProperty("rowCount")  public void setRowcount(ArrayList<Number> rowCount) { this.rowCount = rowCount; }
 
-    /** @see #PKDuplicateCount */ @JsonProperty("PKDuplicateCount")  public ArrayList<Number> getPkDuplicateCount() { return this.PKDuplicateCount; }
-    /** @see #PKDuplicateCount */ @JsonProperty("PKDuplicateCount")  public void setPkDuplicateCount(ArrayList<Number> PKDuplicateCount) { this.PKDuplicateCount = PKDuplicateCount; }
+    /** @see #PKDuplicateCount */ @JsonProperty("PKDuplicateCount")  public ArrayList<Number> getPkduplicatecount() { return this.PKDuplicateCount; }
+    /** @see #PKDuplicateCount */ @JsonProperty("PKDuplicateCount")  public void setPkduplicatecount(ArrayList<Number> PKDuplicateCount) { this.PKDuplicateCount = PKDuplicateCount; }
 
-    /** @see #FKViolationCount */ @JsonProperty("FKViolationCount")  public ArrayList<Number> getFkViolationCount() { return this.FKViolationCount; }
-    /** @see #FKViolationCount */ @JsonProperty("FKViolationCount")  public void setFkViolationCount(ArrayList<Number> FKViolationCount) { this.FKViolationCount = FKViolationCount; }
+    /** @see #FKViolationCount */ @JsonProperty("FKViolationCount")  public ArrayList<Number> getFkviolationcount() { return this.FKViolationCount; }
+    /** @see #FKViolationCount */ @JsonProperty("FKViolationCount")  public void setFkviolationcount(ArrayList<Number> FKViolationCount) { this.FKViolationCount = FKViolationCount; }
 
-    /** @see #nbRecordTested */ @JsonProperty("nbRecordTested")  public ArrayList<Number> getNbRecordTested() { return this.nbRecordTested; }
-    /** @see #nbRecordTested */ @JsonProperty("nbRecordTested")  public void setNbRecordTested(ArrayList<Number> nbRecordTested) { this.nbRecordTested = nbRecordTested; }
+    /** @see #nbRecordTested */ @JsonProperty("nbRecordTested")  public ArrayList<Number> getNbrecordtested() { return this.nbRecordTested; }
+    /** @see #nbRecordTested */ @JsonProperty("nbRecordTested")  public void setNbrecordtested(ArrayList<Number> nbRecordTested) { this.nbRecordTested = nbRecordTested; }
 
     /** @see #read_by__static_ */ @JsonProperty("read_by_(static)")  public ReferenceList getReadByStatic() { return this.read_by__static_; }
     /** @see #read_by__static_ */ @JsonProperty("read_by_(static)")  public void setReadByStatic(ReferenceList read_by__static_) { this.read_by__static_ = read_by__static_; }
@@ -387,6 +390,96 @@ public class DataFileRecord extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isDataFileRecord(Object obj) { return (obj.getClass() == DataFileRecord.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "qualityScore",
+        "alias_(business_name)",
+        "include_for_business_lineage",
+        "imported_from",
+        "reviewDate",
+        "fieldCount",
+        "rowCount",
+        "PKDuplicateCount",
+        "FKViolationCount",
+        "nbRecordTested",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "data_file_fields",
+        "implements_logical_entities",
+        "implements_design_tables_or_views",
+        "same_as_data_sources",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "suggested_term_assignments",
+        "blueprint_elements",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "data_file",
+        "qualityScore",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "data_file_fields",
+        "implements_logical_entities",
+        "implements_design_tables_or_views",
+        "alias_(business_name)",
+        "same_as_data_sources",
+        "include_for_business_lineage",
+        "imported_from",
+        "reviewDate",
+        "fieldCount",
+        "rowCount",
+        "PKDuplicateCount",
+        "FKViolationCount",
+        "nbRecordTested",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "suggested_term_assignments",
+        "blueprint_elements",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isDataFileRecord(Object obj) { return (obj.getClass() == DataFileRecord.class); }
 
 }

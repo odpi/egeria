@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class DesignColumn extends Reference {
 
     public static String getIgcTypeId() { return "design_column"; }
+    public static String getIgcTypeDisplayName() { return "Design Column"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -305,8 +308,8 @@ public class DesignColumn extends Reference {
     /** @see #included_in_design_key */ @JsonProperty("included_in_design_key")  public ReferenceList getIncludedInDesignKey() { return this.included_in_design_key; }
     /** @see #included_in_design_key */ @JsonProperty("included_in_design_key")  public void setIncludedInDesignKey(ReferenceList included_in_design_key) { this.included_in_design_key = included_in_design_key; }
 
-    /** @see #parent_design_foreignKey */ @JsonProperty("parent_design_foreignKey")  public ReferenceList getParentDesignForeignKey() { return this.parent_design_foreignKey; }
-    /** @see #parent_design_foreignKey */ @JsonProperty("parent_design_foreignKey")  public void setParentDesignForeignKey(ReferenceList parent_design_foreignKey) { this.parent_design_foreignKey = parent_design_foreignKey; }
+    /** @see #parent_design_foreignKey */ @JsonProperty("parent_design_foreignKey")  public ReferenceList getParentDesignForeignkey() { return this.parent_design_foreignKey; }
+    /** @see #parent_design_foreignKey */ @JsonProperty("parent_design_foreignKey")  public void setParentDesignForeignkey(ReferenceList parent_design_foreignKey) { this.parent_design_foreignKey = parent_design_foreignKey; }
 
     /** @see #included_in_design_foreign_key */ @JsonProperty("included_in_design_foreign_key")  public ReferenceList getIncludedInDesignForeignKey() { return this.included_in_design_foreign_key; }
     /** @see #included_in_design_foreign_key */ @JsonProperty("included_in_design_foreign_key")  public void setIncludedInDesignForeignKey(ReferenceList included_in_design_foreign_key) { this.included_in_design_foreign_key = included_in_design_foreign_key; }
@@ -359,6 +362,79 @@ public class DesignColumn extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isDesignColumn(Object obj) { return (obj.getClass() == DesignColumn.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "primary_key",
+        "type",
+        "data_type",
+        "odbc_type",
+        "length",
+        "minimum_length",
+        "fraction",
+        "position",
+        "level",
+        "allows_null_values",
+        "unique",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "implements_entity_attributes",
+        "implemented_by_data_fields",
+        "implemented_by_database_columns",
+        "included_in_design_key",
+        "parent_design_foreignKey",
+        "included_in_design_foreign_key",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "design_table_or_view",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "implements_entity_attributes",
+        "implemented_by_data_fields",
+        "implemented_by_database_columns",
+        "primary_key",
+        "included_in_design_key",
+        "parent_design_foreignKey",
+        "included_in_design_foreign_key",
+        "type",
+        "data_type",
+        "odbc_type",
+        "physical_domains",
+        "length",
+        "minimum_length",
+        "fraction",
+        "position",
+        "level",
+        "allows_null_values",
+        "unique",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isDesignColumn(Object obj) { return (obj.getClass() == DesignColumn.class); }
 
 }

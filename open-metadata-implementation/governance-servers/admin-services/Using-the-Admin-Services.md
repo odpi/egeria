@@ -229,16 +229,16 @@ This is done by POSTing the IGC environment details:
 
 - `igcBaseURL` specifies the https host and port on which to access the IGC REST API
 - `igcAuthorization` provides a Basic-encoded username and password
-- `igcVersion` specifies the IBM Information Server version of the environment (`v115` or `v117`)
 
 ```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/ibm-igc/details
 {
     "igcBaseURL": "https://infosvr.vagrant.ibm.com:9446",
     "igcAuthorization": "aXNhZG1pbjppc2FkbWlu",
-    "igcVersion": "v117"
 }
 ```
+
+The specific version of IBM Information Governance Catalog the environment is running will be detected as part of the initialization process.
 
 #### Enable OMAG Server as a repository proxy
 
@@ -264,6 +264,15 @@ The OMRS then distributes this new metadata.
 
 ```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/event-mapper-details?connectorProvider={javaClassName}&eventSource={resourceName}
+```
+
+For example, to enable the IBM Information Governance Catalog event mapper,
+POST the following (where `igc.hostname.somewhere.com` is the hostname of the
+domain (services) tier of the environment, and `59092` is the port on which
+its Kafka bus can be accessed):
+
+```
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/event-mapper-details?connectorProvider=org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider&eventSource=igc.hostname.somewhere.com:59092
 ```
 
 #### Remove the local repository

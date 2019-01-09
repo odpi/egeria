@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class DataClassOld extends Reference {
 
     public static String getIgcTypeId() { return "data_class_old"; }
+    public static String getIgcTypeDisplayName() { return "Data Class"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -151,6 +154,44 @@ public class DataClassOld extends Reference {
     /** @see #is_user_defined */ @JsonProperty("is_user_defined")  public Boolean getIsUserDefined() { return this.is_user_defined; }
     /** @see #is_user_defined */ @JsonProperty("is_user_defined")  public void setIsUserDefined(Boolean is_user_defined) { this.is_user_defined = is_user_defined; }
 
-    public static final Boolean isDataClassOld(Object obj) { return (obj.getClass() == DataClassOld.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "class_code",
+        "is_user_defined"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "classifies_data_field",
+        "has_sub_data_class",
+        "inferred_by_df_analysis_summary"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "is_sub_of_data_class",
+        "classifies_data_field",
+        "has_sub_data_class",
+        "class_code",
+        "inferred_by_df_analysis_summary",
+        "is_user_defined"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isDataClassOld(Object obj) { return (obj.getClass() == DataClassOld.class); }
 
 }

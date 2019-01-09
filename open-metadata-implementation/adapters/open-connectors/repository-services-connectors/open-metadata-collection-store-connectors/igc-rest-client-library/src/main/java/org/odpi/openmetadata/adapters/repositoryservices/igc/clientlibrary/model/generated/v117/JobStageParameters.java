@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class JobStageParameters extends Reference {
 
     public static String getIgcTypeId() { return "job_stage_parameters"; }
+    public static String getIgcTypeDisplayName() { return "Job Stage Parameters"; }
 
     /**
      * The 'transaction_groupable' property, displayed as 'Transaction Groupable' in the IGC UI.
@@ -151,6 +154,47 @@ public class JobStageParameters extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isJobStageParameters(Object obj) { return (obj.getClass() == JobStageParameters.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "transaction_groupable",
+        "a_xmeta_locking_root",
+        "locked",
+        "hidden",
+        "for_output",
+        "for_stage",
+        "quote_string",
+        "conv_type",
+        "for_input",
+        "display_style",
+        "view_data",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "transaction_groupable",
+        "of_ds_parameter_def",
+        "a_xmeta_locking_root",
+        "locked",
+        "hidden",
+        "for_output",
+        "for_stage",
+        "quote_string",
+        "conv_type",
+        "for_input",
+        "display_style",
+        "view_data",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isJobStageParameters(Object obj) { return (obj.getClass() == JobStageParameters.class); }
 
 }

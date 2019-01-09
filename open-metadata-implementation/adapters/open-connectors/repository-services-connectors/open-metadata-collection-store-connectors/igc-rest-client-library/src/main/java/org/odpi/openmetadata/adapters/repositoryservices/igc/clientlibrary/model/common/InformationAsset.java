@@ -10,4 +10,6 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
  */
 public class InformationAsset extends MainObject {
     public static String getIgcTypeId() { return "information_asset"; }
+    public static String getIgcTypeDisplayName() { return "Information Asset"; }
+    public static final Boolean isInformationAsset(Object obj) { return (obj.getClass() == InformationAsset.class); }
 }

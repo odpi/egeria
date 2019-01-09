@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class DataClass extends Reference {
 
     public static String getIgcTypeId() { return "data_class"; }
+    public static String getIgcTypeDisplayName() { return "Data Class"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -281,11 +284,11 @@ public class DataClass extends Reference {
     /** @see #valid_values_case_sensitive */ @JsonProperty("valid_values_case_sensitive")  public Boolean getValidValuesCaseSensitive() { return this.valid_values_case_sensitive; }
     /** @see #valid_values_case_sensitive */ @JsonProperty("valid_values_case_sensitive")  public void setValidValuesCaseSensitive(Boolean valid_values_case_sensitive) { this.valid_values_case_sensitive = valid_values_case_sensitive; }
 
-    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public Boolean getSqueezeConsecutiveWhiteSpaces() { return this.squeezeConsecutiveWhiteSpaces; }
-    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public void setSqueezeConsecutiveWhiteSpaces(Boolean squeezeConsecutiveWhiteSpaces) { this.squeezeConsecutiveWhiteSpaces = squeezeConsecutiveWhiteSpaces; }
+    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public Boolean getSqueezeconsecutivewhitespaces() { return this.squeezeConsecutiveWhiteSpaces; }
+    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public void setSqueezeconsecutivewhitespaces(Boolean squeezeConsecutiveWhiteSpaces) { this.squeezeConsecutiveWhiteSpaces = squeezeConsecutiveWhiteSpaces; }
 
-    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public String getColumnNameMatch() { return this.columnNameMatch; }
-    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public void setColumnNameMatch(String columnNameMatch) { this.columnNameMatch = columnNameMatch; }
+    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public String getColumnnamematch() { return this.columnNameMatch; }
+    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public void setColumnnamematch(String columnNameMatch) { this.columnNameMatch = columnNameMatch; }
 
     /** @see #example */ @JsonProperty("example")  public String getExample() { return this.example; }
     /** @see #example */ @JsonProperty("example")  public void setExample(String example) { this.example = example; }
@@ -296,8 +299,8 @@ public class DataClass extends Reference {
     /** @see #class_code */ @JsonProperty("class_code")  public String getClassCode() { return this.class_code; }
     /** @see #class_code */ @JsonProperty("class_code")  public void setClassCode(String class_code) { this.class_code = class_code; }
 
-    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public String getValidValueReferenceFile() { return this.validValueReferenceFile; }
-    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public void setValidValueReferenceFile(String validValueReferenceFile) { this.validValueReferenceFile = validValueReferenceFile; }
+    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public String getValidvaluereferencefile() { return this.validValueReferenceFile; }
+    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public void setValidvaluereferencefile(String validValueReferenceFile) { this.validValueReferenceFile = validValueReferenceFile; }
 
     /** @see #in_collections */ @JsonProperty("in_collections")  public ReferenceList getInCollections() { return this.in_collections; }
     /** @see #in_collections */ @JsonProperty("in_collections")  public void setInCollections(ReferenceList in_collections) { this.in_collections = in_collections; }
@@ -314,6 +317,80 @@ public class DataClass extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isDataClass(Object obj) { return (obj.getClass() == DataClass.class); }
+    public static Boolean canBeCreated() { return true; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "data_class_type_single",
+        "data_type_filter_elements_enum",
+        "default_threshold",
+        "length_filter_min",
+        "length_filter_max",
+        "java_class_name_single",
+        "regular_expression_single",
+        "valid_value_strings",
+        "valid_values_case_sensitive",
+        "squeezeConsecutiveWhiteSpaces",
+        "columnNameMatch",
+        "example",
+        "enabled",
+        "class_code",
+        "validValueReferenceFile",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "contains_data_classes",
+        "classifications_selected",
+        "classified_assets_detected",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "parent_data_class",
+        "data_class_type_single",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "contains_data_classes",
+        "classifications_selected",
+        "classified_assets_detected",
+        "data_type_filter_elements_enum",
+        "default_threshold",
+        "length_filter_min",
+        "length_filter_max",
+        "java_class_name_single",
+        "regular_expression_single",
+        "valid_value_strings",
+        "valid_values_case_sensitive",
+        "squeezeConsecutiveWhiteSpaces",
+        "columnNameMatch",
+        "example",
+        "enabled",
+        "class_code",
+        "validValueReferenceFile",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isDataClass(Object obj) { return (obj.getClass() == DataClass.class); }
 
 }

@@ -3926,10 +3926,6 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
                 {
                     termISATypeOFRelationshipRelationship.setSteward(existingRelationship.getSteward());
                 }
-                if (termISATypeOFRelationshipRelationship.getStatus() == null)
-                {
-                    termISATypeOFRelationshipRelationship.setStatus(existingRelationship.getStatus());
-                }
             }
             org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermISATypeOFRelationship.TermISATypeOFRelationship gennedRelationship = IsaTypeOfMapper.mapTermISATypeOFRelationshipToOMRSRelationshipBean(termISATypeOFRelationshipRelationship);
             org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermISATypeOFRelationship.TermISATypeOFRelationship updatedGennedRelationship = subjectAreaOmasREST.updateTermISATypeOFRelationshipRelationship(userId, gennedRelationship);

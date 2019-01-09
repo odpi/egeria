@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class ClassificationContribution extends Reference {
 
     public static String getIgcTypeId() { return "classification_contribution"; }
+    public static String getIgcTypeDisplayName() { return "Classification Contribution"; }
 
     /**
      * The 'infoset' property, displayed as 'Infoset' in the IGC UI.
@@ -71,6 +74,24 @@ public class ClassificationContribution extends Reference {
     /** @see #match_type */ @JsonProperty("match_type")  public String getMatchType() { return this.match_type; }
     /** @see #match_type */ @JsonProperty("match_type")  public void setMatchType(String match_type) { this.match_type = match_type; }
 
-    public static final Boolean isClassificationContribution(Object obj) { return (obj.getClass() == ClassificationContribution.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "object_count",
+        "size",
+        "match_type"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "infoset",
+        "data_class",
+        "object_count",
+        "size",
+        "match_type"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isClassificationContribution(Object obj) { return (obj.getClass() == ClassificationContribution.class); }
 
 }
