@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class JobStageRecord extends Reference {
 
     public static String getIgcTypeId() { return "job_stage_record"; }
+    public static String getIgcTypeDisplayName() { return "Job Stage Record"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -171,6 +174,50 @@ public class JobStageRecord extends Reference {
     /** @see #record_id_name_value_relation */ @JsonProperty("record_id_name_value_relation")  public String getRecordIdNameValueRelation() { return this.record_id_name_value_relation; }
     /** @see #record_id_name_value_relation */ @JsonProperty("record_id_name_value_relation")  public void setRecordIdNameValueRelation(String record_id_name_value_relation) { this.record_id_name_value_relation = record_id_name_value_relation; }
 
-    public static final Boolean isJobStageRecord(Object obj) { return (obj.getClass() == JobStageRecord.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "record_id_name",
+        "a_xmeta_locking_root",
+        "other_records_initialization_flag",
+        "record_id_value",
+        "internal_id",
+        "record_name",
+        "record_id_name_value_relation"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "has_ds_flow_variable"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "record_id_name",
+        "a_xmeta_locking_root",
+        "other_records_initialization_flag",
+        "of_ds_stage",
+        "has_ds_flow_variable",
+        "record_id_value",
+        "internal_id",
+        "record_name",
+        "record_id_name_value_relation"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isJobStageRecord(Object obj) { return (obj.getClass() == JobStageRecord.class); }
 
 }
