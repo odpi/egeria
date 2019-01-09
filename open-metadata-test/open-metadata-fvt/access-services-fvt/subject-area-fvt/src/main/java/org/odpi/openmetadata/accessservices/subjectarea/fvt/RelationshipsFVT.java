@@ -968,8 +968,7 @@ public class RelationshipsFVT
         Antonym createdAntonym = subjectAreaRelationship.createAntonymRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, antonym);
         FVTUtils.validateLine(createdAntonym);
         System.out.println("Created Antonym " + createdAntonym);
-        String
-                guid = createdAntonym.getGuid();
+        String guid = createdAntonym.getGuid();
 
         Antonym gotAntonym =subjectAreaRelationship.getAntonymRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
         FVTUtils.validateLine(gotAntonym);

@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class XmlSchemaDefinition extends Reference {
 
     public static String getIgcTypeId() { return "xml_schema_definition"; }
+    public static String getIgcTypeDisplayName() { return "XML Schema Definition"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -295,6 +298,77 @@ public class XmlSchemaDefinition extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isXmlSchemaDefinition(Object obj) { return (obj.getClass() == XmlSchemaDefinition.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "target_namespace",
+        "id",
+        "xpath",
+        "default_namespace",
+        "language",
+        "version",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "xml_schema_library",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "contains_xsd_elements",
+        "contains_xsd_attributes",
+        "contains_xsd_simple_types",
+        "contains_xsd_complex_types",
+        "contains_xsd_element_groups",
+        "contains_xsd_attribute_groups",
+        "includes_xsd_schemas",
+        "imports_xsd_schemas",
+        "redefines_xsd_schemas",
+        "overrides_xsd_schemas",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "target_namespace",
+        "xml_schema_library",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "contains_xsd_elements",
+        "contains_xsd_attributes",
+        "contains_xsd_simple_types",
+        "contains_xsd_complex_types",
+        "contains_xsd_element_groups",
+        "contains_xsd_attribute_groups",
+        "includes_xsd_schemas",
+        "imports_xsd_schemas",
+        "redefines_xsd_schemas",
+        "overrides_xsd_schemas",
+        "id",
+        "xpath",
+        "default_namespace",
+        "language",
+        "version",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isXmlSchemaDefinition(Object obj) { return (obj.getClass() == XmlSchemaDefinition.class); }
 
 }

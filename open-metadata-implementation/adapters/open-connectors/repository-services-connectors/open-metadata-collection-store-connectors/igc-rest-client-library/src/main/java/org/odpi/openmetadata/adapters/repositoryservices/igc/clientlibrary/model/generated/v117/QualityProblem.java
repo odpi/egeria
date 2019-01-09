@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class QualityProblem extends Reference {
 
     public static String getIgcTypeId() { return "quality_problem"; }
+    public static String getIgcTypeDisplayName() { return "Quality Score Problem"; }
 
     /**
      * The 'qualityScore' property, displayed as 'Quality Score' in the IGC UI.
@@ -81,11 +84,11 @@ public class QualityProblem extends Reference {
     protected Date modified_on;
 
 
-    /** @see #qualityScore */ @JsonProperty("qualityScore")  public Number getQualityScore() { return this.qualityScore; }
-    /** @see #qualityScore */ @JsonProperty("qualityScore")  public void setQualityScore(Number qualityScore) { this.qualityScore = qualityScore; }
+    /** @see #qualityScore */ @JsonProperty("qualityScore")  public Number getQualityscore() { return this.qualityScore; }
+    /** @see #qualityScore */ @JsonProperty("qualityScore")  public void setQualityscore(Number qualityScore) { this.qualityScore = qualityScore; }
 
-    /** @see #QualityProblemTypeName */ @JsonProperty("QualityProblemTypeName")  public String getQualityProblemTypeName() { return this.QualityProblemTypeName; }
-    /** @see #QualityProblemTypeName */ @JsonProperty("QualityProblemTypeName")  public void setQualityProblemTypeName(String QualityProblemTypeName) { this.QualityProblemTypeName = QualityProblemTypeName; }
+    /** @see #QualityProblemTypeName */ @JsonProperty("QualityProblemTypeName")  public String getQualityproblemtypename() { return this.QualityProblemTypeName; }
+    /** @see #QualityProblemTypeName */ @JsonProperty("QualityProblemTypeName")  public void setQualityproblemtypename(String QualityProblemTypeName) { this.QualityProblemTypeName = QualityProblemTypeName; }
 
     /** @see #details */ @JsonProperty("details")  public String getDetails() { return this.details; }
     /** @see #details */ @JsonProperty("details")  public void setDetails(String details) { this.details = details; }
@@ -99,8 +102,8 @@ public class QualityProblem extends Reference {
     /** @see #percent_occurrences */ @JsonProperty("percent_occurrences")  public Number getPercentOccurrences() { return this.percent_occurrences; }
     /** @see #percent_occurrences */ @JsonProperty("percent_occurrences")  public void setPercentOccurrences(Number percent_occurrences) { this.percent_occurrences = percent_occurrences; }
 
-    /** @see #QualityProblemTypeDescription */ @JsonProperty("QualityProblemTypeDescription")  public String getQualityProblemTypeDescription() { return this.QualityProblemTypeDescription; }
-    /** @see #QualityProblemTypeDescription */ @JsonProperty("QualityProblemTypeDescription")  public void setQualityProblemTypeDescription(String QualityProblemTypeDescription) { this.QualityProblemTypeDescription = QualityProblemTypeDescription; }
+    /** @see #QualityProblemTypeDescription */ @JsonProperty("QualityProblemTypeDescription")  public String getQualityproblemtypedescription() { return this.QualityProblemTypeDescription; }
+    /** @see #QualityProblemTypeDescription */ @JsonProperty("QualityProblemTypeDescription")  public void setQualityproblemtypedescription(String QualityProblemTypeDescription) { this.QualityProblemTypeDescription = QualityProblemTypeDescription; }
 
     /** @see #Column */ @JsonProperty("Column")  public String getColumn() { return this.Column; }
     /** @see #Column */ @JsonProperty("Column")  public void setColumn(String Column) { this.Column = Column; }
@@ -117,6 +120,40 @@ public class QualityProblem extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isQualityProblem(Object obj) { return (obj.getClass() == QualityProblem.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "qualityScore",
+        "QualityProblemTypeName",
+        "details",
+        "confidence",
+        "occurrences",
+        "percent_occurrences",
+        "QualityProblemTypeDescription",
+        "Column",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "qualityScore",
+        "QualityProblemTypeName",
+        "details",
+        "confidence",
+        "occurrences",
+        "percent_occurrences",
+        "QualityProblemTypeDescription",
+        "Column",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isQualityProblem(Object obj) { return (obj.getClass() == QualityProblem.class); }
 
 }
