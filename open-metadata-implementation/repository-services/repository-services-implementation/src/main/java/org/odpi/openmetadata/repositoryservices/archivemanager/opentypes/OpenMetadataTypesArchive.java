@@ -512,17 +512,10 @@ public class OpenMetadataTypesArchive
         final String attribute1Name            = "displayName";
         final String attribute1Description     = "Display name of the process";
         final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "parentProcessGuid";
-        final String attribute2Description     = "Guid of the parent process";
-        final String attribute2DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                 attribute1Description,
                 attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                attribute2Description,
-                attribute2DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
