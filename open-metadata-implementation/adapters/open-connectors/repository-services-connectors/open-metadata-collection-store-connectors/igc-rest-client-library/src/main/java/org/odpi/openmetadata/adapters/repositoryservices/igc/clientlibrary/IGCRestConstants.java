@@ -30,9 +30,6 @@ public class IGCRestConstants {
     public static final String IGC_REST_COMMON_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common";
     public static final String IGC_REST_GENERATED_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated";
 
-    public static final String VERSION_115 = "v115";
-    public static final String VERSION_117 = "v117";
-
     // ie. this constant must not be public or it is a potential vulnerability, so must be exposed by getter below
     private static final String[] MODIFICATION_DETAILS = new String[] {
             MOD_CREATED_BY,

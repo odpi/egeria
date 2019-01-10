@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCVersionEnum;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
@@ -55,7 +56,6 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     private IGCRestClient igcRestClient;
 
     private HashSet<ImplementedMapping> implementedMappings = new HashSet<>();
-    private String igcVersion;
 
     private XMLOutputFactory xmlOutputFactory;
 
@@ -77,7 +77,6 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         this.igcRestClient = parentConnector.getIGCRestClient();
         upsertOMRSBundleZip();
         this.igcRestClient.registerPOJO(OMRSStub.class);
-        this.igcVersion = parentConnector.getIGCVersion();
         this.xmlOutputFactory = XMLOutputFactory.newInstance();
     }
 
@@ -588,6 +587,11 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         final String  typeGUIDParameterName        = "entityTypeGUID";
         final String  asOfTimeParameter            = "asOfTime";
         final String  pageSizeParameter            = "pageSize";
+
+        // TODO: need to walk the hierarchy of types and ensure we do a search across all subtypes of (as well as
+        //  base type received), eg. searching for 'Asset' should also search for RelationalTable, RelationalColumn,
+        //  Database, etc, etc
+        //  - also need search by classification for demo
 
         /*
          * Validate parameters

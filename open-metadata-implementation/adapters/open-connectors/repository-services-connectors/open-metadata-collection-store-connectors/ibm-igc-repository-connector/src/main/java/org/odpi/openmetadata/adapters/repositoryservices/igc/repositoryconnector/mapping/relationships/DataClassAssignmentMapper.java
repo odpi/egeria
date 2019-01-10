@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCVersionEnum;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
@@ -175,7 +176,8 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                 P_THRESHOLD
         };
         IGCSearch igcSearch = new IGCSearch("classification", classificationProperties, igcSearchConditionSet);
-        if (!igcomrsRepositoryConnector.getIGCVersion().equals(IGCRestConstants.VERSION_115)) {
+        IGCVersionEnum igcVersion = igcomrsRepositoryConnector.getIGCVersion();
+        if (igcVersion.isEqualTo(IGCVersionEnum.V11702) || igcVersion.isHigherThan(IGCVersionEnum.V11702)) {
             igcSearch.addProperty("value_frequency");
         }
         ReferenceList detectedClassifications = igcomrsRepositoryConnector.getIGCRestClient().search(igcSearch);
@@ -224,7 +226,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                             "partialMatch",
                             EntityMapping.getPrimitivePropertyValue((confidence.intValue() < 100))
                     );
-                    if (!igcomrsRepositoryConnector.getIGCVersion().equals(IGCRestConstants.VERSION_115)) {
+                    if (igcVersion.isEqualTo(IGCVersionEnum.V11702) || igcVersion.isHigherThan(IGCVersionEnum.V11702)) {
                         relationshipProperties.setProperty(
                                 "valueFrequency",
                                 EntityMapping.getPrimitivePropertyValue(detectedClassification.getPropertyByName("value_frequency"))
@@ -339,7 +341,8 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                 P_THRESHOLD
         };
         IGCSearch igcSearch = new IGCSearch("classification", classificationProperties, igcSearchConditionSet);
-        if (!igcomrsRepositoryConnector.getIGCVersion().equals(IGCRestConstants.VERSION_115)) {
+        IGCVersionEnum igcVersion = igcomrsRepositoryConnector.getIGCVersion();
+        if (igcVersion.isEqualTo(IGCVersionEnum.V11702) || igcVersion.isHigherThan(IGCVersionEnum.V11702)) {
             igcSearch.addProperty("value_frequency");
         }
         ReferenceList detectedClassifications = igcomrsRepositoryConnector.getIGCRestClient().search(igcSearch);
@@ -388,7 +391,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                             "partialMatch",
                             EntityMapping.getPrimitivePropertyValue((confidence.intValue() < 100))
                     );
-                    if (!igcomrsRepositoryConnector.getIGCVersion().equals(IGCRestConstants.VERSION_115)) {
+                    if (igcVersion.isEqualTo(IGCVersionEnum.V11702) || igcVersion.isHigherThan(IGCVersionEnum.V11702)) {
                         relationshipProperties.setProperty(
                                 "valueFrequency",
                                 EntityMapping.getPrimitivePropertyValue(detectedClassification.getPropertyByName("value_frequency"))
