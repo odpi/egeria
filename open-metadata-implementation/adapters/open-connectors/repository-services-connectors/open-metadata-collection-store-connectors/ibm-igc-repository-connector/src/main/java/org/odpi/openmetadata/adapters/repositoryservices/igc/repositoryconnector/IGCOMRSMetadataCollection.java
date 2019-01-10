@@ -383,10 +383,34 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 );
 
             } catch (TypeDefNotKnownException e) {
-                log.error("Unable to find RelationshipDef: {}", omrsRelationshipName);
+                OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                        omrsRelationshipName,
+                        guid,
+                        guidParameterName,
+                        methodName,
+                        repositoryName);
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
             }
         } else {
-            log.error("Unable to find any implemented relationship mapping for: {}", omrsRelationshipName);
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    omrsRelationshipName,
+                    guid,
+                    guidParameterName,
+                    methodName,
+                    repositoryName);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
 
         return found;
@@ -516,9 +540,18 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                                     pageSize)
                     );
                 } else {
-                    log.error("Unable to find Mapper that can translate relationships for asset type: {} with prefix {}",
-                            asset.getType(),
-                            prefix);
+                    OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN_FOR_INSTANCE;
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                            prefix + asset.getType(),
+                            "IGC asset",
+                            methodName,
+                            repositoryName);
+                    throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction());
                 }
 
             }
@@ -814,7 +847,10 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @param pageSize the number of results per page (0 for all results)
      * @param userId the user making the request
      */
-    private void processResults(ReferenceList results, List<EntityDetail> entityDetails, int pageSize, String userId) {
+    private void processResults(ReferenceList results,
+                                List<EntityDetail> entityDetails,
+                                int pageSize,
+                                String userId) throws RepositoryErrorException {
 
         if (pageSize == 0) {
             // If the provided pageSize was 0, we need to retrieve ALL pages of results...
@@ -831,16 +867,12 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 List<ReferenceableMapper> mappers = getMappers(reference.getType(), userId);
                 for (ReferenceableMapper mapper : mappers) {
                     log.debug("processResults with mapper: {}", mapper.getClass().getCanonicalName());
-                    try {
-                        if (mapper.igcRidNeedsPrefix()) {
-                            log.debug(" ... prefix required, getEntityDetail with: {}", mapper.getIgcRidPrefix() + reference.getId());
-                            ed = getEntityDetail(userId, mapper.getIgcRidPrefix() + reference.getId(), reference);
-                        } else {
-                            log.debug(" ... no prefix required, getEntityDetail with: {}", reference.getId());
-                            ed = getEntityDetail(userId, reference.getId(), reference);
-                        }
-                    } catch (RepositoryErrorException e) {
-                        log.error("Unable to retrieve entity details.", e);
+                    if (mapper.igcRidNeedsPrefix()) {
+                        log.debug(" ... prefix required, getEntityDetail with: {}", mapper.getIgcRidPrefix() + reference.getId());
+                        ed = getEntityDetail(userId, mapper.getIgcRidPrefix() + reference.getId(), reference);
+                    } else {
+                        log.debug(" ... no prefix required, getEntityDetail with: {}", reference.getId());
+                        ed = getEntityDetail(userId, reference.getId(), reference);
                     }
                     if (ed != null) {
                         entityDetails.add(ed);
@@ -1105,9 +1137,18 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 // 2. Apply the mapping to the object, and retrieve the resulting EntityDetail
                 detail = referenceMapper.getOMRSEntityDetail();
             } else {
-                log.error("Unable to find Mapper that can translate detail for asset type: {} with prefix {}",
-                        asset.getType(),
-                        prefix);
+                OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN_FOR_INSTANCE;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                        prefix + asset.getType(),
+                        "IGC asset",
+                        methodName,
+                        repositoryName);
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
             }
 
         }
