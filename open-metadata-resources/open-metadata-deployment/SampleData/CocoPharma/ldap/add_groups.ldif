@@ -1,0 +1,90 @@
+#ldapadd -x -W -D "cn=Manager,dc=ing-atlas,dc=com" -f add_groups.ldif
+#founder group
+dn: cn=Founder,ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Zach_Now,cn=Founder,ou=data-lake,dc=ing-atlas,dc=com
+member: uid=Steve_Starter,cn=Founder,ou=data-lake,dc=ing-atlas,dc=com
+member: uid=Terri_Daring,cn=Founder,ou=data-lake,dc=ing-atlas,dc=com
+
+
+dn: cn=Data Steward,ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Tanya_Tidy,cn=Data Steward,ou=data-lake,dc=ing-atlas,dc=com
+
+dn: cn=IT Project Leader,ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Polly_Tasker,cn=IT Project Leader,ou=data-lake,dc=ing-atlas,dc=com
+
+
+dn: cn=Lead Researcher,ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Tessa_Tube,cn=Lead Researcher,ou=data-lake,dc=ing-atlas,dc=com
+
+dn: cn=Data Scientist,ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Callie_Quartile,cn=Data Scientist,ou=data-lake,dc=ing-atlas,dc=com
+
+dn: cn=Chief Security Officer,ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Ivor_Padlock,cn=Chief Security Officer,ou=data-lake,dc=ing-atlas,dc=com
+
+dn: cn=Application Developer,ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Bob_Nitter,cn=Application Developer,ou=data-lake,dc=ing-atlas,dc=com
+
+dn: cn=Human Resources and Compliance Director,ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Faith_Broker,cn=Human Resources and Compliance Director,ou=data-lake,dc=ing-atlas,dc=com
+
+dn: cn=Payment Clerk,ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Sally_Counter,cn=Payment Clerk,ou=data-lake,dc=ing-atlas,dc=com
+
+dn: cn=DataStage Specialist,ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Lemmie_Stage,cn=DataStage Specialist,ou=data-lake,dc=ing-atlas,dc=com
+
+dn: cn=Information Architect,ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Erin_Overview,cn=Information Architect,ou=data-lake,dc=ing-atlas,dc=com
+
+dn: cn=Sales Specialist,ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Harry_Hopeful,cn=Sales Specialist,ou=data-lake,dc=ing-atlas,dc=com
+
+dn: cn=IT Infrastructure Lead,ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Gary_Geeke,cn=IT Infrastructure Lead,ou=data-lake,dc=ing-atlas,dc=com
+
+dn: cn=Chief Finance Officer (CFO),ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Reggie_Mint,cn=Chief Finance Officer (CFO),ou=data-lake,dc=ing-atlas,dc=com
+
+dn: cn=Information Analyst,ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Peter_Profile,cn=Information Analyst,ou=data-lake,dc=ing-atlas,dc=com
+
+dn: cn=Accounts Manager,ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Tom_Tally,cn=Accounts Manager,ou=data-lake,dc=ing-atlas,dc=com
+
+dn: cn=Chief Data Officer (CDO),ou=data-lake,dc=ing-atlas,dc=com
+changetype: modify
+replace: member
+member: uid=Jules_Keeper,cn=Chief Data Officer (CDO),ou=data-lake,dc=ing-atlas,dc=com
