@@ -1508,10 +1508,11 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     public OMRSStub getOMRSStubForAsset(Reference asset) {
 
         // We need to translate the provided asset into a unique name for the stub
+        String stubName = getStubNameFromAsset(asset);
         IGCSearchCondition condition = new IGCSearchCondition(
                 "name",
                 "=",
-                getStubNameFromAsset(asset)
+                stubName
         );
         String[] properties = new String[]{ "$sourceRID", "$sourceType", "$payload" };
         IGCSearchConditionSet conditionSet = new IGCSearchConditionSet(condition);
@@ -1520,11 +1521,11 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         OMRSStub stub = null;
         if (results.getPaging().getNumTotal() > 0) {
             if (results.getPaging().getNumTotal() > 1) {
-                log.warn("Found multiple stubs for asset, taking only the first: {}", asset);
+                log.warn("Found multiple stubs for asset, taking only the first: {}", stubName);
             }
             stub = (OMRSStub) results.getItems().get(0);
         } else {
-            log.info("No stub found for asset: {}", asset);
+            log.info("No stub found for asset: {}", stubName);
         }
         return stub;
 
