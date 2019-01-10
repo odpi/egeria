@@ -6,7 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.kafka.clients.consumer.*;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCVersionEnum;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
@@ -59,7 +59,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
     private String originatorServerName;
     private String originatorServerType;
 
-    private String igcVersion;
+    private IGCVersionEnum igcVersion;
     private Properties igcKafkaProperties;
     private String igcKafkaBootstrap;
     private String igcKafkaTopic;
@@ -95,13 +95,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
         this.igcVersion = igcomrsRepositoryConnector.getIGCVersion();
         this.igcRestClient = igcomrsRepositoryConnector.getIGCRestClient();
 
-        // Pick the best topic available based on the version of IGC
-        if (igcVersion.equals(IGCRestConstants.VERSION_115)) {
-            this.igcKafkaTopic = "InfosphereEvents";
-        } else if (igcVersion.equals(IGCRestConstants.VERSION_117)) {
-            // TODO: switch to IgcUnifiedGovEvents once implemented
-            this.igcKafkaTopic = "InfosphereEvents";
-        }
+        // TODO: Pick the best topic available based on the version of IGC (for now always default to InfosphereEvents)
+        this.igcKafkaTopic = "InfosphereEvents";
 
         // Retrieve connection details to configure Kafka connectivity
         this.igcKafkaBootstrap = this.connectionBean.getEndpoint().getAddress();
@@ -238,7 +233,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
     @Override
     public void processEvent(String event) {
         log.debug("Processing event: {}", event);
-        if (igcVersion.equals(IGCRestConstants.VERSION_117)) {
+        if (igcVersion.isEqualTo(IGCVersionEnum.V11702) || igcVersion.isHigherThan(IGCVersionEnum.V11702)) {
             processEventV117(event);
         } else {
             processEventV115(event);
@@ -1009,8 +1004,11 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
 
             // TODO: for now this sends the same set of classifications every time, known design issue with how
             //  classifications are currently handled (to be changed once classifications are reworked)
-            for (Classification classification : detail.getClassifications()) {
-                sendNewClassification(detail);
+            List<Classification> classifications = detail.getClassifications();
+            if (classifications != null) {
+                for (Classification classification : classifications) {
+                    sendNewClassification(detail);
+                }
             }
 
             // See if there are any generated entities to send an event for (ie. *Type)
@@ -1031,8 +1029,11 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                         );
                         // TODO: for now this sends the same set of classifications every time, known design issue with how
                         //  classifications are currently handled (to be changed once classifications are reworked)
-                        for (Classification classification : genDetail.getClassifications()) {
-                            sendNewClassification(genDetail);
+                        classifications = genDetail.getClassifications();
+                        if (classifications != null) {
+                            for (Classification classification : classifications) {
+                                sendNewClassification(genDetail);
+                            }
                         }
                     } else {
                         log.warn("Unable to generate new entity for asset type {} with prefix {} and RID: {}", asset.getType(), ridPrefix, asset.getId());
@@ -1165,12 +1166,14 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
      */
     private Map<String, Classification> getClassificationMapFromList(List<Classification> classifications) {
         HashMap<String, Classification> map = new HashMap<>();
-        for (Classification classification : classifications) {
-            String typeGUID = classification.getType().getTypeDefGUID();
-            if (map.containsKey(typeGUID)) {
-                log.warn("Found multiple classifications of type {} -- clobbering!", typeGUID);
+        if (classifications != null) {
+            for (Classification classification : classifications) {
+                String typeGUID = classification.getType().getTypeDefGUID();
+                if (map.containsKey(typeGUID)) {
+                    log.warn("Found multiple classifications of type {} -- clobbering!", typeGUID);
+                }
+                map.put(typeGUID, classification);
             }
-            map.put(typeGUID, classification);
         }
         return map;
     }

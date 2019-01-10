@@ -63,7 +63,7 @@ public class IGCRestClient {
     private Boolean workflowEnabled = false;
     private List<String> cookies = null;
 
-    private String igcVersion;
+    private IGCVersionEnum igcVersion;
     private HashMap<String, Class> registeredPojosByType;
 
     private int defaultPageSize = 100;
@@ -113,13 +113,18 @@ public class IGCRestClient {
         // Register the non-generated types
         this.registerPOJO(Paging.class);
 
-        this.igcVersion = IGCRestConstants.VERSION_115;
+        // Start with vanilla 11.5.0.2
+        this.igcVersion = IGCVersionEnum.V11502;
         ArrayNode igcTypes = getTypes();
         for (JsonNode node : igcTypes) {
-            // Check for a type that does not exist in v11.5
-            if (node.path("_id").asText().equals("analytics_project")) {
-                this.igcVersion = IGCRestConstants.VERSION_117;
-                break;
+            // Check for a type that does not exist in v11.5.0.2 against higher versions, and if found
+            // set our version to that higher version
+            String assetType = node.path("_id").asText();
+            for (IGCVersionEnum aVersion : IGCVersionEnum.values()) {
+                if (aVersion.isHigherThan(this.igcVersion)
+                        && assetType.equals(aVersion.getTypeNameFirstAvailableInThisVersion())) {
+                    this.igcVersion = aVersion;
+                }
             }
         }
 
@@ -286,9 +291,9 @@ public class IGCRestClient {
     /**
      * Retrieve the version of the IGC environment (static member VERSION_115 or VERSION_117).
      *
-     * @return String
+     * @return IGCVersionEnum
      */
-    public String getIgcVersion() { return igcVersion; }
+    public IGCVersionEnum getIgcVersion() { return igcVersion; }
 
     /**
      * Retrieve the base URL of this IGC REST API connection.
