@@ -676,7 +676,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 }
             }
 
-            igcSearch.addProperties(properties.toArray(new String[0]));
+            igcSearch.addProperties(properties);
             igcSearch.addConditions(igcSearchConditionSet);
 
             setPagingForSearch(igcSearch, fromEntityElement, pageSize);

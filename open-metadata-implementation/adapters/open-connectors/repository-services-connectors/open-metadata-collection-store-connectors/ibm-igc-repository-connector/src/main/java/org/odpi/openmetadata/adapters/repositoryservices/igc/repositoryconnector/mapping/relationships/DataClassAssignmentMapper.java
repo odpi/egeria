@@ -274,7 +274,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
         igcSearch.addType("data_file_field");
         igcSearch.addType("database_column");
         igcSearch.addProperty("selected_classification");
-        igcSearch.addProperties(IGCRestConstants.getInstance().MODIFICATION_DETAILS());
+        igcSearch.addProperties(IGCRestConstants.getInstance().MODIFICATION_DETAILS);
         ReferenceList assetsWithSelected = igcomrsRepositoryConnector.getIGCRestClient().search(igcSearch);
 
         assetsWithSelected.getAllPages(igcomrsRepositoryConnector.getIGCRestClient());

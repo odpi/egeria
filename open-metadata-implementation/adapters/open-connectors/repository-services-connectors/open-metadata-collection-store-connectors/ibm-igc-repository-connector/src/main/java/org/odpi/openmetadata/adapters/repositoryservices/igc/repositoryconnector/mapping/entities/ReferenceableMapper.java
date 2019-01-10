@@ -154,7 +154,7 @@ public class ReferenceableMapper extends EntityMapping {
         }
 
         if (mapper.igcEntity != null && mapper.igcEntity.hasModificationDetails()) {
-            for (String property : IGCRestConstants.getInstance().MODIFICATION_DETAILS()) {
+            for (String property : IGCRestConstants.getInstance().MODIFICATION_DETAILS) {
                 mapper.addComplexIgcProperty(property);
             }
         }
@@ -381,7 +381,7 @@ public class ReferenceableMapper extends EntityMapping {
                 log.debug("Adding properties from mapping: {}", mapping);
                 allProperties.addAll(mapping.getIgcRelationshipPropertiesForType(igcEntity.getType()));
             }
-            allProperties.addAll(Arrays.asList(IGCRestConstants.getInstance().MODIFICATION_DETAILS()));
+            allProperties.addAll(IGCRestConstants.getInstance().MODIFICATION_DETAILS);
             IGCSearchSorting sort = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
             igcEntity = igcEntity.getAssetWithSubsetOfProperties(
                     igcomrsRepositoryConnector.getIGCRestClient(),
