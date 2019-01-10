@@ -2,10 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -40,7 +37,7 @@ public class IGCRestConstants {
         modDetails.add(MOD_CREATED_ON);
         modDetails.add(MOD_MODIFIED_BY);
         modDetails.add(MOD_MODIFIED_ON);
-        return modDetails;
+        return Collections.unmodifiableList(modDetails);
     }
 
     private static final Map<String, String> NON_UNIQUE_CLASSNAMES = createNonUniqueClassnames();
