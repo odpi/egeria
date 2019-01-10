@@ -8,17 +8,6 @@ import java.util.regex.Pattern;
 
 public class IGCRestConstants {
 
-    /**
-     * Singleton for array-based constants, since these are otherwise mutable even when final (and thus a potential
-     * vulnerability).
-     */
-    private static class Singleton {
-        private static final IGCRestConstants INSTANCE = new IGCRestConstants();
-    }
-    public static IGCRestConstants getInstance() {
-        return Singleton.INSTANCE;
-    }
-
     public static final String MOD_CREATED_BY = "created_by";
     public static final String MOD_CREATED_ON = "created_on";
     public static final String MOD_MODIFIED_BY = "modified_by";
@@ -29,7 +18,7 @@ public class IGCRestConstants {
     public static final String IGC_REST_COMMON_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common";
     public static final String IGC_REST_GENERATED_MODEL_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated";
 
-    public static final List<String> MODIFICATION_DETAILS = createModificationDetails();
+    private static final List<String> MODIFICATION_DETAILS = createModificationDetails();
 
     private static List<String> createModificationDetails() {
         ArrayList<String> modDetails = new ArrayList<>();
@@ -52,8 +41,10 @@ public class IGCRestConstants {
         map.put("parameterset", "ParameterSet2");
         map.put("function_call", "FunctionCall");
         map.put("functioncall", "FunctionCall2");
-        return map;
+        return Collections.unmodifiableMap(map);
     }
+
+    public static final List<String> getModificationProperties() { return MODIFICATION_DETAILS; }
 
     /**
      * Retrieve the name of a POJO class from the IGC asset type name.
