@@ -88,7 +88,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                            OMRSRepositoryConnector repositoryConnector) {
 
         super.initialize(repositoryEventMapperName, repositoryConnector);
-        log.debug("IGC Event Mapper initializing...");
+        log.info("IGC Event Mapper initializing...");
 
         // Setup IGC OMRS Repository connectivity
         this.igcomrsRepositoryConnector = (IGCOMRSRepositoryConnector) this.repositoryConnector;
@@ -122,7 +122,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
     public void start() throws ConnectorCheckedException {
 
         super.start();
-        log.debug("IGC Event Mapper starting...");
+        log.info("IGC Event Mapper starting...");
         this.igcomrsMetadataCollection = (IGCOMRSMetadataCollection) igcomrsRepositoryConnector.getMetadataCollection();
         this.metadataCollectionId = igcomrsRepositoryConnector.getMetadataCollectionId();
         this.originatorServerName = igcomrsRepositoryConnector.getServerName();
@@ -328,7 +328,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                 processAsset(event.getMergedRID(), "data_connection", null);
                 break;
             default:
-                log.warn("Found unhandled action type for data connection: {}", action);
+                log.warn("Found unhandled action type '{}' for data connection on event: {}", action, event);
                 break;
         }
 
@@ -355,7 +355,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                 log.debug("Ignoring ASSIGNED_RELATIONSHIP event -- should be handled already by an earlier CREATE or MODIFY event: {}", event);
                 break;
             default:
-                log.warn("Action '{}' is not yet implemented: {}", action, assetRid);
+                log.warn("Action '{}' is not yet implemented: {}", action, event);
                 break;
         }
 
@@ -374,7 +374,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             case InfosphereEventsIAEvent.COL_ANALYZED:
             case InfosphereEventsIAEvent.COL_CLASSIFIED:
                 // TODO: could potentially retrieve more from these via IA REST API...
-                log.warn("Column / field analyzed or classified, but not yet published: {}", action);
+                log.warn("Column / field analyzed or classified, but not yet published -- skipping: {}", event);
                 break;
             case InfosphereEventsIAEvent.TBL_PUBLISHED:
                 // This is the only event we can really do something with, as IGC API can only see
@@ -397,7 +397,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                         searchAssetType = "data_file_field";
                         break;
                     default:
-                        log.warn("Unimplemented asset type for IA publishing: {}", containerAsset.getType());
+                        log.warn("Unimplemented asset type '{}' for IA publishing: {}", containerAsset.getType(), event);
                         break;
                 }
                 IGCSearchCondition igcSearchCondition = new IGCSearchCondition(searchProperty, "=", containerAsset.getId());
@@ -411,11 +411,11 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                         processAsset(child.getId(), child.getType(), null);
                     }
                 } else {
-                    log.warn("Unable to find any subassets for IA published container: {}", containerRid);
+                    log.warn("Unable to find any sub-assets for IA published container '{}': {}", containerRid, event);
                 }
                 break;
             default:
-                log.warn("Action is not yet implemented for IA: {}", action);
+                log.warn("Action '{}' is not yet implemented for IA: {}", action, event);
                 break;
         }
 
@@ -509,7 +509,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             if (subTokens.length == 2) {
                 rids.add(subTokens[1]);
             } else {
-                log.warn("Unexpected number of tokens from event payload: {}", token);
+                log.warn("Unexpected number of tokens ({}) from event payload: {}", subTokens.length, payload);
             }
         }
 
@@ -672,13 +672,13 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                                 relationshipTriggerGUID
                         );
                     } else {
-                        log.warn("Expected relationship but found neither Reference nor ReferenceList: {}", relatedValue);
+                        log.warn("Expected relationship for path '{}' for guid {} but found neither Reference nor ReferenceList: {}", change.getIgcPropertyPath(), latestVersion.getId(), relatedValue);
                     }
                 } else {
-                    log.warn("Expected relationship but found nothing: {}", relatedValue);
+                    log.warn("Expected relationship for path '{}' for guid {} but found nothing: {}", change.getIgcPropertyPath(), latestVersion.getId(), relatedValue);
                 }
             } else {
-                log.warn("No registered POJO to translate asset type {} -- skipping its relationships.", assetType);
+                log.warn("No registered POJO to translate asset type '{}' for guid {} -- skipping its relationships.", assetType, latestVersion.getId());
             }
 
         }
@@ -738,10 +738,10 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                     proxyOnes = relationshipMapping.getProxyOneAssetFromAsset(relatedAsset, igcRestClient);
                     proxyTwos = relationshipMapping.getProxyTwoAssetFromAsset(latestVersion, igcRestClient);
                 } else {
-                    log.warn("Unable to match assets to proxies through linking asset {} -- skipped, but this is likely indicative of a problem with the mapping.", linkingType);
+                    log.warn("Unable to match assets to proxies through linking asset '{}' for guids {} and {} through relationship type {} -- skipped, but this is likely indicative of a problem with the mapping.", linkingType, latestVersion.getId(), relatedAsset.getId(), omrsRelationshipType);
                 }
             } else {
-                log.warn("Unable to match assets to proxies for any asset translation -- skipped, but this is likely indicative of a problem with the mapping.");
+                log.warn("Unable to match assets {} and {} to proxies for any asset translation for relationship type {} -- skipped, but this is likely indicative of a problem with the mapping.", latestVersion.getId(), relatedAsset.getId(), omrsRelationshipType);
                 proxyOnes.add(latestVersion);
                 proxyTwos.add(relatedAsset);
             }
@@ -759,7 +759,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             }
 
         } else {
-            log.warn("Related RID was null: {}", relatedAsset);
+            log.warn("Related RID for guid {} and relationship {} was null -- skipped.", latestVersion.getId(), omrsRelationshipType);
         }
 
     }
@@ -849,7 +849,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                                 sendUpdatedRelationship(relationship);
                                 break;
                             default:
-                                log.warn("Unknown action '{}' for relationship: {}", changeType, relationship);
+                                log.warn("Unknown action '{}' for relationship {}", changeType, relationshipGUID);
                                 break;
                         }
 
@@ -862,11 +862,11 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                     }
                 }
             } else {
-                log.info("Relationship was same as one already processed -- skipping: {}", relationshipTriggerGUID);
+                log.info("Relationship was same as one that triggered this processing -- skipping: {}", relationshipTriggerGUID);
             }
 
         } else {
-            log.warn("Related RID was null: {}", relatedAsset);
+            log.warn("Related RID for relationship type {} and guid {} was null.", omrsRelationshipType, latestVersionRID);
         }
 
     }
@@ -920,7 +920,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                 log.error("User not authorized to retrieve relationship: {}", relationshipGUID, e);
             }
         } else {
-            log.info("Relationship was same as one already processed -- skipping: {}", relationshipTriggerGUID);
+            log.info("Relationship was same as the one that triggered this processing -- skipping: {}", relationshipTriggerGUID);
         }
 
     }
@@ -1279,7 +1279,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
      */
     private void processEventV117(String event) {
         // TODO: implement processEventV117
-        log.info("Not yet implemented as v11.7-specific -- backing to v11.5 processing: {}", event);
+        log.debug("Not yet implemented as v11.7-specific -- backing to v11.5 processing: {}", event);
         processEventV115(event);
     }
 
