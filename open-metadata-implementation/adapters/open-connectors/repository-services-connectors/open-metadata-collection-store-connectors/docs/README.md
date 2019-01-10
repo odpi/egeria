@@ -6,10 +6,10 @@ The open metadata collection store connectors are used to
 integrate an existing metadata repository into the the open
 metadata ecosystem.  There are two types of connectors.
 
-* The **repository connector** provides
+* The [**repository connector**](../../../../../repository-services/docs/component-descriptions/connectors/repository-connector.md) provides
 a standard repository interface that wraps the proprietary
 interface of the metadata repository.
-* The **event mapper connector** captures
+* The [**event mapper connector**](../../../../../repository-services/docs/component-descriptions/connectors/event-mapper-connector.md) captures
 events that provide notifications that metadata has changed
 in the metadata repository and passes them to the
 [Open Metadata Repository Services (OMRS)](../../../../../repository-services/docs/README.md).
@@ -31,26 +31,37 @@ to the OMRS so it can be distributed to the other metadata repositories who are 
 ## Getting Started Implementing a New Connector
 
 As implied by the overview above, a logical place to start in implementing a new
-Open Metadata Collection Store Connector is by implementing the OMRS interface.
+Open Metadata Collection Store Connector is by implementing the repository connector.
 
 This requires implementing:
 
 - an `OMRSRepositoryConnectorProvider` specific to your connector, which extends `OMRSRepositoryConnectorProviderBase`.
-    This really only involves defining the connector class and setting this in the constructor.
+    The connector provider is a factory for its corresponding connector. Much of the logic needed is coded in the base
+    class. Therefore your implementation really only involves defining the connector class and setting this in the
+    constructor.
 - an `OMRSRepositoryConnector` specific to your connector, which extends `OMRSRepositoryConnector`. Most likely the
     main logic of this class will be implemented by overriding the `initialize()` method of the base class,
     and putting into this any logic for initializing the connection: for example, connecting to an underlying
     database, or starting a REST API session, etc. (Similarly, override the `disconnect()` method to properly
     cleanup / close such resources.)
 - an OMRSMetadataCollection specific to your repository, which extends `OMRSMetadataCollectionBase`. Ideally your
-    implementation should override each of the methods defined in the base class, but a logical place to start is
-    likely to be the `getEntityDetail()` method that retrieves an entity by its GUID.
+    implementation should override each of the methods defined in the base class, but a logical place to start is:
+
+	1. implement the `verifyTypeDef()` method, which indicates which types are supported by your repository,
+	1. as part of that implementation, you likely want to configure the mapping from your repository's types to the open metadata types,
+	1. then implement be the `getEntityDetail()` method that retrieves an entity by its GUID.
 
 Once these minimal starting points are implemented, you should be able to configure the
 [OMAG server chassis](../../../../../governance-servers/server-chassis/server-chassis-spring/README.md)
 as a proxy to your repository connector by following the instructions in
-[using the admin services](../../../../../governance-servers/admin-services/Using-the-Admin-Services.md)
-to configure it as a proxy (and providing the name of your `OMRSRepositoryConnectorProvider` class).
+[using the admin services](../../../../../governance-servers/admin-services/Using-the-Admin-Services.md).
+**Important**: this will *not* necessarily be the
+[end-state pattern](../../../../../../open-metadata-publication/website/open-metadata-integration-patterns/README.md)
+you intend to use for your repository connector, but can provide a quick way to start testing its functionality.
+
+This very basic initial scaffold of an implementation allows a [connection](../../../connector-configuration-factory/README.md)
+to be instantiated to your repository, and translation between your repository's representation of metadata and the open
+metadata standard types.
 
 The configuration and startup sequence is important, to start with the following should be sufficient
 (ie. you should not need to configure the access services or event bus initially to just test your
