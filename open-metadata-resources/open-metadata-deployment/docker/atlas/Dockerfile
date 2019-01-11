@@ -4,7 +4,7 @@
 FROM ubuntu:18.04
 
 LABEL org.label-schema.name = "AtlasForEgeriaVDC"
-LABEL org.label-schema.description="Atlas service to support Egeria VDC demos (including ATLAS-1773 patch Jan 2019)"
+LABEL org.label-schema.description="Atlas service to support Egeria VDC demos" 
 LABEL org.label-schema.url="https://github.com/odpi/egeria/"
 LABEL org.label-schema.vcs="https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/docker/atlas"
 LABEL org.label-schema.version="0.1.0"
@@ -27,31 +27,9 @@ ENV PATH /usr/java/bin:/usr/local/apache-maven/bin:/usr/local/sbin:/usr/local/bi
 WORKDIR /root
 
 # Pull down Atlas and build it into /root/atlas-bin.
-RUN git clone http://git.apache.org/atlas.git -b master
-#Apply patch
-RUN wget https://issues.apache.org/jira/secure/attachment/12952687/ATLAS-1773-2018-12-21.patch
-RUN wget https://issues.apache.org/jira/secure/attachment/12952688/ATLAS-2810-2018-12-21.patch
-RUN wget https://issues.apache.org/jira/secure/attachment/12952689/ATLAS-2939-2018-12-21.patch
-RUN wget https://issues.apache.org/jira/secure/attachment/12952690/ATLAS-2985-2018-12-21.patch
-
-# additional patch for latest spring framework
-#COPY dist/ATLAS-1773-additional-patch-to-work-with-Egeria.patch .
+RUN git clone https://github.com/grahamwallis/atlas -b master
 
 WORKDIR atlas
-
-RUN   git config --global user.email "you@example.com"
-RUN   git config --global user.name "Your Name"
-
-RUN git checkout master
-RUN git pull
-RUN git checkout 1123f512cd4ba98f8e1cfecb7f9deff23cbb4949
-
-# apply patches
-RUN git am < ../ATLAS-2810-2018-12-21.patch
-RUN git am < ../ATLAS-2939-2018-12-21.patch
-RUN git am < ../ATLAS-2985-2018-12-21.patch
-RUN git am < ../ATLAS-1773-2018-12-21.patch
-#RUN git am < ../ATLAS-1773-additional-patch-to-work-with-Egeria.patch
 
 # Add reference to odpi repository for snapshots
 COPY dist/settings.xml /root/.m2/settings.xml
