@@ -1,6 +1,10 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 # ODPi/Egeria Working Group Meeting 
 
 January 9th and 10th: Egeria Working Group meeting to discuss projects and architecture.
+
+**NOTE: These are proposed diagrams and architecture and are not final or implemented.**
 
 ## Agenda: Day 1
 
@@ -217,3 +221,7 @@ January 9th and 10th: Egeria Working Group meeting to discuss projects and archi
 
 - March: 5th, 6th, 7th as proposed working Group next meeting in Amsterdam.
 - April: 9th, 10th, 11th proposed working group in Hursley.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
