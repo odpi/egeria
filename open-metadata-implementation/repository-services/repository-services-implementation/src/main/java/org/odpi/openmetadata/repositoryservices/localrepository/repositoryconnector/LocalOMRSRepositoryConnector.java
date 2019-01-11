@@ -371,6 +371,23 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
         }
     }
 
+
+    /**
+     * Explicitly set up the metadata collection name.
+     *
+     * @param metadataCollectionName display name of the metadata collection.
+     */
+    public void setMetadataCollectionName(String metadataCollectionName)
+    {
+        super.setMetadataCollectionName(metadataCollectionName);
+
+        if (realLocalConnector != null)
+        {
+            realLocalConnector.setMetadataCollectionName(metadataCollectionName);
+        }
+    }
+
+
     /**
      * Returns the metadata collection object that provides an OMRS abstraction of the metadata within
      * a metadata repository.

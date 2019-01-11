@@ -23,7 +23,8 @@ public interface OMRSRegistryEventProcessor
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId  unique identifier for the metadata collection that is registering with the cohort.
+     * @param originatorMetadataCollectionId  unique identifier of metadata collection of originator.
+     * @param originatorMetadataCollectionName  display name of metadata collection of originator.
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
@@ -33,6 +34,7 @@ public interface OMRSRegistryEventProcessor
      */
     boolean processRegistrationEvent(String                    sourceName,
                                      String                    originatorMetadataCollectionId,
+                                     String                    originatorMetadataCollectionName,
                                      String                    originatorServerName,
                                      String                    originatorServerType,
                                      String                    originatorOrganizationName,
@@ -61,7 +63,8 @@ public interface OMRSRegistryEventProcessor
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId  unique identifier for the metadata collection that is registering with the cohort.
+     * @param originatorMetadataCollectionId  unique identifier of metadata collection of originator.
+     * @param originatorMetadataCollectionName  display name of metadata collection of originator.
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
@@ -71,6 +74,7 @@ public interface OMRSRegistryEventProcessor
      */
     boolean processReRegistrationEvent(String                    sourceName,
                                        String                    originatorMetadataCollectionId,
+                                       String                    originatorMetadataCollectionName,
                                        String                    originatorServerName,
                                        String                    originatorServerType,
                                        String                    originatorOrganizationName,
@@ -83,7 +87,8 @@ public interface OMRSRegistryEventProcessor
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId  metadata collectionId of originator.
+     * @param originatorMetadataCollectionId  unique identifier of metadata collection of originator.
+     * @param originatorMetadataCollectionName  display name of metadata collection of originator.
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
@@ -91,6 +96,7 @@ public interface OMRSRegistryEventProcessor
      */
     boolean processUnRegistrationEvent(String                    sourceName,
                                        String                    originatorMetadataCollectionId,
+                                       String                    originatorMetadataCollectionName,
                                        String                    originatorServerName,
                                        String                    originatorServerType,
                                        String                    originatorOrganizationName);
@@ -103,7 +109,8 @@ public interface OMRSRegistryEventProcessor
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId  metadata collectionId of originator.
+     * @param originatorMetadataCollectionId  unique identifier of metadata collection of originator.
+     * @param originatorMetadataCollectionName  display name of metadata collection of originator.
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
@@ -112,6 +119,7 @@ public interface OMRSRegistryEventProcessor
      */
     void processConflictingCollectionIdEvent(String  sourceName,
                                              String  originatorMetadataCollectionId,
+                                             String  originatorMetadataCollectionName,
                                              String  originatorServerName,
                                              String  originatorServerType,
                                              String  originatorOrganizationName,
@@ -124,7 +132,8 @@ public interface OMRSRegistryEventProcessor
      *
      * @param sourceName  name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
-     * @param originatorMetadataCollectionId  metadata collectionId of originator.
+     * @param originatorMetadataCollectionId  unique identifier of metadata collection of originator.
+     * @param originatorMetadataCollectionName  display name of metadata collection of originator.
      * @param originatorServerName  name of the server that the event came from.
      * @param originatorServerType  type of server that the event came from.
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
@@ -134,6 +143,7 @@ public interface OMRSRegistryEventProcessor
      */
     void processBadConnectionEvent(String     sourceName,
                                    String     originatorMetadataCollectionId,
+                                   String     originatorMetadataCollectionName,
                                    String     originatorServerName,
                                    String     originatorServerType,
                                    String     originatorOrganizationName,

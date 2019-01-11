@@ -57,6 +57,7 @@ public class OMRSCohortManager
      *
      * @param cohortName name of the cohort.  This is a local name used for messages.
      * @param localMetadataCollectionId configured value for the local metadata collection id
+     * @param localMetadataCollectionName display name for the local metadata collection
      * @param localServerName the name of the local server. It is a descriptive name for informational purposes.
      * @param localServerType the type of the local server.  It is a descriptive name for informational purposes.
      * @param localOrganizationName the name of the organization that owns the local server/repository.
@@ -74,6 +75,7 @@ public class OMRSCohortManager
      */
     public void initialize(String                           cohortName,
                            String                           localMetadataCollectionId,
+                           String                           localMetadataCollectionName,
                            String                           localServerName,
                            String                           localServerType,
                            String                           localOrganizationName,
@@ -139,6 +141,7 @@ public class OMRSCohortManager
                  */
                 this.cohortRegistry.initialize(cohortName,
                                                localMetadataCollectionId,
+                                               localMetadataCollectionName,
                                                localRepository.getLocalRepositoryRemoteConnection(),
                                                localServerName,
                                                localServerType,
@@ -184,6 +187,7 @@ public class OMRSCohortManager
                  * from remote members of the cohort to configure the enterprise access capability.
                  */
                 this.cohortRegistry.initialize(cohortName,
+                                               null,
                                                null,
                                                null,
                                                localServerName,
