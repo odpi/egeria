@@ -3106,14 +3106,13 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      *
      * @param matchProperties  the properties to match.
      * @param instanceHeader  the header properties from the instance.
-     * @param metadataCollectionId the identifier for the repository's metadata collection
      * @return integer count of the matching properties.
      */
-    public int countMatchingPropertyValues(InstanceProperties       matchProperties,
-                                           InstanceAuditHeader      instanceHeader,
-                                           String                   metadataCollectionId)
+    public int countMatchingHeaderPropertyValues(InstanceProperties       matchProperties,
+                                                 InstanceAuditHeader      instanceHeader)
     {
         final String metadataCollectionIdPropertyName = "metadataCollectionId";
+        final String metadataCollectionNamePropertyName = "metadataCollectionName";
         final String typeNamePropertyName = "typeName";
         final String typeGUIDPropertyName = "typeGUID";
         final String createdByPropertyName = "createdBy";
@@ -3129,7 +3128,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
             if (propertyMap != null)
             {
-                if (this.checkStringPropertyValue(propertyMap, metadataCollectionIdPropertyName, metadataCollectionId))
+                if (this.checkStringPropertyValue(propertyMap, metadataCollectionIdPropertyName, instanceHeader.getMetadataCollectionId()))
+                {
+                    matchingProperties ++;
+                }
+                if (this.checkStringPropertyValue(propertyMap, metadataCollectionNamePropertyName, instanceHeader.getMetadataCollectionName()))
                 {
                     matchingProperties ++;
                 }
@@ -3168,14 +3171,12 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * Determine if the instance properties match the match criteria.
      *
      * @param matchProperties  the properties to match.
-     * @param metadataCollectionId metadata collection Id for instance if known.
      * @param instanceHeader the header of the instance.
      * @param instanceProperties  the properties from the instance.
      * @param matchCriteria  rule on how the match should occur.
      * @return boolean flag indicating whether the two sets of properties match
      */
     public boolean verifyMatchingInstancePropertyValues(InstanceProperties   matchProperties,
-                                                        String               metadataCollectionId,
                                                         InstanceAuditHeader  instanceHeader,
                                                         InstanceProperties   instanceProperties,
                                                         MatchCriteria        matchCriteria)
@@ -3183,7 +3184,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         if (matchProperties != null)
         {
             int matchingProperties = this.countMatchingPropertyValues(matchProperties, instanceProperties) +
-                                     this.countMatchingPropertyValues(matchProperties, instanceHeader, metadataCollectionId);
+                                     this.countMatchingHeaderPropertyValues(matchProperties, instanceHeader);
 
             switch (matchCriteria)
             {

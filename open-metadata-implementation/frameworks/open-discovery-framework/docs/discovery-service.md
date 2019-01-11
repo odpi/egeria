@@ -4,7 +4,7 @@
 # Discovery Service
 
 A discovery service is a component that provides analysis of supplied
-[Asset](../../../../open-metadata-publication/website/assets) on request.
+[Asset](../../../../open-metadata-implementation/access-services/docs/concepts/assets) on request.
 
 It is implemented as a specialized [Open Connector Framework (OCF)](../../open-connector-framework)
 connector.  The interface and base class are provided by the [Open Discovery Framework(ODF)](README.md).
@@ -13,7 +13,7 @@ A discovery service is initialized with a connector to the Asset it is to analyz
 the results of other discovery services that have run before it if it is part of a
 [discovery pipeline](discovery-pipeline.md).
 
-The results of a discovery service are stored in [Annotations]
+The results of a discovery service are stored in [Annotations](discovery-annotation.md).
 
 
 ----

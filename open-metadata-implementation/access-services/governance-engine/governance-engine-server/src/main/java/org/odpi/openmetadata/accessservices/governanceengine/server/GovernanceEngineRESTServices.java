@@ -3,18 +3,10 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server;
 
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.*;
-import org.odpi.openmetadata.accessservices.governanceengine.server.admin.GovernanceEngineAdmin;
 import org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernanceClassificationDefHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernedAssetHandler;
-import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

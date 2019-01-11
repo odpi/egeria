@@ -373,7 +373,7 @@ public class OMRSArchiveManager
         {
             String                 sourceName                 = OMRSAuditingComponent.ARCHIVE_MANAGER.getComponentName();
             String                 homeMetadataCollectionId   = archiveProperties.getArchiveGUID();
-            String                 originatorServerName       = archiveProperties.getArchiveName();
+            String                 archiveName                = archiveProperties.getArchiveName();
             String                 originatorServerType       = OpenMetadataArchiveType.CONTENT_PACK.getName();
             InstanceProvenanceType provenanceType             = InstanceProvenanceType.CONTENT_PACK;
             Date                   archiveCreationTime        = archiveProperties.getCreationDate();
@@ -396,7 +396,7 @@ public class OMRSArchiveManager
                     if (entity != null)
                     {
                         this.setInstanceAuditHeader(homeMetadataCollectionId,
-                                                    originatorServerName,
+                                                    archiveName,
                                                     originatorName,
                                                     archiveCreationTime,
                                                     provenanceType,
@@ -405,7 +405,7 @@ public class OMRSArchiveManager
 
                         instanceProcessor.processNewEntityEvent(sourceName,
                                                                 homeMetadataCollectionId,
-                                                                originatorServerName,
+                                                                archiveName,
                                                                 originatorServerType,
                                                                 originatorOrganizationName,
                                                                 entity);
@@ -423,7 +423,7 @@ public class OMRSArchiveManager
                     if (relationship != null)
                     {
                         this.setInstanceAuditHeader(homeMetadataCollectionId,
-                                                    originatorServerName,
+                                                    archiveName,
                                                     originatorName,
                                                     archiveCreationTime,
                                                     provenanceType,
@@ -432,7 +432,7 @@ public class OMRSArchiveManager
 
                         instanceProcessor.processNewRelationshipEvent(sourceName,
                                                                       homeMetadataCollectionId,
-                                                                      originatorServerName,
+                                                                      archiveName,
                                                                       originatorServerType,
                                                                       originatorOrganizationName,
                                                                       relationship);
@@ -452,7 +452,7 @@ public class OMRSArchiveManager
                         Classification classification = classificationEntityExtension.getClassification();
 
                         this.setInstanceAuditHeader(homeMetadataCollectionId,
-                                                    originatorServerName,
+                                                    archiveName,
                                                     originatorName,
                                                     archiveCreationTime,
                                                     provenanceType,

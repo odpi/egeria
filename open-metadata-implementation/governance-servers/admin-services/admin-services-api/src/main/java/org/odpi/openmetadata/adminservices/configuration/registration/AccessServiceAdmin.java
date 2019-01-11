@@ -20,8 +20,8 @@ public interface AccessServiceAdmin
      * AccessServiceConfig as the accessServicesOptions.  Individual access services may support
      * additional properties.
      */
-    String            supportedZonesPropertyName      = "SupportedZones";      /* All */
-    String            karmaPointThresholdPropertyName = "KarmaPointThreshold"; /* Community Profile OMAS */
+    String            supportedZonesPropertyName    = "SupportedZones";    /* All */
+    String            karmaPointPlateauPropertyName = "KarmaPointPlateau"; /* Community Profile OMAS */
 
     /**
      * Initialize the access service.

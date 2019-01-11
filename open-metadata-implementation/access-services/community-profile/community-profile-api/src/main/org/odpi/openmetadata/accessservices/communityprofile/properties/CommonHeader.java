@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * CommonHeader provides the common properties for type, guid, additional properties and classifications.
+ * The CommonHeader provides the link to the guid and type of element extracted from the open metadata repositories.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -24,17 +24,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = ReferenceableHeader.class, name = "ReferenceableHeader"),
-        @JsonSubTypes.Type(value = PersonalProfile.class, name = "PersonalProfile")
+        @JsonSubTypes.Type(value = NoteEntryHeader.class, name = "NoteEntryHeader"),
+        @JsonSubTypes.Type(value = Resource.class, name = "Resource"),
+        @JsonSubTypes.Type(value = IdentifiableUserHeader.class, name = "IdentifiableUserHeader"),
+        @JsonSubTypes.Type(value = ContactMethod.class, name = "ContactMethod"),
+        @JsonSubTypes.Type(value = ExternalReference.class, name = "ExternalReference"),
+        @JsonSubTypes.Type(value = ReferenceableHeader.class, name = "ReferenceableHeader")
 })
 public abstract class CommonHeader extends CommunityProfileElementHeader
 {
     private String               guid                 = null;
-    private String               typeName             = null;
-    private String               typeDescription      = null;
-    private String               qualifiedName        = null;
-    private Map<String, Object>  additionalProperties = null;
-    private List<Classification> classifications      = null;
 
 
     /**
@@ -56,11 +55,6 @@ public abstract class CommonHeader extends CommunityProfileElementHeader
         if (template != null)
         {
             this.guid = template.getGUID();
-            this.typeName = template.getTypeName();
-            this.typeDescription = template.getTypeDescription();
-            this.qualifiedName = template.getQualifiedName();
-            this.additionalProperties = template.getAdditionalProperties();
-            this.classifications = template.getClassifications();
         }
     }
 
@@ -88,138 +82,6 @@ public abstract class CommonHeader extends CommunityProfileElementHeader
 
 
     /**
-     * Return the name for this Asset's type.
-     *
-     * @return string name
-     */
-    public String getTypeName()
-    {
-        return typeName;
-    }
-
-
-    /**
-     * Set up the name for this Asset's type.
-     *
-     * @param typeName string name
-     */
-    public void setTypeName(String typeName)
-    {
-        this.typeName = typeName;
-    }
-
-
-    /**
-     * Return the description for this Asset's type.
-     *
-     * @return string description
-     */
-    public String getTypeDescription()
-    {
-        return typeDescription;
-    }
-
-
-    /**
-     * Set up the description for this Asset's type.
-     *
-     * @param typeDescription string description
-     */
-    public void setTypeDescription(String typeDescription)
-    {
-        this.typeDescription = typeDescription;
-    }
-
-
-    /**
-     * Return the unique name for this asset.
-     *
-     * @return string name
-     */
-    public String getQualifiedName()
-    {
-        return qualifiedName;
-    }
-
-
-    /**
-     * Set up the unique name for this asset.
-     *
-     * @param qualifiedName string name
-     */
-    public void setQualifiedName(String qualifiedName)
-    {
-        this.qualifiedName = qualifiedName;
-    }
-
-
-    /**
-     * Return any additional properties associated with the asset.
-     *
-     * @return map of property names to property values
-     */
-    public Map<String, Object> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
-    }
-
-
-    /**
-     * Set up any additional properties associated with the asset.
-     *
-     * @param additionalProperties map of property names to property values
-     */
-    public void setAdditionalProperties(Map<String, Object> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
-    }
-
-
-    /**
-     * Return the list of active classifications for this asset.
-     *
-     * @return list of classification objects
-     */
-    public List<Classification> getClassifications()
-    {
-        if (classifications == null)
-        {
-            return null;
-        }
-        else if (classifications.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return classifications;
-        }
-    }
-
-
-    /**
-     * Set up the list of active classifications for this asset.
-     *
-     * @param classifications list of classification objects
-     */
-    public void setClassifications(List<Classification> classifications)
-    {
-        this.classifications = classifications;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -227,14 +89,15 @@ public abstract class CommonHeader extends CommunityProfileElementHeader
     @Override
     public String toString()
     {
-        return "ReferenceableHeader{" +
+        return "CommonHeader{" +
                 "guid='" + guid + '\'' +
-                ", typeName='" + typeName + '\'' +
-                ", typeDescription='" + typeDescription + '\'' +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", classifications=" + classifications +
                 ", GUID='" + getGUID() + '\'' +
+                ", typeName='" + getTypeName() + '\'' +
+                ", typeDescription='" + getTypeDescription() + '\'' +
+                ", originId='" + getOriginId() + '\'' +
+                ", originName='" + getOriginName() + '\'' +
+                ", originType='" + getOriginType() + '\'' +
+                ", originLicense='" + getOriginLicense() + '\'' +
                 '}';
     }
 
@@ -256,13 +119,12 @@ public abstract class CommonHeader extends CommunityProfileElementHeader
         {
             return false;
         }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
         CommonHeader that = (CommonHeader) objectToCompare;
-        return Objects.equals(guid, that.guid) &&
-                Objects.equals(getTypeName(), that.getTypeName()) &&
-                Objects.equals(getTypeDescription(), that.getTypeDescription()) &&
-                Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
-                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties()) &&
-                Objects.equals(getClassifications(), that.getClassifications());
+        return Objects.equals(guid, that.guid);
     }
 
 
@@ -274,7 +136,6 @@ public abstract class CommonHeader extends CommunityProfileElementHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(guid, getTypeName(), getTypeDescription(), getQualifiedName(), getAdditionalProperties(),
-                            getClassifications());
+        return Objects.hash(super.hashCode(), guid);
     }
 }

@@ -22,8 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Classification extends CommunityProfileElementHeader
 {
-    private String              classificationName       = null;
-    private Map<String, Object> classificationProperties = null;
+    private String              name       = null;
+    private Map<String, Object> properties = null;
 
     /**
      * Default constructor
@@ -37,16 +37,16 @@ public class Classification extends CommunityProfileElementHeader
     /**
      * Copy/clone constructor
      *
-     * @param templateClassification template to copy
+     * @param template template to copy
      */
-    public Classification(Classification templateClassification)
+    public Classification(Classification template)
     {
-        super(templateClassification);
+        super(template);
 
-        if (templateClassification != null)
+        if (template != null)
         {
-            classificationName = templateClassification.getClassificationName();
-            classificationProperties = templateClassification.getClassificationProperties();
+            name = template.getName();
+            properties = template.getProperties();
         }
     }
 
@@ -54,11 +54,11 @@ public class Classification extends CommunityProfileElementHeader
     /**
      * Set up the name of the classification
      *
-     * @param classificationName  name of classification
+     * @param name  name of classification
      */
-    public void setClassificationName(String classificationName)
+    public void setName(String name)
     {
-        this.classificationName = classificationName;
+        this.name = name;
     }
 
 
@@ -67,9 +67,9 @@ public class Classification extends CommunityProfileElementHeader
      *
      * @return String name
      */
-    public String getClassificationName()
+    public String getName()
     {
-        return classificationName;
+        return name;
     }
 
 
@@ -77,11 +77,11 @@ public class Classification extends CommunityProfileElementHeader
      * Set up a collection of the additional stored properties for the classification.
      * If no stored properties are present then null is returned.
      *
-     * @param classificationProperties  properties for the classification
+     * @param properties  properties for the classification
      */
-    public void setClassificationProperties(Map<String, Object> classificationProperties)
+    public void setProperties(Map<String, Object> properties)
     {
-        this.classificationProperties = classificationProperties;
+        this.properties = properties;
     }
 
 
@@ -91,15 +91,19 @@ public class Classification extends CommunityProfileElementHeader
      *
      * @return properties map
      */
-    public Map<String, Object> getClassificationProperties()
+    public Map<String, Object> getProperties()
     {
-        if (classificationProperties == null)
+        if (properties == null)
+        {
+            return null;
+        }
+        else if (properties.isEmpty())
         {
             return null;
         }
         else
         {
-            return new HashMap<>(classificationProperties);
+            return new HashMap<>(properties);
         }
     }
 
@@ -113,8 +117,8 @@ public class Classification extends CommunityProfileElementHeader
     public String toString()
     {
         return "Classification{" +
-                "classificationName='" + classificationName + '\'' +
-                ", classificationProperties=" + classificationProperties +
+                "name='" + name + '\'' +
+                ", properties=" + properties +
                 '}';
     }
 
@@ -137,8 +141,8 @@ public class Classification extends CommunityProfileElementHeader
             return false;
         }
         Classification that = (Classification) objectToCompare;
-        return Objects.equals(getClassificationName(), that.getClassificationName()) &&
-                Objects.equals(getClassificationProperties(), that.getClassificationProperties());
+        return Objects.equals(getName(), that.getName()) &&
+                Objects.equals(getProperties(), that.getProperties());
     }
 
 
@@ -150,6 +154,6 @@ public class Classification extends CommunityProfileElementHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(getClassificationName());
+        return Objects.hash(getName());
     }
 }

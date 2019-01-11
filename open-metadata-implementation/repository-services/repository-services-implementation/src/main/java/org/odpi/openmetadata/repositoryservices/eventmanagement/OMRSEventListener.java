@@ -119,6 +119,7 @@ public class OMRSEventListener implements OMRSTopicListener
                                                                         registryEventOriginator.getServerName(),
                                                                         registryEventOriginator.getServerType(),
                                                                         registryEventOriginator.getOrganizationName(),
+                                                                        registryEvent.getMetadataCollectionName(),
                                                                         registryEvent.getRegistrationTimestamp(),
                                                                         registryEvent.getRemoteConnection());
                         break;
@@ -129,6 +130,7 @@ public class OMRSEventListener implements OMRSTopicListener
                                                                           registryEventOriginator.getServerName(),
                                                                           registryEventOriginator.getServerType(),
                                                                           registryEventOriginator.getOrganizationName(),
+                                                                          registryEvent.getMetadataCollectionName(),
                                                                           registryEvent.getRegistrationTimestamp(),
                                                                           registryEvent.getRemoteConnection());
                         break;
@@ -143,6 +145,7 @@ public class OMRSEventListener implements OMRSTopicListener
                     case UN_REGISTRATION_EVENT:
                         registryEventProcessor.processUnRegistrationEvent(cohortName,
                                                                           registryEventOriginator.getMetadataCollectionId(),
+                                                                          registryEvent.getMetadataCollectionName(),
                                                                           registryEventOriginator.getServerName(),
                                                                           registryEventOriginator.getServerType(),
                                                                           registryEventOriginator.getOrganizationName());
@@ -161,6 +164,7 @@ public class OMRSEventListener implements OMRSTopicListener
                                                                                      registryEventOriginator.getServerName(),
                                                                                      registryEventOriginator.getServerType(),
                                                                                      registryEventOriginator.getOrganizationName(),
+                                                                                     registryEvent.getMetadataCollectionName(),
                                                                                      registryEvent.getTargetMetadataCollectionId(),
                                                                                      registryEvent.getTargetRemoteConnection(),
                                                                                      registryEvent.getErrorMessage());
@@ -172,6 +176,7 @@ public class OMRSEventListener implements OMRSTopicListener
                                                                                                registryEventOriginator.getServerName(),
                                                                                                registryEventOriginator.getServerType(),
                                                                                                registryEventOriginator.getOrganizationName(),
+                                                                                               registryEvent.getMetadataCollectionName(),
                                                                                                registryEvent.getTargetMetadataCollectionId(),
                                                                                                registryEvent.getErrorMessage());
                                     break;
