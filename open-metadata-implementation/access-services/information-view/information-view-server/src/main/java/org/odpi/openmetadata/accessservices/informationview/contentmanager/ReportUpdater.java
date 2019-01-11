@@ -16,10 +16,23 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -69,7 +82,7 @@ public class ReportUpdater extends ReportBasicOperation {
         List<Relationship> relationships = entitiesCreatorHelper.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
         List<EntityDetail> matchingEntities = filterMatchingEntities(relationships, reportElements);
         if (reportElements != null && !reportElements.isEmpty()) {
-            reportElements.stream().forEach(e -> createOrUpdateReportElement(qualifiedNameForParent, parentGuid, matchingEntities, e));
+            reportElements.forEach(e -> createOrUpdateReportElement(qualifiedNameForParent, parentGuid, matchingEntities, e));
         }
     }
 
@@ -82,7 +95,7 @@ public class ReportUpdater extends ReportBasicOperation {
                 EntityDetail entity = entitiesCreatorHelper.getEntityByGuid(entity2Guid);
                 if (isReportElementDeleted(reportElements, entity.getProperties())) {
                     entitiesCreatorHelper.purgeRelationship(relationship);
-                    entitiesCreatorHelper.purgeEntity(relationship.getEntityTwoProxy());
+                    entitiesCreatorHelper.purgeEntity(relationship.getEntityTwoProxy());//TODO purge also type entity
                 } else {
                     matchingEntities.add(entity);
                 }
@@ -93,10 +106,7 @@ public class ReportUpdater extends ReportBasicOperation {
 
     private boolean isReportElementDeleted(List<ReportElement> reportElements, InstanceProperties properties) {
         String elementName = EntityPropertiesUtils.getStringValueForProperty(properties, Constants.NAME);
-        if (reportElements != null && !reportElements.isEmpty()) {
-            return reportElements.stream().noneMatch((e -> e.getName().equals(elementName)));
-        }
-        return false;
+        return reportElements != null && !reportElements.isEmpty() && reportElements.stream().noneMatch((e -> e.getName().equals(elementName)));
     }
 
 
@@ -156,7 +166,7 @@ public class ReportUpdater extends ReportBasicOperation {
             InstanceProperties columnProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
                     .withStringProperty(Constants.ATTRIBUTE_NAME, reportColumn.getName())
-                    .withStringProperty(Constants.FORMULA, reportColumn.getFormula())//TODO add more properties
+                    .withStringProperty(Constants.FORMULA, reportColumn.getFormula())
                     .build();
 
             EntityDetailWrapper wrapper = entitiesCreatorHelper.createOrUpdateEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedNameForColumn, columnProperties, null, true);
@@ -164,7 +174,7 @@ public class ReportUpdater extends ReportBasicOperation {
             createOrUpdateSchemaQueryImplementation(reportColumn, wrapper.getEntityDetail().getGUID());
 
             columnType = entitiesCreatorHelper.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, matchingColumn.getGUID());
-            if (columnType == null || columnType.size() == 0) {
+            if (columnType == null || columnType.isEmpty()) {
                 addSchemaType(qualifiedNameForColumn, wrapper.getEntityDetail(), Constants.SCHEMA_TYPE);
             }
         } else {
@@ -176,17 +186,17 @@ public class ReportUpdater extends ReportBasicOperation {
     private void createOrUpdateSchemaQueryImplementation(ReportColumn reportColumn, String columnGuid) throws Exception {
 
         List<Relationship> relationships = entitiesCreatorHelper.getRelationships(Constants.SCHEMA_QUERY_IMPLEMENTATION, columnGuid);
-        List<String> previouslyExistingSourcesGuids = new ArrayList<>();
+        List<String> relationshipsToRemove = new ArrayList<>();
         if (relationships != null && !relationships.isEmpty()) {
-            previouslyExistingSourcesGuids = relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
+            relationshipsToRemove = relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
         }
         for (Source source : reportColumn.getSources()) {
             String sourceColumnGuid = getSourceGuid(source);
             if (!StringUtils.isEmpty(sourceColumnGuid)) {
                 log.info("source {} for report column {} found.", source, reportColumn.getName());
-                if (previouslyExistingSourcesGuids.contains(sourceColumnGuid)) {
-                    log.info("Relationship already exists");
-                    previouslyExistingSourcesGuids.remove(sourceColumnGuid);
+                if (relationshipsToRemove != null && relationshipsToRemove.contains(sourceColumnGuid)) {
+                    log.info("Relationship already exists and is valid");
+                    relationshipsToRemove.remove(sourceColumnGuid);
                 } else {
                     InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
                             .withStringProperty(Constants.QUERY, "")
@@ -198,12 +208,12 @@ public class ReportUpdater extends ReportBasicOperation {
                             schemaQueryImplProperties);
                 }
             } else {
-                log.error("source column not found, unable to add relationships for column " + source.toString());
+                log.error(MessageFormat.format("source column not found, unable to add relationship {0} between column {1} and source {2}", Constants.SCHEMA_QUERY_IMPLEMENTATION, columnGuid, source.toString()));
             }
 
-            if (previouslyExistingSourcesGuids != null && !previouslyExistingSourcesGuids.isEmpty()) {
+            if (relationships != null && !relationships.isEmpty() && relationshipsToRemove != null && !relationshipsToRemove.isEmpty()) {
                 for (Relationship relationship : relationships) {
-                    if (previouslyExistingSourcesGuids.contains(relationship.getGUID())) {
+                    if (relationshipsToRemove.contains(relationship.getGUID())) {
                         entitiesCreatorHelper.purgeRelationship(relationship);
                     }
                 }
@@ -211,43 +221,24 @@ public class ReportUpdater extends ReportBasicOperation {
         }
     }
 
-    private void createOrUpdateSemanticAssignment(ReportColumn reportColumn, String columnGuid) throws Exception {
+    private void createOrUpdateSemanticAssignment(ReportColumn reportColumn, String columnGuid) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, RelationshipNotKnownException, RelationshipNotDeletedException, StatusNotSupportedException, TypeDefNotKnownException {
         List<Relationship> existingAssignments = entitiesCreatorHelper.getRelationships(Constants.SEMANTIC_ASSIGNMENT, columnGuid);
         if (reportColumn.getBusinessTerm() == null) {
-            if (existingAssignments != null && !existingAssignments.isEmpty()) {
-                for (Relationship relationship : existingAssignments) {
-                    entitiesCreatorHelper.purgeRelationship(relationship);
-                }
-            }
+            deleteRelationships(existingAssignments);
         } else {
-            String businessTermAssignedToColumnGuid = reportColumn.getBusinessTerm().getGuid();
-            if (StringUtils.isEmpty(businessTermAssignedToColumnGuid)) {
-                EntityDetail businessTerm = entitiesCreatorHelper.getEntity(Constants.BUSINESS_TERM, reportColumn.getBusinessTerm().buildQualifiedName());
-                if (businessTerm != null) {
-                    businessTermAssignedToColumnGuid = businessTerm.getGUID();
-                }
+            String businessTermAssignedToColumnGuid = findAssignedBusinessTermGuid(reportColumn);
+            List<Relationship> matchingRelationship = new ArrayList<>();
+            if (existingAssignments != null && !existingAssignments.isEmpty()) {
+                matchingRelationship = existingAssignments.stream().filter(e -> e.getEntityTwoProxy().getGUID().equals(businessTermAssignedToColumnGuid)).collect(Collectors.toList());
+                deleteRelationships(existingAssignments.stream().filter(e -> !e.getEntityTwoProxy().getGUID().equals(businessTermAssignedToColumnGuid)).collect(Collectors.toList()));
             }
 
-            if (existingAssignments != null && !existingAssignments.isEmpty()) {
-
-                if (!existingAssignments.get(0).getEntityTwoProxy().getGUID().equals(businessTermAssignedToColumnGuid)) {
-                    entitiesCreatorHelper.purgeRelationship(existingAssignments.get(0));
-                    if (!StringUtils.isEmpty(businessTermAssignedToColumnGuid)) {
-                        entitiesCreatorHelper.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
-                                columnGuid,
-                                businessTermAssignedToColumnGuid,
-                                Constants.INFORMATION_VIEW_OMAS_NAME,
-                                new InstanceProperties());
-                    }
-                }
-            } else {
-                if (!StringUtils.isEmpty(businessTermAssignedToColumnGuid)) {
-                    entitiesCreatorHelper.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
-                            columnGuid,
-                            businessTermAssignedToColumnGuid,
-                            Constants.INFORMATION_VIEW_OMAS_NAME,
-                            new InstanceProperties());
-                }
+            if ((matchingRelationship == null || matchingRelationship.isEmpty()) && !StringUtils.isEmpty(businessTermAssignedToColumnGuid)) {
+                entitiesCreatorHelper.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
+                        columnGuid,
+                        businessTermAssignedToColumnGuid,
+                        Constants.INFORMATION_VIEW_OMAS_NAME,
+                        new InstanceProperties());
             }
         }
     }

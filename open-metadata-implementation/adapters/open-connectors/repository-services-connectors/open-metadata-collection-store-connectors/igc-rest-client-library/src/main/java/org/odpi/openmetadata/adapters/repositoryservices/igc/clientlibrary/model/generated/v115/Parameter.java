@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class Parameter extends Reference {
 
     public static String getIgcTypeId() { return "parameter"; }
+    public static String getIgcTypeDisplayName() { return "Parameter"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -462,6 +465,92 @@ public class Parameter extends Reference {
     /** @see #level */ @JsonProperty("level")  public Number getLevel() { return this.level; }
     /** @see #level */ @JsonProperty("level")  public void setLevel(Number level) { this.level = level; }
 
-    public static final Boolean isParameter(Object obj) { return (obj.getClass() == Parameter.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "usage",
+        "connection_property",
+        "is_connection_property",
+        "is_signed",
+        "type",
+        "is_computed",
+        "allows_empty_value",
+        "odbc_type",
+        "based_on",
+        "position",
+        "allow_null_values",
+        "fraction",
+        "allows_null_values",
+        "calendar",
+        "display_size",
+        "minimum_length",
+        "item_kind",
+        "unique",
+        "length",
+        "data_type",
+        "default_value",
+        "level"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "defines_parameter_val",
+        "validated_by_data_values",
+        "has_dimension"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "is_return_of_function",
+        "of_container_def",
+        "of_parameter_set",
+        "is_parameter_set",
+        "defines_parameter_val",
+        "of_stage_type",
+        "of_job_def",
+        "of_stored_procedure",
+        "usage",
+        "connection_property",
+        "is_connection_property",
+        "of_function",
+        "data_item_definition",
+        "is_signed",
+        "validated_by_data_values",
+        "type",
+        "is_computed",
+        "allows_empty_value",
+        "odbc_type",
+        "based_on",
+        "position",
+        "allow_null_values",
+        "fraction",
+        "allows_null_values",
+        "calendar",
+        "display_size",
+        "minimum_length",
+        "item_kind",
+        "has_dimension",
+        "unique",
+        "length",
+        "data_type",
+        "default_value",
+        "level"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isParameter(Object obj) { return (obj.getClass() == Parameter.class); }
 
 }

@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class InvDataRuleDefinition extends Reference {
 
     public static String getIgcTypeId() { return "inv_data_rule_definition"; }
+    public static String getIgcTypeDisplayName() { return "Data Rule Definition"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -26,7 +29,7 @@ public class InvDataRuleDefinition extends Reference {
     protected String name;
 
     /**
-     * The 'short_&amp;_long_description' property, displayed as 'Short &amp; Long Description' in the IGC UI.
+     * The 'short_&_long_description' property, displayed as 'Short & Long Description' in the IGC UI.
      */
     @JsonProperty("short_&_long_description") protected String short___long_description;
 
@@ -169,6 +172,49 @@ public class InvDataRuleDefinition extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isInvDataRuleDefinition(Object obj) { return (obj.getClass() == InvDataRuleDefinition.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_&_long_description",
+        "short_description",
+        "long_description",
+        "project",
+        "status",
+        "published",
+        "expression",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "contact",
+        "assigned_to_terms",
+        "data_rule_set_defintions",
+        "data_rules"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_&_long_description",
+        "short_description",
+        "long_description",
+        "project",
+        "status",
+        "contact",
+        "assigned_to_terms",
+        "data_rule_set_defintions",
+        "data_rules",
+        "published",
+        "expression",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isInvDataRuleDefinition(Object obj) { return (obj.getClass() == InvDataRuleDefinition.class); }
 
 }

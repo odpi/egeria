@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class BiOlapLevelElement extends Reference {
 
     public static String getIgcTypeId() { return "bi_olap_level_element"; }
+    public static String getIgcTypeDisplayName() { return "BI OLAP Level Element"; }
 
     /**
      * The 'name' property, displayed as 'Element Name' in the IGC UI.
@@ -75,6 +78,25 @@ public class BiOlapLevelElement extends Reference {
     /** @see #defined_as_an_olap_member */ @JsonProperty("defined_as_an_olap_member")  public Reference getDefinedAsAnOlapMember() { return this.defined_as_an_olap_member; }
     /** @see #defined_as_an_olap_member */ @JsonProperty("defined_as_an_olap_member")  public void setDefinedAsAnOlapMember(Reference defined_as_an_olap_member) { this.defined_as_an_olap_member = defined_as_an_olap_member; }
 
-    public static final Boolean isBiOlapLevelElement(Object obj) { return (obj.getClass() == BiOlapLevelElement.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "business_name",
+        "short_description"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "business_name",
+        "short_description",
+        "defined_in_level",
+        "key_level",
+        "defined_as_an_olap_member"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isBiOlapLevelElement(Object obj) { return (obj.getClass() == BiOlapLevelElement.class); }
 
 }

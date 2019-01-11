@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class OlapJoin extends Reference {
 
     public static String getIgcTypeId() { return "olap_join"; }
+    public static String getIgcTypeDisplayName() { return "OLAP Join"; }
 
     /**
      * The 'name' property, displayed as 'Join Name' in the IGC UI.
@@ -99,6 +102,32 @@ public class OlapJoin extends Reference {
     /** @see #referenced_by_an_olap_cube */ @JsonProperty("referenced_by_an_olap_cube")  public ReferenceList getReferencedByAnOlapCube() { return this.referenced_by_an_olap_cube; }
     /** @see #referenced_by_an_olap_cube */ @JsonProperty("referenced_by_an_olap_cube")  public void setReferencedByAnOlapCube(ReferenceList referenced_by_an_olap_cube) { this.referenced_by_an_olap_cube = referenced_by_an_olap_cube; }
 
-    public static final Boolean isOlapJoin(Object obj) { return (obj.getClass() == OlapJoin.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "business_name",
+        "short_description",
+        "type",
+        "condition"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "contains_references",
+        "referenced_by_an_olap_cube"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "business_name",
+        "short_description",
+        "type",
+        "condition",
+        "bi_model",
+        "contains_references",
+        "referenced_by_an_olap_cube"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isOlapJoin(Object obj) { return (obj.getClass() == OlapJoin.class); }
 
 }
