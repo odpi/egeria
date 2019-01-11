@@ -27,7 +27,7 @@ image:
 
   atlas:
     repository: planetf1/atlas-1773-egeria
-    tag: 0.1.1
+    tag: 0.1.2
     pullPolicy: IfNotPresent
 
   igcproxy:
