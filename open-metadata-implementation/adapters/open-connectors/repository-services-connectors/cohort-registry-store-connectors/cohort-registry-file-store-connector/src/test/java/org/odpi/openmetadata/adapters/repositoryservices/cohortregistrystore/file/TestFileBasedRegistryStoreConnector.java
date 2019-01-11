@@ -98,6 +98,7 @@ public class TestFileBasedRegistryStoreConnector
         MemberRegistration   member = new MemberRegistration();
 
         member.setMetadataCollectionId(name + "MetadataCollectionId");
+        member.setMetadataCollectionName(name + "MetadataCollectionName");
         member.setOrganizationName(name + "OrganizationName");
         member.setServerName(name + "ServerName");
         member.setServerType(name + "ServerType");
@@ -111,6 +112,8 @@ public class TestFileBasedRegistryStoreConnector
     private  void  exerciseActiveConnector(FileBasedRegistryStoreConnector connector)
     {
         MemberRegistration   local = getMemberRegistration("local");
+
+        connector.clearAllRegistrations();
 
         assertTrue(connector.retrieveLocalRegistration() == null);
         assertTrue(connector.retrieveRemoteRegistrations() == null);

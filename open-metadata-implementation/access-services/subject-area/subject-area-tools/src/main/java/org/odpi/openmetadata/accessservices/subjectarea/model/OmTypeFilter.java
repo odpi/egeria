@@ -30,7 +30,7 @@ public class OmTypeFilter {
     private Map<String, RelationshipDef> relationshipTypeDefsMap = new HashMap<String, RelationshipDef>();
 
     private static String[] ENTITY_TYPES = {"APIOperation", "Community", "ExternalGlossaryLink", "GovernanceMetric", "ImplementationSnippet",
-            "MetadataCollection", "ProjectCharter", "SoftwareServer","APISchemaType", "ComplexSchemaType", "ExternalId", "GovernancePolicy",
+            "MetadataCollection", "ProjectCharter", "SoftwareServer","SoftwareServerPlatform","APISchemaType", "ComplexSchemaType", "ExternalId", "GovernancePolicy",
             "InformalTag", "MetadataRepositoryCohort", "PropertyFacet", "SoftwareServerCapability","ActorProfile", "Connection", "ExternalReference",
             "GovernanceProcess", "LicenseType", "Network", "Rating", "SubscriberList","Application", "ConnectorType", "FileFolder", "GovernanceResponsibility",
             "Like", "NetworkGateway", "Referenceable", "Team","Asset", "ContactDetails", "Glossary", "GovernanceRule", "Location", "NoteEntry", "Regulation",
@@ -38,7 +38,7 @@ public class OmTypeFilter {
             "CertificationType", "DataSet", "GlossaryTerm", "GraphEdge", "MediaCollection", "OperatingPlatform", "SchemaAttribute", "UserIdentity",
             "CohortMember", "DeployedAPI", "GovernanceControl", "GraphVertex", "MediaFile", "Person", "SchemaLinkElement", "VirtualConnection","Collection",
             "DerivedSchemaAttribute", "GovernanceDefinition", "Host", "MediaUsage", "Process", "SchemaType", "VirtualContainer","Comment", "Endpoint",
-            "GovernanceDriver", "HostCluster", "Meeting", "Project", "SoftwareComponent","DeployedSoftwareComponent"};
+            "GovernanceDriver", "HostCluster", "Meeting", "Project", "SoftwareComponent","DeployedSoftwareComponent","CommunityMember"};
     private static String[] RELATIONSHIP_TYPES = {
             "APIEndpoint", "BusinessCapabilityResponsibility", "ExternallySourcedGlossary", "LibraryCategoryReference", "LibraryTermReference","ProfileIdentity", "ServerDeployment",
             "APIHeader", "CategoryAnchor", "FolderHierarchy", "License", "", "ProjectCharterLink", "ServerEndpoint", "APIOperations", "CategoryHierarchyLink",

@@ -29,12 +29,13 @@ public class MemberRegistration implements Serializable
     /*
      * Information about a metadata repository that is a member of the metadata repository cluster
      */
-    private String     metadataCollectionId = null;
-    private String     serverName           = null;
-    private String     serverType           = null;
-    private String     organizationName     = null;
-    private Date       registrationTime     = null;
-    private Connection repositoryConnection = null;
+    private String     metadataCollectionId   = null;
+    private String     metadataCollectionName = null;
+    private String     serverName             = null;
+    private String     serverType             = null;
+    private String     organizationName       = null;
+    private Date       registrationTime       = null;
+    private Connection repositoryConnection   = null;
 
 
     /**
@@ -57,12 +58,13 @@ public class MemberRegistration implements Serializable
     {
         if (template != null)
         {
-            metadataCollectionId  = template.getMetadataCollectionId();
-            serverName            = template.getServerName();
-            serverType            = template.getServerType();
-            organizationName      = template.getOrganizationName();
-            registrationTime      = template.getRegistrationTime();
-            repositoryConnection  = template.getRepositoryConnection();
+            metadataCollectionId = template.getMetadataCollectionId();
+            metadataCollectionName = template.getMetadataCollectionName();
+            serverName = template.getServerName();
+            serverType = template.getServerType();
+            organizationName = template.getOrganizationName();
+            registrationTime = template.getRegistrationTime();
+            repositoryConnection = template.getRepositoryConnection();
 
         }
     }
@@ -82,6 +84,35 @@ public class MemberRegistration implements Serializable
      * @param metadataCollectionId String guid
      */
     public void setMetadataCollectionId(String metadataCollectionId) { this.metadataCollectionId = metadataCollectionId; }
+
+
+    /**
+     * Return the metadata collection name.  The server name is returned if the metadata collection name has not beed explicitly provided.
+     *
+     * @return string name
+     */
+    public String getMetadataCollectionName()
+    {
+        if (metadataCollectionName != null)
+        {
+            return metadataCollectionName;
+        }
+        else
+        {
+            return serverName;
+        }
+    }
+
+
+    /**
+     * Set up the metadata collection name.  This overrides the default value of the server name.
+     *
+     * @param metadataCollectionName string name
+     */
+    public void setMetadataCollectionName(String metadataCollectionName)
+    {
+        this.metadataCollectionName = metadataCollectionName;
+    }
 
 
     /**
@@ -180,7 +211,7 @@ public class MemberRegistration implements Serializable
     {
         if (repositoryConnection == null)
         {
-            return repositoryConnection;
+            return null;
         }
         else
         {
@@ -219,6 +250,7 @@ public class MemberRegistration implements Serializable
         }
         MemberRegistration that = (MemberRegistration) objectToCompare;
         return Objects.equals(getMetadataCollectionId(), that.getMetadataCollectionId()) &&
+                Objects.equals(getMetadataCollectionName(), that.getMetadataCollectionName()) &&
                 Objects.equals(getServerName(), that.getServerName()) &&
                 Objects.equals(getServerType(), that.getServerType()) &&
                 Objects.equals(getOrganizationName(), that.getOrganizationName()) &&
@@ -237,6 +269,7 @@ public class MemberRegistration implements Serializable
     {
 
         return Objects.hash(getMetadataCollectionId(),
+                            getMetadataCollectionName(),
                             getServerName(),
                             getServerType(),
                             getOrganizationName(),
@@ -255,6 +288,7 @@ public class MemberRegistration implements Serializable
     {
         return "MemberRegistration{" +
                 "metadataCollectionId='" + metadataCollectionId + '\'' +
+                ", metadataCollectionName='" + metadataCollectionName + '\'' +
                 ", serverName='" + serverName + '\'' +
                 ", serverType='" + serverType + '\'' +
                 ", organizationName='" + organizationName + '\'' +

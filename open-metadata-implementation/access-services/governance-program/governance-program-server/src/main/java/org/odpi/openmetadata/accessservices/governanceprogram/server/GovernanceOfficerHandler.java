@@ -110,7 +110,7 @@ class GovernanceOfficerHandler
                                                                   String               appointmentId,
                                                                   String               appointmentContext,
                                                                   String               title,
-                                                                  Map<String, Object>  additionalProperties) throws InvalidParameterException
+                                                                  Map<String, String>  additionalProperties) throws InvalidParameterException
     {
         errorHandler.validateEnum(governanceDomain, governanceDomainParameterName, methodName);
         errorHandler.validateName(appointmentId, appointmentIdParameterName, methodName);
@@ -198,7 +198,7 @@ class GovernanceOfficerHandler
                 governanceOfficer.setAppointmentContext(repositoryHelper.getStringProperty(serviceName, appointmentContextPropertyName, instanceProperties, methodName));
                 governanceOfficer.setTitle(repositoryHelper.getStringProperty(serviceName, titlePropertyName, instanceProperties, methodName));
                 governanceOfficer.setGovernanceDomain(enumHandler.getGovernanceDomainFromProperties(instanceProperties, governanceDomainPropertyName, methodName));
-                governanceOfficer.setAdditionalProperties(repositoryHelper.getMapFromProperty(serviceName, additionalPropertiesName, instanceProperties, methodName));
+                governanceOfficer.setAdditionalProperties(repositoryHelper.getStringMapFromProperty(serviceName, additionalPropertiesName, instanceProperties, methodName));
             }
 
             try
@@ -526,7 +526,7 @@ class GovernanceOfficerHandler
                                    String                     appointmentId,
                                    String                     appointmentContext,
                                    String                     title,
-                                   Map<String, Object>        additionalProperties,
+                                   Map<String, String>        additionalProperties,
                                    List<ExternalReference>    externalReferences) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
@@ -605,7 +605,7 @@ class GovernanceOfficerHandler
                                    String                     appointmentId,
                                    String                     appointmentContext,
                                    String                     title,
-                                   Map<String, Object>        additionalProperties,
+                                   Map<String, String>        additionalProperties,
                                    List<ExternalReference>    externalReferences) throws UnrecognizedGUIDException,
                                                                                          InvalidParameterException,
                                                                                          PropertyServerException,

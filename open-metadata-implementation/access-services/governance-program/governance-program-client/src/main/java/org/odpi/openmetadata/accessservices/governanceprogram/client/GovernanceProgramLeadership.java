@@ -71,7 +71,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                         String              knownName,
                                         String              jobTitle,
                                         String              jobRoleDescription,
-                                        Map<String, Object> additionalProperties) throws InvalidParameterException,
+                                        Map<String, String> additionalProperties) throws InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
     {
@@ -135,7 +135,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                         String              knownName,
                                         String              jobTitle,
                                         String              jobRoleDescription,
-                                        Map<String, Object> additionalProperties) throws UnrecognizedGUIDException,
+                                        Map<String, String> additionalProperties) throws UnrecognizedGUIDException,
                                                                                          InvalidParameterException,
                                                                                          PropertyServerException,
                                                                                          UserNotAuthorizedException
@@ -363,7 +363,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                           String                     appointmentId,
                                           String                     appointmentContext,
                                           String                     title,
-                                          Map<String, Object>        additionalProperties,
+                                          Map<String, String>        additionalProperties,
                                           List<ExternalReference>    externalReferences) throws InvalidParameterException,
                                                                                                 PropertyServerException,
                                                                                                 UserNotAuthorizedException
@@ -428,7 +428,7 @@ public class GovernanceProgramLeadership implements GovernanceLeadershipInterfac
                                           String                     appointmentId,
                                           String                     appointmentContext,
                                           String                     title,
-                                          Map<String, Object>        additionalProperties,
+                                          Map<String, String>        additionalProperties,
                                           List<ExternalReference>    externalReferences)  throws UnrecognizedGUIDException,
                                                                                                  InvalidParameterException,
                                                                                                  PropertyServerException,
