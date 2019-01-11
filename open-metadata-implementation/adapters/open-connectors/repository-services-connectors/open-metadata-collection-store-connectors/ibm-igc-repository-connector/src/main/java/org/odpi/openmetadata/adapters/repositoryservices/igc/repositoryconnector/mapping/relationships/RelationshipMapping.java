@@ -580,7 +580,20 @@ public abstract class RelationshipMapping {
         String proxyOneRid = null;
         String proxyTwoRid = null;
 
-        if (relationshipMapping.sameTypeOnBothEnds()
+        if (igcPropertyName != null && igcPropertyName.equals(SELF_REFERENCE_SENTINEL)) {
+            // When self-referencing, it should be the same entity on both sides, but we need to
+            // prefix the correct RID based on where the relationship mapping tells us it belongs
+            // (ie. ordering IS important, unlike next conditional)
+            // (the actual prefixing is done further below, for non-self-referencing as well)
+            proxyOneRid = endOne.getId();
+            proxyTwoRid = endTwo.getId();
+            if (pmOne.getIgcRidPrefix() == null && pmTwo.getIgcRidPrefix() == null) {
+                log.warn("Self-referencing relationship expected, but no prefix found for relationship {} from {} to {} via {}", omrsRelationshipName, proxyOneRid, proxyTwoRid, igcPropertyName);
+            }
+            if (!proxyOneRid.equals(proxyTwoRid)) {
+                log.warn("Self-referencing relationship expected for {}, but RIDs of ends do not match: {} and {}", omrsRelationshipName, proxyOneRid, proxyTwoRid);
+            }
+        } else if (relationshipMapping.sameTypeOnBothEnds()
                 && pmOne.matchesAssetType(endOneType)) {
             if (relationshipMapping.samePropertiesOnBothEnds()) {
                 // If both the types and property names of both ends of the mapping are the same (eg. synonyms and
