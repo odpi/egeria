@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 
 import java.util.Map;
 import java.util.Objects;
@@ -228,14 +229,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
      */
     public Connection getAccessServiceInTopic()
     {
-        if (accessServiceInTopic == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Connection(accessServiceInTopic);
-        }
+        return accessServiceInTopic;
     }
 
 
@@ -261,14 +255,7 @@ public class AccessServiceConfig extends AdminServicesConfigHeader
      */
     public Connection getAccessServiceOutTopic()
     {
-        if (accessServiceOutTopic == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Connection(accessServiceOutTopic);
-        }
+        return accessServiceOutTopic;
     }
 
 
