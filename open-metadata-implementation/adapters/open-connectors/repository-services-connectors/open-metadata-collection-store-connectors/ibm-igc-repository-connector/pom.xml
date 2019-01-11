@@ -22,12 +22,21 @@
 
     <artifactId>ibm-igc-repository-connector</artifactId>
 
+    <properties>
+        <zjsonpatch.version>0.4.6</zjsonpatch.version>
+    </properties>
+
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>igc-rest-client-library</artifactId>
             <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.flipkart.zjsonpatch</groupId>
+            <artifactId>zjsonpatch</artifactId>
+            <version>${zjsonpatch.version}</version>
         </dependency>
 
     </dependencies>

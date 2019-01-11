@@ -26,7 +26,6 @@
         <junit.platform.version>1.2.0</junit.platform.version>
         <junit.jupiter.version>5.2.0</junit.jupiter.version>
         <junit.surefire.version>1.2.0</junit.surefire.version>
-        <mockito.junit.version>2.19.0</mockito.junit.version>
         <junit.version>4.12</junit.version>
     </properties>
 
@@ -66,20 +65,20 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
-            <version>${mockito.junit.version}</version>
+            <version>${mockito.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-inline</artifactId>
-            <version>${mockito.junit.version}</version>
+            <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>${mockito.junit.version}</version>
+            <version>${mockito.version}</version>
         </dependency>
 
         <dependency>
