@@ -8,6 +8,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.attributes.ConfidentialityLevelMapper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -75,30 +76,8 @@ public class ConfidentialityMapper extends ClassificationMapping {
             if (catIdentity.toString().endsWith("Confidentiality")) {
 
                 InstanceProperties classificationProperties = new InstanceProperties();
-
-                EnumPropertyValue level = new EnumPropertyValue();
-                String confidentialityName = assignedTerm.getName();
-                switch(confidentialityName) {
-                    case "Unclassified":
-                        level.setOrdinal(0);
-                        break;
-                    case "Internal":
-                        level.setOrdinal(1);
-                        break;
-                    case "Confidential":
-                        level.setOrdinal(2);
-                        break;
-                    case "Sensitive":
-                        level.setOrdinal(3);
-                        break;
-                    case "Restricted":
-                        level.setOrdinal(4);
-                        break;
-                    default:
-                        level.setOrdinal(99);
-                        break;
-                }
-                level.setSymbolicName(confidentialityName);
+                ConfidentialityLevelMapper confidentialityLevelMapper = ConfidentialityLevelMapper.getInstance();
+                EnumPropertyValue level = confidentialityLevelMapper.getEnumMappingByIgcValue(assignedTerm.getName());
                 classificationProperties.setProperty("level", level);
 
                 try {

@@ -11,6 +11,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchSorting;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.*;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.attributes.AttributeMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.RelationshipMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.ReferenceableMapper;
@@ -54,6 +55,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     private IGCRestClient igcRestClient;
 
     private HashSet<ImplementedMapping> implementedMappings;
+    private HashSet<ImplementedAttribute> implementedAttributes;
 
     private XMLOutputFactory xmlOutputFactory;
 
@@ -77,6 +79,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         this.igcRestClient.registerPOJO(OMRSStub.class);
         this.xmlOutputFactory = XMLOutputFactory.newInstance();
         this.implementedMappings = new HashSet<>();
+        this.implementedAttributes = new HashSet<>();
     }
 
     /**
@@ -115,8 +118,6 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
         repositoryValidator.validateUnknownTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
-
-        // TODO: just need to handle AttributeTypeDefs now?
 
         TypeDefCategory typeDefCategory = newTypeDef.getCategory();
         String omrsTypeDefName = newTypeDef.getName();
@@ -194,21 +195,33 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
         repositoryValidator.validateUnknownAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
 
-        /*
-         * Perform operation
-         */
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        // Note this is only implemented for Enums, support for other types is indicated directly
+        // in the verifyAttributeTypeDef method
+        AttributeTypeDefCategory attributeTypeDefCategory = newAttributeTypeDef.getCategory();
+        String omrsTypeDefName = newAttributeTypeDef.getName();
+        log.debug("Looking for mapping for {} of type {}", omrsTypeDefName, attributeTypeDefCategory.getName());
 
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                this.getClass().getName(),
-                repositoryName);
+        // See if we have a Mapper defined for the class -- if so, it's implemented
+        StringBuilder sbMapperClassname = new StringBuilder();
+        sbMapperClassname.append(MAPPING_PKG);
+        sbMapperClassname.append("attributes.");
+        sbMapperClassname.append(omrsTypeDefName);
+        sbMapperClassname.append("Mapper");
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
+        try {
+            Class mappingClass = Class.forName(sbMapperClassname.toString());
+            log.debug(" ... found mapping class: {}", mappingClass);
+
+            ImplementedAttribute implementedAttribute = new ImplementedAttribute(
+                    newAttributeTypeDef,
+                    mappingClass
+            );
+            implementedAttributes.add(implementedAttribute);
+
+        } catch (ClassNotFoundException e) {
+            throw new TypeDefNotSupportedException(404, IGCOMRSMetadataCollection.class.getName(), methodName, omrsTypeDefName + " is not supported.", "", "Request support through Egeria GitHub issue.");
+        }
+
     }
 
     /**
@@ -383,21 +396,27 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, attributeTypeDef, methodName);
 
-        /*
-         * Perform operation
-         */
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        boolean bImplemented;
+        switch (attributeTypeDef.getCategory()) {
+            case PRIMITIVE:
+                bImplemented = true;
+                break;
+            case UNKNOWN_DEF:
+                bImplemented = false;
+                break;
+            case COLLECTION:
+                bImplemented = true;
+                break;
+            case ENUM_DEF:
+                bImplemented = (getMappingForAttributeType(attributeTypeDef.getGUID()) != null);
+                break;
+            default:
+                bImplemented = false;
+                break;
+        }
 
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                this.getClass().getName(),
-                repositoryName);
+        return bImplemented;
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
     }
 
     /**
@@ -857,6 +876,22 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         for (ImplementedMapping implementedMapping : implementedMappings) {
             if (entityTypeGUID.equals(implementedMapping.getTypeDef().getGUID())) {
                 mapping = implementedMapping;
+            }
+        }
+        return mapping;
+    }
+
+    /**
+     * Retrieve any mapping that exists for the provided attributeTypeGUID (or null if there are none).
+     *
+     * @param attributeTypeGUID the GUID of the OMRS attribute type for which to find a mapping
+     * @return
+     */
+    private AttributeMapping getMappingForAttributeType(String attributeTypeGUID) {
+        AttributeMapping mapping = null;
+        for (ImplementedAttribute implementedAttribute : implementedAttributes) {
+            if (attributeTypeGUID.equals(implementedAttribute.getAttributeTypeDef().getGUID())) {
+                mapping = implementedAttribute.getAttributeMapping();
             }
         }
         return mapping;
