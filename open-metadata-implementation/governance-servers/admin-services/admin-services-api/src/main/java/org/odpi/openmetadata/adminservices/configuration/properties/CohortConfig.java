@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
 import java.util.ArrayList;
@@ -122,14 +123,7 @@ public class CohortConfig extends AdminServicesConfigHeader
      */
     public Connection getCohortRegistryConnection()
     {
-        if (cohortRegistryConnection == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Connection(cohortRegistryConnection);
-        }
+        return cohortRegistryConnection;
     }
 
 
@@ -151,14 +145,7 @@ public class CohortConfig extends AdminServicesConfigHeader
      */
     public Connection getCohortOMRSTopicConnection()
     {
-        if (cohortOMRSTopicConnection == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new Connection(cohortOMRSTopicConnection);
-        }
+        return cohortOMRSTopicConnection;
     }
 
 

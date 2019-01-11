@@ -9,6 +9,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -138,7 +139,15 @@ public class EventBusConfig extends AdminServicesConfigHeader
      *
      * @return JSON style description of variables.
      */
-
+    @Override
+    public String toString()
+    {
+        return "EventBusConfig{" +
+                "connectorProvider='" + connectorProvider + '\'' +
+                ", topicURLRoot='" + topicURLRoot + '\'' +
+                ", additionalProperties=" + additionalProperties +
+                '}';
+    }
 
 
     /**
@@ -147,8 +156,22 @@ public class EventBusConfig extends AdminServicesConfigHeader
      * @param objectToCompare object
      * @return boolean result
      */
-
-
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        EventBusConfig that = (EventBusConfig) objectToCompare;
+        return Objects.equals(getConnectorProvider(), that.getConnectorProvider()) &&
+                Objects.equals(getTopicURLRoot(), that.getTopicURLRoot()) &&
+                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
+    }
 
 
     /**
@@ -156,4 +179,9 @@ public class EventBusConfig extends AdminServicesConfigHeader
      *
      * @return in hash code
      */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getConnectorProvider(), getTopicURLRoot(), getAdditionalProperties());
+    }
 }

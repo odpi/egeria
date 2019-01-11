@@ -40,7 +40,7 @@ import java.util.Objects;
  *         OMRS provides to the Open Metadata AccessServices (OMASs).
  *     </li>
  *     <li>
- *         cohortConfigList provides details of each open metadata repository cluster that the local server is
+ *         cohortConfigList provides details of each open metadata repository cohort that the local server is
  *         connected to.
  *     </li>
  * </ul>
@@ -97,6 +97,10 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
         {
             return null;
         }
+        else if (auditLogConnections.isEmpty())
+        {
+            return null;
+        }
         else
         {
             return auditLogConnections;
@@ -111,14 +115,7 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
      */
     public void setAuditLogConnections(List<Connection> auditLogConnections)
     {
-        if (auditLogConnections == null)
-        {
-            this.auditLogConnections = null;
-        }
-        else
-        {
-            this.auditLogConnections = new ArrayList<>(auditLogConnections);
-        }
+        this.auditLogConnections = auditLogConnections;
     }
 
 
@@ -131,6 +128,10 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
     public List<Connection> getOpenMetadataArchiveConnections()
     {
         if (openMetadataArchiveConnections == null)
+        {
+            return null;
+        }
+        else if (openMetadataArchiveConnections.isEmpty())
         {
             return null;
         }
@@ -149,14 +150,7 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
      */
     public void setOpenMetadataArchiveConnections(List<Connection> openMetadataArchiveConnections)
     {
-        if (openMetadataArchiveConnections == null)
-        {
-            this.openMetadataArchiveConnections = null;
-        }
-        else
-        {
-            this.openMetadataArchiveConnections = new ArrayList<>(openMetadataArchiveConnections);
-        }
+        this.openMetadataArchiveConnections = openMetadataArchiveConnections;
     }
 
 
@@ -207,14 +201,18 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the configuration properties for each open metadata repository cluster that this local server
+     * Return the configuration properties for each open metadata repository cohort that this local server
      * connects to.
      *
-     * @return list of cluster configuration properties
+     * @return list of cohort configuration properties
      */
     public List<CohortConfig> getCohortConfigList()
     {
         if (cohortConfigList == null)
+        {
+            return null;
+        }
+        else if (cohortConfigList.isEmpty())
         {
             return null;
         }
@@ -229,18 +227,11 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
      * Set up the configuration properties for each open metadata repository cluster that this local server
      * connects to.
      *
-     * @param cohortConfigList list of cluster configuration properties
+     * @param cohortConfigList list of cohort configuration properties
      */
     public void setCohortConfigList(List<CohortConfig> cohortConfigList)
     {
-        if (cohortConfigList == null)
-        {
-            this.cohortConfigList = null;
-        }
-        else
-        {
-            this.cohortConfigList = new ArrayList<>(cohortConfigList);
-        }
+        this.cohortConfigList = cohortConfigList;
     }
 
 
