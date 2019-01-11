@@ -4,7 +4,6 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCVersionEnum;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
@@ -36,7 +35,6 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
-import java.net.URL;
 import java.util.*;
 
 /**
@@ -55,7 +53,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
     private IGCRestClient igcRestClient;
 
-    private HashSet<ImplementedMapping> implementedMappings = new HashSet<>();
+    private HashSet<ImplementedMapping> implementedMappings;
 
     private XMLOutputFactory xmlOutputFactory;
 
@@ -78,25 +76,139 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         upsertOMRSBundleZip();
         this.igcRestClient.registerPOJO(OMRSStub.class);
         this.xmlOutputFactory = XMLOutputFactory.newInstance();
+        this.implementedMappings = new HashSet<>();
     }
 
     /**
-     * Generates a zip file for the OMRS OpenIGC bundle, needed to enable change tracking for the event mapper.
+     * Create a definition of a new TypeDef.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param newTypeDef TypeDef structure describing the new TypeDef.
+     * @throws InvalidParameterException the new TypeDef is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
+     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
+     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
+     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    private void upsertOMRSBundleZip() {
+    public void addTypeDef(String       userId,
+                           TypeDef      newTypeDef) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotSupportedException,
+            TypeDefKnownException,
+            TypeDefConflictException,
+            InvalidTypeDefException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException {
+        final String  methodName = "addTypeDef";
+        final String  typeDefParameterName = "newTypeDef";
 
-        ClassPathResource bundleResource = new ClassPathResource("/bundleOMRS");
-        try {
-            File bundle = this.igcRestClient.createOpenIgcBundleFile(bundleResource.getFile());
-            if (bundle != null) {
-                this.igcRestClient.upsertOpenIgcBundle("OMRS", bundle.getAbsolutePath());
-            } else {
-                log.error("Unable to generate OMRS bundle.");
-            }
-        } catch (IOException e) {
-            log.error("Unable to open bundle resource for OMRS.", e);
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
+        repositoryValidator.validateUnknownTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
+
+        // TODO: just need to handle AttributeTypeDefs now?
+
+        TypeDefCategory typeDefCategory = newTypeDef.getCategory();
+        String omrsTypeDefName = newTypeDef.getName();
+        log.debug("Looking for mapping for {} of type {}", omrsTypeDefName, typeDefCategory.getName());
+
+        // See if we have a Mapper defined for the class -- if so, it's implemented
+        StringBuilder sbMapperClassname = new StringBuilder();
+        sbMapperClassname.append(MAPPING_PKG);
+        switch(typeDefCategory) {
+            case RELATIONSHIP_DEF:
+                sbMapperClassname.append("relationships.");
+                break;
+            case CLASSIFICATION_DEF:
+                sbMapperClassname.append("classifications.");
+                break;
+            default:
+                sbMapperClassname.append("entities.");
+                break;
         }
+        sbMapperClassname.append(omrsTypeDefName);
+        sbMapperClassname.append("Mapper");
 
+        try {
+            Class mappingClass = Class.forName(sbMapperClassname.toString());
+            log.debug(" ... found mapping class: {}", mappingClass);
+
+            ImplementedMapping implementedMapping = new ImplementedMapping(
+                    newTypeDef,
+                    mappingClass,
+                    (IGCOMRSRepositoryConnector)parentConnector,
+                    userId
+            );
+            implementedMapping.registerPOJOs(this.igcRestClient);
+            implementedMappings.add(implementedMapping);
+
+        } catch (ClassNotFoundException e) {
+            throw new TypeDefNotSupportedException(404, IGCOMRSMetadataCollection.class.getName(), methodName, omrsTypeDefName + " is not supported.", "", "Request support through Egeria GitHub issue.");
+        }
+    }
+
+    /**
+     * Create a definition of a new AttributeTypeDef.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param newAttributeTypeDef TypeDef structure describing the new TypeDef.
+     * @throws InvalidParameterException the new TypeDef is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
+     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
+     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
+     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  void addAttributeTypeDef(String             userId,
+                                     AttributeTypeDef   newAttributeTypeDef) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotSupportedException,
+            TypeDefKnownException,
+            TypeDefConflictException,
+            InvalidTypeDefException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException {
+        final String  methodName           = "addAttributeTypeDef";
+        final String  typeDefParameterName = "newAttributeTypeDef";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
+        repositoryValidator.validateUnknownAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
+
+        /*
+         * Perform operation
+         */
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
     }
 
     /**
@@ -233,51 +345,59 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, typeDef, methodName);
 
-        // TODO: just need to handle AttributeTypeDefs now?
+        return (getMappingForEntityType(typeDef.getGUID()) != null);
 
-        TypeDefCategory typeDefCategory = typeDef.getCategory();
-        String omrsTypeDefName = typeDef.getName();
-        log.debug("Looking for mapping for {} of type {}", omrsTypeDefName, typeDefCategory.getName());
+    }
 
-        boolean bMapperExists = false;
+    /**
+     * Verify that a definition of an AttributeTypeDef is either new or matches the definition already stored.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param attributeTypeDef TypeDef structure describing the TypeDef to test.
+     * @return boolean where true means the TypeDef matches the local definition where false means the TypeDef is not known.
+     * @throws InvalidParameterException the TypeDef is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
+     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
+     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  boolean verifyAttributeTypeDef(String            userId,
+                                           AttributeTypeDef  attributeTypeDef) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotSupportedException,
+            TypeDefConflictException,
+            InvalidTypeDefException,
+            UserNotAuthorizedException
+    {
+        final String  methodName           = "verifyAttributeTypeDef";
+        final String  typeDefParameterName = "attributeTypeDef";
 
-        // See if we have a Mapper defined for the class -- if so, it's implemented
-        StringBuilder sbMapperClassname = new StringBuilder();
-        sbMapperClassname.append(MAPPING_PKG);
-        switch(typeDefCategory) {
-            case RELATIONSHIP_DEF:
-                sbMapperClassname.append("relationships.");
-                break;
-            case CLASSIFICATION_DEF:
-                sbMapperClassname.append("classifications.");
-                break;
-            default:
-                sbMapperClassname.append("entities.");
-                break;
-        }
-        sbMapperClassname.append(omrsTypeDefName);
-        sbMapperClassname.append("Mapper");
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
 
-        try {
-            Class mappingClass = Class.forName(sbMapperClassname.toString());
-            bMapperExists = (mappingClass != null);
-            log.debug(" ... found mapping class: {}", mappingClass);
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, attributeTypeDef, methodName);
 
-            ImplementedMapping implementedMapping = new ImplementedMapping(
-                    typeDef,
-                    mappingClass,
-                    (IGCOMRSRepositoryConnector)parentConnector,
-                    userId
-            );
-            implementedMapping.registerPOJOs(this.igcRestClient);
-            implementedMappings.add(implementedMapping);
+        /*
+         * Perform operation
+         */
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
 
-        } catch (ClassNotFoundException e) {
-            log.info("Unable to find Mapper for {}", omrsTypeDefName);
-        }
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
 
-        return bMapperExists;
-
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
     }
 
     /**
@@ -1741,6 +1861,25 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         }
 
         return fullAsset;
+
+    }
+
+    /**
+     * Generates a zip file for the OMRS OpenIGC bundle, needed to enable change tracking for the event mapper.
+     */
+    private void upsertOMRSBundleZip() {
+
+        ClassPathResource bundleResource = new ClassPathResource("/bundleOMRS");
+        try {
+            File bundle = this.igcRestClient.createOpenIgcBundleFile(bundleResource.getFile());
+            if (bundle != null) {
+                this.igcRestClient.upsertOpenIgcBundle("OMRS", bundle.getAbsolutePath());
+            } else {
+                log.error("Unable to generate OMRS bundle.");
+            }
+        } catch (IOException e) {
+            log.error("Unable to open bundle resource for OMRS.", e);
+        }
 
     }
 
