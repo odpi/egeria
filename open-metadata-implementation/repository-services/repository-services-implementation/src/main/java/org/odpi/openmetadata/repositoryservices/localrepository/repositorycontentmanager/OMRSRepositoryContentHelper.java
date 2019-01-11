@@ -715,6 +715,39 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         }
     }
 
+    /**
+     * Remember the metadata collection name for this metadata collection Id. If the metadata collection id
+     * is null, it is ignored.
+     *
+     * @param metadataCollectionId unique identifier (guid) for the metadata collection.
+     * @param metadataCollectionName display name for the metadata collection (can be null).
+     */
+    public void registerMetadataCollection(String    metadataCollectionId,
+                                                        String    metadataCollectionName)
+    {
+        final String methodName = "registerMetadataCollection";
+
+        validateRepositoryContentManager(methodName);
+
+        repositoryContentManager.registerMetadataCollection(metadataCollectionId, metadataCollectionName);
+    }
+
+
+    /**
+     * Return the metadata collection name (or null) for a metadata collection id.
+     *
+     * @param metadataCollectionId unique identifier (guid) for the metadata collection.
+     * @return display name
+     */
+    public String getMetadataCollectionName(String    metadataCollectionId)
+    {
+        final String methodName = "getMetadataCollectionName";
+
+        validateRepositoryContentManager(methodName);
+
+        return repositoryContentManager.getMetadataCollectionName(metadataCollectionId);
+    }
+
 
     /**
      * Return an entity with the header and type information filled out.  The caller only needs to add properties

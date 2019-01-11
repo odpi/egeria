@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -82,30 +83,6 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
             this.enterpriseAccessConfig = template.getEnterpriseAccessConfig();
             this.cohortConfigList = template.getCohortConfigList();
         }
-    }
-
-
-    /**
-     * Constructor to set all properties.
-     *
-     * @param auditLogConnections connections to copies of the audit log.
-     * @param openMetadataArchiveConnections list of open metadata archive files to load.
-     * @param localRepositoryConfig properties to configure the behavior of the local repository.
-     * @param enterpriseAccessConfig properties to configure the behavior of the federation services provided
-     *                                to the Open Metadata Access Services (OMASs).
-     * @param cohortConfigList properties about the open metadata repository clusters that this server connects to.
-     */
-    public RepositoryServicesConfig(List<Connection>         auditLogConnections,
-                                    List<Connection>         openMetadataArchiveConnections,
-                                    LocalRepositoryConfig    localRepositoryConfig,
-                                    EnterpriseAccessConfig   enterpriseAccessConfig,
-                                    List<CohortConfig>       cohortConfigList)
-    {
-        this.setAuditLogConnections(auditLogConnections);
-        this.setOpenMetadataArchiveConnections(openMetadataArchiveConnections);
-        this.setLocalRepositoryConfig(localRepositoryConfig);
-        this.setEnterpriseAccessConfig(enterpriseAccessConfig);
-        this.setCohortConfigList(cohortConfigList);
     }
 
 
@@ -272,7 +249,17 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
      *
      * @return JSON style description of variables.
      */
-
+    @Override
+    public String toString()
+    {
+        return "RepositoryServicesConfig{" +
+                "auditLogConnections=" + auditLogConnections +
+                ", openMetadataArchiveConnections=" + openMetadataArchiveConnections +
+                ", localRepositoryConfig=" + localRepositoryConfig +
+                ", enterpriseAccessConfig=" + enterpriseAccessConfig +
+                ", cohortConfigList=" + cohortConfigList +
+                '}';
+    }
 
 
     /**
@@ -281,8 +268,24 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
      * @param objectToCompare object
      * @return boolean result
      */
-
-
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        RepositoryServicesConfig that = (RepositoryServicesConfig) objectToCompare;
+        return Objects.equals(getAuditLogConnections(), that.getAuditLogConnections()) &&
+                Objects.equals(getOpenMetadataArchiveConnections(), that.getOpenMetadataArchiveConnections()) &&
+                Objects.equals(getLocalRepositoryConfig(), that.getLocalRepositoryConfig()) &&
+                Objects.equals(getEnterpriseAccessConfig(), that.getEnterpriseAccessConfig()) &&
+                Objects.equals(getCohortConfigList(), that.getCohortConfigList());
+    }
 
 
     /**
@@ -290,4 +293,10 @@ public class RepositoryServicesConfig extends AdminServicesConfigHeader
      *
      * @return in hash code
      */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getAuditLogConnections(), getOpenMetadataArchiveConnections(), getLocalRepositoryConfig(),
+                            getEnterpriseAccessConfig(), getCohortConfigList());
+    }
 }

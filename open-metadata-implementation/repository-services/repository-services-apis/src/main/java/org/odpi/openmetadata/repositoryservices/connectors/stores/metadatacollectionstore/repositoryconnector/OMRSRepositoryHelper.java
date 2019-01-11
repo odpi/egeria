@@ -205,6 +205,26 @@ public interface OMRSRepositoryHelper
 
 
     /**
+     * Remember the metadata collection name for this metadata collection Id. If the metadata collection id
+     * is null, it is ignored.
+     *
+     * @param metadataCollectionId unique identifier (guid) for the metadata collection.
+     * @param metadataCollectionName display name for the metadata collection (can be null).
+     */
+    void registerMetadataCollection(String    metadataCollectionId,
+                                    String    metadataCollectionName);
+
+
+    /**
+     * Return the metadata collection name (or null) for a metadata collection id.
+     *
+     * @param metadataCollectionId unique identifier (guid) for the metadata collection.
+     * @return display name
+     */
+    String getMetadataCollectionName(String    metadataCollectionId);
+
+
+    /**
      * Return an entity with the header and type information filled out.  The caller only needs to add properties
      * and classifications to complete the set up of the entity.
      *
