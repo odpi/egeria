@@ -14,8 +14,12 @@ Infrastructure, Process, Referenceable, Server and Host.
 * **[0025 Locations](0025-Locations.md)**
 * **[0030 Hosts and Platforms](0030-Hosts-and-Platforms.md)**
 * **[0035 Complex Hosts](0035-Complex-Hosts.md)**
+* **[0037 Software Server Platforms](0037-Software-Server-Platforms.md)**
 * **[0040 Software Servers](0040-Software-Servers.md)**
+* **[0042 Software Server Capabilities](0042-Software-Server-Capabilities.md)**
 * **[0045 Servers and Assets](0045-Servers-and-Assets.md)**
+* **[0050 Applications and Processes](0050-Applications-and-Processes.md)**
+* **[0055 Data Processing Engines](0055-Data-Processing-Engines.md)**
 * **[0070 Networks and Gateways](0070-Networks-and-Gateways.md)**
 * **[0090 Cloud Platforms and Services](0090-Cloud-Platforms-and-Services.md)**
 

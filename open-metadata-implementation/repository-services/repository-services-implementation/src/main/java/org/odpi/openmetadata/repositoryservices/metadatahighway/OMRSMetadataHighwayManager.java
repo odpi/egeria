@@ -180,6 +180,7 @@ public class OMRSMetadataHighwayManager
 
             cohortManager.initialize(cohortConfig.getCohortName(),
                                      localMetadataCollectionId,
+                                     localRepository.getMetadataCollectionName(),
                                      localServerName,
                                      localServerType,
                                      localOrganizationName,
