@@ -15,133 +15,6 @@ import java.util.Map;
  */
 public interface GovernanceLeadershipInterface
 {
-    /**
-     * Create a personal profile for an individual who is to be appointed to a governance role but does not
-     * have a profile in open metadata.
-     *
-     * @param userId the name of the calling user.
-     * @param profileUserId userId of the individual whose profile this is.
-     * @param employeeNumber personnel/serial/unique employee number of the individual.
-     * @param fullName full name of the person.
-     * @param knownName known name or nickname of the individual.
-     * @param jobTitle job title of the individual.
-     * @param jobRoleDescription job description of the individual.
-     * @param additionalProperties  additional properties about the individual.
-     * @return Unique identifier for the personal profile.
-     * @throws InvalidParameterException the employee number or full name is null.
-     * @throws PropertyServerException the server is not available.
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
-     */
-    String createPersonalProfile(String              userId,
-                                 String              profileUserId,
-                                 String              employeeNumber,
-                                 String              fullName,
-                                 String              knownName,
-                                 String              jobTitle,
-                                 String              jobRoleDescription,
-                                 Map<String, Object> additionalProperties) throws InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException;
-
-
-    /**
-     * Update properties for the personal properties.  Null values result in empty fields in the profile.
-     *
-     * @param userId the name of the calling user.
-     * @param profileGUID unique identifier for the profile.
-     * @param employeeNumber personnel/serial/unique employee number of the individual. Used to verify the profileGUID.
-     * @param fullName full name of the person.
-     * @param knownName known name or nickname of the individual.
-     * @param jobTitle job title of the individual.
-     * @param jobRoleDescription job description of the individual.
-     * @param additionalProperties  additional properties about the individual.
-     * @throws UnrecognizedGUIDException the unique identifier of the personal profile is either null or invalid.
-     * @throws InvalidParameterException the known name is null or the employeeNumber does not match the profileGUID.
-     * @throws PropertyServerException the server is not available.
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
-     */
-    void   updatePersonalProfile(String              userId,
-                                 String              profileGUID,
-                                 String              employeeNumber,
-                                 String              fullName,
-                                 String              knownName,
-                                 String              jobTitle,
-                                 String              jobRoleDescription,
-                                 Map<String, Object> additionalProperties) throws UnrecognizedGUIDException,
-                                                                                  InvalidParameterException,
-                                                                                  PropertyServerException,
-                                                                                  UserNotAuthorizedException;
-
-
-    /**
-     * Delete the personal profile.
-     *
-     * @param userId the name of the calling user.
-     * @param profileGUID unique identifier for the profile.
-     * @param employeeNumber personnel/serial/unique employee number of the individual.
-     * @throws UnrecognizedGUIDException the unique identifier of the personal profile is either null or invalid.
-     * @throws InvalidParameterException the employee number or full name is null.
-     * @throws PropertyServerException the server is not available.
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
-     */
-    void   deletePersonalProfile(String              userId,
-                                 String              profileGUID,
-                                 String              employeeNumber) throws UnrecognizedGUIDException,
-                                                                            InvalidParameterException,
-                                                                            PropertyServerException,
-                                                                            UserNotAuthorizedException;
-
-
-    /**
-     * Retrieve a personal profile by guid.
-     *
-     * @param userId the name of the calling user.
-     * @param profileGUID unique identifier for the profile.
-     * @return personal profile object.
-     * @throws UnrecognizedGUIDException the unique identifier of the personal profile is either null or invalid.
-     * @throws PropertyServerException the server is not available.
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
-     */
-    PersonalProfile getPersonalProfileByGUID(String        userId,
-                                             String        profileGUID) throws UnrecognizedGUIDException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException;
-
-
-    /**
-     * Retrieve a personal profile by personnel/serial/unique employee number of the individual.
-     *
-     * @param userId the name of the calling user.
-     * @param employeeNumber personnel/serial/unique employee number of the individual.
-     * @return personal profile object.
-     * @throws InvalidParameterException the employee number.
-     * @throws EmployeeNumberNotUniqueException more than one personal profile was found.
-     * @throws PropertyServerException the server is not available.
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
-     */
-    PersonalProfile getPersonalProfileByEmployeeNumber(String         userId,
-                                                       String         employeeNumber) throws InvalidParameterException,
-                                                                                             EmployeeNumberNotUniqueException,
-                                                                                             PropertyServerException,
-                                                                                             UserNotAuthorizedException;
-
-
-    /**
-     * Return a list of candidate personal profiles for an individual.  It matches on full name and known name.
-     * The name may include wild card parameters.
-     *
-     * @param userId the name of the calling user.
-     * @param name name of individual.
-     * @return list of personal profile objects.
-     * @throws InvalidParameterException the name is null.
-     * @throws PropertyServerException the server is not available.
-     * @throws UserNotAuthorizedException the calling user is not authorized to issue the call.
-     */
-    List<PersonalProfile>  getPersonalProfilesByName(String        userId,
-                                                     String        name) throws InvalidParameterException,
-                                                                                PropertyServerException,
-                                                                                UserNotAuthorizedException;
-
 
     /**
      * Create the governance officer appointment.
@@ -165,7 +38,7 @@ public interface GovernanceLeadershipInterface
                                    String                     appointmentId,
                                    String                     appointmentContext,
                                    String                     title,
-                                   Map<String, Object>        additionalProperties,
+                                   Map<String, String>        additionalProperties,
                                    List<ExternalReference>    externalReferences)  throws InvalidParameterException,
                                                                                           PropertyServerException,
                                                                                           UserNotAuthorizedException;
@@ -196,7 +69,7 @@ public interface GovernanceLeadershipInterface
                                    String                     appointmentId,
                                    String                     appointmentContext,
                                    String                     title,
-                                   Map<String, Object>        additionalProperties,
+                                   Map<String, String>        additionalProperties,
                                    List<ExternalReference>    externalReferences)  throws UnrecognizedGUIDException,
                                                                                           InvalidParameterException,
                                                                                           PropertyServerException,

@@ -30,7 +30,7 @@ public class GovernanceOfficerDetailsRequestBody extends GovernanceProgramOMASAP
     private String                      appointmentId       = null;
     private String                      appointmentContext  = null;
 
-    private Map<String, Object>         additionalProperties = null;
+    private Map<String, String>         additionalProperties = null;
     private List<ExternalReference>     externalReferences = null;
 
     /**
@@ -145,7 +145,7 @@ public class GovernanceOfficerDetailsRequestBody extends GovernanceProgramOMASAP
      * Set up the context in which the governance officer is appointed. This may be an organizational scope,
      * location, or scope of assets.
      *
-     * @param appointmentContext
+     * @param appointmentContext description
      */
     public void setAppointmentContext(String appointmentContext)
     {
@@ -191,7 +191,7 @@ public class GovernanceOfficerDetailsRequestBody extends GovernanceProgramOMASAP
      *
      * @return map from string to object.
      */
-    public Map<String, Object> getAdditionalProperties()
+    public Map<String, String> getAdditionalProperties()
     {
         if (additionalProperties == null)
         {
@@ -213,7 +213,7 @@ public class GovernanceOfficerDetailsRequestBody extends GovernanceProgramOMASAP
      *
      * @param additionalProperties map from string to object.
      */
-    public void setAdditionalProperties(Map<String, Object> additionalProperties)
+    public void setAdditionalProperties(Map<String, String> additionalProperties)
     {
         this.additionalProperties = additionalProperties;
     }

@@ -36,8 +36,8 @@ public class ClassificationTest
     {
         Classification testObject = new Classification();
 
-        testObject.setClassificationName("TestName");
-        testObject.setClassificationProperties(classificationProperties);
+        testObject.setName("TestName");
+        testObject.setProperties(classificationProperties);
 
         return testObject;
     }
@@ -50,8 +50,8 @@ public class ClassificationTest
      */
     private void validateResultObject(Classification  resultObject)
     {
-        assertTrue(resultObject.getClassificationProperties().equals(classificationProperties));
-        assertTrue(resultObject.getClassificationName().equals("TestName"));
+        assertTrue(resultObject.getProperties().equals(classificationProperties));
+        assertTrue(resultObject.getName().equals("TestName"));
     }
 
 
@@ -62,13 +62,13 @@ public class ClassificationTest
     {
         Classification    nullObject = new Classification();
 
-        assertTrue(nullObject.getClassificationName() == null);
-        assertTrue(nullObject.getClassificationProperties() == null);
+        assertTrue(nullObject.getName() == null);
+        assertTrue(nullObject.getProperties() == null);
 
         nullObject = new Classification(null);
 
-        assertTrue(nullObject.getClassificationName() == null);
-        assertTrue(nullObject.getClassificationProperties() == null);
+        assertTrue(nullObject.getName() == null);
+        assertTrue(nullObject.getProperties() == null);
     }
 
 
@@ -86,7 +86,7 @@ public class ClassificationTest
         assertTrue(sameObject.equals(sameObject));
 
         Classification  differentObject = getTestObject();
-        differentObject.setClassificationName("Different");
+        differentObject.setName("Different");
         assertFalse(getTestObject().equals(differentObject));
     }
 

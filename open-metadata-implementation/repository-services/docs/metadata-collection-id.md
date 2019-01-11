@@ -47,7 +47,7 @@ sends the local metadata collection id and
       },
       "guid": "858be98b-49d2-4ccf-9b23-01085a5f473f",
       "qualifiedName": "DefaultRepositoryRESTAPI.Connection.cocoMDS1",
-      "displayName": "DefaultRepositoryRESTAPI.Connection.cocoMDS1",
+      "name": "DefaultRepositoryRESTAPI.Connection.cocoMDS1",
       "description": "OMRS default repository REST API connection.",
       "connectorType": {
         "type": {
@@ -60,7 +60,7 @@ sends the local metadata collection id and
         },
         "guid": "64e67923-8190-45ea-8f96-39320d638c02",
         "qualifiedName": "DefaultRepositoryRESTAPI.ConnectorType.cocoMDS1",
-        "displayName": "DefaultRepositoryRESTAPI.ConnectorType.cocoMDS1",
+        "name": "DefaultRepositoryRESTAPI.ConnectorType.cocoMDS1",
         "description": "OMRS default repository REST API connector type.",
         "connectorProviderClassName": "org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider"
       },
@@ -75,7 +75,7 @@ sends the local metadata collection id and
         },
         "guid": "cee85898-43aa-4af5-9bbd-2bed809d1acb",
         "qualifiedName": "DefaultRepositoryRESTAPI.Endpoint.cocoMDS1",
-        "displayName": "DefaultRepositoryRESTAPI.Endpoint.cocoMDS1",
+        "name": "DefaultRepositoryRESTAPI.Endpoint.cocoMDS1",
         "description": "OMRS default repository REST API endpoint.",
         "address": "http://localhost:8080/openmetadata/repositoryservices/"
       }
