@@ -59,7 +59,7 @@ public class TypeDefLink extends TypeDefElementHeader
     /**
      * Copy/clone constructor copies the values from the supplied template.
      *
-     * @param template TypeDefSummary
+     * @param template TypeDefLink
      */
     public TypeDefLink(TypeDefLink template)
     {

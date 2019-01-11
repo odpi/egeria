@@ -45,14 +45,14 @@ public class MyProfileRESTServices
      * PropertyServerException there is a problem retrieving information from the property server(s) or
      * UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public MyProfileResponse getMyProfile(String serverName,
-                                          String userId)
+    public PersonalProfileResponse getMyProfile(String serverName,
+                                                String userId)
     {
         final String   methodName = "getMyProfile";
 
         log.debug("Calling method: " + methodName);
 
-        MyProfileResponse  response = new MyProfileResponse();
+        PersonalProfileResponse  response = new PersonalProfileResponse();
 
         try
         {
@@ -112,22 +112,24 @@ public class MyProfileRESTServices
             String              knownName            = null;
             String              jobTitle             = null;
             String              jobRoleDescription   = null;
-            Map<String, Object> additionalProperties = null;
+            Map<String, Object> profileProperties    = null;
+            Map<String, String> additionalProperties = null;
 
             if (requestBody != null)
             {
-                employeeNumber = requestBody.getEmployeeNumber();
+                employeeNumber = requestBody.getQualifiedName();
                 fullName = requestBody.getFullName();
                 knownName = requestBody.getKnownName();
                 jobTitle = requestBody.getJobTitle();
                 jobRoleDescription = requestBody.getJobRoleDescription();
+                profileProperties = requestBody.getProfileProperties();
                 additionalProperties = requestBody.getAdditionalProperties();
             }
 
             MyProfileHandler   handler = new MyProfileHandler(instanceHandler.getAccessServiceName(),
                                                               instanceHandler.getRepositoryConnector(serverName));
 
-            handler.updateMyProfile(userId, employeeNumber, fullName, knownName, jobTitle, jobRoleDescription, additionalProperties);
+            handler.updateMyProfile(userId, employeeNumber, fullName, knownName, jobTitle, jobRoleDescription, profileProperties, additionalProperties);
         }
         catch (InvalidParameterException  error)
         {

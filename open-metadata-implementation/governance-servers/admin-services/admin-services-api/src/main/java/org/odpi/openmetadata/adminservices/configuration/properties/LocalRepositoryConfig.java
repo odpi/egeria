@@ -12,9 +12,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * LocalRepositoryConfig provides the properties to control the behavior of the metadata repository associated with
@@ -23,6 +23,10 @@ import java.util.List;
  *     <li>
  *         metadataCollectionId - unique id of local repository's metadata collection.  If this value is set to
  *         null, the server will generate a unique Id.
+ *     </li>
+ *     <li>
+ *         metadataCollectionName- display name of local repository's metadata collection.  If this value is set to
+ *         null, the server will use the local server name.
  *     </li>
  *     <li>
  *         localRepositoryLocalConnection - the connection properties used to create a locally optimized connector
@@ -58,11 +62,10 @@ import java.util.List;
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class LocalRepositoryConfig implements Serializable
+public class LocalRepositoryConfig extends AdminServicesConfigHeader
 {
-    private static final long serialVersionUID = 1L;
-
     private String                   metadataCollectionId            = null;
+    private String                   metadataCollectionName         = null;
     private Connection               localRepositoryLocalConnection  = null;
     private Connection               localRepositoryRemoteConnection = null;
     private OpenMetadataExchangeRule eventsToSaveRule                = null;
@@ -76,6 +79,7 @@ public class LocalRepositoryConfig implements Serializable
      * Constructor
      *
      * @param metadataCollectionId unique id of local repository's metadata collection
+     * @param metadataCollectionName display name of local repository's metadata collection
      * @param localRepositoryLocalConnection the connection properties used to create a locally optimized connector
      *         to the local repository for use by this local server's components.
      * @param localRepositoryRemoteConnection the connection properties used to create a connector
@@ -89,6 +93,7 @@ public class LocalRepositoryConfig implements Serializable
      * @param eventMapperConnection Connection for the local repository's event mapper.  This is optional.
      */
     public LocalRepositoryConfig(String                    metadataCollectionId,
+                                 String                    metadataCollectionName,
                                  Connection                localRepositoryLocalConnection,
                                  Connection                localRepositoryRemoteConnection,
                                  OpenMetadataExchangeRule  eventsToSaveRule,
@@ -97,7 +102,10 @@ public class LocalRepositoryConfig implements Serializable
                                  List<TypeDefSummary>      selectedTypesToSend,
                                  Connection                eventMapperConnection)
     {
+        super();
+
         this.metadataCollectionId = metadataCollectionId;
+        this.metadataCollectionName = metadataCollectionName;
         this.localRepositoryLocalConnection = localRepositoryLocalConnection;
         this.localRepositoryRemoteConnection = localRepositoryRemoteConnection;
         this.eventsToSaveRule = eventsToSaveRule;
@@ -114,6 +122,31 @@ public class LocalRepositoryConfig implements Serializable
      */
     public LocalRepositoryConfig()
     {
+        super();
+    }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public LocalRepositoryConfig(LocalRepositoryConfig  template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            this.metadataCollectionId = template.getMetadataCollectionId();
+            this.metadataCollectionName = template.getMetadataCollectionName();
+            this.localRepositoryLocalConnection = template.getLocalRepositoryLocalConnection();
+            this.localRepositoryRemoteConnection = template.getLocalRepositoryRemoteConnection();
+            this.eventsToSaveRule = template.getEventsToSaveRule();
+            this.selectedTypesToSave = template.getSelectedTypesToSave();
+            this.eventsToSendRule = template.getEventsToSendRule();
+            this.selectedTypesToSend = template.getSelectedTypesToSend();
+            this.eventMapperConnection = template.getEventMapperConnection();
+        }
     }
 
 
@@ -138,6 +171,28 @@ public class LocalRepositoryConfig implements Serializable
     public void setMetadataCollectionId(String metadataCollectionId)
     {
         this.metadataCollectionId = metadataCollectionId;
+    }
+
+
+    /**
+     * Return the display name of the metadata collection. (The local server name is used if this is null).
+     *
+     * @return string name
+     */
+    public String getMetadataCollectionName()
+    {
+        return metadataCollectionName;
+    }
+
+
+    /**
+     * Set up the display name of the metadata collection. (The local server name is used if this is null).
+     *
+     * @param metadataCollectionName string name
+     */
+    public void setMetadataCollectionName(String metadataCollectionName)
+    {
+        this.metadataCollectionName = metadataCollectionName;
     }
 
 
@@ -222,9 +277,23 @@ public class LocalRepositoryConfig implements Serializable
         {
             return null;
         }
+        else if (selectedTypesToSave.isEmpty())
+        {
+            return null;
+        }
         else
         {
-            return selectedTypesToSave;
+            List<TypeDefSummary> resultList = new ArrayList<>();
+
+            for (TypeDefSummary  typeDefSummary : selectedTypesToSave)
+            {
+                if (typeDefSummary != null)
+                {
+                    resultList.add(new TypeDefSummary(typeDefSummary));
+                }
+            }
+
+            return resultList;
         }
     }
 
@@ -236,14 +305,7 @@ public class LocalRepositoryConfig implements Serializable
      */
     public void setSelectedTypesToSave(List<TypeDefSummary> selectedTypesToSave)
     {
-        if (selectedTypesToSave == null)
-        {
-            this.selectedTypesToSave = null;
-        }
-        else
-        {
-            this.selectedTypesToSave = new ArrayList<>(selectedTypesToSave);
-        }
+        this.selectedTypesToSave = selectedTypesToSave;
     }
 
 
@@ -282,9 +344,23 @@ public class LocalRepositoryConfig implements Serializable
         {
             return null;
         }
+        else if (selectedTypesToSend.isEmpty())
+        {
+            return null;
+        }
         else
         {
-            return selectedTypesToSend;
+            List<TypeDefSummary> resultList = new ArrayList<>();
+
+            for (TypeDefSummary  typeDefSummary : selectedTypesToSend)
+            {
+                if (typeDefSummary != null)
+                {
+                    resultList.add(new TypeDefSummary(typeDefSummary));
+                }
+            }
+
+            return resultList;
         }
     }
 
@@ -296,14 +372,7 @@ public class LocalRepositoryConfig implements Serializable
      */
     public void setSelectedTypesToSend(List<TypeDefSummary> selectedTypesToSend)
     {
-        if (selectedTypesToSend == null)
-        {
-            this.selectedTypesToSend = null;
-        }
-        else
-        {
-            this.selectedTypesToSend = new ArrayList<>(selectedTypesToSend);
-        }
+        this.selectedTypesToSend = selectedTypesToSend;
     }
 
 
@@ -332,5 +401,71 @@ public class LocalRepositoryConfig implements Serializable
     public void setEventMapperConnection(Connection eventMapperConnection)
     {
         this.eventMapperConnection = eventMapperConnection;
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+    @Override
+    public String toString()
+    {
+        return "LocalRepositoryConfig{" +
+                "metadataCollectionId='" + metadataCollectionId + '\'' +
+                ", metadataCollectionName='" + metadataCollectionName + '\'' +
+                ", localRepositoryLocalConnection=" + localRepositoryLocalConnection +
+                ", localRepositoryRemoteConnection=" + localRepositoryRemoteConnection +
+                ", eventsToSaveRule=" + eventsToSaveRule +
+                ", selectedTypesToSave=" + selectedTypesToSave +
+                ", eventsToSendRule=" + eventsToSendRule +
+                ", selectedTypesToSend=" + selectedTypesToSend +
+                ", eventMapperConnection=" + eventMapperConnection +
+                '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        LocalRepositoryConfig that = (LocalRepositoryConfig) objectToCompare;
+        return Objects.equals(getMetadataCollectionId(), that.getMetadataCollectionId()) &&
+                Objects.equals(getMetadataCollectionName(), that.getMetadataCollectionName()) &&
+                Objects.equals(getLocalRepositoryLocalConnection(), that.getLocalRepositoryLocalConnection()) &&
+                Objects.equals(getLocalRepositoryRemoteConnection(), that.getLocalRepositoryRemoteConnection()) &&
+                getEventsToSaveRule() == that.getEventsToSaveRule() &&
+                Objects.equals(getSelectedTypesToSave(), that.getSelectedTypesToSave()) &&
+                getEventsToSendRule() == that.getEventsToSendRule() &&
+                Objects.equals(getSelectedTypesToSend(), that.getSelectedTypesToSend()) &&
+                Objects.equals(getEventMapperConnection(), that.getEventMapperConnection());
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getMetadataCollectionId(), getMetadataCollectionName(), getLocalRepositoryLocalConnection(),
+                            getLocalRepositoryRemoteConnection(), getEventsToSaveRule(), getSelectedTypesToSave(),
+                            getEventsToSendRule(), getSelectedTypesToSend(), getEventMapperConnection());
     }
 }

@@ -83,10 +83,6 @@ public enum WatchStatus implements Serializable
     @Override
     public String toString()
     {
-        return "WatchStatus{" +
-                "ordinal=" + ordinal +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return "WatchStatus : " + name;
     }
 }

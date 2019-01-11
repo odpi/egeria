@@ -61,6 +61,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     private Map<String, AttributeTypeDef>   activeAttributeTypeDefNames    = new HashMap<>();
     private Map<String, List<TypeDefLink>>  typeDefSuperTypes              = new HashMap<>();
     private Map<String, InstanceType>       knownInstanceTypes             = new HashMap<>();
+    private Map<String, String>             metadataCollectionNames        = new HashMap<>();
 
 
     /*
@@ -2705,6 +2706,49 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
     {
 
     }
+
+
+    /*
+     * ===========================
+     * Metadata Collections
+     */
+
+
+    /**
+     * Remember the metadata collection name for this metadata collection Id. If the metadata collection id
+     * is null, it is ignored.
+     *
+     * @param metadataCollectionId unique identifier (guid) for the metadata collection.
+     * @param metadataCollectionName display name for the metadata collection (can be null).
+     */
+    public synchronized void registerMetadataCollection(String    metadataCollectionId,
+                                           String    metadataCollectionName)
+    {
+        if (metadataCollectionId != null)
+        {
+            metadataCollectionNames.put(metadataCollectionId, metadataCollectionName);
+        }
+    }
+
+
+    /**
+     * Return the metadata collection name (or null) for a metadata collection id.
+     *
+     * @param metadataCollectionId unique identifier (guid) for the metadata collection.
+     * @return display name
+     */
+    public synchronized String getMetadataCollectionName(String    metadataCollectionId)
+    {
+        if (metadataCollectionId != null)
+        {
+            return metadataCollectionNames.get(metadataCollectionId);
+        }
+        else
+        {
+            return null;
+        }
+    }
+
 
 
     /* ========================
