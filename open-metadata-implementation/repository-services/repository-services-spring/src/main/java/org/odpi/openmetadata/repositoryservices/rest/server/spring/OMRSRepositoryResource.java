@@ -2045,6 +2045,7 @@ public class OMRSRepositoryResource
      * @param entityGUID the unique identifier for the entity to change.
      * @param homeMetadataCollectionId the existing identifier for this entity's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository (optional).
      * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return EntityDetailResponse:
      * entity: new values for this entity, including the new home information or
@@ -2062,12 +2063,15 @@ public class OMRSRepositoryResource
                                              @PathVariable String                        entityGUID,
                                              @PathVariable String                        homeMetadataCollectionId,
                                              @RequestParam String                        newHomeMetadataCollectionId,
+                                             @RequestParam(required=false) String        newHomeMetadataCollectionName,
                                              @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.reHomeEntity(serverName, userId,
+        return restAPI.reHomeEntity(serverName,
+                                    userId,
                                     entityGUID,
                                     homeMetadataCollectionId,
                                     newHomeMetadataCollectionId,
+                                    newHomeMetadataCollectionName,
                                     typeDefValidationForRequest);
     }
 
@@ -2165,12 +2169,15 @@ public class OMRSRepositoryResource
                                                    @PathVariable String                        relationshipGUID,
                                                    @RequestParam String                        homeMetadataCollectionId,
                                                    @RequestParam String                        newHomeMetadataCollectionId,
+                                                   @RequestParam(required=false) String        newHomeMetadataCollectionName,
                                                    @RequestBody  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
-        return restAPI.reHomeRelationship(serverName, userId,
+        return restAPI.reHomeRelationship(serverName,
+                                          userId,
                                           relationshipGUID,
                                           homeMetadataCollectionId,
                                           newHomeMetadataCollectionId,
+                                          newHomeMetadataCollectionName,
                                           typeDefValidationForRequest);
     }
 

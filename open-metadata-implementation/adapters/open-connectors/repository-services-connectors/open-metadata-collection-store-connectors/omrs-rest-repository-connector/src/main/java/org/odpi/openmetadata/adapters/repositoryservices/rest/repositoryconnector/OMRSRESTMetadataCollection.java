@@ -3128,6 +3128,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param typeDefName the name of the TypeDef for the entity used to verify the entity identity.
      * @param homeMetadataCollectionId the existing identifier for this entity's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return entity new values for this entity, including the new home information.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -3141,26 +3142,44 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                      String         typeDefGUID,
                                      String         typeDefName,
                                      String         homeMetadataCollectionId,
-                                     String         newHomeMetadataCollectionId) throws InvalidParameterException,
-                                                                                        RepositoryErrorException,
-                                                                                        EntityNotKnownException,
-                                                                                        FunctionNotSupportedException,
-                                                                                        UserNotAuthorizedException
+                                     String         newHomeMetadataCollectionId,
+                                     String         newHomeMetadataCollectionName) throws InvalidParameterException,
+                                                                                          RepositoryErrorException,
+                                                                                          EntityNotKnownException,
+                                                                                          FunctionNotSupportedException,
+                                                                                          UserNotAuthorizedException
     {
         final String methodName  = "reHomeEntity";
-        final String urlTemplate = "users/{0}/instances/entity/{1}/home/{2}?newHomeMetadataCollectionId={3}";
+        final String urlTemplate1 = "users/{0}/instances/entity/{1}/home/{2}?newHomeMetadataCollectionId={3}";
+        final String urlTemplate2 = "users/{0}/instances/entity/{1}/home/{2}?newHomeMetadataCollectionId={3}&newHomeMetadataCollectionName={4}";
 
         TypeDefValidationForRequest requestBody = new TypeDefValidationForRequest();
         requestBody.setTypeDefGUID(typeDefGUID);
         requestBody.setTypeDefName(typeDefName);
 
-        EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
-                                                                            restURLRoot + urlTemplate,
-                                                                            requestBody,
-                                                                            userId,
-                                                                            entityGUID,
-                                                                            homeMetadataCollectionId,
-                                                                            newHomeMetadataCollectionId);
+        EntityDetailResponse restResult;
+
+        if (newHomeMetadataCollectionName == null)
+        {
+            restResult = this.callEntityDetailPostRESTCall(methodName,
+                                                           restURLRoot + urlTemplate1,
+                                                           requestBody,
+                                                           userId,
+                                                           entityGUID,
+                                                           homeMetadataCollectionId,
+                                                           newHomeMetadataCollectionId);
+        }
+        else
+        {
+            restResult = this.callEntityDetailPostRESTCall(methodName,
+                                                           restURLRoot + urlTemplate2,
+                                                           requestBody,
+                                                           userId,
+                                                           entityGUID,
+                                                           homeMetadataCollectionId,
+                                                           newHomeMetadataCollectionId,
+                                                           newHomeMetadataCollectionName);
+        }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -3293,6 +3312,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId the existing identifier for this relationship's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return relationship new values for this relationship, including the new home information.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -3307,26 +3327,44 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                            String   typeDefGUID,
                                            String   typeDefName,
                                            String   homeMetadataCollectionId,
-                                           String   newHomeMetadataCollectionId) throws InvalidParameterException,
-                                                                                        RepositoryErrorException,
-                                                                                        RelationshipNotKnownException,
-                                                                                        FunctionNotSupportedException,
-                                                                                        UserNotAuthorizedException
+                                           String   newHomeMetadataCollectionId,
+                                           String   newHomeMetadataCollectionName) throws InvalidParameterException,
+                                                                                          RepositoryErrorException,
+                                                                                          RelationshipNotKnownException,
+                                                                                          FunctionNotSupportedException,
+                                                                                          UserNotAuthorizedException
     {
         final String methodName  = "reHomeRelationship";
-        final String urlTemplate = "users/{0}/instances/relationship/{1}/home/{2}?newHomeMetadataCollectionId={3}";
+        final String urlTemplate1 = "users/{0}/instances/relationship/{1}/home/{2}?newHomeMetadataCollectionId={3}";
+        final String urlTemplate2 = "users/{0}/instances/relationship/{1}/home/{2}?newHomeMetadataCollectionId={3}&newHomeMetadataCollectionName={4}";
 
         TypeDefValidationForRequest requestBody = new TypeDefValidationForRequest();
         requestBody.setTypeDefGUID(typeDefGUID);
         requestBody.setTypeDefName(typeDefName);
 
-        RelationshipResponse restResult = this.callRelationshipPostRESTCall(methodName,
-                                                                            restURLRoot + urlTemplate,
-                                                                            requestBody,
-                                                                            userId,
-                                                                            relationshipGUID,
-                                                                            homeMetadataCollectionId,
-                                                                            newHomeMetadataCollectionId);
+        RelationshipResponse restResult;
+
+        if (newHomeMetadataCollectionName == null)
+        {
+            restResult = this.callRelationshipPostRESTCall(methodName,
+                                                           restURLRoot + urlTemplate1,
+                                                           requestBody,
+                                                           userId,
+                                                           relationshipGUID,
+                                                           homeMetadataCollectionId,
+                                                           newHomeMetadataCollectionId);
+        }
+        else
+        {
+            restResult = this.callRelationshipPostRESTCall(methodName,
+                                                           restURLRoot + urlTemplate2,
+                                                           requestBody,
+                                                           userId,
+                                                           relationshipGUID,
+                                                           homeMetadataCollectionId,
+                                                           newHomeMetadataCollectionId,
+                                                           newHomeMetadataCollectionName);
+        }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);

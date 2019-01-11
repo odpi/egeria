@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * LocalRepositoryConfig provides the properties to control the behavior of the metadata repository associated with
@@ -22,6 +23,10 @@ import java.util.List;
  *     <li>
  *         metadataCollectionId - unique id of local repository's metadata collection.  If this value is set to
  *         null, the server will generate a unique Id.
+ *     </li>
+ *     <li>
+ *         metadataCollectionName- display name of local repository's metadata collection.  If this value is set to
+ *         null, the server will use the local server name.
  *     </li>
  *     <li>
  *         localRepositoryLocalConnection - the connection properties used to create a locally optimized connector
@@ -60,6 +65,7 @@ import java.util.List;
 public class LocalRepositoryConfig extends AdminServicesConfigHeader
 {
     private String                   metadataCollectionId            = null;
+    private String                   metadataCollectionName         = null;
     private Connection               localRepositoryLocalConnection  = null;
     private Connection               localRepositoryRemoteConnection = null;
     private OpenMetadataExchangeRule eventsToSaveRule                = null;
@@ -73,6 +79,7 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
      * Constructor
      *
      * @param metadataCollectionId unique id of local repository's metadata collection
+     * @param metadataCollectionName display name of local repository's metadata collection
      * @param localRepositoryLocalConnection the connection properties used to create a locally optimized connector
      *         to the local repository for use by this local server's components.
      * @param localRepositoryRemoteConnection the connection properties used to create a connector
@@ -86,6 +93,7 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
      * @param eventMapperConnection Connection for the local repository's event mapper.  This is optional.
      */
     public LocalRepositoryConfig(String                    metadataCollectionId,
+                                 String                    metadataCollectionName,
                                  Connection                localRepositoryLocalConnection,
                                  Connection                localRepositoryRemoteConnection,
                                  OpenMetadataExchangeRule  eventsToSaveRule,
@@ -97,6 +105,7 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
         super();
 
         this.metadataCollectionId = metadataCollectionId;
+        this.metadataCollectionName = metadataCollectionName;
         this.localRepositoryLocalConnection = localRepositoryLocalConnection;
         this.localRepositoryRemoteConnection = localRepositoryRemoteConnection;
         this.eventsToSaveRule = eventsToSaveRule;
@@ -129,13 +138,14 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
         if (template != null)
         {
             this.metadataCollectionId = template.getMetadataCollectionId();
+            this.metadataCollectionName = template.getMetadataCollectionName();
             this.localRepositoryLocalConnection = template.getLocalRepositoryLocalConnection();
             this.localRepositoryRemoteConnection = template.getLocalRepositoryRemoteConnection();
             this.eventsToSaveRule = template.getEventsToSaveRule();
-            this.setSelectedTypesToSave(selectedTypesToSave);
-            this.eventsToSendRule = eventsToSendRule;
-            this.setSelectedTypesToSend(selectedTypesToSend);
-            this.eventMapperConnection = eventMapperConnection;
+            this.selectedTypesToSave = template.getSelectedTypesToSave();
+            this.eventsToSendRule = template.getEventsToSendRule();
+            this.selectedTypesToSend = template.getSelectedTypesToSend();
+            this.eventMapperConnection = template.getEventMapperConnection();
         }
     }
 
@@ -161,6 +171,28 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
     public void setMetadataCollectionId(String metadataCollectionId)
     {
         this.metadataCollectionId = metadataCollectionId;
+    }
+
+
+    /**
+     * Return the display name of the metadata collection. (The local server name is used if this is null).
+     *
+     * @return string name
+     */
+    public String getMetadataCollectionName()
+    {
+        return metadataCollectionName;
+    }
+
+
+    /**
+     * Set up the display name of the metadata collection. (The local server name is used if this is null).
+     *
+     * @param metadataCollectionName string name
+     */
+    public void setMetadataCollectionName(String metadataCollectionName)
+    {
+        this.metadataCollectionName = metadataCollectionName;
     }
 
 
@@ -377,7 +409,21 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
      *
      * @return JSON style description of variables.
      */
-
+    @Override
+    public String toString()
+    {
+        return "LocalRepositoryConfig{" +
+                "metadataCollectionId='" + metadataCollectionId + '\'' +
+                ", metadataCollectionName='" + metadataCollectionName + '\'' +
+                ", localRepositoryLocalConnection=" + localRepositoryLocalConnection +
+                ", localRepositoryRemoteConnection=" + localRepositoryRemoteConnection +
+                ", eventsToSaveRule=" + eventsToSaveRule +
+                ", selectedTypesToSave=" + selectedTypesToSave +
+                ", eventsToSendRule=" + eventsToSendRule +
+                ", selectedTypesToSend=" + selectedTypesToSend +
+                ", eventMapperConnection=" + eventMapperConnection +
+                '}';
+    }
 
 
     /**
@@ -386,8 +432,28 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
      * @param objectToCompare object
      * @return boolean result
      */
-
-
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        LocalRepositoryConfig that = (LocalRepositoryConfig) objectToCompare;
+        return Objects.equals(getMetadataCollectionId(), that.getMetadataCollectionId()) &&
+                Objects.equals(getMetadataCollectionName(), that.getMetadataCollectionName()) &&
+                Objects.equals(getLocalRepositoryLocalConnection(), that.getLocalRepositoryLocalConnection()) &&
+                Objects.equals(getLocalRepositoryRemoteConnection(), that.getLocalRepositoryRemoteConnection()) &&
+                getEventsToSaveRule() == that.getEventsToSaveRule() &&
+                Objects.equals(getSelectedTypesToSave(), that.getSelectedTypesToSave()) &&
+                getEventsToSendRule() == that.getEventsToSendRule() &&
+                Objects.equals(getSelectedTypesToSend(), that.getSelectedTypesToSend()) &&
+                Objects.equals(getEventMapperConnection(), that.getEventMapperConnection());
+    }
 
 
     /**
@@ -395,4 +461,11 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
      *
      * @return in hash code
      */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getMetadataCollectionId(), getMetadataCollectionName(), getLocalRepositoryLocalConnection(),
+                            getLocalRepositoryRemoteConnection(), getEventsToSaveRule(), getSelectedTypesToSave(),
+                            getEventsToSendRule(), getSelectedTypesToSend(), getEventMapperConnection());
+    }
 }

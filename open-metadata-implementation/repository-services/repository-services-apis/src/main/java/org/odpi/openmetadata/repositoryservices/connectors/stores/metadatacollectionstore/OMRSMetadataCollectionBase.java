@@ -13,6 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
@@ -64,6 +65,7 @@ import java.util.Date;
  */
 public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 {
+    private boolean isLocalRepository = true;
 
     /**
      * Constructor to save the metadata collection id.
@@ -94,6 +96,29 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                       String                  metadataCollectionId)
     {
         super(parentConnector, repositoryName, metadataCollectionId, repositoryHelper, repositoryValidator);
+    }
+
+
+    /**
+     * Constructor ensures the metadata collection is linked to its connector and knows its metadata collection Id.
+     *
+     * @param parentConnector connector that this metadata collection supports.  The connector has the information
+     *                        to call the metadata repository.
+     * @param repositoryName name of this repository.
+     * @param repositoryHelper helper class for building types and instances
+     * @param repositoryValidator validator class for checking open metadata repository objects and parameters.
+     * @param metadataCollectionId unique identifier of the metadata collection Id.
+     * @param isLocalRepository indicates whether is this a local repository or the enterprise repository.
+     */
+    public OMRSMetadataCollectionBase(OMRSRepositoryConnector parentConnector,
+                                      String                  repositoryName,
+                                      OMRSRepositoryHelper    repositoryHelper,
+                                      OMRSRepositoryValidator repositoryValidator,
+                                      String                  metadataCollectionId,
+                                      boolean                 isLocalRepository)
+    {
+        super(parentConnector, repositoryName, metadataCollectionId, repositoryHelper, repositoryValidator);
+        this.isLocalRepository = isLocalRepository;
     }
 
 
@@ -155,21 +180,14 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
 
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
 
-        /*
-         * Perform operation
-         */
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 this.getClass().getName(),
-                                                                                                 repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        if (isLocalRepository)
+        {
+            return repositoryHelper.getActiveTypeDefGallery();
+        }
+        else
+        {
+            return repositoryHelper.getKnownTypeDefGallery();
+        }
     }
 
 
@@ -202,21 +220,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateTypeName(repositoryName, nameParameterName, name, methodName);
 
-        /*
-         * Perform operation
-         */
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                 this.getClass().getName(),
-                                                                                                 repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        return repositoryHelper.getActiveTypesByWildCardName(repositoryName, name);
     }
 
 
@@ -1230,12 +1234,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -1436,12 +1440,24 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        if (asOfTime == null)
+        {
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
+        }
+        else
+        {
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
     }
 
 
@@ -1483,7 +1499,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                         List<InstanceStatus>       limitResultsByStatus,
                                                         Date                       asOfTime,
                                                         String                     sequencingProperty,
-                                                        SequencingOrder sequencingOrder,
+                                                        SequencingOrder            sequencingOrder,
                                                         int                        pageSize) throws InvalidParameterException,
                                                                                                     TypeErrorException,
                                                                                                     RepositoryErrorException,
@@ -1520,12 +1536,24 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        if (asOfTime == null)
+        {
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
+        }
+        else
+        {
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
     }
 
 
@@ -1615,12 +1643,24 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        if (asOfTime == null)
+        {
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
+        }
+        else
+        {
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
     }
 
 
@@ -1735,12 +1775,24 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        if (asOfTime == null)
+        {
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
+        }
+        else
+        {
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
     }
 
 
@@ -1823,12 +1875,24 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        if (asOfTime == null)
+        {
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
+        }
+        else
+        {
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
     }
 
 
@@ -1973,12 +2037,24 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        if (asOfTime == null)
+        {
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
+        }
+        else
+        {
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
     }
 
 
@@ -2065,12 +2141,24 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        if (asOfTime == null)
+        {
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
+        }
+        else
+        {
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
     }
 
 
@@ -2148,12 +2236,24 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        if (asOfTime == null)
+        {
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
+        }
+        else
+        {
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
     }
 
 
@@ -2214,12 +2314,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -2320,12 +2420,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -2414,12 +2514,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -2560,12 +2660,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -2718,12 +2818,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -2785,12 +2885,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -2900,12 +3000,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -3349,12 +3449,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -3415,12 +3515,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -3531,12 +3631,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -3604,12 +3704,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -3670,12 +3770,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -3690,6 +3790,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param typeDefName the name of the TypeDef for the entity used to verify the entity identity.
      * @param homeMetadataCollectionId the existing identifier for this entity's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return entity new values for this entity, including the new home information.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -3703,11 +3804,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                      String         typeDefGUID,
                                      String         typeDefName,
                                      String         homeMetadataCollectionId,
-                                     String         newHomeMetadataCollectionId) throws InvalidParameterException,
-                                                                                        RepositoryErrorException,
-                                                                                        EntityNotKnownException,
-                                                                                        FunctionNotSupportedException,
-                                                                                        UserNotAuthorizedException
+                                     String         newHomeMetadataCollectionId,
+                                     String         newHomeMetadataCollectionName) throws InvalidParameterException,
+                                                                                          RepositoryErrorException,
+                                                                                          EntityNotKnownException,
+                                                                                          FunctionNotSupportedException,
+                                                                                          UserNotAuthorizedException
     {
         final String methodName                = "reHomeEntity";
         final String guidParameterName         = "typeDefGUID";
@@ -3743,12 +3845,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -3818,12 +3920,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -3904,12 +4006,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
@@ -3924,6 +4026,7 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
      * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId the existing identifier for this relationship's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return relationship new values for this relationship, including the new home information.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -3938,7 +4041,8 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                            String   typeDefGUID,
                                            String   typeDefName,
                                            String   homeMetadataCollectionId,
-                                           String   newHomeMetadataCollectionId) throws InvalidParameterException,
+                                           String   newHomeMetadataCollectionId,
+                                           String   newHomeMetadataCollectionName) throws InvalidParameterException,
                                                                                         RepositoryErrorException,
                                                                                         RelationshipNotKnownException,
                                                                                         FunctionNotSupportedException,
@@ -3978,12 +4082,12 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
                                                                                                  this.getClass().getName(),
                                                                                                  repositoryName);
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                                                this.getClass().getName(),
+                                                methodName,
+                                                errorMessage,
+                                                errorCode.getSystemAction(),
+                                                errorCode.getUserAction());
     }
 
 
