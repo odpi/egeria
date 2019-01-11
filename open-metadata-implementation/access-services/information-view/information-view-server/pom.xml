@@ -23,7 +23,6 @@
     <artifactId>information-view-server</artifactId>
 
     <properties>
-        <mockito.junit.version>2.19.0</mockito.junit.version>
         <junit.version>4.12</junit.version>
     </properties>
 
@@ -38,7 +37,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>${mockito.junit.version}</version>
+            <version>${mockito.version}</version>
         </dependency>
 
         <dependency>

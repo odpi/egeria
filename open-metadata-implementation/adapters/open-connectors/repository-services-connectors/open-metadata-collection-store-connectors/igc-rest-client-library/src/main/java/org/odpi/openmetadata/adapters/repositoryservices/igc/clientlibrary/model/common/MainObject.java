@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
  * The supertype of many IGC objects -- in particular, any OpenIGC objects.
@@ -14,11 +16,12 @@ import java.util.Date;
  * on virtually all IGC asset types.
  */
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = InformationAsset.class, name = "information_asset")
+        @JsonSubTypes.Type(value = InformationAsset.class, name = "information_asset"),
 })
 public class MainObject extends Reference {
 
     public static String getIgcTypeId() { return "main_object"; }
+    public static String getIgcTypeDisplayName() { return "Main Object"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -138,5 +141,19 @@ public class MainObject extends Reference {
 
     /** @see #modified_on */ @JsonProperty("modified_on") public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on") public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
+
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final Boolean isMainObject(Object obj) { return (obj.getClass() == MainObject.class); }
 
 }

@@ -69,9 +69,7 @@ public class ReportHandler {
             }
 
         } catch (Exception e) {
-            log.error("Exception processing report", e);
             InformationViewErrorCode auditCode = InformationViewErrorCode.REPORT_CREATION_EXCEPTION;
-
 
             auditLog.logException("processEvent",
                     auditCode.getErrorMessageId(),
@@ -87,7 +85,8 @@ public class ReportHandler {
                     "Unable to create report: " + e.getMessage(),
                     "The system is unable to process the request.",
                     "Correct the payload submitted to request.",
-                    "");
+                    e,
+                    payload.getReportName());
         }
     }
 
