@@ -97,10 +97,6 @@ public enum GovernanceDomain implements Serializable
     @Override
     public String toString()
     {
-        return "GovernanceDomain{" +
-                "ordinal=" + ordinal +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return "GovernanceDomain : " + name;
     }
 }

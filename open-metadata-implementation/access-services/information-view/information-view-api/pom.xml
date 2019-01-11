@@ -1,17 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
     <parent>
         <artifactId>information-view</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>0.3-SNAPSHOT</version>
     </parent>
+
+    <name>Information View OMAS API</name>
+    <description>
+        Shared beans for the Information View Open Metadata Access Service (OMAS).
+    </description>
+
+
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>information-view-api</artifactId>
-    <name>Information View OMAS API</name>
 
 </project>
