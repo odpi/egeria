@@ -3,13 +3,16 @@
 
 # 0445 Governance Roles
 
-Someone or something needs to be identified as being responsible for managing and updating the descriptions of metadata.
-The **StaffAssignment** relationship defines the role of people
-or engines that are responsible for particular aspects of the
-maintenance of a [Referenceable](0010-Base-Model.md) object.
+Although we aim to automate governance as much as possible, it is often necessary to
+assign responsibility for specific actions to specific people.
+
+In Figure 1, the responsibilities of someone assigned to managed a
+particular aspect of governing a resource ([Referenceable](0010-Base-Model.md))
+is represented by a GovernanceRole entity.  The person assigned to
+do the work is then linked to the Governance Role.
 
 ![UML](0445-Governance-Roles.png)
-
+> Figure 1: Assignment of Governance Roles
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

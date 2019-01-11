@@ -133,6 +133,7 @@ public class EnterpriseOMRSConnectorProvider extends OMRSRepositoryConnectorProv
         connector.setRepositoryHelper(new OMRSRepositoryContentHelper(repositoryContentManager));
         connector.setRepositoryValidator(new OMRSRepositoryContentValidator(repositoryContentManager));
         connector.setMetadataCollectionId(enterpriseMetadataCollectionId);
+        connector.setMetadataCollectionName(enterpriseMetadataCollectionName);
         connector.initializeConnectedAssetProperties(new EnterpriseOMRSConnectorProperties(connector,
                                                                                            this.connectorManager,
                                                                                            enterpriseMetadataCollectionId,

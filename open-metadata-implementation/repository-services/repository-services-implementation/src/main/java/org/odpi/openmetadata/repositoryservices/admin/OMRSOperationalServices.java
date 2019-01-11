@@ -67,12 +67,13 @@ public class OMRSOperationalServices
      */
     private static final Logger       log      = LoggerFactory.getLogger(OMRSOperationalServices.class);
 
-    private String                         localServerName;         /* Initialized in constructor */
-    private String                         localServerType;         /* Initialized in constructor */
-    private String                         localOrganizationName;   /* Initialized in constructor */
-    private String                         localServerUserId;       /* Initialized in constructor */
-    private String                         localServerURL;          /* Initialized in constructor */
-    private int                            maxPageSize;             /* Initialized in constructor */
+    private String                         localServerName;               /* Initialized in constructor */
+    private String                         localServerType;               /* Initialized in constructor */
+    private String                         localMetadataCollectionName;   /* Initialized in constructor */
+    private String                         localOrganizationName;         /* Initialized in constructor */
+    private String                         localServerUserId;             /* Initialized in constructor */
+    private String                         localServerURL;                /* Initialized in constructor */
+    private int                            maxPageSize;                   /* Initialized in constructor */
 
     private String                         localMetadataCollectionId        = null;
 
@@ -96,6 +97,7 @@ public class OMRSOperationalServices
      * @param localServerName name of the local server
      * @param localServerType type of the local server
      * @param organizationName name of the organization that owns the local server
+     * @param localMetadataCollectionName name of the metadata collection residing in the local server
      * @param localServerUserId user id for this server to use if processing inbound messages.
      * @param localServerURL URL root for this server.
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
@@ -302,12 +304,17 @@ public class OMRSOperationalServices
         if (localRepositoryConfig != null)
         {
             localMetadataCollectionId = localRepositoryConfig.getMetadataCollectionId();
+            localMetadataCollectionName = localRepositoryConfig.getMetadataCollectionName();
+            if (localMetadataCollectionName == null)
+            {
+                localMetadataCollectionName = localServerName;
+            }
 
             auditCode = OMRSAuditCode.LOCAL_REPOSITORY_INITIALIZING;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
-                               auditCode.getFormattedLogMessage(localMetadataCollectionId),
+                               auditCode.getFormattedLogMessage(localMetadataCollectionName, localMetadataCollectionId),
                                null,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
@@ -988,6 +995,7 @@ public class OMRSOperationalServices
             localRepositoryConnector.setRepositoryHelper(new OMRSRepositoryContentHelper(localRepositoryContentManager));
             localRepositoryConnector.setRepositoryValidator(new OMRSRepositoryContentValidator(localRepositoryContentManager));
             localRepositoryConnector.setMetadataCollectionId(localMetadataCollectionId);
+            localRepositoryConnector.setMetadataCollectionName(localMetadataCollectionName);
 
             return localRepositoryConnector;
         }
