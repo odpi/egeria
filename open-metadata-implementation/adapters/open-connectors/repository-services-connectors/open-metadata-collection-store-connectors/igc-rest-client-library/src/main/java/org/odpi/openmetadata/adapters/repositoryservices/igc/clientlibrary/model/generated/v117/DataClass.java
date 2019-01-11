@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class DataClass extends Reference {
 
     public static String getIgcTypeId() { return "data_class"; }
+    public static String getIgcTypeDisplayName() { return "Data Class"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -399,14 +402,14 @@ public class DataClass extends Reference {
     /** @see #valid_values_case_sensitive */ @JsonProperty("valid_values_case_sensitive")  public Boolean getValidValuesCaseSensitive() { return this.valid_values_case_sensitive; }
     /** @see #valid_values_case_sensitive */ @JsonProperty("valid_values_case_sensitive")  public void setValidValuesCaseSensitive(Boolean valid_values_case_sensitive) { this.valid_values_case_sensitive = valid_values_case_sensitive; }
 
-    /** @see #allowSubstringMatch */ @JsonProperty("allowSubstringMatch")  public Boolean getAllowSubstringMatch() { return this.allowSubstringMatch; }
-    /** @see #allowSubstringMatch */ @JsonProperty("allowSubstringMatch")  public void setAllowSubstringMatch(Boolean allowSubstringMatch) { this.allowSubstringMatch = allowSubstringMatch; }
+    /** @see #allowSubstringMatch */ @JsonProperty("allowSubstringMatch")  public Boolean getAllowsubstringmatch() { return this.allowSubstringMatch; }
+    /** @see #allowSubstringMatch */ @JsonProperty("allowSubstringMatch")  public void setAllowsubstringmatch(Boolean allowSubstringMatch) { this.allowSubstringMatch = allowSubstringMatch; }
 
-    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public Boolean getSqueezeConsecutiveWhiteSpaces() { return this.squeezeConsecutiveWhiteSpaces; }
-    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public void setSqueezeConsecutiveWhiteSpaces(Boolean squeezeConsecutiveWhiteSpaces) { this.squeezeConsecutiveWhiteSpaces = squeezeConsecutiveWhiteSpaces; }
+    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public Boolean getSqueezeconsecutivewhitespaces() { return this.squeezeConsecutiveWhiteSpaces; }
+    /** @see #squeezeConsecutiveWhiteSpaces */ @JsonProperty("squeezeConsecutiveWhiteSpaces")  public void setSqueezeconsecutivewhitespaces(Boolean squeezeConsecutiveWhiteSpaces) { this.squeezeConsecutiveWhiteSpaces = squeezeConsecutiveWhiteSpaces; }
 
-    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public String getColumnNameMatch() { return this.columnNameMatch; }
-    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public void setColumnNameMatch(String columnNameMatch) { this.columnNameMatch = columnNameMatch; }
+    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public String getColumnnamematch() { return this.columnNameMatch; }
+    /** @see #columnNameMatch */ @JsonProperty("columnNameMatch")  public void setColumnnamematch(String columnNameMatch) { this.columnNameMatch = columnNameMatch; }
 
     /** @see #expression */ @JsonProperty("expression")  public String getExpression() { return this.expression; }
     /** @see #expression */ @JsonProperty("expression")  public void setExpression(String expression) { this.expression = expression; }
@@ -432,8 +435,8 @@ public class DataClass extends Reference {
     /** @see #class_code */ @JsonProperty("class_code")  public String getClassCode() { return this.class_code; }
     /** @see #class_code */ @JsonProperty("class_code")  public void setClassCode(String class_code) { this.class_code = class_code; }
 
-    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public String getValidValueReferenceFile() { return this.validValueReferenceFile; }
-    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public void setValidValueReferenceFile(String validValueReferenceFile) { this.validValueReferenceFile = validValueReferenceFile; }
+    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public String getValidvaluereferencefile() { return this.validValueReferenceFile; }
+    /** @see #validValueReferenceFile */ @JsonProperty("validValueReferenceFile")  public void setValidvaluereferencefile(String validValueReferenceFile) { this.validValueReferenceFile = validValueReferenceFile; }
 
     /** @see #active */ @JsonProperty("active")  public Boolean getActive() { return this.active; }
     /** @see #active */ @JsonProperty("active")  public void setActive(Boolean active) { this.active = active; }
@@ -459,6 +462,108 @@ public class DataClass extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isDataClass(Object obj) { return (obj.getClass() == DataClass.class); }
+    public static Boolean canBeCreated() { return true; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "data_class_type_single",
+        "data_type_filter_elements_enum",
+        "default_threshold",
+        "length_filter_min",
+        "length_filter_max",
+        "java_class_name_single",
+        "properties",
+        "scope",
+        "regular_expression_single",
+        "applicable_for_single",
+        "additional_regular_expression",
+        "additionial_applicable_for",
+        "valid_value_strings",
+        "valid_values_case_sensitive",
+        "allowSubstringMatch",
+        "squeezeConsecutiveWhiteSpaces",
+        "columnNameMatch",
+        "expression",
+        "script",
+        "language",
+        "reference_columns_metadata",
+        "priority",
+        "example",
+        "enabled",
+        "class_code",
+        "validValueReferenceFile",
+        "active",
+        "provider",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "contains_data_classes",
+        "classifications_selected",
+        "classified_assets_detected",
+        "filters",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "parent_data_class",
+        "data_class_type_single",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "contains_data_classes",
+        "classifications_selected",
+        "classified_assets_detected",
+        "data_type_filter_elements_enum",
+        "default_threshold",
+        "length_filter_min",
+        "length_filter_max",
+        "java_class_name_single",
+        "properties",
+        "scope",
+        "regular_expression_single",
+        "applicable_for_single",
+        "additional_regular_expression",
+        "additionial_applicable_for",
+        "valid_value_strings",
+        "valid_values_case_sensitive",
+        "allowSubstringMatch",
+        "squeezeConsecutiveWhiteSpaces",
+        "columnNameMatch",
+        "expression",
+        "script",
+        "language",
+        "reference_columns_metadata",
+        "priority",
+        "example",
+        "enabled",
+        "class_code",
+        "validValueReferenceFile",
+        "active",
+        "provider",
+        "filters",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isDataClass(Object obj) { return (obj.getClass() == DataClass.class); }
 
 }

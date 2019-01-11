@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class DevelopmentLog extends Reference {
 
     public static String getIgcTypeId() { return "development_log"; }
+    public static String getIgcTypeDisplayName() { return "DevelopmentLog"; }
 
     /**
      * The 'date' property, displayed as 'Date' in the IGC UI.
@@ -117,6 +120,40 @@ public class DevelopmentLog extends Reference {
     /** @see #workflow_new_state */ @JsonProperty("workflow_new_state")  public String getWorkflowNewState() { return this.workflow_new_state; }
     /** @see #workflow_new_state */ @JsonProperty("workflow_new_state")  public void setWorkflowNewState(String workflow_new_state) { this.workflow_new_state = workflow_new_state; }
 
-    public static final Boolean isDevelopmentLog(Object obj) { return (obj.getClass() == DevelopmentLog.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return false; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "date",
+        "workflow_task",
+        "development_log",
+        "activity",
+        "new_state",
+        "person",
+        "comment",
+        "user_task_key",
+        "user_task_name",
+        "workflow_instance_id",
+        "workflow_event",
+        "workflow_new_state"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "date",
+        "workflow_task",
+        "development_log",
+        "activity",
+        "new_state",
+        "person",
+        "comment",
+        "user_task_key",
+        "user_task_name",
+        "workflow_instance_id",
+        "workflow_event",
+        "workflow_new_state"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isDevelopmentLog(Object obj) { return (obj.getClass() == DevelopmentLog.class); }
 
 }

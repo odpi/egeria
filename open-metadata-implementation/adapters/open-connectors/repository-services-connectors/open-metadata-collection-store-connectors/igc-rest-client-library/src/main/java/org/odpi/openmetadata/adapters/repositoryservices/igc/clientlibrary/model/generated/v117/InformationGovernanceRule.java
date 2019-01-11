@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class InformationGovernanceRule extends Reference {
 
     public static String getIgcTypeId() { return "information_governance_rule"; }
+    public static String getIgcTypeDisplayName() { return "Information Governance Rule"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -192,6 +195,53 @@ public class InformationGovernanceRule extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isInformationGovernanceRule(Object obj) { return (obj.getClass() == InformationGovernanceRule.class); }
+    public static Boolean canBeCreated() { return true; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "language",
+        "workflow_current_state",
+        "workflow_stored_state",
+        "glossary_type",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "referencing_policies",
+        "labels",
+        "stewards",
+        "related_rules",
+        "implemented_by_assets",
+        "governs_assets",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "referencing_policies",
+        "labels",
+        "stewards",
+        "language",
+        "related_rules",
+        "implemented_by_assets",
+        "governs_assets",
+        "in_collections",
+        "workflow_current_state",
+        "workflow_stored_state",
+        "glossary_type",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isInformationGovernanceRule(Object obj) { return (obj.getClass() == InformationGovernanceRule.class); }
 
 }

@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class Stage extends Reference {
 
     public static String getIgcTypeId() { return "stage"; }
+    public static String getIgcTypeDisplayName() { return "Stage"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -531,6 +534,123 @@ public class Stage extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on")  public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on")  public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    public static final Boolean isStage(Object obj) { return (obj.getClass() == Stage.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "type_definition",
+        "file",
+        "host",
+        "data_source_or_server",
+        "schema",
+        "table",
+        "sql_statement",
+        "insert_sql",
+        "update_sql",
+        "delete_sql",
+        "before_sql",
+        "after_sql",
+        "all_sql_statements",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "job_or_container",
+        "job",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "constraints",
+        "stage_variable",
+        "input_links",
+        "output_links",
+        "next_stages",
+        "previous_stages",
+        "manually_bound_to",
+        "references_data_connection_mapping",
+        "reads_from_(static)",
+        "writes_to_(static)",
+        "reads_from_(design)",
+        "writes_to_(design)",
+        "reads_from_(operational)",
+        "writes_to_(operational)",
+        "reads_from_(user_defined)",
+        "writes_to_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "references_table_definitions",
+        "standardization_rule_sets",
+        "match_specifications",
+        "data_rule_definition",
+        "blueprint_elements",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "job_or_container",
+        "job",
+        "shared_or_local_container",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "type",
+        "type_definition",
+        "constraints",
+        "references_container",
+        "stage_variable",
+        "input_links",
+        "output_links",
+        "next_stages",
+        "previous_stages",
+        "manually_bound_to",
+        "references_data_connection_mapping",
+        "runs_sequences_jobs",
+        "reads_from_(static)",
+        "writes_to_(static)",
+        "reads_from_(design)",
+        "writes_to_(design)",
+        "reads_from_(operational)",
+        "writes_to_(operational)",
+        "reads_from_(user_defined)",
+        "writes_to_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "references_table_definitions",
+        "file",
+        "host",
+        "data_source_or_server",
+        "schema",
+        "table",
+        "sql_statement",
+        "insert_sql",
+        "update_sql",
+        "delete_sql",
+        "before_sql",
+        "after_sql",
+        "all_sql_statements",
+        "standardization_rule_sets",
+        "match_specifications",
+        "data_rule_definition",
+        "blueprint_elements",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isStage(Object obj) { return (obj.getClass() == Stage.class); }
 
 }

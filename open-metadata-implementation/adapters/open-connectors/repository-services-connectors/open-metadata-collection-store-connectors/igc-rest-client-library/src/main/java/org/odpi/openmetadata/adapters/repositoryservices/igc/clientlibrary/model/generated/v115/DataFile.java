@@ -5,7 +5,9 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.ArrayList;
 
 /**
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 public class DataFile extends Reference {
 
     public static String getIgcTypeId() { return "data_file"; }
+    public static String getIgcTypeDisplayName() { return "Data File"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -367,6 +370,87 @@ public class DataFile extends Reference {
     /** @see #amazon_s3_data_files */ @JsonProperty("amazon_s3_data_files")  public Reference getAmazonS3DataFiles() { return this.amazon_s3_data_files; }
     /** @see #amazon_s3_data_files */ @JsonProperty("amazon_s3_data_files")  public void setAmazonS3DataFiles(Reference amazon_s3_data_files) { this.amazon_s3_data_files = amazon_s3_data_files; }
 
-    public static final Boolean isDataFile(Object obj) { return (obj.getClass() == DataFile.class); }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "alias_(business_name)",
+        "path",
+        "store_type",
+        "imported_from",
+        "include_for_business_lineage",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+        "parent_folder_or_host",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "data_file_records",
+        "implements_physical_models",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "suggested_term_assignments",
+        "blueprint_elements",
+        "in_collections"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "parent_folder_or_host",
+        "parent_folder",
+        "host",
+        "labels",
+        "stewards",
+        "assigned_to_terms",
+        "implements_rules",
+        "governed_by_rules",
+        "data_file_records",
+        "implements_data_file_definition",
+        "implements_physical_models",
+        "alias_(business_name)",
+        "path",
+        "store_type",
+        "imported_from",
+        "read_by_(static)",
+        "written_by_(static)",
+        "read_by_(design)",
+        "written_by_(design)",
+        "read_by_(operational)",
+        "written_by_(operational)",
+        "read_by_(user_defined)",
+        "written_by_(user_defined)",
+        "impacted_by",
+        "impacts_on",
+        "include_for_business_lineage",
+        "suggested_term_assignments",
+        "blueprint_elements",
+        "in_collections",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on",
+        "amazon_s3_data_files"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
+    public static Boolean isDataFile(Object obj) { return (obj.getClass() == DataFile.class); }
 
 }
