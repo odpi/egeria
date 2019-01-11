@@ -46,7 +46,7 @@ public class PersonalProfilesRESTServices
      */
     public GUIDResponse createPersonalProfile(String                     serverName,
                                               String                     userId,
-                                              PersonalDetailsRequestBody requestBody)
+                                              PersonalProfileRequestBody requestBody)
     {
         final String        methodName = "createPersonalProfile";
 
@@ -62,16 +62,18 @@ public class PersonalProfilesRESTServices
             String              knownName = null;
             String              jobTitle = null;
             String              jobRoleDescription = null;
-            Map<String, Object> additionalProperties = null;
+            Map<String, Object> profileProperties = null;
+            Map<String, String> additionalProperties = null;
 
             if (requestBody != null)
             {
                 profileUserId = requestBody.getUserId();
-                employeeNumber = requestBody.getEmployeeNumber();
+                employeeNumber = requestBody.getQualifiedName();
                 fullName = requestBody.getFullName();
                 knownName = requestBody.getKnownName();
                 jobTitle = requestBody.getJobTitle();
                 jobRoleDescription = requestBody.getJobRoleDescription();
+                profileProperties = requestBody.getProfileProperties();
                 additionalProperties = requestBody.getAdditionalProperties();
             }
 
@@ -85,6 +87,7 @@ public class PersonalProfilesRESTServices
                                                            knownName,
                                                            jobTitle,
                                                            jobRoleDescription,
+                                                           profileProperties,
                                                            additionalProperties));
         }
         catch (InvalidParameterException error)
@@ -122,7 +125,7 @@ public class PersonalProfilesRESTServices
     public VoidResponse updatePersonalProfile(String                     serverName,
                                               String                     userId,
                                               String                     profileGUID,
-                                              PersonalDetailsRequestBody requestBody)
+                                              PersonalProfileRequestBody requestBody)
     {
         final String        methodName = "updatePersonalProfile";
 
@@ -137,15 +140,17 @@ public class PersonalProfilesRESTServices
             String              knownName = null;
             String              jobTitle = null;
             String              jobRoleDescription = null;
-            Map<String, Object> additionalProperties = null;
+            Map<String, Object> profileProperties = null;
+            Map<String, String> additionalProperties = null;
 
             if (requestBody != null)
             {
-                employeeNumber = requestBody.getEmployeeNumber();
+                employeeNumber = requestBody.getQualifiedName();
                 fullName = requestBody.getFullName();
                 knownName = requestBody.getKnownName();
                 jobTitle = requestBody.getJobTitle();
                 jobRoleDescription = requestBody.getJobRoleDescription();
+                profileProperties = requestBody.getProfileProperties();
                 additionalProperties = requestBody.getAdditionalProperties();
             }
 
@@ -159,11 +164,8 @@ public class PersonalProfilesRESTServices
                                           knownName,
                                           jobTitle,
                                           jobRoleDescription,
+                                          profileProperties,
                                           additionalProperties);
-        }
-        catch (UnrecognizedGUIDException error)
-        {
-            captureUnrecognizedGUIDException(response, error);
         }
         catch (InvalidParameterException error)
         {
@@ -214,7 +216,7 @@ public class PersonalProfilesRESTServices
 
             if (requestBody != null)
             {
-                employeeNumber = requestBody.getEmployeeNumber();
+                employeeNumber = requestBody.getQualifiedName();
             }
 
             PersonalProfilesHandler handler = new PersonalProfilesHandler(instanceHandler.getAccessServiceName(),
@@ -223,10 +225,6 @@ public class PersonalProfilesRESTServices
             handler.deletePersonalProfile(userId,
                                           profileGUID,
                                           employeeNumber);
-        }
-        catch (UnrecognizedGUIDException error)
-        {
-            captureUnrecognizedGUIDException(response, error);
         }
         catch (InvalidParameterException error)
         {
@@ -280,10 +278,6 @@ public class PersonalProfilesRESTServices
         {
             captureInvalidParameterException(response, error);
         }
-        catch (UnrecognizedGUIDException error)
-        {
-            captureUnrecognizedGUIDException(response, error);
-        }
         catch (PropertyServerException error)
         {
             capturePropertyServerException(response, error);
@@ -307,7 +301,7 @@ public class PersonalProfilesRESTServices
      * @param employeeNumber personnel/serial/unique employee number of the individual.
      * @return personal profile object or
      * InvalidParameterException the employee number or full name is null or
-     * EmployeeNumberNotUniqueException more than one personal profile was found or
+     * QualifiedNameNotUniqueException more than one personal profile was found or
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */
@@ -331,10 +325,6 @@ public class PersonalProfilesRESTServices
         catch (InvalidParameterException error)
         {
             captureInvalidParameterException(response, error);
-        }
-        catch (EmployeeNumberNotUniqueException error)
-        {
-            captureEmployeeNumberNotUniqueException(response, error);
         }
         catch (PropertyServerException error)
         {
@@ -445,36 +435,6 @@ public class PersonalProfilesRESTServices
     }
 
 
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void captureUnrecognizedGUIDException(CommunityProfileOMASAPIResponse     response,
-                                                  UnrecognizedGUIDException            error)
-    {
-        String  guid = error.getGUID();
-        String  expectedTypeName = error.getExpectedTypeName();
-
-        if ((guid != null) || (expectedTypeName != null))
-        {
-            Map<String, Object>  exceptionProperties = new HashMap<>();
-
-            exceptionProperties.put("guid", guid);
-            exceptionProperties.put("expectedTypeName", expectedTypeName);
-            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
-        }
-        else
-        {
-            captureCheckedException(response, error, error.getClass().getName());
-        }
-
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
     /**
      * Set the exception information into the response.
      *
@@ -498,32 +458,6 @@ public class PersonalProfilesRESTServices
             captureCheckedException(response, error, error.getClass().getName());
         }
     }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void captureEmployeeNumberNotUniqueException(CommunityProfileOMASAPIResponse response,
-                                                         EmployeeNumberNotUniqueException error)
-    {
-        List<EntityDetail> duplicateProfiles = error.getDuplicateProfiles();
-
-        if (duplicateProfiles != null)
-        {
-            Map<String, Object>  exceptionProperties = new HashMap<>();
-
-            exceptionProperties.put("duplicateProfiles", duplicateProfiles);
-            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
-        }
-        else
-        {
-            captureCheckedException(response, error, error.getClass().getName());
-        }
-    }
-
 
 
     /**

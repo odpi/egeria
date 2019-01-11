@@ -23,7 +23,7 @@ public class TestOMRSAuditCode
 
         assertTrue("OMRS-AUDIT-0003".equals(testObject.getLogMessageId()));
         assertTrue(OMRSAuditLogRecordSeverity.INFO == (testObject.getSeverity()));
-        assertTrue("The local repository is initializing with metadata collection id DummyId".equals(testObject.getFormattedLogMessage("DummyId")));
+        assertTrue("The local repository is initializing with metadata collection named DummyName with an id of DummyId".equals(testObject.getFormattedLogMessage("DummyName", "DummyId")));
         assertTrue("The local server has started to initialize the local repository.".equals(testObject.getSystemAction()));
         assertTrue("No action is required.  This is part of the normal operation of the server.".equals(testObject.getUserAction()));
     }

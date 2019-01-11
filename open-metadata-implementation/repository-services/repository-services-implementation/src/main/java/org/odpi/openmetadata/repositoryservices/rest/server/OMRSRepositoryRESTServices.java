@@ -5146,6 +5146,7 @@ public class OMRSRepositoryRESTServices
      * @param entityGUID the unique identifier for the entity to change.
      * @param homeMetadataCollectionId the existing identifier for this entity's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return EntityDetailResponse:
      * entity: new values for this entity, including the new home information or
@@ -5161,6 +5162,7 @@ public class OMRSRepositoryRESTServices
                                              String                        entityGUID,
                                              String                        homeMetadataCollectionId,
                                              String                        newHomeMetadataCollectionId,
+                                             String                        newHomeMetadataCollectionName,
                                              TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "reHomeEntity";
@@ -5185,7 +5187,8 @@ public class OMRSRepositoryRESTServices
                                                                     typeDefGUID,
                                                                     typeDefName,
                                                                     homeMetadataCollectionId,
-                                                                    newHomeMetadataCollectionId));
+                                                                    newHomeMetadataCollectionId,
+                                                                    newHomeMetadataCollectionName));
         }
         catch (RepositoryErrorException  error)
         {
@@ -5378,6 +5381,7 @@ public class OMRSRepositoryRESTServices
      * @param relationshipGUID the unique identifier for the relationship.
      * @param homeMetadataCollectionId the existing identifier for this relationship's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @param typeDefValidationForRequest information about the type used to confirm the right instance is specified.
      * @return RelationshipResponse:
      * relationship: new values for this relationship, including the new home information or
@@ -5394,6 +5398,7 @@ public class OMRSRepositoryRESTServices
                                                    String                        relationshipGUID,
                                                    String                        homeMetadataCollectionId,
                                                    String                        newHomeMetadataCollectionId,
+                                                   String                        newHomeMetadataCollectionName,
                                                    TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "reHomeRelationship";
@@ -5418,7 +5423,8 @@ public class OMRSRepositoryRESTServices
                                                                                 typeDefGUID,
                                                                                 typeDefName,
                                                                                 homeMetadataCollectionId,
-                                                                                newHomeMetadataCollectionId));
+                                                                                newHomeMetadataCollectionId,
+                                                                                newHomeMetadataCollectionName));
         }
         catch (RepositoryErrorException  error)
         {
