@@ -7,9 +7,17 @@ Provides an OMRS repository connector for IBM's InfoSphere Information Governanc
 
 ## Getting started
 
-To start using the connector, you will need an IGC environment, running either 
-version 11.5 or 11.7 of the software. (The connector will automatically detect 
-which version as part of its initialization.)
+To start using the connector, you will need an IGC environment, running either
+version 11.5 or 11.7 of the software. (The connector will automatically detect
+which version as part of its initialization.) You will need to first enable event
+notification in your IGC environment:
+
+1. Navigate to "Administration": !["Administration"](docs/ibm-igc-setup1.png)
+1. Navigate to "Event Notification" within the "Setup" heading: !["Event Notification"](docs/ibm-igc-setup2.png)
+1. Toggle "Enable" and then "Save and Close": !["Enable" and "Save and Close"](docs/ibm-igc-setup3.png)
+
+There should not be any need to restart the environment after enabling the event
+notification.
 
 You will need to configure the OMAG server as follows (order is important). For 
 example payloads and endpoints, see the [Postman](docs/postman) assets included 
