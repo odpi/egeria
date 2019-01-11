@@ -11,10 +11,17 @@ LABEL org.label-schema.version="0.1.0"
 LABEL org.label-schema.schema-version = "1.0"
 
 # Install Git, which is missing from the Ubuntu base images.
-RUN apt-get update && apt-get install -y git python openjdk-8-jdk maven wget http
+RUN apt-get update && apt-get install -y git python openjdk-8-jdk maven wget httpie
 
-# Setup the cohort
-ENV atlas-endpoint
-ENV egeria-endpoint
+# Stup the cohort
+ENV ATLAS_ENDPOINT null
+ENV KAFKA_ENDPOINT null
+
+WORKDIR /root
+COPY dist/configure-atlas.sh /root
+
+
+ENTRYPOINT ./configure-atlas.sh 
+
 
 
