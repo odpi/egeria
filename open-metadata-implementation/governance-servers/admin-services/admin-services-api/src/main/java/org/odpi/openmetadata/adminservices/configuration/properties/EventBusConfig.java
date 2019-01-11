@@ -9,23 +9,22 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * EventBusConfig caches the properties that are used to set up event-based connectors in the server.  If it
- * is set up then the admin services will ensure that all connectors that embed an event bus will use the same
- * connector with the core additional properties.  (These additional properties can be overridden when a specific
- * connector is set up).
+ * EventBusConfig caches the default properties that are used to set up event-based connectors in the server.  If it
+ * is set up then the admin services will ensure that all connectors created after the event bus is configured,
+ * that embed an event bus will use the same event bus connector with the core additional properties.
+ * (These additional properties can be overridden when a specific connector is set up).
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class EventBusConfig implements Serializable
+public class EventBusConfig extends AdminServicesConfigHeader
 {
-    private static final long serialVersionUID = 1L;
-
     private String              connectorProvider    = null;
     private String              topicURLRoot         = null;
     private Map<String, Object> additionalProperties = null;
@@ -36,6 +35,7 @@ public class EventBusConfig implements Serializable
      */
     public EventBusConfig()
     {
+        super();
     }
 
 
@@ -46,6 +46,8 @@ public class EventBusConfig implements Serializable
      */
     public EventBusConfig(EventBusConfig   template)
     {
+        super(template);
+
         if (template != null)
         {
             connectorProvider = template.getConnectorProvider();
@@ -129,5 +131,57 @@ public class EventBusConfig implements Serializable
     public void setAdditionalProperties(Map<String, Object> additionalProperties)
     {
         this.additionalProperties = additionalProperties;
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+    @Override
+    public String toString()
+    {
+        return "EventBusConfig{" +
+                "connectorProvider='" + connectorProvider + '\'' +
+                ", topicURLRoot='" + topicURLRoot + '\'' +
+                ", additionalProperties=" + additionalProperties +
+                '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        EventBusConfig that = (EventBusConfig) objectToCompare;
+        return Objects.equals(getConnectorProvider(), that.getConnectorProvider()) &&
+                Objects.equals(getTopicURLRoot(), that.getTopicURLRoot()) &&
+                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getConnectorProvider(), getTopicURLRoot(), getAdditionalProperties());
     }
 }

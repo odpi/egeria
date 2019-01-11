@@ -15,19 +15,20 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public abstract class OMRSRepositoryConnector extends ConnectorBase implements OMRSMetadataCollectionManager
 {
-    protected OMRSRepositoryHelper    repositoryHelper     = null;
-    protected OMRSRepositoryValidator repositoryValidator  = null;
-    protected String                  repositoryName       = null;
-    protected String                  serverName           = null;
-    protected String                  serverType           = null;
-    protected String                  organizationName     = null;
-    protected String                  serverUserId         = null;
-    protected int                     maxPageSize          = 1000;
+    protected OMRSRepositoryHelper    repositoryHelper    = null;
+    protected OMRSRepositoryValidator repositoryValidator = null;
+    protected String                  repositoryName      = null;
+    protected String                  serverName          = null;
+    protected String                  serverType          = null;
+    protected String                  organizationName    = null;
+    protected String                  serverUserId        = null;
+    protected int                     maxPageSize         = 1000;
 
-    protected String                  metadataCollectionId = null;
-    protected OMRSMetadataCollection  metadataCollection   = null;
+    protected String                 metadataCollectionId   = null;
+    protected String                 metadataCollectionName = null;
+    protected OMRSMetadataCollection metadataCollection     = null;
 
-    protected OMRSAuditLog            auditLog = null;
+    protected OMRSAuditLog auditLog = null;
 
 
 
@@ -218,6 +219,36 @@ public abstract class OMRSRepositoryConnector extends ConnectorBase implements O
     public void setMetadataCollectionId(String metadataCollectionId)
     {
         this.metadataCollectionId = metadataCollectionId;
+    }
+
+
+    /**
+     * Return the metadata collection name of this repository connector.  It defaults to the server name if not set
+     * up explicitly.
+     *
+     * @return display name of the metadata collection.
+     */
+    public String getMetadataCollectionName()
+    {
+        if (metadataCollectionName != null)
+        {
+            return metadataCollectionName;
+        }
+        else
+        {
+            return serverName;
+        }
+    }
+
+
+    /**
+     * Explicitly set up the metadata collection name.
+     *
+     * @param metadataCollectionName display name of the metadata collection.
+     */
+    public void setMetadataCollectionName(String metadataCollectionName)
+    {
+        this.metadataCollectionName = metadataCollectionName;
     }
 
 
