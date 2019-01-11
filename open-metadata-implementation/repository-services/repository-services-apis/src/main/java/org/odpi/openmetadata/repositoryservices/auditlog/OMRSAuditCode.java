@@ -37,7 +37,7 @@ public enum OMRSAuditCode
 
     LOCAL_REPOSITORY_INITIALIZING("OMRS-AUDIT-0003",
                       OMRSAuditLogRecordSeverity.INFO,
-                      "The local repository is initializing with metadata collection id {0}",
+                      "The local repository is initializing with metadata collection named {0} with an id of {1}",
                       "The local server has started to initialize the local repository.",
                       "No action is required.  This is part of the normal operation of the server."),
 

@@ -6,7 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -19,14 +20,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class UserIdentity implements Serializable
+public class UserIdentity extends IdentifiableUserHeader
 {
-    private static final long          serialVersionUID = 1L;
-
-    private String          guid      = null;
-    private String          type      = null;
-    private String          userId    = null;
-
+    private Map<String, Object> extendedProperties   = null;
+    private Map<String, String> additionalProperties = null;
 
     /**
      * Default constructor
@@ -44,82 +41,79 @@ public class UserIdentity implements Serializable
      */
     public UserIdentity(UserIdentity template)
     {
-        super();
+        super(template);
 
         if (template != null)
         {
-            this.guid = template.getGUID();
-            this.type = template.getType();
-            this.userId = template.getUserId();
+            this.extendedProperties = template.getExtendedProperties();
+            this.additionalProperties = template.getAdditionalProperties();
         }
     }
 
 
     /**
-     * Return the unique identifier for this definition.  This value is assigned by the metadata collection
-     * when the governance definition is created.
+     * Return any properties associated with the subclass of this element.
      *
-     * @return String guid
+     * @return map of property names to property values
      */
-    public String getGUID()
+    public Map<String, Object> getExtendedProperties()
     {
-        return guid;
+        if (extendedProperties == null)
+        {
+            return null;
+        }
+        else if (extendedProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(extendedProperties);
+        }
     }
 
 
     /**
-     * Set up the unique identifier for this definition.  This value is assigned by the metadata collection
-     * when the governance definition is created.
+     * Set up any additional properties associated with the element.
      *
-     * @param guid String guid
+     * @param additionalProperties map of property names to property values
      */
-    public void setGUID(String guid)
+    public void setExtendedProperties(Map<String, Object> additionalProperties)
     {
-        this.guid = guid;
+        this.extendedProperties = additionalProperties;
     }
 
 
     /**
-     * Return the name of the specific type of governance definition.
+     * Return any additional properties associated with the element.
      *
-     * @return String type name
+     * @return map of property names to property values
      */
-    public String getType()
+    public Map<String, String> getAdditionalProperties()
     {
-        return type;
+        if (additionalProperties == null)
+        {
+            return null;
+        }
+        else if (additionalProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(additionalProperties);
+        }
     }
 
 
     /**
-     * Set up the name of the specific type of the governance definition.
+     * Set up any additional properties associated with the element.
      *
-     * @param type String type name
+     * @param additionalProperties map of property names to property values
      */
-    public void setType(String type)
+    public void setAdditionalProperties(Map<String, String> additionalProperties)
     {
-        this.type = type;
-    }
-
-
-    /**
-     * Return the unique name of the user identity for the individual.
-     *
-     * @return userId string
-     */
-    public String getUserId()
-    {
-        return userId;
-    }
-
-
-    /**
-     * Set up the unique name of the user identity for the individual.
-     *
-     * @param userId string
-     */
-    public void setUserId(String userId)
-    {
-        this.userId = userId;
+        this.additionalProperties = additionalProperties;
     }
 
 
@@ -132,9 +126,16 @@ public class UserIdentity implements Serializable
     public String toString()
     {
         return "UserIdentity{" +
-                "guid='" + guid + '\'' +
-                ", type='" + type + '\'' +
-                ", userId=" + userId + '\'' +
+                "extendedProperties=" + extendedProperties +
+                ", additionalProperties=" + additionalProperties +
+                ", userId='" + getUserId() + '\'' +
+                ", GUID='" + getGUID() + '\'' +
+                ", typeName='" + getTypeName() + '\'' +
+                ", typeDescription='" + getTypeDescription() + '\'' +
+                ", originId='" + getOriginId() + '\'' +
+                ", originName='" + getOriginName() + '\'' +
+                ", originType='" + getOriginType() + '\'' +
+                ", originLicense='" + getOriginLicense() + '\'' +
                 '}';
     }
 
@@ -156,10 +157,13 @@ public class UserIdentity implements Serializable
         {
             return false;
         }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
         UserIdentity that = (UserIdentity) objectToCompare;
-        return  Objects.equals(getGUID(), that.getGUID()) &&
-                Objects.equals(getType(), that.getType()) &&
-                Objects.equals(getUserId(), that.getUserId());
+        return Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
+                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
     }
 
 
@@ -171,6 +175,6 @@ public class UserIdentity implements Serializable
     @Override
     public int hashCode()
     {
-        return Objects.hash(getGUID(), getType(), getUserId());
+        return Objects.hash(super.hashCode(), getExtendedProperties(), getAdditionalProperties());
     }
 }

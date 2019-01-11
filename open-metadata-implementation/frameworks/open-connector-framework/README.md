@@ -5,7 +5,7 @@
 # Open Connector Framework (OCF)
 
 The OCF, as the name suggests, is an open framework for supporting connectors.
-Connector provide client-side access to remote digital [Assets](../../../open-metadata-publication/website/assets/README.md)
+Connector provide client-side access to remote digital [Assets](../../../open-metadata-implementation/access-services/docs/concepts/assets)
 such as data sets, APIs and software components.
 OCF Connectors also provide access to metadata about the asset and they may call
 the [Governance Action Framework (GAF)](../governance-action-framework) to execute

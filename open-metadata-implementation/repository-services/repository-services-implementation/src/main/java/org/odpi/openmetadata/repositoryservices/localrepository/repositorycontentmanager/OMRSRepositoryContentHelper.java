@@ -613,7 +613,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
-     * Validate that the type of an entity is of the expected/desired type.  The actual entity may be a subtype
+     * Validate that the type of an instance is of the expected/desired type.  The actual instnace may be a subtype
      * of the expected type of course.
      *
      * @param sourceName source of the request (used for logging)
@@ -713,6 +713,39 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         {
             return matchingTypes;
         }
+    }
+
+    /**
+     * Remember the metadata collection name for this metadata collection Id. If the metadata collection id
+     * is null, it is ignored.
+     *
+     * @param metadataCollectionId unique identifier (guid) for the metadata collection.
+     * @param metadataCollectionName display name for the metadata collection (can be null).
+     */
+    public void registerMetadataCollection(String    metadataCollectionId,
+                                                        String    metadataCollectionName)
+    {
+        final String methodName = "registerMetadataCollection";
+
+        validateRepositoryContentManager(methodName);
+
+        repositoryContentManager.registerMetadataCollection(metadataCollectionId, metadataCollectionName);
+    }
+
+
+    /**
+     * Return the metadata collection name (or null) for a metadata collection id.
+     *
+     * @param metadataCollectionId unique identifier (guid) for the metadata collection.
+     * @return display name
+     */
+    public String getMetadataCollectionName(String    metadataCollectionId)
+    {
+        final String methodName = "getMetadataCollectionName";
+
+        validateRepositoryContentManager(methodName);
+
+        return repositoryContentManager.getMetadataCollectionName(metadataCollectionId);
     }
 
 
@@ -1566,6 +1599,28 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
+     * Remove the named property from the instance properties object.
+     *
+     * @param propertyName name of property to remove
+     * @param properties instance properties object to work on
+     */
+    private void removeProperty(String    propertyName, InstanceProperties  properties)
+    {
+        if (properties != null)
+        {
+            Map<String, InstancePropertyValue> instancePropertyValueMap = properties.getInstanceProperties();
+
+            if (instancePropertyValueMap != null)
+            {
+                instancePropertyValueMap.remove(propertyName);
+                properties.setInstanceProperties(instancePropertyValueMap);
+            }
+        }
+    }
+
+
+
+    /**
      * Return the requested property or null if property is not found.  If the property is not
      * a string property then a logic exception is thrown
      *
@@ -1598,7 +1653,10 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                         {
                             if (primitivePropertyValue.getPrimitiveValue() != null)
                             {
-                                return primitivePropertyValue.getPrimitiveValue().toString();
+                                String retrievedProperty = primitivePropertyValue.getPrimitiveValue().toString();
+                                log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+
+                                return retrievedProperty;
                             }
                         }
                     }
@@ -1610,7 +1668,41 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
             }
         }
 
+        log.debug("No " + propertyName + " property");
         return null;
+    }
+
+
+    /**
+     * Return the requested property or null if property is not found.  If the property is found, it is removed from
+     * the InstanceProperties structure.  If the property is not a string property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return string property value or null
+     */
+    public String removeStringProperty(String             sourceName,
+                                       String             propertyName,
+                                       InstanceProperties properties,
+                                       String             methodName)
+    {
+        String  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getStringProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+                log.debug("Properties left: " + properties.toString());
+            }
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
     }
 
 
@@ -1719,6 +1811,40 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
+     * Locates and extracts a string array property and extracts its values.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not an array property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties all of the properties of the instance
+     * @param methodName method of caller
+     * @return array property value or null
+     */
+    public List<String> removeStringArrayProperty(String             sourceName,
+                                                  String             propertyName,
+                                                  InstanceProperties properties,
+                                                  String             methodName)
+    {
+        List<String>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getStringArrayProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+                log.debug("Properties left: " + properties.toString());
+            }
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
+    }
+
+
+    /**
      * Convert the values in the instance properties into a String Array.  It assumes all of the elements are primitives.
      *
      * @param instanceProperties instance properties containing the values.  They should all be primitive Strings.
@@ -1753,7 +1879,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                         }
                         else
                         {
-                            log.error(thisMethodName + " skipping non primitive value: " + actualPropertyValue + " from method " + callingMethodName);
+                            log.error(thisMethodName + " skipping collection value: " + actualPropertyValue + " from method " + callingMethodName);
                         }
                     }
                     else
@@ -1773,6 +1899,80 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
         log.debug(thisMethodName + " has no property values to extract for method " + callingMethodName);
         return null;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, String> getStringMapFromProperty(String             sourceName,
+                                                        String             propertyName,
+                                                        InstanceProperties properties,
+                                                        String             methodName)
+    {
+        Map<String, Object>   mapFromProperty = this.getMapFromProperty(sourceName, propertyName, properties, methodName);
+
+        if (mapFromProperty != null)
+        {
+            Map<String, String>  stringMapFromProperty = new HashMap<>();
+
+            for (String mapPropertyName : mapFromProperty.keySet())
+            {
+                Object actualPropertyValue = mapFromProperty.get(mapPropertyName);
+
+                if (actualPropertyValue != null)
+                {
+                    stringMapFromProperty.put(mapPropertyName, actualPropertyValue.toString());
+                }
+            }
+
+            if (! stringMapFromProperty.isEmpty())
+            {
+                return stringMapFromProperty;
+            }
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    public Map<String, String> removeStringMapFromProperty(String             sourceName,
+                                                           String             propertyName,
+                                                           InstanceProperties properties,
+                                                           String             methodName)
+    {
+        Map<String, String>  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getStringMapFromProperty(sourceName, propertyName, properties, methodName);
+
+            if (retrievedProperty != null)
+            {
+                this.removeProperty(propertyName, properties);
+                log.debug("Properties left: " + properties.toString());
+            }
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
     }
 
 
@@ -1821,7 +2021,6 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     }
 
 
-
     /**
      * Convert an instance properties object into a map.
      *
@@ -1846,6 +2045,11 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                         PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) actualPropertyValue;
                         resultingMap.put(mapPropertyName, primitivePropertyValue.getPrimitiveValue());
                     }
+                    else if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.ENUM)
+                    {
+                        EnumPropertyValue  enumPropertyValue = (EnumPropertyValue) actualPropertyValue;
+                        resultingMap.put(mapPropertyName, enumPropertyValue.getSymbolicName());
+                    }
                     else
                     {
                         resultingMap.put(mapPropertyName, actualPropertyValue);
@@ -1865,7 +2069,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
     /**
      * Return the requested property or 0 if property is not found.  If the property is not
-     * a int property then a logic exception is thrown
+     * an int property then a logic exception is thrown.
      *
      * @param sourceName source of call
      * @param propertyName name of requested property
@@ -1914,6 +2118,122 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
         return 0;
     }
+
+
+    /**
+     * Return the requested property or 0 if property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not an int property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return string property value or null
+     */
+    public int    removeIntProperty(String             sourceName,
+                                    String             propertyName,
+                                    InstanceProperties properties,
+                                    String             methodName)
+    {
+        int  retrievedProperty = 0;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getIntProperty(sourceName, propertyName, properties, methodName);
+
+            this.removeProperty(propertyName, properties);
+            log.debug("Properties left: " + properties.toString());
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
+    }
+
+
+    /**
+     * Return the requested property or null if property is not found.  If the property is not
+     * a date property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested property
+     * @param properties properties from the instance.
+     * @param methodName method of caller
+     * @return string property value or null
+     */
+    public Date    getDateProperty(String             sourceName,
+                                   String             propertyName,
+                                   InstanceProperties properties,
+                                   String             methodName)
+    {
+        final String  thisMethodName = "getDateProperty";
+
+        if (properties != null)
+        {
+            InstancePropertyValue instancePropertyValue = properties.getPropertyValue(propertyName);
+
+            if (instancePropertyValue != null)
+            {
+                try
+                {
+                    if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+                    {
+                        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) instancePropertyValue;
+
+                        if (primitivePropertyValue.getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE)
+                        {
+                            log.debug("Retrieved date property " + propertyName);
+
+                            if (primitivePropertyValue.getPrimitiveValue() != null)
+                            {
+                                return (Date)primitivePropertyValue.getPrimitiveValue();
+                            }
+                        }
+                    }
+                }
+                catch (Throwable error)
+                {
+                    throwHelperLogicError(sourceName, methodName, thisMethodName);
+                }
+            }
+        }
+
+        log.debug("Date property " + propertyName + " not present");
+
+        return null;
+    }
+
+
+    /**
+     * Return the requested property or null if property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a date property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return string property value or null
+     */
+    public Date    removeDateProperty(String             sourceName,
+                                     String             propertyName,
+                                     InstanceProperties properties,
+                                     String             methodName)
+    {
+        Date  retrievedProperty = null;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getDateProperty(sourceName, propertyName, properties, methodName);
+
+            this.removeProperty(propertyName, properties);
+            log.debug("Properties left: " + properties.toString());
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
+    }
+
 
 
     /**
@@ -1966,6 +2286,37 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         log.debug("Boolean property " + propertyName + " not present");
 
         return false;
+    }
+
+
+    /**
+     * Return the requested property or false if property is not found.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a boolean property then a logic exception is thrown.
+     *
+     * @param sourceName  source of call
+     * @param propertyName  name of requested property
+     * @param properties  properties from the instance.
+     * @param methodName  method of caller
+     * @return string property value or null
+     */
+    public boolean removeBooleanProperty(String             sourceName,
+                                         String             propertyName,
+                                         InstanceProperties properties,
+                                         String             methodName)
+    {
+        boolean  retrievedProperty = false;
+
+        if (properties != null)
+        {
+            retrievedProperty = this.getBooleanProperty(sourceName, propertyName, properties, methodName);
+
+            this.removeProperty(propertyName, properties);
+            log.debug("Properties left: " + properties.toString());
+        }
+
+        log.debug("Retrieved " + propertyName + " property: " + retrievedProperty);
+        return retrievedProperty;
     }
 
 
@@ -2158,9 +2509,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     }
 
 
-
     /**
-     * Add the supplied property to an instance properties object.  If the instance property object
+     * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.
      *
      * @param sourceName name of caller
@@ -2173,17 +2524,82 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     public InstanceProperties addMapPropertyToInstance(String              sourceName,
                                                        InstanceProperties  properties,
                                                        String              propertyName,
-                                                       Map<String, Object> mapValues,
+                                                       Map<String, String> mapValues,
                                                        String              methodName)
     {
-        InstanceProperties  resultingProperties = null;
-
         if (mapValues != null)
         {
-        log.debug("Adding property " + propertyName + " for " + methodName);
+            log.debug("Adding property " + propertyName + " for " + methodName);
 
+            if ((mapValues != null) && (! mapValues.isEmpty()))
+            {
+                InstanceProperties  resultingProperties;
+
+                if (properties == null)
+                {
+                    resultingProperties = new InstanceProperties();
+                }
+                else
+                {
+                    resultingProperties = properties;
+                }
+
+
+                /*
+                 * The values of a map property are stored as an embedded InstanceProperties object.
+                 */
+                InstanceProperties  mapInstanceProperties  = this.addPropertyMapToInstance(sourceName,
+                                                                                           null,
+                                                                                           propertyName,
+                                                                                           mapValues,
+                                                                                           methodName);
+
+                /*
+                 * If there was content in the map then the resulting InstanceProperties are added as
+                 * a property to the resulting properties.
+                 */
+                if (mapInstanceProperties != null)
+                {
+                    MapPropertyValue mapPropertyValue = new MapPropertyValue();
+                    mapPropertyValue.setMapValues(mapInstanceProperties);
+                    resultingProperties.setProperty(propertyName, mapPropertyValue);
+
+                    log.debug("Returning instanceProperty: " + resultingProperties.toString());
+
+                    return resultingProperties;
+                }
+            }
+        }
+
+        log.debug("Null property");
+        return properties;
+    }
+
+
+    /**
+     * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
+     * as a separate property in instance properties.  If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    public InstanceProperties addPropertyMapToInstance(String              sourceName,
+                                                       InstanceProperties  properties,
+                                                       String              propertyName,
+                                                       Map<String, String> mapValues,
+                                                       String              methodName)
+    {
         if ((mapValues != null) && (! mapValues.isEmpty()))
         {
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            InstanceProperties  resultingProperties;
+
             if (properties == null)
             {
                 resultingProperties = new InstanceProperties();
@@ -2193,141 +2609,130 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 resultingProperties = properties;
             }
 
-            InstanceProperties  mapInstanceProperties  = new InstanceProperties();
-            int                 propertyCount = 0;
+            int propertyCount = 0;
 
-            for (String  mapPropertyName : mapValues.keySet())
+            for (String mapPropertyName : mapValues.keySet())
             {
-                Object   mapPropertyValue = mapValues.get(mapPropertyName);
+                Object mapPropertyValue = mapValues.get(mapPropertyName);
 
                 if (mapPropertyValue instanceof String)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                    propertyCount ++;
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Integer)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                    propertyCount ++;
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Long)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                    propertyCount ++;
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Short)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                    propertyCount ++;
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Date)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                    propertyCount ++;
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Character)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                    propertyCount ++;
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Byte)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                    propertyCount ++;
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Boolean)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                    propertyCount ++;
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Float)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                    propertyCount ++;
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
                 }
                 else if (mapPropertyValue instanceof BigDecimal)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL);
+                    primitivePropertyValue.setPrimitiveDefCategory(
+                            PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                    propertyCount ++;
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
                 }
                 else if (mapPropertyValue instanceof BigInteger)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-                    primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER);
+                    primitivePropertyValue.setPrimitiveDefCategory(
+                            PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                    propertyCount ++;
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
                 }
                 else if (mapPropertyValue instanceof Double)
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                    propertyCount ++;
-                }
-                else if (mapPropertyValue instanceof Map)
-                {
-                    MapPropertyValue mapProperty = new MapPropertyValue();
-                    mapProperty.setMapValues(this.addMapPropertyToInstance(sourceName, null, mapPropertyName, (Map)mapPropertyValue, methodName));
-                    mapInstanceProperties.setProperty(mapPropertyName, mapProperty);
-                    propertyCount ++;
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
                 }
                 else
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
-                    mapInstanceProperties.setProperty(mapPropertyName, primitivePropertyValue);
-                    propertyCount ++;
+                    resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
+                    propertyCount++;
                 }
             }
 
             if (propertyCount > 0)
             {
-                MapPropertyValue mapPropertyValue = new MapPropertyValue();
-                mapPropertyValue.setMapValues(mapInstanceProperties);
-                resultingProperties.setProperty(propertyName, mapPropertyValue);
+                log.debug("Returning instanceProperty: " + resultingProperties.toString());
+
+                return resultingProperties;
             }
         }
 
-        return resultingProperties;
-        }
-        else
-        {
-            log.debug("Null property");
-            return properties;
-        }
+        log.debug("Null property");
+        return properties;
     }
 
 
@@ -2369,14 +2774,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      *
      * @param relationship relationship to parse
      * @return String unique identifier
-     * @throws RepositoryErrorException
-     * @throws InvalidParameterException
      */
-    public String  getEnd1EntityGUID(Relationship   relationship) throws RepositoryErrorException,
-                                                                         InvalidParameterException
+    public String  getEnd1EntityGUID(Relationship   relationship)
     {
-        final String methodName = "getEnd1EntityGUID";
-
         if (relationship != null)
         {
             EntityProxy entityProxy = relationship.getEntityOneProxy();
@@ -2388,11 +2788,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                     return entityProxy.getGUID();
                 }
             }
-
-            throwRepositoryContentError(methodName, relationship);
         }
 
-        throwParameterError(methodName);
         return null;
     }
 
@@ -2402,14 +2799,9 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      *
      * @param relationship relationship to parse
      * @return String unique identifier
-     * @throws RepositoryErrorException
-     * @throws InvalidParameterException
      */
-    public String  getEnd2EntityGUID(Relationship   relationship) throws RepositoryErrorException,
-                                                                         InvalidParameterException
+    public String  getEnd2EntityGUID(Relationship   relationship)
     {
-        final String methodName = "getEnd2EntityGUID";
-
         if (relationship != null)
         {
             EntityProxy entityProxy = relationship.getEntityTwoProxy();
@@ -2421,11 +2813,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                     return entityProxy.getGUID();
                 }
             }
-
-            throwRepositoryContentError(methodName, relationship);
         }
 
-        throwParameterError(methodName);
         return null;
     }
 

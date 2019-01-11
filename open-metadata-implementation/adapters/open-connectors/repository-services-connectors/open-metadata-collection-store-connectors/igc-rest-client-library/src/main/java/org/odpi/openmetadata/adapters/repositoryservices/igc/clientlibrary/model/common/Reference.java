@@ -384,7 +384,7 @@ public class Reference extends ObjectPrinter {
             IGCSearchConditionSet idOnlySet = new IGCSearchConditionSet(idOnly);
             IGCSearch igcSearch = new IGCSearch(this.getType(), idOnlySet);
             if (bHasModificationDetails) {
-                igcSearch.addProperties(IGCRestConstants.getInstance().MODIFICATION_DETAILS());
+                igcSearch.addProperties(IGCRestConstants.getModificationProperties());
             }
             igcSearch.setPageSize(2);
             ReferenceList assetsWithCtx = igcrest.search(igcSearch);

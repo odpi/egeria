@@ -4,7 +4,7 @@
 # Discovery Annotations
 
 A discovery annotation describes one or more related properties about an
-[Asset](../../../../open-metadata-publication/website/assets) that has been
+[Asset](../../../../open-metadata-implementation/access-services/docs/concepts/assetss) that has been
 discovered by a [discovery service](discovery-service.md).
 
 Some discovery annotations refer to an entire asset and others refer to a data field within

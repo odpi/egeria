@@ -52,6 +52,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
      * These variables describe the local server's properties.
      */
     private String     localMetadataCollectionId       = null;
+    private String     localMetadataCollectionName     = null;
     private Connection localRepositoryRemoteConnection = null;
     private String     localServerName                 = null;
     private String     localServerType                 = null;
@@ -184,6 +185,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
      * @param cohortName the name of the cohort that this cohort registry is communicating with.
      * @param localMetadataCollectionId configured value for the local metadata collection id may be null
      *                                  if no local repository.
+     * @param localMetadataCollectionName display name for the local metadata collection
      * @param localRepositoryRemoteConnection the connection properties for a connector that can call this
      *                                        server from a remote server.
      * @param localServerName the name of the local server. It is a descriptive name for informational purposes.
@@ -199,6 +201,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
      */
     public void initialize(String                     cohortName,
                            String                     localMetadataCollectionId,
+                           String                     localMetadataCollectionName,
                            Connection                 localRepositoryRemoteConnection,
                            String                     localServerName,
                            String                     localServerType,
@@ -243,6 +246,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
          */
         this.validateLocalMetadataCollectionId(localMetadataCollectionId);
         this.localMetadataCollectionId = localMetadataCollectionId;
+        this.localMetadataCollectionName = localMetadataCollectionName;
 
         /*
          * Save the connection consumer.  This component needs details of the current connections it should use
@@ -273,7 +277,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
             /*
              * Throw exception as the cohort registry store is not available.
              */
-            String methodName = "connectToCohort()";
+            String methodName = "connectToCohort";
 
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_REGISTRY_STORE;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
@@ -305,6 +309,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
          * can change except the localMetadataCollectionId and this value has already been validated.
          */
         localRegistration.setMetadataCollectionId(localMetadataCollectionId);
+        localRegistration.setMetadataCollectionName(localMetadataCollectionName);
         localRegistration.setServerName(localServerName);
         localRegistration.setServerType(localServerType);
         localRegistration.setOrganizationName(localOrganizationName);
@@ -372,6 +377,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
                     if (remoteMember != null)
                     {
                         this.registerRemoteConnectionWithConsumer(remoteMember.getMetadataCollectionId(),
+                                                                  remoteMember.getMetadataCollectionName(),
                                                                   remoteMember.getServerName(),
                                                                   remoteMember.getServerType(),
                                                                   remoteMember.getOrganizationName(),
@@ -460,6 +466,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
 
         return outboundRegistryEventProcessor.processRegistrationEvent(cohortName,
                                                                        localRegistration.getMetadataCollectionId(),
+                                                                       localRegistration.getMetadataCollectionName(),
                                                                        localRegistration.getServerName(),
                                                                        localRegistration.getServerType(),
                                                                        localRegistration.getOrganizationName(),
@@ -517,6 +524,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
 
         outboundRegistryEventProcessor.processUnRegistrationEvent(cohortName,
                                                                   localRegistration.getMetadataCollectionId(),
+                                                                  localRegistration.getMetadataCollectionName(),
                                                                   localRegistration.getServerName(),
                                                                   localRegistration.getServerType(),
                                                                   localRegistration.getOrganizationName());
@@ -527,13 +535,15 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
      * Register a new remote connection with the OMRSConnectionConsumer.  If there is a problem with the
      * remote connection, a bad connection registry event is sent to the remote repository.
      *
-     * @param remoteMetadataCollectionId id of the remote repository
+     * @param remoteMetadataCollectionId id of the remote repository's metadata collection
+     * @param remoteMetadataCollectionName display name of the remote repository's metadata collection
      * @param remoteServerName name of the remote server.
      * @param remoteServerType type of the remote server.
      * @param owningOrganizationName name of the organization the owns the remote server.
      * @param remoteRepositoryConnection connection used to create a connector to call the remote repository.
      */
     private void registerRemoteConnectionWithConsumer(String      remoteMetadataCollectionId,
+                                                      String      remoteMetadataCollectionName,
                                                       String      remoteServerName,
                                                       String      remoteServerType,
                                                       String      owningOrganizationName,
@@ -554,6 +564,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
                                                        remoteServerType,
                                                        owningOrganizationName,
                                                        remoteMetadataCollectionId,
+                                                       remoteMetadataCollectionName,
                                                        remoteRepositoryConnection);
             }
             catch (OCFCheckedExceptionBase error)
@@ -573,6 +584,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
                 {
                     outboundRegistryEventProcessor.processBadConnectionEvent(cohortName,
                                                                              localMetadataCollectionId,
+                                                                             localMetadataCollectionName,
                                                                              localServerName,
                                                                              localServerType,
                                                                              localOrganizationName,
@@ -599,6 +611,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
                 {
                     outboundRegistryEventProcessor.processBadConnectionEvent(cohortName,
                                                                              localMetadataCollectionId,
+                                                                             localMetadataCollectionName,
                                                                              localServerName,
                                                                              localServerType,
                                                                              localOrganizationName,
@@ -636,6 +649,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
      * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
      * @param originatorMetadataCollectionId unique identifier for the metadata collection that is registering with the cohort.
+     * @param originatorMetadataCollectionName display for the metadata collection that is registering with the cohort.
      * @param originatorServerName name of the server that the event came from.
      * @param originatorServerType type of server that the event came from.
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
@@ -644,6 +658,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
      */
     public boolean processRegistrationEvent(String                    sourceName,
                                             String                    originatorMetadataCollectionId,
+                                            String                    originatorMetadataCollectionName,
                                             String                    originatorServerName,
                                             String                    originatorServerType,
                                             String                    originatorOrganizationName,
@@ -660,6 +675,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
             MemberRegistration remoteRegistration = new MemberRegistration();
 
             remoteRegistration.setMetadataCollectionId(originatorMetadataCollectionId);
+            remoteRegistration.setMetadataCollectionName(originatorMetadataCollectionName);
             remoteRegistration.setServerName(originatorServerName);
             remoteRegistration.setServerType(originatorServerType);
             remoteRegistration.setOrganizationName(originatorOrganizationName);
@@ -674,6 +690,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
                  * Pass the new remote connection to the connection consumer.
                  */
                 this.registerRemoteConnectionWithConsumer(originatorMetadataCollectionId,
+                                                          originatorMetadataCollectionName,
                                                           originatorServerName,
                                                           originatorServerType,
                                                           originatorOrganizationName,
@@ -735,6 +752,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
 
                 return outboundRegistryEventProcessor.processReRegistrationEvent(cohortName,
                                                                                  localRegistration.getMetadataCollectionId(),
+                                                                                 localRegistration.getMetadataCollectionName(),
                                                                                  localRegistration.getServerName(),
                                                                                  localRegistration.getServerType(),
                                                                                  localRegistration.getOrganizationName(),
@@ -769,6 +787,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
      * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
      * @param originatorMetadataCollectionId unique identifier for the metadata collection that is registering with the cohort.
+     * @param originatorMetadataCollectionName display name for the metadata collection that is registering with the cohort.
      * @param originatorServerName name of the server that the event came from.
      * @param originatorServerType type of server that the event came from.
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
@@ -777,6 +796,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
      */
     public boolean processReRegistrationEvent(String                    sourceName,
                                               String                    originatorMetadataCollectionId,
+                                              String                    originatorMetadataCollectionName,
                                               String                    originatorServerName,
                                               String                    originatorServerType,
                                               String                    originatorOrganizationName,
@@ -794,6 +814,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
             MemberRegistration remoteRegistration = new MemberRegistration();
 
             remoteRegistration.setMetadataCollectionId(originatorMetadataCollectionId);
+            remoteRegistration.setMetadataCollectionName(originatorMetadataCollectionName);
             remoteRegistration.setServerName(originatorServerName);
             remoteRegistration.setServerType(originatorServerType);
             remoteRegistration.setOrganizationName(originatorOrganizationName);
@@ -809,6 +830,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
                  * the last registration request was received.
                  */
                 this.registerRemoteConnectionWithConsumer(originatorMetadataCollectionId,
+                                                          originatorMetadataCollectionName,
                                                           originatorServerName,
                                                           originatorServerType,
                                                           originatorOrganizationName,
@@ -851,17 +873,19 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
      * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
      * @param originatorMetadataCollectionId metadata collectionId of originator.
+     * @param originatorMetadataCollectionId display name of metadata collection of originator.
      * @param originatorServerName name of the server that the event came from.
      * @param originatorServerType type of server that the event came from.
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
      */
     public boolean processUnRegistrationEvent(String                    sourceName,
                                               String                    originatorMetadataCollectionId,
+                                              String                    originatorMetadataCollectionName,
                                               String                    originatorServerName,
                                               String                    originatorServerType,
                                               String                    originatorOrganizationName)
     {
-        final String    actionDescription = "Receiving Unregistration event";
+        final String    actionDescription = "Receiving unregistration event";
 
         if (registryStore != null)
         {
@@ -914,6 +938,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
      * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
      * @param originatorMetadataCollectionId metadata collectionId of originator.
+     * @param originatorMetadataCollectionName display name of  metadata collection of originator.
      * @param originatorServerName name of the server that the event came from.
      * @param originatorServerType type of server that the event came from.
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
@@ -922,6 +947,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
      */
     public void    processConflictingCollectionIdEvent(String  sourceName,
                                                        String  originatorMetadataCollectionId,
+                                                       String  originatorMetadataCollectionName,
                                                        String  originatorServerName,
                                                        String  originatorServerType,
                                                        String  originatorOrganizationName,
@@ -968,6 +994,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
      * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
      * @param originatorMetadataCollectionId metadata collectionId of originator.
+     * @param originatorMetadataCollectionName display name of metadata collection of originator.
      * @param originatorServerName name of the server that the event came from.
      * @param originatorServerType type of server that the event came from.
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
@@ -977,6 +1004,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
      */
     public void    processBadConnectionEvent(String     sourceName,
                                              String     originatorMetadataCollectionId,
+                                             String     originatorMetadataCollectionName,
                                              String     originatorServerName,
                                              String     originatorServerType,
                                              String     originatorOrganizationName,
@@ -1019,6 +1047,7 @@ public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
         return "OMRSCohortRegistry{" +
                 "cohortName='" + cohortName + '\'' +
                 ", localMetadataCollectionId='" + localMetadataCollectionId + '\'' +
+                ", localMetadataCollectionName='" + localMetadataCollectionName + '\'' +
                 ", localRepositoryRemoteConnection=" + localRepositoryRemoteConnection +
                 ", localServerName='" + localServerName + '\'' +
                 ", localServerType='" + localServerType + '\'' +
