@@ -5,7 +5,7 @@
 
 The purpose of a [connector](../../../open-metadata-implementation/frameworks/open-connector-framework/docs/connector.md)
 is to access the content and related properties (metadata) about an
-[Asset](../assets/README.md) owned or used by an organization.
+[Asset](../../../open-metadata-implementation/access-services/docs/concepts/assets/README.md) owned or used by an organization.
 
 In order for the connector to provide details of the know properties of an Asset, the open metadata
 types support a relationship between a [Connection](../../../open-metadata-implementation/frameworks/open-connector-framework/docs/connection.md) and

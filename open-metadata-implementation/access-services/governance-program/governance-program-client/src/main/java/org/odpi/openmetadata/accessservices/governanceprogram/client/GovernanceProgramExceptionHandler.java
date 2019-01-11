@@ -18,7 +18,7 @@ import java.util.Map;
  * of the server that is running the Open Metadata Access Services.  This server is responsible for locating and
  * managing the governance program definitions exchanged with this client.
  */
-public class GovernanceProgramExceptionHandler
+class GovernanceProgramExceptionHandler
 {
     private String            omasServerURL;  /* Initialized in constructor */
 

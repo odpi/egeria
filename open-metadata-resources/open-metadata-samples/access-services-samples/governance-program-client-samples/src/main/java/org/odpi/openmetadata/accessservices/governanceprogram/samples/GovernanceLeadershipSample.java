@@ -194,8 +194,8 @@ public class GovernanceLeadershipSample
 
         System.out.println("Creating profiles for Jules and Ivor");
 
-        Map<String, Object>  julesAdditionalProperties = new HashMap<>();
-        julesAdditionalProperties.put(workLocationPropertyName, 2);
+        Map<String, String>  julesAdditionalProperties = new HashMap<>();
+        julesAdditionalProperties.put(workLocationPropertyName, "2");
         julesAdditionalProperties.put(contactTypePropertyName, "Employee");
 
         String julesKeeperProfileGUID = client.createPersonalProfile(clientUserId,
@@ -210,8 +210,8 @@ public class GovernanceLeadershipSample
         this.printPersonalProfile(client, clientUserId, julesKeeperProfileGUID);
 
 
-        Map<String, Object>  ivorAdditionalProperties = new HashMap<>();
-        ivorAdditionalProperties.put(workLocationPropertyName, 1);
+        Map<String, String>  ivorAdditionalProperties = new HashMap<>();
+        ivorAdditionalProperties.put(workLocationPropertyName, "1");
         ivorAdditionalProperties.put(contactTypePropertyName, "Employee");
 
         String ivorPadlockProfileGUID  = client.createPersonalProfile(clientUserId,
@@ -288,8 +288,8 @@ public class GovernanceLeadershipSample
 
         System.out.println("Changing CPO to Faith");
 
-        Map<String, Object>  faithAdditionalProperties = new HashMap<>();
-        faithAdditionalProperties.put(workLocationPropertyName, 1);
+        Map<String, String>  faithAdditionalProperties = new HashMap<>();
+        faithAdditionalProperties.put(workLocationPropertyName, "1");
         faithAdditionalProperties.put(contactTypePropertyName, "Employee");
 
         String faithBrokerProfileGUID  = client.createPersonalProfile(clientUserId,
@@ -382,8 +382,8 @@ public class GovernanceLeadershipSample
          */
         System.out.println("Creating profile for Erin");
 
-        Map<String, Object>  erinAdditionalProperties = new HashMap<>();
-        erinAdditionalProperties.put(workLocationPropertyName, 2);
+        Map<String, String>  erinAdditionalProperties = new HashMap<>();
+        erinAdditionalProperties.put(workLocationPropertyName, "2");
         erinAdditionalProperties.put(contactTypePropertyName, "Employee");
         String erinOverviewProfileGUID  = client.createPersonalProfile(clientUserId,
                                                                        erinOverviewUserId,
@@ -421,8 +421,8 @@ public class GovernanceLeadershipSample
          */
         System.out.println("Creating profile for Gary");
 
-        Map<String, Object>  garyAdditionalProperties = new HashMap<>();
-        garyAdditionalProperties.put(workLocationPropertyName, 1);
+        Map<String, String>  garyAdditionalProperties = new HashMap<>();
+        garyAdditionalProperties.put(workLocationPropertyName, "1");
         garyAdditionalProperties.put(contactTypePropertyName, "Employee");
         String garyGeekeProfileGUID  = client.createPersonalProfile(clientUserId,
                                                                     garyGeekeUserId,
@@ -459,8 +459,8 @@ public class GovernanceLeadershipSample
          */
         System.out.println("Creating profile for Gary");
 
-        Map<String, Object>  pollyAdditionalProperties = new HashMap<>();
-        pollyAdditionalProperties.put(workLocationPropertyName, 1);
+        Map<String, String>  pollyAdditionalProperties = new HashMap<>();
+        pollyAdditionalProperties.put(workLocationPropertyName, "1");
         pollyAdditionalProperties.put(contactTypePropertyName, "Employee");
         String pollyTaskerProfileGUID  = client.createPersonalProfile(clientUserId,
                                                                       pollyTaskerUserId,
@@ -497,8 +497,8 @@ public class GovernanceLeadershipSample
          */
         System.out.println("Creating profile for Reggie");
 
-        Map<String, Object>  reggieAdditionalProperties = new HashMap<>();
-        reggieAdditionalProperties.put(workLocationPropertyName, 1);
+        Map<String, String>  reggieAdditionalProperties = new HashMap<>();
+        reggieAdditionalProperties.put(workLocationPropertyName, "1");
         reggieAdditionalProperties.put(contactTypePropertyName, "Employee");
         String reggieMintProfileGUID  = client.createPersonalProfile(clientUserId,
                                                                      reggieMintUserId,

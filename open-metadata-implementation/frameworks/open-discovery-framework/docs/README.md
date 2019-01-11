@@ -5,7 +5,7 @@
 
 The open discovery framework (ODF) provides components and interfaces for building
 discovery services.   Discovery services provide analysis of supplied
-[Assets](../../../../open-metadata-publication/website/assets) on request.
+[Assets](../../../../open-metadata-implementation/access-services/docs/concepts/assets) on request.
 The result is one or more sets of related properties that the discovery service has
 discovered about the Asset, its structure and/or content.
 

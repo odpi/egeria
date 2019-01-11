@@ -145,6 +145,33 @@ class OMAGServerErrorHandler
 
 
     /**
+     * Validate that the metadata collection name is not null.
+     *
+     * @param name  name passed on the request
+     * @param serverName  server name for this server
+     * @param methodName  method called
+     * @throws OMAGInvalidParameterException the cohort name is null
+     */
+    void validateMetadataCollectionName(String  name,
+                                        String  serverName,
+                                        String  methodName) throws OMAGInvalidParameterException
+    {
+        if (name == null)
+        {
+            OMAGErrorCode errorCode    = OMAGErrorCode.NULL_METADATA_COLLECTION_NAME;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
      * Set the exception information into the response.
      *
      * @param response  REST Response
