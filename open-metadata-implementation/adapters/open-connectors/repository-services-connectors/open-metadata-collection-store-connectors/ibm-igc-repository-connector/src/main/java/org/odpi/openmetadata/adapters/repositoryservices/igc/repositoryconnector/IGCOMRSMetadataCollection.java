@@ -83,6 +83,129 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     }
 
     /**
+     * Returns the list of different types of metadata organized into two groups.  The first are the
+     * attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
+     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+     * and classifications.
+     *
+     * (Currently only full type definitions (TypeDefs) are implemented.)
+     *
+     * @param userId unique identifier for requesting user.
+     * @return TypeDefGalleryResponse List of different categories of type definitions.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public TypeDefGallery getAllTypes(String   userId) throws RepositoryErrorException,
+            UserNotAuthorizedException
+    {
+        final String                       methodName = "getAllTypes";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+
+        /*
+         * Perform operation
+         */
+        TypeDefGallery typeDefGallery = new TypeDefGallery();
+        ArrayList<TypeDef> typeDefs = new ArrayList<>();
+        for (ImplementedMapping implementedMapping : implementedMappings) {
+            typeDefs.add(implementedMapping.getTypeDef());
+        }
+        typeDefGallery.setTypeDefs(typeDefs);
+
+        ArrayList<AttributeTypeDef> attributeTypeDefs = new ArrayList<>();
+        for (ImplementedAttribute implementedAttribute : implementedAttributes) {
+            attributeTypeDefs.add(implementedAttribute.getAttributeTypeDef());
+        }
+        typeDefGallery.setAttributeTypeDefs(attributeTypeDefs);
+
+        return typeDefGallery;
+    }
+
+    /**
+     * Returns all of the TypeDefs for a specific category.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param category enum value for the category of TypeDef to return.
+     * @return TypeDefs list.
+     * @throws InvalidParameterException the TypeDefCategory is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<TypeDef> findTypeDefsByCategory(String          userId,
+                                                TypeDefCategory category) throws InvalidParameterException,
+            RepositoryErrorException,
+            UserNotAuthorizedException {
+        final String methodName            = "findTypeDefsByCategory";
+        final String categoryParameterName = "category";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeDefCategory(repositoryName, categoryParameterName, category, methodName);
+
+        ArrayList<TypeDef> typeDefs = new ArrayList<>();
+        for (ImplementedMapping implementedMapping : implementedMappings) {
+            TypeDef candidate = implementedMapping.getTypeDef();
+            if (candidate.getCategory().equals(category)) {
+                typeDefs.add(candidate);
+            }
+        }
+        return typeDefs;
+
+    }
+
+
+    /**
+     * Returns all of the AttributeTypeDefs for a specific category.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param category enum value for the category of an AttributeTypeDef to return.
+     * @return TypeDefs list.
+     * @throws InvalidParameterException the TypeDefCategory is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<AttributeTypeDef> findAttributeTypeDefsByCategory(String                   userId,
+                                                                  AttributeTypeDefCategory category) throws InvalidParameterException,
+            RepositoryErrorException,
+            UserNotAuthorizedException {
+        final String methodName            = "findAttributeTypeDefsByCategory";
+        final String categoryParameterName = "category";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateAttributeTypeDefCategory(repositoryName, categoryParameterName, category, methodName);
+
+        ArrayList<AttributeTypeDef> attributeTypeDefs = new ArrayList<>();
+        for (ImplementedAttribute implementedAttribute : implementedAttributes) {
+            AttributeTypeDef candidate = implementedAttribute.getAttributeTypeDef();
+            if (candidate.getCategory().equals(category)) {
+                attributeTypeDefs.add(candidate);
+            }
+        }
+        return attributeTypeDefs;
+
+    }
+
+    /**
      * Create a definition of a new TypeDef.
      *
      * @param userId unique identifier for requesting user.
@@ -97,6 +220,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @throws FunctionNotSupportedException the repository does not support this call.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public void addTypeDef(String       userId,
                            TypeDef      newTypeDef) throws InvalidParameterException,
             RepositoryErrorException,
@@ -173,6 +297,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @throws FunctionNotSupportedException the repository does not support this call.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public  void addAttributeTypeDef(String             userId,
                                      AttributeTypeDef   newAttributeTypeDef) throws InvalidParameterException,
             RepositoryErrorException,
@@ -225,23 +350,25 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     }
 
     /**
-     * Returns the list of different types of metadata organized into two groups.  The first are the
-     * attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
-     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
-     * and classifications.
-     *
-     * (Currently only full type definitions (TypeDefs) are implemented.)
+     * Return the TypeDef identified by the GUID.
      *
      * @param userId unique identifier for requesting user.
-     * @return TypeDefGalleryResponse List of different categories of type definitions.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @param guid String unique id of the TypeDef.
+     * @return TypeDef structure describing its category and properties.
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotKnownException The requested TypeDef is not known in the metadata collection.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public TypeDefGallery getAllTypes(String   userId) throws RepositoryErrorException,
-            UserNotAuthorizedException
-    {
-        final String                       methodName = "getAllTypes";
+    public TypeDef getTypeDefByGUID(String    userId,
+                                    String    guid) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            UserNotAuthorizedException {
+        final String methodName        = "getTypeDefByGUID";
+        final String guidParameterName = "guid";
 
         /*
          * Validate parameters
@@ -250,18 +377,89 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         parentConnector.validateRepositoryIsActive(methodName);
 
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+
+        TypeDef found = null;
+        for (ImplementedMapping implementedMapping : implementedMappings) {
+            String typeDefGUID = implementedMapping.getTypeDef().getGUID();
+            if (typeDefGUID.equals(guid)) {
+                found = implementedMapping.getTypeDef();
+                break;
+            }
+        }
+        if (found == null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    guid,
+                    guidParameterName,
+                    methodName,
+                    repositoryName);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        return found;
+
+    }
+
+
+    /**
+     * Return the AttributeTypeDef identified by the GUID.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique id of the TypeDef
+     * @return TypeDef structure describing its category and properties.
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotKnownException The requested TypeDef is not known in the metadata collection.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  AttributeTypeDef getAttributeTypeDefByGUID(String    userId,
+                                                       String    guid) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            UserNotAuthorizedException {
+        final String methodName        = "getAttributeTypeDefByGUID";
+        final String guidParameterName = "guid";
 
         /*
-         * Perform operation
+         * Validate parameters
          */
-        TypeDefGallery typeDefGallery = new TypeDefGallery();
-        ArrayList<TypeDef> typeDefs = new ArrayList<>();
-        for (ImplementedMapping implementedMapping : implementedMappings) {
-            typeDefs.add(implementedMapping.getTypeDef());
-        }
-        typeDefGallery.setTypeDefs(typeDefs);
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
 
-        return typeDefGallery;
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+
+        AttributeTypeDef found = null;
+        for (ImplementedAttribute implementedAttribute : implementedAttributes) {
+            String attributeTypeDefGUID = implementedAttribute.getAttributeTypeDef().getGUID();
+            if (attributeTypeDefGUID.equals(guid)) {
+                found = implementedAttribute.getAttributeTypeDef();
+                break;
+            }
+        }
+        if (found == null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.ATTRIBUTE_TYPEDEF_ID_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    "unknown",
+                    guid,
+                    methodName,
+                    repositoryName);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        return found;
+
     }
 
     /**
@@ -298,19 +496,18 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Perform operation
          */
-        TypeDef typeDef = null;
+        TypeDef found = null;
         for (ImplementedMapping implementedMapping : implementedMappings) {
-            if (implementedMapping.getTypeDef().getName().equals(name)) {
-                typeDef = implementedMapping.getTypeDef();
+            TypeDef candidate = implementedMapping.getTypeDef();
+            if (candidate.getName().equals(name)) {
+                found = candidate;
                 break;
             }
         }
-        if (typeDef == null) {
-            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
+        if (found == null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NAME_NOT_KNOWN;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
                     name,
-                    "unknown",
-                    nameParameterName,
                     methodName,
                     repositoryName);
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
@@ -320,8 +517,62 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         }
-        return typeDef;
+        return found;
 
+    }
+
+    /**
+     * Return the AttributeTypeDef identified by the unique name.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param name String name of the TypeDef.
+     * @return TypeDef structure describing its category and properties.
+     * @throws InvalidParameterException the name is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  AttributeTypeDef getAttributeTypeDefByName(String    userId,
+                                                       String    name) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            UserNotAuthorizedException {
+        final String  methodName = "getAttributeTypeDefByName";
+        final String  nameParameterName = "name";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeName(repositoryName, nameParameterName, name, methodName);
+
+        AttributeTypeDef found = null;
+        for (ImplementedAttribute implementedAttribute : implementedAttributes) {
+            AttributeTypeDef candidate = implementedAttribute.getAttributeTypeDef();
+            if (candidate.getName().equals(name)) {
+                found = candidate;
+                break;
+            }
+        }
+        if (found == null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.ATTRIBUTE_TYPEDEF_NAME_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    name,
+                    methodName,
+                    repositoryName);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        return found;
     }
 
     /**
@@ -376,6 +627,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public  boolean verifyAttributeTypeDef(String            userId,
                                            AttributeTypeDef  attributeTypeDef) throws InvalidParameterException,
             RepositoryErrorException,
