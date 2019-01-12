@@ -1,4 +1,7 @@
-#ldapdelete -W -D "cn=Manager,dc=ing-atlas,dc=com" "uid=Polly_Tasker,cn=IT Project Leader,ou=data-lake,dc=ing-atlas,dc=com"
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+#
+# #ldapdelete -W -D "cn=Manager,dc=ing-atlas,dc=com" "uid=Polly_Tasker,cn=IT Project Leader,ou=data-lake,dc=ing-atlas,dc=com"
 #ldapdelete -W -D "cn=Manager,dc=ing-atlas,dc=com" "uid=Zach_Now,cn=Founder,ou=data-lake,dc=ing-atlas,dc=com"
 
 #ldapadd -x -W -D "cn=Manager,dc=ing-atlas,dc=com" -f add_user_without_cn.ldif
