@@ -10,6 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -55,10 +56,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class OMAGServerConfig implements Serializable
+public class OMAGServerConfig extends AdminServicesConfigHeader
 {
-    private static final long serialVersionUID = 1L;
-
     /*
      * Default values used when the server configuration does not provide a value.
      */
@@ -72,16 +71,19 @@ public class OMAGServerConfig implements Serializable
     /*
      * Values in use by this server.
      */
-    private String                    localServerId            = UUID.randomUUID().toString();
-    private String                    localServerName          = null;
-    private String                    localServerType          = defaultLocalServerType;
-    private String                    organizationName         = defaultLocalOrganizationName;
-    private String                    localServerURL           = defaultLocalServerURL;
-    private String                    localServerUserId        = defaultLocalServerUserId;
-    private int                       maxPageSize              = defaultMaxPageSize;
-    private EventBusConfig            eventBusConfig           = null;
-    private List<AccessServiceConfig> accessServicesConfig     = null;
-    private RepositoryServicesConfig  repositoryServicesConfig = null;
+    private String                    localServerId             = UUID.randomUUID().toString();
+    private String                    localServerName           = null;
+    private String                    localServerType           = defaultLocalServerType;
+    private String                    organizationName          = defaultLocalOrganizationName;
+    private String                    localServerURL            = defaultLocalServerURL;
+    private String                    localServerUserId         = defaultLocalServerUserId;
+    private int                       maxPageSize               = defaultMaxPageSize;
+    private EventBusConfig            eventBusConfig            = null;
+    private List<AccessServiceConfig> accessServicesConfig      = null;
+    private RepositoryServicesConfig  repositoryServicesConfig  = null;
+    private DiscoveryEngineConfig     discoveryEngineConfig     = null;
+    private StewardshipServicesConfig stewardshipServicesConfig = null;
+    private SecuritySyncConfig        securitySyncConfig        = null;
 
 
     /**
@@ -91,7 +93,7 @@ public class OMAGServerConfig implements Serializable
      */
     public OMAGServerConfig()
     {
-
+        super();
     }
 
 
@@ -100,16 +102,24 @@ public class OMAGServerConfig implements Serializable
      */
     public OMAGServerConfig(OMAGServerConfig  template)
     {
-        localServerId = template.getLocalServerId();
-        localServerName = template.getLocalServerName();
-        localServerType = template.getLocalServerType();
-        organizationName = template.getOrganizationName();
-        localServerURL = template.getLocalServerURL();
-        localServerUserId = template.getLocalServerUserId();
-        maxPageSize = template.getMaxPageSize();
-        eventBusConfig = template.getEventBusConfig();
-        accessServicesConfig = template.getAccessServicesConfig();
-        repositoryServicesConfig = template.getRepositoryServicesConfig();
+        super(template);
+
+        if (template != null)
+        {
+            localServerId = template.getLocalServerId();
+            localServerName = template.getLocalServerName();
+            localServerType = template.getLocalServerType();
+            organizationName = template.getOrganizationName();
+            localServerURL = template.getLocalServerURL();
+            localServerUserId = template.getLocalServerUserId();
+            maxPageSize = template.getMaxPageSize();
+            eventBusConfig = template.getEventBusConfig();
+            accessServicesConfig = template.getAccessServicesConfig();
+            repositoryServicesConfig = template.getRepositoryServicesConfig();
+            discoveryEngineConfig = template.getDiscoveryEngineConfig();
+            stewardshipServicesConfig = template.getStewardshipServicesConfig();
+            securitySyncConfig = template.getSecuritySyncConfig();
+        }
     }
 
 
@@ -331,5 +341,146 @@ public class OMAGServerConfig implements Serializable
     public void setRepositoryServicesConfig(RepositoryServicesConfig repositoryServicesConfig)
     {
         this.repositoryServicesConfig = repositoryServicesConfig;
+    }
+
+
+    /**
+     * Return the configuration for a discovery engine.
+     *
+     * @return DiscoveryEngineConfig properties
+     */
+    public DiscoveryEngineConfig getDiscoveryEngineConfig()
+    {
+        return discoveryEngineConfig;
+    }
+
+
+    /**
+     * Set up the configuration for a discovery engine.
+     *
+     * @param discoveryEngineConfig DiscoveryEngineConfig properties
+     */
+    public void setDiscoveryEngineConfig(DiscoveryEngineConfig discoveryEngineConfig)
+    {
+        this.discoveryEngineConfig = discoveryEngineConfig;
+    }
+
+
+    /**
+     * Return the configuration for the stewardship services in a server.
+     *
+     * @return StewardshipServicesConfig properties
+     */
+    public StewardshipServicesConfig getStewardshipServicesConfig()
+    {
+        return stewardshipServicesConfig;
+    }
+
+
+    /**
+     * Set up the configuration for the stewardship services in a server.
+     *
+     * @param stewardshipServicesConfig StewardshipServicesConfig properties
+     */
+    public void setStewardshipServicesConfig(StewardshipServicesConfig stewardshipServicesConfig)
+    {
+        this.stewardshipServicesConfig = stewardshipServicesConfig;
+    }
+
+
+    /**
+     * Return the configuration for the security synchronization services.
+     *
+     * @return SecuritySyncConfig properties
+     */
+    public SecuritySyncConfig getSecuritySyncConfig()
+    {
+        return securitySyncConfig;
+    }
+
+
+    /**
+     * Set up the configuration for the security synchronization services.
+     *
+     * @param securitySyncConfig SecuritySyncConfig properties
+     */
+    public void setSecuritySyncConfig(SecuritySyncConfig securitySyncConfig)
+    {
+        this.securitySyncConfig = securitySyncConfig;
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+    @Override
+    public String toString()
+    {
+        return "OMAGServerConfig{" +
+                "localServerId='" + localServerId + '\'' +
+                ", localServerName='" + localServerName + '\'' +
+                ", localServerType='" + localServerType + '\'' +
+                ", organizationName='" + organizationName + '\'' +
+                ", localServerURL='" + localServerURL + '\'' +
+                ", localServerUserId='" + localServerUserId + '\'' +
+                ", maxPageSize=" + maxPageSize +
+                ", eventBusConfig=" + eventBusConfig +
+                ", accessServicesConfig=" + accessServicesConfig +
+                ", repositoryServicesConfig=" + repositoryServicesConfig +
+                ", discoveryEngineConfig=" + discoveryEngineConfig +
+                ", stewardshipServicesConfig=" + stewardshipServicesConfig +
+                ", securitySyncConfig=" + securitySyncConfig +
+                '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        OMAGServerConfig that = (OMAGServerConfig) objectToCompare;
+        return getMaxPageSize() == that.getMaxPageSize() &&
+                Objects.equals(getLocalServerId(), that.getLocalServerId()) &&
+                Objects.equals(getLocalServerName(), that.getLocalServerName()) &&
+                Objects.equals(getLocalServerType(), that.getLocalServerType()) &&
+                Objects.equals(getOrganizationName(), that.getOrganizationName()) &&
+                Objects.equals(getLocalServerURL(), that.getLocalServerURL()) &&
+                Objects.equals(getLocalServerUserId(), that.getLocalServerUserId()) &&
+                Objects.equals(getEventBusConfig(), that.getEventBusConfig()) &&
+                Objects.equals(getAccessServicesConfig(), that.getAccessServicesConfig()) &&
+                Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
+                Objects.equals(getDiscoveryEngineConfig(), that.getDiscoveryEngineConfig()) &&
+                Objects.equals(getStewardshipServicesConfig(), that.getStewardshipServicesConfig()) &&
+                Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig());
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getLocalServerId(), getLocalServerName(), getLocalServerType(), getOrganizationName(),
+                            getLocalServerURL(), getLocalServerUserId(), getMaxPageSize(), getEventBusConfig(),
+                            getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryEngineConfig(),
+                            getStewardshipServicesConfig(), getSecuritySyncConfig());
     }
 }

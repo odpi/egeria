@@ -1,12 +1,13 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Project Management Open Metadata Access Service (OMAS)
 
 The Project Management OMAS provides APIs and events for tools and applications
-focused on managing information about the governance projects in progress
-and the metadata they are managing.  It supports the planning and execution
-of metadata changes as well as providing an overview of the status of
-the current governance project.
+that support project leaders - particularly those who are leading governance projects.
+
+The interface support the setting up, management and completion of projects
+along with the teams that are working on them.
 
 The module structure for the Project Management OMAS is as follows:
 

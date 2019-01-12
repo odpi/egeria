@@ -79,15 +79,15 @@ public class ErrorCodeTest
         testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_ENUM);
         testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_TEXT);
         testSingleErrorCodeValues(CommunityProfileErrorCode.NEGATIVE_START_FROM);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.EMPTY_PAGE_SIZE);
+        testSingleErrorCodeValues(CommunityProfileErrorCode.NEGATIVE_PAGE_SIZE);
         testSingleErrorCodeValues(CommunityProfileErrorCode.SERVER_NOT_AVAILABLE);
         testSingleErrorCodeValues(CommunityProfileErrorCode.OMRS_NOT_INITIALIZED);
         testSingleErrorCodeValues(CommunityProfileErrorCode.OMRS_NOT_AVAILABLE);
         testSingleErrorCodeValues(CommunityProfileErrorCode.NO_METADATA_COLLECTION);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.CONNECTION_NOT_FOUND);
+        testSingleErrorCodeValues(CommunityProfileErrorCode.GUID_IS_NULL);
         testSingleErrorCodeValues(CommunityProfileErrorCode.PROXY_CONNECTION_FOUND);
         testSingleErrorCodeValues(CommunityProfileErrorCode.ASSET_NOT_FOUND);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.MULTIPLE_ASSETS_FOUND);
+        testSingleErrorCodeValues(CommunityProfileErrorCode.MULTIPLE_INSTANCES_FOUND);
         testSingleErrorCodeValues(CommunityProfileErrorCode.UNKNOWN_ASSET);
         testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_CONNECTION_RETURNED);
         testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_CONNECTOR_RETURNED);

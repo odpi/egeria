@@ -19,16 +19,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class PersonalProfile extends CommonHeader
+public class PersonalProfile extends ActorHeader
 {
-    private String              employeeNumber       = null;
     private String              fullName             = null;
-    private String              knownName            = null;
     private String              jobTitle             = null;
-    private String              jobRoleDescription   = null;
     private List<UserIdentity>  associatedUserIds    = null;
     private int                 karmaPoints          = 0;
-
+    private Map<String, Object> extendedProperties   = null;
+    private Map<String, String> additionalProperties = null;
 
 
     /**
@@ -51,41 +49,17 @@ public class PersonalProfile extends CommonHeader
 
         if (template != null)
         {
-            this.employeeNumber = template.getEmployeeNumber();
             this.fullName = template.getFullName();
-            this.knownName = template.getKnownName();
             this.jobTitle = template.getJobTitle();
-            this.jobRoleDescription = template.getJobRoleDescription();
             this.associatedUserIds = template.getAssociatedUserIds();
             this.karmaPoints = template.getKarmaPoints();
+            this.extendedProperties = template.getExtendedProperties();
+            this.additionalProperties = template.getAdditionalProperties();
         }
     }
 
-
     /**
-     * Return the the unique employee number for this governance officer.
-     *
-     * @return String identifier
-     */
-    public String getEmployeeNumber()
-    {
-        return employeeNumber;
-    }
-
-
-    /**
-     * Set up the unique employee number for this governance officer.
-     *
-     * @param employeeNumber String identifier
-     */
-    public void setEmployeeNumber(String employeeNumber)
-    {
-        this.employeeNumber = employeeNumber;
-    }
-
-
-    /**
-     * Return the full name for this governance officer.
+     * Return the full name for this person.
      *
      * @return string name
      */
@@ -96,7 +70,7 @@ public class PersonalProfile extends CommonHeader
 
 
     /**
-     * Set up the full name for this governance officer.
+     * Set up the full name for this person.
      *
      * @param fullName string name
      */
@@ -107,31 +81,7 @@ public class PersonalProfile extends CommonHeader
 
 
     /**
-     * Return the preferred name for this governance officer.
-     *
-     * @return string name
-     */
-    public String getKnownName()
-    {
-        return knownName;
-    }
-
-
-    /**
-     * Set up the preferred name for this governance officer.
-     *
-     * @param knownName string name
-     */
-    public void setKnownName(String knownName)
-    {
-        this.knownName = knownName;
-    }
-
-
-    /**
-     * Return the primary job title for this governance officer.  This may relate to the specific
-     * governance responsibilities, or may be their main role if the governance responsibilities are
-     * just an adjunct to their main role.
+     * Return the primary job title for this person.
      *
      * @return string title
      */
@@ -142,41 +92,13 @@ public class PersonalProfile extends CommonHeader
 
 
     /**
-     * Set up the primary job title for this governance officer.  This may relate to the specific
-     * governance responsibilities, or may be their main role if the governance responsibilities are
-     * just an adjunct to their main role.
+     * Set up the primary job title for this person.
      *
      * @param jobTitle string title
      */
     public void setJobTitle(String jobTitle)
     {
         this.jobTitle = jobTitle;
-    }
-
-
-    /**
-     * Return the description of the job role for this governance officer.  This may relate to the specific
-     * governance responsibilities, or may be their main role if the governance responsibilities are
-     * just an adjunct to their main role.
-     *
-     * @return string description
-     */
-    public String getJobRoleDescription()
-    {
-        return jobRoleDescription;
-    }
-
-
-    /**
-     * Set up the description of the job role for this governance officer.  This may relate to the specific
-     * governance responsibilities, or may be their main role if the governance responsibilities are
-     * just an adjunct to their main role.
-     *
-     * @param jobRoleDescription string description
-     */
-    public void setJobRoleDescription(String jobRoleDescription)
-    {
-        this.jobRoleDescription = jobRoleDescription;
     }
 
 
@@ -236,6 +158,72 @@ public class PersonalProfile extends CommonHeader
 
 
     /**
+     * Return any properties associated with the subclass of this element.
+     *
+     * @return map of property names to property values
+     */
+    public Map<String, Object> getExtendedProperties()
+    {
+        if (extendedProperties == null)
+        {
+            return null;
+        }
+        else if (extendedProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(extendedProperties);
+        }
+    }
+
+
+    /**
+     * Set up any additional properties associated with the element.
+     *
+     * @param additionalProperties map of property names to property values
+     */
+    public void setExtendedProperties(Map<String, Object> additionalProperties)
+    {
+        this.extendedProperties = additionalProperties;
+    }
+
+
+    /**
+     * Return any additional properties associated with the element.
+     *
+     * @return map of property names to property values
+     */
+    public Map<String, String> getAdditionalProperties()
+    {
+        if (additionalProperties == null)
+        {
+            return null;
+        }
+        else if (additionalProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(additionalProperties);
+        }
+    }
+
+
+    /**
+     * Set up any additional properties associated with the element.
+     *
+     * @param additionalProperties map of property names to property values
+     */
+    public void setAdditionalProperties(Map<String, String> additionalProperties)
+    {
+        this.additionalProperties = additionalProperties;
+    }
+
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -244,19 +232,24 @@ public class PersonalProfile extends CommonHeader
     public String toString()
     {
         return "PersonalProfile{" +
-                "employeeNumber='" + employeeNumber + '\'' +
-                ", fullName='" + fullName + '\'' +
-                ", knownName='" + knownName + '\'' +
+                "fullName='" + fullName + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
-                ", jobRoleDescription='" + jobRoleDescription + '\'' +
                 ", associatedUserIds=" + associatedUserIds +
                 ", karmaPoints=" + karmaPoints +
+                ", extendedProperties=" + extendedProperties +
+                ", additionalProperties=" + additionalProperties +
+                ", contactDetails=" + getContactDetails() +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", classifications=" + getClassifications() +
                 ", GUID='" + getGUID() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
                 ", typeDescription='" + getTypeDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", classifications=" + getClassifications() +
+                ", originId='" + getOriginId() + '\'' +
+                ", originName='" + getOriginName() + '\'' +
+                ", originType='" + getOriginType() + '\'' +
+                ", originLicense='" + getOriginLicense() + '\'' +
                 '}';
     }
 
@@ -267,7 +260,27 @@ public class PersonalProfile extends CommonHeader
      * @param objectToCompare object to compare
      * @return boolean result of comparison
      */
-
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        if (!super.equals(objectToCompare))
+        {
+            return false;
+        }
+        PersonalProfile that = (PersonalProfile) objectToCompare;
+        return getKarmaPoints() == that.getKarmaPoints() &&
+                Objects.equals(getAssociatedUserIds(), that.getAssociatedUserIds()) &&
+                Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
+                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
+    }
 
 
     /**
@@ -275,5 +288,10 @@ public class PersonalProfile extends CommonHeader
      *
      * @return int code
      */
-
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getAssociatedUserIds(), getKarmaPoints(),
+                            getExtendedProperties(), getAdditionalProperties());
+    }
 }

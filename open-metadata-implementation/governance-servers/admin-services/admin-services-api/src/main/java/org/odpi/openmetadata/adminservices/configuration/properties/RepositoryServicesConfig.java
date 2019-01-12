@@ -14,6 +14,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 /**
@@ -39,7 +40,7 @@ import java.util.List;
  *         OMRS provides to the Open Metadata AccessServices (OMASs).
  *     </li>
  *     <li>
- *         cohortConfigList provides details of each open metadata repository cluster that the local server is
+ *         cohortConfigList provides details of each open metadata repository cohort that the local server is
  *         connected to.
  *     </li>
  * </ul>
@@ -47,10 +48,8 @@ import java.util.List;
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RepositoryServicesConfig implements Serializable
+public class RepositoryServicesConfig extends AdminServicesConfigHeader
 {
-    private static final long serialVersionUID = 1L;
-
     private List<Connection>       auditLogConnections            = new ArrayList<>();
     private List<Connection>       openMetadataArchiveConnections = new ArrayList<>();
     private LocalRepositoryConfig  localRepositoryConfig          = null;
@@ -63,30 +62,27 @@ public class RepositoryServicesConfig implements Serializable
      */
     public RepositoryServicesConfig()
     {
+        super();
     }
 
 
     /**
-     * Constructor to set all properties.
+     * Copy/clone constructor
      *
-     * @param auditLogConnections connections to copies of the audit log.
-     * @param openMetadataArchiveConnections list of open metadata archive files to load.
-     * @param localRepositoryConfig properties to configure the behavior of the local repository.
-     * @param enterpriseAccessConfig properties to configure the behavior of the federation services provided
-     *                                to the Open Metadata Access Services (OMASs).
-     * @param cohortConfigList properties about the open metadata repository clusters that this server connects to.
+     * @param template object to copy
      */
-    public RepositoryServicesConfig(List<Connection>         auditLogConnections,
-                                    List<Connection>         openMetadataArchiveConnections,
-                                    LocalRepositoryConfig    localRepositoryConfig,
-                                    EnterpriseAccessConfig   enterpriseAccessConfig,
-                                    List<CohortConfig>       cohortConfigList)
+    public RepositoryServicesConfig(RepositoryServicesConfig  template)
     {
-        this.setAuditLogConnections(auditLogConnections);
-        this.setOpenMetadataArchiveConnections(openMetadataArchiveConnections);
-        this.setLocalRepositoryConfig(localRepositoryConfig);
-        this.setEnterpriseAccessConfig(enterpriseAccessConfig);
-        this.setCohortConfigList(cohortConfigList);
+        super();
+
+        if (template != null)
+        {
+            this.auditLogConnections = template.getAuditLogConnections();
+            this.openMetadataArchiveConnections = template.getOpenMetadataArchiveConnections();
+            this.localRepositoryConfig = template.getLocalRepositoryConfig();
+            this.enterpriseAccessConfig = template.getEnterpriseAccessConfig();
+            this.cohortConfigList = template.getCohortConfigList();
+        }
     }
 
 
@@ -98,6 +94,10 @@ public class RepositoryServicesConfig implements Serializable
     public List<Connection> getAuditLogConnections()
     {
         if (auditLogConnections == null)
+        {
+            return null;
+        }
+        else if (auditLogConnections.isEmpty())
         {
             return null;
         }
@@ -115,14 +115,7 @@ public class RepositoryServicesConfig implements Serializable
      */
     public void setAuditLogConnections(List<Connection> auditLogConnections)
     {
-        if (auditLogConnections == null)
-        {
-            this.auditLogConnections = null;
-        }
-        else
-        {
-            this.auditLogConnections = new ArrayList<>(auditLogConnections);
-        }
+        this.auditLogConnections = auditLogConnections;
     }
 
 
@@ -135,6 +128,10 @@ public class RepositoryServicesConfig implements Serializable
     public List<Connection> getOpenMetadataArchiveConnections()
     {
         if (openMetadataArchiveConnections == null)
+        {
+            return null;
+        }
+        else if (openMetadataArchiveConnections.isEmpty())
         {
             return null;
         }
@@ -153,14 +150,7 @@ public class RepositoryServicesConfig implements Serializable
      */
     public void setOpenMetadataArchiveConnections(List<Connection> openMetadataArchiveConnections)
     {
-        if (openMetadataArchiveConnections == null)
-        {
-            this.openMetadataArchiveConnections = null;
-        }
-        else
-        {
-            this.openMetadataArchiveConnections = new ArrayList<>(openMetadataArchiveConnections);
-        }
+        this.openMetadataArchiveConnections = openMetadataArchiveConnections;
     }
 
 
@@ -211,14 +201,18 @@ public class RepositoryServicesConfig implements Serializable
 
 
     /**
-     * Return the configuration properties for each open metadata repository cluster that this local server
+     * Return the configuration properties for each open metadata repository cohort that this local server
      * connects to.
      *
-     * @return list of cluster configuration properties
+     * @return list of cohort configuration properties
      */
     public List<CohortConfig> getCohortConfigList()
     {
         if (cohortConfigList == null)
+        {
+            return null;
+        }
+        else if (cohortConfigList.isEmpty())
         {
             return null;
         }
@@ -233,17 +227,67 @@ public class RepositoryServicesConfig implements Serializable
      * Set up the configuration properties for each open metadata repository cluster that this local server
      * connects to.
      *
-     * @param cohortConfigList list of cluster configuration properties
+     * @param cohortConfigList list of cohort configuration properties
      */
     public void setCohortConfigList(List<CohortConfig> cohortConfigList)
     {
-        if (cohortConfigList == null)
+        this.cohortConfigList = cohortConfigList;
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+    @Override
+    public String toString()
+    {
+        return "RepositoryServicesConfig{" +
+                "auditLogConnections=" + auditLogConnections +
+                ", openMetadataArchiveConnections=" + openMetadataArchiveConnections +
+                ", localRepositoryConfig=" + localRepositoryConfig +
+                ", enterpriseAccessConfig=" + enterpriseAccessConfig +
+                ", cohortConfigList=" + cohortConfigList +
+                '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
         {
-            this.cohortConfigList = null;
+            return true;
         }
-        else
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
-            this.cohortConfigList = new ArrayList<>(cohortConfigList);
+            return false;
         }
+        RepositoryServicesConfig that = (RepositoryServicesConfig) objectToCompare;
+        return Objects.equals(getAuditLogConnections(), that.getAuditLogConnections()) &&
+                Objects.equals(getOpenMetadataArchiveConnections(), that.getOpenMetadataArchiveConnections()) &&
+                Objects.equals(getLocalRepositoryConfig(), that.getLocalRepositoryConfig()) &&
+                Objects.equals(getEnterpriseAccessConfig(), that.getEnterpriseAccessConfig()) &&
+                Objects.equals(getCohortConfigList(), that.getCohortConfigList());
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getAuditLogConnections(), getOpenMetadataArchiveConnections(), getLocalRepositoryConfig(),
+                            getEnterpriseAccessConfig(), getCohortConfigList());
     }
 }
