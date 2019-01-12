@@ -12,22 +12,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ExternalReference stores information about an link to an external resource that is relevant to a profile.
+ * ExternalReference stores information about an link to an external resource that is relevant to a personal
+ * profile or a community.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ExternalReference extends ReferenceableHeader
+public class ExternalReference extends CommonHeader
 {
-    private String              externalReferenceId  = null;
-    private String              localReferenceId     = null;
-    private String              displayName          = null;
+    private String              linkId               = null;
     private String              linkDescription      = null;
+    private String              resourceId           = null;
+    private String              resourceDisplayName  = null;
     private String              resourceDescription  = null;
-    private String              uri                  = null;
-    private String              version              = null;
-    private String              organization         = null;
-
+    private String              resourceURL          = null;
+    private String              resourceVersion      = null;
+    private String              owningOrganization   = null;
+    private Map<String, Object> extendedProperties   = null;
+    private Map<String, String> additionalProperties = null;
 
 
     /**
@@ -46,62 +48,81 @@ public class ExternalReference extends ReferenceableHeader
      */
     public ExternalReference(ExternalReference template)
     {
+        super(template);
+
         if (template != null)
         {
-            /*
-             * Copy the values from the supplied template.
-             */
-            localReferenceId     = template.getLocalReferenceId();
-            externalReferenceId  = template.getExternalReferenceId();
+            linkId               = template.getLinkId();
             linkDescription      = template.getLinkDescription();
-            displayName          = template.getDisplayName();
-            uri                  = template.getURI();
+            resourceId           = template.getResourceId();
+            resourceDisplayName  = template.getResourceDisplayName();
+            resourceURL          = template.getResourceURL();
             resourceDescription  = template.getResourceDescription();
-            version              = template.getVersion();
-            organization         = template.getOrganization();
+            resourceVersion      = template.getResourceVersion();
+            owningOrganization   = template.getOwningOrganization();
+            extendedProperties   = template.getExtendedProperties();
+            additionalProperties = template.getAdditionalProperties();
         }
+    }
+
+
+    /**
+     * Return the identifier given to this reference (with respect to this element).
+     *
+     * @return linkId
+     */
+    public String getLinkId()
+    {
+        return linkId;
+    }
+
+
+    /**
+     * Set up the identifier given to this reference (with respect to this element).
+     *
+     * @param linkId String name
+     */
+    public void setLinkId(String linkId)
+    {
+        this.linkId = linkId;
+    }
+
+
+    /**
+     * Return the description of the reference (with respect to the element that this reference is linked to).
+     *
+     * @return String link description.
+     */
+    public String getLinkDescription() { return linkDescription; }
+
+
+    /**
+     * Set up the description of the reference (with respect to the element that this reference is linked to).
+     *
+     * @param linkDescription String description
+     */
+    public void setLinkDescription(String linkDescription)
+    {
+        this.linkDescription = linkDescription;
     }
 
 
     /**
      * Return the fully qualified name.
      *
-     * @return String externalReferenceId
+     * @return String resourceId
      */
-    public String getExternalReferenceId() { return externalReferenceId; }
+    public String getResourceId() { return resourceId; }
 
 
     /**
      * Set up the fully qualified name.
      *
-     * @param externalReferenceId String identifier
+     * @param resourceId String identifier
      */
-    public void setExternalReferenceId(String externalReferenceId)
+    public void setResourceId(String resourceId)
     {
-        this.externalReferenceId = externalReferenceId;
-    }
-
-
-
-    /**
-     * Return the identifier given to this reference (with respect to this governance definition).
-     *
-     * @return localReferenceId
-     */
-    public String getLocalReferenceId()
-    {
-        return localReferenceId;
-    }
-
-
-    /**
-     * Set up the identifier given to this reference (with respect to this governance definition).
-     *
-     * @param localReferenceId String name
-     */
-    public void setLocalReferenceId(String localReferenceId)
-    {
-        this.localReferenceId = localReferenceId;
+        this.resourceId = resourceId;
     }
 
 
@@ -110,37 +131,19 @@ public class ExternalReference extends ReferenceableHeader
      *
      * @return String display name.
      */
-    public String getDisplayName() { return displayName; }
+    public String getResourceDisplayName() { return resourceDisplayName; }
 
 
     /**
      * Set up the display name of this external reference.
      *
-     * @param displayName - string name
+     * @param name - string name
      */
-    public void setDisplayName(String displayName)
+    public void setResourceDisplayName(String name)
     {
-        this.displayName = displayName;
+        this.resourceDisplayName = name;
     }
 
-
-    /**
-     * Return the description of the reference (with respect to this governance definition).
-     *
-     * @return String link description.
-     */
-    public String getLinkDescription() { return linkDescription; }
-
-
-    /**
-     * Set up the description of the reference (with respect to the governance definition this reference is linked to).
-     *
-     * @param linkDescription String description
-     */
-    public void setLinkDescription(String linkDescription)
-    {
-        this.linkDescription = linkDescription;
-    }
 
 
     /**
@@ -163,21 +166,21 @@ public class ExternalReference extends ReferenceableHeader
 
 
     /**
-     * Return the URI used to retrieve the resource that this external reference represents.
+     * Return the URL used to retrieve the resource that this external reference represents.
      *
-     * @return String URI
+     * @return String URL
      */
-    public String getURI() { return uri; }
+    public String getResourceURL() { return resourceURL; }
 
 
     /**
-     * Set up the URI used to retrieve the resource that this external reference represents.
+     * Set up the URL used to retrieve the resource that this external reference represents.
      *
-     * @param uri String URI
+     * @param url String URL
      */
-    public void setURI(String uri)
+    public void setResourceURL(String url)
     {
-        this.uri = uri;
+        this.resourceURL = url;
     }
 
 
@@ -187,7 +190,7 @@ public class ExternalReference extends ReferenceableHeader
      *
      * @return String version identifier
      */
-    public String getVersion() { return version; }
+    public String getResourceVersion() { return resourceVersion; }
 
 
     /**
@@ -195,9 +198,9 @@ public class ExternalReference extends ReferenceableHeader
      *
      * @param version String identifier
      */
-    public void setVersion(String version)
+    public void setResourceVersion(String version)
     {
-        this.version = version;
+        this.resourceVersion = version;
     }
 
 
@@ -206,17 +209,83 @@ public class ExternalReference extends ReferenceableHeader
      *
      * @return String organization name
      */
-    public String getOrganization() { return organization; }
+    public String getOwningOrganization() { return owningOrganization; }
 
 
     /**
      * Set up the name of the organization that owns the resource that this external reference represents.
      *
-     * @param organization String name
+     * @param owningOrganization String name
      */
-    public void setOrganization(String organization)
+    public void setOwningOrganization(String owningOrganization)
     {
-        this.organization = organization;
+        this.owningOrganization = owningOrganization;
+    }
+
+
+    /**
+     * Return any properties associated with the subclass of this element.
+     *
+     * @return map of property names to property values
+     */
+    public Map<String, Object> getExtendedProperties()
+    {
+        if (extendedProperties == null)
+        {
+            return null;
+        }
+        else if (extendedProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(extendedProperties);
+        }
+    }
+
+
+    /**
+     * Set up any additional properties associated with the element.
+     *
+     * @param additionalProperties map of property names to property values
+     */
+    public void setExtendedProperties(Map<String, Object> additionalProperties)
+    {
+        this.extendedProperties = additionalProperties;
+    }
+
+
+    /**
+     * Return any additional properties associated with the element.
+     *
+     * @return map of property names to property values
+     */
+    public Map<String, String> getAdditionalProperties()
+    {
+        if (additionalProperties == null)
+        {
+            return null;
+        }
+        else if (additionalProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(additionalProperties);
+        }
+    }
+
+
+    /**
+     * Set up any additional properties associated with the element.
+     *
+     * @param additionalProperties map of property names to property values
+     */
+    public void setAdditionalProperties(Map<String, String> additionalProperties)
+    {
+        this.additionalProperties = additionalProperties;
     }
 
 
@@ -229,21 +298,23 @@ public class ExternalReference extends ReferenceableHeader
     public String toString()
     {
         return "ExternalReference{" +
-                "externalReferenceId='" + externalReferenceId + '\'' +
-                ", localReferenceId='" + localReferenceId + '\'' +
-                ", displayName='" + displayName + '\'' +
+                "resourceId='" + resourceId + '\'' +
+                ", linkId='" + linkId + '\'' +
+                ", resourceDisplayName='" + resourceDisplayName + '\'' +
                 ", linkDescription='" + linkDescription + '\'' +
                 ", resourceDescription='" + resourceDescription + '\'' +
-                ", uri='" + uri + '\'' +
-                ", version='" + version + '\'' +
-                ", organization='" + organization + '\'' +
-                ", URI='" + getURI() + '\'' +
+                ", resourceURL='" + resourceURL + '\'' +
+                ", resourceVersion='" + resourceVersion + '\'' +
+                ", organization='" + owningOrganization + '\'' +
+                ", extendedProperties=" + extendedProperties +
+                ", additionalProperties=" + additionalProperties +
                 ", GUID='" + getGUID() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
                 ", typeDescription='" + getTypeDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", classifications=" + getClassifications() +
+                ", originId='" + getOriginId() + '\'' +
+                ", originName='" + getOriginName() + '\'' +
+                ", originType='" + getOriginType() + '\'' +
+                ", originLicense='" + getOriginLicense() + '\'' +
                 '}';
     }
 
@@ -270,15 +341,18 @@ public class ExternalReference extends ReferenceableHeader
             return false;
         }
         ExternalReference that = (ExternalReference) objectToCompare;
-        return Objects.equals(getExternalReferenceId(), that.getExternalReferenceId()) &&
-                Objects.equals(getLocalReferenceId(), that.getLocalReferenceId()) &&
-                Objects.equals(getDisplayName(), that.getDisplayName()) &&
+        return Objects.equals(getResourceId(), that.getResourceId()) &&
+                Objects.equals(getLinkId(), that.getLinkId()) &&
+                Objects.equals(getResourceDisplayName(), that.getResourceDisplayName()) &&
                 Objects.equals(getLinkDescription(), that.getLinkDescription()) &&
                 Objects.equals(getResourceDescription(), that.getResourceDescription()) &&
-                Objects.equals(uri, that.uri) &&
-                Objects.equals(getVersion(), that.getVersion()) &&
-                Objects.equals(getOrganization(), that.getOrganization());
+                Objects.equals(getResourceURL(), that.getResourceURL()) &&
+                Objects.equals(getResourceVersion(), that.getResourceVersion()) &&
+                Objects.equals(getOwningOrganization(), that.getOwningOrganization()) &&
+                Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
+                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
     }
+
 
 
     /**
@@ -289,7 +363,8 @@ public class ExternalReference extends ReferenceableHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getExternalReferenceId(), getLocalReferenceId(), getDisplayName(),
-                            getLinkDescription(), getResourceDescription(), uri, getVersion(), getOrganization());
+        return Objects.hash(super.hashCode(), getResourceId(), getLinkId(), getResourceDisplayName(),
+                            getLinkDescription(), getResourceDescription(), resourceURL, getResourceVersion(), getOwningOrganization(),
+                            getExtendedProperties(), getAdditionalProperties());
     }
 }

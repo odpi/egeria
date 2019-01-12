@@ -24,39 +24,58 @@ public class OMRSEventV1RegistrySection implements Serializable
 {
     private static final long serialVersionUID = 1L;
 
-    private OMRSRegistryEventType registryEventType     = null;
-    private Date                  registrationTimestamp = null;
-    private Connection            remoteConnection      = null;
+    private OMRSRegistryEventType registryEventType      = null;
+    private Date                  registrationTimestamp  = null;
+    private String                metadataCollectionName = null;
+    private Connection            remoteConnection       = null;
 
 
     public OMRSEventV1RegistrySection()
     {
     }
 
+
     public OMRSRegistryEventType getRegistryEventType()
     {
         return registryEventType;
     }
+
 
     public void setRegistryEventType(OMRSRegistryEventType registryEventType)
     {
         this.registryEventType = registryEventType;
     }
 
+
     public Date getRegistrationTimestamp()
     {
         return registrationTimestamp;
     }
+
 
     public void setRegistrationTimestamp(Date registrationTimestamp)
     {
         this.registrationTimestamp = registrationTimestamp;
     }
 
+
+    public String getMetadataCollectionName()
+    {
+        return metadataCollectionName;
+    }
+
+
+    public void setMetadataCollectionName(String metadataCollectionName)
+    {
+        this.metadataCollectionName = metadataCollectionName;
+    }
+
+
     public Connection getRemoteConnection()
     {
         return remoteConnection;
     }
+
 
     public void setRemoteConnection(Connection remoteConnection)
     {

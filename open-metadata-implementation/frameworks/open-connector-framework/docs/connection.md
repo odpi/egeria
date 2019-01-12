@@ -1,11 +1,11 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Connection - part of the [Open Connector Framework (OCF)](../README.md)
+# Connection - part of the [Open Connector Framework (OCF)](..)
 
 The Connection provides the set of properties needed to create an instance
 of a [connector](connector.md) used to access the contents of a specific
-[Asset](../../../../open-metadata-publication/website/assets/README.md).
+[Asset](../../../../open-metadata-implementation/access-services/docs/concepts/assets).
 
 ## Inside a Connection
 

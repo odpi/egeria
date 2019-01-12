@@ -32,7 +32,7 @@ public class PersonalProfile implements Serializable
     private String              jobTitle             = null;
     private String              jobRoleDescription   = null;
     private List<UserIdentity>  associatedUserIds    = null;
-    private Map<String, Object> additionalProperties = null;
+    private Map<String, String> additionalProperties = null;
 
 
 
@@ -267,7 +267,7 @@ public class PersonalProfile implements Serializable
      *
      * @param additionalProperties Additional properties object
      */
-    public void setAdditionalProperties(Map<String,Object> additionalProperties)
+    public void setAdditionalProperties(Map<String,String> additionalProperties)
     {
         this.additionalProperties = additionalProperties;
     }
@@ -278,7 +278,7 @@ public class PersonalProfile implements Serializable
      *
      * @return AdditionalProperties
      */
-    public Map<String,Object> getAdditionalProperties()
+    public Map<String,String> getAdditionalProperties()
     {
         if (additionalProperties == null)
         {
