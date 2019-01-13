@@ -23,11 +23,14 @@ together to show a detailed conversation on a topic.
 
 ## Further Reading
 
-* The [asset consumer OMAS](../../../asset-consumer) enables the consumer of an asset to
-add comments to an asset.  These comments are then visible to the
-[asset owner](../user-roles/asset-owner.md) using the [asset owner OMAS](../../../asset-owner).
+* The [Asset Consumer OMAS](../../../asset-consumer) enables the consumer of an asset to
+add comments to an asset.
+These comments are then visible to other asset consumers through the
+[Connected Asset OMAS](../../../connected-asset).
+The [asset owner](../user-roles/asset-owner.md) can also see the
+comments using the [Asset Owner OMAS](../../../asset-owner).
 
-* The [community profile OMAS](../../../community-profile) enables
+* The [Community Profile OMAS](../../../community-profile) enables
 the owner of a personal profile or the administrator of a community
 are able to remove inappropriate or out-of-date comments
 attached to their personal profile or community respectively.
@@ -37,7 +40,7 @@ attached to their personal profile or community respectively.
 
 * A comment can be attached to any [referenceable](../referenceable.md). The relationship
 that attaches the comment to the referenceable treats the referenceable as the comment's
-[anchor](../anchor.md).
+[anchor](../anchor.md).  This means the comment is deleted when the referenceable is deleted.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
