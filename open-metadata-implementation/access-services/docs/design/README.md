@@ -37,14 +37,14 @@ annotations.  This module is designed to be replaceable with a module using othe
 API should be 1-1 with the *omas-name*-server API.
 
 Each OMAS should also have an FVT test suite called ***omas-name*-fvt** implemented
-under the [access-services-fvt](../../../../open-metadata-test/open-metadata-fvt/access-services-fvt).  This is
-in addition to the unit tests for the module's components that are implemented within each module.
+under the [access-services-fvt](../../../../open-metadata-test/open-metadata-fvt/access-services-fvt) module.
+This is in addition to the unit tests for the module's components that are implemented within each module.
 The FVT test suite should test all of the API calls through to the repository to show that the OMAS
 can find, create, update and delete all of the necessary metadata on behalf of its consumer.
 
 It is also expected that each OMAS will feature in multiple demos, samples and scenarios found under
 [open-metadata-resources](../../../../open-metadata-resources).  However, these are not the responsibility of
-the OMAS component status.
+the OMAS component owner.
 
 ### Java package names
 

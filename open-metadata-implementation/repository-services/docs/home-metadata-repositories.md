@@ -28,3 +28,8 @@ the metadata collection
 id in the metadata instance with the cohort registration information passed
 between members of the cohort when they connect.
 
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+

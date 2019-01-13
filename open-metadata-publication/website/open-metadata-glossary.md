@@ -223,6 +223,7 @@ Below are links to common terms and concepts used in Egeria.
 * [Open Metadata Repository Cohort](../../open-metadata-implementation/repository-services/docs/open-metadata-repository-cohort.md)
 * [Open Metadata Repository Services](../../open-metadata-implementation/repository-services)
 * [Open Metadata Topic Connector](../../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/README.md)
+* [Open Metadata Type Definitions (TypeDefs)](../../open-metadata-implementation/repository-services/docs/open-metadata-type-definitions.md)
 
 
 ## P
@@ -335,6 +336,7 @@ Below are links to common terms and concepts used in Egeria.
   * [InTopic](../../open-metadata-implementation/access-services/docs/concepts/in-topic.md)
   * [OMRS Topic](../../open-metadata-implementation/repository-services/docs/omrs-event-topic.md)
   * [OutTopic](../../open-metadata-implementation/access-services/docs/concepts/out-topic.md)
+* [Type Definitions (TypeDefs)](../../open-metadata-implementation/repository-services/docs/open-metadata-type-definitions.md)
 
 
 
