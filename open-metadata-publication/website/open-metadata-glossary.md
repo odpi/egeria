@@ -133,7 +133,7 @@ Below are links to common terms and concepts used in Egeria.
 * [Governance Program OMAS](../../open-metadata-implementation/access-services/governance-program)
 * [Governance Servers](../../open-metadata-implementation/governance-servers)
 * [Graph Repository Connector](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector)
-* GUIDs
+* [GUIDs](../../open-metadata-implementation/access-services/docs/concepts/guid.md)
   * [Metadata Collection Id](../../open-metadata-implementation/repository-services/docs/metadata-collection-id.md)
 
 
@@ -291,6 +291,7 @@ Below are links to common terms and concepts used in Egeria.
 
 ## R
 
+* [Referenceable](../../open-metadata-implementation/access-services/docs/concepts/referenceable.md)
 * [Repository Services](../../open-metadata-implementation/repository-services)
   * [Repository Services Connectors](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors)
     * [Archive Connectors](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-archive-connectors)
