@@ -1,9 +1,12 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# OMRS Event Publisher
 
-The OMRS event publisher sends OMRS events to the **[OMRS event topic](../omrs-event-topic.md)**.
+# Repository Content Manager
+
+The repository content manager provides the function of the [TypeDef Manager](typedef-manager.md)
+plus the implementation of many [Repository Helper]() and [Repository Validator]() methods.
+
 
 
 

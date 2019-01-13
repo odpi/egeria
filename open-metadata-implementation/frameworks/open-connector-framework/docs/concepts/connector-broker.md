@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Connector Broker - part of the [Open Connector Framework (OCF)](../README.md)
+# Connector Broker - part of the [Open Connector Framework (OCF)](../..)
 
 The Connector Broker is the factory class for all open connectors.
 Given a valid [Connection](connection.md) object, the

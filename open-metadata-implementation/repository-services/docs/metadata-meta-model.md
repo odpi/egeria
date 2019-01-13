@@ -14,7 +14,7 @@ and can be broadly divided into the following two areas:
 
 ## Type Definitions (TypeDefs and AttributeTypeDefs)
 
-TypeDefs define the general characteristics that are used to describe any 
+[TypeDefs](open-metadata-type-definitions.md) define the general characteristics that are used to describe any 
 general type -- whether native or not -- and typically fit into one of 
 the following three general types (`TypeDefCategory`):
 
@@ -368,3 +368,9 @@ omrsRelationship.setGUID("...");
 
 For more information on the OpenMetadataTypes that are covered by and included 
 with Egeria, see [the open metadata type system](../../../open-metadata-publication/website/open-metadata-types/README.md).
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
