@@ -1,0 +1,13 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+# Default settings for the Coco Pharmaceuticals samples - these are the locations (and names) on the target systems
+# where the sample files and database(s) will be created
+egeria_samples_cocopharma_targets:
+  files: /data/files/CocoPharma
+  db_location: /data/db
+
+# Type of database to load sample data into (for options, see the sub-directory names under 'database' directory of
+# these coco-pharmaceuticals samples)
+egeria_samples_cocopharma_db_type: ibm-db2

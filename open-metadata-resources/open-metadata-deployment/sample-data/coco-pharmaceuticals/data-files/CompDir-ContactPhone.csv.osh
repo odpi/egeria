@@ -1,0 +1,6 @@
+// FileStructure: file_format='delimited', header='true'
+record { record_delim='\n', delim=';', final_delim=end, null_field='', charset=UTF-8, date_format='%dd %mmm %yyyy', time_format='%hh:%nn:%ss', timestamp_format='%dd %mmm %yyyy %hh:%nn:%ss' } (
+    RecId: not nullable int64;
+    ContactType: nullable string;
+    Number: nullable string;
+)
