@@ -46,13 +46,38 @@ then
 	exit 1
 fi
 
-# TODO: we should have a valid endpoint now. Check a basic 'ping'
 
 echo "Atlas server URL  : ${ATLAS_ENDPOINT}"
 echo "Kafka broker      : ${KAFKA_ENDPOINT}"
 echo "Egeria user name  : ${EGERIA_USER}"
 echo "Egeria server name: ${EGERIA_SERVER}"
 echo "Egeria Cohort     : ${EGERIA_COHORT}"
+
+echo "Checking ATLAS is up"
+
+loop=25
+retrytimeout=10
+delay=25
+
+while [ $loop -gt 0 ]
+do
+    if http --check-status --ignore-stdin --timeout=${retrytimeout} HEAD ${ATLAS_ENDPOINT} &> /dev/null; then
+        echo 'OK!'
+	break
+    else
+        # timeout - let's keep trying
+        let loop=$loop-1
+        echo ".. not yet up. waiting ${delay}s. ${loop} attempts remaining"
+        sleep ${delay}
+    fi
+done
+
+if [ $loop -le 0 ]
+then
+	echo "Atlas server was unavailable. Abandoning configuration. Check endpoint URL"
+	exit 1
+fi
+
 
 # Isue requests against atlas
 http --verbose --ignore-stdin \
