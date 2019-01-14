@@ -3,8 +3,13 @@
 package org.odpi.openmetadata.accessservices.subjectarea;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * The SubjectAreaDefinition Open Metadata Access Service (OMAS) API for terms.
@@ -59,6 +64,42 @@ public interface SubjectAreaTerm
                                                                               InvalidParameterException,
                                                                               FunctionNotSupportedException,
                                                                               UnexpectedResponseException ;
+    /**
+     * Get Term relationships
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the term to get
+     * @param guid   guid of the term to get
+     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
+     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     *                 beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize the maximum number of elements that can be returned on this request.
+     *                 0 means there is not limit to the page size
+     * @param sequencingOrder the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @return the relationships associated with the requested Term guid
+     *
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException   Function not supported
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public List<Line> getTermRelationships(String serverName, String userId, String guid,
+                                           Date asOfTime,
+                                           int offset,
+                                           int pageSize,
+                                           org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                           String sequencingProperty) throws
+            MetadataServerUncontactableException,
+            UserNotAuthorizedException,
+            InvalidParameterException,
+            FunctionNotSupportedException,
+            UnexpectedResponseException;
     /**
      * Replace a Term. This means to override all the existing attributes with the supplied attributes.
      * <p>
