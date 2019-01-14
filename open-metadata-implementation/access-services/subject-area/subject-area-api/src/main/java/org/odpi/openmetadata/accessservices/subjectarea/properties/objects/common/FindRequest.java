@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.Date;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -23,7 +24,7 @@ public class FindRequest
     private SequencingOrder      sequencingOrder      = null;
     private int                  offset               = 0;
     private int                  pageSize             = 0;
-
+    private Date                 asOfTime;
     /**
      * Default constructor
      */
@@ -119,7 +120,7 @@ public class FindRequest
 
     /**
      * Return the maximum number of elements that can be returned on this request.
-     *
+     *0 means there is not limit to the page size
      * @return page size
      */
     public int getPageSize()
@@ -138,7 +139,21 @@ public class FindRequest
         this.pageSize = pageSize;
     }
 
+    /**
+     * Get the time at which the find should be issued.
+     * @return Date at which the find should be issued
+     */
+    public Date getAsOfTime() {
+        return asOfTime;
+    }
 
+    /**
+     * set up the time at which the find should be made. null means current time.
+     * @param asOfTime
+     */
+    public void setAsOfTime(Date asOfTime) {
+        this.asOfTime = asOfTime;
+    }
 
     /**
      * Standard toString method.

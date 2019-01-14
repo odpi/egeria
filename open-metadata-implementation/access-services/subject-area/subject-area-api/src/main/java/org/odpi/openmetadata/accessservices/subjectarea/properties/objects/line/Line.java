@@ -10,7 +10,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
@@ -44,6 +43,7 @@ import java.util.Map;
                 @JsonSubTypes.Type(value = UsedInContext.class, name = "UsedInContext"),
                 @JsonSubTypes.Type(value = TermISATypeOFRelationship.class, name = "TermISATYPEOFRelationship"),
                 @JsonSubTypes.Type(value = TermTYPEDBYRelationship.class, name = "TermTYPEDBYRelationship"),
+                @JsonSubTypes.Type(value = TermAnchorRelationship.class, name = "TermAnchorRelationship"),
 
         })
             
@@ -57,13 +57,8 @@ public class Line implements Serializable {
     protected LineType lineType;
     protected String entity1Name;
     protected String entity1Type;
-    protected String entity1PropertyName;
-    protected String entity1Label;
-
     protected String entity2Name;
     protected String entity2Type;
-    protected String entity2PropertyName;
-    protected String entity2Label;
     protected String name;
 
     /**
