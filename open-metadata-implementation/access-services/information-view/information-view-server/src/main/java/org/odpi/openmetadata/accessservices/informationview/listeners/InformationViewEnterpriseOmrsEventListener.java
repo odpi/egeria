@@ -7,7 +7,6 @@ package org.odpi.openmetadata.accessservices.informationview.listeners;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
@@ -114,6 +113,16 @@ public class InformationViewEnterpriseOmrsEventListener implements OMRSTopicList
                                 instanceEventOriginator.getServerType(),
                                 instanceEventOriginator.getOrganizationName(),
                                 instanceEvent.getRelationship());
+                        break;
+
+                    case UPDATED_ENTITY_EVENT:
+                        instanceEventProcessor.processUpdatedEntityEvent("EnterpriseOMRSTopic",
+                                instanceEventOriginator.getMetadataCollectionId(),
+                                instanceEventOriginator.getServerName(),
+                                instanceEventOriginator.getServerType(),
+                                instanceEventOriginator.getOrganizationName(),
+                                instanceEvent.getOriginalEntity(),
+                                instanceEvent.getEntity());
                         break;
 
                 }

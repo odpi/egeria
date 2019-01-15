@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.informationview.auditlog.Information
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.ColumnContextEventBuilder;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportCreator;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewEnterpriseOmrsEventListener;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewInTopicListener;
@@ -35,17 +35,8 @@ import org.slf4j.LoggerFactory;
 public class InformationViewAdmin implements AccessServiceAdmin {
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewAdmin.class);
-    private EventPublisher eventPublisher;
-    private OMRSRepositoryConnector enterpriseConnector;
     private OpenMetadataTopicConnector informationViewInTopicConnector;
-    private OMRSTopicConnector enterpriseOMRSTopicConnector = null;
-    private OpenMetadataTopicListener informationViewInTopicListener;
-    private EntitiesCreatorHelper entitiesCreatorHelper;
-    private LookupHelper lookupHelper;
-    private ColumnContextEventBuilder columnContextEventBuilder;
-    private InformationViewEnterpriseOmrsEventListener informationViewEnterpriseOmrsEventListener;
     private OMRSAuditLog auditLog;
-    private OpenMetadataTopicConnector informationViewOutTopicConnector;
     private String serverName = null;
     private InformationViewServicesInstance instance = null;
 
@@ -55,13 +46,13 @@ public class InformationViewAdmin implements AccessServiceAdmin {
      *
      * @param accessServiceConfigurationProperties  specific configuration properties for this access service.
      * @param enterpriseOMRSTopicConnector          connector for receiving OMRS Events from the cohorts
-     * @param enterpriseOMRSRepositoryConnector     connector for querying the cohort repositories
+     * @param enterpriseConnector     connector for querying the cohort repositories
      * @param auditLog                              audit log component for logging messages.
      * @param serverUserName                        user id to use on OMRS calls where there is no end user.
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
     @Override
-    public void initialize(AccessServiceConfig accessServiceConfigurationProperties, OMRSTopicConnector enterpriseOMRSTopicConnector, OMRSRepositoryConnector enterpriseOMRSRepositoryConnector, OMRSAuditLog auditLog, String serverUserName) throws OMAGConfigurationErrorException {
+    public void initialize(AccessServiceConfig accessServiceConfigurationProperties, OMRSTopicConnector enterpriseOMRSTopicConnector, OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog, String serverUserName) throws OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
         InformationViewAuditCode auditCode;
 
@@ -75,13 +66,11 @@ public class InformationViewAdmin implements AccessServiceAdmin {
                 auditCode.getUserAction());
 
 
-        this.enterpriseOMRSTopicConnector = enterpriseOMRSTopicConnector;
-        this.enterpriseConnector = enterpriseOMRSRepositoryConnector;
         this.auditLog = auditLog;
 
-        if (enterpriseOMRSRepositoryConnector != null)
+        if (enterpriseConnector != null)
         {
-            serverName = enterpriseOMRSRepositoryConnector.getServerName();
+            serverName = enterpriseConnector.getServerName();
         }
 
         Connection  inTopicConnection = accessServiceConfigurationProperties.getAccessServiceInTopic();
@@ -96,9 +85,9 @@ public class InformationViewAdmin implements AccessServiceAdmin {
         }
 
         informationViewInTopicConnector = initializeInformationViewTopicConnector(inTopicConnection);
-        informationViewOutTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
+        OpenMetadataTopicConnector informationViewOutTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
 
-        entitiesCreatorHelper = new EntitiesCreatorHelper(this.enterpriseConnector, auditLog);
+        EntitiesCreatorHelper entitiesCreatorHelper = new EntitiesCreatorHelper(enterpriseConnector, auditLog);
 
         if (enterpriseOMRSTopicConnector != null) {
             auditCode = InformationViewAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
@@ -109,10 +98,10 @@ public class InformationViewAdmin implements AccessServiceAdmin {
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
-            columnContextEventBuilder = new ColumnContextEventBuilder(this.enterpriseConnector);
-            eventPublisher = new EventPublisher(informationViewOutTopicConnector, columnContextEventBuilder, auditLog);
-            informationViewEnterpriseOmrsEventListener = new InformationViewEnterpriseOmrsEventListener(eventPublisher, auditLog);
-            this.enterpriseOMRSTopicConnector.registerListener(informationViewEnterpriseOmrsEventListener);
+            ColumnContextEventBuilder columnContextEventBuilder = new ColumnContextEventBuilder(enterpriseConnector);
+            EventPublisher eventPublisher = new EventPublisher(informationViewOutTopicConnector, columnContextEventBuilder, auditLog);
+            InformationViewEnterpriseOmrsEventListener informationViewEnterpriseOmrsEventListener = new InformationViewEnterpriseOmrsEventListener(eventPublisher, auditLog);
+            enterpriseOMRSTopicConnector.registerListener(informationViewEnterpriseOmrsEventListener);
         }
 
 
@@ -125,7 +114,7 @@ public class InformationViewAdmin implements AccessServiceAdmin {
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
-            informationViewInTopicListener = new InformationViewInTopicListener(entitiesCreatorHelper, auditLog);
+            OpenMetadataTopicListener informationViewInTopicListener = new InformationViewInTopicListener(entitiesCreatorHelper, auditLog);
             this.informationViewInTopicConnector.registerListener(informationViewInTopicListener);
             try {
                 informationViewInTopicConnector.start();
@@ -148,8 +137,8 @@ public class InformationViewAdmin implements AccessServiceAdmin {
             }
         }
 
-        lookupHelper = new LookupHelper(enterpriseConnector, entitiesCreatorHelper, auditLog);
-        instance = new InformationViewServicesInstance(new ReportCreator(entitiesCreatorHelper, lookupHelper, auditLog), serverName);
+        LookupHelper lookupHelper = new LookupHelper(enterpriseConnector, entitiesCreatorHelper, auditLog);
+        instance = new InformationViewServicesInstance(new ReportHandler(entitiesCreatorHelper, lookupHelper, auditLog), serverName);
 
         auditCode = InformationViewAuditCode.SERVICE_INITIALIZED;
         auditLog.logRecord(actionDescription,

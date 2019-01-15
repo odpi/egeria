@@ -1152,26 +1152,22 @@ public interface OMRSRepositoryValidator
      *
      * @param matchProperties  the properties to match.
      * @param instanceHeader  the header properties from the instance.
-     * @param metadataCollectionId the identifier for the repository's metadata collection
      * @return integer count of the matching properties.
      */
-    int countMatchingPropertyValues(InstanceProperties       matchProperties,
-                                    InstanceAuditHeader      instanceHeader,
-                                    String                   metadataCollectionId);
+    int countMatchingHeaderPropertyValues(InstanceProperties       matchProperties,
+                                          InstanceAuditHeader      instanceHeader);
 
 
     /**
      * Determine if the instance properties match the match criteria.
      *
      * @param matchProperties  the properties to match.
-     * @param metadataCollectionId metadata collection Id for instance if known.
      * @param instanceHeader the header of the instance.
      * @param instanceProperties  the properties from the instance.
      * @param matchCriteria  rule on how the match should occur.
      * @return boolean flag indicating whether the two sets of properties match
      */
     boolean verifyMatchingInstancePropertyValues(InstanceProperties   matchProperties,
-                                                 String               metadataCollectionId,
                                                  InstanceAuditHeader  instanceHeader,
                                                  InstanceProperties   instanceProperties,
                                                  MatchCriteria        matchCriteria);

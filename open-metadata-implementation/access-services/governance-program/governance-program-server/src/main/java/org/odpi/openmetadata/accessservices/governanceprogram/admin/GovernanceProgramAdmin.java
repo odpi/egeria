@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.governanceprogram.admin;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.auditlog.GovernanceProgramAuditCode;
 import org.odpi.openmetadata.accessservices.governanceprogram.listener.GovernanceProgramOMRSTopicListener;
-import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceProgramRESTServices;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceProgramServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;

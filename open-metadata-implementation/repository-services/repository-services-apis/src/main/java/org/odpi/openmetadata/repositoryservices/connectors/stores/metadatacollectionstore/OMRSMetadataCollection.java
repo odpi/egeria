@@ -64,11 +64,12 @@ public abstract class OMRSMetadataCollection
 {
     static final private String       defaultRepositoryName = "Open Metadata Repository";
 
-    protected String                  metadataCollectionId;                         /* Initialized in constructor */
-    protected OMRSRepositoryHelper    repositoryHelper    = null;                   /* Initialized in constructor */
-    protected OMRSRepositoryValidator repositoryValidator = null;                   /* Initialized in constructor */
-    protected OMRSRepositoryConnector parentConnector     = null;                   /* Initialized in constructor */
-    protected String                  repositoryName      = defaultRepositoryName;  /* Initialized in constructor */
+    protected String                  metadataCollectionId;                            /* Initialized in constructor */
+    protected String                  metadataCollectionName = null;                   /* Initialized in constructor */
+    protected OMRSRepositoryHelper    repositoryHelper       = null;                   /* Initialized in constructor */
+    protected OMRSRepositoryValidator repositoryValidator    = null;                   /* Initialized in constructor */
+    protected OMRSRepositoryConnector parentConnector        = null;                   /* Initialized in constructor */
+    protected String                  repositoryName         = defaultRepositoryName;  /* Initialized in constructor */
 
 
     /**
@@ -138,6 +139,12 @@ public abstract class OMRSMetadataCollection
         this.repositoryHelper = repositoryHelper;
         this.repositoryValidator = repositoryValidator;
         this.parentConnector = parentConnector;
+
+        if (parentConnector != null)
+        {
+            this.metadataCollectionName = parentConnector.getMetadataCollectionName();
+        }
+
         this.repositoryName = repositoryName;
     }
 
@@ -1811,6 +1818,7 @@ public abstract class OMRSMetadataCollection
      * @param typeDefName the name of the TypeDef for the entity used to verify the entity identity.
      * @param homeMetadataCollectionId the existing identifier for this entity's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return entity new values for this entity, including the new home information.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -1819,16 +1827,75 @@ public abstract class OMRSMetadataCollection
      * @throws FunctionNotSupportedException the repository does not support the re-homing of instances.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public abstract EntityDetail reHomeEntity(String         userId,
-                                              String         entityGUID,
-                                              String         typeDefGUID,
-                                              String         typeDefName,
-                                              String         homeMetadataCollectionId,
-                                              String         newHomeMetadataCollectionId) throws InvalidParameterException,
-                                                                                                 RepositoryErrorException,
-                                                                                                 EntityNotKnownException,
-                                                                                                 FunctionNotSupportedException,
-                                                                                                 UserNotAuthorizedException;
+    public  EntityDetail reHomeEntity(String         userId,
+                                      String         entityGUID,
+                                      String         typeDefGUID,
+                                      String         typeDefName,
+                                      String         homeMetadataCollectionId,
+                                      String         newHomeMetadataCollectionId,
+                                      String         newHomeMetadataCollectionName) throws InvalidParameterException,
+                                                                                           RepositoryErrorException,
+                                                                                           EntityNotKnownException,
+                                                                                           FunctionNotSupportedException,
+                                                                                           UserNotAuthorizedException
+    {
+        EntityDetail updatedEntity = this.reHomeEntity(userId, entityGUID, typeDefGUID, typeDefName, homeMetadataCollectionId, newHomeMetadataCollectionId);
+
+        if (updatedEntity != null)
+        {
+            updatedEntity.setMetadataCollectionName(newHomeMetadataCollectionName);
+        }
+
+        return updatedEntity;
+    }
+
+
+    /**
+     * Change the home of an existing entity.  This action is taken for example, if the original home repository
+     * becomes permanently unavailable, or if the user community updating this entity move to working
+     * from a different repository in the open metadata repository cohort.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID the unique identifier for the entity to change.
+     * @param typeDefGUID the guid of the TypeDef for the entity used to verify the entity identity.
+     * @param typeDefName the name of the TypeDef for the entity used to verify the entity identity.
+     * @param homeMetadataCollectionId the existing identifier for this entity's home.
+     * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @return entity new values for this entity, including the new home information.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support the re-homing of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Deprecated
+    public  EntityDetail reHomeEntity(String         userId,
+                                      String         entityGUID,
+                                      String         typeDefGUID,
+                                      String         typeDefName,
+                                      String         homeMetadataCollectionId,
+                                      String         newHomeMetadataCollectionId) throws InvalidParameterException,
+                                                                                         RepositoryErrorException,
+                                                                                         EntityNotKnownException,
+                                                                                         FunctionNotSupportedException,
+                                                                                         UserNotAuthorizedException
+    {
+        final String  methodName = "reHomeEntity";
+
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                 this.getClass().getName(),
+                                                                                                 repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                           this.getClass().getName(),
+                                           methodName,
+                                           errorMessage,
+                                           errorCode.getSystemAction(),
+                                           errorCode.getUserAction());
+    }
 
 
     /**
@@ -1905,6 +1972,7 @@ public abstract class OMRSMetadataCollection
      * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId the existing identifier for this relationship's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return relationship new values for this relationship, including the new home information.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -1914,16 +1982,76 @@ public abstract class OMRSMetadataCollection
      * @throws FunctionNotSupportedException the repository does not support the re-homing of instances.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public abstract Relationship reHomeRelationship(String   userId,
-                                                    String   relationshipGUID,
-                                                    String   typeDefGUID,
-                                                    String   typeDefName,
-                                                    String   homeMetadataCollectionId,
-                                                    String   newHomeMetadataCollectionId) throws InvalidParameterException,
-                                                                                                 RepositoryErrorException,
-                                                                                                 RelationshipNotKnownException,
-                                                                                                 FunctionNotSupportedException,
-                                                                                                 UserNotAuthorizedException;
+    public Relationship reHomeRelationship(String   userId,
+                                           String   relationshipGUID,
+                                           String   typeDefGUID,
+                                           String   typeDefName,
+                                           String   homeMetadataCollectionId,
+                                           String   newHomeMetadataCollectionId,
+                                           String   newHomeMetadataCollectionName) throws InvalidParameterException,
+                                                                                          RepositoryErrorException,
+                                                                                          RelationshipNotKnownException,
+                                                                                          FunctionNotSupportedException,
+                                                                                          UserNotAuthorizedException
+    {
+        Relationship updatedRelationship = this.reHomeRelationship(userId, relationshipGUID, typeDefGUID, typeDefName, homeMetadataCollectionId, newHomeMetadataCollectionId);
+
+        if (updatedRelationship != null)
+        {
+            updatedRelationship.setMetadataCollectionName(newHomeMetadataCollectionName);
+        }
+
+        return updatedRelationship;
+    }
+
+
+    /**
+     * Change the home of an existing relationship.  This action is taken for example, if the original home repository
+     * becomes permanently unavailable, or if the user community updating this relationship move to working
+     * from a different repository in the open metadata repository cohort.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipGUID the unique identifier for the relationship.
+     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
+     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
+     * @param homeMetadataCollectionId the existing identifier for this relationship's home.
+     * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @return relationship new values for this relationship, including the new home information.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the
+     *                                         metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support the re-homing of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Deprecated
+    public  Relationship reHomeRelationship(String   userId,
+                                            String   relationshipGUID,
+                                            String   typeDefGUID,
+                                            String   typeDefName,
+                                            String   homeMetadataCollectionId,
+                                            String   newHomeMetadataCollectionId) throws InvalidParameterException,
+                                                                                         RepositoryErrorException,
+                                                                                         RelationshipNotKnownException,
+                                                                                         FunctionNotSupportedException,
+                                                                                         UserNotAuthorizedException
+    {
+        final String  methodName = "reHomeRelationship";
+
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                 this.getClass().getName(),
+                                                                                                 repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                           this.getClass().getName(),
+                                           methodName,
+                                           errorMessage,
+                                           errorCode.getSystemAction(),
+                                           errorCode.getUserAction());
+    }
 
 
 

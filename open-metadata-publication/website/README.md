@@ -3,10 +3,11 @@
   
 # What is Project Egeria?
 
-Egeria is a moon-shot type of project to create a set of
-open APIs, [types](open-metadata-types/README.md)
+Egeria creates a set of open APIs, [types](open-metadata-types/README.md)
 and interchange protocols to allow all metadata repositories
-to share and exchange metadata.  From this common base, it adds governance,
+to share and exchange metadata.
+
+From this common base, it adds governance,
 discovery and access frameworks to automate the collection, management and
 use of metadata across an enterprise.  The result is an enterprise catalog of
 data resources that are transparently assessed, governed and used in order to

@@ -47,6 +47,8 @@ public class GlossaryMapper {
         if (glossary.getSystemAttributes() !=null) {
             omrsBean.setSystemAttributes(glossary.getSystemAttributes());
         }
+        omrsBean.setEffectiveFromTime(glossary.getEffectiveFromTime());
+        omrsBean.setEffectiveToTime(glossary.getEffectiveToTime());
         omrsBean.setDescription(glossary.getDescription());
         omrsBean.setDisplayName(glossary.getName());
         omrsBean.setUsage(glossary.getUsage());
@@ -89,6 +91,8 @@ public class GlossaryMapper {
         if (omrsBean.getSystemAttributes() !=null) {
             glossary.setSystemAttributes(omrsBean.getSystemAttributes());
         }
+        glossary.setEffectiveFromTime(omrsBean.getEffectiveFromTime());
+        glossary.setEffectiveToTime((omrsBean.getEffectiveToTime()));
         glossary.setName(omrsBean.getDisplayName());
         glossary.setQualifiedName(omrsBean.getQualifiedName());
         glossary.setUsage(omrsBean.getUsage());

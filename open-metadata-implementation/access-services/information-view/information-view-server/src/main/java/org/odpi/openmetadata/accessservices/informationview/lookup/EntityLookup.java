@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.informationview.lookup;
 
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
-import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumnSource;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
@@ -19,6 +18,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,13 +50,13 @@ public abstract class EntityLookup<T extends Source> {
         this.parentChain = parentChain;
     }
 
-    public abstract EntityDetail lookupEntity(T source) throws Exception;
+    public abstract EntityDetail lookupEntity(T source) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException;
 
     public void setParentChain(EntityLookup parentChain) {
         this.parentChain = parentChain;
     }
 
-    public EntityDetail lookupEntity(T source, List<EntityDetail> list) throws Exception {
+    public EntityDetail lookupEntity(T source, List<EntityDetail> list)  {
         InstanceProperties matchProperties = getMatchingProperties(source);
         return matchExactlyToUniqueEntity(list, matchProperties);
     }
@@ -57,7 +64,7 @@ public abstract class EntityLookup<T extends Source> {
     protected abstract InstanceProperties getMatchingProperties(T source);
 
 
-    public EntityDetail findEntity(InstanceProperties matchProperties, String typeDefName) {
+    public EntityDetail findEntity(InstanceProperties matchProperties, String typeDefName) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
         TypeDef typeDef = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.USER_ID, typeDefName);
         List<EntityDetail> existingEntities;
         try {
@@ -74,7 +81,7 @@ public abstract class EntityLookup<T extends Source> {
                             SequencingOrder.ANY,
                             PAGE_SIZE);
             return matchExactlyToUniqueEntity(existingEntities, matchProperties);
-        } catch (Exception e) {
+        } catch (InvalidParameterException | PropertyErrorException | TypeErrorException | FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException e) {
             InformationViewErrorCode auditCode = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
             auditLog.logException("findEntity",
                     auditCode.getErrorMessageId(),
@@ -84,8 +91,7 @@ public abstract class EntityLookup<T extends Source> {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
                     e);
-
-            throw new RuntimeException(e);
+            throw e;
         }
     }
 
@@ -115,7 +121,6 @@ public abstract class EntityLookup<T extends Source> {
             }
         }
         return true;
-
     }
 
 

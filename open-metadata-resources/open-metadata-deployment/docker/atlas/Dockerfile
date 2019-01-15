@@ -4,7 +4,7 @@
 FROM ubuntu:18.04
 
 LABEL org.label-schema.name = "AtlasForEgeriaVDC"
-LABEL org.label-schema.description="Atlas service to support Egeria VDC demos (including ATLAS-1773 patch Oct 2018)"
+LABEL org.label-schema.description="Atlas service to support Egeria VDC demos" 
 LABEL org.label-schema.url="https://github.com/odpi/egeria/"
 LABEL org.label-schema.vcs="https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/docker/atlas"
 LABEL org.label-schema.version="0.1.0"
@@ -27,20 +27,16 @@ ENV PATH /usr/java/bin:/usr/local/apache-maven/bin:/usr/local/sbin:/usr/local/bi
 WORKDIR /root
 
 # Pull down Atlas and build it into /root/atlas-bin.
-RUN git clone http://git.apache.org/atlas.git -b master
+RUN git clone https://github.com/grahamwallis/atlas -b master
 
-#Apply patch
-RUN wget https://jira.apache.org/jira/secure/attachment/12941989/ATLAS-1773-2018-10-01.patch
 WORKDIR atlas
-RUN   git config --global user.email "you@example.com"
-RUN   git config --global user.name "Your Name"
-RUN git am < ../ATLAS-1773-2018-10-01.patch
 
-# Fix up to use released version
-RUN mv pom.xml pom.xml2
-RUN cat pom.xml2 | sed 's/0.1-SNAPSHOT/0.1/g' > pom.xml
-RUN rm pom.xml2
+# Add reference to odpi repository for snapshots
+COPY dist/settings.xml /root/.m2/settings.xml
 WORKDIR /root
+
+# need more java heap
+ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
 
 # Remove -DskipTests if unit tests are to be included
 RUN mvn clean install -DskipTests -Pdist,embedded-hbase-solr -f ./atlas/pom.xml

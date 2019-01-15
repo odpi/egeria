@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.archivemanager;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationEntityExtension;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -27,27 +28,29 @@ public class OMRSArchiveBuilder
     /*
      * Hash maps for accumulating TypeDefs and instances as the content of the archive is built up.
      */
-    private Map<String, PrimitiveDef>      primitiveDefMap       = new HashMap<>();
-    private List<PrimitiveDef>             primitiveDefList      = new ArrayList<>();
-    private Map<String, EnumDef>           enumDefMap            = new HashMap<>();
-    private List<EnumDef>                  enumDefList           = new ArrayList<>();
-    private Map<String, CollectionDef>     collectionDefMap      = new HashMap<>();
-    private List<CollectionDef>            collectionDefList     = new ArrayList<>();
-    private Map<String, ClassificationDef> classificationDefMap  = new HashMap<>();
-    private List<ClassificationDef>        classificationDefList = new ArrayList<>();
-    private Map<String, EntityDef>         entityDefMap          = new HashMap<>();
-    private List<EntityDef>                entityDefList         = new ArrayList<>();
-    private Map<String, RelationshipDef>   relationshipDefMap    = new HashMap<>();
-    private List<RelationshipDef>          relationshipDefList   = new ArrayList<>();
-    private Map<String, TypeDefPatch>      typeDefPatchMap       = new HashMap<>();
-    private List<TypeDefPatch>             typeDefPatchList      = new ArrayList<>();
-    private Map<String, EntityDetail>      entityDetailMap       = new HashMap<>();
-    private List<EntityDetail>             entityDetailList      = new ArrayList<>();
-    private Map<String, Relationship>      relationshipMap       = new HashMap<>();
-    private List<Relationship>             relationshipList      = new ArrayList<>();
-    private Map<String, Object>            guidMap               = new HashMap<>();
-    private Map<String, Object>            nameMap               = new HashMap<>();
-    private Map<String, Set<String>>       entityAttributeMap    = new HashMap<>();
+    private Map<String, PrimitiveDef>                  primitiveDefMap       = new HashMap<>();
+    private List<PrimitiveDef>                         primitiveDefList      = new ArrayList<>();
+    private Map<String, EnumDef>                       enumDefMap            = new HashMap<>();
+    private List<EnumDef>                              enumDefList           = new ArrayList<>();
+    private Map<String, CollectionDef>                 collectionDefMap      = new HashMap<>();
+    private List<CollectionDef>                        collectionDefList     = new ArrayList<>();
+    private Map<String, ClassificationDef>             classificationDefMap  = new HashMap<>();
+    private List<ClassificationDef>                    classificationDefList = new ArrayList<>();
+    private Map<String, EntityDef>                     entityDefMap          = new HashMap<>();
+    private List<EntityDef>                            entityDefList         = new ArrayList<>();
+    private Map<String, RelationshipDef>               relationshipDefMap    = new HashMap<>();
+    private List<RelationshipDef>                      relationshipDefList   = new ArrayList<>();
+    private Map<String, TypeDefPatch>                  typeDefPatchMap       = new HashMap<>();
+    private List<TypeDefPatch>                         typeDefPatchList      = new ArrayList<>();
+    private Map<String, EntityDetail>                  entityDetailMap       = new HashMap<>();
+    private List<EntityDetail>                         entityDetailList      = new ArrayList<>();
+    private Map<String, Relationship>                  relationshipMap       = new HashMap<>();
+    private List<Relationship>                         relationshipList      = new ArrayList<>();
+    private Map<String, ClassificationEntityExtension> classificationMap     = new HashMap<>();
+    private List<ClassificationEntityExtension>        classificationList    = new ArrayList<>();
+    private Map<String, Object>                        guidMap               = new HashMap<>();
+    private Map<String, Object>                        nameMap               = new HashMap<>();
+    private Map<String, Set<String>>                   entityAttributeMap    = new HashMap<>();
 
 
     private static final Logger log = LoggerFactory.getLogger(OMRSArchiveBuilder.class);
@@ -81,6 +84,40 @@ public class OMRSArchiveBuilder
         this.archiveProperties.setOriginatorName(originatorName);
         this.archiveProperties.setCreationDate(creationDate);
         this.archiveProperties.setDependsOnArchives(dependsOnArchives);
+    }
+
+
+
+    /**
+     * Constructor for licensed material.
+     *
+     * It passes parameters used to build the open metadata archive's property header including the
+     * default license string.  This determines the license and copyright for all instances in the
+     * archive that do not have their own explicit license string.  The default license string
+     * will be inserted into each instance with a null license when it is loaded into an open metadata
+     * repository.
+     *
+     * @param archiveGUID unique identifier for this open metadata archive.
+     * @param archiveName name of the open metadata archive.
+     * @param archiveDescription description of the open metadata archive.
+     * @param archiveType enum describing the type of archive this is.
+     * @param originatorName name of the originator (person or organization) of the archive.
+     * @param originatorLicense default license string for content.
+     * @param creationDate data that this archive was created.
+     * @param dependsOnArchives list of GUIDs for archives that this archive depends on (null for no dependencies).
+     */
+    public OMRSArchiveBuilder(String                  archiveGUID,
+                              String                  archiveName,
+                              String                  archiveDescription,
+                              OpenMetadataArchiveType archiveType,
+                              String                  originatorName,
+                              String                  originatorLicense,
+                              Date                    creationDate,
+                              List<String>            dependsOnArchives)
+    {
+        this(archiveGUID, archiveName, archiveDescription, archiveType, originatorName, creationDate, dependsOnArchives);
+
+        this.archiveProperties.setOriginatorLicense(originatorLicense);
     }
 
 
@@ -1106,6 +1143,44 @@ public class OMRSArchiveBuilder
             }
 
             relationshipList.add(relationship);
+        }
+    }
+
+
+    /**
+     * Add a new classification to the archive.
+     *
+     * @param classification instance to add
+     */
+    public void addClassification(ClassificationEntityExtension classification)
+    {
+        final String methodName = "addClassification";
+
+        if (classification != null)
+        {
+            log.debug("Adding Classification: " + classification.toString());
+
+            String classificationId = classification.getEntityToClassify().getGUID() + ":" + classification.getClassification().getName();
+
+            ClassificationEntityExtension   duplicateElement = classificationMap.put(classificationId, classification);
+
+            if (duplicateElement != null)
+            {
+                OMRSErrorCode errorCode = OMRSErrorCode.DUPLICATE_INSTANCE_IN_ARCHIVE;
+                String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(TypeDefCategory.CLASSIFICATION_DEF.getName(),
+                                                                                                                classificationId,
+                                                                                                                duplicateElement.toString(),
+                                                                                                                classification.toString());
+
+                throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                                                  this.getClass().getName(),
+                                                  methodName,
+                                                  errorMessage,
+                                                  errorCode.getSystemAction(),
+                                                  errorCode.getUserAction());
+            }
+
+            classificationList.add(classification);
         }
     }
 

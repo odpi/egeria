@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector;
 
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -18,7 +18,7 @@ import java.util.*;
  * The InMemoryOMRSMetadataCollection represents a metadata repository that supports an in-memory repository.
  * Requests to this metadata collection work with the hashmaps used to manage metadata types and instances.
  */
-public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
+public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
 {
     private InMemoryOMRSMetadataStore         repositoryStore = new InMemoryOMRSMetadataStore();
 
@@ -42,120 +42,12 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         /*
          * The metadata collection Id is the unique identifier for the metadata collection.  It is managed by the super class.
          */
-        super(parentConnector, repositoryName, metadataCollectionId, repositoryHelper, repositoryValidator);
+        super(parentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId, true);
 
         /*
          * Set up the repository name in the repository store
          */
         this.repositoryStore.setRepositoryName(repositoryName);
-    }
-
-
-    /* ======================================================================
-     * Group 1: Confirm the identity of the metadata repository being called.
-     */
-
-    /**
-     * Returns the identifier of the metadata repository.  This is the identifier used to register the
-     * metadata repository with the metadata repository cohort.  It is also the identifier used to
-     * identify the home repository of a metadata instance.
-     *
-     * @return String - metadata collection id.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
-     */
-    public String      getMetadataCollectionId() throws RepositoryErrorException
-    {
-        final String methodName = "getMetadataCollectionId";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        /*
-         * Perform operation
-         */
-        return super.metadataCollectionId;
-    }
-
-
-    /* ==============================
-     * Group 2: Working with typedefs
-     */
-
-
-    /**
-     * Returns the list of different types of metadata organized into two groups.  The first are the
-     * attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
-     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
-     * and classifications.
-     *
-     * @param userId - unique identifier for requesting user.
-     * @return TypeDefGalleryResponse - List of different categories of type definitions.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public TypeDefGallery getAllTypes(String   userId) throws RepositoryErrorException,
-                                                              UserNotAuthorizedException
-    {
-        final String                       methodName = "getAllTypes";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-
-        /*
-         * Perform operation
-         */
-        TypeDefGallery         typeDefGallery    = new TypeDefGallery();
-        List<AttributeTypeDef> attributeTypeDefs = repositoryStore.getAttributeTypeDefs();
-        List<TypeDef>          typeDefs          = repositoryStore.getTypeDefs();
-
-        typeDefGallery.setAttributeTypeDefs(attributeTypeDefs);
-        typeDefGallery.setTypeDefs(typeDefs);
-
-        return typeDefGallery;
-    }
-
-
-    /**
-     * Returns a list of type definitions that have the specified name.  Type names should be unique.  This
-     * method allows wildcard character to be included in the name.  These are * (asterisk) for an
-     * arbitrary string of characters and ampersand for an arbitrary character.
-     *
-     * @param userId - unique identifier for requesting user.
-     * @param name - name of the TypeDefs to return (including wildcard characters).
-     * @return TypeDefs list.
-     * @throws InvalidParameterException the name of the TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public TypeDefGallery findTypesByName(String userId,
-                                          String name) throws InvalidParameterException,
-                                                              RepositoryErrorException,
-                                                              UserNotAuthorizedException
-    {
-        final String   methodName        = "findTypesByName";
-        final String   nameParameterName = "name";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeName(repositoryName, nameParameterName, name, methodName);
-
-        /*
-         * Perform operation
-         */
-        return repositoryHelper.getActiveTypesByWildCardName(repositoryName, name);
     }
 
 
@@ -1789,7 +1681,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
                     (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity)) &&
                     (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
-                                                                              entity.getMetadataCollectionId(),
                                                                               entity,
                                                                               entity.getProperties(),
                                                                               matchCriteria)))
@@ -1943,7 +1834,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                                 if (classificationName.equals(entityClassification.getName()))
                                 {
                                     if (repositoryValidator.verifyMatchingInstancePropertyValues(matchClassificationProperties,
-                                                                                                 null,
                                                                                                  entityClassification,
                                                                                                  entityClassification.getProperties(),
                                                                                                  matchCriteria))
@@ -2274,7 +2164,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                     (repositoryValidator.verifyInstanceType(relationshipTypeGUID, relationship)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
                     (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
-                                                                              relationship.getMetadataCollectionId(),
                                                                               relationship,
                                                                               relationship.getProperties(),
                                                                               matchCriteria)))
@@ -3957,6 +3846,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         updatedRelationship.setStatus(InstanceStatus.DELETED);
 
         updatedRelationship = repositoryHelper.incrementVersion(userId, relationship, updatedRelationship);
+
         repositoryStore.updateRelationshipInStore(updatedRelationship);
 
         return updatedRelationship;
@@ -4063,8 +3953,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         /*
          * Locate relationship
          */
-        Relationship  relationship  = this.getRelationship(userId, deletedRelationshipGUID);
+        Relationship  relationship  = repositoryStore.getRelationship(deletedRelationshipGUID);
 
+        repositoryValidator.validateRelationshipFromStore(repositoryName, deletedRelationshipGUID, relationship, methodName);
         repositoryValidator.validateRelationshipIsDeleted(repositoryName, relationship, methodName);
 
         /*
@@ -4268,6 +4159,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * @param typeDefName - the name of the TypeDef for the entity - used to verify the entity identity.
      * @param homeMetadataCollectionId - the existing identifier for this entity's home.
      * @param newHomeMetadataCollectionId - unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return entity - new values for this entity, including the new home information.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -4280,10 +4172,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                                      String         typeDefGUID,
                                      String         typeDefName,
                                      String         homeMetadataCollectionId,
-                                     String         newHomeMetadataCollectionId) throws InvalidParameterException,
-                                                                                        RepositoryErrorException,
-                                                                                        EntityNotKnownException,
-                                                                                        UserNotAuthorizedException
+                                     String         newHomeMetadataCollectionId,
+                                     String         newHomeMetadataCollectionName) throws InvalidParameterException,
+                                                                                          RepositoryErrorException,
+                                                                                          EntityNotKnownException,
+                                                                                          UserNotAuthorizedException
     {
         final String methodName                = "reHomeEntity";
         final String guidParameterName         = "typeDefGUID";
@@ -4323,6 +4216,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         EntityDetail   updatedEntity = new EntityDetail(entity);
 
         updatedEntity.setMetadataCollectionId(newHomeMetadataCollectionId);
+        updatedEntity.setMetadataCollectionName(newHomeMetadataCollectionName);
         updatedEntity.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
 
         updatedEntity = repositoryHelper.incrementVersion(userId, entity, updatedEntity);
@@ -4496,12 +4390,13 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * becomes permanently unavailable, or if the user community updating this relationship move to working
      * from a different repository in the open metadata repository cohort.
      *
-     * @param userId - unique identifier for requesting user.
-     * @param relationshipGUID - the unique identifier for the relationship.
-     * @param typeDefGUID - the guid of the TypeDef for the relationship - used to verify the relationship identity.
-     * @param typeDefName - the name of the TypeDef for the relationship - used to verify the relationship identity.
-     * @param homeMetadataCollectionId - the existing identifier for this relationship's home.
-     * @param newHomeMetadataCollectionId - unique identifier for the new home metadata collection/repository.
+     * @param userId unique identifier for requesting user.
+     * @param relationshipGUID  the unique identifier for the relationship.
+     * @param typeDefGUID  the guid of the TypeDef for the relationship - used to verify the relationship identity.
+     * @param typeDefName  the name of the TypeDef for the relationship - used to verify the relationship identity.
+     * @param homeMetadataCollectionId  the existing identifier for this relationship's home.
+     * @param newHomeMetadataCollectionId  unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return relationship - new values for this relationship, including the new home information.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -4515,10 +4410,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
                                            String   typeDefGUID,
                                            String   typeDefName,
                                            String   homeMetadataCollectionId,
-                                           String   newHomeMetadataCollectionId) throws InvalidParameterException,
-                                                                                        RepositoryErrorException,
-                                                                                        RelationshipNotKnownException,
-                                                                                        UserNotAuthorizedException
+                                           String   newHomeMetadataCollectionId,
+                                           String   newHomeMetadataCollectionName) throws InvalidParameterException,
+                                                                                          RepositoryErrorException,
+                                                                                          RelationshipNotKnownException,
+                                                                                          UserNotAuthorizedException
     {
         final String  methodName               = "reHomeRelationship";
         final String guidParameterName         = "typeDefGUID";
@@ -4555,6 +4451,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
         Relationship   updatedRelationship = new Relationship(relationship);
 
         updatedRelationship.setMetadataCollectionId(newHomeMetadataCollectionId);
+        updatedRelationship.setMetadataCollectionName(newHomeMetadataCollectionName);
         updatedRelationship.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
 
         updatedRelationship = repositoryHelper.incrementVersion(userId, relationship, updatedRelationship);
@@ -4575,8 +4472,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * Save the entity as a reference copy.  The id of the home metadata collection is already set up in the
      * entity.
      *
-     * @param userId - unique identifier for requesting server.
-     * @param entity - details of the entity to save.
+     * @param userId  unique identifier for requesting server.
+     * @param entity  details of the entity to save.
      * @throws InvalidParameterException the entity is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
@@ -4590,7 +4487,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws InvalidEntityException the new entity has invalid contents.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public void saveEntityReferenceCopy(String userId,
+    public void saveEntityReferenceCopy(String         userId,
                                         EntityDetail   entity) throws InvalidParameterException,
                                                                       RepositoryErrorException,
                                                                       TypeErrorException,
@@ -4624,11 +4521,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * remove reference copies from the local cohort, repositories that have left the cohort,
      * or entities that have come from open metadata archives.
      *
-     * @param userId - unique identifier for requesting server.
-     * @param entityGUID - the unique identifier for the entity.
-     * @param typeDefGUID - the guid of the TypeDef for the relationship - used to verify the relationship identity.
-     * @param typeDefName - the name of the TypeDef for the relationship - used to verify the relationship identity.
-     * @param homeMetadataCollectionId - identifier of the metadata collection that is the home to this entity.
+     * @param userId  unique identifier for requesting server.
+     * @param entityGUID  the unique identifier for the entity.
+     * @param typeDefGUID  the guid of the TypeDef for the relationship - used to verify the relationship identity.
+     * @param typeDefName  the name of the TypeDef for the relationship - used to verify the relationship identity.
+     * @param homeMetadataCollectionId  identifier of the metadata collection that is the home to this entity.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
@@ -4695,11 +4592,11 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * The local repository has requested that the repository that hosts the home metadata collection for the
      * specified entity sends out the details of this entity so the local repository can create a reference copy.
      *
-     * @param userId - unique identifier for requesting server.
-     * @param entityGUID - unique identifier of requested entity.
-     * @param typeDefGUID - unique identifier of requested entity's TypeDef.
-     * @param typeDefName - unique name of requested entity's TypeDef.
-     * @param homeMetadataCollectionId - identifier of the metadata collection that is the home to this entity.
+     * @param userId  unique identifier for requesting server.
+     * @param entityGUID  unique identifier of requested entity.
+     * @param typeDefGUID  unique identifier of requested entity's TypeDef.
+     * @param typeDefName  unique name of requested entity's TypeDef.
+     * @param homeMetadataCollectionId  identifier of the metadata collection that is the home to this entity.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.
@@ -4743,8 +4640,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollection
      * Save the relationship as a reference copy.  The id of the home metadata collection is already set up in the
      * relationship.
      *
-     * @param userId - unique identifier for requesting server.
-     * @param relationship - relationship to save.
+     * @param userId  unique identifier for requesting server.
+     * @param relationship  relationship to save.
      * @throws InvalidParameterException the relationship is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                    the metadata collection is stored.

@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.connectedasset.admin;
 
 import org.odpi.openmetadata.accessservices.connectedasset.auditlog.ConnectedAssetAuditCode;
 import org.odpi.openmetadata.accessservices.connectedasset.listener.ConnectedAssetOMRSTopicListener;
-import org.odpi.openmetadata.accessservices.connectedasset.server.ConnectedAssetRESTServices;
 import org.odpi.openmetadata.accessservices.connectedasset.server.ConnectedAssetServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
