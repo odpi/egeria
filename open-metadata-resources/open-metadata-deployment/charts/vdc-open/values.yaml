@@ -27,7 +27,12 @@ image:
 
   atlas:
     repository: planetf1/atlas-1773-egeria
-    tag: 0.1.1
+    tag: 0.1.2
+    pullPolicy: IfNotPresent
+
+  igcproxy:
+    repository: planetf1/igcproxy-egeriavdc
+    tag: 0.1.0
     pullPolicy: IfNotPresent
 
   nameOverride: ""
@@ -38,6 +43,7 @@ kafka:
   external:
     enabled: true
     type: NodePort
+  replicas: 1
 
 # Network configuration
 service:

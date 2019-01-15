@@ -20,7 +20,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
 
 /**
- * TermAnchor is a relationship between an entity of type Glossary and an entity of type GlossaryTerm.
+ * TermAnchorRelationship is a relationship between an entity of type Glossary and an entity of type GlossaryTerm.
  * The ends of the relationship are stored as entity proxies, where there is a 'proxy' name by which the entity type is known.
  * The first entity proxy has anchor as the proxy name for entity type Glossary.
  * The second entity proxy has terms as the proxy name for entity type GlossaryTerm.
@@ -32,9 +32,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TermAnchor extends Line {
-    private static final Logger log = LoggerFactory.getLogger(TermAnchor.class);
-    private static final String className = TermAnchor.class.getName();
+public class TermAnchorRelationship extends Line {
+    private static final Logger log = LoggerFactory.getLogger(TermAnchorRelationship.class);
+    private static final String className = TermAnchorRelationship.class.getName();
 
    //public java.util.Set<String> propertyNames = new HashSet<>();
       public static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
@@ -61,17 +61,17 @@ public class TermAnchor extends Line {
       public static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
       public static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
       public static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
-    protected String entity1Guid;
-    protected String entity2Guid;
+      protected String termGuid;
+      protected String glossaryGuid;
 
 
-    public TermAnchor() {
+    public TermAnchorRelationship() {
         initialise();
     }
 
     private void initialise()
     {
-       name = "TermAnchor";
+       name = "TermAnchorRelationship";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);
@@ -86,14 +86,14 @@ public class TermAnchor extends Line {
         typeDefGuid = "1d43d661-bdc7-4a91-a996-3239b8f82e56";
     }
 
-    public TermAnchor(Line template) {
+    public TermAnchorRelationship(Line template) {
         super(template);
         initialise();
     }
 
-    public TermAnchor(Relationship omrsRelationship) {
+    public TermAnchorRelationship(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "TermAnchor";
+        name = "TermAnchorRelationship";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);
@@ -101,6 +101,22 @@ public class TermAnchor extends Line {
         catch (IllegalArgumentException e) {
            lineType = LineType.Other;
         }
+    }
+
+    public String getTermGuid() {
+        return termGuid;
+    }
+
+    public void setTermGuid(String termGuid) {
+        this.termGuid = termGuid;
+    }
+
+    public String getGlossaryGuid() {
+        return glossaryGuid;
+    }
+
+    public void setGlossaryGuid(String glossaryGuid) {
+        this.glossaryGuid = glossaryGuid;
     }
 
     InstanceProperties obtainInstanceProperties() {
@@ -126,9 +142,9 @@ public class TermAnchor extends Line {
              {
                  sb = new StringBuilder();
              }
-             sb.append(" TermAnchor=");
+             sb.append(" TermAnchorRelationship=");
              sb.append(super.toString(sb));
-             sb.append(" TermAnchor Attributes{");
+             sb.append(" TermAnchorRelationship Attributes{");
              sb.append("}");
              return sb;
          }
