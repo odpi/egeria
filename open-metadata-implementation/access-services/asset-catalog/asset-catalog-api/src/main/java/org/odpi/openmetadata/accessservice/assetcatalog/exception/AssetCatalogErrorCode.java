@@ -126,7 +126,12 @@ public enum AssetCatalogErrorCode {
             "The system is unable to retrieve the classifications for the given asset.",
             "Check that the unique identifier for the asset is correct."),
 
-    SERVICE_NOT_INITIALIZED(503, "OMAS-ASSET-CATALOG-503-003 ",
+    METHOD_NOT_IMPLEMENTED(501, "OMAS-ASSET-CATALOG-501-001 ",
+            "The Asset Catalog OMAS method {0}({1}) is not implemented for server {2}",
+            "A method in Asset Catalog OMAS does not have a complete implementation.",
+            "Raise a Github issue to get this fixed."),
+
+    SERVICE_NOT_INITIALIZED(503, "OMAS-ASSET-CATALOG-503-001 ",
             "The access service has not been initialized for server {0} and can not support REST API calls",
             "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active for the requested server.",
             "If the server is supposed to have this access service activated, correct the server configuration and restart the server.");

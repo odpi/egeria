@@ -20,6 +20,10 @@
         plug open metadata capability into another technology.
     </description>
 
+    <properties>
+        <gaiandb.url>https://github.com/gaiandb/gaiandb/blob/master/build/GAIANDB_V2.1.8_20160523.zip?raw=true</gaiandb.url>
+    </properties>
+
     <artifactId>adapters</artifactId>
     <packaging>pom</packaging>
     <modules>
@@ -71,7 +75,7 @@
                         </goals>
                         <configuration>
                             <url>
-                                https://github.com/gaiandb/gaiandb/blob/master/build/GAIANDB_V2.1.8_20160523.zip?raw=true
+                                ${gaiandb.url}
                             </url>
                             <outputFileName>GAIANDB_V2.1.8_20160523.zip</outputFileName>
                             <outputDirectory>${project.build.directory}</outputDirectory>

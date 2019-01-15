@@ -22,6 +22,14 @@ public interface OMRSLocalRepository
 
 
     /**
+     * Returns the display name of the local repository's metadata collection.
+     *
+     * @return String guid
+     */
+    String getMetadataCollectionName();
+
+
+    /**
      * Returns the Connection to the local repository that can be used by remote servers to create
      * an OMRS repository connector to call this server in order to access the local repository.
      *

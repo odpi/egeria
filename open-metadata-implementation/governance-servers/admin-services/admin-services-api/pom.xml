@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -17,9 +18,8 @@
 
     <name>Administration Services API</name>
     <description>
-        Provides the definitions that
-        make up the APIs used by external components when communicating
-        with the the open metadata administration services.
+        Provides the definitions that make up the APIs used by external components when communicating
+        with the open metadata administration services.
     </description>
 
     <artifactId>admin-services-api</artifactId>

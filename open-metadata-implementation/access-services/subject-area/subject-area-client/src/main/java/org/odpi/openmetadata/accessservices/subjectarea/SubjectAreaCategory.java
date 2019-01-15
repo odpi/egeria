@@ -143,6 +143,7 @@ public interface SubjectAreaCategory
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws GUIDNotPurgedException a hard delete was issued but the category was not purged
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -153,7 +154,30 @@ public interface SubjectAreaCategory
                                                                                     UserNotAuthorizedException,
                                                                                     MetadataServerUncontactableException,
                                                                                     GUIDNotPurgedException,
-                                                                                    UnexpectedResponseException ;
+                                                                                    UnrecognizedGUIDException,
+                                                                                    UnexpectedResponseException;
+    /**
+     * Restore a Category
+     *
+     * Restore allows the deleted Category to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the category to restore
+     * @return the restored category
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public  Category restoreCategory(String serverName, String userId,String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnrecognizedGUIDException,
+            FunctionNotSupportedException,
+            UnexpectedResponseException;
     /**
      * Create a SubjectAreaDefinition
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -286,15 +310,40 @@ public interface SubjectAreaCategory
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws GUIDNotPurgedException a hard delete was issued but the subjectAreaDefinition was not purged
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public  void purgeSubjectAreaDefinition(String serverName, String userId,String guid) throws InvalidParameterException,
-                                                                                                 UserNotAuthorizedException,
-                                                                                                 MetadataServerUncontactableException,
-                                                                                                 GUIDNotPurgedException,
-                                                                                                 UnexpectedResponseException ;
+    public  void purgeSubjectAreaDefinition(String serverName, String userId,String guid)  throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            GUIDNotPurgedException,
+            UnrecognizedGUIDException,
+            UnexpectedResponseException;
+    /**
+     * Restore a SubjectAreaDefinition
+     *
+     * Restore allows the deleted Subject Area to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the subject area to restore
+     * @return the restored subject area
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public  SubjectAreaDefinition restoreSubjectAreaDefinition(String serverName, String userId,String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnrecognizedGUIDException,
+            FunctionNotSupportedException,
+            UnexpectedResponseException;
+
 }

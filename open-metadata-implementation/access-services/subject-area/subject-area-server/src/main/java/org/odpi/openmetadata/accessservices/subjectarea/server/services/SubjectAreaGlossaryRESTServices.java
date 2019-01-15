@@ -4,8 +4,6 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.GlossaryReferences;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.references.ReferenceableToRelatedMedia.RelatedMediaReference;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.server.SubjectAreaBeansToAccessOMRS;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
@@ -16,11 +14,11 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.GlossaryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.TypeGuids;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,12 +39,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
     public static final String TERM_ANCHOR_RELATIONSHIP_GUID = "1d43d661-bdc7-4a91-a996-3239b8f82e56";
     public static final String CATEGORY_ANCHOR_RELATIONSHIP_GUID = "c628938e-815e-47db-8d1c-59bb2e84e028";
     public static final String CATEGORY_HIERARCHY_LINK_GUID = "71e4b6fb-3412-4193-aff3-a16eccd87e8e";
-
-    static private String accessServiceName = null;
-    static private OMRSRepositoryConnector repositoryConnector = null;
-
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaGlossaryRESTServices.class);
-
     private static final String className = SubjectAreaGlossaryRESTServices.class.getName();
 
     /**
@@ -64,12 +57,16 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
     /**
      * Create a Glossary. There are specializations of glossaries that can also be created using this operation.
      * To create a specialization, you should specify a nodeType other than Glossary in the supplied glossary.
+     *
+     * Glossaries with the same name can be confusing. Best practise is to createGlossaries that have unique names.
+     * This Create call does not police that glossary names are unique. So it is possible to create Glossaries with the same name as each other.
+     *
      * <p>
      * Valid nodeTypes for this request are:
      * <ul>
      *     <li>Taxonomy to create a Taxonomy </li>
      *     <li>CanonicalGlossary to create a canonical glossary </li>
-     *     <li>TaxonomyAndCanonicalGlossary to create a glossary that is both a taxonomy and a canonical glosary </li>
+     *     <li>TaxonomyAndCanonicalGlossary to create a glossary that is both a taxonomy and a canonical glossary </li>
      *     <li>Glossary to create a glossary that is not a taxonomy or a canonical glossary</li>
      * </ul>
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -90,33 +87,16 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
         // initialise omrs API helper with the right instance based on the server name
-        SubjectAreaOMASAPIResponse response = initialiseOMRSAPIHelperForInstance(serverName);
-        SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
-        glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
-        SubjectAreaBeansToAccessOMRS service = new SubjectAreaBeansToAccessOMRS();
-        service.setOMRSAPIHelper(oMRSAPIHelper);
-
-        org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary generatedGlossary = null;
-        if (response==null)
-        {
-            // initialise omrs API helper with the right instance based on the server name
-            response = initialiseOMRSAPIHelperForInstance(serverName);
-        }
+        SubjectAreaOMASAPIResponse response =null;
         try {
-            InputValidator.validateUserIdNotNull(className,methodName,userId);
+            // initialise omrs API helper with the right instance based on the server name
+            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId,suppliedGlossary.getEffectiveFromTime(),suppliedGlossary.getEffectiveToTime(), methodName);
+            SubjectAreaGlossaryRESTServices glossaryRESTServices = new SubjectAreaGlossaryRESTServices();
+            glossaryRESTServices.setOMRSAPIHelper(this.oMRSAPIHelper);
+            org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary generatedGlossary = null;
             InputValidator.validateNodeType( className,methodName,suppliedGlossary.getNodeType(), NodeType.Glossary,NodeType.Taxonomy,NodeType.TaxonomyAndCanonicalGlossary,NodeType.CanonicalGlossary);
-        } catch (InvalidParameterException e) {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        }
-        final String suppliedGlossaryName = suppliedGlossary.getName();
-        if (response == null) {
-            try {
-                generatedGlossary = GlossaryMapper.mapGlossaryToOMRSBean(suppliedGlossary);
-            } catch (InvalidParameterException e) {
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            }
-        }
-        if (response == null) {
+            final String suppliedGlossaryName = suppliedGlossary.getName();
+            generatedGlossary = GlossaryMapper.mapGlossaryToOMRSBean(suppliedGlossary);
             // need to check we have a name
             if (suppliedGlossaryName == null || suppliedGlossaryName.equals("")) {
                 SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_CREATE_WITHOUT_NAME;
@@ -124,59 +104,28 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
                         + errorCode.getFormattedErrorMessage(className,
                         methodName);
                 log.error(errorMessage);
-                InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
                         className,
                         methodName,
                         errorMessage,
                         errorCode.getSystemAction(),
                         errorCode.getUserAction());
-                response = new InvalidParameterExceptionResponse(e);
             } else {
-                SubjectAreaOMASAPIResponse getGlossaryResponse = glossaryRESTServices.getGlossaryByName(serverName,userId, suppliedGlossaryName);
-                if (getGlossaryResponse.getResponseCategory().equals(ResponseCategory.Glossary)) {
-                    GlossaryResponse glossaryResponse = (GlossaryResponse) getGlossaryResponse;
-                    // glossary found
-                    SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_CREATE_FAILED_NAME_ALREADY_EXISTS;
-                    String errorMessage = errorCode.getErrorMessageId()
-                            + errorCode.getFormattedErrorMessage(
-                            suppliedGlossaryName);
-                    log.error(errorMessage);
-                    InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                            className,
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
-                    response = new InvalidParameterExceptionResponse(e);
-                } else {
-                    if (getGlossaryResponse.getResponseCategory().equals(ResponseCategory.UnrecognizedNameException)) {
-                        // this means that there were no errors and a glossary was not found by this name so we are ok to create one.
-                    } else {
-                        // an error occurred so do not continue
-                        response = getGlossaryResponse;
-                    }
-                }
-            }
-        }
-        if (response == null) {
-            org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary newGeneratedGlossary = null;
-            try {
-                newGeneratedGlossary = service.createGlossary(userId, generatedGlossary);
+                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary newGeneratedGlossary =  subjectAreaOmasREST.createGlossary(userId, generatedGlossary);
                 org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary newGlossary = GlossaryMapper.mapOMRSBeantoGlossary(newGeneratedGlossary);
                 response = new GlossaryResponse(newGlossary);
-            } catch (MetadataServerUncontactableException e) {
-                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-            } catch (UserNotAuthorizedException e) {
-                response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-            } catch (InvalidParameterException e) {
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            } catch (ClassificationException e) {
-                response = OMASExceptionToResponse.convertClassificationException(e);
-            } catch (StatusNotSupportedException e) {
-                response = OMASExceptionToResponse.convertStatusNotsupportedException(e);
             }
+        } catch (MetadataServerUncontactableException e) {
+            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+        } catch (UserNotAuthorizedException e) {
+            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+        } catch (InvalidParameterException e) {
+            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (ClassificationException e) {
+            response = OMASExceptionToResponse.convertClassificationException(e);
+        } catch (StatusNotSupportedException e) {
+            response = OMASExceptionToResponse.convertStatusNotsupportedException(e);
         }
-
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
         }
@@ -204,72 +153,46 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
         // initialise omrs API helper with the right instance based on the server name
-        SubjectAreaOMASAPIResponse response = initialiseOMRSAPIHelperForInstance(serverName);
-
-        SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS = new SubjectAreaBeansToAccessOMRS();
-        subjectAreaBeansToAccessOMRS.setOMRSAPIHelper(oMRSAPIHelper);
-        org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary generatedGlossary = null;
-        if (response== null)
+        SubjectAreaOMASAPIResponse response = null;
+        try
         {
-            try
-            {
-                InputValidator.validateUserIdNotNull(className, methodName, userId);
-                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            } catch (InvalidParameterException e)
-            {
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            }
-        }
-        if (response== null) {
-            try {
-                generatedGlossary = subjectAreaBeansToAccessOMRS.getGlossaryById(userId, guid);
-            } catch (MetadataServerUncontactableException e) {
-                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-            } catch (UserNotAuthorizedException e) {
-                response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-            } catch (InvalidParameterException e) {
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            } catch (UnrecognizedGUIDException e) {
-                response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
-            }
-        }
-        org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary gotGlossary = null;
-        if (response == null) {
-            Set<Line> glossaryRelationships = null;
-            gotGlossary = GlossaryMapper.mapOMRSBeantoGlossary(generatedGlossary);
+            // initialise omrs API helper with the right instance based on the server name
+            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary generatedGlossary = subjectAreaOmasREST.getGlossaryById(userId, guid);
+            org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary gotGlossary = GlossaryMapper.mapOMRSBeantoGlossary(generatedGlossary);
             List<org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> classifications = generatedGlossary.getClassifications();
             // set the org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary classifications into the Node
             gotGlossary.setClassifications(classifications);
 
-            try {
-                glossaryRelationships = subjectAreaBeansToAccessOMRS.getGlossaryRelationships(userId, guid);
-                GlossaryReferences generatedGlossaryReferences = null;
-                generatedGlossaryReferences = new GlossaryReferences(guid, glossaryRelationships);
-                // set icons
-                Set<RelatedMediaReference> relatedMediaReferenceSet = generatedGlossaryReferences.getRelatedMediaReferences();
-                Set<IconSummary> icons = SubjectAreaUtils.getIconSummaries(userId, relatedMediaReferenceSet);
-                if (icons != null) {
-                    gotGlossary.setIcons(icons);
-                }
-                response = new GlossaryResponse(gotGlossary);
-            } catch (MetadataServerUncontactableException e) {
-                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-            } catch (UserNotAuthorizedException e) {
-                response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-            } catch (InvalidParameterException e) {
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            } catch (FunctionNotSupportedException e) {
-                //                response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
-                //TODO appropriate Error / log
-            } catch (UnrecognizedGUIDException e) {
-                response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+            String mediaReferenceTypeGuid = TypeGuids.getMediaReferenceTypeGuid();
+            // At some stage we may wish to consider paging this request - for now assuing that the number of related media is likely to be low.
+            // get the related media relationships
+            Set<Line> glossaryRelationships = subjectAreaOmasREST.getGlossaryRelationships(userId, guid, mediaReferenceTypeGuid, 0, null, null, null, 0);
+            // get the icons from the related media relationships
+            Set<IconSummary> icons =  SubjectAreaUtils.getIconSummarySet(userId,subjectAreaOmasREST,glossaryRelationships);
+            if (icons != null) {
+                gotGlossary.setIcons(icons);
             }
+            response = new GlossaryResponse(gotGlossary);
+        } catch (MetadataServerUncontactableException e) {
+            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+        } catch (UserNotAuthorizedException e) {
+            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+        } catch (InvalidParameterException e) {
+            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (UnrecognizedGUIDException e) {
+            response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", Node=" + gotGlossary);
+                log.debug("<== successful method : " + methodName + ",userId=" + userId);
         }
         return response;
     }
+
 
     /**
      * Update a Glossary
@@ -300,217 +223,78 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
-        // initialise omrs API helper with the right instance based on the server name
-        SubjectAreaOMASAPIResponse response = initialiseOMRSAPIHelperForInstance(serverName);
-        if (response ==null)
+         SubjectAreaOMASAPIResponse response = null;
+        try
         {
-            try
-            {
-                InputValidator.validateUserIdNotNull(className, methodName, userId);
-                InputValidator.validateNodeType(className, methodName, suppliedGlossary.getNodeType(), NodeType.Glossary, NodeType.Taxonomy, NodeType.TaxonomyAndCanonicalGlossary, NodeType.CanonicalGlossary);
-                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            } catch (InvalidParameterException e)
-            {
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            }
-        }
-        if (response ==null) {
-            SubjectAreaBeansToAccessOMRS service = new SubjectAreaBeansToAccessOMRS();
-            service.setOMRSAPIHelper(this.oMRSAPIHelper);
+            // initialise omrs API helper with the right instance based on the server name
+            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
+            InputValidator.validateNodeType(className, methodName, suppliedGlossary.getNodeType(), NodeType.Glossary, NodeType.Taxonomy, NodeType.TaxonomyAndCanonicalGlossary, NodeType.CanonicalGlossary);
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+
             response = getGlossaryByGuid(serverName,userId, guid);
             if (response.getResponseCategory().equals(ResponseCategory.Glossary)) {
                 org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary originalGlossary = ((GlossaryResponse) response).getGlossary();
                 if (originalGlossary.getSystemAttributes() != null) {
                     Status status = originalGlossary.getSystemAttributes().getStatus();
-                    SubjectAreaOMASAPIResponse deleteCheckResponse = SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.GLOSSARY_UPDATE_FAILED_ON_DELETED_GLOSSARY);
-                    if (deleteCheckResponse != null) {
-                        response = deleteCheckResponse;
-                    }
+                    SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.GLOSSARY_UPDATE_FAILED_ON_DELETED_GLOSSARY);
                 }
                 if (suppliedGlossary.getSystemAttributes() != null) {
                     Status status = suppliedGlossary.getSystemAttributes().getStatus();
-                    SubjectAreaOMASAPIResponse deleteCheckResponse = SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.STATUS_UPDATE_TO_DELETED_NOT_ALLOWED);
-                    if (deleteCheckResponse != null) {
-                        response = deleteCheckResponse;
-                    }
+                    SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.STATUS_UPDATE_TO_DELETED_NOT_ALLOWED);
                 }
-                if (response != null) {
-                    Glossary updateGlossary = originalGlossary;
-                    if (isReplace) {
-                        // copy over attributes
+
+                Glossary updateGlossary = originalGlossary;
+                if (isReplace) {
+                    // copy over attributes
+                    updateGlossary.setName(suppliedGlossary.getName());
+                    updateGlossary.setQualifiedName(suppliedGlossary.getQualifiedName());
+                    updateGlossary.setDescription(suppliedGlossary.getDescription());
+                    updateGlossary.setUsage(suppliedGlossary.getUsage());
+                    updateGlossary.setAdditionalProperties(suppliedGlossary.getAdditionalProperties());
+                    //TODO handle governance classifications and other classifications
+                } else {
+                    // copy over attributes if specified
+                    if (suppliedGlossary.getName() != null) {
                         updateGlossary.setName(suppliedGlossary.getName());
+                    }
+                    if (suppliedGlossary.getQualifiedName() != null) {
                         updateGlossary.setQualifiedName(suppliedGlossary.getQualifiedName());
+                    }
+                    if (suppliedGlossary.getDescription() != null) {
                         updateGlossary.setDescription(suppliedGlossary.getDescription());
+                    }
+                    if (suppliedGlossary.getUsage() != null) {
                         updateGlossary.setUsage(suppliedGlossary.getUsage());
+                    }
+                    if (suppliedGlossary.getAdditionalProperties() != null) {
                         updateGlossary.setAdditionalProperties(suppliedGlossary.getAdditionalProperties());
-                        //TODO handle governance classifications and other classifications
-                    } else {
-                        // copy over attributes if specified
-                        if (suppliedGlossary.getName() != null) {
-                            updateGlossary.setName(suppliedGlossary.getName());
-                        }
-                        if (suppliedGlossary.getQualifiedName() != null) {
-                            updateGlossary.setQualifiedName(suppliedGlossary.getQualifiedName());
-                        }
-                        if (suppliedGlossary.getDescription() != null) {
-                            updateGlossary.setDescription(suppliedGlossary.getDescription());
-                        }
-                        if (suppliedGlossary.getUsage() != null) {
-                            updateGlossary.setUsage(suppliedGlossary.getUsage());
-                        }
-                        if (suppliedGlossary.getAdditionalProperties() != null) {
-                            updateGlossary.setAdditionalProperties(suppliedGlossary.getAdditionalProperties());
-                        }
-                        //TODO handle governance classifications and other classifications
                     }
-                    org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary generatedGlossary = null;
-                    try {
-                        generatedGlossary = GlossaryMapper.mapGlossaryToOMRSBean(updateGlossary);
-                        org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary updatedGeneratedGlossary = null;
-                        try {
-                            updatedGeneratedGlossary = service.updateGlossary(userId, generatedGlossary);
-                        } catch (MetadataServerUncontactableException e) {
-                            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-                        } catch (UserNotAuthorizedException e) {
-                            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-                        } catch (UnrecognizedGUIDException e) {
-                            response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
-                        }
-                        org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary updatedGlossary = GlossaryMapper.mapOMRSBeantoGlossary(updatedGeneratedGlossary);
-                        response = new GlossaryResponse(updatedGlossary);
-                    } catch (InvalidParameterException e) {
-                        response = OMASExceptionToResponse.convertInvalidParameterException(e);
-
-
-                    }
+                    //TODO handle governance classifications and other classifications
                 }
+                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary generatedGlossary = null;
+
+                generatedGlossary = GlossaryMapper.mapGlossaryToOMRSBean(updateGlossary);
+                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary updatedGeneratedGlossary = null;
+
+                updatedGeneratedGlossary =subjectAreaOmasREST.updateGlossary(userId, generatedGlossary);
+
+                org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary updatedGlossary = GlossaryMapper.mapOMRSBeantoGlossary(updatedGeneratedGlossary);
+                response = new GlossaryResponse(updatedGlossary);
             }
+        } catch (MetadataServerUncontactableException e) {
+            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+        } catch (UserNotAuthorizedException e) {
+            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+        } catch (UnrecognizedGUIDException e) {
+            response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+        } catch (InvalidParameterException e) {
+            response = OMASExceptionToResponse.convertInvalidParameterException(e);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ",response=" + response);
         }
         return response;
 
-    }
-
-    /**
-     * Get a Glossary by name
-     * <p>
-     * Glossaries should have unique names. If repositories were not able to contact each other on the network, it is possible that glossaries of the same
-     * name might be added. If this has occured this operation may not retun the glossary you are interested in. The guid of the glossary is the way to
-     * uniquely identify a glossary; a get for glossary by guid can be issued to find glossaries with particular guids.
-     *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
-     * @param name   find the glossary with this name.
-     * @return the requested glossary.
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
-     * </ul>
-     */
-    public SubjectAreaOMASAPIResponse getGlossaryByName(String serverName, String userId, String name) {
-        final String methodName = "getGlossaryByName";
-        if (log.isDebugEnabled()) {
-            log.debug("==> Method: " + methodName + ",userId=" + userId + ",name=" + name);
-        }
-        // initialise omrs API helper with the right instance based on the server name
-        SubjectAreaOMASAPIResponse response = initialiseOMRSAPIHelperForInstance(serverName);
-        List<EntityDetail> omrsEntityDetails = null;
-        if (response ==null)
-        {
-            try
-            {
-                InputValidator.validateUserIdNotNull(className, methodName, userId);
-                InputValidator.validateNameNotNull(className, methodName, name, "name");
-            } catch (InvalidParameterException e)
-            {
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            }
-        }
-        if (response == null) {
-            MatchCriteria matchCriteria = MatchCriteria.ALL;
-            // guid for the Glossary Type.
-            String entityTypeGUID = GLOSSARY_TYPE_GUID;
-            InstanceProperties matchProperties = new InstanceProperties();
-            PrimitivePropertyValue nameValue = new PrimitivePropertyValue();
-            nameValue.setPrimitiveValue(name);
-            nameValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-            matchProperties.setProperty("displayName", nameValue);
-
-            // Look for all statuses apart from DELETED.
-            List<InstanceStatus> limitResultsByStatus = new ArrayList<>();
-            limitResultsByStatus.add(InstanceStatus.ACTIVE);
-            limitResultsByStatus.add(InstanceStatus.DRAFT);
-            limitResultsByStatus.add(InstanceStatus.PREPARED);
-            limitResultsByStatus.add(InstanceStatus.PROPOSED);
-            limitResultsByStatus.add(InstanceStatus.UNKNOWN);
-
-            try {
-                omrsEntityDetails = oMRSAPIHelper.callFindEntitiesByProperty(
-                        userId,
-                        entityTypeGUID,
-                        matchProperties,
-                        matchCriteria,
-                        0,
-                        limitResultsByStatus,
-                        null,
-                        null,
-                        null,
-                        null,
-                        0
-
-                );
-            } catch (MetadataServerUncontactableException e) {
-                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-            } catch (UserNotAuthorizedException e) {
-                response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-            } catch (FunctionNotSupportedException e) {
-                response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
-            } catch (InvalidParameterException e) {
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            }
-        }
-
-        org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary gotGlossary = null;
-        if (response == null) {
-            if (omrsEntityDetails != null && omrsEntityDetails.size() > 0) {
-                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary gotGeneratedGlossary = null;
-                try {
-                    gotGeneratedGlossary = org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.GlossaryMapper.mapOmrsEntityDetailToGlossary(omrsEntityDetails.get(0));
-                } catch (InvalidParameterException e) {
-                    response = OMASExceptionToResponse.convertInvalidParameterException(e);
-                }
-                if (response == null) {
-                    gotGlossary = GlossaryMapper.mapOMRSBeantoGlossary(gotGeneratedGlossary);
-                    response = new GlossaryResponse(gotGlossary);
-                }
-            } else {
-                // did not find a glossary of this name
-                SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_NAME_DOES_NOT_EXIST;
-                String errorMessage = errorCode.getErrorMessageId()
-                        + errorCode.getFormattedErrorMessage(className,
-                        name);
-                UnrecognizedNameException e = new UnrecognizedNameException(errorCode.getHTTPErrorCode(),
-                        className,
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction(),
-                        name);
-                response = new UnrecognizedNameExceptionResponse(e);
-
-            }
-        }
-        //If there are more than one then pick the first one. We could be more sophisticated with this in the future maybe identify a primary icon.
-
-        if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
-        }
-        return response;
     }
 
     /**
@@ -547,23 +331,15 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ", guid=" + guid);
         }
-        // initialise omrs API helper with the right instance based on the server name
-        SubjectAreaOMASAPIResponse response = initialiseOMRSAPIHelperForInstance(serverName);
-        if (response == null)
-        {
-            try
-            {
-                InputValidator.validateUserIdNotNull(className, methodName, userId);
-                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            } catch (InvalidParameterException e)
-            {
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            }
-        }
+
+        SubjectAreaOMASAPIResponse response = null;
         List<Relationship> terms = null;
         List<Relationship> categories = null;
-        if (response == null) {
-
+        try
+        {
+            // initialise omrs API helper with the right instance based on the server name
+            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             // do not delete if there is glossary content (terms or categories)
             // look for all glossary content that is not deleted.
             List<InstanceStatus> statusList = new ArrayList<>();
@@ -572,64 +348,21 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             statusList.add(InstanceStatus.PROPOSED);
             statusList.add(InstanceStatus.PREPARED);
             statusList.add(InstanceStatus.UNKNOWN);
-
-
-            try {
-                terms = oMRSAPIHelper.callGetRelationshipsForEntity(userId, guid, TERM_ANCHOR_RELATIONSHIP_GUID, 0, statusList, null, null, null, 1);
-                categories = oMRSAPIHelper.callGetRelationshipsForEntity(userId, guid, CATEGORY_ANCHOR_RELATIONSHIP_GUID, 0, statusList, null, null, null, 1);
-            } catch (MetadataServerUncontactableException e) {
-                response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-            } catch (UserNotAuthorizedException e) {
-                response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-            } catch (InvalidParameterException e) {
-                response = OMASExceptionToResponse.convertInvalidParameterException(e);
-            } catch (FunctionNotSupportedException e) {
-                response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
-            } catch (UnrecognizedGUIDException e) {
-                response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
-            }
-        }
-        if (response == null) {
-            SubjectAreaBeansToAccessOMRS service = new SubjectAreaBeansToAccessOMRS();
-            service.setOMRSAPIHelper(oMRSAPIHelper);
+            terms = oMRSAPIHelper.callGetRelationshipsForEntity(userId, guid, TERM_ANCHOR_RELATIONSHIP_GUID, 0, statusList, null, null, null, 1);
+            categories = oMRSAPIHelper.callGetRelationshipsForEntity(userId, guid, CATEGORY_ANCHOR_RELATIONSHIP_GUID, 0, statusList, null, null, null, 1);
             if (((terms == null) || terms.isEmpty()) &&
                     (categories == null || categories.isEmpty())) {
                 if (isPurge) {
-                    try {
-                        service.purgeGlossaryByGuid(userId, guid);
-                        response = new VoidResponse();
-                    } catch (MetadataServerUncontactableException e) {
-                        response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-                    } catch (UserNotAuthorizedException e) {
-                        response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-                    } catch (InvalidParameterException e) {
-                        response = OMASExceptionToResponse.convertInvalidParameterException(e);
-                    } catch (UnrecognizedGUIDException e) {
-                        response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
-                    } catch (EntityNotDeletedException e) {
-                        response = OMASExceptionToResponse.convertEntityNotDeletedException(e);
-                    } catch (GUIDNotPurgedException e) {
-                        response = OMASExceptionToResponse.convertGUIDNotPurgedException(e);
-                    }
-
+                    subjectAreaOmasREST.purgeGlossaryByGuid(userId, guid);
+                    response = new VoidResponse();
                 } else {
                     org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary deletedGeneratedGlossary = null;
-                    try {
-                        EntityDetail entityDetail = service.deleteGlossaryByGuid(userId, guid);
-                        deletedGeneratedGlossary = org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.GlossaryMapper.mapOmrsEntityDetailToGlossary(entityDetail);
-                        org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary deletedGlossary = GlossaryMapper.mapOMRSBeantoGlossary(deletedGeneratedGlossary);
-                        response = new GlossaryResponse(deletedGlossary);
-                    } catch (MetadataServerUncontactableException e) {
-                        response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-                    } catch (UserNotAuthorizedException e) {
-                        response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-                    } catch (FunctionNotSupportedException e) {
-                        response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
-                    } catch (InvalidParameterException e) {
-                        response = OMASExceptionToResponse.convertInvalidParameterException(e);
-                    } catch (UnrecognizedGUIDException e) {
-                        response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
-                    }
+
+                    EntityDetail entityDetail = subjectAreaOmasREST.deleteGlossaryByGuid(userId, guid);
+                    deletedGeneratedGlossary = org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.GlossaryMapper.mapOmrsEntityDetailToGlossary(entityDetail);
+                    org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary deletedGlossary = GlossaryMapper.mapOMRSBeantoGlossary(deletedGeneratedGlossary);
+                    response = new GlossaryResponse(deletedGlossary);
+
                 }
             } else {
                 SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_CONTENT_PREVENTED_DELETE;
@@ -645,12 +378,87 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
                         errorCode.getUserAction());
                 response = new InvalidParameterExceptionResponse(e);
             }
-        } else {
-            // error occurred while looking for existing terms of categories.
+        } catch (MetadataServerUncontactableException e) {
+            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+        } catch (UserNotAuthorizedException e) {
+            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+        } catch (InvalidParameterException e) {
+            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (FunctionNotSupportedException e) {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
+        } catch (UnrecognizedGUIDException e) {
+            response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+        } catch (GUIDNotPurgedException e)
+        {
+            response = OMASExceptionToResponse.convertGUIDNotPurgedException(e);
+        } catch (EntityNotDeletedException e)
+        {
+            response = OMASExceptionToResponse.convertEntityNotDeletedException(e);
         }
-
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId);
+        }
+        return response;
+    }
+    /**
+     * Restore a Glossary
+     *
+     * Restore allows the deleted Glossary to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the glossary to restore
+     * @return response which when successful contains the restored glossary
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse restoreGlossary(String serverName, String userId, String guid)
+    {
+        final String methodName = "restoreGlossary";
+        if (log.isDebugEnabled())
+        {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+        }
+        SubjectAreaOMASAPIResponse response = null;
+        try
+        {
+            // initialise omrs API helper with the right instance based on the server name
+            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary restoredGeneratedGlossary = null;
+
+            EntityDetail omrsEntity = this.oMRSAPIHelper.callOMRSRestoreEntity(userId, guid);
+            restoredGeneratedGlossary = org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.GlossaryMapper.mapOmrsEntityDetailToGlossary(omrsEntity);
+            org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary restoredGlossary = GlossaryMapper.mapOMRSBeantoGlossary(restoredGeneratedGlossary);
+            response = new GlossaryResponse(restoredGlossary);
+        } catch (InvalidParameterException e)
+        {
+            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (UserNotAuthorizedException e)
+        {
+            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+        } catch (MetadataServerUncontactableException e)
+        {
+            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+        } catch (UnrecognizedGUIDException e)
+        {
+            response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
+        } catch (GUIDNotDeletedException e)
+        {
+            response = OMASExceptionToResponse.convertGUIDNotDeletedException(e);
+        }
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
         }
         return response;
     }

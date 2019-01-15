@@ -8,4 +8,8 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
  * Simply define a new POJO as extending this base class to inherit the attributes that are found
  * on virtually all IGC asset types.
  */
-public abstract class InformationAsset extends MainObject { }
+public class InformationAsset extends MainObject {
+    public static String getIgcTypeId() { return "information_asset"; }
+    public static String getIgcTypeDisplayName() { return "Information Asset"; }
+    public static final Boolean isInformationAsset(Object obj) { return (obj.getClass() == InformationAsset.class); }
+}

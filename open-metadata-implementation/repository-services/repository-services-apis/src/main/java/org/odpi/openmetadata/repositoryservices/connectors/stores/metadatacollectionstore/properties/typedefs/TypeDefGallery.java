@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -61,6 +62,10 @@ public class TypeDefGallery extends TypeDefElementHeader
         {
             return null;
         }
+        else if (attributeTypeDefs.isEmpty())
+        {
+            return null;
+        }
         else
         {
             return new ArrayList<>(attributeTypeDefs);
@@ -75,18 +80,7 @@ public class TypeDefGallery extends TypeDefElementHeader
      */
     public void setAttributeTypeDefs(List<AttributeTypeDef> attributeTypeDefs)
     {
-        if (attributeTypeDefs == null)
-        {
-            this.attributeTypeDefs = null;
-        }
-        else if (attributeTypeDefs.isEmpty())
-        {
-            this.attributeTypeDefs = null;
-        }
-        else
-        {
-            this.attributeTypeDefs = new ArrayList<>(attributeTypeDefs);
-        }
+        this.attributeTypeDefs = attributeTypeDefs;
     }
 
 
@@ -98,6 +92,10 @@ public class TypeDefGallery extends TypeDefElementHeader
     public ArrayList<TypeDef> getTypeDefs()
     {
         if (typeDefs == null)
+        {
+            return null;
+        }
+        else if (typeDefs.isEmpty())
         {
             return null;
         }
@@ -115,18 +113,7 @@ public class TypeDefGallery extends TypeDefElementHeader
      */
     public void setTypeDefs(List<TypeDef> typeDefs)
     {
-        if (typeDefs == null)
-        {
-            this.typeDefs = null;
-        }
-        else if (typeDefs.isEmpty())
-        {
-            this.typeDefs = null;
-        }
-        else
-        {
-            this.typeDefs = new ArrayList<>(typeDefs);
-        }
+        this.typeDefs = typeDefs;
     }
 
 

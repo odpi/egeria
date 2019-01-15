@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -32,9 +33,7 @@ public class TypeDefProperties extends TypeDefElementHeader
      */
     public TypeDefProperties()
     {
-        /*
-         * Nothing to do
-         */
+        super();
     }
 
 
@@ -45,9 +44,7 @@ public class TypeDefProperties extends TypeDefElementHeader
      */
     public TypeDefProperties(TypeDefProperties templateProperties)
     {
-        /*
-         * An empty properties object is created in the private variable declaration so nothing to do.
-         */
+        super(templateProperties);
         if (templateProperties != null)
         {
             this.setTypeDefProperties(templateProperties.getTypeDefProperties());
@@ -105,21 +102,21 @@ public class TypeDefProperties extends TypeDefElementHeader
     /**
      * Verify that supplied object has the same properties.
      *
-     * @param o object to test
+     * @param objectToCompare object to test
      * @return result
      */
     @Override
-    public boolean equals(Object o)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == o)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (!(o instanceof TypeDefProperties))
+        if (!(objectToCompare instanceof TypeDefProperties))
         {
             return false;
         }
-        TypeDefProperties that = (TypeDefProperties) o;
+        TypeDefProperties that = (TypeDefProperties) objectToCompare;
         return Objects.equals(getTypeDefProperties(), that.getTypeDefProperties());
     }
 

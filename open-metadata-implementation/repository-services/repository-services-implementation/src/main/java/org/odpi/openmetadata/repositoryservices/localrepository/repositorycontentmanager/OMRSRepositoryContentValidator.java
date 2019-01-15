@@ -11,10 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * OMRSRepositoryContentValidator provides methods to validate TypeDefs and Instances returned from
@@ -2300,7 +2297,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
             if (instanceType != null)
             {
-                if (this.isActiveType(sourceName, instanceType.getTypeDefGUID(), instanceType.getTypeDefName()))
+                if (this.isKnownType(sourceName, instanceType.getTypeDefGUID(), instanceType.getTypeDefName()))
                 {
                     return;
                 }
@@ -2833,15 +2830,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 RelationshipEndDef entityTwoEndDef      = null;
                 TypeDefLink        entityOneTypeDef     = null;
                 TypeDefLink        entityTwoTypeDef     = null;
-                String             entityOneTypeDefGUID = null;
                 String             entityOneTypeDefName = null;
-                String             entityTwoTypeDefGUID = null;
                 String             entityTwoTypeDefName = null;
                 InstanceType       entityOneType        = null;
                 InstanceType       entityTwoType        = null;
-                String             entityOneTypeGUID    = null;
                 String             entityOneTypeName    = null;
-                String             entityTwoTypeGUID    = null;
                 String             entityTwoTypeName    = null;
 
 
@@ -2849,55 +2842,48 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 {
                     entityOneEndDef = relationshipDef.getEndDef1();
                     entityTwoEndDef = relationshipDef.getEndDef2();
+                    log.debug("Got EndDefs");
                 }
 
                 if ((entityOneEndDef != null) && (entityTwoEndDef != null))
                 {
                     entityOneTypeDef = entityOneEndDef.getEntityType();
                     entityTwoTypeDef = entityTwoEndDef.getEntityType();
+                    log.debug("Got EndDef Types");
                 }
 
                 if ((entityOneTypeDef != null) && (entityTwoTypeDef != null))
                 {
-                    entityOneTypeDefGUID = entityOneTypeDef.getGUID();
                     entityOneTypeDefName = entityOneTypeDef.getName();
-                    entityTwoTypeDefGUID = entityTwoTypeDef.getGUID();
                     entityTwoTypeDefName = entityTwoTypeDef.getName();
+                    log.debug("Got EndDef Types of One: " + entityOneTypeDefName + " and Two: " + entityTwoTypeDefName);
+
                 }
 
+                /*
+                 * At this point we know what the expected types of
+                 * the ends should be.  Now look at the relationship instance.
+                 */
                 if ((entityOneProxy != null) && (entityTwoProxy != null))
                 {
                     entityOneType = entityOneProxy.getType();
                     entityTwoType = entityTwoProxy.getType();
+
+                    log.debug("Got Proxy Types of One: " + entityOneType + " and Two: " + entityOneType);
                 }
 
                 if ((entityOneType != null) && (entityTwoType != null))
                 {
-                    entityOneTypeGUID = entityOneType.getTypeDefGUID();
                     entityOneTypeName = entityOneType.getTypeDefName();
-                    entityTwoTypeGUID = entityTwoType.getTypeDefGUID();
                     entityTwoTypeName = entityTwoType.getTypeDefName();
                 }
 
-                if ((entityOneTypeDefGUID != null) && (entityOneTypeDefName != null) &&
-                    (entityTwoTypeDefGUID != null) && (entityTwoTypeDefName != null) &&
-                    (entityOneTypeGUID != null)    && (entityOneTypeName != null)    &&
-                    (entityTwoTypeGUID != null)    && (entityTwoTypeName != null))
+                if ((repositoryContentManager.isTypeOf(sourceName, entityOneTypeName, entityOneTypeDefName) &&
+                     repositoryContentManager.isTypeOf(sourceName, entityTwoTypeName, entityTwoTypeDefName)))
                 {
-                    List<TypeDefLink> entityOneAllTypes = entityOneType.getTypeDefSuperTypes();
-                    entityOneAllTypes.add(new TypeDefLink(entityOneTypeGUID, entityOneTypeName));
-                    List<TypeDefLink> entityTwoAllTypes = entityTwoType.getTypeDefSuperTypes();
-                    entityTwoAllTypes.add(new TypeDefLink(entityTwoTypeGUID, entityTwoTypeName));
-
-                    String finalEntityOneTypeDefGUID = entityOneTypeDefGUID;
-                    String finalEntityOneTypeDefName = entityOneTypeDefName;
-                    String finalEntityTwoTypeDefGUID = entityTwoTypeDefGUID;
-                    String finalEntityTwoTypeDefName = entityTwoTypeDefName;
-                    if (entityOneAllTypes.stream().anyMatch(e -> e.getGUID().equals(finalEntityOneTypeDefGUID) && e.getName().equals(finalEntityOneTypeDefName)) &&
-                            entityTwoAllTypes.stream().anyMatch(e -> e.getGUID().equals(finalEntityTwoTypeDefGUID) && e.getName().equals(finalEntityTwoTypeDefName))) {
-                        return;
-                    }
+                    return;
                 }
+
 
                 OMRSErrorCode errorCode = OMRSErrorCode.INVALID_RELATIONSHIP_ENDS;
                 String errorMessage = errorCode.getErrorMessageId()
@@ -3120,14 +3106,13 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      *
      * @param matchProperties  the properties to match.
      * @param instanceHeader  the header properties from the instance.
-     * @param metadataCollectionId the identifier for the repository's metadata collection
      * @return integer count of the matching properties.
      */
-    public int countMatchingPropertyValues(InstanceProperties       matchProperties,
-                                           InstanceAuditHeader      instanceHeader,
-                                           String                   metadataCollectionId)
+    public int countMatchingHeaderPropertyValues(InstanceProperties       matchProperties,
+                                                 InstanceAuditHeader      instanceHeader)
     {
         final String metadataCollectionIdPropertyName = "metadataCollectionId";
+        final String metadataCollectionNamePropertyName = "metadataCollectionName";
         final String typeNamePropertyName = "typeName";
         final String typeGUIDPropertyName = "typeGUID";
         final String createdByPropertyName = "createdBy";
@@ -3143,7 +3128,11 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
             if (propertyMap != null)
             {
-                if (this.checkStringPropertyValue(propertyMap, metadataCollectionIdPropertyName, metadataCollectionId))
+                if (this.checkStringPropertyValue(propertyMap, metadataCollectionIdPropertyName, instanceHeader.getMetadataCollectionId()))
+                {
+                    matchingProperties ++;
+                }
+                if (this.checkStringPropertyValue(propertyMap, metadataCollectionNamePropertyName, instanceHeader.getMetadataCollectionName()))
                 {
                     matchingProperties ++;
                 }
@@ -3182,14 +3171,12 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * Determine if the instance properties match the match criteria.
      *
      * @param matchProperties  the properties to match.
-     * @param metadataCollectionId metadata collection Id for instance if known.
      * @param instanceHeader the header of the instance.
      * @param instanceProperties  the properties from the instance.
      * @param matchCriteria  rule on how the match should occur.
      * @return boolean flag indicating whether the two sets of properties match
      */
     public boolean verifyMatchingInstancePropertyValues(InstanceProperties   matchProperties,
-                                                        String               metadataCollectionId,
                                                         InstanceAuditHeader  instanceHeader,
                                                         InstanceProperties   instanceProperties,
                                                         MatchCriteria        matchCriteria)
@@ -3197,7 +3184,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         if (matchProperties != null)
         {
             int matchingProperties = this.countMatchingPropertyValues(matchProperties, instanceProperties) +
-                                     this.countMatchingPropertyValues(matchProperties, instanceHeader, metadataCollectionId);
+                                     this.countMatchingHeaderPropertyValues(matchProperties, instanceHeader);
 
             switch (matchCriteria)
             {

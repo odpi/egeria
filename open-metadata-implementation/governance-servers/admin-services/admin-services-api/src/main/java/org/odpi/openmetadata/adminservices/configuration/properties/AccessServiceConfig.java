@@ -8,9 +8,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceOperationalStatus;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.VirtualConnection;
 
-import java.io.Serializable;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -21,10 +22,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class AccessServiceConfig implements Serializable
+public class AccessServiceConfig extends AdminServicesConfigHeader
 {
-    private static final long serialVersionUID = 1L;
-
     private int                            accessServiceId                = 0;
     private String                         accessServiceAdminClass        = null;
     private String                         accessServiceName              = null;
@@ -35,12 +34,39 @@ public class AccessServiceConfig implements Serializable
     private Connection                     accessServiceOutTopic          = null;
     private Map<String, Object>            accessServiceOptions           = null;
 
+
     /**
      * Default constructor for use with Jackson libraries
      */
     public AccessServiceConfig()
     {
+        super();
     }
+
+
+    /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public AccessServiceConfig(AccessServiceConfig  template)
+    {
+        super(template);
+
+        if (template != null)
+        {
+            accessServiceId = template.getAccessServiceId();
+            accessServiceAdminClass = template.getAccessServiceAdminClass();
+            accessServiceName = template.getAccessServiceName();
+            accessServiceDescription = template.getAccessServiceDescription();
+            accessServiceWiki = template.getAccessServiceWiki();
+            accessServiceOperationalStatus = template.getAccessServiceOperationalStatus();
+            accessServiceInTopic = template.getAccessServiceInTopic();
+            accessServiceOutTopic = template.getAccessServiceOutTopic();
+            accessServiceOptions = template.getAccessServiceOptions();
+        }
+    }
+
 
 
     /**
@@ -82,10 +108,10 @@ public class AccessServiceConfig implements Serializable
 
 
     /**
-     * Return the Java class name of the adminservices interface for this access service.
+     * Return the Java class name of the admin-services interface for this access service.
      *
      * @return String class name implementing the
-     * org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin interface.
+     * AccessServiceAdmin interface.
      */
     public String getAccessServiceAdminClass()
     {
@@ -97,7 +123,7 @@ public class AccessServiceConfig implements Serializable
      * Set up the Java class name of the admin services interface for this access service.
      *
      * @param accessServiceAdminClass String class name implementing the
-     * org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin interface.
+     * AccessServiceAdmin interface.
      */
     public void setAccessServiceAdminClass(String accessServiceAdminClass)
     {
@@ -197,6 +223,7 @@ public class AccessServiceConfig implements Serializable
     /**
      * Return the OCF Connection for the topic used to pass requests to this access service.
      * The default values are constructed from the access service name.
+     * If this value is set to null then the access service ignores incoming events.
      *
      * @return Connection for InTopic
      */
@@ -208,6 +235,8 @@ public class AccessServiceConfig implements Serializable
 
     /**
      * Set up the OCF Connection for the topic used to pass requests to this access service.
+     * The default values are constructed from the access service name.
+     * If this value is set to null then the access service ignores incoming events.
      *
      * @param accessServiceInTopic Connection properties
      */
@@ -220,6 +249,7 @@ public class AccessServiceConfig implements Serializable
     /**
      * Return the OCF Connection for the topic used by this access service to publish events.
      * The default values are constructed from the access service name.
+     * If this value is set to null then events are not published by this OMAS.
      *
      * @return Connection for OutTopic
      */
@@ -231,6 +261,8 @@ public class AccessServiceConfig implements Serializable
 
     /**
      * Set up the OCF Connection of the topic used by this access service to publish events.
+     * The default values are constructed from the access service name.
+     * If this value is set to null then events are not published by this OMAS.
      *
      * @param accessServiceOutTopic Connection properties
      */
@@ -270,5 +302,71 @@ public class AccessServiceConfig implements Serializable
     public void setAccessServiceOptions(Map<String, Object> accessServiceOptions)
     {
         this.accessServiceOptions = accessServiceOptions;
+    }
+
+
+    /**
+     * Standard toString method.
+     *
+     * @return JSON style description of variables.
+     */
+    @Override
+    public String toString()
+    {
+        return "AccessServiceConfig{" +
+                "accessServiceId=" + accessServiceId +
+                ", accessServiceAdminClass='" + accessServiceAdminClass + '\'' +
+                ", accessServiceName='" + accessServiceName + '\'' +
+                ", accessServiceDescription='" + accessServiceDescription + '\'' +
+                ", accessServiceWiki='" + accessServiceWiki + '\'' +
+                ", accessServiceOperationalStatus=" + accessServiceOperationalStatus +
+                ", accessServiceInTopic=" + accessServiceInTopic +
+                ", accessServiceOutTopic=" + accessServiceOutTopic +
+                ", accessServiceOptions=" + accessServiceOptions +
+                '}';
+    }
+
+
+    /**
+     * Validate that an object is equal depending on their stored values.
+     *
+     * @param objectToCompare object
+     * @return boolean result
+     */
+    @Override
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
+            return false;
+        }
+        AccessServiceConfig that = (AccessServiceConfig) objectToCompare;
+        return getAccessServiceId() == that.getAccessServiceId() &&
+                Objects.equals(getAccessServiceAdminClass(), that.getAccessServiceAdminClass()) &&
+                Objects.equals(getAccessServiceName(), that.getAccessServiceName()) &&
+                Objects.equals(getAccessServiceDescription(), that.getAccessServiceDescription()) &&
+                Objects.equals(getAccessServiceWiki(), that.getAccessServiceWiki()) &&
+                getAccessServiceOperationalStatus() == that.getAccessServiceOperationalStatus() &&
+                Objects.equals(getAccessServiceInTopic(), that.getAccessServiceInTopic()) &&
+                Objects.equals(getAccessServiceOutTopic(), that.getAccessServiceOutTopic()) &&
+                Objects.equals(getAccessServiceOptions(), that.getAccessServiceOptions());
+    }
+
+
+    /**
+     * Return a hash code based on the values of this object.
+     *
+     * @return in hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(getAccessServiceId(), getAccessServiceAdminClass(), getAccessServiceName(),
+                            getAccessServiceDescription(), getAccessServiceWiki(), getAccessServiceOperationalStatus(),
+                            getAccessServiceInTopic(), getAccessServiceOutTopic(), getAccessServiceOptions());
     }
 }

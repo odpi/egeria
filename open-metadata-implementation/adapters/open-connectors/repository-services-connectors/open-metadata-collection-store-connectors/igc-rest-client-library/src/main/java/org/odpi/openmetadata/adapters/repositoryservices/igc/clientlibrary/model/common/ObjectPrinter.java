@@ -2,6 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,6 +14,8 @@ import java.util.Arrays;
  * details in a standard way that can be easily JSON-esque formatted.
  */
 public abstract class ObjectPrinter {
+
+    private static final Logger log = LoggerFactory.getLogger(ObjectPrinter.class);
 
     /**
      * Recurse up the class hierarchy to retrieve all fields that might hold data on an object.
@@ -24,7 +29,7 @@ public abstract class ObjectPrinter {
         if (superClazz != null) {
             al = getAllFields(superClazz);
         } else {
-            al = new ArrayList<Field>();
+            al = new ArrayList<>();
         }
         al.addAll(Arrays.asList(clazz.getDeclaredFields()));
         return al;
@@ -60,7 +65,7 @@ public abstract class ObjectPrinter {
             // Get rid of the extra comma left at the end
             sb.deleteCharAt(sb.length() - 2);
         } catch (IllegalAccessException e) {
-            e.printStackTrace();
+            log.error("Unable to access all fields.", e);
         }
         sb.append("}}");
         return sb.toString();

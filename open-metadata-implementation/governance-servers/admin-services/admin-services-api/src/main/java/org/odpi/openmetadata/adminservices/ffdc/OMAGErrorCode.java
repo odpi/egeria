@@ -69,14 +69,14 @@ public enum OMAGErrorCode
             "Set up the open metadata repository services configuration and then retry the request with server configuration."),
 
     NULL_ACCESS_SERVICE_ADMIN_CLASS(400, "OMAG-ADMIN-400-010 ",
-            "The OMAG server {0} has been passed a null adminservices class name for access service {1}",
+            "The OMAG server {0} has been passed a null admins ervices class name for access service {1}",
             "The system is unable to initialize this access service.",
-            "if the access service should be initialized then set up the appropriate adminservices class name and restart the server instance."),
+            "if the access service should be initialized then set up the appropriate admin services class name and restart the server instance."),
 
     BAD_ACCESS_SERVICE_ADMIN_CLASS(400, "OMAG-ADMIN-400-011 ",
-            "The OMAG server {0} has been passed an invalid adminservices class name {1} for access service {2}",
+            "The OMAG server {0} has been passed an invalid admin services class name {1} for access service {2}",
             "The system is unable to initialize this access service.",
-            "If the access service should be initialized then set up the appropriate adminservices class name and restart the server instance."),
+            "If the access service should be initialized then set up the appropriate admin services class name and restart the server instance."),
 
     BAD_CONFIG_FILE(400, "OMAG-ADMIN-400-012 ",
             "The OMAG server {0} is not able to open its configuration file {1} due to the following error: {2}",
@@ -105,6 +105,12 @@ public enum OMAGErrorCode
             "The OMAG server {0} is unable to add open metadata services until the event bus is configured",
             "No change has occurred in this server's configuration document.",
             "Add the event bus configuration using the administration services and retry the request."),
+
+    NULL_METADATA_COLLECTION_NAME(400, "OMAG-ADMIN-400-006 ",
+            "OMAG server {0} has been called with a null metadata collection name",
+            "The system is unable to add this metadata collection name to the configuration document for the local server.",
+            "The metadata collection name is optional.  If it is not set up then the local server name is used instead.")
+
     ;
 
     private int    httpErrorCode;

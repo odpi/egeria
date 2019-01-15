@@ -40,7 +40,7 @@ public class  Reference implements Serializable {
     */
 
     // relationship information
-    protected String relationship_Type = null;
+    static protected String relationship_Type = null;
     protected String relationshipGuid;
     protected Map<String, Object> uniqueAttributes;
 

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -14,9 +15,9 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Asset Consumer OMAS with Spring</name>
+    <name>Asset Catalog OMAS with Spring</name>
     <description>
-        Spring-based REST API for the Asset Consumer Open Metadata Access Service (OMAS).
+        Spring-based REST API for the Asset Catalog Open Metadata Access Service (OMAS).
     </description>
 
     <artifactId>asset-catalog-spring</artifactId>

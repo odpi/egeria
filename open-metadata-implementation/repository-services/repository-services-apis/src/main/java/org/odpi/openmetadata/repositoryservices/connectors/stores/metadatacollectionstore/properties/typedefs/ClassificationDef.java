@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 
@@ -23,8 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class ClassificationDef extends TypeDef
 {
-    private   ArrayList<TypeDefLink>     validEntityDefs = null;
-    private   boolean                    propagatable = false;
+    private   List<TypeDefLink>     validEntityDefs = null;
+    private   boolean               propagatable = false;
 
 
     /**
@@ -97,7 +98,17 @@ public class ClassificationDef extends TypeDef
         }
         else
         {
-            return new ArrayList<>(validEntityDefs);
+            List<TypeDefLink> resultList = new ArrayList<>();
+
+            for (TypeDefLink  typeDefLink : validEntityDefs)
+            {
+                if (typeDefLink != null)
+                {
+                    resultList.add(new TypeDefLink(typeDefLink));
+                }
+            }
+
+            return resultList;
         }
     }
 
@@ -109,14 +120,7 @@ public class ClassificationDef extends TypeDef
      */
     public void setValidEntityDefs(List<TypeDefLink> validEntityDefs)
     {
-        if (validEntityDefs == null)
-        {
-            this.validEntityDefs = null;
-        }
-        else
-        {
-            this.validEntityDefs = new ArrayList<>(validEntityDefs);
-        }
+        this.validEntityDefs = validEntityDefs;
     }
 
 
@@ -143,6 +147,7 @@ public class ClassificationDef extends TypeDef
         this.propagatable = propagatable;
     }
 
+
     /**
      * Standard toString method.
      *
@@ -152,7 +157,8 @@ public class ClassificationDef extends TypeDef
     public String toString()
     {
         return "ClassificationDef{" +
-                "validEntityDefs=" + validEntityDefs +
+                "name='" + name + '\'' +
+                ", validEntityDefs=" + validEntityDefs +
                 ", propagatable=" + propagatable +
                 ", superType=" + superType +
                 ", description='" + description + '\'' +
@@ -171,7 +177,6 @@ public class ClassificationDef extends TypeDef
                 ", versionName='" + versionName + '\'' +
                 ", category=" + category +
                 ", guid='" + guid + '\'' +
-                ", name='" + name + '\'' +
                 '}';
     }
 
@@ -179,25 +184,25 @@ public class ClassificationDef extends TypeDef
     /**
      * Verify that supplied object has the same properties.
      *
-     * @param object object to test
+     * @param objectToCompare object to test
      * @return result
      */
     @Override
-    public boolean equals(Object object)
+    public boolean equals(Object objectToCompare)
     {
-        if (this == object)
+        if (this == objectToCompare)
         {
             return true;
         }
-        if (!(object instanceof ClassificationDef))
+        if (!(objectToCompare instanceof ClassificationDef))
         {
             return false;
         }
-        if (!super.equals(object))
+        if (!super.equals(objectToCompare))
         {
             return false;
         }
-        ClassificationDef that = (ClassificationDef) object;
+        ClassificationDef that = (ClassificationDef) objectToCompare;
         return isPropagatable() == that.isPropagatable() &&
                 Objects.equals(getValidEntityDefs(), that.getValidEntityDefs());
     }

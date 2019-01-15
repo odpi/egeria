@@ -1,5 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Contributors to the ODPi Egeria project.  -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 
 # Open metadata administration services user guide
@@ -222,10 +222,28 @@ or the server is shutdown.
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/in-memory-repository
 ```
 
+#### Enable the IBM Information Governance Catalog proxy
+
+The OMAG Server can act as a proxy to an IBM Information Governance Catalog ("IGC") environment.
+This is done by POSTing the IGC environment details:
+
+- `igcBaseURL` specifies the https host and port on which to access the IGC REST API
+- `igcAuthorization` provides a Basic-encoded username and password
+
+```
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/mode/ibm-igc/details
+{
+    "igcBaseURL": "https://infosvr.vagrant.ibm.com:9446",
+    "igcAuthorization": "aXNhZG1pbjppc2FkbWlu",
+}
+```
+
+The specific version of IBM Information Governance Catalog the environment is running will be detected as part of the initialization process.
+
 #### Enable OMAG Server as a repository proxy
 
 The OMAG Server can act as a proxy to a vendor's repository.
-Ths is done by adding the connection
+This is done by adding the connection
 for the repository proxy as the local repository.
 
 ```
@@ -246,6 +264,15 @@ The OMRS then distributes this new metadata.
 
 ```
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/event-mapper-details?connectorProvider={javaClassName}&eventSource={resourceName}
+```
+
+For example, to enable the IBM Information Governance Catalog event mapper,
+POST the following (where `igc.hostname.somewhere.com` is the hostname of the
+domain (services) tier of the environment, and `59092` is the port on which
+its Kafka bus can be accessed):
+
+```
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-repository/event-mapper-details?connectorProvider=org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider&eventSource=igc.hostname.somewhere.com:59092
 ```
 
 #### Remove the local repository
@@ -987,3 +1014,10 @@ If you want to delete the server's configuration document then issue:
 ```
 DELETE http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1
 ```
+
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

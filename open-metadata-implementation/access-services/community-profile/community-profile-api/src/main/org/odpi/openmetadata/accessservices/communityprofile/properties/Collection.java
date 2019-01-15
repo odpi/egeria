@@ -7,25 +7,25 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * Collection defines a collection of assets that an individual is working with.  The asset collections
- * are linked off of the individual's profile.
+ * Collection defines a reusable collection of resources that an individual is working with.  Collections
+ * can added to the resource list of an individual's profile, or a community, or any other referenceable object.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Collection extends ReferenceableHeader
 {
-    private String          displayName        = null;
-    private String          description        = null;
-    private String          collectionUse      = null;
-    private CollectionOrder collectionOrdering = null;
-
+    private CollectionOrder     collectionOrdering   = null;
+    private Map<String, Object> extendedProperties   = null;
+    private Map<String, String> additionalProperties = null;
     /**
      * Default Constructor
      */
@@ -46,77 +46,10 @@ public class Collection extends ReferenceableHeader
 
         if (template != null)
         {
-            this.displayName = template.getDisplayName();
-            this.description = template.getDescription();
-            this.collectionUse = template.getCollectionUse();
             this.collectionOrdering = template.getCollectionOrdering();
+            this.extendedProperties = template.getExtendedProperties();
+            this.additionalProperties = template.getAdditionalProperties();
         }
-    }
-
-
-    /**
-     * Return the display name for this asset (normally a shortened form of the qualified name).
-     *
-     * @return string name
-     */
-    public String getDisplayName()
-    {
-        return displayName;
-    }
-
-
-    /**
-     * Set up the display name for this asset (normally a shortened form of the qualified name).
-     *
-     * @param displayName string name
-     */
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
-    }
-
-
-    /**
-     * Return the description for this asset.
-     *
-     * @return string description
-     */
-    public String getDescription()
-    {
-        return description;
-    }
-
-
-    /**
-     * Set up the description for this asset.
-     *
-     * @param description string
-     */
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-
-    /**
-     * Return the description of how the collection is used by the actor.
-     *
-     * @return text
-     */
-    public String getCollectionUse()
-    {
-        return collectionUse;
-    }
-
-
-    /**
-     * Set up the description of how the collection is used by the actor.
-     *
-     * @param collectionUse test
-     */
-    public void setCollectionUse(String collectionUse)
-    {
-        this.collectionUse = collectionUse;
     }
 
 
@@ -143,6 +76,73 @@ public class Collection extends ReferenceableHeader
 
 
     /**
+     * Return any properties associated with the subclass of this element.
+     *
+     * @return map of property names to property values
+     */
+    public Map<String, Object> getExtendedProperties()
+    {
+        if (extendedProperties == null)
+        {
+            return null;
+        }
+        else if (extendedProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(extendedProperties);
+        }
+    }
+
+
+    /**
+     * Set up any additional properties associated with the element.
+     *
+     * @param additionalProperties map of property names to property values
+     */
+    public void setExtendedProperties(Map<String, Object> additionalProperties)
+    {
+        this.extendedProperties = additionalProperties;
+    }
+
+
+    /**
+     * Return any additional properties associated with the element.
+     *
+     * @return map of property names to property values
+     */
+    public Map<String, String> getAdditionalProperties()
+    {
+        if (additionalProperties == null)
+        {
+            return null;
+        }
+        else if (additionalProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(additionalProperties);
+        }
+    }
+
+
+    /**
+     * Set up any additional properties associated with the element.
+     *
+     * @param additionalProperties map of property names to property values
+     */
+    public void setAdditionalProperties(Map<String, String> additionalProperties)
+    {
+        this.additionalProperties = additionalProperties;
+    }
+
+
+
+    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -151,16 +151,20 @@ public class Collection extends ReferenceableHeader
     public String toString()
     {
         return "Collection{" +
-                "displayName='" + displayName + '\'' +
-                ", description='" + description + '\'' +
-                ", collectionUse='" + collectionUse + '\'' +
-                ", collectionOrdering=" + collectionOrdering +
+                "collectionOrdering=" + collectionOrdering +
+                ", extendedProperties=" + extendedProperties +
+                ", additionalProperties=" + additionalProperties +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", classifications=" + getClassifications() +
                 ", GUID='" + getGUID() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
                 ", typeDescription='" + getTypeDescription() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", additionalProperties=" + getAdditionalProperties() +
-                ", classifications=" + getClassifications() +
+                ", originId='" + getOriginId() + '\'' +
+                ", originName='" + getOriginName() + '\'' +
+                ", originType='" + getOriginType() + '\'' +
+                ", originLicense='" + getOriginLicense() + '\'' +
                 '}';
     }
 
@@ -187,10 +191,9 @@ public class Collection extends ReferenceableHeader
             return false;
         }
         Collection that = (Collection) objectToCompare;
-        return Objects.equals(getDisplayName(), that.getDisplayName()) &&
-                Objects.equals(getDescription(), that.getDescription()) &&
-                Objects.equals(getCollectionUse(), that.getCollectionUse()) &&
-                getCollectionOrdering() == that.getCollectionOrdering();
+        return getCollectionOrdering() == that.getCollectionOrdering() &&
+                Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
+                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
     }
 
 
@@ -202,7 +205,7 @@ public class Collection extends ReferenceableHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getCollectionUse(),
-                            getCollectionOrdering());
+        return Objects.hash(super.hashCode(), getCollectionOrdering(), getExtendedProperties(),
+                            getAdditionalProperties());
     }
 }

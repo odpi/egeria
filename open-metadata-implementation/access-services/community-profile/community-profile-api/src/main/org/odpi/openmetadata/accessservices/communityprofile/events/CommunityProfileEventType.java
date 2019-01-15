@@ -13,27 +13,38 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * CommunityProfileEventType describes the different types of events produced by the Community Profile OMAS.
- *
- * Events are limited to assets that are in the zones listed in the accessPointZones property
- * passed to the Asset Consumer OMAS at start up (a null value here means all zones).
- *
- * In addition each asset can be associated with asset collections.  Asset collections can be linked to
- * an individual's profile, projects and communities.   The Asset Consumer OMAS sends generic notifications
- * when assets that are members of the access point zones are added and deleted from these collections.
- *
- * In addition, individuals can set up personal notifications related to specific assets and asset collections.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum CommunityProfileEventType implements Serializable
 {
-    UNKNOWN_ASSET_CONSUMER_EVENT        (0,  "Unknown Event",                 "An event that is not recognized by the local server."),
-    NEW_ASSET_EVENT                     (1,  "New Asset",                     "A new asset has been added to one of the access point zones."),
-    UPDATED_ASSET_EVENT                 (2,  "Updated Asset",                 "An existing asset from one of the access point zones has been updated."),
-    DELETED_ASSET_EVENT                 (3,  "Deleted Asset",                 "An existing asset has been deleted."),
-    NEW_ASSET_IN_COLLECTION_EVENT       (4,  "New Asset In Collection",       "A new asset has been added to one of the asset collections."),
-    ASSET_REMOVED_FROM_COLLECTION_EVENT (5,  "Asset Removed From Collection", "An asset has been removed from one of the asset collections.");
+    UNKNOWN_COMMUNITY_PROFILE_EVENT           (0,   "Unknown Event",
+                                                    "An event that is not recognized by the local server."),
+    NEW_PERSONAL_PROFILE_EVENT                (1,   "New Personal Profile",
+                                                    "A new personal profile has been added through open metadata."),
+    NEW_REF_PERSONAL_PROFILE_EVENT            (2,   "New Reference Personal Profile",
+                                                    "A personal profile managed by an external system has been added through open metadata."),
+    UPDATED_PERSONAL_PROFILE_EVENT            (3,   "Updated Personal Profile",
+                                                    "A personal profile has been updated."),
+    DELETED_PERSONAL_PROFILE_EVENT            (4,   "Deleted Personal Profile",
+                                                    "An existing personal profile has been deleted."),
+    NEW_ASSET_IN_COLLECTION_EVENT             (20,  "New Asset In Collection",
+                                                    "A new asset has been added to one of the personal collections."),
+    ASSET_REMOVED_FROM_COLLECTION_EVENT       (21,  "Asset Removed From Collection",
+                                                    "An asset has been removed from one of the personal collections."),
+    NEW_PROJECT_IN_COLLECTION_EVENT           (22,  "New Project In Collection",
+                                                    "A new project has been added to one of the personal collections."),
+    PROJECT_REMOVED_FROM_COLLECTION_EVENT     (23,  "Project Removed From Collection",
+                                                    "An project has been removed from one of the personal collections."),
+    NEW_COMMUNITY_IN_COLLECTION_EVENT         (24,  "New Community In Collection",
+                                                    "A new community has been added to one of the personal collections."),
+    COMMUNITY_REMOVED_FROM_COLLECTION_EVENT   (25,  "Community Removed From Collection",
+                                                    "An community has been removed from one of the personal collections."),
+    RESOURCE_IN_COLLECTION_EVENT              (30,  "New Community In Collection",
+                                                    "A new community has been added to one of the sharable collections."),
+    RESOURCE_REMOVED_FROM_COLLECTION_EVENT    (31,  "Resource Removed From Collection",
+                                                    "An resource has been removed from one of the shareable collections.");
 
 
 

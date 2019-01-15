@@ -8,8 +8,10 @@ import org.apache.commons.io.FileUtils;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportCreator;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportHandler;
+import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
@@ -35,10 +37,11 @@ import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnec
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator;
-import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -52,21 +55,21 @@ public class ReportCreationTest {
     private OMRSRepositoryConnector enterpriseConnector;
     @Mock
     private OMRSAuditLog auditLog;
-    private ReportCreator reportCreator;
+    private ReportHandler reportHandler;
     private OMRSRepositoryContentManager localRepositoryContentManager = null;
     private EntitiesCreatorHelper entitiesCreatorHelper;
     private LookupHelper lookupHelper;
 
-    @BeforeMethod
+    @BeforeClass
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
         entitiesCreatorHelper = new EntitiesCreatorHelper(enterpriseConnector, auditLog);
         lookupHelper = new LookupHelper(enterpriseConnector, entitiesCreatorHelper, auditLog);
-        reportCreator = new ReportCreator(entitiesCreatorHelper, lookupHelper, auditLog);
+        reportHandler = new ReportHandler(entitiesCreatorHelper, lookupHelper, auditLog);
         OMRSRepositoryConnector repositoryConnector = initializeInMemoryRepositoryConnector();
         when(enterpriseConnector.getMetadataCollection()).thenReturn(repositoryConnector.getMetadataCollection());
         when(enterpriseConnector.getRepositoryHelper()).thenReturn(repositoryConnector.getRepositoryHelper());
-
+        populateRepository();
     }
 
 
@@ -79,7 +82,6 @@ public class ReportCreationTest {
         ConnectorBroker connectorBroker = new ConnectorBroker();
         Connector connector = connectorBroker.getConnector(connection);
         OMRSRepositoryConnector repositoryConnector = (OMRSRepositoryConnector) connector;
-
 
         localRepositoryContentManager = new OMRSRepositoryContentManager(auditLog);
 
@@ -128,8 +130,7 @@ public class ReportCreationTest {
 
         String payload = FileUtils.readFileToString(new File("./src/test/resources/report1.json"), "UTF-8");
         ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
-        populateRepository();
-        reportCreator.createReportModel(request);
+        reportHandler.submitReportModel(request);
         EntityDetail reportEntity = entitiesCreatorHelper.getEntity(Constants.DEPLOYED_REPORT, "powerbi-server.report_number_35");
         assertNotNull("Report was not created", reportEntity);
         assertEquals("powerbi-server.report_number_35", ((PrimitivePropertyValue) reportEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
@@ -185,13 +186,69 @@ public class ReportCreationTest {
 
     }
 
+    @Test
+    public void testReportBasicPropertiesUpdate() throws Exception {
+        String payload = FileUtils.readFileToString(new File("./src/test/resources/report1.json"), "UTF-8");
+        ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
+        request.setAuthor("test_author");
+        reportHandler.submitReportModel(request);
+        EntityDetail reportEntity = entitiesCreatorHelper.getEntity(Constants.DEPLOYED_REPORT, "powerbi-server.report_number_35");
+        assertNotNull("Report was not created", reportEntity);
+        assertEquals("test_author", ((PrimitivePropertyValue) reportEntity.getProperties().getPropertyValue(Constants.AUTHOR)).getPrimitiveValue());
+    }
+
+    @Test
+    public void testReportSectionUpdate() throws Exception {
+        String payload = FileUtils.readFileToString(new File("./src/test/resources/report1.json"), "UTF-8");
+        ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
+        request.getReportElements().get(0).setName("SectionA");
+        reportHandler.submitReportModel(request);
+        EntityDetail reportEntity = entitiesCreatorHelper.getEntity(Constants.DEPLOYED_REPORT, "powerbi-server.report_number_35");
+        assertNotNull("Report was not created", reportEntity);
+        EntityDetail reportTypeEntity = entitiesCreatorHelper.getEntity(Constants.COMPLEX_SCHEMA_TYPE, "powerbi-server.report_number_35_type");
+        assertNotNull("Report type was not created", reportTypeEntity);
+        List<Relationship> relationships = entitiesCreatorHelper.getRelationships(Constants.ASSET_SCHEMA_TYPE, reportTypeEntity.getGUID());
+        assertNotNull(relationships);
+        assertTrue("Relationship between report and report type was not created", !relationships.isEmpty() && relationships.size() == 1);
+
+
+        EntityDetail reportSectionEntity = entitiesCreatorHelper.getEntity(Constants.DOCUMENT_SCHEMA_ATTRIBUTE, "powerbi-server.report_number_35.SectionA");
+        assertNotNull("Report section was not created", reportSectionEntity);
+        assertEquals("powerbi-server.report_number_35.SectionA", ((PrimitivePropertyValue) reportSectionEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
+        assertEquals("SectionA", ((PrimitivePropertyValue) reportSectionEntity.getProperties().getPropertyValue(Constants.NAME)).getPrimitiveValue());
+    }
+
+    @Test
+    public void testReportColumnUpdate() throws Exception {
+        String payload = FileUtils.readFileToString(new File("./src/test/resources/report1.json"), "UTF-8");
+        ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
+        ReportColumn column = new ReportColumn();
+        column.setName("test_column");
+        column.setSources(Collections.singletonList(request.getSources().get(0)));
+        ((ReportSection)request.getReportElements().get(0)).getElements().add(column);
+        reportHandler.submitReportModel(request);
+        EntityDetail reportEntity = entitiesCreatorHelper.getEntity(Constants.DEPLOYED_REPORT, "powerbi-server.report_number_35");
+        assertNotNull("Report was not created", reportEntity);
+        EntityDetail reportTypeEntity = entitiesCreatorHelper.getEntity(Constants.COMPLEX_SCHEMA_TYPE, "powerbi-server.report_number_35_type");
+        assertNotNull("Report type was not created", reportTypeEntity);
+        List<Relationship> relationships = entitiesCreatorHelper.getRelationships(Constants.ASSET_SCHEMA_TYPE, reportTypeEntity.getGUID());
+        assertNotNull(relationships);
+        assertTrue("Relationship between report and report type was not created", !relationships.isEmpty() && relationships.size() == 1);
+
+
+        EntityDetail reportColumnEntity = entitiesCreatorHelper.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, "powerbi-server.report_number_35.section1.test_column");//powerbi-server.report_number_35.section1.test_column
+        assertNotNull("Report column was not created", reportColumnEntity);
+        assertEquals("powerbi-server.report_number_35.section1.test_column", ((PrimitivePropertyValue) reportColumnEntity.getProperties().getPropertyValue(Constants.QUALIFIED_NAME)).getPrimitiveValue());
+        assertEquals("test_column", ((PrimitivePropertyValue) reportColumnEntity.getProperties().getPropertyValue(Constants.NAME)).getPrimitiveValue());
+    }
+
     private void populateRepository() throws Exception {
 
-        String qualifiedNameForEndpoint = "***REMOVED***";
+        String qualifiedNameForEndpoint = "host";
         InstanceProperties endpointProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForEndpoint)
                 .withStringProperty(Constants.NAME, qualifiedNameForEndpoint)
-                .withStringProperty(Constants.NETWORK_ADDRESS, "***REMOVED***")
+                .withStringProperty(Constants.NETWORK_ADDRESS, "host")
                 .withStringProperty(Constants.PROTOCOL, "")
                 .build();
         EntityDetail endpointEntity = entitiesCreatorHelper.addEntity(Constants.ENDPOINT,
@@ -304,7 +361,7 @@ public class ReportCreationTest {
 
     }
 
-    private void addColumn(EntityDetail tableTypeEntity, String qualifiedNameForTable, String columnName) throws Exception {
+    private EntityDetail addColumn(EntityDetail tableTypeEntity, String qualifiedNameForTable, String columnName) throws Exception {
         String qualifiedNameColumnType = qualifiedNameForTable + "." + columnName + Constants.TYPE_SUFFIX;
         InstanceProperties columnTypeProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameColumnType)
@@ -348,6 +405,7 @@ public class ReportCreationTest {
                 derivedColumnEntity.getGUID(),
                 Constants.INFORMATION_VIEW_OMAS_NAME,
                 new InstanceProperties());
+        return derivedColumnEntity;
     }
 
 }

@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -179,8 +180,8 @@ public class RelationshipEndDef extends TypeDefElementHeader
     public String toString()
     {
         return "RelationshipEndDef{" +
-                "entityType='" + entityType + '\'' +
-                ", attributeName='" + attributeName + '\'' +
+                "attributeName='" + attributeName + '\'' +
+                ", entityType='" + getEntityType() + '\'' +
                 ", attributeDescription='" + attributeDescription + '\'' +
                 ", attributeCardinality=" + attributeCardinality +
                 '}';

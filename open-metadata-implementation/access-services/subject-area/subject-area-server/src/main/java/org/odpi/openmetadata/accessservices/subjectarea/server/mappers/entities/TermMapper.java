@@ -40,6 +40,8 @@ public class TermMapper {
         if (term.getSystemAttributes() !=null) {
             omrsBean.setSystemAttributes(term.getSystemAttributes());
         }
+        omrsBean.setEffectiveFromTime(term.getEffectiveFromTime());
+        omrsBean.setEffectiveToTime(term.getEffectiveToTime());
         omrsBean.setQualifiedName(term.getQualifiedName());
         omrsBean.setDescription(term.getDescription());
         omrsBean.setDisplayName(term.getName());
@@ -96,6 +98,8 @@ public class TermMapper {
         if (omrsBean.getSystemAttributes() !=null) {
             term.setSystemAttributes(omrsBean.getSystemAttributes());
         }
+        term.setEffectiveFromTime(omrsBean.getEffectiveFromTime());
+        term.setEffectiveToTime((omrsBean.getEffectiveToTime()));
         term.setName(omrsBean.getDisplayName());
         term.setSummary(omrsBean.getSummary());
         term.setQualifiedName(omrsBean.getQualifiedName());
