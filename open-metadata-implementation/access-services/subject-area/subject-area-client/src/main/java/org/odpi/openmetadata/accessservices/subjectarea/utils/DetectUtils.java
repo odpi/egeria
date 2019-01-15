@@ -7,9 +7,12 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
+
+import java.util.List;
 
 /**
  * Created by david on 10/08/2018.
@@ -286,6 +289,25 @@ public class DetectUtils {
             CategoryErrorResponse(methodName, restResponse);
         }
         return term;
+    }
+
+    /*
+     * Detect and return a List of term relationships from the supplied response. If we do not find the expected response then throw an Exception
+     * @param methodName - name of the method called
+     * @param restResponse - response from the rest call.  This generated in the remote handlers.
+     * @return List<Line> list of Term relationships is the supplied response is TermRelationships response
+     * @throws UnexpectedResponseException - if the response is not a Term then throw this exception
+     */
+    public static List<Line> detectAndReturnTermRelationships(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        List<Line> relationships = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TermRelationships)) {
+            TermRelationshipsResponse termRelationshipResponse = (TermRelationshipsResponse)restResponse;
+            relationships = termRelationshipResponse.getTermRelationships();
+        } else {
+            CategoryErrorResponse(methodName, restResponse);
+        }
+        return relationships;
+
     }
     /**
      * Detect and return a Category object from the supplied response. If we do not find one then throw an Exception
