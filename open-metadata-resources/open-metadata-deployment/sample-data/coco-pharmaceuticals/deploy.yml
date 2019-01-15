@@ -41,8 +41,8 @@
 
     - name: transform relationships to appropriate database
       template:
-        src: ibm-igc-metadata/{{ item }}.j2
-        dest: ibm-igc-metadata/{{ item }}
+        src: ibm-igc-metadata/{{ item }}
+        dest: ibm-igc-metadata/{{ item }}_generated
       delegate_to: localhost
       with_items:
         - dbcol2term.json
@@ -55,7 +55,7 @@
             - from: "ibm-igc-metadata/bg.xml"
               merged_by: overwrite
           relationships:
-            - from: "ibm-igc-metadata/dbcol2term.json"
+            - from: "ibm-igc-metadata/dbcol2term.json_generated"
               using_mode: REPLACE_ALL
               with_options:
                 transformed_by: "{{ rest_mappings }}"
@@ -64,7 +64,7 @@
               with_options:
                 transformed_by: "{{ rest_mappings }}"
           infoanalyzer:
-            - from: "ibm-igc-metadata/ia.xml"
+            - from: "ibm-igc-metadata/ia.xml_generated"
               into_project: CocoPharma
               with_options:
                 transformed_by: "{{ iaxml_mappings }}"
