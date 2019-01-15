@@ -9,6 +9,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.MetadataServerUncontactableException;
 
+import java.util.List;
+
 /**
  * SubjectAreaInstanceHandler retrieves information from the instance map for the
  * access service instances.  The instance map is thread-safe.  Instances are added
