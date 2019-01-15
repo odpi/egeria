@@ -135,6 +135,16 @@
                 - { property: "assigned_to_terms.parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
               is: 61
 
+    - name: remove generated files
+        file:
+          path: "{{ item }}"
+          state: absent
+        delegate_to: localhost
+        with_items:
+          - cache/
+          - ibm-igc-metadata/dbcol2term.json_generated
+          - ibm-igc-metadata/ia.xml_generated
+
     - name: list groups
       shell: >
         {{ ibm_infosvr_locations.linux }}/ASBNode/bin/DirectoryCommand.sh
