@@ -156,7 +156,7 @@ class AssetCatalogOMASServiceTest {
         AssetDescriptionResponse expectedResponse = new AssetDescriptionResponse();
         List<AssetDescription> expectedDescriptionList = new ArrayList<>();
         AssetDescription expectedDescription = new AssetDescription();
-        expectedDescription.setGUID(assetId);
+        expectedDescription.setGuid(assetId);
         expectedDescription.setTypeDefDescription(typeDefDescription);
         Map<String, Object> propertiesMap = new HashMap<>();
         propertiesMap.put("summary", "Short description of term First Name");
@@ -171,12 +171,12 @@ class AssetCatalogOMASServiceTest {
         List<Relationship> expectedRelationshipList = new ArrayList<>();
         Relationship expectedRelationship = new Relationship();
         Asset fromEntity = new Asset();
-        fromEntity.setGUID(relationshipGuid);
+        fromEntity.setGuid(relationshipGuid);
         fromEntity.setTypeDefName(typeDef);
         expectedRelationship.setFromEntity(fromEntity);
         Asset toEntity = new Asset();
         expectedRelationship.setToEntity(toEntity);
-        toEntity.setGUID(assetId);
+        toEntity.setGuid(assetId);
         toEntity.setTypeDefName("GlossaryTerm");
         expectedRelationshipList.add(expectedRelationship);
         expectedResponse.setRelationships(expectedRelationshipList);
@@ -195,16 +195,16 @@ class AssetCatalogOMASServiceTest {
     private void verifyAssetDescriptionResult(List<AssetDescription> resultList) {
         assertFalse(resultList.isEmpty());
         AssetDescription assetDescription = resultList.get(0);
-        assertEquals(assetDescription.getGUID(), assetId);
+        assertEquals(assetDescription.getGuid(), assetId);
         assertEquals(assetDescription.getTypeDefDescription(), typeDefDescription);
         assertFalse(assetDescription.getProperties().isEmpty());
     }
     private void verifyRelationshipResponse(List<Relationship> resultList) {
         assertFalse(resultList.isEmpty());
         Relationship relationship = resultList.get(0);
-        assertEquals(relationship.getFromEntity().getGUID(), relationshipGuid);
+        assertEquals(relationship.getFromEntity().getGuid(), relationshipGuid);
         assertEquals(relationship.getFromEntity().getTypeDefName(), typeDef);
-        assertEquals(relationship.getToEntity().getGUID(), assetId);
+        assertEquals(relationship.getToEntity().getGuid(), assetId);
         String glossaryTermTypeDef = "GlossaryTerm";
         assertEquals(relationship.getToEntity().getTypeDefName(), glossaryTermTypeDef);
     }
