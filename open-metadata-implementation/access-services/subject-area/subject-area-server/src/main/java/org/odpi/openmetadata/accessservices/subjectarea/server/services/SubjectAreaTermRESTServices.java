@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermAnchor.TermAnchor;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermISATypeOFRelationship.TermISATypeOFRelationshipMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.server.SubjectAreaBeansToAccessOMRS;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
@@ -244,25 +245,38 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         }
         return response;
     }
-    /**
+    /*
      * Get Term relationships
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the term to get
-     * @param findRequestParameters find request
-     * @param asOfTime the reltionships are to be returned as they were at this time. null indicated at the current time.
-     * @return response which when successful contains the relationships associated with the requested Term guid
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * </ul>
+     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
+     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     *                 beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize the maximum number of elements that can be returned on this request.
+     *                 0 means there is not limit to the page size
+     * @param sequencingOrder the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @return the relationships associated with the requested Term guid
+     *
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException   Function not supported
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public SubjectAreaOMASAPIResponse getTermRelationships(String serverName, String userId, String guid, FindRequest findRequestParameters,Date asOfTime)
-    {
+
+    public  SubjectAreaOMASAPIResponse getTermRelationships(String serverName, String userId,String guid,
+                                                           Date asOfTime,
+                                                           Integer offset,
+                                                           Integer pageSize,
+                                                           org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                                           String sequencingProperty
+    ) {
         final String methodName = "getTermRelationships";
         if (log.isDebugEnabled())
         {
@@ -275,23 +289,49 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             // initialise omrs API helper with the right instance based on the server name
             SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            SequencingOrder sequenceOrder=null;
-            Set<Line> termRelationships = subjectAreaOmasREST.getGlossaryTermRelationships(
+            // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
+            if (offset ==null) {
+                offset = new Integer(0);
+            }
+            if (pageSize == null) {
+                pageSize = new Integer(0);
+            }
+            SequencingOrder omrsSequencingOrder =  SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
+            Set<Line> omrsTermRelationships = subjectAreaOmasREST.getGlossaryTermRelationships(
                     userId,
                     guid,
                     null,
-                    findRequestParameters.getOffset(),
+                    offset,
                     asOfTime,
-                    findRequestParameters.getSequencingProperty(),
-                    sequenceOrder,
-                    findRequestParameters.getPageSize());
+                    sequencingProperty,
+                    omrsSequencingOrder,
+                    pageSize);
+            List<Line> termRelationships = SubjectAreaUtils.convertOMRSLinesToOMASLines(omrsTermRelationships);
+            //TODO change the follow to a while loop . refactor to a method so it can be reused for find.
 
-            for (Line termRelationship:termRelationships)
-            {
-                //TODO
+            int sizeToGet = 0;
+            if (omrsTermRelationships.size() > termRelationships.size()) {
+                sizeToGet = omrsTermRelationships.size() - termRelationships.size();
             }
-            response = null;
 
+            while (sizeToGet >0) {
+
+                // there are more relationships we need to get
+                omrsTermRelationships = subjectAreaOmasREST.getGlossaryTermRelationships(
+                        userId,
+                        guid,
+                        null,
+                        offset + sizeToGet,
+                        asOfTime,
+                        sequencingProperty,
+                        omrsSequencingOrder,
+                        sizeToGet);
+                if (omrsTermRelationships != null) {
+                    sizeToGet = getSizeToGet(omrsTermRelationships, termRelationships);
+                    offset = +sizeToGet;
+                }
+            }
+            response =new TermRelationshipsResponse(termRelationships);
         } catch (InvalidParameterException e)
         {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
@@ -306,7 +346,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
         } catch (FunctionNotSupportedException e)
         {
-            //should not occur TODO appropriate error/log
+            //should not occur as it is issued when a type guid is supplied - we supply null. TODO appropriate error/log
         }
 
 
@@ -317,6 +357,18 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         return response;
     }
 
+    private int getSizeToGet(Set<Line> omrsTermRelationships, List<Line> termRelationships) {
+        int sizeToGet =0;
+        List<Line> moreTermRelationships = SubjectAreaUtils.convertOMRSLinesToOMASLines(omrsTermRelationships);
+        if ( moreTermRelationships !=null && moreTermRelationships.size() >0) {
+            for (Line moreTermRelationship : moreTermRelationships) {
+                termRelationships.add(moreTermRelationship);
+            }
+            sizeToGet = omrsTermRelationships.size() - moreTermRelationships.size();
+
+        }
+        return sizeToGet;
+    }
 
     /**
      * Update a Term

@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
   
 # Open Metadata Collection Store Connectors
 
@@ -26,3 +27,10 @@ testing/developing OMASs and demos.
 
 * **[omrs-rest-repository-connector](omrs-rest-repository-connector)** -
 uses the OMRS REST API to call an open metadata-compliant repository.
+
+* **[ibm-igc-repository-connector](ibm-igc-repository-connector)** -
+exposes the IBM InfoSphere Information Governance Catalog as an open metadata repository.
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

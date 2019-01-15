@@ -11,6 +11,8 @@
 open-metadata-implementation/access-services/governance-engine @planetf1 
 open-metadata-implementation/adapters/governance-engines-plugins @planetf1 
 open-metadata-implementation/adapters/authentication-plugins/gaian-impersonation @planetf1 
+open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/igc-rest-client-library @cmgrote
+open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/ibm-igc-repository-connector @cmgrote
 
 # Resources
 

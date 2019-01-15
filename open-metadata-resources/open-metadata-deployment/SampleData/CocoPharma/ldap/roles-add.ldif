@@ -1,0 +1,138 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+#Organizational Units
+dn: ou=data-lake,dc=ing-atlas,dc=com
+objectClass: organizationalUnit
+ou: data-lake
+description: Data Lake Unit 
+
+#Founder
+dn: cn=Founder,ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: Founder
+member: uid=Zach_Now,ou=data-lake,dc=ing-atlas,dc=com
+member: uid=Steve_Starter,ou=data-lake,dc=ing-atlas,dc=com
+member: uid=Terri_Daring,ou=data-lake,dc=ing-atlas,dc=com
+
+#Data Steward
+dn: cn=Data Steward,ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: Data Steward
+member:  uid=Tanya_Tidy,ou=data-lake,dc=ing-atlas,dc=com
+
+#IT Project Leader
+dn: cn=IT Project Leader,ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: IT Project Leader
+member:  uid=Polly_Tasker,ou=data-lake,dc=ing-atlas,dc=com
+
+#Lead Researcher
+dn: cn=Lead Researcher,ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: Lead Researcher
+member:  uid=Tessa_Tube,ou=data-lake,dc=ing-atlas,dc=com
+
+#Data Scientist
+dn: cn=Data Scientist,ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: Data Scientist
+member:  uid=Callie_Quartile,ou=data-lake,dc=ing-atlas,dc=com
+
+#Chief Security Officer
+dn: cn=Chief Security Officer,ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: Chief Security Officer
+member:  uid=Ivor_Padlock,ou=data-lake,dc=ing-atlas,dc=com
+
+#Application Developer
+dn: cn=Application Developer,ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: Application Developer
+member:  uid=Bob_Nitter,ou=data-lake,dc=ing-atlas,dc=com
+
+#Human Resources and Compliance Director
+dn: cn=Human Resources and Compliance Director,ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: Human Resources and Compliance Director
+member:  uid=Faith_Broker,ou=data-lake,dc=ing-atlas,dc=com
+
+#Payment Clerk
+dn: cn=Payment Clerk,ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: Payment Clerk
+member:  uid=Sally_Counter,ou=data-lake,dc=ing-atlas,dc=com
+
+
+#DataStage Specialist
+dn: cn=DataStage Specialist,ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: DataStage Specialist
+member:  uid=Lemmie_Stage,ou=data-lake,dc=ing-atlas,dc=com
+
+
+#Information Architect
+dn: cn=Information Architect,ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: Information Architect
+member:  uid=Erin_Overview,ou=data-lake,dc=ing-atlas,dc=com
+
+
+#Sales Specialist New York
+dn: cn=Sales Specialist,ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: Sales Specialist  New York
+member:  uid=Harry_Hopeful,ou=data-lake,dc=ing-atlas,dc=com
+
+
+#IT Infrastructure Lead
+dn: cn=IT Infrastructure Lead,ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: IT Infrastructure Lead
+member:  uid=Gary_Geeke,ou=data-lake,dc=ing-atlas,dc=com
+
+
+#Chief Finance Officer (CFO)
+dn: cn=Chief Finance Officer (CFO),ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: Chief Finance Officer (CFO)
+member:  uid=Reggie_Mint,ou=data-lake,dc=ing-atlas,dc=com
+
+
+#Information Analyst
+dn: cn=Information Analyst,ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: Information Analyst
+member:  uid=Peter_Profile,ou=data-lake,dc=ing-atlas,dc=com
+
+
+#Accounts Manager, Finance HQ
+dn: cn=Accounts Manager, Finance HQ,ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: Accounts Manager, Finance HQ
+member:  uid=Tom_Tally,ou=data-lake,dc=ing-atlas,dc=com
+
+
+#Chief Data Officer (CDO)
+dn: cn=Chief Data Officer (CDO),ou=data-lake,dc=ing-atlas,dc=com
+objectClass: top
+objectClass: groupOfNames
+cn: Chief Data Officer (CDO)
+member:  uid=Jules_Keeper,ou=data-lake,dc=ing-atlas,dc=com
+
