@@ -47,6 +47,7 @@ public class TypeGuids
     private static String  categoryAnchorTypeGuid = null;
     private static String termAnchorTypeGuid = null;
     private static String categoryHierarchyLinkTypeGuid = null;
+    private static String termAnchorGuid = null;
     public static String getMediaReferenceTypeGuid() {
         if (mediaReferenceTypeGuid ==null)
         {

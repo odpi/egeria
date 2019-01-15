@@ -31,6 +31,8 @@ public enum ResponseCategory {
     TermTYPEDBYRelationship,
     TermUsedInContextRelationship,
     ValidValueRelationship,
+    // term to glossary relationships
+    TermAnchorRelationship,
     // term relationships
     TermRelationships,
     // external glossary relationships
@@ -56,8 +58,6 @@ public enum ResponseCategory {
     UnrecognizedGUIDException,
     UnrecognizedNameException,
     UserNotAuthorizedException,
-    MetadataServerUncontactableException
-
-
+    MetadataServerUncontactableException;
 
 }
