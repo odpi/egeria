@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
@@ -10,36 +11,51 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchSorting;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.*;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.RelationshipMapping;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.ReferenceableMapper;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.PropertyMappingSet;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.model.OMRSStub;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.ClassPathResource;
 
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.*;
 
+/**
+ * Provides the OMRSMetadataCollection implementation for IBM InfoSphere Information Governance Catalog ("IGC").
+ */
 public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
     private static final Logger log = LoggerFactory.getLogger(IGCOMRSMetadataCollection.class);
 
     public static final String MAPPING_PKG = "org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.";
     public static final String DEFAULT_IGC_TYPE = "main_object";
+    public static final String DEFAULT_IGC_TYPE_DISPLAY_NAME = "Main Object";
 
     public static final String GENERATED_TYPE_PREFIX = "__|";
     public static final String GENERATED_TYPE_POSTFIX = "|__";
 
     private IGCRestClient igcRestClient;
 
-    private Class defaultMapper;
-    private EntityMappingSet implementedEntities = new EntityMappingSet();
-    private String igcVersion;
+    private HashSet<ImplementedMapping> implementedMappings;
+
+    private XMLOutputFactory xmlOutputFactory;
 
     /**
      * @param parentConnector      connector that this metadata collection supports.
@@ -57,12 +73,242 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                                      String metadataCollectionId) {
         super(parentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId);
         this.igcRestClient = parentConnector.getIGCRestClient();
-        this.igcVersion = parentConnector.getIGCVersion();
-        try {
-            this.defaultMapper = Class.forName(MAPPING_PKG + "ReferenceableMapper");
-        } catch (ClassNotFoundException e) {
-            log.error("Unable to find default ReferenceableMapper class: " + MAPPING_PKG + "ReferenceableMapper", e);
+        upsertOMRSBundleZip();
+        this.igcRestClient.registerPOJO(OMRSStub.class);
+        this.xmlOutputFactory = XMLOutputFactory.newInstance();
+        this.implementedMappings = new HashSet<>();
+    }
+
+    /**
+     * Create a definition of a new TypeDef.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param newTypeDef TypeDef structure describing the new TypeDef.
+     * @throws InvalidParameterException the new TypeDef is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
+     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
+     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
+     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public void addTypeDef(String       userId,
+                           TypeDef      newTypeDef) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotSupportedException,
+            TypeDefKnownException,
+            TypeDefConflictException,
+            InvalidTypeDefException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException {
+        final String  methodName = "addTypeDef";
+        final String  typeDefParameterName = "newTypeDef";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
+        repositoryValidator.validateUnknownTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
+
+        // TODO: just need to handle AttributeTypeDefs now?
+
+        TypeDefCategory typeDefCategory = newTypeDef.getCategory();
+        String omrsTypeDefName = newTypeDef.getName();
+        log.debug("Looking for mapping for {} of type {}", omrsTypeDefName, typeDefCategory.getName());
+
+        // See if we have a Mapper defined for the class -- if so, it's implemented
+        StringBuilder sbMapperClassname = new StringBuilder();
+        sbMapperClassname.append(MAPPING_PKG);
+        switch(typeDefCategory) {
+            case RELATIONSHIP_DEF:
+                sbMapperClassname.append("relationships.");
+                break;
+            case CLASSIFICATION_DEF:
+                sbMapperClassname.append("classifications.");
+                break;
+            default:
+                sbMapperClassname.append("entities.");
+                break;
         }
+        sbMapperClassname.append(omrsTypeDefName);
+        sbMapperClassname.append("Mapper");
+
+        try {
+            Class mappingClass = Class.forName(sbMapperClassname.toString());
+            log.debug(" ... found mapping class: {}", mappingClass);
+
+            ImplementedMapping implementedMapping = new ImplementedMapping(
+                    newTypeDef,
+                    mappingClass,
+                    (IGCOMRSRepositoryConnector)parentConnector,
+                    userId
+            );
+            implementedMapping.registerPOJOs(this.igcRestClient);
+            implementedMappings.add(implementedMapping);
+
+        } catch (ClassNotFoundException e) {
+            throw new TypeDefNotSupportedException(404, IGCOMRSMetadataCollection.class.getName(), methodName, omrsTypeDefName + " is not supported.", "", "Request support through Egeria GitHub issue.");
+        }
+    }
+
+    /**
+     * Create a definition of a new AttributeTypeDef.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param newAttributeTypeDef TypeDef structure describing the new TypeDef.
+     * @throws InvalidParameterException the new TypeDef is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
+     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
+     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
+     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  void addAttributeTypeDef(String             userId,
+                                     AttributeTypeDef   newAttributeTypeDef) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotSupportedException,
+            TypeDefKnownException,
+            TypeDefConflictException,
+            InvalidTypeDefException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException {
+        final String  methodName           = "addAttributeTypeDef";
+        final String  typeDefParameterName = "newAttributeTypeDef";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
+        repositoryValidator.validateUnknownAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
+
+        /*
+         * Perform operation
+         */
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+    /**
+     * Returns the list of different types of metadata organized into two groups.  The first are the
+     * attribute type definitions (AttributeTypeDefs).  These provide types for properties in full
+     * type definitions.  Full type definitions (TypeDefs) describe types for entities, relationships
+     * and classifications.
+     *
+     * (Currently only full type definitions (TypeDefs) are implemented.)
+     *
+     * @param userId unique identifier for requesting user.
+     * @return TypeDefGalleryResponse List of different categories of type definitions.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public TypeDefGallery getAllTypes(String   userId) throws RepositoryErrorException,
+            UserNotAuthorizedException
+    {
+        final String                       methodName = "getAllTypes";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+
+        /*
+         * Perform operation
+         */
+        TypeDefGallery typeDefGallery = new TypeDefGallery();
+        ArrayList<TypeDef> typeDefs = new ArrayList<>();
+        for (ImplementedMapping implementedMapping : implementedMappings) {
+            typeDefs.add(implementedMapping.getTypeDef());
+        }
+        typeDefGallery.setTypeDefs(typeDefs);
+
+        return typeDefGallery;
+    }
+
+    /**
+     * Return the TypeDef identified by the unique name.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param name String name of the TypeDef.
+     * @return TypeDef structure describing its category and properties.
+     * @throws InvalidParameterException the name is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public TypeDef getTypeDefByName(String    userId,
+                                    String    name) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "getTypeDefByName";
+        final String  nameParameterName = "name";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeName(repositoryName, nameParameterName, name, methodName);
+
+        /*
+         * Perform operation
+         */
+        TypeDef typeDef = null;
+        for (ImplementedMapping implementedMapping : implementedMappings) {
+            if (implementedMapping.getTypeDef().getName().equals(name)) {
+                typeDef = implementedMapping.getTypeDef();
+                break;
+            }
+        }
+        if (typeDef == null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    name,
+                    "unknown",
+                    nameParameterName,
+                    methodName,
+                    repositoryName);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        return typeDef;
+
     }
 
     /**
@@ -99,109 +345,201 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, typeDef, methodName);
 
-        // TODO: approach below will work for EntityDefs, but not for ClassificationDef or RelationshipDefs...
-        //  - maybe only possible to cover all via getAllTypes?
-
-        String omrsTypeDefName = typeDef.getName();
-        log.debug("Looking for mapping for {}", omrsTypeDefName);
-
-        boolean bMapperExists = false;
-
-        // See if we have a Mapper defined for the class -- if so, it's implemented
-        try {
-
-            Class mappingClass = Class.forName(MAPPING_PKG + omrsTypeDefName + "Mapper");
-            bMapperExists = (mappingClass != null);
-            log.debug(" ... found mapping class: {}", mappingClass);
-
-            // Assuming we have some mapping, get the name of the IGC object involved in the mapping and from that
-            // attempt to retrieve a POJO object to (de-)serialise that IGC asset type
-            String igcAssetTypeName = ReferenceMapper.getIgcTypeFromMapping(
-                    mappingClass,
-                    (IGCOMRSRepositoryConnector)parentConnector,
-                    userId
-            );
-            String igcRidPrefix = ReferenceMapper.getIgcRidPrefixFromMapping(
-                    mappingClass,
-                    (IGCOMRSRepositoryConnector)parentConnector,
-                    userId
-            );
-            addImplementedMapping(
-                    igcAssetTypeName,
-                    typeDef,
-                    mappingClass,
-                    userId,
-                    igcRidPrefix
-            );
-
-        } catch (ClassNotFoundException e) {
-            log.info("Unable to find Mapper for {}", omrsTypeDefName);
-        }
-
-        return bMapperExists;
-
-    }
-
-    private void addImplementedMapping(String igcAssetTypeName, TypeDef typeDef, Class mappingClass, String userId, String ridPrefix) {
-
-        if (igcAssetTypeName != null) {
-
-            String pojoClassName = ReferenceMapper.getCamelCase(igcAssetTypeName);
-            String fqPojoClassName = ReferenceMapper.IGC_REST_GENERATED_MODEL_PKG + "." + igcVersion + "." + pojoClassName;
-            try {
-                log.debug("Marking IGC type as implemented: {}", igcAssetTypeName);
-                Class pojoClass = Class.forName(fqPojoClassName);
-                implementedEntities.add(
-                        igcAssetTypeName,
-                        typeDef,
-                        mappingClass,
-                        pojoClass,
-                        ridPrefix
-                );
-                log.debug("Registering base POJO: {}", pojoClass);
-                this.igcRestClient.registerPOJO(pojoClass);
-                // Check if there are any additional POJOs needed by the mapper, and if so register those as well
-                List<String> extraPOJOs = ReferenceMapper.getAdditionalIgcPOJOs(
-                        mappingClass,
-                        (IGCOMRSRepositoryConnector)parentConnector,
-                        userId
-                );
-                if (!extraPOJOs.isEmpty()) {
-                    log.debug("Found additional POJOs for {}", igcAssetTypeName);
-                }
-                for (String pojoName : extraPOJOs) {
-                    log.debug(" ... registering additional POJO: {}", pojoName);
-                    this.igcRestClient.registerPOJO(Class.forName(pojoName));
-                }
-                // Same for any additional types
-                List<String> otherTypes = ReferenceMapper.getAdditionalIgcTypes(
-                        mappingClass,
-                        (IGCOMRSRepositoryConnector)parentConnector,
-                        userId
-                );
-                if (!otherTypes.isEmpty()) {
-                    log.debug("Found additional type for {}", igcAssetTypeName);
-                }
-                for (String otherType : otherTypes) {
-                    log.debug(" ... adding mapping: {}", otherType);
-                    implementedEntities.add(
-                            otherType,
-                            typeDef,
-                            mappingClass,
-                            pojoClass,
-                            ridPrefix
-                    );
-                }
-            } catch (ClassNotFoundException e) {
-                log.info("Unable to find POJO for {}", fqPojoClassName);
-            }
-
-        }
+        return (getMappingForEntityType(typeDef.getGUID()) != null);
 
     }
 
     /**
-     * Return the relationships for a specific entity.
+     * Verify that a definition of an AttributeTypeDef is either new or matches the definition already stored.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param attributeTypeDef TypeDef structure describing the TypeDef to test.
+     * @return boolean where true means the TypeDef matches the local definition where false means the TypeDef is not known.
+     * @throws InvalidParameterException the TypeDef is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
+     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
+     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  boolean verifyAttributeTypeDef(String            userId,
+                                           AttributeTypeDef  attributeTypeDef) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotSupportedException,
+            TypeDefConflictException,
+            InvalidTypeDefException,
+            UserNotAuthorizedException
+    {
+        final String  methodName           = "verifyAttributeTypeDef";
+        final String  typeDefParameterName = "attributeTypeDef";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, attributeTypeDef, methodName);
+
+        /*
+         * Perform operation
+         */
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+    /**
+     * Return a requested relationship. Note that currently this will only work for relationships known to
+     * (originated within) IGC.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the relationship.
+     * @return a relationship structure.
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws RelationshipNotKnownException the metadata collection does not have a relationship with
+     *                                         the requested GUID stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Relationship getRelationship(String    userId,
+                                        String    guid) throws InvalidParameterException,
+            RepositoryErrorException,
+            RelationshipNotKnownException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "getRelationship";
+        final String  guidParameterName = "guid";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+
+        /*
+         * Process operation
+         */
+
+        // Translate the key properties of the GUID into IGC-retrievables
+        String proxyOneRid = RelationshipMapping.getProxyOneGUIDFromRelationshipGUID(guid);
+        String proxyTwoRid = RelationshipMapping.getProxyTwoGUIDFromRelationshipGUID(guid);
+        String omrsRelationshipName = RelationshipMapping.getRelationshipTypeFromRelationshipGUID(guid);
+
+        String proxyOneIgcRid = proxyOneRid;
+        String proxyTwoIgcRid = proxyTwoRid;
+
+        if (isGeneratedGUID(proxyOneRid)) {
+            proxyOneIgcRid = getRidFromGeneratedId(proxyOneRid);
+        }
+        if (isGeneratedGUID(proxyTwoRid)) {
+            proxyTwoIgcRid = getRidFromGeneratedId(proxyTwoRid);
+        }
+
+        log.debug("Looking up relationship: {}", guid);
+
+        // Should not need to translate from proxyone / proxytwo to alternative assets, as the RIDs provided
+        // in the relationship GUID should already be pointing to the correct assets
+        String relationshipLevelRid = (proxyOneRid.equals(proxyTwoRid)) ? proxyOneRid : null;
+        Reference proxyOne;
+        Reference proxyTwo;
+        RelationshipMapping relationshipMapping;
+        if (relationshipLevelRid != null) {
+            Reference relationshipAsset = igcRestClient.getAssetRefById(proxyOneIgcRid);
+            String relationshipAssetType = relationshipAsset.getType();
+            relationshipMapping = getRelationshipMapper(
+                    omrsRelationshipName,
+                    relationshipAssetType,
+                    relationshipAssetType
+            );
+            // Only need to translate if the RIDs are relationship-level RIDs
+            proxyOne = relationshipMapping.getProxyOneAssetFromAsset(relationshipAsset, igcRestClient).get(0);
+            proxyTwo = relationshipMapping.getProxyTwoAssetFromAsset(relationshipAsset, igcRestClient).get(0);
+        } else {
+            proxyOne = igcRestClient.getAssetRefById(proxyOneIgcRid);
+            proxyTwo = igcRestClient.getAssetRefById(proxyTwoIgcRid);
+            relationshipMapping = getRelationshipMapper(
+                    omrsRelationshipName,
+                    proxyOne.getType(),
+                    proxyTwo.getType()
+            );
+        }
+
+        Relationship found = null;
+
+        if (relationshipMapping != null) {
+            try {
+
+                RelationshipDef omrsRelationshipDef = (RelationshipDef) getTypeDefByName(userId, omrsRelationshipName);
+                // Since the ordering should be set by the GUID we're lookup up anyway, we'll simply set the property
+                // to one of the proxyOne properties
+                String igcPropertyName = relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties().get(0);
+                log.debug(" ... using property: {}", igcPropertyName);
+                found = RelationshipMapping.getMappedRelationship(
+                        (IGCOMRSRepositoryConnector)parentConnector,
+                        relationshipMapping,
+                        omrsRelationshipDef,
+                        proxyOne,
+                        proxyTwo,
+                        igcPropertyName,
+                        userId,
+                        relationshipLevelRid
+                );
+
+            } catch (TypeDefNotKnownException e) {
+                OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                        omrsRelationshipName,
+                        guid,
+                        guidParameterName,
+                        methodName,
+                        repositoryName);
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+        } else {
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    omrsRelationshipName,
+                    guid,
+                    guidParameterName,
+                    methodName,
+                    repositoryName);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+        return found;
+
+    }
+
+    /**
+     * Return the relationships for a specific entity. Note that currently this will only work for relationships known
+     * to (originated within) IGC, and that not all parameters are (yet) implemented.
      *
      * @param userId unique identifier for requesting user.
      * @param entityGUID String unique identifier for the entity.
@@ -322,9 +660,18 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                                     pageSize)
                     );
                 } else {
-                    log.error("Unable to find Mapper that can translate relationships for asset type: {} with prefix {}",
-                            asset.getType(),
-                            prefix);
+                    OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN_FOR_INSTANCE;
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                            prefix + asset.getType(),
+                            "IGC asset",
+                            methodName,
+                            repositoryName);
+                    throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction());
                 }
 
             }
@@ -394,6 +741,11 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         final String  asOfTimeParameter            = "asOfTime";
         final String  pageSizeParameter            = "pageSize";
 
+        // TODO: need to walk the hierarchy of types and ensure we do a search across all subtypes of (as well as
+        //  base type received), eg. searching for 'Asset' should also search for RelationalTable, RelationalColumn,
+        //  Database, etc, etc
+        //  - also need search by classification for demo
+
         /*
          * Validate parameters
          */
@@ -432,12 +784,12 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
             IGCSearch igcSearch = new IGCSearch();
 
-            EntityMappingSet.EntityMapping mapping = getMappingForEntityType(entityTypeGUID);
+            ImplementedMapping mapping = getMappingForEntityType(entityTypeGUID);
             addTypeToSearch(mapping, igcSearch);
 
             /* We need to first retrieve the mapping so we know how to translate
              * the provided OMRS property names to IGC property names */
-            PropertyMappingSet propertyMappingSet = getPropertiesFromMapping(mapping, userId);
+            PropertyMappingSet propertyMappingSet = getEntityPropertiesFromMapping(mapping, userId);
 
             /* Provided there is a mapping, build up a list of IGC-specific properties
              * and search criteria, based on the values of the InstanceProperties provided */
@@ -477,7 +829,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 }
             }
 
-            igcSearch.addProperties(properties.toArray(new String[0]));
+            igcSearch.addProperties(properties);
             igcSearch.addConditions(igcSearchConditionSet);
 
             setPagingForSearch(igcSearch, fromEntityElement, pageSize);
@@ -500,14 +852,58 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @param entityTypeGUID the OMRS entityTypeGUID for which to find a mapping
      * @return EntityMapping
      */
-    private EntityMappingSet.EntityMapping getMappingForEntityType(String entityTypeGUID) {
-        EntityMappingSet.EntityMapping mapping = null;
-        if (entityTypeGUID != null
-                && !entityTypeGUID.equals("")
-                && implementedEntities.isTypeDefMapped(entityTypeGUID)) {
-            mapping = implementedEntities.getByTypeDefGUID(entityTypeGUID);
+    private ImplementedMapping getMappingForEntityType(String entityTypeGUID) {
+        ImplementedMapping mapping = null;
+        for (ImplementedMapping implementedMapping : implementedMappings) {
+            if (entityTypeGUID.equals(implementedMapping.getTypeDef().getGUID())) {
+                mapping = implementedMapping;
+            }
         }
         return mapping;
+    }
+
+    /**
+     * Retrieve a mapping from IGC property name to the OMRS relationship type it represents.
+     *
+     * @param assetType the IGC asset type for which to find mappings
+     * @param userId the userId making the request
+     * @return Map<String, RelationshipMapping> - keyed by IGC asset type with values of the RelationshipMappings
+     */
+    public Map<String, List<RelationshipMapping>> getIgcPropertiesToRelationshipMappings(String assetType, String userId) {
+
+        HashMap<String, List<RelationshipMapping>> map = new HashMap<>();
+
+        List<ReferenceableMapper> mappers = getMappers(assetType, userId);
+        for (ReferenceableMapper mapper : mappers) {
+            List<RelationshipMapping> relationshipMappings = mapper.getRelationshipMappers();
+            for (RelationshipMapping relationshipMapping : relationshipMappings) {
+                if (relationshipMapping.getProxyOneMapping().matchesAssetType(assetType)) {
+                    List<String> relationshipNamesOne = relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties();
+                    for (String relationshipName : relationshipNamesOne) {
+                        if (!map.containsKey(relationshipName)) {
+                            map.put(relationshipName, new ArrayList<>());
+                        }
+                        if (!map.get(relationshipName).contains(relationshipMapping)) {
+                            map.get(relationshipName).add(relationshipMapping);
+                        }
+                    }
+                }
+                if (relationshipMapping.getProxyTwoMapping().matchesAssetType(assetType)) {
+                    List<String> relationshipNamesTwo = relationshipMapping.getProxyTwoMapping().getIgcRelationshipProperties();
+                    for (String relationshipName : relationshipNamesTwo) {
+                        if (!map.containsKey(relationshipName)) {
+                            map.put(relationshipName, new ArrayList<>());
+                        }
+                        if (!map.get(relationshipName).contains(relationshipMapping)) {
+                            map.get(relationshipName).add(relationshipMapping);
+                        }
+                    }
+                }
+            }
+        }
+
+        return map;
+
     }
 
     /**
@@ -516,7 +912,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @param mapping the mapping on which to base the search
      * @param igcSearch the IGC search object to which to add the criteria
      */
-    private void addTypeToSearch(EntityMappingSet.EntityMapping mapping, IGCSearch igcSearch) {
+    private void addTypeToSearch(ImplementedMapping mapping, IGCSearch igcSearch) {
         if (mapping == null) {
             // If no TypeDef was provided, run against all types
             igcSearch.addType(DEFAULT_IGC_TYPE);
@@ -532,15 +928,13 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @param userId the userId making the request
      * @return PropertyMappingSet
      */
-    private PropertyMappingSet getPropertiesFromMapping(EntityMappingSet.EntityMapping mapping, String userId) {
+    private PropertyMappingSet getEntityPropertiesFromMapping(ImplementedMapping mapping, String userId) {
         PropertyMappingSet propertyMappingSet = null;
         if (mapping != null) {
-            Class mappingClass = mapping.getMappingClass();
-            propertyMappingSet = ReferenceMapper.getPropertiesFromMapping(
-                    mappingClass,
-                    (IGCOMRSRepositoryConnector)parentConnector,
-                    userId
-            );
+            EntityMapping entityMapping = mapping.getEntityMapping();
+            if (entityMapping != null) {
+                propertyMappingSet = entityMapping.getPropertyMappings();
+            }
         }
         return propertyMappingSet;
     }
@@ -573,7 +967,10 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @param pageSize the number of results per page (0 for all results)
      * @param userId the user making the request
      */
-    private void processResults(ReferenceList results, List<EntityDetail> entityDetails, int pageSize, String userId) {
+    private void processResults(ReferenceList results,
+                                List<EntityDetail> entityDetails,
+                                int pageSize,
+                                String userId) throws RepositoryErrorException {
 
         if (pageSize == 0) {
             // If the provided pageSize was 0, we need to retrieve ALL pages of results...
@@ -586,16 +983,16 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
              * etc and will simply result in 400-code Bad Request messages from the API) */
             if (!reference.getType().equals(DEFAULT_IGC_TYPE)) {
                 EntityDetail ed = null;
-                List<EntityMappingSet.EntityMapping> mappings = implementedEntities.getByIgcAssetType(reference.getType());
-                for (EntityMappingSet.EntityMapping mapping : mappings) {
-                    try {
-                        if (mapping.igcRidNeedsPrefix()) {
-                            ed = getEntityDetail(userId, mapping.getIgcRidPrefix() + reference.getId());
-                        } else {
-                            ed = getEntityDetail(userId, reference.getId());
-                        }
-                    } catch (EntityNotKnownException | EntityProxyOnlyException | InvalidParameterException | RepositoryErrorException | UserNotAuthorizedException e) {
-                        log.error("Unable to retrieve entity details.", e);
+
+                List<ReferenceableMapper> mappers = getMappers(reference.getType(), userId);
+                for (ReferenceableMapper mapper : mappers) {
+                    log.debug("processResults with mapper: {}", mapper.getClass().getCanonicalName());
+                    if (mapper.igcRidNeedsPrefix()) {
+                        log.debug(" ... prefix required, getEntityDetail with: {}", mapper.getIgcRidPrefix() + reference.getId());
+                        ed = getEntityDetail(userId, mapper.getIgcRidPrefix() + reference.getId(), reference);
+                    } else {
+                        log.debug(" ... no prefix required, getEntityDetail with: {}", reference.getId());
+                        ed = getEntityDetail(userId, reference.getId(), reference);
                     }
                     if (ed != null) {
                         entityDetails.add(ed);
@@ -711,8 +1108,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
             IGCSearch igcSearch = new IGCSearch();
 
-            EntityMappingSet.EntityMapping mapping = getMappingForEntityType(entityTypeGUID);
-            PropertyMappingSet propertyMappingSet = getPropertiesFromMapping(mapping, userId);
+            ImplementedMapping mapping = getMappingForEntityType(entityTypeGUID);
+            PropertyMappingSet propertyMappingSet = getEntityPropertiesFromMapping(mapping, userId);
             addTypeToSearch(mapping, igcSearch);
 
             String[] properties = null;
@@ -797,13 +1194,32 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
          * Perform operation
          */
 
-        // 0. see if the entityGUID has a prefix (indicating a generated type)
+        // Lookup the basic asset based on the RID (strip off prefix (indicating a generated type), if there)
         String rid = getRidFromGeneratedId(guid);
-        String prefix = getPrefixFromGeneratedId(guid);
-
-        // 1. retrieve entity from IGC by GUID (RID)
         Reference asset = this.igcRestClient.getAssetRefById(rid);
+
+        return getEntityDetail(userId, guid, asset);
+
+    }
+
+    /**
+     * Return the header, classifications and properties of a specific entity, using the provided IGC asset.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @param asset the IGC asset for which an EntityDetail should be constructed.
+     * @return EntityDetail structure.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     */
+    public EntityDetail getEntityDetail(String userId, String guid, Reference asset) throws RepositoryErrorException {
+
+        final String  methodName        = "getEntityDetail";
+
+        log.debug("getEntityDetail with guid = {}", guid);
+
         EntityDetail detail = null;
+        String prefix = getPrefixFromGeneratedId(guid);
 
         // If we could not find any asset by the provided guid, throw an ENTITY_NOT_KNOWN exception
         if (asset == null) {
@@ -841,9 +1257,18 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 // 2. Apply the mapping to the object, and retrieve the resulting EntityDetail
                 detail = referenceMapper.getOMRSEntityDetail();
             } else {
-                log.error("Unable to find Mapper that can translate detail for asset type: {} with prefix {}",
-                        asset.getType(),
-                        prefix);
+                OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN_FOR_INSTANCE;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                        prefix + asset.getType(),
+                        "IGC asset",
+                        methodName,
+                        repositoryName);
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
             }
 
         }
@@ -866,19 +1291,14 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
         log.debug("Looking for mapper for type {} with prefix {}", igcAssetType, prefix);
 
-        List<Class> mapperClasses = getMapperClasses(igcAssetType);
-        ReferenceableMapper referenceMapper = null;
+        List<ReferenceableMapper> mappers = getMappers(igcAssetType, userId);
 
-        for (Class mappingClassCandidate : mapperClasses) {
-            referenceMapper = ReferenceableMapper.getMapper(
-                    mappingClassCandidate,
-                    (IGCOMRSRepositoryConnector)parentConnector,
-                    igcObject,
-                    userId
-            );
-            String mapperPrefix = referenceMapper.getIgcRidPrefix();
-            if ( (prefix == null && referenceMapper.getIgcRidPrefix() == null)
-                || (prefix != null && mapperPrefix != null && mapperPrefix.equals(prefix)) ) {
+        ReferenceableMapper candidateMapper = null;
+        for (int i = 0; i < mappers.size(); i++) {
+            candidateMapper = mappers.get(i);
+            String mapperPrefix = candidateMapper.getIgcRidPrefix();
+            if ( (prefix == null && mapperPrefix == null)
+                    || (prefix != null && mapperPrefix != null && mapperPrefix.equals(prefix)) ) {
                 // If we didn't receive any prefix and this Mapper doesn't use a prefix, use it
                 // or if we did receive a prefix and it matches this Mapper's prefix, use it
                 break;
@@ -886,8 +1306,14 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             // Otherwise keep looping until we find one that meets above criteria (or we run out of options)
         }
 
-        if (referenceMapper != null) {
-            log.debug("Found mapper class: {}", referenceMapper.getClass().getCanonicalName());
+        ReferenceableMapper referenceMapper = null;
+        if (candidateMapper != null) {
+            log.debug("Found mapper class: {}", candidateMapper.getClass().getCanonicalName());
+            // Translate the provided asset to a base asset type for the mapper, if needed
+            // (if not needed the 'getBaseIgcAssetFromAlternative' is effecitively a NOOP and gives back same object)
+            referenceMapper = candidateMapper.initialize(
+                    candidateMapper.getBaseIgcAssetFromAlternative(igcObject),
+                    igcObject);
         } else {
             log.debug("No mapper class found!");
         }
@@ -901,23 +1327,140 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @param igcAssetType the name of the IGC asset type
      * @return List<Class>
      */
-    public List<Class> getMapperClasses(String igcAssetType) {
-        List<Class> mapperClasses = implementedEntities.getMappingClassesForIgcAssetType(igcAssetType);
-        if (mapperClasses == null) {
-            mapperClasses = new ArrayList<>();
-            mapperClasses.add(defaultMapper);
+    public List<ReferenceableMapper> getMappers(String igcAssetType, String userId) {
+        ArrayList<ReferenceableMapper> mappers = new ArrayList<>();
+        for (ImplementedMapping mapping : implementedMappings) {
+            String mappingAssetType = mapping.getIgcAssetType();
+            // For now skip over the default Referenceable mapping, if no other candidate is found we will add
+            // this default mapping back in below
+            if (mappingAssetType != null && !mappingAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
+                if (mapping.matchesAssetType(igcAssetType)) {
+                    log.debug(" ... adding candidate: {}", mapping.getEntityMapping().getClass().getCanonicalName());
+                    mappers.add((ReferenceableMapper) mapping.getEntityMapping());
+                } else {
+                    for (String otherType : mapping.getOtherIgcAssetTypes()) {
+                        if (igcAssetType.equals(otherType)) {
+                            log.debug(" ... adding other candidate: {}", mapping.getEntityMapping().getClass().getCanonicalName());
+                            mappers.add((ReferenceableMapper) mapping.getEntityMapping());
+                        }
+                    }
+                }
+            }
         }
-        return mapperClasses;
+        if (mappers.isEmpty()) {
+            try {
+                ReferenceableMapper defaultMapper = (ReferenceableMapper) ImplementedMapping.getEntityMapper(
+                        Class.forName(MAPPING_PKG + "entities.ReferenceableMapper"),
+                        (IGCOMRSRepositoryConnector)parentConnector,
+                        userId
+                );
+                mappers.add(defaultMapper);
+            } catch (ClassNotFoundException e) {
+                log.error("Unable to find default ReferenceableMapper class: " + MAPPING_PKG + "entities.ReferenceableMapper", e);
+            }
+        }
+        return mappers;
+    }
+
+    /**
+     * Retrieves a RelationshipMapping by OMRS relationship type from those that are listed as implemented.
+     *
+     * @param omrsRelationshipType the name of the OMRS relationship type for which to retrieve a mapping
+     * @return RelationshipMapping
+     */
+    public RelationshipMapping getRelationshipMapper(String omrsRelationshipType,
+                                                     String proxyOneType,
+                                                     String proxyTwoType) {
+        RelationshipMapping found = null;
+        for (ImplementedMapping mapping : implementedMappings) {
+            RelationshipMapping candidate = mapping.getRelationshipMapping();
+            // If the mapping has a relationship mapping, and its type equals the one we're looking for,
+            // set it to found and short-circuit out of the loop
+            if (candidate != null) {
+                if (matchingRelationshipMapper(candidate, omrsRelationshipType, proxyOneType, proxyTwoType)) {
+                    found = candidate;
+                    break;
+                } else if (candidate.hasSubTypes()) {
+                    for (RelationshipMapping subMapping : candidate.getSubTypes()) {
+                        if (matchingRelationshipMapper(subMapping, omrsRelationshipType, proxyOneType, proxyTwoType)) {
+                            found = subMapping;
+                            break;
+                        }
+                    }
+                } else if (candidate.hasRelationshipLevelAsset()) {
+                    String relationshipLevelAssetType = candidate.getRelationshipLevelIgcAsset();
+                    if (proxyOneType.equals(relationshipLevelAssetType) && proxyTwoType.equals(relationshipLevelAssetType)) {
+                        found = candidate;
+                        break;
+                    }
+                }
+
+            }
+        }
+        return found;
+    }
+
+    /**
+     * Indicates whether the provided relationship mapping matches the provided criteria.
+     *
+     * @param candidate the relationship mapping to check
+     * @param omrsRelationshipType the OMRS relationship type to confirm
+     * @param proxyOneType the asset type of endpoint 1 of the relationship to confirm
+     * @param proxyTwoType the asset type of endpoint 2 of the relationship to confirm
+     * @return
+     */
+    private boolean matchingRelationshipMapper(RelationshipMapping candidate,
+                                               String omrsRelationshipType,
+                                               String proxyOneType,
+                                               String proxyTwoType) {
+        return (candidate != null
+                && candidate.getOmrsRelationshipType().equals(omrsRelationshipType)
+                && candidate.getProxyOneMapping().matchesAssetType(proxyOneType)
+                && candidate.getProxyTwoMapping().matchesAssetType(proxyTwoType));
+    }
+
+    /**
+     * Retrieves the OMRS TypeDefs that are mapped to by the provided IGC asset display name.
+     *
+     * @param igcAssetName the display name of the IGC asset type
+     * @return List<TypeDef>
+     */
+    public List<TypeDef> getTypeDefsForAssetName(String igcAssetName) {
+        ArrayList<TypeDef> typeDefs = new ArrayList<>();
+        for (ImplementedMapping mapping : implementedMappings) {
+            if (igcAssetName.equals(mapping.getIgcAssetTypeDisplayName())) {
+                typeDefs.add(mapping.getTypeDef());
+            }
+        }
+        return typeDefs;
+    }
+
+    /**
+     * Retrieves the IGC asset type from the provided IGC asset display name (only for those assets that have
+     * a mapping implemented). If none is found, will return null.
+     *
+     * @param igcAssetName the display name of the IGC asset type
+     * @return String
+     */
+    public String getIgcAssetTypeForAssetName(String igcAssetName) {
+        String assetType = null;
+        for (ImplementedMapping mapping : implementedMappings) {
+            if (igcAssetName.equals(mapping.getIgcAssetTypeDisplayName())) {
+                assetType = mapping.getIgcAssetType();
+                break;
+            }
+        }
+        return assetType;
     }
 
     /**
      * Adds the provided value to the search criteria for IGC.
      *
-     * @param igcSearchConditionSet
-     * @param omrsPropertyName
-     * @param igcProperties
-     * @param propertyMappingSet
-     * @param value
+     * @param igcSearchConditionSet the search conditions to which to add the criteria
+     * @param omrsPropertyName the OMRS property name to search
+     * @param igcProperties the list of IGC properties to which to add for inclusion in the IGC search
+     * @param propertyMappingSet the property mappings
+     * @param value the value for which to search
      */
     public void addSearchConditionFromValue(IGCSearchConditionSet igcSearchConditionSet,
                                             String omrsPropertyName,
@@ -1073,6 +1616,271 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      */
     public static final String generateTypePrefix(String moniker) {
         return GENERATED_TYPE_PREFIX + moniker + GENERATED_TYPE_POSTFIX;
+    }
+
+    /**
+     * Retrieve an OMRS asset stub (shadow copy of last version of an asset) for the provided asset.
+     * If there is no existing stub, will return null.
+     *
+     * @param asset the asset for which to retrieve the OMRS stub
+     * @return OMRSStub
+     */
+    public OMRSStub getOMRSStubForAsset(Reference asset) {
+
+        // We need to translate the provided asset into a unique name for the stub
+        String stubName = getStubNameFromAsset(asset);
+        IGCSearchCondition condition = new IGCSearchCondition(
+                "name",
+                "=",
+                stubName
+        );
+        String[] properties = new String[]{ "$sourceRID", "$sourceType", "$payload" };
+        IGCSearchConditionSet conditionSet = new IGCSearchConditionSet(condition);
+        IGCSearch igcSearch = new IGCSearch("$OMRS-Stub", properties, conditionSet);
+        ReferenceList results = igcRestClient.search(igcSearch);
+        OMRSStub stub = null;
+        if (results.getPaging().getNumTotal() > 0) {
+            if (results.getPaging().getNumTotal() > 1) {
+                log.warn("Found multiple stubs for asset, taking only the first: {}", stubName);
+            }
+            stub = (OMRSStub) results.getItems().get(0);
+        } else {
+            log.info("No stub found for asset: {}", stubName);
+        }
+        return stub;
+
+    }
+
+    /**
+     * Update (or create if it does not already exist) the OMRS asset stub for the provided asset.
+     * (Note that this method assumes you have already retrieved the full asset being provided.)
+     *
+     * @param asset the asset for which to upsert the OMRS stub
+     * @return String the Repository ID (RID) of the OMRS stub
+     */
+    public String upsertOMRSStubForAsset(Reference asset) {
+
+        String stubName = getStubNameFromAsset(asset);
+
+        // Get the full asset details as a singular JSON payload
+        String payload = igcRestClient.getValueAsJSON(asset);
+
+        // Construct the asset XML document, including the full asset payload
+        StringWriter stringWriter = new StringWriter();
+        try {
+
+            XMLStreamWriter xmlStreamWriter = xmlOutputFactory.createXMLStreamWriter(stringWriter);
+            xmlStreamWriter.writeStartDocument("UTF-8", "1.0");
+
+            xmlStreamWriter.writeStartElement("doc");
+            xmlStreamWriter.writeNamespace("xmlns", "http://www.ibm.com/iis/flow-doc");
+
+            xmlStreamWriter.writeStartElement("assets");
+            xmlStreamWriter.writeStartElement("asset");
+
+            xmlStreamWriter.writeAttribute("class", "$OMRS-Stub");
+            xmlStreamWriter.writeAttribute("repr", stubName);
+            xmlStreamWriter.writeAttribute("ID", "stub1");
+
+            addAttributeToAssetXML(xmlStreamWriter, "name", stubName);
+            addAttributeToAssetXML(xmlStreamWriter, "$sourceType", asset.getType());
+            addAttributeToAssetXML(xmlStreamWriter, "$sourceRID", asset.getId());
+            addAttributeToAssetXML(xmlStreamWriter, "$payload", payload);
+
+            xmlStreamWriter.writeEndElement(); // </asset>
+            xmlStreamWriter.writeEndElement(); // </assets>
+
+            xmlStreamWriter.writeStartElement("importAction");
+            xmlStreamWriter.writeAttribute("completeAssetIDs", "stub1");
+            xmlStreamWriter.writeEndElement(); // </importAction>
+
+            xmlStreamWriter.writeEndElement(); // </doc>
+
+            xmlStreamWriter.writeEndDocument();
+            xmlStreamWriter.flush();
+            xmlStreamWriter.close();
+
+        } catch (XMLStreamException e) {
+            log.error("Unable to write XML stream: {}", asset, e);
+        }
+
+        String stubXML = stringWriter.getBuffer().toString();
+        log.debug("Constructed XML for stub: {}", stubXML);
+
+        // Upsert using the constructed asset XML
+        JsonNode results = igcRestClient.upsertOpenIgcAsset(stubXML);
+
+        return results.path("stub1").asText();
+
+    }
+
+    /**
+     * Adds the provided attribute to the asset XML being constructed.
+     *
+     * @param xmlStreamWriter the asset XML being constructed
+     * @param attrName the name of the attribute to add
+     * @param attrValue the value of the attribute
+     * @throws XMLStreamException
+     */
+    private void addAttributeToAssetXML(XMLStreamWriter xmlStreamWriter, String attrName, String attrValue) throws XMLStreamException {
+        xmlStreamWriter.writeStartElement("attribute");
+        xmlStreamWriter.writeAttribute("name", attrName);
+        xmlStreamWriter.writeAttribute("value", attrValue);
+        xmlStreamWriter.writeEndElement(); // </attribute>
+    }
+
+    /**
+     * Delete the OMRS asset stub for the provided asset details (cannot require the asset itself since it has
+     * already been removed).
+     *
+     * @param rid the Repository ID (RID) of the asset for which to delete the OMRS stub
+     * @param assetType the IGC asset type of the asset for which to delete the OMRS stub
+     * @return boolean - true on successful deletion, false otherwise
+     */
+    public boolean deleteOMRSStubForAsset(String rid, String assetType) {
+
+        String stubName = getStubNameForAsset(rid, assetType);
+
+        // Construct the asset XML document, including the full asset payload
+        StringWriter stringWriter = new StringWriter();
+        try {
+
+            XMLStreamWriter xmlStreamWriter = xmlOutputFactory.createXMLStreamWriter(stringWriter);
+            xmlStreamWriter.writeStartDocument("UTF-8", "1.0");
+
+            xmlStreamWriter.writeStartElement("doc");
+            xmlStreamWriter.writeNamespace("xmlns", "http://www.ibm.com/iis/flow-doc");
+
+            xmlStreamWriter.writeStartElement("assets");
+            xmlStreamWriter.writeStartElement("asset");
+
+            xmlStreamWriter.writeAttribute("class", "$OMRS-Stub");
+            xmlStreamWriter.writeAttribute("repr", stubName);
+            xmlStreamWriter.writeAttribute("ID", "stub1");
+
+            addAttributeToAssetXML(xmlStreamWriter, "name", stubName);
+
+            xmlStreamWriter.writeEndElement(); // </asset>
+            xmlStreamWriter.writeEndElement(); // </assets>
+
+            xmlStreamWriter.writeStartElement("assetsToDelete");
+            xmlStreamWriter.writeCharacters("stub1");
+            xmlStreamWriter.writeEndElement(); // </assetsToDelete>
+
+            xmlStreamWriter.writeEndElement(); // </doc>
+
+            xmlStreamWriter.writeEndDocument();
+            xmlStreamWriter.flush();
+            xmlStreamWriter.close();
+
+        } catch (XMLStreamException e) {
+            log.error("Unable to write XML stream.", e);
+        }
+
+        String stubXML = stringWriter.getBuffer().toString();
+        log.debug("Constructed XML for stub deletion: {}", stubXML);
+
+        // Delete using the constructed asset XML
+        return igcRestClient.deleteOpenIgcAsset(stubXML);
+
+    }
+
+    /**
+     * Construct the unique name for the OMRS stub based on the provided asset.
+     *
+     * @param asset the asset for which to construct the unique OMRS stub name
+     * @return String
+     */
+    public static String getStubNameFromAsset(Reference asset) {
+        return getStubNameForAsset(asset.getId(), asset.getType());
+    }
+
+    /**
+     * Construct the unique name for the OMRS stub based on the provided asset information.
+     *
+     * @param rid the Repository ID (RID) of the asset for which to construct the unique OMRS stub name
+     * @param assetType the asset type (REST form) of the asset for which to construct the unique OMRS stub name
+     * @return String
+     */
+    public static String getStubNameForAsset(String rid, String assetType) {
+        return assetType + "_" + rid;
+    }
+
+    /**
+     * Retrieve all of the asset details, including all relationships, from the RID.
+     * <br><br>
+     * Note that this is quite a heavy operation, relying on multiple REST calls, to build up what could be a very
+     * large object; to simply retrieve the details without all relationships, see getAssetDetails.
+     *
+     * @param rid the Repository ID (RID) of the asset for which to retrieve all details
+     * @return Reference - the object including all of its details and relationships
+     */
+    public Reference getFullAssetDetails(String rid) {
+
+        // Start by retrieving the asset header, so we can introspect the class itself
+        Reference assetRef = igcRestClient.getAssetRefById(rid);
+        Reference fullAsset = null;
+
+        if (assetRef != null) {
+
+            // Introspect the full list of properties from the POJO of the asset
+            Class pojoClass = igcRestClient.getPOJOForType(assetRef.getType());
+            if (pojoClass != null) {
+                List<String> allProps = Reference.getAllPropertiesFromPOJO(pojoClass);
+
+                // Retrieve all asset properties, via search, as this will allow larger page
+                // retrievals (and therefore be overall more efficient) than going by the GET of the asset
+                fullAsset = assetRef.getAssetWithSubsetOfProperties(
+                        igcRestClient,
+                        allProps.toArray(new String[0]),
+                        igcRestClient.getDefaultPageSize()
+                );
+
+                if (fullAsset != null) {
+
+                    // Iterate through all the paged properties and retrieve all pages for each
+                    List<String> allPaged = Reference.getPagedRelationalPropertiesFromPOJO(pojoClass);
+                    for (String pagedProperty : allPaged) {
+                        ReferenceList pagedValue = (ReferenceList) fullAsset.getPropertyByName(pagedProperty);
+                        if (pagedValue != null) {
+                            pagedValue.getAllPages(igcRestClient);
+                        }
+                    }
+
+                    // Set the asset as fully retrieved, so we do not attempt to retrieve parts of it again
+                    fullAsset.setFullyRetrieved();
+
+                }
+            } else {
+                log.debug("No registered POJO for asset type {} -- returning basic reference.", assetRef.getType());
+                fullAsset = assetRef;
+            }
+
+        } else {
+            log.info("Unable to retrieve any asset with RID {} -- assume it was deleted.", rid);
+        }
+
+        return fullAsset;
+
+    }
+
+    /**
+     * Generates a zip file for the OMRS OpenIGC bundle, needed to enable change tracking for the event mapper.
+     */
+    private void upsertOMRSBundleZip() {
+
+        ClassPathResource bundleResource = new ClassPathResource("/bundleOMRS");
+        try {
+            File bundle = this.igcRestClient.createOpenIgcBundleFile(bundleResource.getFile());
+            if (bundle != null) {
+                this.igcRestClient.upsertOpenIgcBundle("OMRS", bundle.getAbsolutePath());
+            } else {
+                log.error("Unable to generate OMRS bundle.");
+            }
+        } catch (IOException e) {
+            log.error("Unable to open bundle resource for OMRS.", e);
+        }
+
     }
 
 }

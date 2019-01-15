@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
@@ -12,7 +13,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,24 +39,17 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Reference extends ObjectPrinter {
 
-    private static final Logger log = LoggerFactory.getLogger(Reference.class);
-
-    public static final String MOD_CREATED_BY = "created_by";
-    public static final String MOD_CREATED_ON = "created_on";
-    public static final String MOD_MODIFIED_BY = "modified_by";
-    public static final String MOD_MODIFIED_ON = "modified_on";
-
-    protected static final String[] MODIFICATION_DETAILS = new String[] {
-            MOD_CREATED_BY,
-            MOD_CREATED_ON,
-            MOD_MODIFIED_BY,
-            MOD_MODIFIED_ON
-    };
+    @JsonIgnore private static final Logger log = LoggerFactory.getLogger(Reference.class);
 
     /**
      * Used to uniquely identify the object without relying on its ID (RID) remaining static.
      */
     @JsonIgnore private Identity identity = null;
+
+    /**
+     * Used to indicate whether this asset has been fully retrieved already (true) or not (false).
+     */
+    @JsonIgnore private boolean fullyRetrieved = false;
 
     /**
      * Provides the context to the unique identity of this asset. Note that while this will exist on
@@ -102,6 +99,14 @@ public class Reference extends ObjectPrinter {
     /** @see #_url */ @JsonProperty("_url") public String getUrl() { return this._url; }
     /** @see #_url */ @JsonProperty("_url") public void setUrl(String _url) { this._url = _url; }
 
+    public boolean isFullyRetrieved() { return this.fullyRetrieved; }
+    public void setFullyRetrieved() { this.fullyRetrieved = true; }
+
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+            "name"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+
     /**
      * This will generally be the most performant method by which to retrieve asset information, when only
      * some subset of properties is required
@@ -119,8 +124,10 @@ public class Reference extends ObjectPrinter {
         Reference assetWithProperties = null;
         IGCSearchCondition idOnly = new IGCSearchCondition("_id", "=", this._id);
         IGCSearchConditionSet idOnlySet = new IGCSearchConditionSet(idOnly);
-        IGCSearch igcSearch = new IGCSearch(this._type, properties, idOnlySet);
-        igcSearch.setPageSize(pageSize);
+        IGCSearch igcSearch = new IGCSearch(Reference.getAssetTypeForSearch(this.getType()), properties, idOnlySet);
+        if (pageSize > 0) {
+            igcSearch.setPageSize(pageSize);
+        }
         if (sorting != null) {
             igcSearch.addSortingCriteria(sorting);
         }
@@ -185,9 +192,10 @@ public class Reference extends ObjectPrinter {
      * @return Reference - the object including all of its details and relationships
      */
     public Reference getFullAssetDetails(IGCRestClient igcrest) {
-        Reference asset = this.getAssetDetails(igcrest);
+
+        Reference asset = igcrest.getAssetById(this.getId());
         try {
-            for (Field f : getClass().getFields()) {
+            for (Field f : asset.getClass().getFields()) {
                 Class fieldClass = f.getType();
                 if (fieldClass == ReferenceList.class) {
                     // Uses reflection to call getAllPages on any ReferenceList fields
@@ -201,6 +209,7 @@ public class Reference extends ObjectPrinter {
             log.error("Unable to access field.", e);
         }
         return asset;
+
     }
 
     /**
@@ -369,15 +378,14 @@ public class Reference extends ObjectPrinter {
 
         if (this._context.isEmpty()) {
 
-            String[] properties = new String[]{ "name" };
             boolean bHasModificationDetails = this.hasModificationDetails();
-            if (bHasModificationDetails) {
-                properties = Reference.MODIFICATION_DETAILS;
-            }
 
             IGCSearchCondition idOnly = new IGCSearchCondition("_id", "=", this.getId());
             IGCSearchConditionSet idOnlySet = new IGCSearchConditionSet(idOnly);
-            IGCSearch igcSearch = new IGCSearch(this.getType(), properties, idOnlySet);
+            IGCSearch igcSearch = new IGCSearch(this.getType(), idOnlySet);
+            if (bHasModificationDetails) {
+                igcSearch.addProperties(IGCRestConstants.getModificationProperties());
+            }
             igcSearch.setPageSize(2);
             ReferenceList assetsWithCtx = igcrest.search(igcSearch);
             success = (!assetsWithCtx.getItems().isEmpty());
@@ -387,10 +395,10 @@ public class Reference extends ObjectPrinter {
                 this._context = new ArrayList(assetWithCtx.getContext());
 
                 if (bHasModificationDetails) {
-                    this.setPropertyByName(MOD_CREATED_ON, assetWithCtx.getPropertyByName(MOD_CREATED_ON));
-                    this.setPropertyByName(MOD_CREATED_BY, assetWithCtx.getPropertyByName(MOD_CREATED_BY));
-                    this.setPropertyByName(MOD_MODIFIED_ON, assetWithCtx.getPropertyByName(MOD_MODIFIED_ON));
-                    this.setPropertyByName(MOD_MODIFIED_BY, assetWithCtx.getPropertyByName(MOD_MODIFIED_BY));
+                    this.setPropertyByName(IGCRestConstants.MOD_CREATED_ON, assetWithCtx.getPropertyByName(IGCRestConstants.MOD_CREATED_ON));
+                    this.setPropertyByName(IGCRestConstants.MOD_CREATED_BY, assetWithCtx.getPropertyByName(IGCRestConstants.MOD_CREATED_BY));
+                    this.setPropertyByName(IGCRestConstants.MOD_MODIFIED_ON, assetWithCtx.getPropertyByName(IGCRestConstants.MOD_MODIFIED_ON));
+                    this.setPropertyByName(IGCRestConstants.MOD_MODIFIED_BY, assetWithCtx.getPropertyByName(IGCRestConstants.MOD_MODIFIED_BY));
                 }
 
             }
@@ -420,8 +428,153 @@ public class Reference extends ObjectPrinter {
      *
      * @return boolean
      */
-    public boolean hasModificationDetails() {
-        return this.hasProperty("modified_on");
+    public boolean hasModificationDetails() { return this.hasProperty("modified_on"); }
+
+    /**
+     * Retrieves the IGC asset display name from the provided POJO.
+     *
+     * @param pojoClass the POJO for which to retrieve an asset's type display name
+     * @return String
+     */
+    public static String getDisplayNameFromPOJO(Class pojoClass) {
+        String igcAssetDisplayName = null;
+        try {
+            Method getIgcTypeDisplayName = pojoClass.getMethod("getIgcTypeDisplayName");
+            igcAssetDisplayName = (String) getIgcTypeDisplayName.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve display name from IGC POJO: {}", pojoClass, e);
+        }
+        return igcAssetDisplayName;
+    }
+
+    /**
+     * Retrieves the asset type from the provided POJO.
+     *
+     * @param pojoClass the POJO for which to retrieve an asset's (REST) type
+     * @return String
+     */
+    public static String getAssetTypeFromPOJO(Class pojoClass) {
+        String igcAssetType = null;
+        try {
+            Method getIgcType = pojoClass.getMethod("getIgcTypeId");
+            igcAssetType = (String) getIgcType.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve asset type from IGC POJO: {}", pojoClass, e);
+        }
+        return igcAssetType;
+    }
+
+    /**
+     * Indicates whether assets of this type can be created via IGC's API (true) or not (false).
+     *
+     * @param pojoClass the POJO for which to check create-ability
+     * @return boolean
+     */
+    public static boolean canAssetBeCreatedFromPOJO(Class pojoClass) {
+        Boolean canBe = false;
+        try {
+            Method canBeCreated = pojoClass.getMethod("canBeCreated");
+            canBe = (Boolean) canBeCreated.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve creation capability from IGC POJO: {}", pojoClass, e);
+        }
+        return canBe;
+    }
+
+    /**
+     * Retrieves the list of property names for the asset that are not relationships to other assets.
+     *
+     * @param pojoClass the POJO for which to retrieve non-relationship property names
+     * @return List<String>
+     */
+    public static List<String> getNonRelationshipPropertiesFromPOJO(Class pojoClass) {
+        List<String> list = null;
+        try {
+            Method getNonRelationshipProperties = pojoClass.getMethod("getNonRelationshipProperties");
+            list = (List<String>) getNonRelationshipProperties.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve non-relationship properties from IGC POJO: {}", pojoClass, e);
+        }
+        return list;
+    }
+
+    /**
+     * Retrieves the list of all property names for the asset.
+     *
+     * @param pojoClass the POJO for which to retrieve all property names
+     * @return List<String>
+     */
+    public static List<String> getAllPropertiesFromPOJO(Class pojoClass) {
+        List<String> list = null;
+        try {
+            Method getAllProperties = pojoClass.getMethod("getAllProperties");
+            list = (List<String>) getAllProperties.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve all properties from IGC POJO: {}", pojoClass, e);
+        }
+        return list;
+    }
+
+    /**
+     * Retrieves the list of all paged relationship property names for the asset.
+     *
+     * @param pojoClass the POJO for which to retrieve the paged relationship property names
+     * @return List<String>
+     */
+    public static List<String> getPagedRelationalPropertiesFromPOJO(Class pojoClass) {
+        List<String> list = null;
+        try {
+            Method getPagedProperties = pojoClass.getMethod("getPagedRelationshipProperties");
+            list = (List<String>) getPagedProperties.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve paged relationship properties from IGC POJO: {}", pojoClass, e);
+        }
+        return list;
+    }
+
+    /**
+     * Indicates whether assets of this type include modification details (true) or not (false).
+     *
+     * @param pojoClass the POJO for which to check for modification details
+     * @return boolean
+     */
+    public static boolean hasModificationDetails(Class pojoClass) {
+        boolean hasModDetails = false;
+        if (pojoClass != null) {
+            try {
+                Method hasModificationDetails = pojoClass.getMethod("includesModificationDetails");
+                Boolean bHasModificationDetails = (Boolean) hasModificationDetails.invoke(null);
+                hasModDetails = (bHasModificationDetails != null && bHasModificationDetails);
+            } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+                log.info("Unable to find modification details for class {}", pojoClass);
+            }
+        }
+        return hasModDetails;
+    }
+
+    /**
+     * Translates the type of asset into what should be used for searching.
+     * This is necessary for certain types that are actually pseudo-aliases for other types, to ensure all
+     * properties of that asset can be retrieved.
+     *
+     * @param assetType the asset type for which to retrieve the search type
+     * @return String
+     */
+    public static String getAssetTypeForSearch(String assetType) {
+        String typeForSearch = null;
+        switch(assetType) {
+            case "host_(engine)":
+                typeForSearch = "host";
+                break;
+            case "non_steward_user":
+            case "steward_user":
+                typeForSearch = "user";
+                break;
+            default:
+                typeForSearch = assetType;
+                break;
+        }
+        return typeForSearch;
     }
 
     // TODO: eventually handle the '_expand' that exists for data classifications

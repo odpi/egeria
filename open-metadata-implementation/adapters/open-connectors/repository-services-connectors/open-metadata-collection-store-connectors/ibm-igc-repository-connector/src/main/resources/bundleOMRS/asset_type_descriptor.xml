@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+<descriptor xmlns="http://www.ibm.com/iis/igc/asset-type-descriptor" bundleId="OMRS">
+  <family position="15" classRefs="Stub">
+    <label key="family1" inDefaultLocale="Open Metadata Repository Services"/>
+  </family>
+  <class localId="Stub" dataAccessRole="None" canHaveImage="false">
+    <label key="class.Stub" inDefaultLocale="OMRS Stub"/>
+    <pluralLabel key="class-plural.Stub" inDefaultLocale="OMRS Stubs"/>
+    <headerSection>
+      <attribute localId="sourceType" type="String" editable="false" multiValued="false">
+        <label key="attr.Stub.sourceType" inDefaultLocale="IGC Type" />
+      </attribute>
+      <attribute localId="sourceRID" type="String" editable="false" multiValued="false">
+        <label key="attr.Stub.sourceRID" inDefaultLocale="IGC RID" />
+      </attribute>
+    </headerSection>
+    <section>
+      <label key="section.Stub.Details" inDefaultLocale="Details"/>
+      <attribute localId="payload" type="LongText" editable="false" multiValued="false">
+        <label key="attr.Stub.payload" inDefaultLocale="Last Version" />
+      </attribute>
+    </section>
+  </class>
+</descriptor>

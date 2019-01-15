@@ -14,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSTypeDefManager;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 
@@ -96,35 +97,6 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
         this.localOrganizationName = localOrganizationName;
         this.outboundRepositoryEventProcessor = outboundRepositoryEventProcessor;
         this.localTypeDefManager = typeDefManager;
-    }
-
-
-    /* ======================================================================
-     * Group 1: Confirm the identity of the metadata repository being called.
-     */
-
-    /**
-     * Returns the identifier of the metadata repository.  This is the identifier used to register the
-     * metadata repository with the metadata repository cohort.  It is also the identifier used to
-     * identify the home repository of a metadata instance.
-     *
-     * @return String metadata collection id.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
-     */
-    public String      getMetadataCollectionId() throws RepositoryErrorException
-    {
-        final String methodName = "getMetadataCollectionId";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        /*
-         * Perform operation
-         */
-        return super.metadataCollectionId;
     }
 
 
@@ -1190,6 +1162,119 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
 
     /**
+     * Ensure the provenance of any returned instance is correctly set.  A repository may not support the storing of
+     * the metadata collection id in the repository (or uses null to mean "local").  When the instance
+     * is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
+     * fixes up the provenance.
+     *
+     * @param instance instance returned from the real repository
+     */
+    private void  setLocalProvenance(InstanceAuditHeader   instance)
+    {
+        if (instance != null)
+        {
+            /*
+             * Ensure the provenance of any returned instance is correctly set.  A repository may not support the storing of
+             * the metadata collection id in the repository (or uses null to mean "local").  When the instance
+             * is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
+             * fixes up the provenance.
+             */
+            if (instance.getMetadataCollectionId() == null)
+            {
+                instance.setMetadataCollectionId(metadataCollectionId);
+                instance.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
+            }
+
+            if (instance.getMetadataCollectionName() == null)
+            {
+                if (metadataCollectionId.equals(instance.getMetadataCollectionId()))
+                {
+                    instance.setMetadataCollectionName(metadataCollectionName);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Review a results list and set up the local provenance information if necessary.
+     *
+     * @param instanceList instances returned from the real repository.
+     * @return validated list (or null)
+     */
+    private List<EntityDetail> setLocalProvenanceInEntityList(List<EntityDetail>   instanceList)
+    {
+        if ((instanceList == null) || (instanceList.isEmpty()))
+        {
+            return null;
+        }
+        else
+        {
+            List<EntityDetail>   resultList = new ArrayList<>();
+
+            for (EntityDetail   entity : instanceList)
+            {
+                if (entity != null)
+                {
+                    setLocalProvenance(entity);
+                    resultList.add(entity);
+                }
+            }
+
+            return resultList;
+        }
+    }
+
+
+    /**
+     * Review a results list and set up the local provenance information if necessary.
+     *
+     * @param instanceList instances returned from the real repository.
+     * @return validated list (or null)
+     */
+    private List<Relationship> setLocalProvenanceInRelationshipList(List<Relationship>   instanceList)
+    {
+        if ((instanceList == null) || (instanceList.isEmpty()))
+        {
+            return null;
+        }
+        else
+        {
+            List<Relationship>   resultList = new ArrayList<>();
+
+            for (Relationship   entity : instanceList)
+            {
+                if (entity != null)
+                {
+                    setLocalProvenance(entity);
+                    resultList.add(entity);
+                }
+            }
+
+            return resultList;
+        }
+    }
+
+
+    /**
+     * Review the contents of an instance graph returned from the real repository and set up the local provenance
+     * information if necessary.
+     *
+     * @param instanceGraph graph from real repository
+     * @return validated graph
+     */
+    private InstanceGraph  setLocalProvenanceInGraph(InstanceGraph   instanceGraph)
+    {
+        InstanceGraph  resultGraph = new InstanceGraph();
+
+        resultGraph.setEntities(setLocalProvenanceInEntityList(instanceGraph.getEntities()));
+        resultGraph.setRelationships(setLocalProvenanceInRelationshipList(instanceGraph.getRelationships()));
+
+        return resultGraph;
+    }
+
+
+    /**
      * Returns the entity if the entity is stored in the metadata collection, otherwise null.
      *
      * @param userId unique identifier for requesting user.
@@ -1223,20 +1308,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         EntityDetail entity = realMetadataCollection.isEntityKnown(userId, guid);
 
-        if (entity != null)
-        {
-            /*
-             * Ensure the provenance of the entity is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the entity
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (entity.getMetadataCollectionId() == null)
-            {
-                entity.setMetadataCollectionId(metadataCollectionId);
-                entity.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
-        }
+        setLocalProvenance(entity);
 
         return entity;
     }
@@ -1279,20 +1351,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         EntitySummary entity =  realMetadataCollection.getEntitySummary(userId, guid);
 
-        if (entity != null)
-        {
-            /*
-             * Ensure the provenance of the entity is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the entity
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (entity.getMetadataCollectionId() == null)
-            {
-                entity.setMetadataCollectionId(metadataCollectionId);
-                entity.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
-        }
+        setLocalProvenance(entity);
 
         return entity;
     }
@@ -1336,20 +1395,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         EntityDetail   entity = realMetadataCollection.getEntityDetail(userId, guid);
 
-        if (entity != null)
-        {
-            /*
-             * Ensure the provenance of the entity is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the entity
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (entity.getMetadataCollectionId() == null)
-            {
-                entity.setMetadataCollectionId(metadataCollectionId);
-                entity.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
-        }
+        setLocalProvenance(entity);
 
         return entity;
     }
@@ -1400,20 +1446,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         EntityDetail   entity = realMetadataCollection.getEntityDetail(userId, guid, asOfTime);
 
-        if (entity != null)
-        {
-            /*
-             * Ensure the provenance of the entity is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the entity
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (entity.getMetadataCollectionId() == null)
-            {
-                entity.setMetadataCollectionId(metadataCollectionId);
-                entity.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
-        }
+        setLocalProvenance(entity);
 
         return entity;
     }
@@ -1488,16 +1521,17 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
         /*
          * Perform operation
          */
+        List<Relationship>  resultList = realMetadataCollection.getRelationshipsForEntity(userId,
+                                                                                          entityGUID,
+                                                                                          relationshipTypeGUID,
+                                                                                          fromRelationshipElement,
+                                                                                          limitResultsByStatus,
+                                                                                          asOfTime,
+                                                                                          sequencingProperty,
+                                                                                          sequencingOrder,
+                                                                                          pageSize);
 
-        return realMetadataCollection.getRelationshipsForEntity(userId,
-                                                                entityGUID,
-                                                                relationshipTypeGUID,
-                                                                fromRelationshipElement,
-                                                                limitResultsByStatus,
-                                                                asOfTime,
-                                                                sequencingProperty,
-                                                                sequencingOrder,
-                                                                pageSize);
+        return setLocalProvenanceInRelationshipList(resultList);
     }
 
 
@@ -1581,17 +1615,19 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
          * Perform operation
          */
 
-        return realMetadataCollection.findEntitiesByProperty(userId,
-                                                             entityTypeGUID,
-                                                             matchProperties,
-                                                             matchCriteria,
-                                                             fromEntityElement,
-                                                             limitResultsByStatus,
-                                                             limitResultsByClassification,
-                                                             asOfTime,
-                                                             sequencingProperty,
-                                                             sequencingOrder,
-                                                             pageSize);
+        List<EntityDetail> resultList = realMetadataCollection.findEntitiesByProperty(userId,
+                                                                                      entityTypeGUID,
+                                                                                      matchProperties,
+                                                                                      matchCriteria,
+                                                                                      fromEntityElement,
+                                                                                      limitResultsByStatus,
+                                                                                      limitResultsByClassification,
+                                                                                      asOfTime,
+                                                                                      sequencingProperty,
+                                                                                      sequencingOrder,
+                                                                                      pageSize);
+
+        return setLocalProvenanceInEntityList(resultList);
     }
 
 
@@ -1702,17 +1738,19 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
          * Perform operation
          */
 
-        return realMetadataCollection.findEntitiesByClassification(userId,
-                                                                   entityTypeGUID,
-                                                                   classificationName,
-                                                                   matchClassificationProperties,
-                                                                   matchCriteria,
-                                                                   fromEntityElement,
-                                                                   limitResultsByStatus,
-                                                                   asOfTime,
-                                                                   sequencingProperty,
-                                                                   sequencingOrder,
-                                                                   pageSize);
+        List<EntityDetail> resultList = realMetadataCollection.findEntitiesByClassification(userId,
+                                                                                            entityTypeGUID,
+                                                                                            classificationName,
+                                                                                            matchClassificationProperties,
+                                                                                            matchCriteria,
+                                                                                            fromEntityElement,
+                                                                                            limitResultsByStatus,
+                                                                                            asOfTime,
+                                                                                            sequencingProperty,
+                                                                                            sequencingOrder,
+                                                                                            pageSize);
+
+        return setLocalProvenanceInEntityList(resultList);
     }
 
 
@@ -1790,16 +1828,18 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
          * Process operation
          */
 
-        return realMetadataCollection.findEntitiesByPropertyValue(userId,
-                                                                  entityTypeGUID,
-                                                                  searchCriteria,
-                                                                  fromEntityElement,
-                                                                  limitResultsByStatus,
-                                                                  limitResultsByClassification,
-                                                                  asOfTime,
-                                                                  sequencingProperty,
-                                                                  sequencingOrder,
-                                                                  pageSize);
+        List<EntityDetail> resultList = realMetadataCollection.findEntitiesByPropertyValue(userId,
+                                                                                           entityTypeGUID,
+                                                                                           searchCriteria,
+                                                                                           fromEntityElement,
+                                                                                           limitResultsByStatus,
+                                                                                           limitResultsByClassification,
+                                                                                           asOfTime,
+                                                                                           sequencingProperty,
+                                                                                           sequencingOrder,
+                                                                                           pageSize);
+
+        return setLocalProvenanceInEntityList(resultList);
     }
 
 
@@ -1835,7 +1875,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
          * Process operation
          */
 
-        return realMetadataCollection.isRelationshipKnown(userId, guid);
+        Relationship relationship = realMetadataCollection.isRelationshipKnown(userId, guid);
+
+        setLocalProvenance(relationship);
+
+        return relationship;
     }
 
 
@@ -1874,7 +1918,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
          * Process operation
          */
 
-        return realMetadataCollection.getRelationship(userId, guid);
+        Relationship relationship = realMetadataCollection.getRelationship(userId, guid);
+
+        setLocalProvenance(relationship);
+
+        return relationship;
     }
 
 
@@ -1919,7 +1967,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
          * Perform operation
          */
 
-        return realMetadataCollection.getRelationship(userId, guid, asOfTime);
+        Relationship relationship = realMetadataCollection.getRelationship(userId, guid, asOfTime);
+
+        setLocalProvenance(relationship);
+
+        return relationship;
     }
 
 
@@ -2001,16 +2053,18 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
          * Perform operation
          */
 
-        return realMetadataCollection.findRelationshipsByProperty(userId,
-                                                                  relationshipTypeGUID,
-                                                                  matchProperties,
-                                                                  matchCriteria,
-                                                                  fromRelationshipElement,
-                                                                  limitResultsByStatus,
-                                                                  asOfTime,
-                                                                  sequencingProperty,
-                                                                  sequencingOrder,
-                                                                  pageSize);
+        List<Relationship> resultList = realMetadataCollection.findRelationshipsByProperty(userId,
+                                                                                           relationshipTypeGUID,
+                                                                                           matchProperties,
+                                                                                           matchCriteria,
+                                                                                           fromRelationshipElement,
+                                                                                           limitResultsByStatus,
+                                                                                           asOfTime,
+                                                                                           sequencingProperty,
+                                                                                           sequencingOrder,
+                                                                                           pageSize);
+
+        return setLocalProvenanceInRelationshipList(resultList);
     }
 
 
@@ -2083,15 +2137,17 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
          * Perform operation
          */
 
-        return realMetadataCollection.findRelationshipsByPropertyValue(userId,
-                                                                       relationshipTypeGUID,
-                                                                       searchCriteria,
-                                                                       fromRelationshipElement,
-                                                                       limitResultsByStatus,
-                                                                       asOfTime,
-                                                                       sequencingProperty,
-                                                                       sequencingOrder,
-                                                                       pageSize);
+        List<Relationship> resultList = realMetadataCollection.findRelationshipsByPropertyValue(userId,
+                                                                                                relationshipTypeGUID,
+                                                                                                searchCriteria,
+                                                                                                fromRelationshipElement,
+                                                                                                limitResultsByStatus,
+                                                                                                asOfTime,
+                                                                                                sequencingProperty,
+                                                                                                sequencingOrder,
+                                                                                                pageSize);
+
+        return setLocalProvenanceInRelationshipList(resultList);
     }
 
 
@@ -2147,11 +2203,13 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
          * Perform operation
          */
 
-        return realMetadataCollection.getLinkingEntities(userId,
-                                                         startEntityGUID,
-                                                         endEntityGUID,
-                                                         limitResultsByStatus,
-                                                         asOfTime);
+        InstanceGraph resultGraph = realMetadataCollection.getLinkingEntities(userId,
+                                                                              startEntityGUID,
+                                                                              endEntityGUID,
+                                                                              limitResultsByStatus,
+                                                                              asOfTime);
+
+        return setLocalProvenanceInGraph(resultGraph);
     }
 
 
@@ -2247,14 +2305,16 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
          * Perform operation
          */
 
-        return realMetadataCollection.getEntityNeighborhood(userId,
-                                                            entityGUID,
-                                                            entityTypeGUIDs,
-                                                            relationshipTypeGUIDs,
-                                                            limitResultsByStatus,
-                                                            limitResultsByClassification,
-                                                            asOfTime,
-                                                            level);
+        InstanceGraph resultGraph = realMetadataCollection.getEntityNeighborhood(userId,
+                                                                                 entityGUID,
+                                                                                 entityTypeGUIDs,
+                                                                                 relationshipTypeGUIDs,
+                                                                                 limitResultsByStatus,
+                                                                                 limitResultsByClassification,
+                                                                                 asOfTime,
+                                                                                 level);
+
+        return setLocalProvenanceInGraph(resultGraph);
     }
 
 
@@ -2338,16 +2398,18 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
          * Perform operation
          */
 
-        return realMetadataCollection.getRelatedEntities(userId,
-                                                         startEntityGUID,
-                                                         entityTypeGUIDs,
-                                                         fromEntityElement,
-                                                         limitResultsByStatus,
-                                                         limitResultsByClassification,
-                                                         asOfTime,
-                                                         sequencingProperty,
-                                                         sequencingOrder,
-                                                         pageSize);
+        List<EntityDetail>  resultList = realMetadataCollection.getRelatedEntities(userId,
+                                                                                   startEntityGUID,
+                                                                                   entityTypeGUIDs,
+                                                                                   fromEntityElement,
+                                                                                   limitResultsByStatus,
+                                                                                   limitResultsByClassification,
+                                                                                   asOfTime,
+                                                                                   sequencingProperty,
+                                                                                   sequencingOrder,
+                                                                                   pageSize);
+
+        return setLocalProvenanceInEntityList(resultList);
     }
 
 
@@ -2438,17 +2500,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (entity != null)
         {
-            /*
-             * Ensure the provenance of the entity is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the entity
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (entity.getMetadataCollectionId() == null)
-            {
-                entity.setMetadataCollectionId(metadataCollectionId);
-                entity.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
+            setLocalProvenance(entity);
 
             /*
              * OK to send out
@@ -2577,6 +2629,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         EntityDetail   newEntity = realMetadataCollection.updateEntityStatus(userId, entityGUID, newStatus);
 
+        setLocalProvenance(newEntity);
         notifyOfUpdatedEntity(currentEntity, newEntity);
 
         return newEntity;
@@ -2647,6 +2700,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         EntityDetail   newEntity = realMetadataCollection.updateEntityProperties(userId, entityGUID, properties);
 
+        setLocalProvenance(newEntity);
         notifyOfUpdatedEntity(currentEntity, newEntity);
 
         return newEntity;
@@ -2664,21 +2718,6 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
     {
         if (newEntity != null)
         {
-            /*
-             * Ensure the provenance of the entity is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the entity
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (newEntity.getMetadataCollectionId() == null)
-            {
-                newEntity.setMetadataCollectionId(metadataCollectionId);
-                newEntity.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
-
-            /*
-             * OK to send out
-             */
             if (outboundRepositoryEventProcessor != null)
             {
                 outboundRepositoryEventProcessor.processUpdatedEntityEvent(repositoryName,
@@ -2733,17 +2772,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (entity != null)
         {
-            /*
-             * Ensure the provenance of the entity is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the entity
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (entity.getMetadataCollectionId() == null)
-            {
-                entity.setMetadataCollectionId(metadataCollectionId);
-                entity.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
+            setLocalProvenance(entity);
 
             /*
              * OK to send out
@@ -2812,7 +2841,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
         repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, obsoleteEntityGUID, methodName);
 
         /*
-         * Locate Entity
+         * Delete Entity
          */
 
         EntityDetail entity = realMetadataCollection.deleteEntity(userId,
@@ -2822,6 +2851,8 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (outboundRepositoryEventProcessor != null)
         {
+            setLocalProvenance(entity);
+
             outboundRepositoryEventProcessor.processDeletedEntityEvent(repositoryName,
                                                                        metadataCollectionId,
                                                                        localServerName,
@@ -2942,17 +2973,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (entity != null)
         {
-            /*
-             * Ensure the provenance of the entity is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the entity
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (entity.getMetadataCollectionId() == null)
-            {
-                entity.setMetadataCollectionId(metadataCollectionId);
-                entity.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
+            setLocalProvenance(entity);
 
             /*
              * OK to send out
@@ -3023,17 +3044,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (entity != null)
         {
-            /*
-             * Ensure the provenance of the entity is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the entity
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (entity.getMetadataCollectionId() == null)
-            {
-                entity.setMetadataCollectionId(metadataCollectionId);
-                entity.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
+            setLocalProvenance(entity);
 
             /*
              * OK to send out
@@ -3102,17 +3113,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (entity != null)
         {
-            /*
-             * Ensure the provenance of the entity is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the entity
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (entity.getMetadataCollectionId() == null)
-            {
-                entity.setMetadataCollectionId(metadataCollectionId);
-                entity.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
+            setLocalProvenance(entity);
 
             /*
              * OK to send out
@@ -3211,17 +3212,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (entity != null)
         {
-            /*
-             * Ensure the provenance of the entity is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the entity
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (entity.getMetadataCollectionId() == null)
-            {
-                entity.setMetadataCollectionId(metadataCollectionId);
-                entity.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
+            setLocalProvenance(entity);
 
             /*
              * OK to send out
@@ -3321,17 +3312,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (relationship != null)
         {
-            /*
-             * Ensure the provenance of the relationship is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the relationship
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (relationship.getMetadataCollectionId() == null)
-            {
-                relationship.setMetadataCollectionId(metadataCollectionId);
-                relationship.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
+            setLocalProvenance(relationship);
 
             /*
              * OK to send out
@@ -3393,6 +3374,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
         Relationship   newRelationship     = realMetadataCollection.updateRelationshipStatus(userId,
                                                                                              relationshipGUID,
                                                                                              newStatus);
+        setLocalProvenance(newRelationship);
         notifyOfUpdatedRelationship(currentRelationship, newRelationship);
 
         return newRelationship;
@@ -3442,6 +3424,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                           relationshipGUID,
                                                                                           properties);
 
+        setLocalProvenance(newRelationship);
         notifyOfUpdatedRelationship(currentRelationship, newRelationship);
 
         return newRelationship;
@@ -3459,21 +3442,6 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
     {
         if (newRelationship != null)
         {
-            /*
-             * Ensure the provenance of the relationship is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the relationship
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (newRelationship.getMetadataCollectionId() == null)
-            {
-                newRelationship.setMetadataCollectionId(metadataCollectionId);
-                newRelationship.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
-
-            /*
-             * OK to send out
-             */
             if (outboundRepositoryEventProcessor != null)
             {
                 outboundRepositoryEventProcessor.processUpdatedRelationshipEvent(repositoryName,
@@ -3529,17 +3497,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (relationship != null)
         {
-            /*
-             * Ensure the provenance of the relationship is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the relationship
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (relationship.getMetadataCollectionId() == null)
-            {
-                relationship.setMetadataCollectionId(metadataCollectionId);
-                relationship.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
+            setLocalProvenance(relationship);
 
             /*
              * OK to send out
@@ -3616,6 +3574,8 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (outboundRepositoryEventProcessor != null)
         {
+            setLocalProvenance(relationship);
+
             outboundRepositoryEventProcessor.processDeletedRelationshipEvent(repositoryName,
                                                                              metadataCollectionId,
                                                                              localServerName,
@@ -3734,17 +3694,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (relationship != null)
         {
-            /*
-             * Ensure the provenance of the relationship is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the relationship
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (relationship.getMetadataCollectionId() == null)
-            {
-                relationship.setMetadataCollectionId(metadataCollectionId);
-                relationship.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
+            setLocalProvenance(relationship);
 
             /*
              * OK to send out
@@ -3830,17 +3780,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (entity != null)
         {
-            /*
-             * Ensure the provenance of the entity is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the entity
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (entity.getMetadataCollectionId() == null)
-            {
-                entity.setMetadataCollectionId(metadataCollectionId);
-                entity.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
+            setLocalProvenance(entity);
 
             /*
              * OK to send out
@@ -3917,17 +3857,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (entity != null)
         {
-            /*
-             * Ensure the provenance of the entity is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the entity
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (entity.getMetadataCollectionId() == null)
-            {
-                entity.setMetadataCollectionId(metadataCollectionId);
-                entity.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
+            setLocalProvenance(entity);
 
             /*
              * OK to send out
@@ -3959,6 +3889,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      * @param typeDefName the name of the TypeDef for the entity used to verify the entity identity.
      * @param homeMetadataCollectionId the identifier of the metadata collection where this entity currently is homed.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return entity new values for this entity, including the new home information.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -3972,11 +3903,12 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                      String    typeDefGUID,
                                      String    typeDefName,
                                      String    homeMetadataCollectionId,
-                                     String    newHomeMetadataCollectionId) throws InvalidParameterException,
-                                                                                   RepositoryErrorException,
-                                                                                   EntityNotKnownException,
-                                                                                   FunctionNotSupportedException,
-                                                                                   UserNotAuthorizedException
+                                     String    newHomeMetadataCollectionId,
+                                     String    newHomeMetadataCollectionName) throws InvalidParameterException,
+                                                                                     RepositoryErrorException,
+                                                                                     EntityNotKnownException,
+                                                                                     FunctionNotSupportedException,
+                                                                                     UserNotAuthorizedException
     {
         final String methodName                = "reHomeEntity";
         final String guidParameterName         = "typeDefGUID";
@@ -4011,7 +3943,8 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                     typeDefGUID,
                                                                     typeDefName,
                                                                     homeMetadataCollectionId,
-                                                                    newHomeMetadataCollectionId);
+                                                                    newHomeMetadataCollectionId,
+                                                                    newHomeMetadataCollectionName);
 
         if (entity != null)
         {
@@ -4023,8 +3956,13 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
              */
             if (entity.getMetadataCollectionId() == null)
             {
-                entity.setMetadataCollectionId(metadataCollectionId);
+                entity.setMetadataCollectionId(newHomeMetadataCollectionId);
                 entity.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
+            }
+
+            if (entity.getMetadataCollectionName() == null)
+            {
+                entity.setMetadataCollectionName(newHomeMetadataCollectionName);
             }
 
             /*
@@ -4109,17 +4047,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (relationship != null)
         {
-            /*
-             * Ensure the provenance of the relationship is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the relationship
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (relationship.getMetadataCollectionId() == null)
-            {
-                relationship.setMetadataCollectionId(metadataCollectionId);
-                relationship.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
+            setLocalProvenance(relationship);
 
             /*
              * OK to send out
@@ -4198,17 +4126,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
         if (relationship != null)
         {
-            /*
-             * Ensure the provenance of the relationship is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the relationship
-             * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
-             * fixes up the provenance.
-             */
-            if (relationship.getMetadataCollectionId() == null)
-            {
-                relationship.setMetadataCollectionId(metadataCollectionId);
-                relationship.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
-            }
+            setLocalProvenance(relationship);
 
             /*
              * OK to send out
@@ -4240,6 +4158,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId the existing identifier for this relationship's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return relationship new values for this relationship, including the new home information.
      * @throws InvalidParameterException one of the parameters is invalid or null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
@@ -4254,13 +4173,14 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                            String    typeDefGUID,
                                            String    typeDefName,
                                            String    homeMetadataCollectionId,
-                                           String    newHomeMetadataCollectionId) throws InvalidParameterException,
-                                                                                         RepositoryErrorException,
-                                                                                         RelationshipNotKnownException,
-                                                                                         FunctionNotSupportedException,
-                                                                                         UserNotAuthorizedException
+                                           String    newHomeMetadataCollectionId,
+                                           String    newHomeMetadataCollectionName) throws InvalidParameterException,
+                                                                                           RepositoryErrorException,
+                                                                                           RelationshipNotKnownException,
+                                                                                           FunctionNotSupportedException,
+                                                                                           UserNotAuthorizedException
     {
-        final String  methodName               = "reHomeRelationship";
+        final String methodName                = "reHomeRelationship";
         final String guidParameterName         = "typeDefGUID";
         final String nameParameterName         = "typeDefName";
         final String relationshipParameterName = "relationshipGUID";
@@ -4293,20 +4213,26 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                 typeDefGUID,
                                                                                 typeDefName,
                                                                                 homeMetadataCollectionId,
-                                                                                newHomeMetadataCollectionId);
+                                                                                newHomeMetadataCollectionId,
+                                                                                newHomeMetadataCollectionName);
 
         if (relationship != null)
         {
             /*
-             * Ensure the provenance of the relationship is correctly set.  A repository may not support the storing of
-             * the metadata collection id in the repository (or uses null to mean "local").  When the relationship
+             * Ensure the provenance of the entity is correctly set.  A repository may not support the storing of
+             * the metadata collection id in the repository (or uses null to mean "local").  When the entity
              * detail is sent out, it must have its home metadata collection id set up.  So LocalOMRSMetadataCollection
              * fixes up the provenance.
              */
             if (relationship.getMetadataCollectionId() == null)
             {
-                relationship.setMetadataCollectionId(metadataCollectionId);
+                relationship.setMetadataCollectionId(newHomeMetadataCollectionId);
                 relationship.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
+            }
+
+            if (relationship.getMetadataCollectionName() == null)
+            {
+                relationship.setMetadataCollectionName(newHomeMetadataCollectionName);
             }
 
             /*
