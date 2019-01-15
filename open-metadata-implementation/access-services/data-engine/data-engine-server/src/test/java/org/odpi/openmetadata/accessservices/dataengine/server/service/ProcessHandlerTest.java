@@ -28,6 +28,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupporte
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -47,7 +48,7 @@ class ProcessHandlerTest {
     private static final String DISPLAY_NAME = "displayName";
     private static final String LATEST_CHANGE = "latestChange";
     private static final String PROCESS_NAME = "processName";
-    private static final String ZONE_MEMBERSHIP = "zone";
+    private static final List<String> ZONE_MEMBERSHIP = Collections.singletonList("zone");
     private static final String PARENT_PROCESS_ID = "parentProcessId";
     private static final String ENTITY_GUID = "entityGuid";
     private static final String DATA_SET_GUID = "dataSetGuid";
@@ -67,8 +68,9 @@ class ProcessHandlerTest {
     @BeforeEach
     private void setUp() {
         when(repositoryConnector.getRepositoryHelper()).thenReturn(repositoryHelper);
-        processHandler = new ProcessHandler(SERVICE_NAME, repositoryConnector,
-                metadataCollection);
+
+        processHandler = new ProcessHandler(SERVICE_NAME, repositoryConnector, metadataCollection);
+
     }
 
     @Test
