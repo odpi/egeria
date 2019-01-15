@@ -86,7 +86,7 @@ open-metadata-implementation/access-services/subject-area/subject-area-server/sr
 # Ignore Deployment / Samples Generated content
 open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/cache/**
 open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/*.retry
-open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/ibm-igc-metadata/*_generated
+open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/ibm-igc-metadata/generated_*
 
 # Ignore private maven repo (jenkins)
 .repository
