@@ -1,4 +1,5 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 
@@ -11,7 +12,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * InstanceHeader manages the attributes that are common to entities and relationship instances.  This includes
- * information abut its type, provenance and change history.
+ * its unique identifier and URL along with information about its type, provenance and change history.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -26,12 +27,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public abstract class InstanceHeader extends InstanceAuditHeader
 {
-    /*
-     * Provenance information defining where the instance came from and whether this is a master or reference copy.
-     */
-    private InstanceProvenanceType    instanceProvenanceType = null;
-    private String                    metadataCollectionId   = null;
-
     /*
      * Entities and relationships have unique identifiers.
      */
@@ -62,52 +57,10 @@ public abstract class InstanceHeader extends InstanceAuditHeader
 
         if (template != null)
         {
-            this.metadataCollectionId = template.getMetadataCollectionId();
-            this.instanceProvenanceType = template.getInstanceProvenanceType();
             this.guid = template.getGUID();
             this.instanceURL = template.getInstanceURL();
         }
     }
-
-
-    /**
-     * Return the type of the provenance for this instance (UNKNOWN, LOCAL_COHORT, EXPORT_ARCHIVE, CONTENT_PACK,
-     * DEREGISTERED_REPOSITORY, CONFIGURATION).
-     *
-     * @return InstanceProvenanceType enum
-     */
-    public InstanceProvenanceType getInstanceProvenanceType() { return instanceProvenanceType; }
-
-
-    /**
-     * Set up the type of the provenance for this instance (UNKNOWN, LOCAL_COHORT, EXPORT_ARCHIVE, CONTENT_PACK,
-     * DEREGISTERED_REPOSITORY, CONFIGURATION).
-     *
-     * @param instanceProvenanceType InstanceProvenanceType enum
-     */
-    public void setInstanceProvenanceType(InstanceProvenanceType instanceProvenanceType)
-    {
-        this.instanceProvenanceType = instanceProvenanceType;
-    }
-
-
-    /**
-     * Return the unique identifier for the metadata collection that is the home for this instance.
-     * If the metadataCollectionId is null it means this instance belongs to the local metadata collection.
-     *
-     * @return metadataCollectionId String unique identifier for the repository
-     */
-    public String getMetadataCollectionId() { return metadataCollectionId; }
-
-
-    /**
-     * Set up the unique identifier for the home metadata collection for this instance.
-     * If the metadataCollectionId is null it means this instance belongs to the local metadata collection.
-     *
-     * @param metadataCollectionId String unique identifier for the repository
-     */
-    public void setMetadataCollectionId(String metadataCollectionId) { this.metadataCollectionId = metadataCollectionId; }
-
 
     /**
      * Return the URL for this instance (or null if the metadata repository does not support instance URLs).
@@ -156,8 +109,13 @@ public abstract class InstanceHeader extends InstanceAuditHeader
     public String toString()
     {
         return "InstanceHeader{" +
-                "GUID='" + getGUID() + '\'' +
+                "guid='" + guid + '\'' +
+                ", instanceURL='" + instanceURL + '\'' +
                 ", type=" + getType() +
+                ", instanceProvenanceType=" + getInstanceProvenanceType() +
+                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
+                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
+                ", instanceLicense='" + getInstanceLicense() + '\'' +
                 ", status=" + getStatus() +
                 ", createdBy='" + getCreatedBy() + '\'' +
                 ", updatedBy='" + getUpdatedBy() + '\'' +
@@ -182,7 +140,7 @@ public abstract class InstanceHeader extends InstanceAuditHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof InstanceHeader))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -191,11 +149,10 @@ public abstract class InstanceHeader extends InstanceAuditHeader
             return false;
         }
         InstanceHeader that = (InstanceHeader) objectToCompare;
-        return getInstanceProvenanceType() == that.getInstanceProvenanceType() &&
-                Objects.equals(getMetadataCollectionId(), that.getMetadataCollectionId()) &&
-                Objects.equals(guid, that.guid) &&
+        return Objects.equals(guid, that.guid) &&
                 Objects.equals(getInstanceURL(), that.getInstanceURL());
     }
+
 
 
     /**
@@ -206,11 +163,6 @@ public abstract class InstanceHeader extends InstanceAuditHeader
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(super.hashCode(),
-                            getInstanceProvenanceType(),
-                            getMetadataCollectionId(),
-                            guid,
-                            getInstanceURL());
+        return Objects.hash(super.hashCode(), guid, getInstanceURL());
     }
 }

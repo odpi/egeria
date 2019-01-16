@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * AssetConsumerEventType describes the different types of events produced by the Asset Consumer OMAS.
- * Events are limited to assets that are in the zones listed in the accessPointZones property
+ * Events are limited to assets that are in the zones listed in the supportedZones property
  * passed to the Asset Consumer OMAS at start up (a null value here means all zones).
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -21,10 +21,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum AssetConsumerEventType implements Serializable
 {
-    UNKNOWN_ASSET_CONSUMER_EVENT        (0,  "Unknown Event",                 "An event that is not recognized by the local server."),
-    NEW_ASSET_EVENT                     (1,  "New Asset",                     "A new asset has been added to one of the access point zones."),
-    UPDATED_ASSET_EVENT                 (2,  "Updated Asset",                 "An existing asset from one of the access point zones has been updated."),
-    DELETED_ASSET_EVENT                 (3,  "Deleted Asset",                 "An existing asset has been deleted.");
+    UNKNOWN_ASSET_CONSUMER_EVENT        (0,  "Unknown Event",  "An event that is not recognized by the local server."),
+    NEW_ASSET_EVENT                     (1,  "New Asset",      "A new asset has been added to one of the access point zones."),
+    UPDATED_ASSET_EVENT                 (2,  "Updated Asset",  "An existing asset has been updated or added to one of the access point zones.");
 
     private static final long     serialVersionUID = 1L;
 

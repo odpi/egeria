@@ -16,6 +16,7 @@ public class IGCSearchConditionSet {
 
     private ArrayNode conditions;
     private String conditionJoin = "and";
+    private boolean negateAll = false;
 
     private IGCSearchConditionSet nestedConditions;
 
@@ -52,6 +53,13 @@ public class IGCSearchConditionSet {
     }
 
     /**
+     * Set whether to negate all of the specified conditions (true) or not (false).
+     *
+     * @param on set to true to negate all conditions in this set; false to use conditions as-specified
+     */
+    public void setNegateAll(boolean on) { this.negateAll = on; }
+
+    /**
      * Adds a set of conditions as nested conditions of this set.
      *
      * @param igcConditions the set of criteria to add as nested criteria
@@ -79,6 +87,9 @@ public class IGCSearchConditionSet {
         if (size() > 0) {
             condSet.set("conditions", this.conditions);
             condSet.set("operator", nf.textNode(this.conditionJoin));
+        }
+        if (negateAll) {
+            condSet.set("negated", nf.booleanNode(true));
         }
         if (nestedConditions != null) {
             ArrayNode condSetOuter = (ArrayNode) condSet.get("conditions");

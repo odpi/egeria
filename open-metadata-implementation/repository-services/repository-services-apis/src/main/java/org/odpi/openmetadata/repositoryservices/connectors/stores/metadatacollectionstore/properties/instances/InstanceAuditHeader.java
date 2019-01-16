@@ -1,4 +1,5 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import com.fasterxml.jackson.annotation.*;
@@ -10,13 +11,25 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * InstanceAuditHeader manages the attributes that are common to classifications and "proper" instances, ie
- * as entities and relationships.  We need to be able to audit when these fundamental elements change and
+ * InstanceAuditHeader manages the attributes that are common to classifications,
+ * entities and relationships.  We need to be able to audit when these fundamental elements change and
  * by whom.  Thus they share this header.  The fields in this header are managed as follows:
  * <ul>
  *     <li>
- *         Type defines which TypeDef defines the type of concept/thing that this instance represents and
+ *         Type identifies which TypeDef defines the type of concept/thing that this instance represents and
  *         controls the properties that can be stored in the instance.
+ *     </li>
+ *     <li>
+ *         InstanceProvenanceType defines the type of metadata collection that this instance originated from.
+ *     </li>
+ *     <li>
+ *         MetadataCollectionId defines which metadata collection that this instance came from - that is its home.
+ *     </li>
+ *     <li>
+ *         MetadataCollectionName defines the display name for the home metadata collection.
+ *     </li>
+ *     <li>
+ *         InstanceLicense defines an specific license that applies to this instance - null means no restrictions.
  *     </li>
  *     <li>
  *         CreatedBy contains the userId of the person/engine that created the instance.  This field is set
@@ -68,22 +81,31 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     /*
      * Summary information about this element's type
      */
-    protected InstanceType   type = null;
+    private InstanceType   type = null;
+
+    /*
+     * Provenance information defining where the instance came from and whether this is a master or reference copy.
+     */
+    private InstanceProvenanceType    instanceProvenanceType = null;
+    private String                    metadataCollectionId   = null;
+    private String                    metadataCollectionName = null;
+    private String                    instanceLicense        = null;
+
 
     /*
      * Standard header information for a classification, entity and relationship.
      */
-    protected String         createdBy         = null;
-    protected String         updatedBy         = null;
-    protected Date           createTime        = null;
-    protected Date           updateTime        = null;
-    protected long           version           = 0L;
-    protected InstanceStatus currentStatus     = null;
+    private String         createdBy         = null;
+    private String         updatedBy         = null;
+    private Date           createTime        = null;
+    private Date           updateTime        = null;
+    private long           version           = 0L;
+    private InstanceStatus currentStatus     = null;
 
     /*
      * Used only if the status is DELETED.  It defines the status to use if the instance is restored.
      */
-    protected InstanceStatus statusOnDelete  = null;
+    private InstanceStatus statusOnDelete  = null;
 
 
     /**
@@ -107,6 +129,8 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
         if (template != null)
         {
             this.type = template.getType();
+            this.metadataCollectionId = template.getMetadataCollectionId();
+            this.instanceProvenanceType = template.getInstanceProvenanceType();
             this.createdBy = template.getCreatedBy();
             this.updatedBy = template.getUpdatedBy();
             this.createTime = template.getCreateTime();
@@ -148,7 +172,94 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
 
 
     /**
-     * Return the status of this instance (UNKNOWN, PROPOSED, DRAFT, ACTIVE, DELETED).
+     * Return the type of the provenance for this instance.
+     *
+     * @return InstanceProvenanceType enum
+     */
+    public InstanceProvenanceType getInstanceProvenanceType() { return instanceProvenanceType; }
+
+
+    /**
+     * Set up the type of the provenance for this instance.
+     *
+     * @param instanceProvenanceType InstanceProvenanceType enum
+     */
+    public void setInstanceProvenanceType(InstanceProvenanceType instanceProvenanceType)
+    {
+        this.instanceProvenanceType = instanceProvenanceType;
+    }
+
+
+    /**
+     * Return the unique identifier for the metadata collection that is the home for this instance.
+     * If the metadataCollectionId is null it means this instance belongs to the local metadata collection.
+     *
+     * @return metadataCollectionId String unique identifier for the repository
+     */
+    public String getMetadataCollectionId() { return metadataCollectionId; }
+
+
+    /**
+     * Set up the unique identifier for the home metadata collection for this instance.
+     * If the metadataCollectionId is null it means this instance belongs to the local metadata collection.
+     *
+     * @param metadataCollectionId String unique identifier for the repository
+     */
+    public void setMetadataCollectionId(String metadataCollectionId) { this.metadataCollectionId = metadataCollectionId; }
+
+
+    /**
+     * Return a display name for the metadata collection that this instance belongs to.  The source of this name is
+     * dependent on the type of origin it has.  For example, this may be the
+     * name of the server where the metadata is hosted, the archive that the instance came from or the name
+     * of the tool, platform or engine that originated the metadata.
+     *
+     * @return display name or null
+     */
+    public String getMetadataCollectionName()
+    {
+        return metadataCollectionName;
+    }
+
+
+    /**
+     * Set up a display name for the metadata collection that this instance belongs to.  The source of this name is
+     * dependent on the type of origin it has.  For example, this may be the
+     * name of the server where the metadata is hosted, the archive that the instance came from or the name
+     * of the tool, platform or engine that originated the metadata.
+     *
+     * @param metadataCollectionName display name or null
+     */
+    public void setMetadataCollectionName(String metadataCollectionName)
+    {
+        this.metadataCollectionName = metadataCollectionName;
+    }
+
+
+    /**
+     * Return the license string for this instance - null means no restrictions.
+     *
+     * @return license string or null
+     */
+    public String getInstanceLicense()
+    {
+        return instanceLicense;
+    }
+
+
+    /**
+     * Set up the license string for this instance - null means no restrictions.
+     *
+     * @param instanceLicense license string or null
+     */
+    public void setInstanceLicense(String instanceLicense)
+    {
+        this.instanceLicense = instanceLicense;
+    }
+
+
+    /**
+     * Return the status of this instance.
      *
      * @return InstanceStatus
      */
@@ -156,7 +267,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
 
 
     /**
-     * Set up the status of this instance (UNKNOWN, PROPOSED, DRAFT, ACTIVE, DELETED).
+     * Set up the status of this instance.
      *
      * @param newStatus InstanceStatus
      */
@@ -291,6 +402,10 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     {
         return "InstanceAuditHeader{" +
                 "type=" + type +
+                ", instanceProvenanceType=" + instanceProvenanceType +
+                ", metadataCollectionId='" + metadataCollectionId + '\'' +
+                ", metadataCollectionName='" + metadataCollectionName + '\'' +
+                ", instanceLicense='" + instanceLicense + '\'' +
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
                 ", createTime=" + createTime +
@@ -298,6 +413,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
                 ", version=" + version +
                 ", currentStatus=" + currentStatus +
                 ", statusOnDelete=" + statusOnDelete +
+                ", status=" + getStatus() +
                 '}';
     }
 
@@ -315,13 +431,17 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof InstanceAuditHeader))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         InstanceAuditHeader that = (InstanceAuditHeader) objectToCompare;
         return getVersion() == that.getVersion() &&
                 Objects.equals(getType(), that.getType()) &&
+                getInstanceProvenanceType() == that.getInstanceProvenanceType() &&
+                Objects.equals(getMetadataCollectionId(), that.getMetadataCollectionId()) &&
+                Objects.equals(getMetadataCollectionName(), that.getMetadataCollectionName()) &&
+                Objects.equals(getInstanceLicense(), that.getInstanceLicense()) &&
                 Objects.equals(getCreatedBy(), that.getCreatedBy()) &&
                 Objects.equals(getUpdatedBy(), that.getUpdatedBy()) &&
                 Objects.equals(getCreateTime(), that.getCreateTime()) &&
@@ -329,6 +449,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
                 currentStatus == that.currentStatus &&
                 getStatusOnDelete() == that.getStatusOnDelete();
     }
+
 
 
     /**
@@ -339,14 +460,9 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(getType(),
-                            getCreatedBy(),
-                            getUpdatedBy(),
-                            getCreateTime(),
-                            getUpdateTime(),
-                            getVersion(),
-                            currentStatus,
-                            getStatusOnDelete());
+        return Objects.hash(getType(), getInstanceProvenanceType(), getMetadataCollectionId(),
+                            getMetadataCollectionName(),
+                            getInstanceLicense(), getCreatedBy(), getUpdatedBy(), getCreateTime(), getUpdateTime(),
+                            getVersion(), currentStatus, getStatusOnDelete());
     }
 }

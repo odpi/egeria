@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTerm;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -72,7 +73,14 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
         }
         else
         {
-            return meanings;
+            List<GlossaryTerm>  clonedList = new ArrayList<>();
+
+            for (GlossaryTerm  existingElement : meanings)
+            {
+                clonedList.add(new GlossaryTerm(existingElement));
+            }
+
+            return clonedList;
         }
     }
 

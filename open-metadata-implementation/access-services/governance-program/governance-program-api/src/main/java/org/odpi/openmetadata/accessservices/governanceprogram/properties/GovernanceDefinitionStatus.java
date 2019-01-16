@@ -87,10 +87,6 @@ public enum GovernanceDefinitionStatus implements Serializable
     @Override
     public String toString()
     {
-        return "GovernanceDefinitionStatus{" +
-                "ordinal=" + ordinal +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
+        return "GovernanceDefinitionStatus : " + name;
     }
 }

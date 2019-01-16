@@ -69,7 +69,7 @@ public class Category extends Node{
 
         Category category = (Category) o;
         Node node = (Node) o;
-        if (!(node.equals((Node)o))) return false;
+        if (!node.equals(this)) return false;
         if (glossary != null ? !glossary.equals(category.glossary) : category.glossary != null) return false;
         return  true;
     }
@@ -81,5 +81,4 @@ public class Category extends Node{
         result = 31 * result + (parentCategory != null ? parentCategory.hashCode() : 0);
         return result;
     }
-
 }

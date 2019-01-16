@@ -155,6 +155,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * @param remoteServerType type of the remote server.
      * @param owningOrganizationName name of the organization the owns the remote server.
      * @param metadataCollectionId Unique identifier for the metadata collection
+     * @param metadataCollectionName Display name for the metadata collection
      * @param remoteConnection Connection object providing properties necessary to create an
      *                         OMRSRepositoryConnector for the remote repository.
      * @throws ConnectionCheckedException there are invalid properties in the Connection
@@ -165,6 +166,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                                                   String         remoteServerType,
                                                   String         owningOrganizationName,
                                                   String         metadataCollectionId,
+                                                  String         metadataCollectionName,
                                                   Connection     remoteConnection) throws ConnectionCheckedException, ConnectorCheckedException
     {
         /*
@@ -175,7 +177,8 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                                                                                   remoteServerName,
                                                                                   remoteServerType,
                                                                                   owningOrganizationName,
-                                                                                  metadataCollectionId);
+                                                                                  metadataCollectionId,
+                                                                                  metadataCollectionName);
 
 
         if (remoteConnector != null)
@@ -228,6 +231,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                                                                remoteServerType,
                                                                owningOrganizationName,
                                                                metadataCollectionId,
+                                                               metadataCollectionName,
                                                                remoteConnection));
 
         /*
@@ -242,7 +246,8 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                                                                                                                       remoteServerName,
                                                                                                                       remoteServerType,
                                                                                                                       owningOrganizationName,
-                                                                                                                      metadataCollectionId));
+                                                                                                                      metadataCollectionId,
+                                                                                                                      metadataCollectionName));
             }
         }
     }
@@ -380,7 +385,8 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                                                                                 registeredConnector.getServerName(),
                                                                                 registeredConnector.getServerType(),
                                                                                 registeredConnector.getOwningOrganizationName(),
-                                                                                registeredConnector.getMetadataCollectionId()));
+                                                                                registeredConnector.getMetadataCollectionId(),
+                                                                                registeredConnector.getMetadataCollectionName()));
             }
         }
 
@@ -426,13 +432,15 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * @param serverType type of the remote server.
      * @param owningOrganizationName name of the organization the owns the remote server.
      * @param metadataCollectionId metadata collection Id for this repository
+     * @param metadataCollectionName metadata collection name for this repository
      * @return OMRSRepositoryConnector for the connection
      */
     private OMRSRepositoryConnector getOMRSRepositoryConnector(Connection connection,
                                                                String     serverName,
                                                                String     serverType,
                                                                String     owningOrganizationName,
-                                                               String     metadataCollectionId)
+                                                               String     metadataCollectionId,
+                                                               String     metadataCollectionName)
     {
         String     methodName = "getOMRSRepositoryConnector()";
 
@@ -451,6 +459,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
             repositoryConnector.setRepositoryValidator(new OMRSRepositoryContentValidator(repositoryContentManager));
             repositoryConnector.setRepositoryHelper((new OMRSRepositoryContentHelper(repositoryContentManager)));
             repositoryConnector.setMetadataCollectionId(metadataCollectionId);
+            repositoryConnector.setMetadataCollectionName(metadataCollectionName);
             repositoryConnector.start();
 
             return repositoryConnector;
@@ -490,6 +499,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
         private String     serverType;
         private String     owningOrganizationName;
         private String     metadataCollectionId;
+        private String     metadataCollectionName;
         private Connection connection;
 
 
@@ -501,6 +511,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
          * @param serverType type of the remote server.
          * @param owningOrganizationName name of the organization the owns the remote server.
          * @param metadataCollectionId unique identifier for the metadata collection that this connector accesses.
+         * @param metadataCollectionName display name for the metadata collection that this connector accesses.
          * @param connection connection used to generate the connector
          */
         public RegisteredConnector(String     source,
@@ -508,6 +519,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                                    String     serverType,
                                    String     owningOrganizationName,
                                    String     metadataCollectionId,
+                                   String     metadataCollectionName,
                                    Connection connection)
         {
             this.source = source;
@@ -515,6 +527,7 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
             this.serverType = serverType;
             this.owningOrganizationName = owningOrganizationName;
             this.metadataCollectionId = metadataCollectionId;
+            this.metadataCollectionName = metadataCollectionName;
             this.connection = connection;
         }
 
@@ -570,6 +583,17 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
         public String getMetadataCollectionId()
         {
             return metadataCollectionId;
+        }
+
+
+        /**
+         * Return the display name for the metadata collection that this connector accesses.
+         *
+         * @return String name
+         */
+        public String getMetadataCollectionName()
+        {
+            return metadataCollectionName;
         }
 
 

@@ -15,19 +15,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * MyProfileRequestBody provides a structure for passing personal details over a REST API.
- * It is used for creating and updating a profile for the asset consumer.
+ * It is used for creating and updating a profile for the calling user.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
 {
-    private String              employeeNumber       = null;
+    private String              qualifiedName        = null;
     private String              fullName             = null;
     private String              knownName            = null;
     private String              jobTitle             = null;
     private String              jobRoleDescription   = null;
-    private Map<String, Object> additionalProperties = null;
+    private Map<String, Object> profileProperties    = null;
+    private Map<String, String> additionalProperties = null;
 
 
     /**
@@ -49,11 +50,12 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
 
         if (template != null)
         {
-            this.employeeNumber = template.getEmployeeNumber();
+            this.qualifiedName = template.getQualifiedName();
             this.fullName = template.getFullName();
             this.knownName = template.getKnownName();
             this.jobTitle = template.getJobTitle();
             this.jobRoleDescription = template.getJobRoleDescription();
+            this.profileProperties = template.getProfileProperties();
             this.additionalProperties = template.getAdditionalProperties();
         }
     }
@@ -64,20 +66,20 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
      *
      * @return String identifier
      */
-    public String getEmployeeNumber()
+    public String getQualifiedName()
     {
-        return employeeNumber;
+        return qualifiedName;
     }
 
 
     /**
      * Set up the unique employee number for this governance officer.
      *
-     * @param employeeNumber String identifier
+     * @param qualifiedName String identifier
      */
-    public void setEmployeeNumber(String employeeNumber)
+    public void setQualifiedName(String qualifiedName)
     {
-        this.employeeNumber = employeeNumber;
+        this.qualifiedName = qualifiedName;
     }
 
 
@@ -177,13 +179,47 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
     }
 
 
+    /**
+     * Set up profile properties.  These are properties that come from the subclass of Person.
+     * Null means no profile properties are available.
+     *
+     * @param profileProperties  map from string (property name) to object (property value)
+     */
+    public void setProfileProperties(Map<String, Object> profileProperties)
+    {
+        this.profileProperties = profileProperties;
+    }
+
+
+    /**
+     * Return profile properties.  These are properties that come from the subclass of Person.
+     * Null means no profile properties are available.
+     *
+     * @return map from string (property name) to object (property value)
+     */
+    public Map<String,Object> getProfileProperties()
+    {
+        if (profileProperties == null)
+        {
+            return null;
+        }
+        else if (profileProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(profileProperties);
+        }
+    }
+
 
     /**
      * Set up additional properties.
      *
      * @param additionalProperties Additional properties object
      */
-    public void setAdditionalProperties(Map<String,Object> additionalProperties)
+    public void setAdditionalProperties(Map<String, String> additionalProperties)
     {
         this.additionalProperties = additionalProperties;
     }
@@ -194,7 +230,7 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
      *
      * @return AdditionalProperties
      */
-    public Map<String,Object> getAdditionalProperties()
+    public Map<String, String> getAdditionalProperties()
     {
         if (additionalProperties == null)
         {
@@ -220,11 +256,12 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
     public String toString()
     {
         return "MyProfileRequestBody{" +
-                ", employeeNumber='" + employeeNumber + '\'' +
+                "qualifiedName='" + qualifiedName + '\'' +
                 ", fullName='" + fullName + '\'' +
                 ", knownName='" + knownName + '\'' +
                 ", jobTitle='" + jobTitle + '\'' +
                 ", jobRoleDescription='" + jobRoleDescription + '\'' +
+                ", profileProperties=" + profileProperties +
                 ", additionalProperties=" + additionalProperties +
                 '}';
     }
@@ -243,16 +280,17 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
         {
             return true;
         }
-        if (!(objectToCompare instanceof MyProfileRequestBody))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
         MyProfileRequestBody that = (MyProfileRequestBody) objectToCompare;
-        return  Objects.equals(getEmployeeNumber(), that.getEmployeeNumber()) &&
+        return Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
                 Objects.equals(getFullName(), that.getFullName()) &&
                 Objects.equals(getKnownName(), that.getKnownName()) &&
                 Objects.equals(getJobTitle(), that.getJobTitle()) &&
                 Objects.equals(getJobRoleDescription(), that.getJobRoleDescription()) &&
+                Objects.equals(getProfileProperties(), that.getProfileProperties()) &&
                 Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
     }
 
@@ -265,6 +303,7 @@ public class MyProfileRequestBody extends CommunityProfileOMASAPIRequestBody
     @Override
     public int hashCode()
     {
-        return 0;
+        return Objects.hash(getQualifiedName(), getFullName(), getKnownName(), getJobTitle(), getJobRoleDescription(),
+                            getProfileProperties(), getAdditionalProperties());
     }
 }

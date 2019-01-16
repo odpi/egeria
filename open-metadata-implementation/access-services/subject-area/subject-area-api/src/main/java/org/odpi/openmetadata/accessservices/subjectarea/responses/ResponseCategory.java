@@ -18,7 +18,7 @@ public enum ResponseCategory {
     Project,
     Comment,
 
-    // term to term relationships
+    // term to term relationship
     TermHASARelationship,
     RelatedTerm,
     SynonymRelationship,
@@ -31,7 +31,10 @@ public enum ResponseCategory {
     TermTYPEDBYRelationship,
     TermUsedInContextRelationship,
     ValidValueRelationship,
-
+    // term to glossary relationships
+    TermAnchorRelationship,
+    // term relationships
+    TermRelationships,
     // external glossary relationships
     LibraryCategoryReferenceRelationshipRelationship,
     LibraryTermReferenceRelationshipRelationship,
@@ -39,11 +42,14 @@ public enum ResponseCategory {
     SemanticAssignmentRelationship,
     // category to term
     TermCategorizationRelationship,
+    // category relationships
+    CategoryRelationships,
 
     // errors
     ClassificationException,
     EntityNotDeletedException,
     FunctionNotSupportedException,
+    GUIDNotDeletedException,
     GUIDNotPurgedException,
     InvalidParameterException,
     RelationshipNotDeletedException,
@@ -52,8 +58,6 @@ public enum ResponseCategory {
     UnrecognizedGUIDException,
     UnrecognizedNameException,
     UserNotAuthorizedException,
-    MetadataServerUncontactableException
-
-
+    MetadataServerUncontactableException;
 
 }

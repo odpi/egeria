@@ -56,7 +56,7 @@ public class NoConnectedAssetException extends AssetConsumerCheckedExceptionBase
                                      String    systemAction,
                                      String    userAction,
                                      Throwable caughtError,
-                                     String connectionGUID)
+                                     String    connectionGUID)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
 

@@ -77,6 +77,12 @@
             <version>${open-metadata.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ibm-igc-repository-connector</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>

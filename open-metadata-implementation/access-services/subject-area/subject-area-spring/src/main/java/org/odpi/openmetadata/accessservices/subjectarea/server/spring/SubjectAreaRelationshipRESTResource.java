@@ -121,6 +121,30 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
         return restAPI.deleteTermHASARelationship(serverName, userId,guid,isPurge);
     }
     /**
+     * Restore a has a relationship.
+     *
+     * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the relationship to restore
+     * @return response which when successful contains the restored relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
+     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/has-as/{guid}")
+    public SubjectAreaOMASAPIResponse restoreTermHASARelationship(@PathVariable String serverName,@PathVariable  String userId,@PathVariable  String guid)
+    {
+        return restAPI.restoreTermHASARelationship(serverName, userId,guid);
+    }
+    /**
      * Create a RelatedTerm. A Related Term is a link between two similar Terms.
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -210,6 +234,30 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
             isPurge = false;
         }
         return restAPI. deleteRelatedTerm(serverName, userId,guid,isPurge);
+    }
+    /**
+     * Restore a related Term relationship.
+     *
+     * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the relationship to restore
+     * @return response which when successful contains the restored relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
+     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/related-terms/{guid}")
+    public SubjectAreaOMASAPIResponse restoreRelatedTerm(@PathVariable String serverName,@PathVariable  String userId,@PathVariable  String guid)
+    {
+        return restAPI.restoreRelatedTerm(serverName, userId,guid);
     }
     /**
      *  Create a synonym relationship, which is a link between glossary terms that have the same meaning.
@@ -305,6 +353,29 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
         return restAPI.deleteSynonymRelationship(serverName, userId,guid,isPurge);
     }
     /**
+     * Restore a Synonym
+     *
+     * Restore allows the deleted Synonym to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Synonym to delete
+     * @return response which when successful contains the restored Synonym
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/synonyms/{guid}")
+    public SubjectAreaOMASAPIResponse restoreSynonym( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
+    {
+        return restAPI.restoreSynonym(serverName,userId,guid);
+    }
+
+    /**
      *  Create an antonym relationship, which is a link between glossary terms that have the opposite meaning.
      *
      * <p>
@@ -396,6 +467,28 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
             isPurge = false;
         }
         return restAPI.deleteAntonymRelationship(serverName, userId,guid,isPurge);
+    }
+    /**
+     * Restore a Antonym
+     *
+     * Restore allows the deleted Antonym to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Antonym to delete
+     * @return response which when successful contains the restored Antonym
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/antonyms/{guid}")
+    public SubjectAreaOMASAPIResponse restoreAntonym( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
+    {
+        return restAPI.restoreAntonym(serverName,userId,guid);
     }
     /**
      *  Create a translation relationship, which is a link between glossary terms to provide different natural language translation of the same concept.
@@ -494,6 +587,28 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
         return restAPI.deleteTranslationRelationship(serverName, userId,guid,isPurge);
     }
     /**
+     * Restore a Translation
+     *
+     * Restore allows the deleted Translation to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Translation to delete
+     * @return response which when successful contains the restored Translation
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/translations/{guid}")
+    public SubjectAreaOMASAPIResponse restoreTranslation( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
+    {
+        return restAPI.restoreTranslation(serverName,userId,guid);
+    }
+    /**
      *  Create a usedInContext relationship, which is a link between glossary terms, where one describes the context where the other one is valid to use.
      *
      * <p>
@@ -586,6 +701,28 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
             isPurge = false;
         }
         return restAPI.deleteUsedInContextRelationship(serverName, userId,guid,isPurge);
+    }
+    /**
+     * Restore a UsedInContext
+     *
+     * Restore allows the deleted UsedInContext to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the UsedInContext to delete
+     * @return response which when successful contains the restored UsedInContext
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/used-in-contexts/{guid}")
+    public SubjectAreaOMASAPIResponse restoreUsedInContext( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
+    {
+        return restAPI.restoreUsedInContext(serverName,userId,guid);
     }
 
     /**
@@ -684,6 +821,28 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
             isPurge = false;
         }
         return restAPI.deletePreferredTermRelationship(serverName, userId,guid,isPurge);
+    }
+    /**
+     * Restore a PreferredTerm
+     *
+     * Restore allows the deleted PreferredTerm to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the PreferredTerm to delete
+     * @return response which when successful contains the restored PreferredTerm
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/preferred-terms/{guid}")
+    public SubjectAreaOMASAPIResponse restorePreferredTerm( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
+    {
+        return restAPI.restorePreferredTerm(serverName,userId,guid);
     }
 
 
@@ -784,6 +943,28 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
         }
         return restAPI.deleteValidValueRelationship(serverName, userId,guid,isPurge);
     }
+    /**
+     * Restore a ValidValue
+     *
+     * Restore allows the deleted ValidValue to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the ValidValue to delete
+     * @return response which when successful contains the restored ValidValue
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/valid-values/{guid}")
+    public SubjectAreaOMASAPIResponse restoreValidValue( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
+    {
+        return restAPI.restoreValidValue(serverName,userId,guid);
+    }
 
     /**
      *  Create a replacementTerm relationship, which is a link to a glossary term that is replacing an obsolete glossary term.
@@ -880,6 +1061,28 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
             isPurge = false;
         }
         return restAPI.deleteReplacementTermRelationship(serverName, userId,guid,isPurge);
+    }
+    /**
+     * Restore a ReplacementTerm
+     *
+     * Restore allows the deleted ReplacementTerm to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the ReplacementTerm to delete
+     * @return response which when successful contains the restored ReplacementTerm
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/replacement-terms/{guid}")
+    public SubjectAreaOMASAPIResponse restoreReplacementTerm( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
+    {
+        return restAPI.restoreReplacementTerm(serverName,userId,guid);
     }
 
     /**
@@ -978,6 +1181,28 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
         }
         return restAPI.deleteTermTYPEDBYRelationship(serverName, userId,guid,isPurge);
     }
+    /**
+     * Restore a Term TYPED BY relationship
+     *
+     * Restore allows the deleted TermTYPEDBY to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the TermTYPEDBY to delete
+     * @return response which when successful contains the restored TermTYPEDBY
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/typed-bys/{guid}")
+    public SubjectAreaOMASAPIResponse restoreTermTYPEDBYRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
+    {
+        return restAPI.restoreTermTYPEDBYRelationship(serverName,userId,guid);
+    }
 
     /**
      *  Create a iSARelationship relationship, which is a link between a more general glossary term and a more specific definition.
@@ -1074,6 +1299,28 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
         }
         return restAPI.deleteISARelationship(serverName, userId,guid,isPurge);
     }
+    /**
+     * Restore a Isa Relationship
+     *
+     * Restore allows the deleted Isa Relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Isa Relationship to delete
+     * @return response which when successful contains the restored IsaRelationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/is-as/{guid}")
+    public SubjectAreaOMASAPIResponse restoreIsaRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
+    {
+        return restAPI.restoreISARelationship(serverName,userId,guid);
+    }
 
 
     /**
@@ -1166,13 +1413,36 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * </ul>
      */
     @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
-    public SubjectAreaOMASAPIResponse deleteTermISATYPEPFRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteTermIsaTypeOfRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
         }
-        return restAPI.deleteISATypeOFRelationshipp(serverName, userId,guid,isPurge);
+        return restAPI.deleteIsATypeOfRelationship(serverName, userId,guid,isPurge);
     }
+    /**
+     * Restore a Is a Type Of Relationship
+     *
+     * Restore allows the deleted Is a Type Of Relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Term Is a Type Of Relationship to delete
+     * @return response which when successful contains the restored TermIsaTypeOfRelationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
+    public SubjectAreaOMASAPIResponse restoreTermIsaTypeOfRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
+    {
+        return restAPI.restoreTermISATypeOF(serverName,userId,guid);
+    }
+
     /**
      * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.
      *

@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Open Metadata Glossary
 
@@ -35,12 +36,15 @@ Below are links to common terms and concepts used in Egeria.
 * [Administration Services (OMAG)](../../open-metadata-implementation/governance-servers/admin-services)
 * [Administration Services (OMRS)](../../open-metadata-implementation/repository-services/docs/subsystem-descriptions/administration-services.md)
 * [Administration User Interface](../../open-metadata-implementation/user-interfaces/server-configuration-user-interface)
+* [Anchor](../../open-metadata-implementation/access-services/docs/concepts/anchor.md)
 * [Apache Kafka Connectivity](../../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/kafka-open-metadata-topic-connector)
 * [Archives for Open Metadata](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-archive-connectors)
-* [Asset](assets/README.md)
+* [Asset](../../open-metadata-implementation/access-services/docs/concepts/assets/README.md)
 * [Asset Catalog OMAS](../../open-metadata-implementation/access-services/asset-catalog)
-* [Asset Consumer](../../open-metadata-implementation/access-services/asset-consumer)
-* [Asset Owner](../../open-metadata-implementation/access-services/asset-owner)
+* [Asset Consumer](../../open-metadata-implementation/access-services/docs/concepts/user-roles/asset-consumer.md)
+* [Asset Consumer OMAS](../../open-metadata-implementation/access-services/asset-consumer)
+* [Asset Owner](../../open-metadata-implementation/access-services/docs/concepts/user-roles/asset-owner.md)
+* [Asset Owner OMAS](../../open-metadata-implementation/access-services/asset-owner)
 * [Audit Log (OMRS)](../../open-metadata-implementation/repository-services/docs/component-descriptions/audit-log.md)
 * [Audit Log Store (OMRS)](../../open-metadata-implementation/repository-services/docs/component-descriptions/connectors/audit-log-store-connector.md)
 * [Authentication Plugins](../../open-metadata-implementation/adapters/authentication-plugins)
@@ -58,10 +62,10 @@ Below are links to common terms and concepts used in Egeria.
 * [Cohort Services (OMRS)](../../open-metadata-implementation/repository-services/docs/subsystem-descriptions/cohort-services.md)
 * [Community Guide](../../Community-Guide.md)
 * [Community Profile OMAS](../../open-metadata-implementation/access-services/community-profile)
-* [Compliance Test Suite](../../open-metadata-compliance-suite)
 * [Configuration User Interface](../../open-metadata-implementation/user-interfaces/server-configuration-user-interface)
 * [Configuration Store Connectors](../../open-metadata-implementation/adapters/open-connectors/configuration-store-connectors)
 * [Configuration Factory](../../open-metadata-implementation/adapters/open-connectors/connector-configuration-factory)
+* [Conformance Test Suite](../../open-metadata-conformance-suite)
 * [Connected Asset OMAS](../../open-metadata-implementation/access-services/connected-asset)
 * [Connectors](../../open-metadata-implementation/adapters/open-connectors)
   * [Access Services Connectors](../../open-metadata-implementation/adapters/open-connectors/access-services-connectors)
@@ -101,6 +105,7 @@ Below are links to common terms and concepts used in Egeria.
 
 ## E
 
+* [Engine](../../open-metadata-implementation/access-services/docs/concepts/server-capabilities/engine.md)
 * [Enterprise Repository Services (OMRS)](../../open-metadata-implementation/repository-services/docs/subsystem-descriptions/enterprise-repository-services.md)
 * [Event Bus](../../open-metadata-implementation/adapters/open-connectors/event-bus-connectors)
   * [Event Bus Configuration](../../open-metadata-implementation/governance-servers/admin-services/Using-the-Admin-Services.md)
@@ -156,6 +161,7 @@ Below are links to common terms and concepts used in Egeria.
 
 ## M
 
+* [Master Data Manager](../../open-metadata-implementation/access-services/docs/concepts/server-capabilities/master-data-manager.md)
 * [Metadata Catalog](../../open-metadata-implementation/access-services/asset-catalog)
 * [Metadata Collection Id](../../open-metadata-implementation/repository-services/docs/metadata-collection-id.md)
 * [Metadata Collection Store Connectors](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors)
@@ -211,7 +217,7 @@ Below are links to common terms and concepts used in Egeria.
 * [Open Metadata Cohort Member](../../open-metadata-implementation/repository-services/docs/cohort-member.md)
 * [Open Metadata Archives](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-archive-connectors)
 * [Open Metadata Collection Store Connectors](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors)
-* [Open Metadata Compliance Suite](../../open-metadata-compliance-suite)
+* [Open Metadata Conformance Suite](../../open-metadata-conformance-suite)
 * [Open Metadata Implementation](../../open-metadata-implementation)
 * [Open Metadata Repository](../../open-metadata-implementation/repository-services/docs/open-metadata-repository.md)
 * [Open Metadata Repository Cohort](../../open-metadata-implementation/repository-services/docs/open-metadata-repository-cohort.md)
@@ -263,7 +269,7 @@ Below are links to common terms and concepts used in Egeria.
   * [open-discovery-framework](../../open-metadata-implementation/frameworks/open-discovery-framework)
   * [open-metadata-archive-connectors](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-archive-connectors)
   * [open-metadata-collection-store-connectors](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors)
-  * [open-metadata-compliance-suite](../../open-metadata-compliance-suite)
+  * [open-metadata-conformance-suite](../../open-metadata-conformance-suite)
   * [open-metadata-distribution](../../open-metadata-distribution)
   * [open-metadata-implementation](../../open-metadata-implementation)
   * [open-metadata-publication](../../open-metadata-publication)
@@ -276,6 +282,7 @@ Below are links to common terms and concepts used in Egeria.
   * [subject-area](../../open-metadata-implementation/access-services/subject-area)
   * [user-interfaces](../../open-metadata-implementation/user-interfaces)
 * [Project Management OMAS](../../open-metadata-implementation/access-services/project-management)
+* [Projects](../../open-metadata-implementation/access-services/docs/concepts/projects)
 
 
 ## Q
@@ -306,6 +313,7 @@ Below are links to common terms and concepts used in Egeria.
 
 * [Samples](../../open-metadata-resources)
 * [Search API](../../open-metadata-implementation/access-services/asset-catalog)
+* [Server Capabilities](../../open-metadata-implementation/access-services/docs/concepts/server-capabilities)
 * [Server Chassis](../../open-metadata-implementation/governance-servers/server-chassis)
 * [Server Configuration User Interface](../../open-metadata-implementation/user-interfaces/server-configuration-user-interface)
 * [Servers fo Governance](../../open-metadata-implementation/governance-servers)
@@ -318,18 +326,26 @@ Below are links to common terms and concepts used in Egeria.
 
 ## T
 
+* [Tool](../../open-metadata-implementation/access-services/docs/concepts/server-capabilities/tool.md)
 * Topic Connectors
   * [Access Services Topic Connector](../../open-metadata-implementation/adapters/open-connectors/access-services-connectors/README.md)
   * [Open Metadata Topic Connector](../../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/README.md)
   * [OMRS Topic Connector](../../open-metadata-implementation/repository-services/docs/component-descriptions/connectors/omrs-topic-connector.md)
+* Topics
+  * [InTopic](../../open-metadata-implementation/access-services/docs/concepts/in-topic.md)
+  * [OMRS Topic](../../open-metadata-implementation/repository-services/docs/omrs-event-topic.md)
+  * [OutTopic](../../open-metadata-implementation/access-services/docs/concepts/out-topic.md)
 
 
 
 ## U
 
+* [User Identity](../../open-metadata-implementation/access-services/docs/concepts/users/user-identity.md)
 * [User Interfaces](../../open-metadata-implementation/user-interfaces)
   * [Access Services User Interface](../../open-metadata-implementation/user-interfaces/access-services-user-interface)
   * [Server Configuration User Interface](../../open-metadata-implementation/user-interfaces/server-configuration-user-interface)
+* [User Roles](../../open-metadata-implementation/access-services/docs/concepts/user-roles)
+* [Users](../../open-metadata-implementation/access-services/docs/concepts/users)
 
 
 

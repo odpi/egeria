@@ -58,10 +58,9 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
      * </ul>
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/categories")
-    public SubjectAreaOMASAPIResponse createGlossary(@PathVariable String serverName,@PathVariable String userId, @RequestBody Category suppliedCategory) {
+    public SubjectAreaOMASAPIResponse createCategory(@PathVariable String serverName,@PathVariable String userId, @RequestBody Category suppliedCategory) {
         return restAPI.createCategory(serverName,userId,suppliedCategory);
     }
-
 
     /**
      * Get a Category
@@ -141,5 +140,27 @@ public class SubjectAreaCategoryRESTResource extends SubjectAreaRESTServicesInst
             isPurge = false;
         }
         return restAPI.deleteCategory(serverName, userId,guid,isPurge);
+    }
+    /**
+     * Restore a Category
+     *
+     * Restore allows the deleted Category to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the category to restore
+     * @return response which when successful contains the restored category
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/categories/{guid}")
+    public SubjectAreaOMASAPIResponse restoreCategory( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
+    {
+        return restAPI.restoreCategory(serverName,userId,guid);
     }
 }

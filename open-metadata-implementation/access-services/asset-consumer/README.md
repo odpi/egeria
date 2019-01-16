@@ -13,25 +13,28 @@ with assets such as:
 
 It supports:
 
-* the retrieval of open metadata connection objects.
+* the retrieval of open metadata connection objects from the open metadata repositories.
 * the creation of a connector based on the properties in a connection object.
 * the retrieval of properties about an asset.
 * the adding of feedback (comments, ratings, tags and likes) to specific assets.
 * the adding of an audit log record for the asset.
-* the management of personal collections of assets that are of interest to the individual.
-* the management of notifications relating to changes to the assets in these collections.
-* the publishing of notifications about assets as configured above.
+* the publishing of notifications about assets.
 
-Using the Asset Consumer OMAS results in Karma Points being awarded
+Adding feedback through the Asset Consumer OMAS results in Karma Points being awarded
 to the individual.  These are maintained in the individual's profile.
-A karma point is awarded for each contribution of metadata
-through the API.
+A karma point is awarded for each contribution of feedback
+through the API. (The awarding of Karma points is managed by the
+[Community Profile OMAS](../community-profile))
 
 The connectors returned by the Asset Consumer OMAS are Open Connector
 Framework (OCF) connectors.  The caller can use the connector to access
 the contents of the asset itself and the properties about the
 asset it is accessing.   This service is provided by the
-[Connected Asset OMAS](../connected-asset/README.md).
+[Connected Asset OMAS](../connected-asset).
+
+## Server-side Configuration
+
+The Asset Consumer OMAS 
 
 ## Internals
 

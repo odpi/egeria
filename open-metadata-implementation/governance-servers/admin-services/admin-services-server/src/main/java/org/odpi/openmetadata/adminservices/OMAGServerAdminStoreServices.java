@@ -6,8 +6,8 @@ import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationF
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.properties.VoidResponse;
 import org.odpi.openmetadata.adminservices.rest.ConnectionResponse;
+import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.odpi.openmetadata.adminservices.store.OMAGServerConfigStore;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -18,7 +18,8 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
  *
  * A configuration document provides the configuration information for a server.  By default, a
  * server's configuration document is stored in its own file.  However, it is possible to override
- * the default location using setConfigurationStoreConnection.
+ * the default location using setConfigurationStoreConnection.  This override affects all
+ * server instances in this process.
  */
 public class OMAGServerAdminStoreServices
 {
