@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.accessservices.service;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
