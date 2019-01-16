@@ -11,3 +11,19 @@ egeria_samples_cocopharma_targets:
 # Type of database to load sample data into (for options, see the sub-directory names under 'database' directory of
 # these coco-pharmaceuticals samples)
 egeria_samples_cocopharma_db_type: ibm-db2
+
+# Type of metadata repository to load sample data into (for options, see the sub-directory names under 'metadata'
+# directory of these coco-pharmaceuticals samples)
+egeria_samples_metadata_backend: ibm-igc
+
+# Name of OS-level users and groups who should own the samples that are being loaded
+# (defaults below are for 'ibm-igc' metadata backend and 'ibm-db2' db_type)
+egeria_samples_users:
+  file_owner: dsadm
+  file_group: dstage
+  db_owner: db2inst1
+  db_group: db2iadm1
+
+# Name of the schema under which to create the sample database
+# (default is to just use the upper-case of 'db_owner' above)
+egeria_samples_db_schema: "{{ egeria_samples_users.db_owner | upper }}"

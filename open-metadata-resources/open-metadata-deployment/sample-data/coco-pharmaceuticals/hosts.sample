@@ -4,14 +4,17 @@
 [targets]
 infosvr.vagrant.ibm.com ansible_user='vagrant' ansible_ssh_private_key_file='~/Developer/vagrant/infosvr/.vagrant/machines/infosvr/virtualbox/private_key'
 
+[egeria-samples-db-host]
+infosvr.vagrant.ibm.com		# host on which database is running to place Egeria sample data
+
+[egeria-samples-files-host]
+infosvr.vagrant.ibm.com		# host on whose file system to place Egeria sample files
+
 [ibm-information-server-repo]
-infosvr.vagrant.ibm.com
+infosvr.vagrant.ibm.com		# repository host for IBM IGC (if using 'ibm-igc' as metadata repository)
 
 [ibm-information-server-domain]
-infosvr.vagrant.ibm.com
+infosvr.vagrant.ibm.com		# domain (services) host for IBM IGC (if using 'ibm-igc' as metadata repository)
 
 [ibm-information-server-engine]
-infosvr.vagrant.ibm.com
-
-[egeria-samples-db-host]
-infosvr.vagrant.ibm.com
+infosvr.vagrant.ibm.com		# engine host for IBM IGC (if using 'ibm-igc' as metadata repository)

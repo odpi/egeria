@@ -7,16 +7,16 @@
     path: "{{ egeria_samples_cocopharma_targets.files }}"
     state: directory
     mode: 0755
-    owner: "{{ ibm_infosvr_users.dsadm }}"
-    group: "{{ ibm_infosvr_groups.dsadm }}"
+    owner: "{{ egeria_samples_users.file_owner }}"
+    group: "{{ egeria_samples_users.file_group }}"
   become: yes
 
 - name: transfer sample data files
   copy:
     src: "data-files/"
     dest: "{{ egeria_samples_cocopharma_targets.files }}/"
-    owner: "{{ ibm_infosvr_users.dsadm }}"
-    group: "{{ ibm_infosvr_groups.dsadm }}"
+    owner: "{{ egeria_samples_users.file_owner }}"
+    group: "{{ egeria_samples_users.file_group }}"
     mode: 0644
   become: yes
 
@@ -25,16 +25,3 @@
     path: "{{ egeria_samples_cocopharma_targets.files }}/load.yml"
     state: absent
   become: yes
-
-- import_role: name=IBM.infosvr-metadata-asset-manager
-  vars:
-    import_areas:
-      - name: CocoPharma_SampleFiles
-        type: LocalFileConnector
-        description: "Loads metadata for CocoPharma sample files"
-        metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
-        dcn:
-          name: LOCALFS
-        assets_to_import:
-          - "folder[{{ egeria_samples_cocopharma_targets.files }}]"
-        hostname: "{{ groups['ibm-information-server-engine'][0] | upper }}"

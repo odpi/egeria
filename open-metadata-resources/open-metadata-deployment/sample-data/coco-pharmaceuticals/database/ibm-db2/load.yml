@@ -5,44 +5,19 @@
 - name: copy data load scripts
   template:
     src: "database/ibm-db2/load{{ item }}.sql"
-    dest: "/home/{{ ibm_infosvr_users.db2inst1 }}/load{{ item }}.sql"
-  become_user: "{{ ibm_infosvr_users.db2inst1 }}"
+    dest: "/home/{{ egeria_samples_users.db_owner }}/load{{ item }}.sql"
+  become_user: "{{ egeria_samples_users.db_owner }}"
   become: yes
-  when: ('ibm-information-server-engine' in group_names)
   with_items: "{{ egeria_samples_cocopharma_databases }}"
 
 - name: load sample data to database
   shell: >
     source ~/.bashrc &&
-    db2 -td$ -f /home/{{ ibm_infosvr_users.db2inst1 }}/load{{ item }}.sql
+    db2 -td$ -f /home/{{ egeria_samples_users.db_owner }}/load{{ item }}.sql
   args:
     executable: /bin/bash
-  become_user: "{{ ibm_infosvr_users.db2inst1 }}"
+  become_user: "{{ egeria_samples_users.db_owner }}"
   become: yes
   with_items: "{{ egeria_samples_cocopharma_databases }}"
   register: __db2_load_result
   failed_when: __db2_load_result.rc != 0 and __db2_load_result.rc != 4
-  when: ('ibm-information-server-engine' in group_names)
-
-- name: harvest metadata via IBM Metadata Asset Manager
-  include_role:
-    name: IBM.infosvr-metadata-asset-manager
-  vars:
-    import_areas:
-      - name: CocoPharma_{{ db_name }}
-        type: DB2Connector
-        description: "Import area for CocoPharma {{ db_name }} sample database"
-        metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
-        dcn:
-          name: CocoPharma_DB2
-          description: "CocoPharma DB2 connection"
-          database: "{{ db_name | upper }}"
-          username: "{{ ibm_infosvr_users.db2inst1 }}"
-          password: "{{ ibm_infosvr_upwds.db2inst1 }}"
-        assets_to_import:
-            - "database[{{ db_name | upper }}]"
-        hostname: "{{ groups['egeria-samples-db-host'][0] | upper }}"
-        database_name: "{{ db_name | upper }}"
-  with_items: "{{ egeria_samples_cocopharma_databases }}"
-  loop_control:
-    loop_var: db_name
