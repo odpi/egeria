@@ -74,15 +74,10 @@ public class InformationViewAdmin implements AccessServiceAdmin {
         }
 
         Connection  inTopicConnection = accessServiceConfigurationProperties.getAccessServiceInTopic();
-        String      inTopicName = null;
+        String inTopicName = getTopicName(inTopicConnection);
 
-        if (inTopicConnection != null) {
-            Endpoint inTopicEndpoint = inTopicConnection.getEndpoint();
-
-            if (inTopicEndpoint != null) {
-                inTopicName = inTopicEndpoint.getAddress();
-            }
-        }
+        Connection  outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
+        String outTopicName = getTopicName(outTopicConnection);
 
         informationViewInTopicConnector = initializeInformationViewTopicConnector(inTopicConnection);
         OpenMetadataTopicConnector informationViewOutTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
@@ -106,35 +101,13 @@ public class InformationViewAdmin implements AccessServiceAdmin {
 
 
         if (informationViewInTopicConnector != null) {
-            auditCode = InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_IN_TOPIC;
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(inTopicName),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
             OpenMetadataTopicListener informationViewInTopicListener = new InformationViewInTopicListener(entitiesCreatorHelper, auditLog);
             this.informationViewInTopicConnector.registerListener(informationViewInTopicListener);
-            try {
-                informationViewInTopicConnector.start();
-            } catch (ConnectorCheckedException e) {
-                auditCode = InformationViewAuditCode.ERROR_INITIALIZING_INFORMATION_VIEW_TOPIC_CONNECTION;
-                auditLog.logRecord(actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(inTopicName, serverName),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
-                throw new OMAGConfigurationErrorException(400,
-                        InformationViewAdmin.class.getSimpleName(),
-                        actionDescription,
-                        auditCode.getFormattedLogMessage(),
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction()
-                );
-            }
+            startConnector(InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_IN_TOPIC, actionDescription, inTopicName, informationViewInTopicConnector);
+        }
+
+        if (informationViewOutTopicConnector != null) {
+            startConnector(InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_OUT_TOPIC, actionDescription, outTopicName, informationViewOutTopicConnector);
         }
 
         LookupHelper lookupHelper = new LookupHelper(enterpriseConnector, entitiesCreatorHelper, auditLog);
@@ -148,6 +121,50 @@ public class InformationViewAdmin implements AccessServiceAdmin {
                 null,
                 auditCode.getSystemAction(),
                 auditCode.getUserAction());
+    }
+
+    private void startConnector(InformationViewAuditCode auditCode, String actionDescription, String topicName, OpenMetadataTopicConnector topicConnector) throws OMAGConfigurationErrorException {
+
+        auditLog.logRecord(actionDescription,
+                auditCode.getLogMessageId(),
+                auditCode.getSeverity(),
+                auditCode.getFormattedLogMessage(topicName),
+                null,
+                auditCode.getSystemAction(),
+                auditCode.getUserAction());
+
+
+        try {
+            topicConnector.start();
+        } catch (ConnectorCheckedException e) {
+            auditCode = InformationViewAuditCode.ERROR_INITIALIZING_INFORMATION_VIEW_TOPIC_CONNECTION;
+            auditLog.logRecord(actionDescription,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(topicName, serverName),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
+            throw new OMAGConfigurationErrorException(400,
+                    InformationViewAdmin.class.getSimpleName(),
+                    actionDescription,
+                    auditCode.getFormattedLogMessage(),
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction()
+            );
+        }
+    }
+
+    private String getTopicName(Connection connection) {
+        String      topicName = null;
+        if (connection != null) {
+            Endpoint outTopicEndpoint = connection.getEndpoint();
+
+            if (outTopicEndpoint != null) {
+                topicName = outTopicEndpoint.getAddress();
+            }
+        }
+        return topicName;
     }
 
 
