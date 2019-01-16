@@ -240,7 +240,7 @@ egeria_samples_cocopharma_users:
     lastname: Cummings
     title: Ms.
     jobtitle: Registered Nurse
-    email: angela.cummings@cocopharmaceutical.com
+    email: angela.cummings@hh-care.org
     groups:
       - cocopharma_trials
   - username: gable
@@ -249,7 +249,7 @@ egeria_samples_cocopharma_users:
     lastname: Able
     title: Mr.
     jobtitle: Consultant
-    email: grant.able@cocopharmaceutical.com
+    email: grant.able@hh-care.org
     groups:
       - cocopharma_trials
   - username: jstitched
@@ -258,7 +258,7 @@ egeria_samples_cocopharma_users:
     lastname: Stitched
     title: Ms.
     jobtitle: Surgeon
-    email: julie.stitched@cocopharmaceutical.com
+    email: julie.stitched@hh-care.org
     groups:
       - cocopharma_trials
   - username: rrecords
@@ -267,7 +267,7 @@ egeria_samples_cocopharma_users:
     lastname: Records
     title: Mr.
     jobtitle: Patient Data Manager
-    email: robert.records@cocopharmaceutical.com
+    email: robert.records@hh-care.org
     groups:
       - cocopharma_trials
   - username: nnoah
