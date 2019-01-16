@@ -7,16 +7,26 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCod
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.initialization.SubjectAreaRegistration;
 import org.odpi.openmetadata.accessservices.subjectarea.initialization.SubjectAreaServicesInstanceMap;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.PossibleClassificationsResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.PossibleRelationshipsResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 /**
