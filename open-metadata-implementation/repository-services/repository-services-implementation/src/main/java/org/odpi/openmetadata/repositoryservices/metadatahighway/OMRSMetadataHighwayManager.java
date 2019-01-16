@@ -110,6 +110,7 @@ public class OMRSMetadataHighwayManager
     {
         OMRSCohortManager cohortManager  = new OMRSCohortManager(auditLog.createNewAuditLog(OMRSAuditingComponent.COHORT_MANAGER));
         String            localMetadataCollectionId = null;
+        String            localMetadataCollectionName = null;
         String            actionDescription = "Connect to Cohort";
 
         /*
@@ -158,6 +159,7 @@ public class OMRSMetadataHighwayManager
         if (localRepository != null)
         {
             localMetadataCollectionId = localRepository.getMetadataCollectionId();
+            localMetadataCollectionName = localRepository.getMetadataCollectionName();
         }
 
         /*
@@ -180,7 +182,7 @@ public class OMRSMetadataHighwayManager
 
             cohortManager.initialize(cohortConfig.getCohortName(),
                                      localMetadataCollectionId,
-                                     localRepository.getMetadataCollectionName(),
+                                     localMetadataCollectionName,
                                      localServerName,
                                      localServerType,
                                      localOrganizationName,
