@@ -67,11 +67,9 @@ public class DataEngineRestServices {
             List<String> outputs = processRequestBody.getOutputs();
             String description = processRequestBody.getDescription();
             String latestChange = processRequestBody.getLatestChange();
-            String zoneMembership = processRequestBody.getZoneMembership();
+            List<String> zoneMembership = processRequestBody.getZoneMembership();
             String parentProcessGuid = processRequestBody.getParentProcessGuid();
             String displayName = processRequestBody.getDisplayName();
-
-          //  createTestDataSets(userId, processHandler);
 
             String processGuid = processHandler.createProcess(userId, processName, description, latestChange,
                     zoneMembership, displayName, parentProcessGuid);
@@ -93,17 +91,5 @@ public class DataEngineRestServices {
         }
 
         return response;
-    }
-
-    //TODO remove when igc replicator can replicate DataSets
-    private void createTestDataSets(String userId, ProcessHandler processHandler)
-            throws UserNotAuthorizedException, TypeErrorException, ClassificationErrorException,
-            StatusNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-            InvalidParameterException, RepositoryErrorException, PropertyErrorException {
-
-        String dataSetGuid = processHandler.createDataSet(userId, "dataSet1");
-        String dataSetGuid2 = processHandler.createDataSet(userId, "dataSet2");
-        String dataSetGuid3 = processHandler.createDataSet(userId, "dataSet3");
-        String dataSetGuid4 = processHandler.createDataSet(userId, "dataSet4");
     }
 }

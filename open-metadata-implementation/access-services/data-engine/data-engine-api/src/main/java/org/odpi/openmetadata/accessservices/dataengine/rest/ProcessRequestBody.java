@@ -11,7 +11,7 @@ public class ProcessRequestBody extends DataEngineOMASAPIRequestBody {
     private List<String> outputs;
     private String description;
     private String latestChange;
-    private String zoneMembership;
+    private List<String> zoneMembership;
     private String displayName;
     private String parentProcessGuid;
 
@@ -35,7 +35,7 @@ public class ProcessRequestBody extends DataEngineOMASAPIRequestBody {
         return latestChange;
     }
 
-    public String getZoneMembership() {
+    public List<String> getZoneMembership() {
         return zoneMembership;
     }
 

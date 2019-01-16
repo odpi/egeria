@@ -4,14 +4,16 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaTerm;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * FVT resource to call subject area term client API
@@ -81,6 +83,7 @@ public class TermFVT
         FVTUtils.validateNode(gotTerm);
         System.out.println("Purge a term1");
         purgeTerm(guid);
+
     }
 
     public  Term createTermWithGlossaryGuid(String termName, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
@@ -147,5 +150,24 @@ public class TermFVT
     {
         subjectAreaTerm.purgeTerm(serverName,FVTConstants.USERID, guid);
         System.out.println("Purge succeeded");
+    }
+
+    public List<Line> getTermRelationships(Term term) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
+        return subjectAreaTerm.getTermRelationships(serverName,FVTConstants.USERID,
+                term.getSystemAttributes().getGUID(),
+                null,
+                0,
+                0,
+                null,
+                null);
+    }
+    public List<Line> getTermRelationships(Term term, Date asOfTime, int offset, int pageSize, SequencingOrder sequenceOrder,String sequencingProperty) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
+        return subjectAreaTerm.getTermRelationships(serverName,FVTConstants.USERID,
+                term.getSystemAttributes().getGUID(),
+                asOfTime,
+                offset,
+                pageSize,
+                sequenceOrder,
+                sequencingProperty);
     }
 }
