@@ -337,7 +337,9 @@
           - dataQualityAnalysis
           - publish
         parameters:
-          rootAssets: schema[{{ item | upper }}|{{ ibm_infosvr_users.db2inst1 | upper }}]
+          rootAssets: schema[{{ db_name | upper }}|{{ ibm_infosvr_users.db2inst1 | upper }}]
           Asset_description_already_exists: Replace_existing_description
   with_items: "{{ egeria_samples_cocopharma_databases }}"
   when: ('ibm-information-server-engine' in group_names) and (egeria_samples_cocopharma_db_type == 'ibm-db2')
+  loop_control:
+    loop_var: db_name
