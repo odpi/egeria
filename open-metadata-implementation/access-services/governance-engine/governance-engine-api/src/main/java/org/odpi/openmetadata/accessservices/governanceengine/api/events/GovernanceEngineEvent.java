@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.api.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
 
 import java.io.Serializable;
 
@@ -18,36 +19,28 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GovernanceEngineEvent implements Serializable {
-    GovernanceEngineEventType eventType = GovernanceEngineEventType.UNKNOWN_GOVERNANCE_ENGINE_EVENT;
 
-    //TODO: Very different style of events - revisit
     private static final long serialVersionUID = 1L;
+    private GovernanceEngineEventType eventType = GovernanceEngineEventType.UNKNOWN_GOVERNANCE_ENGINE_EVENT;
+    private GovernedAsset governedAsset;
 
-    /**
-     * Default constructor
-     */
-    public GovernanceEngineEvent() {
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
     }
 
-
-    /**
-     * Return the type of event.
-     *
-     * @return event type enum
-     */
     public GovernanceEngineEventType getEventType() {
         return eventType;
     }
 
-
-    /**
-     * Set up the type of event.
-     *
-     * @param eventType - event type enum
-     */
     public void setEventType(GovernanceEngineEventType eventType) {
         this.eventType = eventType;
     }
 
+    public GovernedAsset getGovernedAsset() {
+        return governedAsset;
+    }
 
+    public void setGovernedAsset(GovernedAsset governedAsset) {
+        this.governedAsset = governedAsset;
+    }
 }

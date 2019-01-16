@@ -2,7 +2,10 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server.handlers;
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineErrorCode;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.GuidNotFoundException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.MetadataServerException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassificationDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
@@ -23,6 +26,7 @@ import java.util.Map;
  * OMAS and retrieves Connections through the OMRSRepositoryConnector.
  */
 public class GovernanceClassificationDefHandler {
+
     private OMRSMetadataCollection metadataCollection = null;
     private String serviceName;
     private OMRSRepositoryHelper repositoryHelper = null;
@@ -42,11 +46,11 @@ public class GovernanceClassificationDefHandler {
         this.serviceName = serviceName;
 
         if (repositoryConnector != null) {
+            this.repositoryHelper = repositoryConnector.getRepositoryHelper();
+            this.serverName = repositoryConnector.getServerName();
             try {
-                this.repositoryHelper = repositoryConnector.getRepositoryHelper();
-                this.serverName = repositoryConnector.getServerName();
                 this.metadataCollection = repositoryConnector.getMetadataCollection();
-            } catch (Throwable error) {
+            } catch (RepositoryErrorException e) {
                 GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.NO_METADATA_COLLECTION;
                 String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
@@ -58,7 +62,6 @@ public class GovernanceClassificationDefHandler {
                         errorCode.getUserAction());
             }
         }
-
     }
 
 
@@ -68,54 +71,31 @@ public class GovernanceClassificationDefHandler {
      * @param userId         - String - userId of user making request.
      * @param classification - classifications to start query from
      * @return List of Classification Definitions
-     * @throws InvalidParameterException       - one of the parameters is null or invalid.
-     * @throws ClassificationNotFoundException - cannot find all the classifications specified.
-     * @throws MetadataServerException         - there is a problem retrieving information from the metadata server
-     * @throws UserNotAuthorizedException      - the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException  - one of the parameters is null or invalid.
+     * @throws MetadataServerException    - there is a problem retrieving information from the metadata server
+     * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    public List<GovernanceClassificationDef> getGovernanceClassificationDefs(String userId,
-                                                                             List<String> classification) throws InvalidParameterException,
-            MetadataServerException, ClassificationNotFoundException, UserNotAuthorizedException {
-
+    public List<GovernanceClassificationDef> getGovernanceClassificationDefs(String userId, List<String> classification)
+            throws InvalidParameterException, MetadataServerException, UserNotAuthorizedException {
         final String methodName = "getGovernanceClassificationDefs";
         final String nameParameter = "name";
 
-        List<GovernanceClassificationDef> defsToReturn = new ArrayList<>();
-
-        //TODO: use common api code for this validation in client and server
         validator.validateUserId(userId, methodName);
         validator.validateClassification(classification, nameParameter, methodName);
 
-        // Search for all classification types that match our criteria
+        List<GovernanceClassificationDef> defsToReturn = new ArrayList<>();
         try {
             List<TypeDef> typeDefsByCategory = metadataCollection.findTypeDefsByCategory(userId, TypeDefCategory.CLASSIFICATION_DEF);
-            //TODO Needs to restrict classifications by parent - for now returns ALL classifications
-            if (typeDefsByCategory!=null) {
-                typeDefsByCategory.forEach((td) -> {
-                    //TODO federation: resolve what to do if we have duplicate names (with different definitions)
-                    GovernanceClassificationDef gcd = new GovernanceClassificationDef();
-                    gcd.setName(td.getName());
-                    Map<String, String> gdca = new HashMap<>();
-                    //Get the parms
-                    List<TypeDefAttribute> prop = td.getPropertiesDefinition();
-                    if (prop!=null) {
-                        prop.forEach((tda) -> {
-                            // TODO Mapping of types between OMRS and Ranger should be abstracted
-                            // TODO Mapping of alpha name is fragile - temporary for initial debug. Could just map primitive
-                            // types
-                            gdca.put(tda.getAttributeName(), tda.getAttributeType().getName());
-                        });
-                    }
-                    gcd.setAttributeDefinitions(gdca);
-                    defsToReturn.add(gcd);
+            if (typeDefsByCategory != null) {
+                typeDefsByCategory.forEach(typeDef -> {
+                    GovernanceClassificationDef governanceClassificationDef = getGovernanceClassificationDef(typeDef);
+                    defsToReturn.add(governanceClassificationDef);
                 });
             }
 
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-
             GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.USER_NOT_AUTHORIZED;
-            String errorMessage =
-                    errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(userId, methodName);
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(userId, methodName);
 
             throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
@@ -124,7 +104,6 @@ public class GovernanceClassificationDefHandler {
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | RepositoryErrorException e) {
-
             GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.METADATA_QUERY_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
@@ -139,13 +118,32 @@ public class GovernanceClassificationDefHandler {
         return defsToReturn;
     }
 
+    private GovernanceClassificationDef getGovernanceClassificationDef(TypeDef typeDef) {
+        GovernanceClassificationDef governanceClassificationDef = new GovernanceClassificationDef();
+
+        governanceClassificationDef.setName(typeDef.getName());
+        Map<String, String> propertyMap = getProperties(typeDef);
+        governanceClassificationDef.setAttributeDefinitions(propertyMap);
+
+        return governanceClassificationDef;
+    }
+
+    private Map<String, String> getProperties(TypeDef typeDef) {
+        Map<String, String> propertyMap = new HashMap<>();
+        List<TypeDefAttribute> properties = typeDef.getPropertiesDefinition();
+        if (properties != null) {
+            properties.forEach(attribute -> propertyMap.put(attribute.getAttributeName(), attribute.getAttributeType().getName()));
+        }
+        return propertyMap;
+    }
+
     /**
      * Returns a single tag definitions.
      * <p>
      * NOTE: Currently am returning the same type (list) to keep API return consistent
      *
      * @param userId  - String - userId of user making request.
-     * @param tagguid - tag guid
+     * @param tagGuid - tag guid
      * @return Connection retrieved from property handlers
      * @throws InvalidParameterException  - one of the parameters is null or invalid.
      * @throws MetadataServerException    - there is a problem retrieving information from the property (metadata)
@@ -153,33 +151,14 @@ public class GovernanceClassificationDefHandler {
      * @throws UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      * @throws GuidNotFoundException      - the requesting user is not authorized to issue this request.
      */
-    public GovernanceClassificationDef getGovernanceClassificationDef(String userId,
-                                                                      String tagguid) throws InvalidParameterException,
-            MetadataServerException,
-            UserNotAuthorizedException, GuidNotFoundException {
-
-        GovernanceClassificationDef defToReturn = new GovernanceClassificationDef();
-
-
+    public GovernanceClassificationDef getGovernanceClassificationDef(String userId, String tagGuid) throws InvalidParameterException, MetadataServerException, UserNotAuthorizedException, GuidNotFoundException {
         final String methodName = "getGovernanceClassificationDef";
-
         validator.validateUserId(userId, methodName);
-        validator.validateGUID(tagguid, "tagguid", methodName);
+        validator.validateGUID(tagGuid, "tagGuid", methodName);
 
-        // Search for all classification types that match our criteria
-        // getTypedefByCategory(CLASSIFICATION_DEF)
         try {
-            TypeDef td = metadataCollection.getTypeDefByGUID(userId, tagguid);
-            GovernanceClassificationDef gcd = new GovernanceClassificationDef();
-            gcd.setName(td.getName());
-            Map<String, String> gdca = new HashMap<>();
-            //Get the parms
-            td.getPropertiesDefinition().forEach((tda) -> {
-                // TODO Mapping of types between OMRS and Ranger should be abstracted
-                // TODO Mapping of alpha name is fragile - temporary for initial debug
-                gdca.put(tda.getAttributeName(), tda.getAttributeType().getName());
-            });
-            gcd.setAttributeDefinitions(gdca);
+            TypeDef typeDef = metadataCollection.getTypeDefByGUID(userId, tagGuid);
+            return getGovernanceClassificationDef(typeDef);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
 
             GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.USER_NOT_AUTHORIZED;
@@ -216,6 +195,5 @@ public class GovernanceClassificationDefHandler {
                     errorCode.getUserAction());
 
         }
-        return defToReturn;
     }
 }
