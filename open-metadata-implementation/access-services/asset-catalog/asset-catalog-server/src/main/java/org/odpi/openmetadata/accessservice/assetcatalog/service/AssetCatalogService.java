@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservice.assetcatalog.exception.AssetCatalogEr
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.AssetCatalogException;
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.AssetNotFoundException;
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.ClassificationNotFoundException;
+import org.odpi.openmetadata.accessservice.assetcatalog.exception.NotImplementedException;
 import org.odpi.openmetadata.accessservice.assetcatalog.exception.PropertyServerException;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Column;
@@ -35,12 +36,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
@@ -67,14 +67,12 @@ public class AssetCatalogService {
 
     private static AssetCatalogInstanceHandler instanceHandler = new AssetCatalogInstanceHandler();
 
-    private static OMRSMetadataCollection metadataCollectionForSearch;
-    private static TypeDefGallery allTypes = new TypeDefGallery();
+    private OMRSMetadataCollection metadataCollectionForSearch;
+    private String serverName;
+    private TypeDefGallery allTypes = new TypeDefGallery();
 
     private Converter converter = new Converter();
     private ExceptionHandler exceptionUtil = new ExceptionHandler();
-
-    public AssetCatalogService() {
-    }
 
     public AssetDescriptionResponse getAssetSummaryById(String serverName, String userId, String assetId) {
         AssetDescriptionResponse response = new AssetDescriptionResponse();
@@ -526,36 +524,39 @@ public class AssetCatalogService {
     }
 
 
-    public List<AssetDescription> getLastUpdatedAssets(String serverName, String userId, SearchParameters searchParameters) {
-        //TODO: Asset Catalog - Implementation missing
-        return new ArrayList<>();
+    public List<AssetDescription> getLastUpdatedAssets(String serverName, String userId, SearchParameters searchParameters) throws NotImplementedException {
+        AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String methodName = "getLastUpdatedAssets";
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName, userId, serverName);
+
+        throw new NotImplementedException(errorCode.getHttpErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
     }
 
-    public List<AssetDescription> getLastCreatedAssets(String serverName, String userId, SearchParameters searchParameters) {
-        //TODO: Asset Catalog - Implementation missing
-        return new ArrayList<>();
+    public List<AssetDescription> getLastCreatedAssets(String serverName, String userId, SearchParameters searchParameters) throws NotImplementedException {
+        AssetCatalogErrorCode errorCode = AssetCatalogErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String methodName = "getLastCreatedAssets";
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName, userId, serverName);
+
+        throw new NotImplementedException(errorCode.getHttpErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
     }
 
     public AssetDescriptionResponse searchAssets(String serverName, String userId, String searchCriteria, SearchParameters searchParameters) {
 
         AssetDescriptionResponse response = new AssetDescriptionResponse();
         try {
-            metadataCollectionForSearch = instanceHandler.getMetadataCollection(serverName);
-            allTypes = metadataCollectionForSearch.getAllTypes(userId);
-
-            List<EntityDetail> matchCriteriaEntities = findEntitiesBySearchCriteria(metadataCollectionForSearch, userId, searchCriteria);
-            List<AssetDescription> assetDescriptions = new ArrayList<>(matchCriteriaEntities.size());
-
-            for (EntityDetail entityDetail : matchCriteriaEntities) {
-                final InstanceType entityType = entityDetail.getType();
-                if (entityType.getTypeDefName().equals(GLOSSARY_TERM)) {
-                    AssetDescription assetDescription = processGlossaryTerm(userId, entityDetail);
-                    assetDescriptions.add(assetDescription);
-                } else if (hasSuperTypeAsset(entityType) || hasSuperTypeSchemaAttribute(entityType)) {
-                    AssetDescription assetDescription = processAsset(userId, entityDetail);
-                    assetDescriptions.add(assetDescription);
-                }
-            }
+            List<AssetDescription> assetDescriptions = searchAssets(serverName, userId, searchCriteria, true);
 
             response.setAssetDescriptionList(assetDescriptions);
         } catch (RepositoryErrorException
@@ -576,6 +577,81 @@ public class AssetCatalogService {
         return response;
     }
 
+    public AssetDescriptionResponse searchAssetsByPropertyValue(String serverName, String userId, String searchCriteria, SearchParameters searchParameters) {
+
+        AssetDescriptionResponse response = new AssetDescriptionResponse();
+        try {
+            List<AssetDescription> assetDescriptions = searchAssets(serverName, userId, searchCriteria, false);
+
+            response.setAssetDescriptionList(assetDescriptions);
+        } catch (RepositoryErrorException
+                | TypeErrorException
+                | FunctionNotSupportedException
+                | UserNotAuthorizedException
+                | InvalidParameterException
+                | PagingErrorException
+                | EntityNotKnownException
+                | EntityProxyOnlyException
+                | TypeDefNotKnownException
+                | PropertyErrorException e) {
+            exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
+        } catch (AssetCatalogException e) {
+            exceptionUtil.captureAssetCatalogExeption(response, e);
+        }
+
+        return response;
+    }
+
+    private List<AssetDescription> searchAssets(String serverName, String userId, String searchCriteria, boolean containsConnectionDetails) throws PropertyServerException, RepositoryErrorException, UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException, EntityProxyOnlyException, TypeDefNotKnownException {
+        setMetadataRepositoryDetails(serverName, userId);
+        List<AssetDescription> assetDescriptions = processAssetsBySearchCriteria(userId, searchCriteria);
+        setAssetsConnection(userId, assetDescriptions, containsConnectionDetails);
+        return assetDescriptions;
+    }
+
+
+    private void setMetadataRepositoryDetails(String serverName, String userId) throws PropertyServerException, RepositoryErrorException, UserNotAuthorizedException {
+        metadataCollectionForSearch = instanceHandler.getMetadataCollection(serverName);
+        allTypes = metadataCollectionForSearch.getAllTypes(userId);
+        this.serverName = serverName;
+    }
+
+    private List<AssetDescription> processAssetsBySearchCriteria(String userId, String searchCriteria) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException, EntityProxyOnlyException, TypeDefNotKnownException {
+        List<EntityDetail> matchCriteriaEntities = findEntitiesBySearchCriteria(metadataCollectionForSearch, userId, searchCriteria);
+        List<AssetDescription> assetDescriptions = new ArrayList<>(matchCriteriaEntities.size());
+
+        for (EntityDetail entityDetail : matchCriteriaEntities) {
+            final InstanceType entityType = entityDetail.getType();
+            if (entityType.getTypeDefName().equals(GLOSSARY_TERM)) {
+                AssetDescription assetDescription = processGlossaryTerm(userId, entityDetail);
+                assetDescriptions.add(assetDescription);
+            } else if (hasSuperTypeAsset(entityType) || hasSuperTypeSchemaAttribute(entityType)) {
+                AssetDescription assetDescription = processAsset(userId, entityDetail);
+                assetDescriptions.add(assetDescription);
+            }
+        }
+        return assetDescriptions;
+    }
+
+    private void setAssetsConnection(String userId, List<AssetDescription> assetDescriptions, boolean containsDetails) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException, PropertyServerException {
+
+        for (AssetDescription assetDescription : assetDescriptions) {
+
+            List<Context> contexts = assetDescription.getContexts();
+            for (Context context : contexts) {
+                if (context.getDatabase() != null && context.getDatabase().getGuid() != null) {
+                    Connection connection;
+                    if (containsDetails) {
+                        connection = getConnectionDetails(metadataCollectionForSearch, userId, context.getDatabase().getGuid());
+                    } else {
+                        connection = getConnectionId(userId, context.getDatabase().getGuid());
+
+                    }
+                    context.setConnection(connection);
+                }
+            }
+        }
+    }
 
     private EntitySummary getEntitySummary(String serverName, String userId, String assetId) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, EntityNotKnownException, AssetNotFoundException, PropertyServerException {
         OMRSMetadataCollection metadataCollection = instanceHandler.getMetadataCollection(serverName);
@@ -863,6 +939,7 @@ public class AssetCatalogService {
                 entityDetail.getGUID(),
                 SEMANTIC_ASSIGNMENT);
         final List<Context> glossaryTermConnections = getGlossaryTermConnections(userId, entityDetail, relationshipsToColumn);
+
         if (!glossaryTermConnections.isEmpty()) {
             assetDescription.setContexts(glossaryTermConnections);
         }
@@ -872,11 +949,11 @@ public class AssetCatalogService {
 
     private AssetDescription processAsset(String userId, EntityDetail entityDetail) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
         AssetDescription assetDescription = converter.getAssetDescription(entityDetail);
-        Context connection = getConnectionToAsset(metadataCollectionForSearch, userId, entityDetail);
+        Context context = getConnectionToAsset(metadataCollectionForSearch, userId, entityDetail);
 
-        if (connection != null) {
+        if (context != null) {
             List<Context> contexts = new ArrayList<>();
-            contexts.add(connection);
+            contexts.add(context);
             assetDescription.setContexts(contexts);
         }
 
@@ -912,39 +989,40 @@ public class AssetCatalogService {
             case RELATIONAL_COLUMN:
                 return processColumn(metadataCollection, userId, entityDetail);
             case RELATIONAL_TABLE:
-                return processTable(metadataCollection, userId, entityDetail);
+                return processTable(userId, entityDetail);
             case DATA_STORE:
-                return processDataStore(metadataCollection, userId, entityDetail);
+                return processDataStore(entityDetail);
             case DEPLOYED_DB_SCHEMA_TYPE:
-                return processDataSet(metadataCollection, userId, entityDetail);
+                return processDataSet(userId, entityDetail);
             default:
                 return null;
         }
     }
 
-    private Context processDataSet(OMRSMetadataCollection metadataCollection, String userId, EntityDetail entityDetail)
+    private Context processDataSet(String userId, EntityDetail entityDetail)
             throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
         Context context = new Context();
 
-        String dataSetName = getStringPropertyValue(entityDetail.getProperties(), DISPLAY_NAME);
-        getDataSet(metadataCollection, userId, entityDetail, context, dataSetName);
+        String dataSetName = converter.getStringPropertyValue(entityDetail.getProperties(), DISPLAY_NAME);
+        getDataSet(userId, entityDetail, context, dataSetName);
 
         return context;
     }
 
-    private Context processDataStore(OMRSMetadataCollection metadataCollection, String userId, EntityDetail dataStore) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
+    private Context processDataStore(EntityDetail dataStore) {
         Context context = new Context();
 
         Database database = getDatabase(dataStore);
-        context.setDatabase(database);
-        getConnectionDetails(metadataCollection, userId, context, dataStore);
+        if (database != null) {
+            context.setDatabase(database);
+        }
 
         return context;
     }
 
-    private Context processTable(OMRSMetadataCollection metadataCollection, String userId, EntityDetail relationalTable) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
+    private Context processTable(String userId, EntityDetail relationalTable) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
         Context context = new Context();
-        getDatabaseSchema(metadataCollection, userId, relationalTable, context);
+        getDatabaseSchema(userId, relationalTable, context);
         return context;
     }
 
@@ -956,12 +1034,12 @@ public class AssetCatalogService {
 
         Column column = getColumn(metadataCollection, userId, relationalColumn);
         context.setColumn(column);
-        getTable(metadataCollection, userId, relationalColumn, context);
+        getTable(userId, relationalColumn, context);
 
         return context;
     }
 
-    private void getDataSet(OMRSMetadataCollection metadataCollection, String userId, EntityDetail entityDetail, Context context, String dataSetName) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
+    private void getDataSet(String userId, EntityDetail entityDetail, Context context, String dataSetName) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
         EntityDetail dataSet = getTheEndOfRelationship(userId, entityDetail.getGUID(), DATA_CONTENT_FOR_DATA_SET);
 
         if (dataSet != null) {
@@ -969,13 +1047,12 @@ public class AssetCatalogService {
 
             if (database != null) {
                 database.setDataSetName(dataSetName);
+                context.setDatabase(database);
             }
-
-            getConnectionDetails(metadataCollection, userId, context, dataSet);
         }
     }
 
-    private void getTable(OMRSMetadataCollection metadataCollection, String userId, EntityDetail relationalColumn, Context context) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
+    private void getTable(String userId, EntityDetail relationalColumn, Context context) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
 
         final EntityDetail relationalTableType = getTheEndOfRelationship(userId, relationalColumn.getGUID(), ATTRIBUTE_FOR_SCHEMA);
         if (relationalTableType != null) {
@@ -984,13 +1061,13 @@ public class AssetCatalogService {
                 Table table = getTable(relationalTableType, relationalTable);
                 context.setTable(table);
 
-                getDatabaseSchema(metadataCollection, userId, relationalTable, context);
+                getDatabaseSchema(userId, relationalTable, context);
             }
         }
 
     }
 
-    private void getDatabaseSchema(OMRSMetadataCollection metadataCollection, String userId, EntityDetail relationalTable, Context context) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
+    private void getDatabaseSchema(String userId, EntityDetail relationalTable, Context context) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
         final EntityDetail relationalDbSchemaType = getTheEndOfRelationship(userId, relationalTable.getGUID(), ATTRIBUTE_FOR_SCHEMA);
         if (relationalDbSchemaType != null) {
             Schema schema = getSchema(relationalDbSchemaType);
@@ -998,13 +1075,13 @@ public class AssetCatalogService {
 
             final EntityDetail deployedDbSchema = getTheEndOfRelationship(userId, relationalDbSchemaType.getGUID(), ASSET_SCHEMA_TYPE);
             if (deployedDbSchema != null && deployedDbSchema.getProperties() != null) {
-                String dataSetName = getStringPropertyValue(deployedDbSchema.getProperties(), DISPLAY_NAME);
-                getDataSet(metadataCollection, userId, context, deployedDbSchema, dataSetName);
+                String dataSetName = converter.getStringPropertyValue(deployedDbSchema.getProperties(), DISPLAY_NAME);
+                getDataSet(userId, context, deployedDbSchema, dataSetName);
             }
         }
     }
 
-    private void getDataSet(OMRSMetadataCollection metadataCollection, String userId, Context context, EntityDetail deployedDbSchema, String dataSetName) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
+    private void getDataSet(String userId, Context context, EntityDetail deployedDbSchema, String dataSetName) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
         EntityDetail dataSet = getTheEndOfRelationship(userId, deployedDbSchema.getGUID(), DATA_CONTENT_FOR_DATA_SET);
         if (dataSet != null) {
             Database database = getDatabase(dataSet);
@@ -1012,44 +1089,64 @@ public class AssetCatalogService {
                 database.setDataSetName(dataSetName);
             }
             context.setDatabase(database);
-
-            getConnectionDetails(metadataCollection, userId, context, dataSet);
         }
     }
 
-    private void getConnectionDetails(OMRSMetadataCollection metadataCollection, String userId, Context context, EntityDetail dataSet) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
-        final EntityDetail connectionEntity = getTheEndOfRelationship(userId, dataSet.getGUID(), CONNECTION_TO_ASSET);
+    private Connection getConnectionDetails(OMRSMetadataCollection metadataCollection, String userId, String dataSetGuid) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException, PropertyServerException {
+        final EntityDetail connectionEntity = getTheEndOfRelationship(userId, dataSetGuid, CONNECTION_TO_ASSET);
+
         if (connectionEntity != null) {
             Connection connection = getConnection(connectionEntity);
-            context.setConnection(connection);
-
             Connector connectorType = getConnectorType(metadataCollection, userId, connectionEntity);
-            context.setConnector(connectorType);
-
             Endpoint endpoint = getEndpoint(metadataCollection, userId, connectionEntity);
-            context.setEndpoint(endpoint);
+
+            if (connectorType != null) {
+                connection.setConnector(connectorType);
+            }
+            if (endpoint != null) {
+                connection.setEndpoint(endpoint);
+            }
+            return connection;
         }
+
+        return null;
     }
+
+    private Connection getConnectionId(String userId, String dataSetGuid) throws InvalidParameterException, TypeDefNotKnownException, PropertyErrorException, EntityProxyOnlyException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, TypeErrorException, RepositoryErrorException {
+        final EntityDetail connectionEntity = getTheEndOfRelationship(userId, dataSetGuid, CONNECTION_TO_ASSET);
+
+        if (connectionEntity != null) {
+            Connection connection = new Connection();
+            connection.setGuid(connectionEntity.getGUID());
+        }
+
+        return null;
+    }
+
 
     private Column getColumn(OMRSMetadataCollection metadataCollection, String userId, EntityDetail relationalColumn) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
         Column column = new Column();
 
-        column.setName(getStringPropertyValue(relationalColumn.getProperties(), NAME));
+        column.setName(converter.getStringPropertyValue(relationalColumn.getProperties(), NAME));
         column.setType(getColumnType(metadataCollection, userId, relationalColumn));
         column.setGuid(relationalColumn.getGUID());
 
         return column;
     }
 
-    private Connection getConnection(EntityDetail entityDetail) {
-        InstanceProperties properties = entityDetail.getProperties();
-        if (properties == null) {
-            return null;
-        }
+    private Connection getConnection(EntityDetail entityDetail) throws PropertyServerException {
         Connection connection = new Connection();
-        connection.setDisplayName(getStringPropertyValue(properties, NAME));
-        connection.setDescription(getStringPropertyValue(properties, DESCRIPTION));
-        connection.setGuid(entityDetail.getGUID());
+
+        InstanceProperties properties = entityDetail.getProperties();
+        if (properties != null) {
+            connection.setDisplayName(converter.getStringPropertyValue(properties, NAME));
+            connection.setDescription(converter.getStringPropertyValue(properties, DESCRIPTION));
+            connection.setGuid(entityDetail.getGUID());
+            final OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(serverName);
+
+            connection.setSecuredProperties(converter.getAdditionalPropertiesFromEntity(properties, SECURED_PROPERTIES, repositoryHelper));
+            connection.setSecuredProperties(converter.getAdditionalPropertiesFromEntity(properties, ADDITIONAL_PROPERTIES, repositoryHelper));
+        }
         return connection;
     }
 
@@ -1070,16 +1167,16 @@ public class AssetCatalogService {
 
         Endpoint endpoint = new Endpoint();
         endpoint.setGuid(endpointEntity.getGUID());
-        endpoint.setName(getStringPropertyValue(properties, NAME));
-        endpoint.setDescription(getStringPropertyValue(properties, DESCRIPTION));
-        endpoint.setNetworkAddress(getStringPropertyValue(properties, NETWORK_ADDRESS));
-        endpoint.setProtocol(getStringPropertyValue(properties, PROTOCOL));
-        endpoint.setEncryptionMethod(getStringPropertyValue(properties, ENCRYPTION_METHOD));
+        endpoint.setName(converter.getStringPropertyValue(properties, NAME));
+        endpoint.setDescription(converter.getStringPropertyValue(properties, DESCRIPTION));
+        endpoint.setNetworkAddress(converter.getStringPropertyValue(properties, NETWORK_ADDRESS));
+        endpoint.setProtocol(converter.getStringPropertyValue(properties, PROTOCOL));
+        endpoint.setEncryptionMethod(converter.getStringPropertyValue(properties, ENCRYPTION_METHOD));
 
         return endpoint;
     }
 
-    private Connector getConnectorType(OMRSMetadataCollection metadataCollection, String userId, EntityDetail connectionEntity) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
+    private Connector getConnectorType(OMRSMetadataCollection metadataCollection, String userId, EntityDetail connectionEntity) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException, PropertyServerException {
         final List<Relationship> relationshipsToConnectorType = getRelationshipByType(metadataCollection, userId, connectionEntity.getGUID(), CONNECTION_CONNECTOR_TYPE);
 
         if (!relationshipsToConnectorType.isEmpty()) {
@@ -1094,16 +1191,19 @@ public class AssetCatalogService {
         return null;
     }
 
-    private Connector getConnector(EntityDetail entityDetail) {
+    private Connector getConnector(EntityDetail entityDetail) throws PropertyServerException {
         InstanceProperties properties = entityDetail.getProperties();
         if (properties == null) {
             return null;
         }
 
         Connector connector = new Connector();
-        connector.setName(getStringPropertyValue(properties, NAME));
-        connector.setDescription(getStringPropertyValue(properties, DESCRIPTION));
-        connector.setProvider(getStringPropertyValue(properties, CONNECTOR_PROVIDER_CLASS_NAME));
+        connector.setName(converter.getStringPropertyValue(properties, NAME));
+        connector.setDescription(converter.getStringPropertyValue(properties, DESCRIPTION));
+        connector.setProvider(converter.getStringPropertyValue(properties, CONNECTOR_PROVIDER_CLASS_NAME));
+
+        final OMRSRepositoryHelper repositoryHelper = instanceHandler.getRepositoryHelper(serverName);
+        connector.setAdditionalProperties(converter.getAdditionalPropertiesFromEntity(properties, ADDITIONAL_PROPERTIES, repositoryHelper));
 
         return connector;
     }
@@ -1114,7 +1214,7 @@ public class AssetCatalogService {
         if (relationalTable != null) {
             table.setGuid(relationalTable.getGUID());
             if (relationalTable.getProperties() != null) {
-                table.setName(getStringPropertyValue(relationalTable.getProperties(), NAME));
+                table.setName(converter.getStringPropertyValue(relationalTable.getProperties(), NAME));
             }
         }
 
@@ -1123,11 +1223,11 @@ public class AssetCatalogService {
             return null;
         }
         table.setGuid(relationalTableType.getGUID());
-        table.setTypeName(getStringPropertyValue(properties, DISPLAY_NAME));
-        table.setOwner(getStringPropertyValue(properties, OWNER));
-        table.setTypeUsage(getStringPropertyValue(properties, USAGE));
-        table.setTypeEncodingStandard(getStringPropertyValue(properties, ENCODING_STANDARD));
-        table.setTypeVersion(getStringPropertyValue(properties, VERSION_NUMBER));
+        table.setTypeName(converter.getStringPropertyValue(properties, DISPLAY_NAME));
+        table.setOwner(converter.getStringPropertyValue(properties, OWNER));
+        table.setTypeUsage(converter.getStringPropertyValue(properties, USAGE));
+        table.setTypeEncodingStandard(converter.getStringPropertyValue(properties, ENCODING_STANDARD));
+        table.setTypeVersion(converter.getStringPropertyValue(properties, VERSION_NUMBER));
 
         return table;
     }
@@ -1138,25 +1238,25 @@ public class AssetCatalogService {
         Schema schema = new Schema();
 
         schema.setGuid(entityDb.getGUID());
-        schema.setAuthor(getStringPropertyValue(properties, AUTHOR));
-        schema.setName(getStringPropertyValue(properties, DISPLAY_NAME));
-        schema.setEncodingStandard(getStringPropertyValue(properties, ENCODING_STANDARD));
-        schema.setVersionNr(getStringPropertyValue(properties, VERSION_NUMBER));
+        schema.setAuthor(converter.getStringPropertyValue(properties, AUTHOR));
+        schema.setName(converter.getStringPropertyValue(properties, DISPLAY_NAME));
+        schema.setEncodingStandard(converter.getStringPropertyValue(properties, ENCODING_STANDARD));
+        schema.setVersionNr(converter.getStringPropertyValue(properties, VERSION_NUMBER));
         return schema;
     }
 
     private Database getDatabase(EntityDetail databaseEntity) {
         InstanceProperties properties = databaseEntity.getProperties();
-
         if (properties == null) {
             return null;
         }
+
         Database database = new Database();
         database.setGuid(databaseEntity.getGUID());
-        database.setName(getStringPropertyValue(properties, NAME));
-        database.setDescription(getStringPropertyValue(properties, DESCRIPTION));
-        database.setOwner(getStringPropertyValue(properties, OWNER));
-        database.setType(getStringPropertyValue(properties, TYPE));
+        database.setName(converter.getStringPropertyValue(properties, NAME));
+        database.setDescription(converter.getStringPropertyValue(properties, DESCRIPTION));
+        database.setOwner(converter.getStringPropertyValue(properties, OWNER));
+        database.setType(converter.getStringPropertyValue(properties, TYPE));
 
         return database;
     }
@@ -1215,7 +1315,7 @@ public class AssetCatalogService {
         InstanceProperties matchProperties = getInstanceProperties(matchProperty, propertyValue);
         SequencingOrder sequencingOrder = converter.getSequencingOrder(orderType);
 
-        List<EntityDetail> entitiesByProperty = metadataCollectionForSearch.findEntitiesByProperty(userId,
+        List<EntityDetail> entitiesByProperty = metadataCollection.findEntitiesByProperty(userId,
                 assetTypeId,
                 matchProperties,
                 MatchCriteria.ANY,
@@ -1356,16 +1456,6 @@ public class AssetCatalogService {
         return getThePairEntity(metadataCollectionForSearch, userId, assetId, relationshipsToColumnTypes.get(0));
     }
 
-    private String getStringPropertyValue(InstanceProperties instanceProperties, String propertyName) {
-
-        PrimitivePropertyValue value = (PrimitivePropertyValue) instanceProperties.getPropertyValue(propertyName);
-        if (value != null) {
-            return (String) value.getPrimitiveValue();
-        }
-
-        return null;
-    }
-
     private DataType getColumnType(OMRSMetadataCollection metadataCollection, String userId, EntityDetail relationalColumn) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
         final List<Relationship> relationshipsToType = getRelationshipByType(metadataCollection, userId, relationalColumn.getGUID(), SCHEMA_ATTRIBUTE_TYPE);
 
@@ -1373,14 +1463,7 @@ public class AssetCatalogService {
             final EntityDetail columnType = getThePairEntity(metadataCollection, userId, relationalColumn.getGUID(), relationshipsToType.get(0));
 
             if (columnType != null && columnType.getProperties() != null) {
-
-                PrimitivePropertyValue value = (PrimitivePropertyValue) columnType.getProperties().getPropertyValue(TYPE);
-                if (value != null) {
-                    PrimitiveDefCategory primitiveValue = value.getPrimitiveDefCategory();
-                    return converter.getDataTypeDef(primitiveValue);
-                }
-
-                return null;
+                return converter.getColumnTypeValue(columnType);
             }
         }
 

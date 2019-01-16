@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -48,7 +49,7 @@ import java.util.Date;
  *     until all of the requested metadata is assembled.
  * </p>
  */
-public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
+public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 {
 
     /*
@@ -76,7 +77,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
         /*
          * The metadata collection Id is the unique identifier for the metadata collection.  It is managed by the super class.
          */
-        super(enterpriseParentConnector, repositoryName, metadataCollectionId, repositoryHelper, repositoryValidator);
+        super(enterpriseParentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId, false);
 
         /*
          * Save enterpriseParentConnector since this has the connection information and
@@ -84,35 +85,6 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
          */
         this.enterpriseParentConnector = enterpriseParentConnector;
 
-    }
-
-
-    /* ======================================================================
-     * Group 1: Confirm the identity of the metadata repository being called.
-     */
-
-    /**
-     * Returns the identifier of the metadata repository.  This is the identifier used to register the
-     * metadata repository with the metadata repository cohort.  It is also the identifier used to
-     * identify the home repository of a metadata instance.
-     *
-     * @return String metadata collection id.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
-     */
-    public String      getMetadataCollectionId() throws RepositoryErrorException
-    {
-        final String methodName = "getMetadataCollectionId";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        /*
-         * Perform operation
-         */
-        return super.metadataCollectionId;
     }
 
 
@@ -5588,13 +5560,6 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
         repositoryValidator.validateGUID(repositoryName, guidParameterName, deletedRelationshipGUID, methodName);
 
         /*
-         * Locate relationship
-         */
-        Relationship  relationship  = this.getRelationship(userId, deletedRelationshipGUID);
-
-        repositoryValidator.validateRelationshipIsDeleted(repositoryName, relationship, methodName);
-
-        /*
          * Validation is complete.  It is ok to restore the relationship.
          *
          * The list of cohort connectors are retrieved for each request to ensure that any changes in
@@ -5744,6 +5709,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
      * @param typeDefName the name of the TypeDef for the entity used to verify the entity identity.
      * @param homeMetadataCollectionId the existing identifier for this entity's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return entity new values for this entity, including the new home information.
      * @throws FunctionNotSupportedException the repository does not support the re-homing of instances.
      */
@@ -5752,7 +5718,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
                                      String         typeDefGUID,
                                      String         typeDefName,
                                      String         homeMetadataCollectionId,
-                                     String         newHomeMetadataCollectionId) throws FunctionNotSupportedException
+                                     String         newHomeMetadataCollectionId,
+                                     String         newHomeMetadataCollectionName) throws FunctionNotSupportedException
     {
         final String                       methodName = "reHomeEntity()";
 
@@ -5825,6 +5792,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
      * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
      * @param homeMetadataCollectionId the existing identifier for this relationship's home.
      * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
      * @return relationship new values for this relationship, including the new home information.
      * @throws FunctionNotSupportedException the repository does not support the re-homing of instances.
      */
@@ -5833,9 +5801,10 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollection
                                            String   typeDefGUID,
                                            String   typeDefName,
                                            String   homeMetadataCollectionId,
-                                           String   newHomeMetadataCollectionId) throws FunctionNotSupportedException
+                                           String   newHomeMetadataCollectionId,
+                                           String   newHomeMetadataCollectionName) throws FunctionNotSupportedException
     {
-        final String                       methodName = "reHomeRelationship()";
+        final String                       methodName = "reHomeRelationship";
 
         throwNotEnterpriseFunction(methodName);
 

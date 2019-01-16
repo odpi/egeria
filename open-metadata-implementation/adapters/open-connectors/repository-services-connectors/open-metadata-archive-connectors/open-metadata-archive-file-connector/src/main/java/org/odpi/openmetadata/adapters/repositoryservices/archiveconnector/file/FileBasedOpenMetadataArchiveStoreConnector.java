@@ -72,10 +72,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
 
         try
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Retrieving server configuration properties");
-            }
+            log.debug("Retrieving server configuration properties");
 
             String configStoreFileContents = FileUtils.readFileToString(archiveStoreFile, "UTF-8");
 
@@ -89,10 +86,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
              * The config file is not found, create a new one ...
              */
 
-            if (log.isDebugEnabled())
-            {
-                log.debug("New server config Store", ioException);
-            }
+            log.debug("New server config Store", ioException);
 
             newOpenMetadataArchive = new OpenMetadataArchive();
         }
@@ -112,10 +106,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
 
         try
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Writing open metadata archive store properties: " + archiveContents);
-            }
+            log.debug("Writing open metadata archive store properties: " + archiveContents);
 
             if (archiveContents == null)
             {
@@ -132,10 +123,7 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
         }
         catch (IOException   ioException)
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Unusable Server config Store :(", ioException);
-            }
+            log.debug("Unusable Server config Store :(", ioException);
         }
     }
 
@@ -160,9 +148,6 @@ public class FileBasedOpenMetadataArchiveStoreConnector extends OpenMetadataArch
     {
         super.disconnect();
 
-        if (log.isDebugEnabled())
-        {
-            log.debug("Closing Config Store.");
-        }
+        log.debug("Closing Config Store.");
     }
 }

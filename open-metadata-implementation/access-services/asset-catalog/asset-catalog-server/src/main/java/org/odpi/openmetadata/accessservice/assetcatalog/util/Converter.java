@@ -8,15 +8,19 @@ import org.odpi.openmetadata.accessservice.assetcatalog.model.DataType;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Relationship;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.SequenceOrderType;
 import org.odpi.openmetadata.accessservice.assetcatalog.model.Status;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +30,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservice.assetcatalog.util.Constants.NAME;
+import static org.odpi.openmetadata.accessservice.assetcatalog.util.Constants.TYPE;
+import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
 
 public class Converter {
 
@@ -43,7 +49,7 @@ public class Converter {
 
     public AssetDescription getAssetDescription(EntityDetail entityDetail) {
         AssetDescription assetDescription = new AssetDescription();
-        assetDescription.setGUID(entityDetail.getGUID());
+        assetDescription.setGuid(entityDetail.getGUID());
         assetDescription.setMetadataCollectionId(entityDetail.getMetadataCollectionId());
         assetDescription.setDisplayName((String) getPropertyValue(entityDetail.getProperties(), NAME));
 
@@ -68,7 +74,7 @@ public class Converter {
 
     public AssetDescription getAssetDescription(EntitySummary entitySummary) {
         AssetDescription assetDescription = new AssetDescription();
-        assetDescription.setGUID(entitySummary.getGUID());
+        assetDescription.setGuid(entitySummary.getGUID());
         assetDescription.setMetadataCollectionId(entitySummary.getMetadataCollectionId());
 
         assetDescription.setCreatedBy(entitySummary.getCreatedBy());
@@ -103,7 +109,7 @@ public class Converter {
             org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship rel) {
         Relationship relationship = new Relationship();
 
-        relationship.setGUID(rel.getGUID());
+        relationship.setGuid(rel.getGUID());
         relationship.setCreatedBy(rel.getCreatedBy());
         relationship.setCreateTime(rel.getCreateTime());
 
@@ -125,7 +131,7 @@ public class Converter {
     public InstanceProperties getMatchProperties(String matchProperty, String propertyValue) {
         InstanceProperties instanceProperties = new InstanceProperties();
         PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
-        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        primitivePropertyValue.setPrimitiveDefCategory(OM_PRIMITIVE_TYPE_STRING);
         primitivePropertyValue.setPrimitiveValue(propertyValue);
         instanceProperties.setProperty(matchProperty, primitivePropertyValue);
         return instanceProperties;
@@ -209,7 +215,7 @@ public class Converter {
     private Asset getAsset(EntityProxy entityProxy) {
         Asset asset = new Asset();
 
-        asset.setGUID(entityProxy.getGUID());
+        asset.setGuid(entityProxy.getGUID());
         if (entityProxy.getUniqueProperties() != null) {
             asset.setName((String) getPropertyValue(entityProxy.getUniqueProperties(), NAME));
         }
@@ -289,6 +295,16 @@ public class Converter {
         return null;
     }
 
+    public String getStringPropertyValue(InstanceProperties instanceProperties, String propertyName) {
+
+        PrimitivePropertyValue value = (PrimitivePropertyValue) instanceProperties.getPropertyValue(propertyName);
+        if (value != null && value.getPrimitiveDefCategory().equals(OM_PRIMITIVE_TYPE_STRING)) {
+            return (String) value.getPrimitiveValue();
+        }
+
+        return null;
+    }
+
     private SequencingOrder getOrderType(SequenceOrderType orderType) {
         switch (orderType) {
             case GUID:
@@ -310,7 +326,18 @@ public class Converter {
         }
     }
 
-    public DataType getDataTypeDef(PrimitiveDefCategory primitiveValue) {
+    public DataType getColumnTypeValue(EntityDetail columnType) {
+        PrimitivePropertyValue value = (PrimitivePropertyValue) columnType.getProperties().getPropertyValue(TYPE);
+
+        if (value != null) {
+            PrimitiveDefCategory primitiveValue = value.getPrimitiveDefCategory();
+            return getDataTypeDef(primitiveValue);
+        }
+
+        return null;
+    }
+
+    private DataType getDataTypeDef(PrimitiveDefCategory primitiveValue) {
         if (primitiveValue == null || !dataTypes.containsKey(primitiveValue.getJavaClassName())) {
             return null;
         }
@@ -319,19 +346,62 @@ public class Converter {
     }
 
     private HashMap<String, DataType> getDataTypeMap() {
-        HashMap<String, DataType> dataTypes = new HashMap<>();
-        dataTypes.put("java.lang.Boolean", DataType.BOOLEAN);
-        dataTypes.put("java.lang.Byte", DataType.BYTE);
-        dataTypes.put("java.Lang.Char", DataType.CHAR);
-        dataTypes.put("java.lang.Short", DataType.SHORT);
-        dataTypes.put("java.lang.Integer", DataType.INT);
-        dataTypes.put("java.lang.Long", DataType.LONG);
-        dataTypes.put("java.lang.Float", DataType.FLOAT);
-        dataTypes.put("java.lang.Double", DataType.DOUBLE);
-        dataTypes.put("java.math.BigInteger", DataType.BIG_INTEGER);
-        dataTypes.put("java.math.BigDecimal", DataType.BIG_DECIMAL);
-        dataTypes.put("java.lang.String", DataType.STRING);
-        dataTypes.put("java.util.Date", DataType.DATE);
-        return dataTypes;
+        HashMap<String, DataType> dataTypesMap = new HashMap<>();
+        dataTypesMap.put("java.lang.Boolean", DataType.BOOLEAN);
+        dataTypesMap.put("java.lang.Byte", DataType.BYTE);
+        dataTypesMap.put("java.Lang.Char", DataType.CHAR);
+        dataTypesMap.put("java.lang.Short", DataType.SHORT);
+        dataTypesMap.put("java.lang.Integer", DataType.INT);
+        dataTypesMap.put("java.lang.Long", DataType.LONG);
+        dataTypesMap.put("java.lang.Float", DataType.FLOAT);
+        dataTypesMap.put("java.lang.Double", DataType.DOUBLE);
+        dataTypesMap.put("java.math.BigInteger", DataType.BIG_INTEGER);
+        dataTypesMap.put("java.math.BigDecimal", DataType.BIG_DECIMAL);
+        dataTypesMap.put("java.lang.String", DataType.STRING);
+        dataTypesMap.put("java.util.Date", DataType.DATE);
+        return dataTypesMap;
+    }
+
+    public Map<String, Object> getAdditionalPropertiesFromEntity(InstanceProperties properties, String propertyName, OMRSRepositoryHelper helper) {
+        InstanceProperties mapProperty = getMapInstanceProperties(propertyName, properties, helper);
+        if (mapProperty == null) {
+            return null;
+        }
+
+        Iterator<String> additionalPropertyNames = mapProperty.getPropertyNames();
+        if (additionalPropertyNames == null) {
+            return null;
+        }
+
+        Map<String, Object> additionalPropertiesMap = new HashMap<>();
+
+        while (additionalPropertyNames.hasNext()) {
+            String additionalPropertyName = additionalPropertyNames.next();
+            InstancePropertyValue additionalPropertyValue = mapProperty.getPropertyValue(additionalPropertyName);
+
+            if (additionalPropertyValue != null) {
+                final Object primitivePropertyValue = getPrimitivePropertyValue(additionalPropertyValue);
+                additionalPropertiesMap.put(additionalPropertyName, primitivePropertyValue);
+            }
+        }
+
+        return additionalPropertiesMap;
+    }
+
+    private InstanceProperties getMapInstanceProperties(String propertyName, InstanceProperties properties, OMRSRepositoryHelper helper) {
+        return helper.getMapProperty(AccessServiceDescription.ASSET_CATALOG_OMAS.getAccessServiceName(),
+                propertyName,
+                properties,
+                "getMapInstanceProperties");
+    }
+
+    private Object getPrimitivePropertyValue(InstancePropertyValue additionalPropertyValue) {
+        if (additionalPropertyValue != null &&
+                additionalPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE) {
+            PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) additionalPropertyValue;
+            return primitivePropertyValue.getPrimitiveValue();
+        }
+
+        return null;
     }
 }

@@ -122,10 +122,6 @@ public enum SubjectAreaErrorCode {
             "Cannot delete Project as it was not intended for glossary use.",
             "The system is unable to process the request.",
             "Correct the code in the caller to delete Glossary Projects."),
-    CREATE_WITH_NON_EXISTANT_GLOSSARY_NAME(400, "OMAS-SUBJECTAREA-400-025 ",
-            "Glossary with name {0} does not exist. Cannot create without a glossary",
-            "The system is unable to process the request.",
-            "Correct the code in the caller to create with a valid glossaryName."),
     CREATE_WITH_GLOSSARY_RELATIONSHIP(400, "OMAS-SUBJECTAREA-400-026 ",
             "Glossary relationship with guid {0} supplied on a create. The relationship cannot exist prior to the relationship end being created.",
             "The system is unable to process the request.",
@@ -150,10 +146,6 @@ public enum SubjectAreaErrorCode {
             "Glossary creation with name {0} failed, because it was unable to create its classifications",
             "The system has deleted the Glossary and is unable to process the request.",
             "Retry the Glossary creation."),
-    GLOSSARY_CREATE_FAILED_NAME_ALREADY_EXISTS(400, "OMAS-SUBJECTAREA-400-032 ",
-             "Glossary creation with name {0} failed, because there is already a glossary with that name",
-             "The system is unable to process the request.",
-             "Retry the Glossary creation with a name that is not already in use."),
     GLOSSARY_CONTENT_PREVENTED_DELETE(400, "OMAS-SUBJECTAREA-400-033 ",
             "Glossary (guid {0}) deletion failed, because there is glossary content",
             "The system is unable to process the request.",
@@ -307,16 +299,31 @@ public enum SubjectAreaErrorCode {
             "A get was issued for a relationship with guid {0}. The returned relationship was not of the required type {1} ",
             "The system returned an invalid nodetype  in the response.",
             "Raising a github issue on the system."),
-
+    GUID_NOT_DELETED_ERROR(400, "OMAS-SUBJECTAREA-400-071 ",
+            "A restore was issued for guid {0}, but the status was not deleted. Restores can only succeed after a soft delete.",
+            "The system returns the not deleted response.",
+            "Soft delete prior to attempting a restore."),
+    PAST_EFFECTIVE_TO_DATE(400, "OMAS-SUBJECTAREA-400-072 ",
+            "The effective to date passed on the {0} operation is in the past",
+            "The system is unable to process the request that requests the effective date begins in the past.",
+            "Correct the code in the caller to either not use the effective To date or use an effective date in the future."),
+    PAST_EFFECTIVE_FROM_DATE(400, "OMAS-SUBJECTAREA-400-073 ",
+            "The effective from date passed on the {0} operation is in the past",
+            "The system is unable to process the request that requests the effective date begins in the past.",
+            "Correct the code in the caller to either not use the effective To date or use an effective date in the future."),
+    INCORRECT_EFFECTIVE_DATE_RANGE(400, "OMAS-SUBJECTAREA-400-074 ",
+            "The supplied effectivity Date range  is incorrect, as it starts after it ends on the {0} operation",
+            "The system is unable to process the request that requests sn incorrect effectivity range.",
+            "Correct the code in the caller to either not use the effectivity dates or to ensure the from is before the to Date."),
     OMRS_NOT_INITIALIZED(404, "OMAS-SUBJECTAREA-404-001 ",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to the open metadata property org.odpi.openmetadata.accessservices.subjectarea.server.",
-            "Check that the org.odpi.openmetadata.accessservices.subjectarea.server where the Asset Consumer OMAS is running initialized correctly.  " +
+            "Check that the org.odpi.openmetadata.accessservices.subjectarea.server where the Asset Consumer OMAS is running initialized correctly." +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
     OMRS_NOT_AVAILABLE(404, "OMAS-SUBJECTAREA-404-002 ",
             "The open metadata repository services are not available for the {0} operation",
             "The system is unable to connect to the open metadata property org.odpi.openmetadata.accessservices.subjectarea.server.",
-            "Check that the org.odpi.openmetadata.accessservices.subjectarea.server where the Asset Consumer OMAS is running initialized correctly.  " +
+            "Check that the org.odpi.openmetadata.accessservices.subjectarea.server where the Asset Consumer OMAS is running initialized correctly." +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
     NO_METADATA_COLLECTION(404, "OMAS-SUBJECTAREA-404-003 ",
             "The requested connection {0} is not found in OMAS Server {1}",
@@ -367,9 +374,8 @@ public enum SubjectAreaErrorCode {
     SERVICE_NOT_INITIALIZED(504, "OMAS-SUBJECTAREA-503-004 ",
             "The access service has not been initialized and can not support REST API call {0}",
             "The org.odpi.openmetadata.accessservices.subjectarea.server has received a call to one of its open metadata access services but is unable to process it because the access service is not active.",
-            "If the org.odpi.openmetadata.accessservices.subjectarea.server is supposed to have this access service activated, correct the org.odpi.openmetadata.accessservices.subjectarea.server configuration and restart the org.odpi.openmetadata.accessservices.subjectarea.server.");
-
-
+            "If the org.odpi.openmetadata.accessservices.subjectarea.server is supposed to have this access service activated, correct the org.odpi.openmetadata.accessservices.subjectarea.server configuration and restart the org.odpi.openmetadata.accessservices.subjectarea.server.")
+    ;
 
     private int httpErrorCode;
     private String errorMessageId;

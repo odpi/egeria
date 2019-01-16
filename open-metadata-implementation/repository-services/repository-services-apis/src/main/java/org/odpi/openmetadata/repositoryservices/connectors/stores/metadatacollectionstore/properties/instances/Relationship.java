@@ -1,4 +1,5 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -21,10 +22,7 @@ public class Relationship extends InstanceHeader
 {
     private   InstanceProperties    relationshipProperties = null;
 
-    private   String                entityOnePropertyName  = null;
     private   EntityProxy           entityOneProxy         = null;
-
-    private   String                entityTwoPropertyName  = null;
     private   EntityProxy           entityTwoProxy         = null;
 
 
@@ -54,9 +52,7 @@ public class Relationship extends InstanceHeader
         if (templateElement != null)
         {
             relationshipProperties = templateElement.getProperties();
-            entityOnePropertyName  = templateElement.getEntityOnePropertyName();
             entityOneProxy         = templateElement.getEntityOneProxy();
-            entityTwoPropertyName  = templateElement.getEntityTwoPropertyName();
             entityTwoProxy         = templateElement.getEntityTwoProxy();
         }
     }
@@ -160,30 +156,6 @@ public class Relationship extends InstanceHeader
     }
 
 
-    /**
-     * Return the name of the property for the relationship from the perspective of the entity at the first end of the
-     * relationship.
-     *
-     * @return entityOnePropertyName String property name
-     */
-    @Deprecated
-    public String getEntityOnePropertyName() {
-        return entityOnePropertyName;
-    }
-
-
-    /**
-     * Set up the property name for the relationship from the perspective of the entity at the first end of the
-     * relationship.
-     *
-     * @param entityOnePropertyName String property name
-     */
-    @Deprecated
-    public void setEntityOnePropertyName(String entityOnePropertyName)
-    {
-        this.entityOnePropertyName = entityOnePropertyName;
-    }
-
 
     /**
      * Return details of the entity at the first end of the relationship.
@@ -209,26 +181,6 @@ public class Relationship extends InstanceHeader
      * @param entityOneProxy EntityProxy object for the first end of the relationship.
      */
     public void setEntityOneProxy(EntityProxy entityOneProxy) { this.entityOneProxy = entityOneProxy; }
-
-
-    /**
-     * Return the property name for the relationship from the perspective of the entity at the second end of the
-     * relationship.
-     *
-     * @return String property name
-     */
-    @Deprecated
-    public String getEntityTwoPropertyName() { return entityTwoPropertyName; }
-
-
-    /**
-     * Set up the property name for the relationship from the perspective of the entity at the second end of the
-     * relationship.
-     *
-     * @param entityTwoPropertyName String property name
-     */
-    @Deprecated
-    public void setEntityTwoPropertyName(String entityTwoPropertyName) { this.entityTwoPropertyName = entityTwoPropertyName; }
 
 
     /**
@@ -266,15 +218,16 @@ public class Relationship extends InstanceHeader
     public String toString()
     {
         return "Relationship{" +
-                "relationshipProperties=" + relationshipProperties +
+                "type=" + getType() +
+                ", relationshipProperties=" + relationshipProperties +
                 ", entityOneProxy=" + entityOneProxy +
                 ", entityTwoProxy=" + entityTwoProxy +
-                ", properties=" + getProperties() +
-                ", type=" + getType() +
-                ", instanceProvenanceType=" + getInstanceProvenanceType() +
-                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
                 ", instanceURL='" + getInstanceURL() + '\'' +
                 ", GUID='" + getGUID() + '\'' +
+                ", instanceProvenanceType=" + getInstanceProvenanceType() +
+                ", metadataCollectionId='" + getMetadataCollectionId() + '\'' +
+                ", metadataCollectionName='" + getMetadataCollectionName() + '\'' +
+                ", instanceLicense='" + getInstanceLicense() + '\'' +
                 ", status=" + getStatus() +
                 ", createdBy='" + getCreatedBy() + '\'' +
                 ", updatedBy='" + getUpdatedBy() + '\'' +
@@ -299,7 +252,7 @@ public class Relationship extends InstanceHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof Relationship))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -322,10 +275,6 @@ public class Relationship extends InstanceHeader
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(super.hashCode(),
-                            relationshipProperties,
-                            getEntityOneProxy(),
-                            getEntityTwoProxy());
+        return Objects.hash(super.hashCode(), relationshipProperties, getEntityOneProxy(), getEntityTwoProxy());
     }
 }

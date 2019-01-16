@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices;
 
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider;
@@ -313,6 +314,51 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setConnectorType(getConnectorType(InMemoryOMRSRepositoryConnectorProvider.class.getName()));
+
+        return connection;
+    }
+
+
+    /**
+     * Return the in-memory local repository connection.  This is using the IGCOMRSRepositoryConnector.
+     *
+     * @param serverName  name of the real repository server
+     * @param url  location of the repository proxy
+     * @param additionalProperties name value pairs for the connection
+     * @return Connection object
+     */
+    public Connection getIBMIGCRepositoryConnection(String              serverName,
+                                                    String              url,
+                                                    Map<String, Object> additionalProperties)
+    {
+        // TODO: confirm whether these should be final GUIDs or randomly generated (like ProxyConnection below)?
+        final String endpointGUID          = "94546575-45b5-4ece-9c05-7654b4a7cf7e";
+        final String connectionGUID        = "c2e88b7b-4d23-43b0-b6d9-7d25a68f17c0";
+        final String endpointDescription   = "OMRS repository endpoint for IBM Information Governance Catalog.";
+        final String connectionDescription = "OMRS repository connection to IBM Information Governance Catalog.";
+
+        String endpointName    = "IBMIGCRepository.Endpoint." + serverName;
+
+        Endpoint endpoint = new Endpoint();
+
+        endpoint.setType(this.getEndpointType());
+        endpoint.setGUID(endpointGUID);
+        endpoint.setQualifiedName(endpointName);
+        endpoint.setDisplayName(endpointName);
+        endpoint.setDescription(endpointDescription);
+        endpoint.setAddress(url);
+
+        String connectionName = "IBMIGCRepository.Connection." + serverName;
+
+        Connection connection = new Connection();
+
+        connection.setType(this.getConnectionType());
+        connection.setGUID(connectionGUID);
+        connection.setQualifiedName(connectionName);
+        connection.setDisplayName(connectionName);
+        connection.setDescription(connectionDescription);
+        connection.setConnectorType(getConnectorType(IGCOMRSRepositoryConnectorProvider.class.getName()));
+        connection.setAdditionalProperties(additionalProperties);
 
         return connection;
     }

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugi
 
 import com.ibm.gaiandb.Logger;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ranger.authorization.hadoop.config.RangerConfiguration;
 import org.apache.ranger.plugin.audit.RangerDefaultAuditHandler;
 import org.apache.ranger.plugin.model.RangerPolicy;
@@ -12,19 +12,12 @@ import org.apache.ranger.plugin.model.RangerServiceDef;
 import org.apache.ranger.plugin.policyengine.RangerAccessRequest;
 import org.apache.ranger.plugin.policyengine.RangerAccessRequestImpl;
 import org.apache.ranger.plugin.policyengine.RangerAccessResult;
-import org.apache.ranger.plugin.policyengine.RangerDataMaskResult;
 import org.apache.ranger.plugin.service.RangerBasePlugin;
 
 import java.util.List;
 import java.util.Set;
 
-import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.COLUMN_RESOURCE;
-import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.DEFAULT_APP_ID;
-import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.DEFAULT_SERVICE_TYPE;
-import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.NULL_MASK_TYPE;
-import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.SCHEMA_RESOURCE;
-import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.SELECT_ACTION;
-import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.TABLE_RESOURCE;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.*;
 
 public class RangerGaianAuthorizer implements GaianAuthorizer {
 
@@ -143,7 +136,7 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
         logger.logDetail("==> addCellValueTransformerAndCheckIfTransformed(queryContext=" + queryContext + ", " + columnName + ")");
         String columnTransformer = columnName;
         List<String> columnTransformers = queryContext.getColumnTransformers();
-        RangerDataMaskResult result = getRangerDataMaskResult(queryContext, columnName);
+        RangerAccessResult result = getRangerDataMaskResult(queryContext, columnName);
         boolean isDataMaskEnabled = isDataMaskEnabled(result);
 
         if (isDataMaskEnabled) {
@@ -165,7 +158,7 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
         return isDataMaskEnabled;
     }
 
-    private String getCustomMaskType(String columnName, RangerDataMaskResult result) {
+    private String getCustomMaskType(String columnName, RangerAccessResult result) {
         String maskedValue = result.getMaskedValue();
 
         if (maskedValue == null) {
@@ -175,7 +168,7 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
         }
     }
 
-    private String getTransformer(RangerDataMaskResult result) {
+    private String getTransformer(RangerAccessResult result) {
         RangerServiceDef.RangerDataMaskTypeDef maskTypeDef = result.getMaskTypeDef();
 
         if (maskTypeDef != null) {
@@ -185,7 +178,7 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
         return null;
     }
 
-    private RangerDataMaskResult getRangerDataMaskResult(QueryContext queryContext, String columnName) {
+    private RangerAccessResult getRangerDataMaskResult(QueryContext queryContext, String columnName) {
         GaianResourceType objectType = GaianResourceType.COLUMN;
         RangerGaianResource resource = new RangerGaianResource(objectType, queryContext.getSchema(), queryContext.getTableName(), columnName);
         String user = queryContext.getUser();
@@ -195,7 +188,7 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
         return gaianPlugin.evalDataMaskPolicies(request, new RangerDefaultAuditHandler());
     }
 
-    private boolean isDataMaskEnabled(RangerDataMaskResult result) {
+    private boolean isDataMaskEnabled(RangerAccessResult result) {
         return result != null && result.isMaskEnabled() && !StringUtils.equalsIgnoreCase(result.getMaskType(), RangerPolicy.MASK_TYPE_NONE);
     }
 

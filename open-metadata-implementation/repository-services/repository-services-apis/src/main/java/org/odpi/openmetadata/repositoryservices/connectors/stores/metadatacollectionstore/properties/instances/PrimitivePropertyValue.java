@@ -1,4 +1,5 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -130,8 +131,8 @@ public class PrimitivePropertyValue extends InstancePropertyValue
     public String toString()
     {
         return "PrimitivePropertyValue{" +
-                "primitiveDefCategory=" + primitiveDefCategory +
-                ", primitiveValue=" + primitiveValue +
+                "primitiveValue=" + primitiveValue +
+                ", primitiveDefCategory=" + primitiveDefCategory +
                 ", instancePropertyCategory=" + getInstancePropertyCategory() +
                 ", typeGUID='" + getTypeGUID() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +

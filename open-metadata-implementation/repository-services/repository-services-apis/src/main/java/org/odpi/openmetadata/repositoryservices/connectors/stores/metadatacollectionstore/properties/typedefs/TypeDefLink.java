@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs;
 
 
@@ -58,7 +59,7 @@ public class TypeDefLink extends TypeDefElementHeader
     /**
      * Copy/clone constructor copies the values from the supplied template.
      *
-     * @param template TypeDefSummary
+     * @param template TypeDefLink
      */
     public TypeDefLink(TypeDefLink template)
     {
@@ -126,8 +127,8 @@ public class TypeDefLink extends TypeDefElementHeader
     @Override
     public String toString()
     {
-        return "TypeDefSummary{" +
-                ", guid='" + guid + '\'' +
+        return "TypeDefLink{" +
+                "guid='" + guid + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }

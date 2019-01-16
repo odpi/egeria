@@ -43,6 +43,8 @@ public class CategoryMapper {
         if (category.getSystemAttributes() !=null) {
             omrsBean.setSystemAttributes(category.getSystemAttributes());
         }
+        omrsBean.setEffectiveFromTime(category.getEffectiveFromTime());
+        omrsBean.setEffectiveToTime(category.getEffectiveToTime());
         omrsBean.setQualifiedName(category.getQualifiedName());
         omrsBean.setDescription(category.getDescription());
         omrsBean.setDisplayName(category.getName());
@@ -81,6 +83,8 @@ public class CategoryMapper {
         if (omrsBean.getSystemAttributes() !=null) {
             category.setSystemAttributes(omrsBean.getSystemAttributes());
         }
+        category.setEffectiveFromTime(omrsBean.getEffectiveFromTime());
+        category.setEffectiveToTime((omrsBean.getEffectiveToTime()));
         category.setName(omrsBean.getDisplayName());
         category.setQualifiedName(omrsBean.getQualifiedName());
 

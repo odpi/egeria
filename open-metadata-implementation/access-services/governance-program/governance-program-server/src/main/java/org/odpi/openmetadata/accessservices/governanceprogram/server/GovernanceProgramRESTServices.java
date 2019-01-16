@@ -66,7 +66,7 @@ public class GovernanceProgramRESTServices
             String              knownName = null;
             String              jobTitle = null;
             String              jobRoleDescription = null;
-            Map<String, Object> additionalProperties = null;
+            Map<String, String> additionalProperties = null;
 
             if (requestBody != null)
             {
@@ -141,7 +141,7 @@ public class GovernanceProgramRESTServices
             String              knownName = null;
             String              jobTitle = null;
             String              jobRoleDescription = null;
-            Map<String, Object> additionalProperties = null;
+            Map<String, String> additionalProperties = null;
 
             if (requestBody != null)
             {
@@ -425,7 +425,7 @@ public class GovernanceProgramRESTServices
         String                     appointmentId = null;
         String                     appointmentContext = null;
         String                     title = null;
-        Map<String, Object>        additionalProperties = null;
+        Map<String, String>        additionalProperties = null;
         List<ExternalReference>    externalReferences = null;
 
         if (requestBody != null)
@@ -500,7 +500,7 @@ public class GovernanceProgramRESTServices
         String                     appointmentId = null;
         String                     appointmentContext = null;
         String                     title = null;
-        Map<String, Object>        additionalProperties = null;
+        Map<String, String>        additionalProperties = null;
         List<ExternalReference>    externalReferences = null;
 
         if (requestBody != null)

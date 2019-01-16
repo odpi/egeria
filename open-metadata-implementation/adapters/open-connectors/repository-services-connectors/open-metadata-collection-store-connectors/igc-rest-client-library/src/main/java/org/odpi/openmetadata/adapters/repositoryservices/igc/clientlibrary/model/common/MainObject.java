@@ -2,30 +2,26 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /**
- * The supertype of the vast majority of IGC objects.
+ * The supertype of many IGC objects -- in particular, any OpenIGC objects.
  * <br><br>
  * Simply define a new POJO as extending this base class to inherit the attributes that are found
  * on virtually all IGC asset types.
  */
-public abstract class MainObject extends Reference {
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = InformationAsset.class, name = "information_asset"),
+})
+public class MainObject extends Reference {
 
-    @JsonIgnore private Identity identity = null;
-
-    /**
-     * Provides the context to the unique identity of this asset.
-     */
-    protected ArrayList<Reference> _context = new ArrayList<Reference>();
+    public static String getIgcTypeId() { return "main_object"; }
+    public static String getIgcTypeDisplayName() { return "Main Object"; }
 
     /**
      * The 'name' property, displayed as 'Name' in the IGC UI.
@@ -110,9 +106,6 @@ public abstract class MainObject extends Reference {
 
     // TODO: add notes object reference
 
-    /** @see #_context */ @JsonProperty("_context") public ArrayList<Reference> getContext() { return this._context; }
-    /** @see #_context */ @JsonProperty("_context") public void setContext(ArrayList<Reference> _context) { this._context = _context; }
-
     /** @see #name */ @JsonProperty("name") public String getTheName() { return this.name; }
     /** @see #name */ @JsonProperty("name") public void setTheName(String name) { this.name = name; }
 
@@ -149,43 +142,18 @@ public abstract class MainObject extends Reference {
     /** @see #modified_on */ @JsonProperty("modified_on") public Date getModifiedOn() { return this.modified_on; }
     /** @see #modified_on */ @JsonProperty("modified_on") public void setModifiedOn(Date modified_on) { this.modified_on = modified_on; }
 
-    /**
-     * Ensures that the _context of the asset is populated (takes no action if already populated).
-     *
-     * @param igcrest a REST API connection to use in populating the context
-     * @return Boolean indicating whether _context was successfully / already populated (true) or not (false)
-     */
-    public Boolean populateContext(IGCRestClient igcrest) {
-        Boolean success = true;
-        // Only bother retrieving the context if it isn't already present
-        if (this.name == null && this._context.size() == 0) {
-            IGCSearchCondition idOnly = new IGCSearchCondition("_id", "=", this.getId());
-            IGCSearchConditionSet idOnlySet = new IGCSearchConditionSet(idOnly);
-            IGCSearch igcSearch = new IGCSearch(this.getType(), idOnlySet);
-            igcSearch.setPageSize(2);
-            ReferenceList assetsWithCtx = igcrest.search(igcSearch);
-            success = (assetsWithCtx.getItems().size() > 0);
-            if (success) {
-                Reference assetWithCtx = assetsWithCtx.getItems().get(0);
-                this.name = assetWithCtx.getName();
-                this._context = ((MainObject)assetWithCtx)._context;
-            }
-        }
-        return success;
-    }
-
-    /**
-     * Retrieves the semantic identity of the asset.
-     *
-     * @param igcrest a REST API connection to use in confirming the identity of the asset
-     * @return Identity
-     */
-    public Identity getIdentity(IGCRestClient igcrest) {
-        if (this.identity == null) {
-            this.populateContext(igcrest);
-            this.identity = new Identity(this._context, this.getType(), this.getName());
-        }
-        return this.identity;
-    }
+    public static Boolean canBeCreated() { return false; }
+    public static Boolean includesModificationDetails() { return true; }
+    private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "created_by",
+        "created_on",
+        "modified_by",
+        "modified_on"
+    );
+    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static final Boolean isMainObject(Object obj) { return (obj.getClass() == MainObject.class); }
 
 }

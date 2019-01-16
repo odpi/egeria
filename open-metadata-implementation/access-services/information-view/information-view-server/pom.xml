@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -22,7 +23,6 @@
     <artifactId>information-view-server</artifactId>
 
     <properties>
-        <mockito.junit.version>2.19.0</mockito.junit.version>
         <junit.version>4.12</junit.version>
     </properties>
 
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>${mockito.junit.version}</version>
+            <version>${mockito.version}</version>
         </dependency>
 
         <dependency>

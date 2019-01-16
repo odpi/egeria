@@ -13,7 +13,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetConsumerOMASAPIResponse provides a common header for Asset Consumer OMAS managed rest to its REST API.
+ * AssetConsumerOMASAPIResponse provides a common header for AssetCollectionMember Consumer OMAS managed rest to its REST API.
  * It manages information about exceptions.  If no exception has been raised exceptionClassName is null.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -24,7 +24,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes
         ({
-                @JsonSubTypes.Type(value = MyProfileResponse.class,  name = "MyProfileResponse"),
+                @JsonSubTypes.Type(value = PersonalProfileResponse.class,  name = "PersonalProfileResponse"),
+                @JsonSubTypes.Type(value = PersonalProfileListResponse.class,  name = "PersonalProfileListResponse"),
+                @JsonSubTypes.Type(value = CountResponse.class,  name = "CountResponse"),
                 @JsonSubTypes.Type(value = GUIDResponse.class,  name = "GUIDResponse"),
                 @JsonSubTypes.Type(value = VoidResponse.class,  name = "VoidResponse")
         })
