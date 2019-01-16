@@ -94,7 +94,7 @@ public class IGCSearch {
      *
      * @param properties the names of properties to include in the search
      */
-    public void addProperties(String[] properties) {
+    public void addProperties(List<String> properties) {
         for (String property : properties) {
             this.properties.add(property);
         }

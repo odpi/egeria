@@ -18,7 +18,7 @@ changes to the metadata.
 
 Figure 1 captures how people and teams are represented.
 
-![UML](0110-Actors.md)
+![UML](0110-Actors.png)
 > Figure 1: Collecting information about people and teams
 
 **UserIdentity** provides a structure for storing the security
@@ -42,12 +42,10 @@ This separation is maintained because the user identity
 is the only information available on calls to the metadata
 repository.  The ActorProfile is used to aggregate the
 activity of the individual or team
-(or engine - see [EngineProfile](0250-Data-Processing-Engines.md) in Area 2 model).
+(or IT infrastructure - see [ITProfile](0117-IT-Profiles.md)).
 This includes crowd-sourcing and project participation.
 
-Open metadata supports Karma Points.
-These are awarded for participation in the collaboration
-around open metadata.
+
 
 
 ----

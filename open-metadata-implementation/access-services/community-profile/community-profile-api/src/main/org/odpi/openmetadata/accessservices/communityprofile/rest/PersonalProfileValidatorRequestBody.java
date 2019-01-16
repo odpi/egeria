@@ -20,7 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class PersonalProfileValidatorRequestBody extends CommunityProfileOMASAPIRequestBody
 {
-    private String              employeeNumber       = null;
+    private String qualifiedName = null;
 
 
     /**
@@ -28,6 +28,7 @@ public class PersonalProfileValidatorRequestBody extends CommunityProfileOMASAPI
      */
     public PersonalProfileValidatorRequestBody()
     {
+        super();
     }
 
 
@@ -42,7 +43,7 @@ public class PersonalProfileValidatorRequestBody extends CommunityProfileOMASAPI
 
         if (template != null)
         {
-            this.employeeNumber = template.getEmployeeNumber();
+            this.qualifiedName = template.getQualifiedName();
         }
     }
 
@@ -52,20 +53,20 @@ public class PersonalProfileValidatorRequestBody extends CommunityProfileOMASAPI
      *
      * @return String identifier
      */
-    public String getEmployeeNumber()
+    public String getQualifiedName()
     {
-        return employeeNumber;
+        return qualifiedName;
     }
 
 
     /**
      * Set up the unique employee number for this governance officer.
      *
-     * @param employeeNumber String identifier
+     * @param qualifiedName String identifier
      */
-    public void setEmployeeNumber(String employeeNumber)
+    public void setQualifiedName(String qualifiedName)
     {
-        this.employeeNumber = employeeNumber;
+        this.qualifiedName = qualifiedName;
     }
 
 
@@ -77,8 +78,8 @@ public class PersonalProfileValidatorRequestBody extends CommunityProfileOMASAPI
     @Override
     public String toString()
     {
-        return "PersonalDetailsRequestBody{" +
-                ", employeeNumber='" + employeeNumber +
+        return "PersonalProfileValidatorRequestBody{" +
+                "qualifiedName='" + qualifiedName + '\'' +
                 '}';
     }
 
@@ -101,7 +102,7 @@ public class PersonalProfileValidatorRequestBody extends CommunityProfileOMASAPI
             return false;
         }
         PersonalProfileValidatorRequestBody that = (PersonalProfileValidatorRequestBody) objectToCompare;
-        return  Objects.equals(getEmployeeNumber(), that.getEmployeeNumber());
+        return  Objects.equals(getQualifiedName(), that.getQualifiedName());
     }
 
 
@@ -113,6 +114,6 @@ public class PersonalProfileValidatorRequestBody extends CommunityProfileOMASAPI
     @Override
     public int hashCode()
     {
-        return Objects.hash(employeeNumber);
+        return Objects.hash(qualifiedName);
     }
 }

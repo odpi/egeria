@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.communityprofile.server;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.UnrecognizedGUIDException;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -16,6 +15,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 class ErrorHandler
 {
+    private final String  defaultGUIDParameterName = "guid";
+
     private OMRSRepositoryConnector repositoryConnector;
 
 
@@ -95,26 +96,25 @@ class ErrorHandler
      * @param parameterName  name of the parameter that passed the guid.
      * @param expectedTypeName  type of the entity for the guid.
      * @param methodName  name of the method making the call.
-     * @throws UnrecognizedGUIDException the guid is null
+     * @throws InvalidParameterException the guid is null
      */
     void validateGUID(String guid,
                       String parameterName,
                       String expectedTypeName,
-                      String methodName) throws UnrecognizedGUIDException
+                      String methodName) throws InvalidParameterException
     {
         if (guid == null)
         {
             CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.NULL_GUID;
-            String                     errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(parameterName, methodName);
+            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(expectedTypeName, parameterName, methodName);
 
-            throw new UnrecognizedGUIDException(errorCode.getHTTPErrorCode(),
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
                                                 this.getClass().getName(),
                                                 methodName,
                                                 errorMessage,
                                                 errorCode.getSystemAction(),
                                                 errorCode.getUserAction(),
-                                                expectedTypeName,
-                                                null);
+                                                parameterName);
         }
     }
 
@@ -243,7 +243,7 @@ class ErrorHandler
 
         if (pageSize < 1)
         {
-            CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.EMPTY_PAGE_SIZE;
+            CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.NEGATIVE_PAGE_SIZE;
             String                 errorMessage = errorCode.getErrorMessageId()
                                                 + errorCode.getFormattedErrorMessage(pageSizeParameterName, methodName);
 
@@ -265,12 +265,12 @@ class ErrorHandler
      * @param methodName  name of the method making the call.
      * @param actualType  type of retrieved entity
      * @param expectedType  type the entity should be
-     * @throws UnrecognizedGUIDException the guid is for the wrong type of object
+     * @throws InvalidParameterException the guid is for the wrong type of object
      */
     void handleWrongTypeForGUIDException(String guid,
                                          String methodName,
                                          String actualType,
-                                         String expectedType) throws UnrecognizedGUIDException
+                                         String expectedType) throws InvalidParameterException
     {
         CommunityProfileErrorCode errorCode = CommunityProfileErrorCode.INSTANCE_WRONG_TYPE_FOR_GUID;
         String                    errorMessage = errorCode.getErrorMessageId()
@@ -279,14 +279,13 @@ class ErrorHandler
                                                                                     actualType,
                                                                                     expectedType);
 
-        throw new UnrecognizedGUIDException(errorCode.getHTTPErrorCode(),
+        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
                                             this.getClass().getName(),
                                             methodName,
                                             errorMessage,
                                             errorCode.getSystemAction(),
                                             errorCode.getUserAction(),
-                                            expectedType,
-                                            guid);
+                                            defaultGUIDParameterName);
 
     }
 
@@ -413,55 +412,19 @@ class ErrorHandler
 
 
     /**
-     * Throw an exception if there is a problem with the asset guid
-     *
-     * @param error  caught exception
-     * @param assetGUID  unique identifier for the requested asset
-     * @param methodName  name of the method making the call
-     * @param serverName name of this server
-     * @param serviceName  name of this access service
-     *
-     * @throws InvalidParameterException one of the parameters passed is invalid
-     */
-    void handleUnknownAsset(Throwable  error,
-                            String     assetGUID,
-                            String     methodName,
-                            String     serverName,
-                            String     serviceName) throws InvalidParameterException
-    {
-        CommunityProfileErrorCode errorCode = CommunityProfileErrorCode.UNKNOWN_ASSET;
-        String                 errorMessage = errorCode.getErrorMessageId()
-                                            + errorCode.getFormattedErrorMessage(assetGUID,
-                                                                                 methodName,
-                                                                                 serviceName,
-                                                                                 serverName,
-                                                                                 error.getMessage());
-
-        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
-                                            "assetGUID");
-
-    }
-
-
-    /**
      * Throw an exception if the supplied guid is not recognized
      *
      * @param userId  user name to validate
      * @param methodName  name of the method making the call.
      * @param serverName  name of this server
      * @param expectedType  name of object to return
-     * @throws UnrecognizedGUIDException the guid is not recognized
+     * @throws InvalidParameterException the guid is not recognized
      */
     void handleUnrecognizedGUIDException(String userId,
                                          String methodName,
                                          String serverName,
                                          String expectedType,
-                                         String guid) throws UnrecognizedGUIDException
+                                         String guid) throws InvalidParameterException
     {
         CommunityProfileErrorCode errorCode = CommunityProfileErrorCode.INSTANCE_NOT_FOUND_BY_GUID;
         String                 errorMessage = errorCode.getErrorMessageId()
@@ -471,14 +434,13 @@ class ErrorHandler
                                                                                  userId,
                                                                                  serverName);
 
-        throw new UnrecognizedGUIDException(errorCode.getHTTPErrorCode(),
+        throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
                                             this.getClass().getName(),
                                             methodName,
                                             errorMessage,
                                             errorCode.getSystemAction(),
                                             errorCode.getUserAction(),
-                                            expectedType,
-                                            guid);
+                                            defaultGUIDParameterName);
 
     }
 }

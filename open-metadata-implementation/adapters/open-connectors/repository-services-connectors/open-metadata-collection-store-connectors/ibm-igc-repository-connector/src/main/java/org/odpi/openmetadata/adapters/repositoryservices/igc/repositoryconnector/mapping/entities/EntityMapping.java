@@ -80,7 +80,7 @@ public abstract class EntityMapping {
         } else {
             sbPojoName.append(IGCRestConstants.IGC_REST_GENERATED_MODEL_PKG);
             sbPojoName.append(".");
-            sbPojoName.append(igcomrsRepositoryConnector.getIGCVersion());
+            sbPojoName.append(igcomrsRepositoryConnector.getIGCVersion().getVersionString());
             sbPojoName.append(".");
             sbPojoName.append(IGCRestConstants.getClassNameForAssetType(igcAssetType));
         }
@@ -166,7 +166,7 @@ public abstract class EntityMapping {
         StringBuilder sbPojoName = new StringBuilder();
         sbPojoName.append(IGCRestConstants.IGC_REST_GENERATED_MODEL_PKG);
         sbPojoName.append(".");
-        sbPojoName.append(igcomrsRepositoryConnector.getIGCVersion());
+        sbPojoName.append(igcomrsRepositoryConnector.getIGCVersion().getVersionString());
         sbPojoName.append(".");
         sbPojoName.append(IGCRestConstants.getClassNameForAssetType(igcAssetTypeName));
         try {

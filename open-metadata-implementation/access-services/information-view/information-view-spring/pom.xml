@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -22,12 +23,6 @@
     <artifactId>information-view-spring</artifactId>
 
     <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>5.0.6.RELEASE</version>
-        </dependency>
-
 
         <dependency>
             <groupId>org.springframework</groupId>
@@ -38,6 +33,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>information-view-server</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>information-view-api</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
