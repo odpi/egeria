@@ -87,7 +87,7 @@ There are a number of types of APIs associated with the Subject Area OMAS.
 * Collaboration APIs allow comments and TODO and the like to be associate with glossary content
 * A report API, allows glossary content to be analysed, the API response highlights areas that the subject Area Expert might want to amend. - not implemented yet
 * More sophisticated get API for example get relationships associated with a Term - not implemented yet
-* find API - not implemented yet
+* Node orientated APIs
 
 
 ## How the Subject Area OMAS deals with effective dates

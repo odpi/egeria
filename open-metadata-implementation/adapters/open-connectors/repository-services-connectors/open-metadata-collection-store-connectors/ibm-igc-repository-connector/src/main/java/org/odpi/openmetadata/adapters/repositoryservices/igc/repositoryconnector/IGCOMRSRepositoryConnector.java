@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector;
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCVersionEnum;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -10,7 +11,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
 
     private IGCRestClient igcRestClient;
-    private String igcVersion;
+    private IGCVersionEnum igcVersion;
 
     /**
      * Default constructor used by the OCF Connector Provider.
@@ -49,9 +50,9 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
     /**
      * Retrieve the version identifier of the IGC environment.
      *
-     * @return String
+     * @return IGCVersionEnum
      */
-    public String getIGCVersion() {
+    public IGCVersionEnum getIGCVersion() {
         return this.igcVersion;
     }
 

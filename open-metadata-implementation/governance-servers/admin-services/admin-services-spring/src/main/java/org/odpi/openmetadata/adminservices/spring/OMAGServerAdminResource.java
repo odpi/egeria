@@ -338,6 +338,28 @@ public class OMAGServerAdminResource
 
 
     /**
+     * Set up the local metadata collection name.  If this is not set then the default value is the
+     * local server name.
+     *
+     * @param userId                      user that is issuing the request.
+     * @param serverName                  local server name.
+     * @param name                        metadata collection name.
+     * @return void response or
+     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or name parameter or
+     * OMAGConfigurationErrorException the event bus is not set.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/local-repository/metadata-collection-name/{name}")
+
+    public VoidResponse setLocalMetadataCollectionName(@PathVariable  String               userId,
+                                                       @PathVariable  String               serverName,
+                                                       @PathVariable  String               name)
+    {
+        return adminAPI.setLocalMetadataCollectionName(userId, serverName, name);
+    }
+
+
+    /**
      * Enable registration of server to an open metadata repository cohort.  This is a group of open metadata
      * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
      * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration

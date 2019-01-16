@@ -10,10 +10,7 @@ import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.Use
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
@@ -32,12 +29,11 @@ class MyProfileHandler
     private static final String userIdentityTypeGUID            = "fbe95779-1f3c-4ac6-aa9d-24963ff16282";
     private static final String userIdentityTypeName            = "UserIdentity";
     private static final String userIdPropertyName              = "qualifiedName";
-
     private static final String userIdentityProfileLinkTypeGUID = "01664609-e777-4079-b543-6baffe910ff1";
 
     private static final String personalDetailsTypeGUID         = "ac406bf8-e53e-49f1-9088-2af28bbbd285";
     private static final String personalDetailsTypeName         = "Person";
-    private static final String employeeNumberPropertyName      = "qualifiedName";
+    private static final String qualifiedNamePropertyName       = "qualifiedName";
     private static final String fullNamePropertyName            = "fullName";
     private static final String knownNamePropertyName           = "name";
     private static final String jobTitlePropertyName            = "jobTitle";
@@ -45,7 +41,7 @@ class MyProfileHandler
     private static final String karmaPointsPropertyName         = "karmaPoints";
     private static final String additionalPropertiesName        = "additionalProperties";
 
-    private static final String employeeNumberParameterName     = "employeeNumber";
+    private static final String qualifiedNameParameterName      = "qualifiedName";
     private static final String knownNameParameterName          = "knownName";
 
     private static final Logger log = LoggerFactory.getLogger(MyProfileHandler.class);
@@ -86,6 +82,7 @@ class MyProfileHandler
      * @param jobTitle job title of the individual.
      * @param jobRoleDescription job description of the individual.
      * @param karmaPoints points relating to the positive contribution made by the user.
+     * @param profileProperties  properties about the individual for a new type that is the subclass of Person.
      * @param additionalProperties  additional properties about the individual.
      * @return Unique identifier for the personal profile.
      * @throws InvalidParameterException the employee number or known name is null.
@@ -97,16 +94,17 @@ class MyProfileHandler
                                                          String              jobTitle,
                                                          String              jobRoleDescription,
                                                          int                 karmaPoints,
-                                                         Map<String, Object> additionalProperties) throws InvalidParameterException
+                                                         Map<String, Object> profileProperties,
+                                                         Map<String, String> additionalProperties) throws InvalidParameterException
     {
-        errorHandler.validateName(employeeNumber, employeeNumberParameterName, methodName);
+        errorHandler.validateName(employeeNumber, qualifiedNameParameterName, methodName);
         errorHandler.validateName(knownName, knownNameParameterName, methodName);
 
         InstanceProperties properties;
 
         properties = repositoryHelper.addStringPropertyToInstance(serviceName,
                                                                   null,
-                                                                  employeeNumberPropertyName,
+                                                                  qualifiedNamePropertyName,
                                                                   employeeNumber,
                                                                   methodName);
 
@@ -185,13 +183,18 @@ class MyProfileHandler
 
             if (instanceProperties != null)
             {
-                myProfile.setEmployeeNumber(repositoryHelper.getStringProperty(serviceName, employeeNumberPropertyName, instanceProperties, methodName));
-                myProfile.setFullName(repositoryHelper.getStringProperty(serviceName, fullNamePropertyName, instanceProperties, methodName));
-                myProfile.setKnownName(repositoryHelper.getStringProperty(serviceName, knownNamePropertyName, instanceProperties, methodName));
-                myProfile.setJobTitle(repositoryHelper.getStringProperty(serviceName, jobTitlePropertyName, instanceProperties, methodName));
-                myProfile.setJobRoleDescription(repositoryHelper.getStringProperty(serviceName, jobDescriptionPropertyName, instanceProperties, methodName));
-                myProfile.setKarmaPoints(repositoryHelper.getIntProperty(serviceName, karmaPointsPropertyName, instanceProperties, methodName));
-                myProfile.setAdditionalProperties(repositoryHelper.getMapFromProperty(serviceName, additionalPropertiesName, instanceProperties, methodName));
+                /*
+                 * As properties are retrieved, they are removed from the instance properties object so that what is left going into
+                 * profile properties.
+                 */
+                myProfile.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, qualifiedNamePropertyName, instanceProperties, methodName));
+                myProfile.setFullName(repositoryHelper.removeStringProperty(serviceName, fullNamePropertyName, instanceProperties, methodName));
+                myProfile.setName(repositoryHelper.removeStringProperty(serviceName, knownNamePropertyName, instanceProperties, methodName));
+                myProfile.setJobTitle(repositoryHelper.removeStringProperty(serviceName, jobTitlePropertyName, instanceProperties, methodName));
+                myProfile.setDescription(repositoryHelper.removeStringProperty(serviceName, jobDescriptionPropertyName, instanceProperties, methodName));
+                myProfile.setKarmaPoints(repositoryHelper.removeIntProperty(serviceName, karmaPointsPropertyName, instanceProperties, methodName));
+                myProfile.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, additionalPropertiesName, instanceProperties, methodName));
+                myProfile.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
             }
 
             log.debug("MyProfile: " + myProfile.toString());
@@ -214,6 +217,7 @@ class MyProfileHandler
      * @param knownName known name or nickname of the individual.
      * @param jobTitle job title of the individual.
      * @param jobRoleDescription job description of the individual.
+     * @param profileProperties  properties about the individual for a new type that is the subclass of Person.
      * @param additionalProperties  additional properties about the individual.
      * @throws InvalidParameterException the employee number or known name is null.
      * @throws PropertyServerException the server is not available.
@@ -225,7 +229,8 @@ class MyProfileHandler
                                    String              knownName,
                                    String              jobTitle,
                                    String              jobRoleDescription,
-                                   Map<String, Object> additionalProperties) throws InvalidParameterException,
+                                   Map<String, Object> profileProperties,
+                                   Map<String, String> additionalProperties) throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
     {
@@ -242,6 +247,7 @@ class MyProfileHandler
                                                                        jobTitle,
                                                                        jobRoleDescription,
                                                                        0,
+                                                                       profileProperties,
                                                                        additionalProperties);
 
         try
@@ -279,6 +285,7 @@ class MyProfileHandler
      * @param jobTitle job title of the individual.
      * @param jobRoleDescription job description of the individual.
      * @param karmaPoints points relating to the positive contribution made by the user.
+     * @param profileProperties  properties about the individual for a new type that is the subclass of Person.
      * @param additionalProperties  additional properties about the individual.
      * @throws InvalidParameterException the full name is null or the employeeNumber does not match the profileGUID.
      * @throws PropertyServerException the server is not available.
@@ -292,7 +299,8 @@ class MyProfileHandler
                                  String              jobTitle,
                                  String              jobRoleDescription,
                                  int                 karmaPoints,
-                                 Map<String, Object> additionalProperties) throws InvalidParameterException,
+                                 Map<String, Object> profileProperties,
+                                 Map<String, String> additionalProperties) throws InvalidParameterException,
                                                                                   PropertyServerException,
                                                                                   UserNotAuthorizedException
     {
@@ -309,6 +317,7 @@ class MyProfileHandler
                                                                        jobTitle,
                                                                        jobRoleDescription,
                                                                        karmaPoints,
+                                                                       profileProperties,
                                                                        additionalProperties);
 
         try
@@ -610,12 +619,13 @@ class MyProfileHandler
 
             updateMyProfile(userId,
                             profile.getGUID(),
-                            profile.getEmployeeNumber(),
+                            profile.getQualifiedName(),
                             profile.getFullName(),
-                            profile.getKnownName(),
+                            profile.getName(),
                             profile.getJobTitle(),
-                            profile.getJobRoleDescription(),
+                            profile.getDescription(),
                             profile.getKarmaPoints(),
+                            profile.getExtendedProperties(),
                             profile.getAdditionalProperties());
         }
     }
@@ -671,6 +681,7 @@ class MyProfileHandler
      * @param knownName known name or nickname of the individual.
      * @param jobTitle job title of the individual.
      * @param jobRoleDescription job description of the individual.
+     * @param profileProperties  properties about the individual for a new type that is the subclass of Person.
      * @param additionalProperties  additional properties about the individual.
      *
      * @throws InvalidParameterException one of the parameters is invalid.
@@ -683,14 +694,15 @@ class MyProfileHandler
                          String              knownName,
                          String              jobTitle,
                          String              jobRoleDescription,
-                         Map<String, Object> additionalProperties) throws InvalidParameterException,
+                         Map<String, Object> profileProperties,
+                         Map<String, String> additionalProperties) throws InvalidParameterException,
                                                                           PropertyServerException,
                                                                           UserNotAuthorizedException
     {
         final String   methodName = "updateMyProfile";
 
         errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateName(userId, employeeNumberParameterName, methodName);
+        errorHandler.validateName(userId, qualifiedNameParameterName, methodName);
 
         /*
          * The profile may already exist.
@@ -699,7 +711,7 @@ class MyProfileHandler
 
         if (profile == null)
         {
-            createMyProfile(userId, employeeNumber, fullName, knownName, jobTitle, jobRoleDescription, additionalProperties);
+            createMyProfile(userId, employeeNumber, fullName, knownName, jobTitle, jobRoleDescription, profileProperties, additionalProperties);
         }
         else
         {
@@ -708,11 +720,13 @@ class MyProfileHandler
 
             updateMyProfile(userId,
                             profile.getGUID(),
-                            employeeNumber, fullName,
+                            employeeNumber,
+                            fullName,
                             knownName,
                             jobTitle,
                             jobRoleDescription,
                             karmaPoints,
+                            profileProperties,
                             additionalProperties);
         }
     }

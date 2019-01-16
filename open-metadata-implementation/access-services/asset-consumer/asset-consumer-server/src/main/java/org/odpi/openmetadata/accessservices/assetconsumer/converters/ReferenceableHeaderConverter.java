@@ -117,20 +117,25 @@ public class ReferenceableHeaderConverter
                                                                        OMRSRepositoryHelper repositoryHelper)
     {
         List<ReferenceableClassification> classifications = null;
-        List<Classification>              entityClassifications = entity.getClassifications();
 
-        if (entityClassifications != null)
+        if (entity != null)
         {
-            classifications = new ArrayList<>();
+            List<Classification> entityClassifications = entity.getClassifications();
 
-            for (Classification  entityClassification : entityClassifications)
+            if (entityClassifications != null)
             {
-                if (entityClassification != null)
-                {
-                    ReferenceableClassification  beanClassification = new ReferenceableClassification();
+                classifications = new ArrayList<>();
 
-                    beanClassification.setClassificationName(entityClassification.getName());
-                    beanClassification.setClassificationProperties(repositoryHelper.getInstancePropertiesAsMap(entityClassification.getProperties()));
+                for (Classification entityClassification : entityClassifications)
+                {
+                    if (entityClassification != null)
+                    {
+                        ReferenceableClassification beanClassification = new ReferenceableClassification();
+
+                        beanClassification.setClassificationName(entityClassification.getName());
+                        beanClassification.setClassificationProperties(
+                                repositoryHelper.getInstancePropertiesAsMap(entityClassification.getProperties()));
+                    }
                 }
             }
         }
