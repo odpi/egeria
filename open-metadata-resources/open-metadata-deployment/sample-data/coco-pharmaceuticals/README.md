@@ -87,6 +87,17 @@ ansible-playbook [-i hosts] remove.yml
 
 Where the inventory provided is as described above for loading.
 
+Note that to fully remove artifacts from an IGC environment you must also allow import areas to
+be deleted from IBM Metadata Asset Manager. This requires a manual configuration change as follows
+(which must be completed before running the removal playbook):
+
+!["Administration"](docs/ibm-mam-enable-delete.png)
+
+1. Navigate to the "Administration" tab.
+1. Open the "Import Settings" under Navigation.
+1. Tick the box next to "Allow users to delete import areas in which imports were shared to the repository".
+1. Click the "Save" button.
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

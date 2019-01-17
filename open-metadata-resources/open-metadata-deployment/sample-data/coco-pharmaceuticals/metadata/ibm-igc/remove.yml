@@ -225,3 +225,16 @@
     path: /tmp/__cocopharma_users_command_list.x
     state: absent
   when: ('ibm-information-server-engine' in group_names)
+
+- name: remove Metadata Asset Manager import areas
+  shell: >
+    {{ ibm_infosvr_locations.linux }}/ASBNode/bin/imam.sh
+    -u {{ ibm_infosvr_users.isadmin }}
+    -w {{ ibm_infosvr_upwds.isadmin }}
+    -n CocoPharma_{{ item | upper }}
+    -a delete
+    --type area
+  args:
+    executable: /bin/bash
+  when: ('ibm-information-server-engine' in group_names)
+  with_items: "{{ egeria_samples_cocopharma_databases }}"
