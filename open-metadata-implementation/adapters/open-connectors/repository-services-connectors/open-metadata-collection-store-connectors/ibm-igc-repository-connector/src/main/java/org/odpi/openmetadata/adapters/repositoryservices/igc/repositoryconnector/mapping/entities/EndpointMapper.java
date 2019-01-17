@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.ConnectionEndpointMapper;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,11 +38,13 @@ public class EndpointMapper extends ReferenceableMapper {
         // The list of properties that should be mapped
         addSimplePropertyMapping("name", "name");
         addSimplePropertyMapping("short_description", "description");
-        addSimplePropertyMapping("name", "networkAddress");
 
         // This relationship can only be retrieved inverted
         // (relationship in IGC is cannot be traversed in other direction)
         addRelationshipMapper(ConnectionEndpointMapper.getInstance());
+
+        addComplexIgcProperty("name");
+        addComplexOmrsProperty("networkAddress");
 
     }
 
@@ -71,6 +74,18 @@ public class EndpointMapper extends ReferenceableMapper {
             log.debug("Not a host_(engine) asset, just returning as-is: {}", otherAsset);
             return otherAsset;
         }
+    }
+
+    /**
+     * Implement any complex property mappings that cannot be simply mapped one-to-one.
+     */
+    @Override
+    protected void complexPropertyMappings(InstanceProperties instanceProperties) {
+
+        // Map from name to networkAddress, without clobbering the simple name mapping
+        String networkAddress = (String) igcEntity.getPropertyByName("name");
+        instanceProperties.setProperty("networkAddress", getPrimitivePropertyValue(networkAddress));
+
     }
 
 }
