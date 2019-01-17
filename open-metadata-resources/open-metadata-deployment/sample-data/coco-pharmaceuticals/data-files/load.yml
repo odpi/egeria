@@ -22,6 +22,9 @@
 
 - name: remove any non-sample files
   file:
-    path: "{{ egeria_samples_cocopharma_targets.files }}/load.yml"
+    path: "{{ egeria_samples_cocopharma_targets.files }}/{{ item }}"
     state: absent
   become: yes
+  with_items:
+    - load.yml
+    - remove.yml

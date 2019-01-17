@@ -13,7 +13,7 @@
 - name: load sample data to database
   shell: >
     source ~/.bashrc &&
-    db2 -td$ -f /home/{{ egeria_samples_users.db_owner }}/load{{ item }}.sql
+    db2 -td@ -f /home/{{ egeria_samples_users.db_owner }}/load{{ item }}.sql
   args:
     executable: /bin/bash
   become_user: "{{ egeria_samples_users.db_owner }}"
