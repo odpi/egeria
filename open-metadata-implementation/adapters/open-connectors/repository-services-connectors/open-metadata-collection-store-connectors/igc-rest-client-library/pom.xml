@@ -51,10 +51,10 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler.version}</version>
                 <configuration>
-                    <compilerArgument>-J-Xmx1024m</compilerArgument>
-<!--                    <fork>true</fork>
+<!--                    <compilerArgument>-J-Xmx1024m</compilerArgument> -->
+                    <fork>true</fork>
                     <meminitial>128m</meminitial>
-                    <maxmem>512m</maxmem> -->
+                    <maxmem>1024m</maxmem>
                 </configuration>
             </plugin>
         </plugins>
