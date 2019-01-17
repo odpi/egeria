@@ -1,7 +1,7 @@
 # <!-- SPDX-License-Identifier: Apache-2.0 -->
 # Copyright Contributors to the Egeria project.
-name: vdc-open
-description: Egeria VDC Environment using open components only including egeria, ranger, atlas etc
+name: vdc
+description: Egeria VDC Environment 
 version: 0.0.1
 keywords:
   - apache-ranger, ranger, security, odpi, egeria, open-metadata,vdc, virtualization
