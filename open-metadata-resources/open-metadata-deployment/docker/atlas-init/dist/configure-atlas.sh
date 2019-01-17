@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 #  SPDX-License-Identifier: Apache-2.0
 #  Copyright Contributors to the ODPi Egeria project. 
@@ -55,17 +55,23 @@ echo "Egeria Cohort     : ${EGERIA_COHORT}"
 
 echo "Checking ATLAS is up"
 
-loop=25
+loop=100
 retrytimeout=10
-delay=25
+delay=30
 
+# - In a standard environment, return code 1 indicates service is running. However in a k8s environment the 
+# service appears to respond even before the backend is up. Thus a better test is to force an error.
+# So we will do a post, expecting a 401 back when things are ok (full authentication is required)
 while [ $loop -gt 0 ]
 do
-    if http --check-status --ignore-stdin --timeout=${retrytimeout} HEAD ${ATLAS_ENDPOINT} &> /dev/null; then
+    http --check-status --ignore-stdin --timeout=${retrytimeout} HEAD ${ATLAS_ENDPOINT} &> /dev/null
+    rc=$?
+    if [ $rc -eq 4 ]
+    then
         echo 'OK!'
 	break
     else
-        # timeout - let's keep trying
+        # timeout or otherwise not ready - let's keep trying
         let loop=$loop-1
         echo ".. not yet up. waiting ${delay}s. ${loop} attempts remaining"
         sleep ${delay}
@@ -79,7 +85,7 @@ then
 fi
 
 
-# Isue requests against atlas
+# Issue requests against atlas
 http --verbose --ignore-stdin \
 	--auth admin:admin \
 	POST ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/event-bus   \
@@ -140,4 +146,10 @@ then
         exit 1
 fi
 printf "\nAtlas setup completed\n"
+
+echo "WARNING - Now going into sleep loop - to maintain health successful pod status"
+while [ true ]
+do
+	sleep 100000000
+done
 exit 0
