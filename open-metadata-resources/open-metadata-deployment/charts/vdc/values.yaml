@@ -46,9 +46,8 @@ image:
 
 kafka:
   external:
-    enabled: true
+    enabled: false
     type: NodePort
-  replicas: 1
 
 # Network configuration
 service:
