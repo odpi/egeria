@@ -30,9 +30,9 @@ image:
     tag: 0.1.2
     pullPolicy: IfNotPresent
 
-  atlas:
+  atlasinit:
     repository: planetf1/atlas-init-egeria
-    tag: 0.1.1
+    tag: 0.1.4
     pullPolicy: IfNotPresent
 
   igcproxy:
@@ -54,3 +54,4 @@ kafka:
 service:
   #LoadBalancer is another option (not for IBM Cloud free cluster)
   type: NodePort
+  externalName:  default.svc.cluster.local
