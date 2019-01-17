@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.auditlog;
+package org.odpi.openmetadata.accessservices.assetlineage.auditlog;
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.slf4j.Logger;
@@ -10,7 +10,7 @@ import java.text.MessageFormat;
 import java.util.Arrays;
 
 /**
- * The CommunityProfileAuditCode is used to define the message content for the OMRS Audit Log.
+ * The AssetLineageAuditCode is used to define the message content for the OMRS Audit Log.
  *
  * The 5 fields in the enum are:
  * <ul>
@@ -22,35 +22,35 @@ import java.util.Arrays;
  *     <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum CommunityProfileAuditCode
+public enum AssetLineageAuditCode
 {
-    SERVICE_INITIALIZING("OMAS-COMMUNITY-PROFILE-0001",
+    SERVICE_INITIALIZING("OMAS-ASSET-LINEAGE-0001",
              OMRSAuditLogRecordSeverity.INFO,
-             "The Community Profile Open Metadata Access Service (OMAS) is initializing a new server instance",
-             "The local server has started up a new instance of the Community Profile OMAS.",
+             "The Asset Lineage Open Metadata Access Service (OMAS) is initializing a new server instance",
+             "The local server has started up a new instance of the Asset Lineage OMAS.",
              "No action is required.  This is part of the normal operation of the service."),
 
-    SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAS-COMMUNITY-PROFILE-0002",
+    SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAS-ASSET-LINEAGE-0002",
              OMRSAuditLogRecordSeverity.INFO,
-             "The Community Profile Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server {0}",
-             "The Community Profile OMAS is registering to receive events from the connected open metadata repositories.",
+             "The Asset Lineage Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server {0}",
+             "The Asset Lineage OMAS is registering to receive events from the connected open metadata repositories.",
              "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_INITIALIZED("OMAS-COMMUNITY-PROFILE-0003",
+    SERVICE_INITIALIZED("OMAS-ASSET-LINEAGE-0003",
              OMRSAuditLogRecordSeverity.INFO,
-             "The Community Profile Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
+             "The Asset Lineage Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
              "The access service has completed initialization of a new instance.",
              "No action is required.  This is part of the normal operation of the service."),
 
-    SERVICE_SHUTDOWN("OMAS-COMMUNITY-PROFILE-0004",
+    SERVICE_SHUTDOWN("OMAS-ASSET-LINEAGE-0004",
              OMRSAuditLogRecordSeverity.INFO,
-             "The Community Profile Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
-             "The local server has requested shut down of an Community Profile OMAS instance.",
+             "The Asset Lineage Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
+             "The local server has requested shut down of an Asset Lineage OMAS instance.",
              "No action is required.  This is part of the normal operation of the service."),
 
-    SERVICE_INSTANCE_FAILURE("OMAS-COMMUNITY-PROFILE-0005",
+    SERVICE_INSTANCE_FAILURE("OMAS-ASSET-LINEAGE-0005",
              OMRSAuditLogRecordSeverity.ERROR,
-             "The Community Profile Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
+             "The Asset Lineage Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.")
     ;
@@ -61,14 +61,14 @@ public enum CommunityProfileAuditCode
     private String                     systemAction;
     private String                     userAction;
 
-    private static final Logger log = LoggerFactory.getLogger(CommunityProfileAuditCode.class);
+    private static final Logger log = LoggerFactory.getLogger(AssetLineageAuditCode.class);
 
 
     /**
-     * The constructor for CommunityProfileAuditCode expects to be passed one of the enumeration rows defined in
-     * CommunityProfileAuditCode above.   For example:
+     * The constructor for AssetLineageAuditCode expects to be passed one of the enumeration rows defined in
+     * AssetLineageAuditCode above.   For example:
      *
-     *     CommunityProfileAuditCode   auditCode = CommunityProfileAuditCode.SERVER_NOT_AVAILABLE;
+     *     AssetLineageAuditCode   auditCode = AssetLineageAuditCode.SERVER_NOT_AVAILABLE;
      *
      * This will expand out to the 4 parameters shown below.
      *
@@ -78,7 +78,7 @@ public enum CommunityProfileAuditCode
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction - instructions for resolving the situation, if any
      */
-    CommunityProfileAuditCode(String                     messageId,
+    AssetLineageAuditCode(String                     messageId,
                               OMRSAuditLogRecordSeverity severity,
                               String                     message,
                               String                     systemAction,
@@ -123,7 +123,7 @@ public enum CommunityProfileAuditCode
     {
         if (log.isDebugEnabled())
         {
-            log.debug(String.format("<== CommunityProfile Audit Code.getMessage(%s)", Arrays.toString(params)));
+            log.debug(String.format("<== AssetLineage Audit Code.getMessage(%s)", Arrays.toString(params)));
         }
 
         MessageFormat mf = new MessageFormat(logMessage);
@@ -131,7 +131,7 @@ public enum CommunityProfileAuditCode
 
         if (log.isDebugEnabled())
         {
-            log.debug(String.format("==> CommunityProfile Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
+            log.debug(String.format("==> AssetLineage Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
         }
 
         return result;

@@ -1,8 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.listener;
+package org.odpi.openmetadata.accessservices.assetlineage.listener;
 
-import org.odpi.openmetadata.accessservices.communityprofile.outtopic.CommunityProfilePublisher;
+import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -13,15 +13,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class CommunityProfileOMRSTopicListener implements OMRSTopicListener
+public class AssetLineageOMRSTopicListener implements OMRSTopicListener
 {
-    private static final Logger log = LoggerFactory.getLogger(CommunityProfileOMRSTopicListener.class);
+    private static final Logger log = LoggerFactory.getLogger(AssetLineageOMRSTopicListener.class);
 
-    private CommunityProfilePublisher publisher;
+    private AssetLineagePublisher publisher;
 
 
     /**
-     * The constructor is given the connection to the out topic for Community Profile OMAS
+     * The constructor is given the connection to the out topic for Asset Lineage OMAS
      * along with classes for testing and manipulating instances.
      *
      * @param assetConsumerOutTopic  connection to the out topic
@@ -29,13 +29,13 @@ public class CommunityProfileOMRSTopicListener implements OMRSTopicListener
      * @param repositoryValidator  provides validation of metadata instance
      * @param componentName  name of component
      */
-    public CommunityProfileOMRSTopicListener(Connection              assetConsumerOutTopic,
+    public AssetLineageOMRSTopicListener(Connection              assetConsumerOutTopic,
                                              OMRSRepositoryConnector repositoryConnector,
                                              OMRSRepositoryHelper    repositoryHelper,
                                              OMRSRepositoryValidator repositoryValidator,
                                              String                  componentName)
     {
-        publisher = new CommunityProfilePublisher(assetConsumerOutTopic,
+        publisher = new AssetLineagePublisher(assetConsumerOutTopic,
                                                   repositoryConnector,
                                                   repositoryHelper,
                                                   repositoryValidator,
@@ -72,7 +72,7 @@ public class CommunityProfileOMRSTopicListener implements OMRSTopicListener
      */
     public void processInstanceEvent(OMRSInstanceEvent  instanceEvent)
     {
-        log.debug("Processing instance event: " + instanceEvent);
+/*        log.debug("Processing instance event: " + instanceEvent);
 
         if (instanceEvent == null)
         {
@@ -193,6 +193,6 @@ public class CommunityProfileOMRSTopicListener implements OMRSTopicListener
             {
                 log.debug("Ignored instance event - null type");
             }
-        }
+        }*/
     }
 }

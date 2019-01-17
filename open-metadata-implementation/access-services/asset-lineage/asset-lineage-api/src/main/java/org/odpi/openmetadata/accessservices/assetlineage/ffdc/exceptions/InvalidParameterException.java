@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * The InvalidParameterException is thrown by the OMAS when a parameter is null or an invalid value.
  */
-public class InvalidParameterException extends CommunityProfileCheckedExceptionBase
+public class InvalidParameterException extends AssetLineageCheckedExceptionBase
 {
     private   String  parameterName;
 

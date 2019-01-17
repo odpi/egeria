@@ -1,13 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.ffdc;
+package org.odpi.openmetadata.accessservices.assetlineage.ffdc;
 
 /**
- * This package provides the first failure data capture support for the Community Profile OMAS module.
+ * This package provides the first failure data capture support for the Asset Lineage OMAS module.
  * This includes an error code enum, a base class for runtime exceptions, a base class for checked exceptions plus
  * implementation of each specific exception.
  *
- * The error code enum (CommunityProfileErrorCode) has an entry for each unique situation
+ * The error code enum (AssetLineageErrorCode) has an entry for each unique situation
  * where an exception is returned.  Each entry defines:
  *
  * <ul>
