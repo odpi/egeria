@@ -427,7 +427,7 @@ public class ColumnContextEventBuilder {
     }
 
     public EntityDetail getEntity(String guid) throws RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException {
-        return enterpriseConnector.getMetadataCollection().getEntityDetail("", guid);
+        return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);
     }
 
     public BusinessTerm buildBusinessTerm(EntityDetail businessTermEntity) {
@@ -435,7 +435,7 @@ public class ColumnContextEventBuilder {
         businessTerm.setGuid(businessTermEntity.getGUID());
         businessTerm.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.QUALIFIED_NAME));
         businessTerm.setSummary(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.SUMMARY));
-        businessTerm.setName(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.NAME));
+        businessTerm.setName(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.DISPLAY_NAME));
         businessTerm.setExamples(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.EXAMPLES));
         businessTerm.setAbbreviation(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.ABBREVIATION));
         businessTerm.setQuery(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.QUERY));
