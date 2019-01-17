@@ -1367,10 +1367,14 @@ public abstract class RelationshipMapping {
                 relationship.setVersion(ep1.getUpdateTime().getTime());
                 relationship.setCreateTime(ep1.getUpdateTime());
                 relationship.setCreatedBy(ep1.getCreatedBy());
+                relationship.setUpdatedBy(ep1.getUpdatedBy());
+                relationship.setUpdateTime(ep1.getUpdateTime());
             } else if (ep2 != null && ep2.getUpdateTime() != null) {
                 relationship.setVersion(ep2.getUpdateTime().getTime());
                 relationship.setCreateTime(ep2.getUpdateTime());
                 relationship.setCreatedBy(ep2.getCreatedBy());
+                relationship.setUpdatedBy(ep2.getUpdatedBy());
+                relationship.setUpdateTime(ep2.getUpdateTime());
             }
 
             if (ep1 != null && ep2 != null) {
