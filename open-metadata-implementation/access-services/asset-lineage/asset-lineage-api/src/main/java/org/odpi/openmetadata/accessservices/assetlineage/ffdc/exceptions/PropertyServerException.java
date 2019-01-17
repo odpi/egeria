@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.ffdc.exceptions;
  * The PropertyServerException is thrown by the OMAS when it is not able to communicate with the
  * property server.
  */
-public class PropertyServerException extends CommunityProfileCheckedExceptionBase
+public class PropertyServerException extends AssetLineageCheckedExceptionBase
 {
     /**
      * This is the typical constructor used for creating an exception.

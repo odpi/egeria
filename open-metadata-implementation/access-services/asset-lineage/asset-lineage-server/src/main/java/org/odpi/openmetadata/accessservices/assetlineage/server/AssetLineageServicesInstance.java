@@ -1,18 +1,18 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.server;
+package org.odpi.openmetadata.accessservices.assetlineage.server;
 
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
+import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exceptions.NewInstanceException;
+import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 /**
- * CommunityProfileServicesInstance caches references to OMRS objects for a specific server.
+ * AssetLineageServicesInstance caches references to OMRS objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-public class CommunityProfileServicesInstance
+public class AssetLineageServicesInstance
 {
     private OMRSRepositoryConnector repositoryConnector = null;
     private OMRSMetadataCollection  metadataCollection = null;
@@ -25,7 +25,7 @@ public class CommunityProfileServicesInstance
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @throws NewInstanceException a problem occurred during initialization
      */
-    public CommunityProfileServicesInstance(OMRSRepositoryConnector repositoryConnector) throws NewInstanceException
+    public AssetLineageServicesInstance(OMRSRepositoryConnector repositoryConnector) throws NewInstanceException
     {
         final String methodName = "new ServiceInstance";
 
@@ -37,11 +37,11 @@ public class CommunityProfileServicesInstance
                 this.serverName = repositoryConnector.getServerName();
                 this.metadataCollection = repositoryConnector.getMetadataCollection();
 
-                CommunityProfileServicesInstanceMap.setNewInstanceForJVM(serverName, this);
+                AssetLineageServicesInstanceMap.setNewInstanceForJVM(serverName, this);
             }
             catch (Throwable error)
             {
-                CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.OMRS_NOT_INITIALIZED;
+                AssetLineageErrorCode errorCode    = AssetLineageErrorCode.OMRS_NOT_INITIALIZED;
                 String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
                 throw new NewInstanceException(errorCode.getHTTPErrorCode(),
@@ -55,7 +55,7 @@ public class CommunityProfileServicesInstance
         }
         else
         {
-            CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.OMRS_NOT_INITIALIZED;
+            AssetLineageErrorCode errorCode    = AssetLineageErrorCode.OMRS_NOT_INITIALIZED;
             String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new NewInstanceException(errorCode.getHTTPErrorCode(),
@@ -85,7 +85,7 @@ public class CommunityProfileServicesInstance
         }
         else
         {
-            CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.OMRS_NOT_AVAILABLE;
+            AssetLineageErrorCode errorCode    = AssetLineageErrorCode.OMRS_NOT_AVAILABLE;
             String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new NewInstanceException(errorCode.getHTTPErrorCode(),
@@ -114,7 +114,7 @@ public class CommunityProfileServicesInstance
         }
         else
         {
-            CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.OMRS_NOT_AVAILABLE;
+            AssetLineageErrorCode errorCode    = AssetLineageErrorCode.OMRS_NOT_AVAILABLE;
             String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
@@ -143,7 +143,7 @@ public class CommunityProfileServicesInstance
         }
         else
         {
-            CommunityProfileErrorCode errorCode    = CommunityProfileErrorCode.OMRS_NOT_AVAILABLE;
+            AssetLineageErrorCode errorCode    = AssetLineageErrorCode.OMRS_NOT_AVAILABLE;
             String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
@@ -160,6 +160,6 @@ public class CommunityProfileServicesInstance
      * Unregister this instance from the instance map.
      */
     public void shutdown() {
-        CommunityProfileServicesInstanceMap.removeInstanceForJVM(serverName);
+        AssetLineageServicesInstanceMap.removeInstanceForJVM(serverName);
     }
 }

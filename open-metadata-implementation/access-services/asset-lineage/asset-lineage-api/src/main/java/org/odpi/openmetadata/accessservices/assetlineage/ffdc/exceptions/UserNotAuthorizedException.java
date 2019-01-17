@@ -9,7 +9,7 @@ import java.util.Objects;
  * The UserNotAuthorizedException is thrown by the OMAS when a userId passed on a request is not
  * authorized to perform the requested action.
  */
-public class UserNotAuthorizedException extends CommunityProfileCheckedExceptionBase
+public class UserNotAuthorizedException extends AssetLineageCheckedExceptionBase
 {
     private String  userId;
 

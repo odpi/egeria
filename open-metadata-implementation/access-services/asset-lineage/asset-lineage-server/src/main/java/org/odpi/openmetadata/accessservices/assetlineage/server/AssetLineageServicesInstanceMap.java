@@ -1,20 +1,20 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.server;
+package org.odpi.openmetadata.accessservices.assetlineage.server;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * CommunityProfileServicesInstanceMap provides the mapping for inbound REST requests to the appropriate instances
+ * AssetLineageServicesInstanceMap provides the mapping for inbound REST requests to the appropriate instances
  * for the requested server.  The map is maintained in a static so it is scoped to the class loader.
  *
  * Instances of this class call the synchronized static methods to work with the map.
  */
-public class CommunityProfileServicesInstanceMap
+public class AssetLineageServicesInstanceMap
 {
-    private static  Map<String, CommunityProfileServicesInstance>   instanceMap = new HashMap<>();
+    private static  Map<String, AssetLineageServicesInstance>   instanceMap = new HashMap<>();
 
 
     /**
@@ -24,7 +24,7 @@ public class CommunityProfileServicesInstanceMap
      * @param instance instance object
      */
     static synchronized void  setNewInstanceForJVM(String                         serverName,
-                                                   CommunityProfileServicesInstance   instance)
+                                                   AssetLineageServicesInstance   instance)
     {
         instanceMap.put(serverName, instance);
     }
@@ -36,9 +36,9 @@ public class CommunityProfileServicesInstanceMap
      * @param serverName name of the server
      * @return OMRSRepositoryServicesInstance object
      */
-    private static synchronized CommunityProfileServicesInstance getInstanceForJVM(String    serverName)
+    private static synchronized AssetLineageServicesInstance getInstanceForJVM(String    serverName)
     {
-        CommunityProfileServicesInstance   instance = instanceMap.get(serverName);
+        AssetLineageServicesInstance   instance = instanceMap.get(serverName);
 
         return instance;
     }
@@ -58,7 +58,7 @@ public class CommunityProfileServicesInstanceMap
     /**
      * Constructor
      */
-    public CommunityProfileServicesInstanceMap()
+    public AssetLineageServicesInstanceMap()
     {
     }
 
@@ -69,8 +69,8 @@ public class CommunityProfileServicesInstanceMap
      * @param serverName name of the server
      * @return OMRSRepositoryServicesInstance object
      */
-    public CommunityProfileServicesInstance getInstance(String    serverName)
+    public AssetLineageServicesInstance getInstance(String    serverName)
     {
-        return CommunityProfileServicesInstanceMap.getInstanceForJVM(serverName);
+        return AssetLineageServicesInstanceMap.getInstanceForJVM(serverName);
     }
 }
