@@ -37,6 +37,7 @@ public class EndpointMapper extends ReferenceableMapper {
         // The list of properties that should be mapped
         addSimplePropertyMapping("name", "name");
         addSimplePropertyMapping("short_description", "description");
+        addSimplePropertyMapping("name", "networkAddress");
 
         // This relationship can only be retrieved inverted
         // (relationship in IGC is cannot be traversed in other direction)
