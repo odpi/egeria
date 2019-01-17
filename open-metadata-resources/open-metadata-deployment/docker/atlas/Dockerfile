@@ -49,5 +49,8 @@ ENV MANAGE_LOCAL_HBASE true
 ENV PATH /root/atlas-bin/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 EXPOSE 21000
+WORKDIR /root/atlas-bin/conf
+RUN sed -i "s|^atlas.graph.storage.lock.wait-time=10000|atlas.graph.storage.lock.wait-time=100|g" atlas-application.properties
+RUN echo "atlas.notification.relationships.enabled=true" >> atlas-application.properties
 
-CMD ["/bin/bash", "-c", "/root/atlas-bin/bin/atlas_start.py; tail -fF /root/atlas-bin/logs/application.log"]
+ENTRYPOINT ["/bin/bash", "-c", "/root/atlas-bin/bin/atlas_start.py; tail -fF /root/atlas-bin/logs/application.log"]
