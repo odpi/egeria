@@ -226,7 +226,19 @@
     state: absent
   when: ('ibm-information-server-engine' in group_names)
 
-- name: remove Metadata Asset Manager import areas
+- name: remove Metadata Asset Manager file import area
+  shell: >
+    {{ ibm_infosvr_locations.linux }}/ASBNode/bin/imam.sh
+    -u {{ ibm_infosvr_users.isadmin }}
+    -w {{ ibm_infosvr_upwds.isadmin }}
+    -n CocoPharma_SampleFiles
+    -a delete
+    --type area
+  args:
+    executable: /bin/bash
+  when: ('ibm-information-server-engine' in group_names)
+
+- name: remove Metadata Asset Manager database import areas
   shell: >
     {{ ibm_infosvr_locations.linux }}/ASBNode/bin/imam.sh
     -u {{ ibm_infosvr_users.isadmin }}
