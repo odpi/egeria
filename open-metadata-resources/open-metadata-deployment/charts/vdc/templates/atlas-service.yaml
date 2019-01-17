@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: atlas-service
 
-  name: atlas
+  name: {{ include "myapp.fullname" . }}-atlas-service
 
 spec:
   type: "{{ .Values.service.type }}"
