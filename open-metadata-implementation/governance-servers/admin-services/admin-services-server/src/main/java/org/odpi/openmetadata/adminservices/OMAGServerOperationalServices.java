@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices;
 
@@ -6,7 +6,9 @@ package org.odpi.openmetadata.adminservices;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.SecuritySyncAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
@@ -121,12 +123,13 @@ public class OMAGServerOperationalServices
              */
             OMRSOperationalServices  operationalRepositoryServices     = instance.getOperationalRepositoryServices();
             List<AccessServiceAdmin> operationalAccessServiceAdminList = instance.getOperationalAccessServiceAdminList();
-
+            SecuritySyncAdmin operationalSecuritySync = instance.getOperationalSecuritySyncAdmin();
             /*
              * Shut down any running instances for this server
              */
             deactivateRunningServiceInstances(operationalRepositoryServices,
                                               operationalAccessServiceAdminList,
+                                              operationalSecuritySync,
                                               false);
 
             /*
@@ -242,6 +245,12 @@ public class OMAGServerOperationalServices
             instance.setOperationalAccessServiceAdminList(operationalAccessServiceAdminList);
             instanceMap.setNewInstance(serverName, instance);
 
+            /*Initialize the Security Sync component*/
+            SecuritySyncAdmin securitySyncAdmin = initializeSecuritySync(serverName, configuration, methodName, operationalRepositoryServices, enterpriseTopicConnector);
+            if (securitySyncAdmin != null) {
+                instance.setOperationalSecuritySyncAdmin(securitySyncAdmin);
+            }
+
             /*
              * The enterprise topic passes OMRS Events from the cohort to the listening access services.
              * During the access services start up, they registered listeners with the enterprise topic.
@@ -284,6 +293,54 @@ public class OMAGServerOperationalServices
         return response;
     }
 
+    private SecuritySyncAdmin initializeSecuritySync(String serverName, OMAGServerConfig configuration, String methodName, OMRSOperationalServices operationalRepositoryServices, OMRSTopicConnector enterpriseTopicConnector) throws OMAGConfigurationErrorException {
+        SecuritySyncConfig securitySyncConfig = configuration.getSecuritySyncConfig();
+        if (securitySyncConfig != null) {
+            String securitySyncAdminClassName = securitySyncConfig.getSecuritySyncAdminClass();
+
+            if (securitySyncAdminClassName != null) {
+
+                try {
+                    SecuritySyncAdmin securitySyncAdmin = (SecuritySyncAdmin) Class.forName(securitySyncAdminClassName).newInstance();
+                    securitySyncAdmin.initialize(securitySyncConfig,
+                            enterpriseTopicConnector,
+                            operationalRepositoryServices.getAuditLog(securitySyncConfig.getSecuritySyncId(),
+                                    securitySyncConfig.getSecuritySyncName(),
+                                    securitySyncConfig.getSecuritySyncDescription(),
+                                    securitySyncConfig.getSecuritySyncWiki()),
+                            configuration.getLocalServerUserId());
+                    return securitySyncAdmin;
+                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
+                    OMAGErrorCode errorCode = OMAGErrorCode.BAD_ACCESS_SERVICE_ADMIN_CLASS;
+                    String errorMessage = errorCode.getErrorMessageId()
+                            + errorCode.getFormattedErrorMessage(serverName,
+                            securitySyncAdminClassName,
+                            securitySyncConfig.getSecuritySyncName());
+
+                    throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction());
+                }
+            } else {
+                OMAGErrorCode errorCode = OMAGErrorCode.NULL_ACCESS_SERVICE_ADMIN_CLASS;
+                String errorMessage = errorCode.getErrorMessageId()
+                        + errorCode.getFormattedErrorMessage(serverName,
+                        securitySyncConfig.getSecuritySyncName());
+
+                throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+        }
+        return null;
+    }
+
 
     /**
      * Shutdown any running services.
@@ -294,8 +351,8 @@ public class OMAGServerOperationalServices
      */
     private void deactivateRunningServiceInstances(OMRSOperationalServices  operationalRepositoryServices,
                                                    List<AccessServiceAdmin> operationalAccessServiceAdminList,
-                                                   boolean                  permanentDeactivation)
-    {
+                                                   SecuritySyncAdmin securitySyncAdmin,
+                                                   boolean permanentDeactivation) {
         /*
          * Shutdown the access services
          */
@@ -308,6 +365,13 @@ public class OMAGServerOperationalServices
                     accessServiceAdmin.shutdown();
                 }
             }
+        }
+
+        /*
+         * Shutdown the security sync
+         */
+        if (securitySyncAdmin != null) {
+            securitySyncAdmin.shutdown();
         }
 
         /*
@@ -343,6 +407,7 @@ public class OMAGServerOperationalServices
 
             deactivateRunningServiceInstances(instance.getOperationalRepositoryServices(),
                                               instance.getOperationalAccessServiceAdminList(),
+                                              instance.getOperationalSecuritySyncAdmin(),
                                               false);
 
             instanceMap.removeInstance(serverName);
@@ -387,6 +452,7 @@ public class OMAGServerOperationalServices
 
             deactivateRunningServiceInstances(instance.getOperationalRepositoryServices(),
                                               instance.getOperationalAccessServiceAdminList(),
+                                              instance.getOperationalSecuritySyncAdmin(),
                                               true);
 
             instanceMap.removeInstance(serverName);
