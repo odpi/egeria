@@ -153,6 +153,12 @@ public class BiCollectionDimension extends Reference {
         "business_name",
         "sequence"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "business_name"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "labels",
         "stewards",
@@ -176,6 +182,7 @@ public class BiCollectionDimension extends Reference {
         "sequence"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isBiCollectionDimension(Object obj) { return (obj.getClass() == BiCollectionDimension.class); }

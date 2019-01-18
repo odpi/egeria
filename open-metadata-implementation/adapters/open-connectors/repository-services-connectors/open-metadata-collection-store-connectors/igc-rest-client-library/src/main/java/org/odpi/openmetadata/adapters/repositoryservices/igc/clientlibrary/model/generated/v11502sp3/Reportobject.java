@@ -114,6 +114,12 @@ public class Reportobject extends Reference {
         "long_description",
         "alias_(business_name)"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "alias_(business_name)"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "labels",
         "stewards",
@@ -133,6 +139,7 @@ public class Reportobject extends Reference {
         "alias_(business_name)"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isReportobject(Object obj) { return (obj.getClass() == Reportobject.class); }
