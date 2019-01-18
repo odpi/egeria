@@ -77,6 +77,9 @@ public class XsdAttributeReference extends Reference {
     private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
         "usage"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "usage"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "xsd_element",
         "xsd_attribute_group",
@@ -90,6 +93,7 @@ public class XsdAttributeReference extends Reference {
         "references_xsd_attribute"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isXsdAttributeReference(Object obj) { return (obj.getClass() == XsdAttributeReference.class); }
