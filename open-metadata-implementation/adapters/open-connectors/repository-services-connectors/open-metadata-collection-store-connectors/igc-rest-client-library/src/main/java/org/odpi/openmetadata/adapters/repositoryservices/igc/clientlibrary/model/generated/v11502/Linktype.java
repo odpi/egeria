@@ -46,12 +46,17 @@ public class Linktype extends Reference {
         "name",
         "description"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "description"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
     private static final List<String> ALL_PROPERTIES = Arrays.asList(
         "name",
         "description"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isLinktype(Object obj) { return (obj.getClass() == Linktype.class); }
