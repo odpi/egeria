@@ -82,6 +82,13 @@ public class DevelopmentLog extends Reference {
         "person",
         "comment"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "workflow_task",
+        "activity",
+        "new_state",
+        "person",
+        "comment"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
     private static final List<String> ALL_PROPERTIES = Arrays.asList(
         "date",
@@ -92,6 +99,7 @@ public class DevelopmentLog extends Reference {
         "comment"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isDevelopmentLog(Object obj) { return (obj.getClass() == DevelopmentLog.class); }
