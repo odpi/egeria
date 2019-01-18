@@ -56,6 +56,9 @@ public class UserRole extends Reference {
         "name",
         "system_role"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "users"
     );
@@ -65,6 +68,7 @@ public class UserRole extends Reference {
         "users"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isUserRole(Object obj) { return (obj.getClass() == UserRole.class); }

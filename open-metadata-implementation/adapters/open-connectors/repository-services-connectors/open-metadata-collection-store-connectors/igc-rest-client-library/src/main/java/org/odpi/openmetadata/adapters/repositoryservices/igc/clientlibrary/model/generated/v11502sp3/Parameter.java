@@ -494,6 +494,17 @@ public class Parameter extends Reference {
         "default_value",
         "level"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "type",
+        "based_on",
+        "allow_null_values",
+        "calendar",
+        "item_kind",
+        "default_value"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "labels",
         "stewards",
@@ -549,6 +560,7 @@ public class Parameter extends Reference {
         "level"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isParameter(Object obj) { return (obj.getClass() == Parameter.class); }
