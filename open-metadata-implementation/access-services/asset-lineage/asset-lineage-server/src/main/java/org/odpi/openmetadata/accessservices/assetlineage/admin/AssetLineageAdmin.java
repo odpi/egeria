@@ -44,7 +44,6 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
                            OMRSRepositoryConnector enterpriseOMRSRepositoryConnector,
                            OMRSAuditLog auditLog,
                            String serverUserName) throws OMAGConfigurationErrorException {
-        System.out.println("wololo");
         final String actionDescription = "initialize";
         AssetLineageAuditCode auditCode;
 

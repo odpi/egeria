@@ -14,6 +14,8 @@ public enum AccessServiceDescription implements Serializable
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-catalog/"),
     ASSET_CONSUMER_OMAS              (1001,   "AssetConsumer", "Access assets through connectors",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-consumer/"),
+    ASSET_LINEAGE_OMAS              (1022,   "AssetLineage", "Store asset lineage",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-lineage/"),
     ASSET_OWNER_OMAS                 (1002,   "AssetOwner", "Manage an asset",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-owner/"),
     COMMUNITY_PROFILE_OMAS           (1003,   "CommunityProfile", "Define personal profile and collaborate",
@@ -22,7 +24,7 @@ public enum AccessServiceDescription implements Serializable
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/connected-asset/"),
     DATA_INFRASTRUCTURE_OMAS         (1010,   "DataInfrastructure", "Manage information about the deployed IT infrastructure",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-infrastructure/"),
-     DATA_ENGINE_OMAS                (1021,   "DataEngine", "Create processes for lineage",
+    DATA_ENGINE_OMAS                 (1021,   "DataEngine", "Create processes for lineage",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-engine/"),
     DATA_PLATFORM_OMAS               (1005,   "DataPlatform", "Capture changes to the data stores and data set managed by a data platform",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-platform/"),
@@ -74,6 +76,7 @@ public enum AccessServiceDescription implements Serializable
 
         accessServiceDescriptionList.add(AccessServiceDescription.ASSET_CATALOG_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.ASSET_CONSUMER_OMAS);
+        accessServiceDescriptionList.add(AccessServiceDescription.ASSET_LINEAGE_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.ASSET_OWNER_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.COMMUNITY_PROFILE_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.CONNECTED_ASSET_OMAS);
