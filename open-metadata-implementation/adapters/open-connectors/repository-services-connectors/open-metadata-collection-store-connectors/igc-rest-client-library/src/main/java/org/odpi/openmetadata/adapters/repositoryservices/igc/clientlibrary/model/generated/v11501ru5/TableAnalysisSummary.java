@@ -213,6 +213,16 @@ public class TableAnalysisSummary extends Reference {
         "inferred_foreign_keys",
         "foreign_key_violations"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "short_&_long_description",
+        "short_description",
+        "long_description",
+        "project_name",
+        "created_by",
+        "modified_by",
+        "inferred_primary_keys",
+        "inferred_foreign_keys"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "assigned_to_terms",
         "steward"
@@ -240,6 +250,7 @@ public class TableAnalysisSummary extends Reference {
         "foreign_key_violations"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isTableAnalysisSummary(Object obj) { return (obj.getClass() == TableAnalysisSummary.class); }

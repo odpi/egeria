@@ -73,6 +73,7 @@ public class BiHierarchyMember extends Reference {
         "sorting_order",
         "sequence"
     );
+    private static final List<String> STRING_PROPERTIES = new ArrayList<>();
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "child_level"
     );
@@ -83,6 +84,7 @@ public class BiHierarchyMember extends Reference {
         "sequence"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isBiHierarchyMember(Object obj) { return (obj.getClass() == BiHierarchyMember.class); }
