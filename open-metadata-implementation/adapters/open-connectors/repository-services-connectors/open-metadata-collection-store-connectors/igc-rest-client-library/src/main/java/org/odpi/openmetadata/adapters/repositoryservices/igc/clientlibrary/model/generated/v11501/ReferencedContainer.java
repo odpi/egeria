@@ -147,6 +147,14 @@ public class ReferencedContainer extends Reference {
         "modified_by",
         "modified_on"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "version",
+        "name",
+        "short_description",
+        "long_description",
+        "created_by",
+        "modified_by"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "stages"
     );
@@ -165,6 +173,7 @@ public class ReferencedContainer extends Reference {
         "shared_containers"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isReferencedContainer(Object obj) { return (obj.getClass() == ReferencedContainer.class); }

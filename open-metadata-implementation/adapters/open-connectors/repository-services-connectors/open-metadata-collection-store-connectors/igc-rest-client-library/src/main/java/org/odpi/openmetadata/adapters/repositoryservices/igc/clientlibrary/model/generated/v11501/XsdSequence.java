@@ -545,6 +545,26 @@ public class XsdSequence extends Reference {
         "modified_by",
         "modified_on"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "namespace",
+        "data_type",
+        "default_value",
+        "fixed_value",
+        "white_space",
+        "timezone",
+        "name_form",
+        "pattern_expression",
+        "minimum_range",
+        "is_minimum_range_inclusive_string",
+        "maximum_range",
+        "is_maximum_range_inclusive_string",
+        "enumeration_value",
+        "created_by",
+        "modified_by"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "context",
         "labels",
@@ -623,6 +643,7 @@ public class XsdSequence extends Reference {
         "modified_on"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isXsdSequence(Object obj) { return (obj.getClass() == XsdSequence.class); }
