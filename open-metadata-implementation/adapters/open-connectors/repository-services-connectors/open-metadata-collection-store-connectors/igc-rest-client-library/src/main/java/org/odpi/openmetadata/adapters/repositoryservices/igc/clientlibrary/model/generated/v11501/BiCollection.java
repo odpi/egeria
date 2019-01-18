@@ -444,6 +444,20 @@ public class BiCollection extends Reference {
         "modified_by",
         "modified_on"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "type",
+        "namespace",
+        "alias_(business_name)",
+        "type_definition",
+        "filter_expression",
+        "join_condition",
+        "imported_from",
+        "created_by",
+        "modified_by"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "bi_model_or_bi_collection",
         "labels",
@@ -521,6 +535,7 @@ public class BiCollection extends Reference {
         "modified_on"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isBiCollection(Object obj) { return (obj.getClass() == BiCollection.class); }

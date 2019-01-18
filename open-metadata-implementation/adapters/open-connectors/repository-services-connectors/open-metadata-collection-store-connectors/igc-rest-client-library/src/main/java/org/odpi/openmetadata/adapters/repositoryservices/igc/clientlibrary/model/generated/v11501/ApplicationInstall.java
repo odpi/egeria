@@ -198,6 +198,18 @@ public class ApplicationInstall extends Reference {
         "installation_path",
         "release_number"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "vendor_name",
+        "instance_name",
+        "location_name",
+        "installation_date",
+        "platform_identifier",
+        "installation_path",
+        "release_number"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "labels",
         "stewards",
@@ -227,6 +239,7 @@ public class ApplicationInstall extends Reference {
         "release_number"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isApplicationInstall(Object obj) { return (obj.getClass() == ApplicationInstall.class); }

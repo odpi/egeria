@@ -124,6 +124,12 @@ public class Olapmodelgroup extends Reference {
         "long_description",
         "business_name"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "business_name"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "labels",
         "stewards",
@@ -144,6 +150,7 @@ public class Olapmodelgroup extends Reference {
         "business_name"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isOlapmodelgroup(Object obj) { return (obj.getClass() == Olapmodelgroup.class); }

@@ -86,6 +86,7 @@ public class XsdElementGroupReference extends Reference {
         "min_occurs",
         "max_occurs"
     );
+    private static final List<String> STRING_PROPERTIES = new ArrayList<>();
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "xsd_element",
         "xsd_complex_type",
@@ -100,6 +101,7 @@ public class XsdElementGroupReference extends Reference {
         "references_xsd_element_group"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isXsdElementGroupReference(Object obj) { return (obj.getClass() == XsdElementGroupReference.class); }

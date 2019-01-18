@@ -195,6 +195,19 @@ public class Mapping extends Reference {
         "modified_by",
         "modified_on"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "description",
+        "source_column_names",
+        "target_column_names",
+        "status",
+        "tags",
+        "rule_description",
+        "rule_expression",
+        "last_update_description",
+        "created_by",
+        "modified_by"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "mapping_specification",
         "source_columns",
@@ -223,6 +236,7 @@ public class Mapping extends Reference {
         "modified_on"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isMapping(Object obj) { return (obj.getClass() == Mapping.class); }

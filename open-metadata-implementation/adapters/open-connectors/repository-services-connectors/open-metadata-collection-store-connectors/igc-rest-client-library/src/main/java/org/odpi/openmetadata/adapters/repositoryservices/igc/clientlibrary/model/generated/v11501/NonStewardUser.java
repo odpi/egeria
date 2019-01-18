@@ -208,6 +208,26 @@ public class NonStewardUser extends Reference {
         "modified_by",
         "modified_on"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "full_name",
+        "job_title",
+        "email_address",
+        "office_phone_number",
+        "mobile_phone_number",
+        "principal_id",
+        "given_name",
+        "surname",
+        "courtesy_title",
+        "organization",
+        "location",
+        "business_address",
+        "home_phone_number",
+        "fax_number",
+        "pager_number",
+        "instant_message_id",
+        "created_by",
+        "modified_by"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
     private static final List<String> ALL_PROPERTIES = Arrays.asList(
         "full_name",
@@ -232,6 +252,7 @@ public class NonStewardUser extends Reference {
         "modified_on"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isNonStewardUser(Object obj) { return (obj.getClass() == NonStewardUser.class); }
