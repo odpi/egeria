@@ -92,6 +92,14 @@ public class StageType extends Reference {
         "author",
         "copyright"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "long_description",
+        "vendor",
+        "version",
+        "author",
+        "copyright"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "steward"
     );
@@ -105,6 +113,7 @@ public class StageType extends Reference {
         "copyright"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isStageType(Object obj) { return (obj.getClass() == StageType.class); }

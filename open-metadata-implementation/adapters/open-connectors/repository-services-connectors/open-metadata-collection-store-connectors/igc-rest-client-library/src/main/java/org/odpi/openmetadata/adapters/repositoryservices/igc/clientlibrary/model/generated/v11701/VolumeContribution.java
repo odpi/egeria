@@ -66,6 +66,7 @@ public class VolumeContribution extends Reference {
         "object_count",
         "size"
     );
+    private static final List<String> STRING_PROPERTIES = new ArrayList<>();
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
     private static final List<String> ALL_PROPERTIES = Arrays.asList(
         "infoset",
@@ -74,6 +75,7 @@ public class VolumeContribution extends Reference {
         "size"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isVolumeContribution(Object obj) { return (obj.getClass() == VolumeContribution.class); }

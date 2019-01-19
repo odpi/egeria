@@ -188,6 +188,17 @@ public class JobStageRecord extends Reference {
         "record_name",
         "record_id_name_value_relation"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "record_id_name",
+        "a_xmeta_locking_root",
+        "record_id_value",
+        "internal_id",
+        "record_name",
+        "record_id_name_value_relation"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "labels",
         "stewards",
@@ -216,6 +227,7 @@ public class JobStageRecord extends Reference {
         "record_id_name_value_relation"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isJobStageRecord(Object obj) { return (obj.getClass() == JobStageRecord.class); }
