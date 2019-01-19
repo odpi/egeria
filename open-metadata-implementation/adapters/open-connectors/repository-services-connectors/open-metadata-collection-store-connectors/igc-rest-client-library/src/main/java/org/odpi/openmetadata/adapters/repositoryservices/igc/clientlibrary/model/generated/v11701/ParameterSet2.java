@@ -125,6 +125,11 @@ public class ParameterSet2 extends Reference {
         "short_description",
         "long_description"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "labels",
         "stewards",
@@ -147,6 +152,7 @@ public class ParameterSet2 extends Reference {
         "used_as_parameter_def"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isParameterSet2(Object obj) { return (obj.getClass() == ParameterSet2.class); }
