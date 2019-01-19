@@ -269,6 +269,21 @@ public class DsdesignView extends Reference {
         "stage_x_size",
         "internal_id"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "output_pins",
+        "input_pins",
+        "stage_types",
+        "stage_x_pos",
+        "container_view_sizing",
+        "stage_list",
+        "stage_y_pos",
+        "stage_y_size",
+        "stage_x_size",
+        "internal_id"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "labels",
         "stewards",
@@ -306,6 +321,7 @@ public class DsdesignView extends Reference {
         "internal_id"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isDsdesignView(Object obj) { return (obj.getClass() == DsdesignView.class); }
