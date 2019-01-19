@@ -63,4 +63,18 @@ public class EnumMapping extends AttributeMapping {
         return value;
     }
 
+    public String getIgcValueForOrdinal(int omrsOrdinal) {
+
+        String igcValue = null;
+        for (String candidateValue : enumDefByIgcValue.keySet()) {
+            EnumElementDef element = enumDefByIgcValue.get(candidateValue);
+            if (element.getOrdinal() == omrsOrdinal) {
+                igcValue = candidateValue;
+                break;
+            }
+        }
+        return igcValue;
+
+    }
+
 }
