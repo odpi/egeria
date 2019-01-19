@@ -168,6 +168,16 @@ public class Classdescriptor extends Reference {
         "modified_by",
         "modified_on"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "identifier_attribute",
+        "class_name",
+        "long_description_attribute",
+        "model_name",
+        "model_uri",
+        "short_description_attribute",
+        "created_by",
+        "modified_by"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "used_in_application_function",
         "has_navigation_descriptor",
@@ -193,6 +203,7 @@ public class Classdescriptor extends Reference {
         "modified_on"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isClassdescriptor(Object obj) { return (obj.getClass() == Classdescriptor.class); }
