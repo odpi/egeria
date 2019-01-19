@@ -13,6 +13,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchSorting;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.*;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.attributes.AttributeMapping;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.classifications.ClassificationMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.RelationshipMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.ReferenceableMapper;
@@ -1052,31 +1053,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     errorCode.getUserAction());
         } else {
 
-            ImplementedMapping mappingExact = getMappingForEntityType(entityTypeGUID);
-            String requestedTypeName;
-            List<ImplementedMapping> mappingsToSearch = new ArrayList<>();
-
-            // If no implemented mapping could be found, at least retrieve the TypeDef for further introspection
-            // (so that if it has any implemented subtypes, we can still search for those)
-            if (mappingExact == null) {
-                TypeDef unimplemented = unimplementedTypeDefs.get(entityTypeGUID);
-                requestedTypeName = unimplemented.getName();
-            } else {
-                requestedTypeName = mappingExact.getTypeDef().getName();
-            }
-
-            // Walk the hierarchy of types to ensure we search across all subtypes of the requested TypeDef as well
-            List<TypeDef> allEntityTypes = findTypeDefsByCategory(userId, TypeDefCategory.ENTITY_DEF);
-
-            for (TypeDef typeDef : allEntityTypes) {
-                ImplementedMapping implementedMapping = getMappingForEntityType(typeDef.getGUID());
-                if (implementedMapping != null) {
-                    if(repositoryHelper.isTypeOf(metadataCollectionId, typeDef.getName(), requestedTypeName)) {
-                        // Add any subtypes of the requested type into the search
-                        mappingsToSearch.add(implementedMapping);
-                    }
-                }
-            }
+            List<ImplementedMapping> mappingsToSearch = getMappingsToSearch(entityTypeGUID, userId);
 
             // Now iterate through all of the mappings we need to search, construct and run an appropriate search
             // for each one
@@ -1159,8 +1136,9 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      *                                beyond the first page of results. Zero means start from the first element.
      * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
      *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     *                             status values. (not implemented for IGC, must be null)
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values. (not implemented
+     *                 for IGC, must be null)
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
      * @param sequencingOrder Enum defining how the results should be ordered.
@@ -1220,9 +1198,6 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
         repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
 
-        // TODO:
-        //  - search by classification for demo
-
         /*
          * Validate TypeDef
          */
@@ -1252,33 +1227,100 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 matchClassificationProperties,
                 methodName);
 
-        /*
-         * Perform operation
-         */
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        ArrayList<EntityDetail> entityDetails = new ArrayList<>();
 
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                this.getClass().getName(),
-                repositoryName);
-
-        if (asOfTime == null)
-        {
+        // Immediately throw unimplemented exception if trying to limit by status or retrieve historical view
+        if (limitResultsByStatus != null || asOfTime != null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                    this.getClass().getName(),
+                    repositoryName);
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
+        } else {
+
+            List<ImplementedMapping> mappingsToSearch = getMappingsToSearch(entityTypeGUID, userId);
+
+            // Now iterate through all of the mappings we need to search, construct and run an appropriate search
+            // for each one
+            for (ImplementedMapping mapping : mappingsToSearch) {
+
+                ClassificationMapping foundMapping = null;
+
+                // Check which classifications (if any) are implemented for the entity mapping
+                List<ClassificationMapping> classificationMappings = mapping.getEntityMapping().getClassificationMappers();
+                for (ClassificationMapping classificationMapping : classificationMappings) {
+
+                    // Check whether the implemented classification matches the one we're searching based on
+                    String candidateName = classificationMapping.getOmrsClassificationType();
+                    if (candidateName.equals(classificationName)) {
+                        foundMapping = classificationMapping;
+                        break;
+                    }
+
+                }
+
+                // Only proceed if we have found a classification mapping for this entity that matches the search
+                // criteria provided
+                if (foundMapping != null) {
+
+                    IGCSearch igcSearch = new IGCSearch();
+                    igcSearch.addType(mapping.getIgcAssetType());
+                    IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+
+                    // Retrieve the list of property names we need for the classification
+                    List<String> igcClassificationProperties = foundMapping.getIgcRelationshipProperties();
+
+                    // Compose the search criteria for the classification as a set of nested conditions, so that
+                    // matchCriteria does not change the meaning of what we're searching
+                    IGCSearchConditionSet baseCriteria = foundMapping.getIGCSearchCriteria(matchClassificationProperties);
+                    igcSearchConditionSet.addNestedConditionSet(baseCriteria);
+
+                    IGCSearchSorting igcSearchSorting = null;
+                    if (sequencingProperty == null && sequencingOrder != null) {
+                        igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
+                    }
+
+                    if (matchCriteria != null) {
+                        switch (matchCriteria) {
+                            case ALL:
+                                igcSearchConditionSet.setMatchAnyCondition(false);
+                                break;
+                            case ANY:
+                                igcSearchConditionSet.setMatchAnyCondition(true);
+                                break;
+                            case NONE:
+                                igcSearchConditionSet.setMatchAnyCondition(false);
+                                igcSearchConditionSet.setNegateAll(true);
+                                break;
+                        }
+                    }
+
+                    igcSearch.addProperties(igcClassificationProperties);
+                    igcSearch.addConditions(igcSearchConditionSet);
+
+                    setPagingForSearch(igcSearch, fromEntityElement, pageSize);
+
+                    if (igcSearchSorting != null) {
+                        igcSearch.addSortingCriteria(igcSearchSorting);
+                    }
+
+                    processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+
+                } else {
+                    log.info("No classification mapping has been implemented for {} on entity {} -- skipping from search.", classificationName, mapping.getTypeDef().getName());
+                }
+
+            }
+
         }
-        else
-        {
-            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
+
+        return entityDetails.isEmpty() ? null : entityDetails;
+
     }
 
     /**
@@ -1465,6 +1507,63 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     }
 
     /**
+     * Retrieve the listing of implemented mappings that should be used for an entity search, including navigating
+     * subtypes when a supertype is the entity type provided.
+     *
+     * @param entityTypeGUID the GUID of the OMRS entity type for which to search
+     * @param userId the userId through which to search
+     * @return List<ImplementedMapping>
+     */
+    private List<ImplementedMapping> getMappingsToSearch(String entityTypeGUID, String userId) throws
+            InvalidParameterException,
+            RepositoryErrorException,
+            UserNotAuthorizedException {
+
+        List<ImplementedMapping> mappingsToSearch = new ArrayList<>();
+
+        // If no entityType was provided, add all implemented types (except Referenceable, as that could itself
+        // include many objects that are not implemented)
+        if (entityTypeGUID == null) {
+            for (ImplementedMapping candidate : implementedMappings) {
+                if (candidate.getTypeDef().getCategory().equals(TypeDefCategory.ENTITY_DEF)) {
+                    if (!candidate.getTypeDef().getName().equals("Referenceable")) {
+                        mappingsToSearch.add(candidate);
+                    }
+                }
+            }
+        } else {
+
+            ImplementedMapping mappingExact = getMappingForEntityType(entityTypeGUID);
+            String requestedTypeName;
+            // If no implemented mapping could be found, at least retrieve the TypeDef for further introspection
+            // (so that if it has any implemented subtypes, we can still search for those)
+            if (mappingExact == null) {
+                TypeDef unimplemented = unimplementedTypeDefs.get(entityTypeGUID);
+                requestedTypeName = unimplemented.getName();
+            } else {
+                requestedTypeName = mappingExact.getTypeDef().getName();
+            }
+
+            // Walk the hierarchy of types to ensure we search across all subtypes of the requested TypeDef as well
+            List<TypeDef> allEntityTypes = findTypeDefsByCategory(userId, TypeDefCategory.ENTITY_DEF);
+
+            for (TypeDef typeDef : allEntityTypes) {
+                ImplementedMapping implementedMapping = getMappingForEntityType(typeDef.getGUID());
+                if (implementedMapping != null) {
+                    if (repositoryHelper.isTypeOf(metadataCollectionId, typeDef.getName(), requestedTypeName)) {
+                        // Add any subtypes of the requested type into the search
+                        mappingsToSearch.add(implementedMapping);
+                    }
+                }
+            }
+
+        }
+
+        return mappingsToSearch;
+
+    }
+
+    /**
      * Return a list of entities whose string based property values match the search criteria.  The
      * search criteria may include regex style wild cards.
      *
@@ -1554,89 +1653,64 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     errorCode.getUserAction());
         } else {
 
-            ImplementedMapping mappingExact = getMappingForEntityType(entityTypeGUID);
-            String requestedTypeName;
-            List<ImplementedMapping> mappingsToSearch = new ArrayList<>();
-
-            // If no implemented mapping could be found, at least retrieve the TypeDef for further introspection
-            // (so that if it has any implemented subtypes, we can still search for those)
-            if (mappingExact == null) {
-                TypeDef unimplemented = unimplementedTypeDefs.get(entityTypeGUID);
-                requestedTypeName = unimplemented.getName();
-            } else {
-                requestedTypeName = mappingExact.getTypeDef().getName();
-            }
-
-            // Walk the hierarchy of types to ensure we search across all subtypes of the requested TypeDef as well
-            List<TypeDef> allEntityTypes = findTypeDefsByCategory(userId, TypeDefCategory.ENTITY_DEF);
-
-            for (TypeDef typeDef : allEntityTypes) {
-                ImplementedMapping implementedMapping = getMappingForEntityType(typeDef.getGUID());
-                if (implementedMapping != null) {
-                    if(repositoryHelper.isTypeOf(metadataCollectionId, typeDef.getName(), requestedTypeName)) {
-                        // Add any subtypes of the requested type into the search
-                        mappingsToSearch.add(implementedMapping);
-                    }
-                }
-            }
+            List<ImplementedMapping> mappingsToSearch = getMappingsToSearch(entityTypeGUID, userId);
 
             // Now iterate through all of the mappings we need to search, construct and run an appropriate search
             // for each one
             for (ImplementedMapping mapping : mappingsToSearch) {
 
                 IGCSearch igcSearch = new IGCSearch();
-
                 String igcAssetType = addTypeToSearch(mapping, igcSearch);
 
                 // Get POJO from the asset type, and use this to retrieve a listing of all string properties
                 // for that asset type -- these are the list of properties we should use for the search
                 Class pojo = igcRestClient.getPOJOForType(igcAssetType);
 
-                List<String> properties;
                 if (pojo != null) {
-                    properties = Reference.getStringPropertiesFromPOJO(pojo);
-                } else {
-                    /* Since IGC requires the set of properties against which to search,
-                     * if no type has been provided we'll use the generic set of the following
-                     * properties for the search (common to all objects) */
-                    properties = new ArrayList<>();
-                    properties.add("name");
-                    properties.add("short_description");
-                    // TODO:
-                    //  - POST'd search to IGC doesn't work on latest v11.7.0.2+ using long_description; suggestion
-                    //    to instead use "searchText" (TBD; may need to drop 'long_description' from v11.7 search in
-                    //    meantime)
-                    //  - using "searchText" requires using "searchProperties" (no "where" conditions) -- but does not
-                    //    work with 'main_object', must be used with a specific asset type
-                    if (igcRestClient.getIgcVersion().isLowerThan(IGCVersionEnum.V11702)) {
-                        properties.add("long_description");
+
+                    List<String> properties = Reference.getStringPropertiesFromPOJO(pojo);
+                    // POST'd search to IGC doesn't work on v11.7.0.2 using long_description
+                    // Using "searchText" requires using "searchProperties" (no "where" conditions) -- but does not
+                    // work with 'main_object', must be used with a specific asset type
+                    // Therefore for v11.7.0.2 we will simply drop long_description from the fields we search
+                    if (igcRestClient.getIgcVersion().isEqualTo(IGCVersionEnum.V11702)) {
+                        ArrayList<String> propertiesWithoutLongDescription = new ArrayList<>();
+                        for (String property : properties) {
+                            if (!property.equals("long_description")) {
+                                propertiesWithoutLongDescription.add(property);
+                            }
+                        }
+                        properties = propertiesWithoutLongDescription;
                     }
+
+                    IGCSearchSorting igcSearchSorting = null;
+                    if (sequencingProperty == null && sequencingOrder != null) {
+                        igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
+                    }
+
+                    IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+                    igcSearchConditionSet.setMatchAnyCondition(true);
+                    for (String property : properties) {
+                        igcSearchConditionSet.addCondition(new IGCSearchCondition(
+                                property,
+                                "like %{0}%",
+                                searchCriteria
+                        ));
+                    }
+
+                    igcSearch.addConditions(igcSearchConditionSet);
+
+                    setPagingForSearch(igcSearch, fromEntityElement, pageSize);
+
+                    if (igcSearchSorting != null) {
+                        igcSearch.addSortingCriteria(igcSearchSorting);
+                    }
+
+                    processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+
+                } else {
+                    log.warn("Unable to find POJO to handle IGC asset type '{}' -- skipping search against this asset type.", igcAssetType);
                 }
-
-                IGCSearchSorting igcSearchSorting = null;
-                if (sequencingProperty == null && sequencingOrder != null) {
-                    igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
-                }
-
-                IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
-                igcSearchConditionSet.setMatchAnyCondition(true);
-                for (String property : properties) {
-                    igcSearchConditionSet.addCondition(new IGCSearchCondition(
-                            property,
-                            "like %{0}%",
-                            searchCriteria
-                    ));
-                }
-
-                igcSearch.addConditions(igcSearchConditionSet);
-
-                setPagingForSearch(igcSearch, fromEntityElement, pageSize);
-
-                if (igcSearchSorting != null) {
-                    igcSearch.addSortingCriteria(igcSearchSorting);
-                }
-
-                processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
 
             }
 
