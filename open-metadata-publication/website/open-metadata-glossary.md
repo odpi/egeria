@@ -133,7 +133,8 @@ Below are links to common terms and concepts used in Egeria.
 * [Governance Program OMAS](../../open-metadata-implementation/access-services/governance-program)
 * [Governance Servers](../../open-metadata-implementation/governance-servers)
 * [Graph Repository Connector](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector)
-* [GUIDs](../../open-metadata-implementation/access-services/docs/concepts/guid.md)
+* [GUIDs](basic-concepts/guid.md)
+  * [Access services GUIDs](../../open-metadata-implementation/access-services/docs/concepts/guid.md)
   * [Metadata Collection Id](../../open-metadata-implementation/repository-services/docs/metadata-collection-id.md)
 
 
@@ -334,9 +335,9 @@ Below are links to common terms and concepts used in Egeria.
   * [Open Metadata Topic Connector](../../open-metadata-implementation/adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/README.md)
   * [OMRS Topic Connector](../../open-metadata-implementation/repository-services/docs/component-descriptions/connectors/omrs-topic-connector.md)
 * Topics
-  * [InTopic](../../open-metadata-implementation/access-services/docs/concepts/in-topic.md)
+  * [InTopic](../../open-metadata-implementation/access-services/docs/concepts/client-server/in-topic.md)
   * [OMRS Topic](../../open-metadata-implementation/repository-services/docs/omrs-event-topic.md)
-  * [OutTopic](../../open-metadata-implementation/access-services/docs/concepts/out-topic.md)
+  * [OutTopic](../../open-metadata-implementation/access-services/docs/concepts/client-server/out-topic.md)
 * [Type Definitions (TypeDefs)](../../open-metadata-implementation/repository-services/docs/open-metadata-type-definitions.md)
 
 
