@@ -407,6 +407,7 @@ public class IGCRestClient {
         }
         ResponseEntity<String> response;
         try {
+            log.debug("{}ing to {} with: {}", method, endpoint, payload);
             response = new RestTemplate().exchange(
                     endpoint,
                     method,
