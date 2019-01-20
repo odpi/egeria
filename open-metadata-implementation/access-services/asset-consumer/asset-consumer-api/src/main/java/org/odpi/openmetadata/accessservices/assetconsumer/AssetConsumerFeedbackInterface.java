@@ -43,7 +43,7 @@ public interface AssetConsumerFeedbackInterface
 
 
     /**
-     * Adds a rating and optional review text to the asset.
+     * Updates the rating and optional review text attached to the asset by this user.
      *
      * @param userId      userId of user making request.
      * @param reviewGUID  unique identifier for the review.
@@ -64,7 +64,7 @@ public interface AssetConsumerFeedbackInterface
 
 
     /**
-     * Removes of a star rating that was added to the asset by this user.
+     * Removes of a review that was added to the asset by this user.
      *
      * @param userId      userId of user making request.
      * @param reviewGUID  unique identifier for the review object.
@@ -73,10 +73,10 @@ public interface AssetConsumerFeedbackInterface
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    void   removeReview(String     userId,
-                        String     reviewGUID) throws InvalidParameterException,
-                                                      PropertyServerException,
-                                                      UserNotAuthorizedException;
+    void   removeReviewFromAsset(String     userId,
+                                 String     reviewGUID) throws InvalidParameterException,
+                                                               PropertyServerException,
+                                                               UserNotAuthorizedException;
 
 
     /**
@@ -107,10 +107,10 @@ public interface AssetConsumerFeedbackInterface
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    void   removeLike(String     userId,
-                      String     likeGUID) throws InvalidParameterException,
-                                                  PropertyServerException,
-                                                  UserNotAuthorizedException;
+    void   removeLikeFromAsset(String     userId,
+                               String     likeGUID) throws InvalidParameterException,
+                                                           PropertyServerException,
+                                                           UserNotAuthorizedException;
 
 
     /**
@@ -187,8 +187,8 @@ public interface AssetConsumerFeedbackInterface
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    void   removeComment(String     userId,
-                         String     commentGUID) throws InvalidParameterException,
-                                                        PropertyServerException,
-                                                        UserNotAuthorizedException;
+    void   removeCommentFromAsset(String     userId,
+                                  String     commentGUID) throws InvalidParameterException,
+                                                                 PropertyServerException,
+                                                                 UserNotAuthorizedException;
 }
