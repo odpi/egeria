@@ -93,6 +93,10 @@ public class Outputpin extends Reference {
         "modified_by",
         "modified_on"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "created_by",
+        "modified_by"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
     private static final List<String> ALL_PROPERTIES = Arrays.asList(
         "of_job_component",
@@ -104,6 +108,7 @@ public class Outputpin extends Reference {
         "modified_on"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isOutputpin(Object obj) { return (obj.getClass() == Outputpin.class); }

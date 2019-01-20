@@ -57,6 +57,7 @@ public class Datasourcealiasgroup extends Reference {
     public static Boolean canBeCreated() { return false; }
     public static Boolean includesModificationDetails() { return false; }
     private static final List<String> NON_RELATIONAL_PROPERTIES = new ArrayList<>();
+    private static final List<String> STRING_PROPERTIES = new ArrayList<>();
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "same_as_data_connections"
     );
@@ -66,6 +67,7 @@ public class Datasourcealiasgroup extends Reference {
         "bound_to_database"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isDatasourcealiasgroup(Object obj) { return (obj.getClass() == Datasourcealiasgroup.class); }

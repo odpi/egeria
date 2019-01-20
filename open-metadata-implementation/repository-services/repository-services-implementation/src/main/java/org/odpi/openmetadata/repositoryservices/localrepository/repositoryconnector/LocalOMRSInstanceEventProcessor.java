@@ -304,14 +304,14 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                     break;
 
                 case PURGED_RELATIONSHIP_EVENT:
-                    this.processPurgedEntityEvent(cohortName,
-                                                  instanceEventOriginator.getMetadataCollectionId(),
-                                                  instanceEventOriginator.getServerName(),
-                                                  instanceEventOriginator.getServerType(),
-                                                  instanceEventOriginator.getOrganizationName(),
-                                                  instanceEvent.getTypeDefGUID(),
-                                                  instanceEvent.getTypeDefName(),
-                                                  instanceEvent.getInstanceGUID());
+                    this.processPurgedRelationshipEvent(cohortName,
+                                                        instanceEventOriginator.getMetadataCollectionId(),
+                                                        instanceEventOriginator.getServerName(),
+                                                        instanceEventOriginator.getServerType(),
+                                                        instanceEventOriginator.getOrganizationName(),
+                                                        instanceEvent.getTypeDefGUID(),
+                                                        instanceEvent.getTypeDefName(),
+                                                        instanceEvent.getInstanceGUID());
                     break;
 
                 case RESTORED_RELATIONSHIP_EVENT:

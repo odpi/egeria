@@ -712,6 +712,23 @@ public class AssetCatalogService {
         return asset.getClassifications();
     }
 
+    private String getTypeID(String serverName, String userId, String relationshipType) throws AssetNotFoundException, PropertyServerException {
+
+        OMRSMetadataCollection metadataCollection = instanceHandler.getMetadataCollection(serverName);
+
+        if (relationshipType != null) {
+            try {
+                return metadataCollection.getTypeDefByName(userId, relationshipType).getGUID();
+            } catch (InvalidParameterException
+                    | RepositoryErrorException
+                    | UserNotAuthorizedException
+                    | TypeDefNotKnownException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
     private List<Relationship> getRelationships(String serverName, String userId, String assetId, Integer fromElement,
                                                 Integer pageSize, String property, String relationshipTypeID,
                                                 List<InstanceStatus> instanceStatuses, SequencingOrder sequencingOrder)

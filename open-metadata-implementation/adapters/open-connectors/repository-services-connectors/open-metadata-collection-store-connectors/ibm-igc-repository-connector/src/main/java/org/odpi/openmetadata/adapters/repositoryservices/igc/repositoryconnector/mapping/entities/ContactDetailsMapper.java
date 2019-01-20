@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.attributes.ContactMethodTypeMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.ContactThroughMapper_Person;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.ContactThroughMapper_Team;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
@@ -49,10 +50,8 @@ public class ContactDetailsMapper extends ReferenceableMapper {
         // Set the email address as a contact method (only if there is one present)
         String emailAddress = (String) igcEntity.getPropertyByName("email_address");
         if (emailAddress != null && !emailAddress.equals("")) {
-            EnumPropertyValue contactDetail = new EnumPropertyValue();
-            contactDetail.setOrdinal(0);
-            contactDetail.setSymbolicName("Email");
-            instanceProperties.setProperty("contactMethodType", contactDetail);
+            EnumPropertyValue contactMethod = ContactMethodTypeMapper.getInstance().getEnumMappingByIgcValue("email");
+            instanceProperties.setProperty("contactMethodType", contactMethod);
             instanceProperties.setProperty("contactMethodValue", getPrimitivePropertyValue(emailAddress));
         }
 
