@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- *  AssetListResponse returns a list of assets from the server.   The list may be too long to
+ *  MeaningListResponse returns a list of meanings from the server.   The list may be too long to
  *  retrieve in a single call so there is support for paging of replies.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -86,9 +86,9 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
 
 
     /**
-     * Set up the list of assets for the response.
+     * Set up the list of glossary terms for the response.
      *
-     * @param meanings list of assets
+     * @param meanings list
      */
     public void setMeanings(List<GlossaryTerm> meanings)
     {
