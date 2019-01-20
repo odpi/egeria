@@ -12,8 +12,8 @@ These first two methods enable the caller to extract the unique identifier
 * **getAssetForConnection** - returns the unique identifier for the asset connected to the requested connection.
   
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/get-asset-for-connection-with-java.md),
-  [REST](../../../asset-consumer-server/docs/user/get-asset-for-connection-with-rest.md)
+  [Java](../../../asset-consumer-client/docs/user/get-asset-for-connection-guid-with-java.md),
+  [REST](../../../asset-consumer-server/docs/user/get-asset-for-connection-guid-with-rest.md)
 
 * **getAssetForConnectionName** - returns the asset corresponding to the supplied connection name.
 
