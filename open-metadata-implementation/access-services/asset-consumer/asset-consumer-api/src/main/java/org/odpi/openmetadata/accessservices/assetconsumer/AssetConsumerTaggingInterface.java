@@ -5,8 +5,11 @@ package org.odpi.openmetadata.accessservices.assetconsumer;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.UserNotAuthorizedException;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.Tag;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
+
+import java.util.List;
 
 /**
  * AssetConsumerTaggingInterface support the management and use of informal tags, whether public or private.
@@ -88,6 +91,45 @@ public interface AssetConsumerTaggingInterface
                                             PropertyServerException,
                                             UserNotAuthorizedException;
 
+
+    /**
+     * Return the tag for the supplied unique identifier (guid).
+     *
+     * @param userId userId of the user making the request.
+     * @param guid unique identifier of the tag.
+     *
+     * @return tag
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    Tag getTag(String userId,
+               String guid) throws InvalidParameterException,
+                                   PropertyServerException,
+                                   UserNotAuthorizedException;
+
+
+    /**
+     * Return the list of tags matching the supplied name.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId the name of the calling user.
+     * @param tag name of tag.  This may include wild card characters.
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return tag list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    List<Tag> getTagsByName(String serverName,
+                            String userId,
+                            String tag,
+                            int    startFrom,
+                            int    pageSize) throws InvalidParameterException,
+                                                    PropertyServerException,
+                                                    UserNotAuthorizedException;
 
     /**
      * Adds a tag (either private of public) to an asset.

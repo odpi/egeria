@@ -34,6 +34,18 @@ any number of assets (including none).
   [Java](../../../asset-consumer-client/docs/user/delete-tag-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/delete-tag-with-rest.md)
 
+* **getTag** - Return the tag for the supplied unique identifier (guid).
+
+  Implementation: 
+  [Java](../../../asset-consumer-client/docs/user/get-tag-with-java.md),
+  [REST](../../../asset-consumer-server/docs/user/get-tag-with-rest.md)
+
+* **getTagsByName** - Return the list of tags matching the supplied name.
+
+  Implementation: 
+  [Java](../../../asset-consumer-client/docs/user/get-tags-by-name-with-java.md),
+  [REST](../../../asset-consumer-server/docs/user/get-tags-by-name-with-rest.md)
+
 * **addTagToAsset** - Adds a tag (either private of public) to an asset.
 
   Implementation: 
