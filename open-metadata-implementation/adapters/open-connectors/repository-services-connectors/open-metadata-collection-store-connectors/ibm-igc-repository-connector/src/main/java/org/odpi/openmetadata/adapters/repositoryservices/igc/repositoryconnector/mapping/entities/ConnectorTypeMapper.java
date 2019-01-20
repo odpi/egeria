@@ -24,6 +24,7 @@ public class ConnectorTypeMapper extends ReferenceableMapper {
         // The list of properties that should be mapped
         addSimplePropertyMapping("name", "name");
         addSimplePropertyMapping("short_description", "description");
+        addSimplePropertyMapping("type", "connectorProviderClassName");
 
         // The list of relationships that should be mapped
         addRelationshipMapper(ConnectionConnectorTypeMapper.getInstance());

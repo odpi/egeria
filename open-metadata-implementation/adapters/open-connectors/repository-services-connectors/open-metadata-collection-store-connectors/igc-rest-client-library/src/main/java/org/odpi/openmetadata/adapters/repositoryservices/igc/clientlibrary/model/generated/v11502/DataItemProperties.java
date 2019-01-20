@@ -202,6 +202,18 @@ public class DataItemProperties extends Reference {
         "sign_option",
         "pad_char"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "filler_parents",
+        "nls_map",
+        "redefined_field",
+        "association",
+        "depend_field",
+        "field_type",
+        "date_mask",
+        "apt_field_prop",
+        "usage",
+        "pad_char"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
     private static final List<String> ALL_PROPERTIES = Arrays.asList(
         "belonging_to_parameter_definition",
@@ -225,6 +237,7 @@ public class DataItemProperties extends Reference {
         "pad_char"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isDataItemProperties(Object obj) { return (obj.getClass() == DataItemProperties.class); }

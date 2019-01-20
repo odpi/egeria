@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCVersionEnum;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
@@ -11,6 +12,8 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchSorting;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.*;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.attributes.AttributeMapping;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.classifications.ClassificationMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.RelationshipMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.ReferenceableMapper;
@@ -54,6 +57,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     private IGCRestClient igcRestClient;
 
     private HashSet<ImplementedMapping> implementedMappings;
+    private HashMap<String, TypeDef> unimplementedTypeDefs;
+    private HashSet<ImplementedAttribute> implementedAttributes;
 
     private XMLOutputFactory xmlOutputFactory;
 
@@ -77,138 +82,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         this.igcRestClient.registerPOJO(OMRSStub.class);
         this.xmlOutputFactory = XMLOutputFactory.newInstance();
         this.implementedMappings = new HashSet<>();
-    }
-
-    /**
-     * Create a definition of a new TypeDef.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param newTypeDef TypeDef structure describing the new TypeDef.
-     * @throws InvalidParameterException the new TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
-     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
-     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
-     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
-     * @throws FunctionNotSupportedException the repository does not support this call.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public void addTypeDef(String       userId,
-                           TypeDef      newTypeDef) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotSupportedException,
-            TypeDefKnownException,
-            TypeDefConflictException,
-            InvalidTypeDefException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException {
-        final String  methodName = "addTypeDef";
-        final String  typeDefParameterName = "newTypeDef";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
-        repositoryValidator.validateUnknownTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
-
-        // TODO: just need to handle AttributeTypeDefs now?
-
-        TypeDefCategory typeDefCategory = newTypeDef.getCategory();
-        String omrsTypeDefName = newTypeDef.getName();
-        log.debug("Looking for mapping for {} of type {}", omrsTypeDefName, typeDefCategory.getName());
-
-        // See if we have a Mapper defined for the class -- if so, it's implemented
-        StringBuilder sbMapperClassname = new StringBuilder();
-        sbMapperClassname.append(MAPPING_PKG);
-        switch(typeDefCategory) {
-            case RELATIONSHIP_DEF:
-                sbMapperClassname.append("relationships.");
-                break;
-            case CLASSIFICATION_DEF:
-                sbMapperClassname.append("classifications.");
-                break;
-            default:
-                sbMapperClassname.append("entities.");
-                break;
-        }
-        sbMapperClassname.append(omrsTypeDefName);
-        sbMapperClassname.append("Mapper");
-
-        try {
-            Class mappingClass = Class.forName(sbMapperClassname.toString());
-            log.debug(" ... found mapping class: {}", mappingClass);
-
-            ImplementedMapping implementedMapping = new ImplementedMapping(
-                    newTypeDef,
-                    mappingClass,
-                    (IGCOMRSRepositoryConnector)parentConnector,
-                    userId
-            );
-            implementedMapping.registerPOJOs(this.igcRestClient);
-            implementedMappings.add(implementedMapping);
-
-        } catch (ClassNotFoundException e) {
-            throw new TypeDefNotSupportedException(404, IGCOMRSMetadataCollection.class.getName(), methodName, omrsTypeDefName + " is not supported.", "", "Request support through Egeria GitHub issue.");
-        }
-    }
-
-    /**
-     * Create a definition of a new AttributeTypeDef.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param newAttributeTypeDef TypeDef structure describing the new TypeDef.
-     * @throws InvalidParameterException the new TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
-     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
-     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
-     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
-     * @throws FunctionNotSupportedException the repository does not support this call.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public  void addAttributeTypeDef(String             userId,
-                                     AttributeTypeDef   newAttributeTypeDef) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotSupportedException,
-            TypeDefKnownException,
-            TypeDefConflictException,
-            InvalidTypeDefException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException {
-        final String  methodName           = "addAttributeTypeDef";
-        final String  typeDefParameterName = "newAttributeTypeDef";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
-        repositoryValidator.validateUnknownAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
-
-        /*
-         * Perform operation
-         */
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                this.getClass().getName(),
-                repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
+        this.unimplementedTypeDefs = new HashMap<>();
+        this.implementedAttributes = new HashSet<>();
     }
 
     /**
@@ -248,7 +123,348 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         }
         typeDefGallery.setTypeDefs(typeDefs);
 
+        ArrayList<AttributeTypeDef> attributeTypeDefs = new ArrayList<>();
+        for (ImplementedAttribute implementedAttribute : implementedAttributes) {
+            attributeTypeDefs.add(implementedAttribute.getAttributeTypeDef());
+        }
+        typeDefGallery.setAttributeTypeDefs(attributeTypeDefs);
+
         return typeDefGallery;
+    }
+
+    /**
+     * Returns all of the TypeDefs for a specific category.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param category enum value for the category of TypeDef to return.
+     * @return TypeDefs list.
+     * @throws InvalidParameterException the TypeDefCategory is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<TypeDef> findTypeDefsByCategory(String          userId,
+                                                TypeDefCategory category) throws InvalidParameterException,
+            RepositoryErrorException,
+            UserNotAuthorizedException {
+        final String methodName            = "findTypeDefsByCategory";
+        final String categoryParameterName = "category";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeDefCategory(repositoryName, categoryParameterName, category, methodName);
+
+        ArrayList<TypeDef> typeDefs = new ArrayList<>();
+        for (ImplementedMapping implementedMapping : implementedMappings) {
+            TypeDef candidate = implementedMapping.getTypeDef();
+            if (candidate.getCategory().equals(category)) {
+                typeDefs.add(candidate);
+            }
+        }
+        return typeDefs;
+
+    }
+
+
+    /**
+     * Returns all of the AttributeTypeDefs for a specific category.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param category enum value for the category of an AttributeTypeDef to return.
+     * @return TypeDefs list.
+     * @throws InvalidParameterException the TypeDefCategory is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<AttributeTypeDef> findAttributeTypeDefsByCategory(String                   userId,
+                                                                  AttributeTypeDefCategory category) throws InvalidParameterException,
+            RepositoryErrorException,
+            UserNotAuthorizedException {
+        final String methodName            = "findAttributeTypeDefsByCategory";
+        final String categoryParameterName = "category";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateAttributeTypeDefCategory(repositoryName, categoryParameterName, category, methodName);
+
+        ArrayList<AttributeTypeDef> attributeTypeDefs = new ArrayList<>();
+        for (ImplementedAttribute implementedAttribute : implementedAttributes) {
+            AttributeTypeDef candidate = implementedAttribute.getAttributeTypeDef();
+            if (candidate.getCategory().equals(category)) {
+                attributeTypeDefs.add(candidate);
+            }
+        }
+        return attributeTypeDefs;
+
+    }
+
+    /**
+     * Create a definition of a new TypeDef.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param newTypeDef TypeDef structure describing the new TypeDef.
+     * @throws InvalidParameterException the new TypeDef is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
+     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
+     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
+     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void addTypeDef(String       userId,
+                           TypeDef      newTypeDef) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotSupportedException,
+            TypeDefKnownException,
+            TypeDefConflictException,
+            InvalidTypeDefException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException {
+        final String  methodName = "addTypeDef";
+        final String  typeDefParameterName = "newTypeDef";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
+        repositoryValidator.validateUnknownTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
+
+        TypeDefCategory typeDefCategory = newTypeDef.getCategory();
+        String omrsTypeDefName = newTypeDef.getName();
+        log.debug("Looking for mapping for {} of type {}", omrsTypeDefName, typeDefCategory.getName());
+
+        // See if we have a Mapper defined for the class -- if so, it's implemented
+        StringBuilder sbMapperClassname = new StringBuilder();
+        sbMapperClassname.append(MAPPING_PKG);
+        switch(typeDefCategory) {
+            case RELATIONSHIP_DEF:
+                sbMapperClassname.append("relationships.");
+                break;
+            case CLASSIFICATION_DEF:
+                sbMapperClassname.append("classifications.");
+                break;
+            default:
+                sbMapperClassname.append("entities.");
+                break;
+        }
+        sbMapperClassname.append(omrsTypeDefName);
+        sbMapperClassname.append("Mapper");
+
+        try {
+            Class mappingClass = Class.forName(sbMapperClassname.toString());
+            log.debug(" ... found mapping class: {}", mappingClass);
+
+            ImplementedMapping implementedMapping = new ImplementedMapping(
+                    newTypeDef,
+                    mappingClass,
+                    (IGCOMRSRepositoryConnector)parentConnector,
+                    userId
+            );
+            implementedMapping.registerPOJOs(this.igcRestClient);
+            implementedMappings.add(implementedMapping);
+
+        } catch (ClassNotFoundException e) {
+            unimplementedTypeDefs.put(newTypeDef.getGUID(), newTypeDef);
+            throw new TypeDefNotSupportedException(404, IGCOMRSMetadataCollection.class.getName(), methodName, omrsTypeDefName + " is not supported.", "", "Request support through Egeria GitHub issue.");
+        }
+    }
+
+    /**
+     * Create a definition of a new AttributeTypeDef.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param newAttributeTypeDef TypeDef structure describing the new TypeDef.
+     * @throws InvalidParameterException the new TypeDef is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
+     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
+     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
+     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  void addAttributeTypeDef(String             userId,
+                                     AttributeTypeDef   newAttributeTypeDef) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotSupportedException,
+            TypeDefKnownException,
+            TypeDefConflictException,
+            InvalidTypeDefException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException {
+        final String  methodName           = "addAttributeTypeDef";
+        final String  typeDefParameterName = "newAttributeTypeDef";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
+        repositoryValidator.validateUnknownAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
+
+        // Note this is only implemented for Enums, support for other types is indicated directly
+        // in the verifyAttributeTypeDef method
+        AttributeTypeDefCategory attributeTypeDefCategory = newAttributeTypeDef.getCategory();
+        String omrsTypeDefName = newAttributeTypeDef.getName();
+        log.debug("Looking for mapping for {} of type {}", omrsTypeDefName, attributeTypeDefCategory.getName());
+
+        // See if we have a Mapper defined for the class -- if so, it's implemented
+        StringBuilder sbMapperClassname = new StringBuilder();
+        sbMapperClassname.append(MAPPING_PKG);
+        sbMapperClassname.append("attributes.");
+        sbMapperClassname.append(omrsTypeDefName);
+        sbMapperClassname.append("Mapper");
+
+        try {
+            Class mappingClass = Class.forName(sbMapperClassname.toString());
+            log.debug(" ... found mapping class: {}", mappingClass);
+
+            ImplementedAttribute implementedAttribute = new ImplementedAttribute(
+                    newAttributeTypeDef,
+                    mappingClass
+            );
+            implementedAttributes.add(implementedAttribute);
+
+        } catch (ClassNotFoundException e) {
+            throw new TypeDefNotSupportedException(404, IGCOMRSMetadataCollection.class.getName(), methodName, omrsTypeDefName + " is not supported.", "", "Request support through Egeria GitHub issue.");
+        }
+
+    }
+
+    /**
+     * Return the TypeDef identified by the GUID.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique id of the TypeDef.
+     * @return TypeDef structure describing its category and properties.
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotKnownException The requested TypeDef is not known in the metadata collection.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public TypeDef getTypeDefByGUID(String    userId,
+                                    String    guid) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            UserNotAuthorizedException {
+        final String methodName        = "getTypeDefByGUID";
+        final String guidParameterName = "guid";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+
+        TypeDef found = null;
+        for (ImplementedMapping implementedMapping : implementedMappings) {
+            String typeDefGUID = implementedMapping.getTypeDef().getGUID();
+            if (typeDefGUID.equals(guid)) {
+                found = implementedMapping.getTypeDef();
+                break;
+            }
+        }
+        if (found == null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    guid,
+                    guidParameterName,
+                    methodName,
+                    repositoryName);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        return found;
+
+    }
+
+
+    /**
+     * Return the AttributeTypeDef identified by the GUID.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique id of the TypeDef
+     * @return TypeDef structure describing its category and properties.
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotKnownException The requested TypeDef is not known in the metadata collection.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  AttributeTypeDef getAttributeTypeDefByGUID(String    userId,
+                                                       String    guid) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            UserNotAuthorizedException {
+        final String methodName        = "getAttributeTypeDefByGUID";
+        final String guidParameterName = "guid";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+
+        AttributeTypeDef found = null;
+        for (ImplementedAttribute implementedAttribute : implementedAttributes) {
+            String attributeTypeDefGUID = implementedAttribute.getAttributeTypeDef().getGUID();
+            if (attributeTypeDefGUID.equals(guid)) {
+                found = implementedAttribute.getAttributeTypeDef();
+                break;
+            }
+        }
+        if (found == null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.ATTRIBUTE_TYPEDEF_ID_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    "unknown",
+                    guid,
+                    methodName,
+                    repositoryName);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        return found;
+
     }
 
     /**
@@ -285,19 +501,18 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Perform operation
          */
-        TypeDef typeDef = null;
+        TypeDef found = null;
         for (ImplementedMapping implementedMapping : implementedMappings) {
-            if (implementedMapping.getTypeDef().getName().equals(name)) {
-                typeDef = implementedMapping.getTypeDef();
+            TypeDef candidate = implementedMapping.getTypeDef();
+            if (candidate.getName().equals(name)) {
+                found = candidate;
                 break;
             }
         }
-        if (typeDef == null) {
-            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
+        if (found == null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NAME_NOT_KNOWN;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
                     name,
-                    "unknown",
-                    nameParameterName,
                     methodName,
                     repositoryName);
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
@@ -307,8 +522,62 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         }
-        return typeDef;
+        return found;
 
+    }
+
+    /**
+     * Return the AttributeTypeDef identified by the unique name.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param name String name of the TypeDef.
+     * @return TypeDef structure describing its category and properties.
+     * @throws InvalidParameterException the name is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  AttributeTypeDef getAttributeTypeDefByName(String    userId,
+                                                       String    name) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            UserNotAuthorizedException {
+        final String  methodName = "getAttributeTypeDefByName";
+        final String  nameParameterName = "name";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeName(repositoryName, nameParameterName, name, methodName);
+
+        AttributeTypeDef found = null;
+        for (ImplementedAttribute implementedAttribute : implementedAttributes) {
+            AttributeTypeDef candidate = implementedAttribute.getAttributeTypeDef();
+            if (candidate.getName().equals(name)) {
+                found = candidate;
+                break;
+            }
+        }
+        if (found == null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.ATTRIBUTE_TYPEDEF_NAME_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    name,
+                    methodName,
+                    repositoryName);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        return found;
     }
 
     /**
@@ -363,6 +632,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public  boolean verifyAttributeTypeDef(String            userId,
                                            AttributeTypeDef  attributeTypeDef) throws InvalidParameterException,
             RepositoryErrorException,
@@ -383,21 +653,27 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, attributeTypeDef, methodName);
 
-        /*
-         * Perform operation
-         */
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        boolean bImplemented;
+        switch (attributeTypeDef.getCategory()) {
+            case PRIMITIVE:
+                bImplemented = true;
+                break;
+            case UNKNOWN_DEF:
+                bImplemented = false;
+                break;
+            case COLLECTION:
+                bImplemented = true;
+                break;
+            case ENUM_DEF:
+                bImplemented = (getMappingForAttributeType(attributeTypeDef.getGUID()) != null);
+                break;
+            default:
+                bImplemented = false;
+                break;
+        }
 
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                this.getClass().getName(),
-                repositoryName);
+        return bImplemented;
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
     }
 
     /**
@@ -741,11 +1017,6 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         final String  asOfTimeParameter            = "asOfTime";
         final String  pageSizeParameter            = "pageSize";
 
-        // TODO: need to walk the hierarchy of types and ensure we do a search across all subtypes of (as well as
-        //  base type received), eg. searching for 'Asset' should also search for RelationalTable, RelationalColumn,
-        //  Database, etc, etc
-        //  - also need search by classification for demo
-
         /*
          * Validate parameters
          */
@@ -782,63 +1053,269 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     errorCode.getUserAction());
         } else {
 
-            IGCSearch igcSearch = new IGCSearch();
+            List<ImplementedMapping> mappingsToSearch = getMappingsToSearch(entityTypeGUID, userId);
 
-            ImplementedMapping mapping = getMappingForEntityType(entityTypeGUID);
-            addTypeToSearch(mapping, igcSearch);
+            // Now iterate through all of the mappings we need to search, construct and run an appropriate search
+            // for each one
+            for (ImplementedMapping mapping : mappingsToSearch) {
 
-            /* We need to first retrieve the mapping so we know how to translate
-             * the provided OMRS property names to IGC property names */
-            PropertyMappingSet propertyMappingSet = getEntityPropertiesFromMapping(mapping, userId);
+                IGCSearch igcSearch = new IGCSearch();
+                igcSearch.addType(mapping.getIgcAssetType());
 
-            /* Provided there is a mapping, build up a list of IGC-specific properties
-             * and search criteria, based on the values of the InstanceProperties provided */
-            ArrayList<String> properties = new ArrayList<>();
-            IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+                /* We need to first retrieve the mapping so we know how to translate
+                 * the provided OMRS property names to IGC property names */
+                PropertyMappingSet propertyMappingSet = getEntityPropertiesFromMapping(mapping, userId);
 
-            Iterator iPropertyNames = matchProperties.getPropertyNames();
-            while (propertyMappingSet != null && iPropertyNames.hasNext()) {
-                String omrsPropertyName = (String) iPropertyNames.next();
-                InstancePropertyValue value = matchProperties.getPropertyValue(omrsPropertyName);
-                addSearchConditionFromValue(
-                        igcSearchConditionSet,
-                        omrsPropertyName,
-                        properties,
-                        propertyMappingSet,
-                        value
-                );
-            }
+                /* Provided there is a mapping, build up a list of IGC-specific properties
+                 * and search criteria, based on the values of the InstanceProperties provided */
+                ArrayList<String> properties = new ArrayList<>();
+                IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
 
-            IGCSearchSorting igcSearchSorting = null;
-            if (sequencingProperty == null && sequencingOrder != null) {
-                igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
-            }
-
-            if (matchCriteria != null) {
-                switch(matchCriteria) {
-                    case ALL:
-                        igcSearchConditionSet.setMatchAnyCondition(false);
-                        break;
-                    case ANY:
-                        igcSearchConditionSet.setMatchAnyCondition(true);
-                        break;
-                    case NONE:
-                        igcSearchConditionSet.setMatchAnyCondition(false);
-                        igcSearchConditionSet.setNegateAll(true);
-                        break;
+                Iterator iPropertyNames = matchProperties.getPropertyNames();
+                while (propertyMappingSet != null && iPropertyNames.hasNext()) {
+                    String omrsPropertyName = (String) iPropertyNames.next();
+                    InstancePropertyValue value = matchProperties.getPropertyValue(omrsPropertyName);
+                    addSearchConditionFromValue(
+                            igcSearchConditionSet,
+                            omrsPropertyName,
+                            properties,
+                            propertyMappingSet,
+                            value
+                    );
                 }
+
+                IGCSearchSorting igcSearchSorting = null;
+                if (sequencingProperty == null && sequencingOrder != null) {
+                    igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
+                }
+
+                if (matchCriteria != null) {
+                    switch (matchCriteria) {
+                        case ALL:
+                            igcSearchConditionSet.setMatchAnyCondition(false);
+                            break;
+                        case ANY:
+                            igcSearchConditionSet.setMatchAnyCondition(true);
+                            break;
+                        case NONE:
+                            igcSearchConditionSet.setMatchAnyCondition(false);
+                            igcSearchConditionSet.setNegateAll(true);
+                            break;
+                    }
+                }
+
+                igcSearch.addProperties(properties);
+                igcSearch.addConditions(igcSearchConditionSet);
+
+                setPagingForSearch(igcSearch, fromEntityElement, pageSize);
+
+                if (igcSearchSorting != null) {
+                    igcSearch.addSortingCriteria(igcSearchSorting);
+                }
+
+                processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+
             }
 
-            igcSearch.addProperties(properties);
-            igcSearch.addConditions(igcSearchConditionSet);
+        }
 
-            setPagingForSearch(igcSearch, fromEntityElement, pageSize);
+        return entityDetails.isEmpty() ? null : entityDetails;
 
-            if (igcSearchSorting != null) {
-                igcSearch.addSortingCriteria(igcSearchSorting);
+    }
+
+    /**
+     * Return a list of entities that have the requested type of classification attached.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID unique identifier for the type of entity requested.  Null mans any type of entity.
+     * @param classificationName name of the classification a null is not valid.
+     * @param matchClassificationProperties list of classification properties used to narrow the search.
+     * @param matchCriteria Enum defining how the properties should be matched to the classifications in the repository.
+     * @param fromEntityElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values. (not implemented for IGC, must be null)
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values. (not implemented
+     *                 for IGC, must be null)
+     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of entities matching the supplied criteria where null means no matching entities in the metadata
+     * collection.
+     * @throws InvalidParameterException a parameter is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws ClassificationErrorException the classification request is not known to the metadata collection.
+     * @throws PropertyErrorException the properties specified are not valid for the requested type of
+     *                                  classification.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  List<EntityDetail> findEntitiesByClassification(String                    userId,
+                                                            String                    entityTypeGUID,
+                                                            String                    classificationName,
+                                                            InstanceProperties        matchClassificationProperties,
+                                                            MatchCriteria             matchCriteria,
+                                                            int                       fromEntityElement,
+                                                            List<InstanceStatus>      limitResultsByStatus,
+                                                            Date                      asOfTime,
+                                                            String                    sequencingProperty,
+                                                            SequencingOrder           sequencingOrder,
+                                                            int                       pageSize) throws InvalidParameterException,
+            TypeErrorException,
+            RepositoryErrorException,
+            ClassificationErrorException,
+            PropertyErrorException,
+            PagingErrorException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName                   = "findEntitiesByClassification";
+        final String  classificationParameterName  = "classificationName";
+        final String  entityTypeGUIDParameterName  = "entityTypeGUID";
+
+        final String  matchCriteriaParameterName   = "matchCriteria";
+        final String  matchPropertiesParameterName = "matchClassificationProperties";
+        final String  asOfTimeParameter            = "asOfTime";
+        final String  pageSizeParameter            = "pageSize";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateOptionalTypeGUID(repositoryName, entityTypeGUIDParameterName, entityTypeGUID, methodName);
+        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+
+        /*
+         * Validate TypeDef
+         */
+        if (entityTypeGUID != null)
+        {
+            TypeDef entityTypeDef = repositoryHelper.getTypeDef(repositoryName,
+                    entityTypeGUIDParameterName,
+                    entityTypeGUID,
+                    methodName);
+
+            repositoryValidator.validateTypeDefForInstance(repositoryName,
+                    entityTypeGUIDParameterName,
+                    entityTypeDef,
+                    methodName);
+
+            repositoryValidator.validateClassification(repositoryName,
+                    classificationParameterName,
+                    classificationName,
+                    entityTypeDef.getName(),
+                    methodName);
+        }
+
+        repositoryValidator.validateMatchCriteria(repositoryName,
+                matchCriteriaParameterName,
+                matchPropertiesParameterName,
+                matchCriteria,
+                matchClassificationProperties,
+                methodName);
+
+        ArrayList<EntityDetail> entityDetails = new ArrayList<>();
+
+        // Immediately throw unimplemented exception if trying to limit by status or retrieve historical view
+        if (limitResultsByStatus != null || asOfTime != null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                    this.getClass().getName(),
+                    repositoryName);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        } else {
+
+            List<ImplementedMapping> mappingsToSearch = getMappingsToSearch(entityTypeGUID, userId);
+
+            // Now iterate through all of the mappings we need to search, construct and run an appropriate search
+            // for each one
+            for (ImplementedMapping mapping : mappingsToSearch) {
+
+                ClassificationMapping foundMapping = null;
+
+                // Check which classifications (if any) are implemented for the entity mapping
+                List<ClassificationMapping> classificationMappings = mapping.getEntityMapping().getClassificationMappers();
+                for (ClassificationMapping classificationMapping : classificationMappings) {
+
+                    // Check whether the implemented classification matches the one we're searching based on
+                    String candidateName = classificationMapping.getOmrsClassificationType();
+                    if (candidateName.equals(classificationName)) {
+                        foundMapping = classificationMapping;
+                        break;
+                    }
+
+                }
+
+                // Only proceed if we have found a classification mapping for this entity that matches the search
+                // criteria provided
+                if (foundMapping != null) {
+
+                    IGCSearch igcSearch = new IGCSearch();
+                    igcSearch.addType(mapping.getIgcAssetType());
+                    IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+
+                    // Retrieve the list of property names we need for the classification
+                    List<String> igcClassificationProperties = foundMapping.getIgcRelationshipProperties();
+
+                    // Compose the search criteria for the classification as a set of nested conditions, so that
+                    // matchCriteria does not change the meaning of what we're searching
+                    IGCSearchConditionSet baseCriteria = foundMapping.getIGCSearchCriteria(matchClassificationProperties);
+                    igcSearchConditionSet.addNestedConditionSet(baseCriteria);
+
+                    IGCSearchSorting igcSearchSorting = null;
+                    if (sequencingProperty == null && sequencingOrder != null) {
+                        igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
+                    }
+
+                    if (matchCriteria != null) {
+                        switch (matchCriteria) {
+                            case ALL:
+                                igcSearchConditionSet.setMatchAnyCondition(false);
+                                break;
+                            case ANY:
+                                igcSearchConditionSet.setMatchAnyCondition(true);
+                                break;
+                            case NONE:
+                                igcSearchConditionSet.setMatchAnyCondition(false);
+                                igcSearchConditionSet.setNegateAll(true);
+                                break;
+                        }
+                    }
+
+                    igcSearch.addProperties(igcClassificationProperties);
+                    igcSearch.addConditions(igcSearchConditionSet);
+
+                    setPagingForSearch(igcSearch, fromEntityElement, pageSize);
+
+                    if (igcSearchSorting != null) {
+                        igcSearch.addSortingCriteria(igcSearchSorting);
+                    }
+
+                    processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+
+                } else {
+                    log.info("No classification mapping has been implemented for {} on entity {} -- skipping from search.", classificationName, mapping.getTypeDef().getName());
+                }
+
             }
-
-            processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
 
         }
 
@@ -857,6 +1334,22 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         for (ImplementedMapping implementedMapping : implementedMappings) {
             if (entityTypeGUID.equals(implementedMapping.getTypeDef().getGUID())) {
                 mapping = implementedMapping;
+            }
+        }
+        return mapping;
+    }
+
+    /**
+     * Retrieve any mapping that exists for the provided attributeTypeGUID (or null if there are none).
+     *
+     * @param attributeTypeGUID the GUID of the OMRS attribute type for which to find a mapping
+     * @return
+     */
+    private AttributeMapping getMappingForAttributeType(String attributeTypeGUID) {
+        AttributeMapping mapping = null;
+        for (ImplementedAttribute implementedAttribute : implementedAttributes) {
+            if (attributeTypeGUID.equals(implementedAttribute.getAttributeTypeDef().getGUID())) {
+                mapping = implementedAttribute.getAttributeMapping();
             }
         }
         return mapping;
@@ -911,14 +1404,18 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      *
      * @param mapping the mapping on which to base the search
      * @param igcSearch the IGC search object to which to add the criteria
+     * @return String - the IGC asset type that will be used for the search
      */
-    private void addTypeToSearch(ImplementedMapping mapping, IGCSearch igcSearch) {
+    private String addTypeToSearch(ImplementedMapping mapping, IGCSearch igcSearch) {
+        String igcType = DEFAULT_IGC_TYPE;
         if (mapping == null) {
             // If no TypeDef was provided, run against all types
-            igcSearch.addType(DEFAULT_IGC_TYPE);
+            igcSearch.addType(igcType);
         } else {
-            igcSearch.addType(mapping.getIgcAssetType());
+            igcType = mapping.getIgcAssetType();
+            igcSearch.addType(igcType);
         }
+        return igcType;
     }
 
     /**
@@ -1006,6 +1503,63 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             results.getNextPage(this.igcRestClient);
             processResults(results, entityDetails, pageSize, userId);
         }
+
+    }
+
+    /**
+     * Retrieve the listing of implemented mappings that should be used for an entity search, including navigating
+     * subtypes when a supertype is the entity type provided.
+     *
+     * @param entityTypeGUID the GUID of the OMRS entity type for which to search
+     * @param userId the userId through which to search
+     * @return List<ImplementedMapping>
+     */
+    private List<ImplementedMapping> getMappingsToSearch(String entityTypeGUID, String userId) throws
+            InvalidParameterException,
+            RepositoryErrorException,
+            UserNotAuthorizedException {
+
+        List<ImplementedMapping> mappingsToSearch = new ArrayList<>();
+
+        // If no entityType was provided, add all implemented types (except Referenceable, as that could itself
+        // include many objects that are not implemented)
+        if (entityTypeGUID == null) {
+            for (ImplementedMapping candidate : implementedMappings) {
+                if (candidate.getTypeDef().getCategory().equals(TypeDefCategory.ENTITY_DEF)) {
+                    if (!candidate.getTypeDef().getName().equals("Referenceable")) {
+                        mappingsToSearch.add(candidate);
+                    }
+                }
+            }
+        } else {
+
+            ImplementedMapping mappingExact = getMappingForEntityType(entityTypeGUID);
+            String requestedTypeName;
+            // If no implemented mapping could be found, at least retrieve the TypeDef for further introspection
+            // (so that if it has any implemented subtypes, we can still search for those)
+            if (mappingExact == null) {
+                TypeDef unimplemented = unimplementedTypeDefs.get(entityTypeGUID);
+                requestedTypeName = unimplemented.getName();
+            } else {
+                requestedTypeName = mappingExact.getTypeDef().getName();
+            }
+
+            // Walk the hierarchy of types to ensure we search across all subtypes of the requested TypeDef as well
+            List<TypeDef> allEntityTypes = findTypeDefsByCategory(userId, TypeDefCategory.ENTITY_DEF);
+
+            for (TypeDef typeDef : allEntityTypes) {
+                ImplementedMapping implementedMapping = getMappingForEntityType(typeDef.getGUID());
+                if (implementedMapping != null) {
+                    if (repositoryHelper.isTypeOf(metadataCollectionId, typeDef.getName(), requestedTypeName)) {
+                        // Add any subtypes of the requested type into the search
+                        mappingsToSearch.add(implementedMapping);
+                    }
+                }
+            }
+
+        }
+
+        return mappingsToSearch;
 
     }
 
@@ -1099,57 +1653,66 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     errorCode.getUserAction());
         } else {
 
-            // TODO:
-            //  - POST'd search to IGC doesn't work on latest v11.7.0.2+ using long_description; suggestion
-            //    to instead use "searchText" (TBD; may need to drop 'long_description' from v11.7 search in
-            //    meantime)
-            //  - using "searchText" requires using "searchProperties" (no "where" conditions) -- but does not
-            //    work with 'main_object', must be used with a specific asset type
+            List<ImplementedMapping> mappingsToSearch = getMappingsToSearch(entityTypeGUID, userId);
 
-            IGCSearch igcSearch = new IGCSearch();
+            // Now iterate through all of the mappings we need to search, construct and run an appropriate search
+            // for each one
+            for (ImplementedMapping mapping : mappingsToSearch) {
 
-            ImplementedMapping mapping = getMappingForEntityType(entityTypeGUID);
-            PropertyMappingSet propertyMappingSet = getEntityPropertiesFromMapping(mapping, userId);
-            addTypeToSearch(mapping, igcSearch);
+                IGCSearch igcSearch = new IGCSearch();
+                String igcAssetType = addTypeToSearch(mapping, igcSearch);
 
-            String[] properties = null;
-            if (propertyMappingSet != null) {
-                properties = propertyMappingSet.getAllMappedIgcProperties().toArray(new String[0]);
-            } else {
-                /* Since IGC requires the set of properties against which to search,
-                 * if no type has been provided we'll use the generic set of the following
-                 * properties for the search (common to all objects) */
-                properties = new String[] {
-                        "name",
-                        "short_description",
-                        "long_description"
-                };
+                // Get POJO from the asset type, and use this to retrieve a listing of all string properties
+                // for that asset type -- these are the list of properties we should use for the search
+                Class pojo = igcRestClient.getPOJOForType(igcAssetType);
+
+                if (pojo != null) {
+
+                    List<String> properties = Reference.getStringPropertiesFromPOJO(pojo);
+                    // POST'd search to IGC doesn't work on v11.7.0.2 using long_description
+                    // Using "searchText" requires using "searchProperties" (no "where" conditions) -- but does not
+                    // work with 'main_object', must be used with a specific asset type
+                    // Therefore for v11.7.0.2 we will simply drop long_description from the fields we search
+                    if (igcRestClient.getIgcVersion().isEqualTo(IGCVersionEnum.V11702)) {
+                        ArrayList<String> propertiesWithoutLongDescription = new ArrayList<>();
+                        for (String property : properties) {
+                            if (!property.equals("long_description")) {
+                                propertiesWithoutLongDescription.add(property);
+                            }
+                        }
+                        properties = propertiesWithoutLongDescription;
+                    }
+
+                    IGCSearchSorting igcSearchSorting = null;
+                    if (sequencingProperty == null && sequencingOrder != null) {
+                        igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
+                    }
+
+                    IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+                    igcSearchConditionSet.setMatchAnyCondition(true);
+                    for (String property : properties) {
+                        igcSearchConditionSet.addCondition(new IGCSearchCondition(
+                                property,
+                                "like %{0}%",
+                                searchCriteria
+                        ));
+                    }
+
+                    igcSearch.addConditions(igcSearchConditionSet);
+
+                    setPagingForSearch(igcSearch, fromEntityElement, pageSize);
+
+                    if (igcSearchSorting != null) {
+                        igcSearch.addSortingCriteria(igcSearchSorting);
+                    }
+
+                    processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+
+                } else {
+                    log.warn("Unable to find POJO to handle IGC asset type '{}' -- skipping search against this asset type.", igcAssetType);
+                }
+
             }
-
-            IGCSearchSorting igcSearchSorting = null;
-            if (sequencingProperty == null && sequencingOrder != null) {
-                igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
-            }
-
-            IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
-            igcSearchConditionSet.setMatchAnyCondition(true);
-            for (String property : properties) {
-                igcSearchConditionSet.addCondition(new IGCSearchCondition(
-                        property,
-                        "like %{0}%",
-                        searchCriteria
-                ));
-            }
-
-            igcSearch.addConditions(igcSearchConditionSet);
-
-            setPagingForSearch(igcSearch, fromEntityElement, pageSize);
-
-            if (igcSearchSorting != null) {
-                igcSearch.addSortingCriteria(igcSearchSorting);
-            }
-
-            processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
 
         }
 
