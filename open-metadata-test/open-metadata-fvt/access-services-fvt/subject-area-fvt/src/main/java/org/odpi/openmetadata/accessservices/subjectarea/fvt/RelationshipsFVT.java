@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -63,13 +62,13 @@ public class RelationshipsFVT
 
         Glossary glossary = glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         System.out.println("Create a term1 using glossary guid");
-        Term term1 = termFVT.createTermWithGlossaryGuid(DEFAULT_TEST_TERM_NAME, glossary.getSystemAttributes().getGUID());
+        Term term1 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME, glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(term1);
         System.out.println("Create a term2 using glossary guid");
-        Term term2 = termFVT.createTermWithGlossaryGuid(DEFAULT_TEST_TERM_NAME2, glossary.getSystemAttributes().getGUID());
+        Term term2 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME2, glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(term2);
         System.out.println("Create a term3 using glossary guid");
-        Term term3 = termFVT.createTermWithGlossaryGuid(DEFAULT_TEST_TERM_NAME3, glossary.getSystemAttributes().getGUID());
+        Term term3 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME3, glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(term3);
 
         synonymFVT(term1, term2);
