@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class RatingRequestBody extends AssetConsumerOMASAPIRequestBody
+public class ReviewRequestBody extends AssetConsumerOMASAPIRequestBody
 {
     private StarRating starRating = null;
     private String     review     = null;
@@ -27,7 +27,7 @@ public class RatingRequestBody extends AssetConsumerOMASAPIRequestBody
     /**
      * Default constructor
      */
-    public RatingRequestBody()
+    public ReviewRequestBody()
     {
     }
 
@@ -37,7 +37,7 @@ public class RatingRequestBody extends AssetConsumerOMASAPIRequestBody
      *
      * @param template object to copy
      */
-    public RatingRequestBody(RatingRequestBody template)
+    public ReviewRequestBody(ReviewRequestBody template)
     {
         super(template);
 
@@ -125,7 +125,7 @@ public class RatingRequestBody extends AssetConsumerOMASAPIRequestBody
         {
             return false;
         }
-        RatingRequestBody that = (RatingRequestBody) objectToCompare;
+        ReviewRequestBody that = (ReviewRequestBody) objectToCompare;
         return getStarRating() == that.getStarRating() &&
                 Objects.equals(getReview(), that.getReview());
     }
