@@ -919,7 +919,6 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * Return the full definition (meaning) of a term using the unique identifier of the glossary term
      * that contains the definition.
      *
-     * @param serverName name of the server instances for this request
      * @param userId userId of the user making the request.
      * @param guid unique identifier of the glossary term.
      *
@@ -928,8 +927,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public GlossaryTerm getMeaning(String serverName,
-                                   String userId,
+    public GlossaryTerm getMeaning(String userId,
                                    String guid) throws InvalidParameterException,
                                                        PropertyServerException,
                                                        UserNotAuthorizedException
@@ -956,7 +954,6 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
     /**
      * Return the full definition (meaning) of the terms matching the supplied name.
      *
-     * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
      * @param term name of term.  This may include wild card characters.
      * @param startFrom  index of the list ot start from (0 for start)
@@ -967,8 +964,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<GlossaryTerm> getMeaningByName(String serverName,
-                                               String userId,
+    public List<GlossaryTerm> getMeaningByName(String userId,
                                                String term,
                                                int    startFrom,
                                                int    pageSize) throws InvalidParameterException,
