@@ -21,13 +21,13 @@ These first two methods enable the caller to extract the unique identifier
   [Java](../../../asset-consumer-client/docs/user/get-asset-for-connection-name-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/get-asset-for-connection-name-with-rest.md)
 
-This method uses the guid of the asset to retrieve properties about the asset.
+This method uses the guid of the asset to retrieve properties about the asset.  It is implemented
+by the [Connected Asset OMAS](../../../../connected-asset) which is why there is no REST implementation.
 
 * **getAssetProperties** - returns a comprehensive collection of properties about the requested asset.
    
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/get-asset-properties-with-java.md),
-  [REST](../../../asset-consumer-server/docs/user/get-asset-properties-with-rest.md)
+  [Java](../../../asset-consumer-client/docs/user/get-asset-properties-with-java.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
