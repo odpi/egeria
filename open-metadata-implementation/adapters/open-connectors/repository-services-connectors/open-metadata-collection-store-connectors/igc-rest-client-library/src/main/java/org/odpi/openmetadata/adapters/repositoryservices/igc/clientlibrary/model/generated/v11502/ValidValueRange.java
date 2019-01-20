@@ -102,6 +102,12 @@ public class ValidValueRange extends Reference {
         "name",
         "short_description"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "minimum_value",
+        "maximum_value",
+        "name",
+        "short_description"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "design_column"
     );
@@ -116,6 +122,7 @@ public class ValidValueRange extends Reference {
         "design_column"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isValidValueRange(Object obj) { return (obj.getClass() == ValidValueRange.class); }

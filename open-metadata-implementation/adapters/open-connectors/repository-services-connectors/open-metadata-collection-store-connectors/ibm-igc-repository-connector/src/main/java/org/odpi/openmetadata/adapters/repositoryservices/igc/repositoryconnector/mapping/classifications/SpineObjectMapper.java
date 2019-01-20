@@ -4,8 +4,11 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Identity;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +32,7 @@ public class SpineObjectMapper extends ClassificationMapping {
     private SpineObjectMapper() {
         super(
                 "term",
-                "assigned_to_terms",
+                "category_path",
                 "SpineObject"
         );
     }
@@ -69,6 +72,28 @@ public class SpineObjectMapper extends ClassificationMapping {
             }
 
         }
+
+    }
+
+    /**
+     * Search for SpineObject by looking at parent category of the term being under a "Spine Objects" category.
+     * (There are no properties on the SpineObject classification, so no need to even check the provided
+     * matchClassificationProperties.)
+     *
+     * @param matchClassificationProperties the criteria to use when searching for the classification
+     * @return IGCSearchConditionSet - the IGC search criteria to find entities based on this classification
+     */
+    @Override
+    public IGCSearchConditionSet getIGCSearchCriteria(InstanceProperties matchClassificationProperties) {
+
+        IGCSearchCondition igcSearchCondition = new IGCSearchCondition(
+                "parent_category.name",
+                "=",
+                "Spine Objects"
+        );
+        IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet(igcSearchCondition);
+        igcSearchConditionSet.setMatchAnyCondition(false);
+        return igcSearchConditionSet;
 
     }
 

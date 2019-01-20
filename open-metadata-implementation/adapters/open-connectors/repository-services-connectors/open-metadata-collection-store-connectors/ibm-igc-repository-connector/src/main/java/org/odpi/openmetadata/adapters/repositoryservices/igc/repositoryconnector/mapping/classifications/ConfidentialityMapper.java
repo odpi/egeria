@@ -6,11 +6,15 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRe
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Identity;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.attributes.ConfidentialityLevelMapper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,30 +79,8 @@ public class ConfidentialityMapper extends ClassificationMapping {
             if (catIdentity.toString().endsWith("Confidentiality")) {
 
                 InstanceProperties classificationProperties = new InstanceProperties();
-
-                EnumPropertyValue level = new EnumPropertyValue();
-                String confidentialityName = assignedTerm.getName();
-                switch(confidentialityName) {
-                    case "Unclassified":
-                        level.setOrdinal(0);
-                        break;
-                    case "Internal":
-                        level.setOrdinal(1);
-                        break;
-                    case "Confidential":
-                        level.setOrdinal(2);
-                        break;
-                    case "Sensitive":
-                        level.setOrdinal(3);
-                        break;
-                    case "Restricted":
-                        level.setOrdinal(4);
-                        break;
-                    default:
-                        level.setOrdinal(99);
-                        break;
-                }
-                level.setSymbolicName(confidentialityName);
+                ConfidentialityLevelMapper confidentialityLevelMapper = ConfidentialityLevelMapper.getInstance();
+                EnumPropertyValue level = confidentialityLevelMapper.getEnumMappingByIgcValue(assignedTerm.getName());
                 classificationProperties.setProperty("level", level);
 
                 try {
@@ -118,6 +100,45 @@ public class ConfidentialityMapper extends ClassificationMapping {
             }
 
         }
+
+    }
+
+    /**
+     * Search for Confidentiality by looking for a term assignment where the assigned term both sits under a
+     * Confidentiality parent category and has a name matching the confidentiality level. (Note that only the
+     * 'level' classification property is used from matchClassificationProperties, as no other properties are
+     * implemented in IGC.)
+     *
+     * @param matchClassificationProperties the criteria to use when searching for the classification
+     * @return IGCSearchConditionSet - the IGC search criteria to find entities based on this classification
+     */
+    @Override
+    public IGCSearchConditionSet getIGCSearchCriteria(InstanceProperties matchClassificationProperties) {
+
+        IGCSearchCondition igcSearchCondition = new IGCSearchCondition(
+                "assigned_to_terms.parent_category.name",
+                "=",
+                "Confidentiality"
+        );
+        IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet(igcSearchCondition);
+
+        // We can only search by level, so we will ignore all other properties
+        InstancePropertyValue value = matchClassificationProperties.getPropertyValue("level");
+        if (value instanceof EnumPropertyValue) {
+            EnumPropertyValue level = (EnumPropertyValue) value;
+            ConfidentialityLevelMapper confidentialityLevelMapper = ConfidentialityLevelMapper.getInstance();
+            String igcTermName = confidentialityLevelMapper.getIgcValueForOrdinal(level.getOrdinal());
+            IGCSearchCondition propertyCondition = new IGCSearchCondition(
+                    "assigned_to_terms.name",
+                    "=",
+                    igcTermName
+            );
+            igcSearchConditionSet.addCondition(propertyCondition);
+        }
+
+        igcSearchConditionSet.setMatchAnyCondition(false);
+
+        return igcSearchConditionSet;
 
     }
 
