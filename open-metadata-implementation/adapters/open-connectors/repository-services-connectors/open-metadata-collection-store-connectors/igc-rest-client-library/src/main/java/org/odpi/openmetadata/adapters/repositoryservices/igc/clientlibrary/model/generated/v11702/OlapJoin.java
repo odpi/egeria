@@ -111,6 +111,12 @@ public class OlapJoin extends Reference {
         "type",
         "condition"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "business_name",
+        "short_description",
+        "condition"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "contains_references",
         "referenced_by_an_olap_cube"
@@ -126,6 +132,7 @@ public class OlapJoin extends Reference {
         "referenced_by_an_olap_cube"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isOlapJoin(Object obj) { return (obj.getClass() == OlapJoin.class); }

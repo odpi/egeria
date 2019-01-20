@@ -143,6 +143,13 @@ public class Datagroup extends Reference {
         "name_quoting_char",
         "name_qualifier"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "name_quoting_char",
+        "name_qualifier"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "labels",
         "stewards",
@@ -165,6 +172,7 @@ public class Datagroup extends Reference {
         "database_schema"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isDatagroup(Object obj) { return (obj.getClass() == Datagroup.class); }
