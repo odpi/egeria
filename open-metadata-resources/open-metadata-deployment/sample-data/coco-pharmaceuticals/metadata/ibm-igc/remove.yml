@@ -250,3 +250,30 @@
     executable: /bin/bash
   when: ('ibm-information-server-engine' in group_names)
   with_items: "{{ egeria_samples_cocopharma_databases }}"
+
+- name: remote database catalog status
+  shell: "source ~/.bashrc && db2 list database directory"
+  args:
+    executable: /bin/bash
+  become_user: "{{ ibm_infosvr_users.db2inst1 }}"
+  become: yes
+  ignore_errors: yes
+  register: __cocopharma_db2catalog_completion
+  changed_when: False
+  when: >
+    ('ibm-information-server-engine' in group_names)
+    and (egeria_samples_cocopharma_db_type == 'ibm-db2')
+
+- name: uncatalog databases
+  shell: >
+    source ~/.bashrc &&
+    db2 uncatalog database {{ item | upper }}
+  args:
+    executable: /bin/bash
+  become: yes
+  become_user: "{{ egeria_samples_credentials.db_owner }}"
+  when: >
+    ('ibm-information-server-engine' in group_names)
+    and (egeria_samples_cocopharma_db_type == 'ibm-db2')
+    and __cocopharma_db2catalog_completion.stdout.find(item) > 0
+  with_items: "{{ egeria_samples_cocopharma_databases }}"

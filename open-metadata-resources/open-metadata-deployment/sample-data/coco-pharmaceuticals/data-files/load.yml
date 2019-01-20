@@ -7,16 +7,16 @@
     path: "{{ egeria_samples_cocopharma_targets.files }}"
     state: directory
     mode: 0755
-    owner: "{{ egeria_samples_users.file_owner }}"
-    group: "{{ egeria_samples_users.file_group }}"
+    owner: "{{ egeria_samples_credentials.file_owner }}"
+    group: "{{ egeria_samples_credentials.file_group }}"
   become: yes
 
 - name: transfer sample data files
   copy:
     src: "data-files/"
     dest: "{{ egeria_samples_cocopharma_targets.files }}/"
-    owner: "{{ egeria_samples_users.file_owner }}"
-    group: "{{ egeria_samples_users.file_group }}"
+    owner: "{{ egeria_samples_credentials.file_owner }}"
+    group: "{{ egeria_samples_credentials.file_group }}"
     mode: 0644
   become: yes
 

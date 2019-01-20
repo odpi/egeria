@@ -17,13 +17,19 @@ egeria_samples_cocopharma_db_type: ibm-db2
 egeria_samples_metadata_backend: ibm-igc
 
 # Name of OS-level users and groups who should own the samples that are being loaded
-# (defaults below are for 'ibm-igc' metadata backend and 'ibm-db2' db_type)
-egeria_samples_users:
+# Defaults:
+#  - ibm-igc => file => dsadm / dstage
+#  - ibm-db2 => db => db2inst1 / db2iadm1
+#  - postgresql => db => postgres / postgres
+egeria_samples_credentials:
   file_owner: dsadm
   file_group: dstage
   db_owner: db2inst1
   db_group: db2iadm1
+  db_passwd: db2inst1
 
 # Name of the schema under which to create the sample database
-# (default is to just use the upper-case of 'db_owner' above)
-egeria_samples_db_schema: "{{ egeria_samples_users.db_owner | upper }}"
+# Defaults:
+#  - postgresql => public
+#  - ibm-db2 => "{{ egeria_samples_credentials.db_owner | upper }}"
+egeria_samples_db_schema: "{{ egeria_samples_credentials.db_owner | upper }}"
