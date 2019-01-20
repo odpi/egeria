@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTerm;
+import org.odpi.openmetadata.accessservices.assetconsumer.properties.Tag;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.odpi.openmetadata.accessservices.connectedasset.client.ConnectedAsset;
 import org.odpi.openmetadata.accessservices.connectedasset.client.ConnectedAssetProperties;
@@ -933,9 +934,12 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
                                                        UserNotAuthorizedException
     {
         final String   methodName = "getMeaning";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/{guid}";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/{2}";
+        final String   guidParameter = "guid";
 
         invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameter, methodName);
 
         MeaningResponse restResult = restClient.callMeaningGetRESTCall(methodName,
                                                                        omasServerURL + urlTemplate,
@@ -971,10 +975,13 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
     {
-        final String   methodName = "getMeaning";
-        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/by-name/{term}?elementStart={3}&maxElements={4}";
+        final String   methodName = "getMeaningByName";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/meanings/by-name/{2}?elementStart={3}&maxElements={4}";
+        final String   nameParameter = "term";
 
         invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(term, nameParameter, methodName);
 
         MeaningListResponse restResult = restClient.callMeaningListGetRESTCall(methodName,
                                                                                omasServerURL + urlTemplate,
@@ -1060,6 +1067,49 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * ===============================================
      */
 
+    /**
+     * Creates a new informal tag and returns the unique identifier for it.
+     *
+     * @param urlTemplate      string template for the URL.
+     * @param methodName       name of calling method.
+     * @param userId           userId of user making request.
+     * @param tagName          name of the tag.
+     * @param tagDescription  (optional) description of the tag.  Setting a description, particularly in a public tag
+     *                        makes the tag more valuable to other users and can act as an embryonic glossary term.
+     *
+     * @return GUID for new tag.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the asset properties to the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    private String createTag(String urlTemplate,
+                             String methodName,
+                             String userId,
+                             String tagName,
+                             String tagDescription) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
+    {
+        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        TagRequestBody  tagRequestBody = new TagRequestBody();
+        tagRequestBody.setTagName(tagName);
+        tagRequestBody.setTagDescription(tagDescription);
+
+        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
+                                                                  omasServerURL + urlTemplate,
+                                                                  tagRequestBody,
+                                                                  serverName,
+                                                                  userId);
+
+        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+
+        return restResult.getGUID();
+    }
 
     /**
      * Creates a new public informal tag and returns the unique identifier for it.
@@ -1082,27 +1132,9 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
                                                                 UserNotAuthorizedException
     {
         final String   methodName = "createPublicTag";
-
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/public";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        TagRequestBody  tagRequestBody = new TagRequestBody();
-        tagRequestBody.setTagName(tagName);
-        tagRequestBody.setTagDescription(tagDescription);
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
-                                                                  tagRequestBody,
-                                                                  serverName,
-                                                                  userId);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getGUID();
+        return this.createTag(urlTemplate, methodName, userId, tagName, tagDescription);
     }
 
     /**
@@ -1126,27 +1158,9 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
                                                                  UserNotAuthorizedException
     {
         final String   methodName = "createPrivateTag";
-
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/private";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
-        invalidParameterHandler.validateUserId(userId, methodName);
-
-        TagRequestBody  tagRequestBody = new TagRequestBody();
-        tagRequestBody.setTagName(tagName);
-        tagRequestBody.setTagDescription(tagDescription);
-
-        GUIDResponse restResult = restClient.callGUIDPostRESTCall(methodName,
-                                                                  omasServerURL + urlTemplate,
-                                                                  tagRequestBody,
-                                                                  serverName,
-                                                                  userId);
-
-        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
-
-        return restResult.getGUID();
+        return this.createTag(urlTemplate, methodName, userId, tagName, tagDescription);
     }
 
 
@@ -1227,6 +1241,90 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+    }
+
+
+    /**
+     * Return the tag for the supplied unique identifier (guid).
+     *
+     * @param userId userId of the user making the request.
+     * @param guid unique identifier of the tag.
+     *
+     * @return tag
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public Tag getTag(String userId,
+                      String guid) throws InvalidParameterException,
+                                          PropertyServerException,
+                                          UserNotAuthorizedException
+    {
+        final String   methodName = "getTag";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/{2}";
+        final String   guidParameter = "guid";
+
+        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameter, methodName);
+
+        TagResponse restResult = restClient.callTagGetRESTCall(methodName,
+                                                               omasServerURL + urlTemplate,
+                                                               serverName,
+                                                               userId,
+                                                               guid);
+
+        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+
+        return restResult.getTag();
+    }
+
+
+    /**
+     * Return the list of tags matching the supplied name.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId the name of the calling user.
+     * @param tag name of tag.  This may include wild card characters.
+     * @param startFrom  index of the list ot start from (0 for start)
+     * @param pageSize   maximum number of elements to return.
+     *
+     * @return tag list
+     * @throws InvalidParameterException the userId is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving information from the property server(s).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<Tag> getTagsByName(String serverName,
+                                   String userId,
+                                   String tag,
+                                   int    startFrom,
+                                   int    pageSize) throws InvalidParameterException,
+                                                           PropertyServerException,
+                                                           UserNotAuthorizedException
+    {
+        final String   methodName = "getTagsByName";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/tags/by-name/{2}?elementStart={3}&maxElements={4}";
+        final String   nameParameter = "tag";
+
+        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(tag, nameParameter, methodName);
+
+        TagListResponse restResult = restClient.callTagListGetRESTCall(methodName,
+                                                                       omasServerURL + urlTemplate,
+                                                                       serverName,
+                                                                       userId,
+                                                                       tag,
+                                                                       startFrom,
+                                                                       pageSize);
+
+        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+
+        return restResult.getTags();
     }
 
 

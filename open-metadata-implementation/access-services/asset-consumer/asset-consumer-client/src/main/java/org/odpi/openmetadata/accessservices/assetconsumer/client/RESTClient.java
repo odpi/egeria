@@ -125,6 +125,42 @@ class RESTClient
 
 
     /**
+     * Issue a GET REST call that returns a TagResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return TagResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    TagResponse callTagGetRESTCall(String    methodName,
+                                   String    urlTemplate,
+                                   Object... params) throws PropertyServerException
+    {
+        return (TagResponse)this.callGetRESTCall(methodName, TagResponse.class, urlTemplate, params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a TagListResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return TagListResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    TagListResponse callTagListGetRESTCall(String    methodName,
+                                           String    urlTemplate,
+                                           Object... params) throws PropertyServerException
+    {
+        return (TagListResponse)this.callGetRESTCall(methodName, TagListResponse.class, urlTemplate, params);
+    }
+
+
+    /**
      * Issue a POST REST call that returns a guid object.
      *
      * @param methodName  name of the method being called
