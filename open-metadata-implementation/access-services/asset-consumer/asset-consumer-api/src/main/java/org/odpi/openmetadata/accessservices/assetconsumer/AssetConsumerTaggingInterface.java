@@ -112,7 +112,6 @@ public interface AssetConsumerTaggingInterface
     /**
      * Return the list of tags matching the supplied name.
      *
-     * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
      * @param tag name of tag.  This may include wild card characters.
      * @param startFrom  index of the list ot start from (0 for start)
@@ -123,8 +122,7 @@ public interface AssetConsumerTaggingInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<Tag> getTagsByName(String serverName,
-                            String userId,
+    List<Tag> getTagsByName(String userId,
                             String tag,
                             int    startFrom,
                             int    pageSize) throws InvalidParameterException,
