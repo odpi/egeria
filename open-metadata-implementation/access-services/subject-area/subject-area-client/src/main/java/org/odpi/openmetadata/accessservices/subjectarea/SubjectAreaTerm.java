@@ -104,6 +104,7 @@ public interface SubjectAreaTerm
      * Replace a Term. This means to override all the existing attributes with the supplied attributes.
      * <p>
      * Status is not updated using this call.
+     * The GovernanceAction content if specified replaces what is on the server.
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
@@ -133,6 +134,7 @@ public interface SubjectAreaTerm
      * If the caller has chosen to incorporate the term qualifiedName in their Term Terms or Categories qualified name, changing the qualified name of the term will cause those
      * qualified names to mismatch the Term name.
      * Status is not updated using this call.
+     * The GovernanceAction content if specified replaces what is on the server.
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
