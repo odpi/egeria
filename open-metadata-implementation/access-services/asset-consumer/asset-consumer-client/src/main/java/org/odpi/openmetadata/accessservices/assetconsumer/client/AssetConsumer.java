@@ -567,7 +567,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
 
 
     /**
-     * Adds a rating and optional review text to the asset.
+     * Updates the rating and optional review text attached to the asset by this user.
      *
      * @param userId      userId of user making request.
      * @param reviewGUID  unique identifier for the review.
@@ -615,7 +615,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
 
 
     /**
-     * Removes of a star rating that was added to the asset by this user.
+     * Removes of a review that was added to the asset by this user.
      *
      * @param userId      userId of user making request.
      * @param reviewGUID  unique identifier for the rating object.
@@ -624,12 +624,12 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   removeReview(String userId,
-                               String reviewGUID) throws InvalidParameterException,
-                                                         PropertyServerException,
-                                                         UserNotAuthorizedException
+    public void   removeReviewFromAsset(String userId,
+                                        String reviewGUID) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
-        final String   methodName = "removeReview";
+        final String   methodName = "removeReviewFromAsset";
         final String   guidParameter = "reviewGUID";
 
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/reviews/{2}/delete";
@@ -703,12 +703,12 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public void   removeLike(String     userId,
-                             String     likeGUID) throws InvalidParameterException,
-                                                         PropertyServerException,
-                                                         UserNotAuthorizedException
+    public void   removeLikeFromAsset(String     userId,
+                                      String     likeGUID) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
-        final String   methodName = "removeLike";
+        final String   methodName = "removeLikeFromAsset";
         final String   guidParameter = "likeGUID";
 
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/likes/{2}/delete";
@@ -881,12 +881,12 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    public void   removeComment(String     userId,
-                                String     commentGUID) throws InvalidParameterException,
-                                                               PropertyServerException,
-                                                               UserNotAuthorizedException
+    public void   removeCommentFromAsset(String     userId,
+                                         String     commentGUID) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
     {
-        final  String  methodName = "removeComment";
+        final  String  methodName = "removeCommentFromAsset";
         final  String  guidParameter = "commentGUID";
 
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/comments/{2}/delete";
