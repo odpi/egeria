@@ -12,6 +12,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.attributes.DataClassAssignmentStatusMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.DataClassMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
@@ -232,9 +233,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                                 EntityMapping.getPrimitivePropertyValue(detectedClassification.getPropertyByName("value_frequency"))
                         );
                     }
-                    EnumPropertyValue status = new EnumPropertyValue();
-                    status.setSymbolicName("Discovered");
-                    status.setOrdinal(0);
+                    EnumPropertyValue status = DataClassAssignmentStatusMapper.getInstance().getEnumMappingByIgcValue("discovered");
                     relationshipProperties.setProperty(
                             "status",
                             status
@@ -298,9 +297,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                         userId
                 );
 
-                EnumPropertyValue status = new EnumPropertyValue();
-                status.setSymbolicName("Proposed");
-                status.setOrdinal(1);
+                EnumPropertyValue status = DataClassAssignmentStatusMapper.getInstance().getEnumMappingByIgcValue("selected");
                 relationshipProperties.setProperty(
                         "status",
                         status
@@ -397,9 +394,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                                 EntityMapping.getPrimitivePropertyValue(detectedClassification.getPropertyByName("value_frequency"))
                         );
                     }
-                    EnumPropertyValue status = new EnumPropertyValue();
-                    status.setSymbolicName("Discovered");
-                    status.setOrdinal(0);
+                    EnumPropertyValue status = DataClassAssignmentStatusMapper.getInstance().getEnumMappingByIgcValue("discovered");
                     relationshipProperties.setProperty(
                             "status",
                             status
@@ -456,9 +451,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                             userId
                     );
 
-                    EnumPropertyValue status = new EnumPropertyValue();
-                    status.setSymbolicName("Proposed");
-                    status.setOrdinal(1);
+                    EnumPropertyValue status = DataClassAssignmentStatusMapper.getInstance().getEnumMappingByIgcValue("selected");
                     relationshipProperties.setProperty(
                             "status",
                             status

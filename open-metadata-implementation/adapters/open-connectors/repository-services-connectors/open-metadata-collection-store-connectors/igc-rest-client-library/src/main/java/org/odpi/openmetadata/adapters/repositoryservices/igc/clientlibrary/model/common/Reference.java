@@ -499,6 +499,23 @@ public class Reference extends ObjectPrinter {
     }
 
     /**
+     * Retrieves the list of property names for the asset that are string-valued.
+     *
+     * @param pojoClass the POJO for which to retrieve string-valued property names
+     * @return List<String>
+     */
+    public static List<String> getStringPropertiesFromPOJO(Class pojoClass) {
+        List<String> list = null;
+        try {
+            Method getStringProperties = pojoClass.getMethod("getStringProperties");
+            list = (List<String>) getStringProperties.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve string properties from IGC POJO: {}", pojoClass, e);
+        }
+        return list;
+    }
+
+    /**
      * Retrieves the list of all property names for the asset.
      *
      * @param pojoClass the POJO for which to retrieve all property names
