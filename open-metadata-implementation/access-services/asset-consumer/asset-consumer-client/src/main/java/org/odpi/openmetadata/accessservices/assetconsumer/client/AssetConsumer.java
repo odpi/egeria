@@ -1287,7 +1287,6 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
     /**
      * Return the list of tags matching the supplied name.
      *
-     * @param serverName name of the server instances for this request
      * @param userId the name of the calling user.
      * @param tag name of tag.  This may include wild card characters.
      * @param startFrom  index of the list ot start from (0 for start)
@@ -1298,8 +1297,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<Tag> getTagsByName(String serverName,
-                                   String userId,
+    public List<Tag> getTagsByName(String userId,
                                    String tag,
                                    int    startFrom,
                                    int    pageSize) throws InvalidParameterException,
@@ -1358,11 +1356,9 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         invalidParameterHandler.validateGUID(assetGUID, assetGUIDParameterName, methodName);
         invalidParameterHandler.validateGUID(tagGUID, tagGUIDParameterName, methodName);
 
-        NullRequestBody  requestBody = new NullRequestBody();
-
         VoidResponse restResult = restClient.callVoidPostRESTCall(methodName,
                                                                   omasServerURL + urlTemplate,
-                                                                  requestBody,
+                                                                  nullRequestBody,
                                                                   serverName,
                                                                   userId,
                                                                   assetGUID,
