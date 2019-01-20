@@ -1111,6 +1111,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         return restResult.getGUID();
     }
 
+
     /**
      * Creates a new public informal tag and returns the unique identifier for it.
      *
@@ -1136,6 +1137,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
 
         return this.createTag(urlTemplate, methodName, userId, tagName, tagDescription);
     }
+
 
     /**
      * Creates a new private informal tag and returns the unique identifier for it.
@@ -1414,5 +1416,4 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
         exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
     }
-
 }
