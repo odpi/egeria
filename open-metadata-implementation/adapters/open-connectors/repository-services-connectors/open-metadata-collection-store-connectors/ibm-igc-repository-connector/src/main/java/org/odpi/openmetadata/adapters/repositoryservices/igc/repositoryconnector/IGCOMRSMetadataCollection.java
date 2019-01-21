@@ -1341,7 +1341,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
                     methodName,
                     repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
@@ -5045,12 +5045,18 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 List<ReferenceableMapper> mappers = getMappers(reference.getType(), userId);
                 for (ReferenceableMapper mapper : mappers) {
                     log.debug("processResults with mapper: {}", mapper.getClass().getCanonicalName());
+                    String idToLookup;
                     if (mapper.igcRidNeedsPrefix()) {
                         log.debug(" ... prefix required, getEntityDetail with: {}", mapper.getIgcRidPrefix() + reference.getId());
-                        ed = getEntityDetail(userId, mapper.getIgcRidPrefix() + reference.getId(), reference);
+                        idToLookup = mapper.getIgcRidPrefix() + reference.getId();
                     } else {
                         log.debug(" ... no prefix required, getEntityDetail with: {}", reference.getId());
-                        ed = getEntityDetail(userId, reference.getId(), reference);
+                        idToLookup = reference.getId();
+                    }
+                    try {
+                        ed = getEntityDetail(userId, idToLookup, reference);
+                    } catch (EntityNotKnownException e) {
+                        log.error("Unable to find entity: {}", idToLookup);
                     }
                     if (ed != null) {
                         entityDetails.add(ed);
@@ -5134,7 +5140,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      */
-    public EntityDetail getEntityDetail(String userId, String guid, Reference asset) throws RepositoryErrorException {
+    public EntityDetail getEntityDetail(String userId, String guid, Reference asset)
+            throws RepositoryErrorException, EntityNotKnownException {
 
         final String  methodName        = "getEntityDetail";
 
@@ -5149,7 +5156,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
                     methodName,
                     repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
