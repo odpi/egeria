@@ -11,9 +11,11 @@ import java.util.Map;
 
 
 /**
- * OMAGAccessServiceRegistration provides static methods for an access service to
- * register itself with the OMAG Server.  Static methods are needed to be able to
- * get this information to the Admin Services REST API singletons created by Spring.
+ * OMAGAccessServiceRegistration provides static methods to enable an access service to dynamically
+ * register itself with the OMAG Server.
+ *
+ * Static methods are needed to be able to get this information to the Admin Services REST API singletons
+ * created by Spring.
  */
 public class OMAGAccessServiceRegistration
 {
@@ -48,7 +50,7 @@ public class OMAGAccessServiceRegistration
      *
      * @return list of registration info
      */
-    public static synchronized  List<AccessServiceRegistration> getAccessServiceRegistrationList()
+    public static synchronized List<AccessServiceRegistration> getAccessServiceRegistrationList()
     {
         List<AccessServiceRegistration>  registrationList = new ArrayList<>();
 

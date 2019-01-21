@@ -10,7 +10,7 @@ import java.util.Objects;
 
 /**
  * AssetCollectionRequestBody defines the properties used to create an asset connector anchor object.
- * Asset collections are linked off of the individual's profile.
+ * AssetCollectionMember collections are linked off of the individual's profile.
  */
 public class AssetCollectionRequestBody extends CommunityProfileOMASAPIRequestBody
 {

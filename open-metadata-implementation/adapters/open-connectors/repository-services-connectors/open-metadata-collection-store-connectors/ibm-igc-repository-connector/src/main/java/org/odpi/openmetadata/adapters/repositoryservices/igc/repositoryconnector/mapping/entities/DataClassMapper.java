@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities;
 
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCVersionEnum;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
@@ -55,7 +55,8 @@ public class DataClassMapper extends ReferenceableMapper {
         addComplexOmrsProperty("specification");
 
         // Further expand the complex properties if we're on v11.7 (and these are then available)
-        if (igcomrsRepositoryConnector.getIGCVersion().equals(IGCRestConstants.VERSION_117)) {
+        IGCVersionEnum igcVersion = igcomrsRepositoryConnector.getIGCVersion();
+        if (igcVersion.isEqualTo(IGCVersionEnum.V11702) || igcVersion.isHigherThan(IGCVersionEnum.V11702)) {
             addComplexIgcProperty("expression");
             addComplexIgcProperty("script");
             addComplexIgcProperty("provider");
@@ -165,7 +166,8 @@ public class DataClassMapper extends ReferenceableMapper {
          * setup the OMRS 'userDefined' property
          * Provider = 'IBM' is only present in v11.7+ to be able to make this determination
          */
-        if (igcomrsRepositoryConnector.getIGCVersion().equals("v117")) {
+        IGCVersionEnum igcVersion = igcomrsRepositoryConnector.getIGCVersion();
+        if (igcVersion.isEqualTo(IGCVersionEnum.V11702) || igcVersion.isHigherThan(IGCVersionEnum.V11702)) {
             String provider = (String) igcEntity.getPropertyByName("provider");
             instanceProperties.setProperty(
                     "userDefined",

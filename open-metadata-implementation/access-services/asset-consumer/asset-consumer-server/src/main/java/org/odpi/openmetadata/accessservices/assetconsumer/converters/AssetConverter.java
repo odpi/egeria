@@ -66,8 +66,7 @@ public class AssetConverter extends ReferenceableHeaderConverter
             assetBean.setDisplayName(repositoryHelper.getStringProperty(componentName, DISPLAY_NAME_PROPERTY_NAME, instanceProperties, methodName));
             assetBean.setOwner(repositoryHelper.getStringProperty(componentName, ownerPropertyName, instanceProperties, methodName));
             assetBean.setDescription(repositoryHelper.getStringProperty(componentName, descriptionPropertyName, instanceProperties, methodName));
-            assetBean.setZoneMembership(repositoryHelper.getStringArrayProperty(componentName,
-                                                                                zoneMembershipPropertyName, instanceProperties, methodName));
+            assetBean.setZoneMembership(repositoryHelper.getStringArrayProperty(componentName, zoneMembershipPropertyName, instanceProperties, methodName));
             assetBean.setLastChange(repositoryHelper.getStringProperty(componentName, latestChangePropertyName, instanceProperties, methodName));
         }
     }

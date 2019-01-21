@@ -124,6 +124,27 @@ public class AssetCatalog implements AssetCatalogInterface {
     }
 
     /**
+     * Fetch the relationships for a specific asset and relationship type
+     *
+     * @param userId  the unique identifier for the user
+     * @param assetId the unique identifier for the asset
+     * @param relationshipType the the type of relationship required
+     * @return list of relationships for the given asset
+     * @throws PropertyServerException   there is a problem retrieving information from the property server
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     */
+    @Override
+    public RelationshipsResponse getAssetRelationshipsForType(String userId, String assetId, String relationshipType) throws PropertyServerException, InvalidParameterException {
+        String methodName = "getAssetRelationshipsForType";
+        doBasicChecks(methodName, userId);
+        validateParameter(methodName, assetId);
+        validateParameter(methodName, relationshipType);
+
+        String url = "/{0}/asset-relationships/{1}?type={2}";
+        return callGetRelationshipsResponse(url, userId, assetId, relationshipType);
+    }
+
+    /**
      * Fetch the classification for a specific asset
      *
      * @param userId  the unique identifier for the user
