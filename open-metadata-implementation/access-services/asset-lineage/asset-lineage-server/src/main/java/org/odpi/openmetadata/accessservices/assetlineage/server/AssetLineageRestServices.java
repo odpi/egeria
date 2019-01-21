@@ -8,6 +8,5 @@ public class AssetLineageRestServices {
 
     AssetLineageInstanceHandler  instanceHandler = new AssetLineageInstanceHandler();
 
-   
 
 }

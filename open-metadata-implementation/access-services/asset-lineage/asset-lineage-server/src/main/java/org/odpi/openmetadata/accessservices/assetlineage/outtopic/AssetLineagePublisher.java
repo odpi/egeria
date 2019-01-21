@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * AssetLineagePublisher is responsible for publishing events about personalProfiles.  It is called
+ * AssetLineagePublisher is responsible for publishing events about lineage.  It is called
  * when an interesting OMRS Event is added to the Enterprise OMRS Topic.  It adds events to the Asset lineage OMAS
  * out topic.
  */
