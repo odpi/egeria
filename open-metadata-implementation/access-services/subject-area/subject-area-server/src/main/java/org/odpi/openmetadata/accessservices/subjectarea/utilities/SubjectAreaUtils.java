@@ -227,11 +227,13 @@ public class SubjectAreaUtils {
         String glossaryGuid = termAnchorRelationship.getEntity1Guid();
         org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary glossary = subjectAreaBeansToAccessOMRS.getGlossaryById(userId, glossaryGuid);
         GlossarySummary glossarySummary =extractGlossarySummaryFromGlossary(glossary);
-        //get glossary icons
-        String mediaReferenceTypeGuid = TypeGuids.getMediaReferenceTypeGuid();
-        Set<Line> mediaReferenceRelationships = subjectAreaBeansToAccessOMRS.getGlossaryRelationships(userId, glossaryGuid, mediaReferenceTypeGuid, 0, null, null, null, 0);
-        Set<IconSummary> icons =getIconSummarySet(userId,subjectAreaBeansToAccessOMRS,mediaReferenceRelationships);
-        glossarySummary.setIcons(icons);
+        if (glossarySummary !=null) {
+            //get glossary icons
+            String mediaReferenceTypeGuid = TypeGuids.getMediaReferenceTypeGuid();
+            Set<Line> mediaReferenceRelationships = subjectAreaBeansToAccessOMRS.getGlossaryRelationships(userId, glossaryGuid, mediaReferenceTypeGuid, 0, null, null, null, 0);
+            Set<IconSummary> icons = getIconSummarySet(userId, subjectAreaBeansToAccessOMRS, mediaReferenceRelationships);
+            glossarySummary.setIcons(icons);
+        }
         return glossarySummary;
     }
     /**
@@ -320,7 +322,7 @@ public class SubjectAreaUtils {
     public static IconSummary extractIconSummaryFromRelatedMedia(RelatedMedia relatedMedia)
     {
         IconSummary icon = null;
-        if (relatedMedia.getMediaUsage().contains(MediaUsage.Icon))
+        if (relatedMedia.getMediaUsage().contains(MediaUsage.Icon.getOrdinal()))
         {
             icon = new IconSummary();
             icon.setGuid(relatedMedia.getSystemAttributes().getGUID());
