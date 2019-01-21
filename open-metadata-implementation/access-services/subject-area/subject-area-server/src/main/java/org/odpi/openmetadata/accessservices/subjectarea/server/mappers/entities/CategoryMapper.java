@@ -53,18 +53,6 @@ public class CategoryMapper {
         if (classifications==null) {
             classifications = new ArrayList<>();
         }
-        for (Classification classification : classifications) {
-            final String classificationName = classification.getClassificationName();
-            if (classificationName.equals(new Confidentiality().getClassificationName())) {
-                NodeUtils.foundGovernanceClassifications(classificationName);
-            } else    if (classificationName.equals(new Confidence().getClassificationName())) {
-                NodeUtils.foundGovernanceClassifications(classificationName);
-            } else    if (classificationName.equals(new Criticality().getClassificationName())) {
-                NodeUtils.foundGovernanceClassifications(classificationName);
-            } else    if (classificationName.equals(new Retention().getClassificationName())) {
-                NodeUtils.foundGovernanceClassifications(classificationName);
-            }
-        }
 
         omrsBean.setClassifications(classifications);
         return omrsBean;

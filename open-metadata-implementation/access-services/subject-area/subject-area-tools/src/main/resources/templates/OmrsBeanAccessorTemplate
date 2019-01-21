@@ -6,6 +6,8 @@
 package org.odpi.openmetadata.accessservices.subjectarea.generated.server;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //omrs
@@ -326,10 +328,7 @@ public class SubjectAreaBeansToAccessOMRS  {
 
             EntityDetail omrsEntityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId,entityGuid);
 
-            List<String> existingClassificationNames = new ArrayList();
-            for (org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification existingClassification:omrsEntityDetail.getClassifications()) {
-                 String name = existingClassification.getName();
-            }
+            List<String> existingClassificationNames = omrsEntityDetail.getClassifications().stream().map(x -> x.getName()).collect(Collectors.toList());
             for (Classification classification:classificationsToUpdate) {
                  String name = classification.getClassificationName();
                  // Only allow updates of classifications that already exist.
