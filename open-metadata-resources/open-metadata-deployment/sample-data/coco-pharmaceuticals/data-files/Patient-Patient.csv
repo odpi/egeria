@@ -1,0 +1,33 @@
+PatientId;Patient;LH Addr 1;LH Addr 2;LH Addr 3;LH Addr 4;LH Addr 5;Trial
+1;Miss Apricot Lace;92 Bookworm Ave;Alesbelly;Oxfordshire;OX99 2EE;;UK1
+2;A Steif;4 Button Cottages;Sawdust Hill;Waltenborough;WS45 1VF;;UK1
+3;Mr William Smart;90 Bookworm Avenue;Alesbelly;Oxfordshire;OX99 2EE;;UK1
+4;Mr Angus Atlantic;27 highland Rd;Loch User;Scotland;LO22 9fD;;UK1
+5;Rodney Soft;37 Street Rd;Carshire;Nessex;NX23 9GH;;UK1
+6;Mr Alistair Steiff;4 Button Cottages;Sawdust Hill;Waltenborough;WS45 1VF;;UK2
+7;Mr Alistair Steiff;4 Button Cottages;Sawdust Hill;Waltenborough;WS45 1VF;;UK3
+8;Mrs Daisy Seiff;4 Button Cottages;Sawdust Hill;Waltenborough;WS45 1VF;Wife;UK3
+9;Mr T Bach;1 Daffodill Close;The Valles;Wales;LL4 7CW;;UK2
+10;Mr Jonathon Trip;3 rRidge Road;Ropley;Arland;Old Hampshire;FD2 9MN;UK3
+11;Mrs G Type;45 Long Rd;London;SW9 12GQ;;;UK3
+12;Mr Fred Bean;5 Can Lane;Alleyvale Rd;Windford;Windfordshire;WN2 12FG;UK3
+13;Alistare Steif;4 Button Cottages;Sawdust Hill;Waltenborough;WS45 1VF;;UK4
+14;P J Bronson;132 Four Wheel Drive;Leatherseat;Surrey;;;UK3
+15;Mrs S Counter;56 Number Close;Timeworth;London;SW45 6YU;;UK2
+16;Graham Turner;The Spinney;Roundly;Cumbria;FD7 4RD;;UK1
+17;Mr Gavin Fall;199 Long Rd;Midton;Centerville;Middleshire;MI6 1FF;UK1
+18;Mrs Florence Bell;3 High St;Ringley;Hants;RG56 1DF;;UK2
+19;Jeffery Fawkes;4 Green Rd;Countryside;Surrey;GU11 $GG;;UK4
+20;Mr D Bloke;Will;Supply;Later;;;UK5
+21;John Brown;Unit 1;Fairfield Estate;Windsor;WN33 9ED;;UK2
+22;Mr David Nice;Rose Cottage;Dingleton;Devon;DI9 7FD;;UK2
+23;Mrs Celia Nice;Rose Cottage;Dingleton;Devon;DI9 7FD;;UK3
+24;Cathy Starter;1 First Row;Headley;Cornwall;HD9 8MN;;UK4
+25;John Smith;18 Beer Street;Barrelton;Berkshire;BA25 7MZ;;UK5
+26;John Smith Jr;Hursley Park;Winchester;Hants;SO21 2JN;;UK5
+27;Miss Callie jones;IBM;Hursley Park;Winchester;Hants;So21 2JN;UK4
+28;Ms D Rawlings;4 Cross Road;Wimpleton;Hants;ED3 4MA;;UK4
+29;Sir Issac Cummings;The Manor;Crossby;Wiltshire;BH1 5TF;;UK4
+30;Walter Steiff;4 Button Cottages;Sawdust hill;Waltenborough;WS45 1VF;;UK4
+31;Dr Mike Cross;Surgery House;Main St;Wellton;WE20 2MN;;UK5
+32;Mr Alister Steiff;4 Button Cottages;Waltenborough;OX99 2EE;;;UK5

@@ -1,0 +1,14 @@
+// SPDX-License-Identifier: Apache-2.0
+// Copyright Contributors to the ODPi Egeria project.
+// FileStructure: file_format='delimited', header='true'
+record { record_delim='\n', delim=';', final_delim=end, null_field='', charset=UTF-8, date_format='%dd %mmm %yyyy', time_format='%hh:%nn:%ss', timestamp_format='%dd %mmm %yyyy %hh:%nn:%ss' } (
+    WLID: not nullable int64;
+    WLName: nullable string;
+    F1: nullable string;
+    F2: nullable string;
+    F3: nullable string;
+    F4: nullable string;
+    F5: nullable string;
+    F6: nullable string;
+    F7: nullable string;
+)
