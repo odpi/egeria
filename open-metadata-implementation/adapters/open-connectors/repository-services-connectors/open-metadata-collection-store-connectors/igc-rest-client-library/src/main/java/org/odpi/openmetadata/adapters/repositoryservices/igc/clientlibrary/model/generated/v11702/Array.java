@@ -162,6 +162,11 @@ public class Array extends Reference {
         "maximum_size",
         "minimum_size"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "labels",
         "stewards",
@@ -186,6 +191,7 @@ public class Array extends Reference {
         "minimum_size"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isArray(Object obj) { return (obj.getClass() == Array.class); }

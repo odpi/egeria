@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
@@ -89,6 +90,16 @@ public abstract class ClassificationMapping {
                                                       List<Classification> classifications,
                                                       Reference fromIgcObject,
                                                       String userId);
+
+    /**
+     * Implement this method to define how IGC assets can be searched based on this classification. (Since IGC has no
+     * actual concept of classification, this is left as a method to-be-implemented depending on how the implementation
+     * desires the classification to be represented within IGC.)
+     *
+     * @param matchClassificationProperties the criteria to use when searching for the classification
+     * @return IGCSearchConditionSet - the IGC search criteria to find entities based on this classification
+     */
+    public abstract IGCSearchConditionSet getIGCSearchCriteria(InstanceProperties matchClassificationProperties);
 
     /**
      * Indicates whether this classification mapping matches the provided IGC asset type: that is, this mapping
