@@ -120,6 +120,11 @@ public class QualityProblem extends Reference {
         "modified_by",
         "modified_on"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "details",
+        "created_by",
+        "modified_by"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
     private static final List<String> ALL_PROPERTIES = Arrays.asList(
         "data_quality_score",
@@ -134,6 +139,7 @@ public class QualityProblem extends Reference {
         "modified_on"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isQualityProblem(Object obj) { return (obj.getClass() == QualityProblem.class); }
