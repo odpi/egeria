@@ -9,10 +9,12 @@ import org.odpi.openmetadata.accessservices.subjectarea.generated.classification
 import org.odpi.openmetadata.accessservices.subjectarea.generated.classifications.Retention.Retention;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.ObjectIdentifier;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.SpineAttribute;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.SpineObject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,6 +53,7 @@ public class TermMapper {
         if (classifications==null) {
             classifications = new ArrayList<>();
         }
+        // we do not expect governance action classifications in the supplied term
         for (Classification classification : classifications) {
             final String classificationName = classification.getClassificationName();
             if (classificationName.equals(new Confidentiality().getClassificationName())) {
@@ -58,29 +61,27 @@ public class TermMapper {
             } else    if (classificationName.equals(new Confidence().getClassificationName())) {
                 NodeUtils.foundGovernanceClassifications(classificationName);
             } else    if (classificationName.equals(new Criticality().getClassificationName())) {
-                NodeUtils. foundGovernanceClassifications(classificationName);
+                NodeUtils.foundGovernanceClassifications(classificationName);
             } else    if (classificationName.equals(new Retention().getClassificationName())) {
                 NodeUtils.foundGovernanceClassifications(classificationName);
             }
         }
         GovernanceActions governanceActions = term.getGovernanceActions();
-        if (governanceActions ==null) {
-            governanceActions =new GovernanceActions();
-            term.setGovernanceActions(governanceActions);
+        if (governanceActions!=null) {
+            if (governanceActions.getConfidentiality() !=null) {
+                classifications.add(governanceActions.getConfidentiality());
+            }
+            if (governanceActions.getConfidence() !=null) {
+                classifications.add(governanceActions.getConfidence());
+            }
+            if (governanceActions.getCriticality() !=null) {
+                classifications.add(governanceActions.getCriticality());
+            }
+            if (governanceActions.getRetention() !=null) {
+                classifications.add(governanceActions.getRetention());
+            }
         }
-        if (governanceActions.getRetention() !=null) {
-            classifications.add(governanceActions.getRetention());
-        }
-        if (governanceActions.getConfidence() !=null) {
-            classifications.add(governanceActions.getConfidence());
-        }
-        if (governanceActions.getConfidentiality() !=null) {
-            classifications.add(governanceActions.getConfidentiality());
-        }
-        if (governanceActions.getCriticality() !=null) {
-            classifications.add(governanceActions.getCriticality());
-        }
-
+        // TODO handle the setting od spine object, spine attribute and object identifier - we should just crete an object as there may be an effectivity
         omrsBean.setClassifications(classifications);
         return omrsBean;
     }
@@ -103,8 +104,30 @@ public class TermMapper {
         term.setName(omrsBean.getDisplayName());
         term.setSummary(omrsBean.getSummary());
         term.setQualifiedName(omrsBean.getQualifiedName());
-
-        term.setClassifications(omrsBean.getClassifications());
+        List<Classification> classifications = omrsBean.getClassifications();
+        if (classifications !=null) {
+            GovernanceActions governanceActions = new GovernanceActions();
+            for (Classification classification : classifications) {
+                final String classificationName = classification.getClassificationName();
+                if (classificationName.equals(new Confidentiality().getClassificationName())) {
+                    governanceActions.setConfidentiality((org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Confidentiality) classification);
+                } else if (classificationName.equals(new Confidence().getClassificationName())) {
+                    governanceActions.setConfidence((org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Confidence) classification);
+                } else if (classificationName.equals(new Criticality().getClassificationName())) {
+                    governanceActions.setCriticality((org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Criticality) classification);
+                } else if (classificationName.equals(new Retention().getClassificationName())) {
+                    governanceActions.setRetention((org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Retention) classification);
+                } else if (classificationName.equals(new SpineObject().getClassificationName())) {
+                    term.setSpineObject(true);
+                } else if (classificationName.equals(new SpineAttribute().getClassificationName())) {
+                    term.setSpineAttribute(true);
+                } else if (classificationName.equals(new ObjectIdentifier().getClassificationName())) {
+                    term.setObjectIdentifier(true);
+                }
+            }
+            term.setGovernanceActions(governanceActions);
+        }
+        //TODO other classifications.
         return term;
     }
 }

@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 
 import java.io.IOException;
@@ -81,7 +80,7 @@ public class EffectiveDatesFVT
         }
         Glossary futureGloss =glossaryFVT.createFutureGlossary(DEFAULT_TEST_FUTURE_GLOSSARY_NAME);
         FVTUtils.validateNode(futureGloss);
-        Term term5 =termFVT.createTermWithGlossaryGuid(DEFAULT_TEST_TERM_NAME, futureGloss.getSystemAttributes().getGUID());
+        Term term5 =termFVT.createTerm(DEFAULT_TEST_TERM_NAME, futureGloss.getSystemAttributes().getGUID());
         FVTUtils.validateNode(term5);
         if (term5.getGlossary()==null) {
             // error
