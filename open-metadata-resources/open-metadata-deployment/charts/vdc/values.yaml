@@ -27,7 +27,7 @@ image:
 
   atlas:
     repository: planetf1/atlas-1773-egeria
-    tag: 0.1.4
+    tag: 0.1.5
     pullPolicy: IfNotPresent
 
   atlasinit:
@@ -45,10 +45,13 @@ image:
 
 
 kafka:
+  #replicas: 1
   external:
     enabled: false
     type: NodePort
   configurationOverrides:
+    "advertised.listeners": |-
+       PLAINTEXT://${KAFKA_ENDPOINT}
     "auto.create.topics.enable": true
 
 
