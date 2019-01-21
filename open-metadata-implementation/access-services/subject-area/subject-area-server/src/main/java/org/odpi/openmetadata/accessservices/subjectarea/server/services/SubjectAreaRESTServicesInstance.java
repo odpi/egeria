@@ -271,14 +271,19 @@ public GovernanceClassificationDefListAPIResponse getGovernanceClassificationDef
         }
         // initialise omrs API helper with the right instance based on the server name
         SubjectAreaOMASAPIResponse response = null;
-        EntityDetail entityDetail = null;
+
         if (response == null)
         {
             try
             {
                 // initialise omrs API helper with the right instance based on the server name
                 SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
-                entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid);
+                EntityDetail entityDetail = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid);
+                String typeName = entityDetail.getType().getTypeDefName();
+                if (SubjectAreaUtils.isTerm(typeName))
+                {
+                    response = this.getPossibleRelationshipsForEntity(serverName, userId, typeName);
+                }
             } catch (MetadataServerUncontactableException e)
             {
                 response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
@@ -293,14 +298,6 @@ public GovernanceClassificationDefListAPIResponse getGovernanceClassificationDef
                 response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
             }
         }
-        if (response == null)
-        {
-            String typeName = entityDetail.getType().getTypeDefName();
-            if (SubjectAreaUtils.isTerm(typeName))
-            {
-                response = this.getPossibleRelationshipsForEntity(serverName, userId, typeName);
-            }
-        }
         return response;
     }
 
@@ -313,28 +310,15 @@ public GovernanceClassificationDefListAPIResponse getGovernanceClassificationDef
         }
         SubjectAreaOMASAPIResponse response = null;
         Set<String> relationships = new HashSet<>();
-        TypeDef typeDef = null;
+
         try
         {
             // initialise omrs API helper with the right instance based on the server name
             SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
-            typeDef = oMRSAPIHelper.callGetTypeDefByName(userId, typeName);
+            TypeDef typeDef = oMRSAPIHelper.callGetTypeDefByName(userId, typeName);
             if (typeDef.getCategory().getName() == (TypeDefCategory.ENTITY_DEF.getName()))
             {
-                EntityDef entityDef = (EntityDef) typeDef;
-                TypeDefGallery gallery = null;
-                try
-                {
-                    gallery = oMRSAPIHelper.callGetAllTypes(userId);
-                } catch (MetadataServerUncontactableException e)
-                {
-                    response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-                } catch (UserNotAuthorizedException e)
-                {
-                    response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-                }
-                if (response == null)
-                {
+                TypeDefGallery gallery = oMRSAPIHelper.callGetAllTypes(userId);
                     for (TypeDef def : gallery.getTypeDefs())
                     {
                         if (def.getCategory().getName() == (TypeDefCategory.RELATIONSHIP_DEF.getName()))
@@ -350,7 +334,6 @@ public GovernanceClassificationDefListAPIResponse getGovernanceClassificationDef
                         }
                     }
                     response = new PossibleRelationshipsResponse(relationships);
-                }
             } else
             {
                 SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.WRONG_TYPENAME;
