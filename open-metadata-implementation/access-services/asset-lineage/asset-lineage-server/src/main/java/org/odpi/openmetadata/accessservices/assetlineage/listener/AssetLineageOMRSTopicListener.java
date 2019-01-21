@@ -13,8 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class AssetLineageOMRSTopicListener implements OMRSTopicListener
-{
+public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     private static final Logger log = LoggerFactory.getLogger(AssetLineageOMRSTopicListener.class);
 
     private AssetLineagePublisher publisher;
@@ -24,22 +23,21 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
      * along with classes for testing and manipulating instances.
      *
-     * @param assetConsumerOutTopic  connection to the out topic
-     * @param repositoryHelper  provides methods for working with metadata instances
-     * @param repositoryValidator  provides validation of metadata instance
-     * @param componentName  name of component
+     * @param assetConsumerOutTopic connection to the out topic
+     * @param repositoryHelper      provides methods for working with metadata instances
+     * @param repositoryValidator   provides validation of metadata instance
+     * @param componentName         name of component
      */
-    public AssetLineageOMRSTopicListener(Connection              assetConsumerOutTopic,
-                                             OMRSRepositoryConnector repositoryConnector,
-                                             OMRSRepositoryHelper    repositoryHelper,
-                                             OMRSRepositoryValidator repositoryValidator,
-                                             String                  componentName)
-    {
+    public AssetLineageOMRSTopicListener(Connection assetConsumerOutTopic,
+                                         OMRSRepositoryConnector repositoryConnector,
+                                         OMRSRepositoryHelper repositoryHelper,
+                                         OMRSRepositoryValidator repositoryValidator,
+                                         String componentName) {
         publisher = new AssetLineagePublisher(assetConsumerOutTopic,
-                                                  repositoryConnector,
-                                                  repositoryHelper,
-                                                  repositoryValidator,
-                                                  componentName);
+                repositoryConnector,
+                repositoryHelper,
+                repositoryValidator,
+                componentName);
     }
 
 
@@ -48,8 +46,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener
      *
      * @param event inbound event
      */
-    public void processRegistryEvent(OMRSRegistryEvent event)
-    {
+    public void processRegistryEvent(OMRSRegistryEvent event) {
         log.debug("Ignoring registry event: " + event.toString());
     }
 
@@ -59,8 +56,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener
      *
      * @param event inbound event
      */
-    public void processTypeDefEvent(OMRSTypeDefEvent event)
-    {
+    public void processTypeDefEvent(OMRSTypeDefEvent event) {
         log.debug("Ignoring type event: " + event.toString());
     }
 
@@ -70,8 +66,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener
      *
      * @param instanceEvent event to unpack
      */
-    public void processInstanceEvent(OMRSInstanceEvent  instanceEvent)
-    {
+    public void processInstanceEvent(OMRSInstanceEvent instanceEvent) {
 /*        log.debug("Processing instance event: " + instanceEvent);
 
         if (instanceEvent == null)

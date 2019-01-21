@@ -11,55 +11,53 @@ import java.util.Arrays;
 
 /**
  * The AssetLineageAuditCode is used to define the message content for the OMRS Audit Log.
- *
+ * <p>
  * The 5 fields in the enum are:
  * <ul>
- *     <li>Log Message Id - to uniquely identify the message</li>
- *     <li>Severity - is this an event, decision, action, error or exception</li>
- *     <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
- *     <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
- *     <li>SystemAction - describes the result of the situation</li>
- *     <li>UserAction - describes how a user should correct the situation</li>
+ * <li>Log Message Id - to uniquely identify the message</li>
+ * <li>Severity - is this an event, decision, action, error or exception</li>
+ * <li>Log Message Text - includes placeholder to allow additional values to be captured</li>
+ * <li>Additional Information - further parameters and data relating to the audit message (optional)</li>
+ * <li>SystemAction - describes the result of the situation</li>
+ * <li>UserAction - describes how a user should correct the situation</li>
  * </ul>
  */
-public enum AssetLineageAuditCode
-{
+public enum AssetLineageAuditCode {
     SERVICE_INITIALIZING("OMAS-ASSET-LINEAGE-0001",
-             OMRSAuditLogRecordSeverity.INFO,
-             "The Asset Lineage Open Metadata Access Service (OMAS) is initializing a new server instance",
-             "The local server has started up a new instance of the Asset Lineage OMAS.",
-             "No action is required.  This is part of the normal operation of the service."),
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Asset Lineage Open Metadata Access Service (OMAS) is initializing a new server instance",
+            "The local server has started up a new instance of the Asset Lineage OMAS.",
+            "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAS-ASSET-LINEAGE-0002",
-             OMRSAuditLogRecordSeverity.INFO,
-             "The Asset Lineage Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server {0}",
-             "The Asset Lineage OMAS is registering to receive events from the connected open metadata repositories.",
-             "No action is required.  This is part of the normal operation of the server."),
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Asset Lineage Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server {0}",
+            "The Asset Lineage OMAS is registering to receive events from the connected open metadata repositories.",
+            "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_INITIALIZED("OMAS-ASSET-LINEAGE-0003",
-             OMRSAuditLogRecordSeverity.INFO,
-             "The Asset Lineage Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
-             "The access service has completed initialization of a new instance.",
-             "No action is required.  This is part of the normal operation of the service."),
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Asset Lineage Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
+            "The access service has completed initialization of a new instance.",
+            "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_SHUTDOWN("OMAS-ASSET-LINEAGE-0004",
-             OMRSAuditLogRecordSeverity.INFO,
-             "The Asset Lineage Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
-             "The local server has requested shut down of an Asset Lineage OMAS instance.",
-             "No action is required.  This is part of the normal operation of the service."),
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Asset Lineage Open Metadata Access Service (OMAS) is shutting down its instance for server {0}",
+            "The local server has requested shut down of an Asset Lineage OMAS instance.",
+            "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INSTANCE_FAILURE("OMAS-ASSET-LINEAGE-0005",
-             OMRSAuditLogRecordSeverity.ERROR,
-             "The Asset Lineage Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
-             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
-                             "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.")
-    ;
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Asset Lineage Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
+            "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
+            "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.");
 
-    private String                     logMessageId;
+    private String logMessageId;
     private OMRSAuditLogRecordSeverity severity;
-    private String                     logMessage;
-    private String                     systemAction;
-    private String                     userAction;
+    private String logMessage;
+    private String systemAction;
+    private String userAction;
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineageAuditCode.class);
 
@@ -67,23 +65,22 @@ public enum AssetLineageAuditCode
     /**
      * The constructor for AssetLineageAuditCode expects to be passed one of the enumeration rows defined in
      * AssetLineageAuditCode above.   For example:
-     *
-     *     AssetLineageAuditCode   auditCode = AssetLineageAuditCode.SERVER_NOT_AVAILABLE;
-     *
+     * <p>
+     * AssetLineageAuditCode   auditCode = AssetLineageAuditCode.SERVER_NOT_AVAILABLE;
+     * <p>
      * This will expand out to the 4 parameters shown below.
      *
-     * @param messageId - unique Id for the message
-     * @param severity - severity of the message
-     * @param message - text for the message
+     * @param messageId    - unique Id for the message
+     * @param severity     - severity of the message
+     * @param message      - text for the message
      * @param systemAction - description of the action taken by the system when the condition happened
-     * @param userAction - instructions for resolving the situation, if any
+     * @param userAction   - instructions for resolving the situation, if any
      */
-    AssetLineageAuditCode(String                     messageId,
-                              OMRSAuditLogRecordSeverity severity,
-                              String                     message,
-                              String                     systemAction,
-                              String                     userAction)
-    {
+    AssetLineageAuditCode(String messageId,
+                          OMRSAuditLogRecordSeverity severity,
+                          String message,
+                          String systemAction,
+                          String userAction) {
         this.logMessageId = messageId;
         this.severity = severity;
         this.logMessage = message;
@@ -97,8 +94,7 @@ public enum AssetLineageAuditCode
      *
      * @return logMessageId
      */
-    public String getLogMessageId()
-    {
+    public String getLogMessageId() {
         return logMessageId;
     }
 
@@ -108,8 +104,7 @@ public enum AssetLineageAuditCode
      *
      * @return OMRSAuditLogRecordSeverity enum
      */
-    public OMRSAuditLogRecordSeverity getSeverity()
-    {
+    public OMRSAuditLogRecordSeverity getSeverity() {
         return severity;
     }
 
@@ -119,24 +114,20 @@ public enum AssetLineageAuditCode
      * @param params - strings that plug into the placeholders in the logMessage
      * @return logMessage (formatted with supplied parameters)
      */
-    public String getFormattedLogMessage(String... params)
-    {
-        if (log.isDebugEnabled())
-        {
+    public String getFormattedLogMessage(String... params) {
+        if (log.isDebugEnabled()) {
             log.debug(String.format("<== AssetLineage Audit Code.getMessage(%s)", Arrays.toString(params)));
         }
 
         MessageFormat mf = new MessageFormat(logMessage);
         String result = mf.format(params);
 
-        if (log.isDebugEnabled())
-        {
+        if (log.isDebugEnabled()) {
             log.debug(String.format("==> AssetLineage Audit Code.getMessage(%s): %s", Arrays.toString(params), result));
         }
 
         return result;
     }
-
 
 
     /**
@@ -145,8 +136,7 @@ public enum AssetLineageAuditCode
      *
      * @return systemAction String
      */
-    public String getSystemAction()
-    {
+    public String getSystemAction() {
         return systemAction;
     }
 
@@ -156,8 +146,7 @@ public enum AssetLineageAuditCode
      *
      * @return userAction String
      */
-    public String getUserAction()
-    {
+    public String getUserAction() {
         return userAction;
     }
 }

@@ -13,14 +13,14 @@ import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicCo
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 public class AssetLineageAdmin implements AccessServiceAdmin {
-    private OMRSRepositoryConnector repositoryConnector = null;
-    private OMRSTopicConnector omrsTopicConnector = null;
-    private AccessServiceConfig accessServiceConfig = null;
-    private OMRSAuditLog auditLog = null;
-    private AssetLineageServicesInstance instance = null;
-    private String serverName = null;
-    private String serverUserName = null;
-    private AssetLineageOMRSTopicListener omrsTopicListener = null;
+    private OMRSRepositoryConnector repositoryConnector;
+    private OMRSTopicConnector omrsTopicConnector;
+    private AccessServiceConfig accessServiceConfig;
+    private OMRSAuditLog auditLog;
+    private AssetLineageServicesInstance instance;
+    private String serverName;
+    private String serverUserName;
+    private AssetLineageOMRSTopicListener omrsTopicListener;
 
     /**
      * Default constructor
@@ -45,9 +45,7 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
                            OMRSAuditLog auditLog,
                            String serverUserName) throws OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
-        AssetLineageAuditCode auditCode;
-
-        auditCode = AssetLineageAuditCode.SERVICE_INITIALIZING;
+        AssetLineageAuditCode auditCode = AssetLineageAuditCode.SERVICE_INITIALIZING;
         auditLog.logRecord(actionDescription,
                 auditCode.getLogMessageId(),
                 auditCode.getSeverity(),

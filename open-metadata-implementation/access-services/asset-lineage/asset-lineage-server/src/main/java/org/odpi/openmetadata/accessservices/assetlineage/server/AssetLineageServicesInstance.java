@@ -14,9 +14,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class AssetLineageServicesInstance
 {
-    private OMRSRepositoryConnector repositoryConnector = null;
-    private OMRSMetadataCollection  metadataCollection = null;
-    private String                  serverName = null;
+    private OMRSRepositoryConnector repositoryConnector;
+    private OMRSMetadataCollection  metadataCollection;
+    private String                  serverName;
 
 
     /**
