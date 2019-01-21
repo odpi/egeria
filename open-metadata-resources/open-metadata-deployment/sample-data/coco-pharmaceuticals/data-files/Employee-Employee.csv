@@ -1,0 +1,20 @@
+PNUM;FNAME;LNAME;EMPSTATUS;LVL;DEPT;ROLE;LOCCODE
+133777;Zach;Now;5;9;9999;Founder;3
+439222;Steve;Starter;5;9;9999;Founder;1
+371803;Terri;Daring;5;9;9999;Founder;2
+209482;Tanya;Tidy;7;2;4051;Data Steward;3
+338575;Polly;Tasker;7;7;2373;IT Project Leader;1
+302145;Tessa;Tube;7;7;2343;Lead Researcher;3
+328080;Callie;Quartile;7;5;4051;Data Scientist;3
+499888;Ivor;Padlock;7;8;2373;Chief Security Officer;1
+458109;Bob;Nitter;6;4;3082;Application Developer;1
+139870;Faith;Broker;5;8;2373;Human Resources and Compliance Director;1
+457911;Sally;Counter;6;2;6877;Payment Clerk;2
+818928;Lemmie;Stage;7;4;3082;DataStage Specialist;1
+324713;Erin;Overview;7;7;7432;Information Architect;2
+144994;Harry;Hopeful;7;6;2343;Sales Specialist, New York;3
+199995;Gary;Geeke;7;6;3082;IT Infrastructure Lead;1
+188888;Reggie;Mint;5;8;5656;Chief Finance Officer (CFO);2
+986419;Peter;Profile;7;5;7432;Information Analyst;2
+896522;Tom;Tally;7;7;6788;Accounts Manager, Finance HQ;2
+296776;Jules;Keeper;5;8;5656;Chief Data Officer (CDO);2
