@@ -128,12 +128,6 @@ public class  Reference implements Serializable {
         this(null, relatedEndType, uniqueAttributes);
     }
 
-    public Reference(String relatedEndType, final String attrName, final Object attrValue) {
-        this(null, relatedEndType, new HashMap<String, Object>() {{
-            put(attrName, attrValue);
-        }});
-    }
-
     public Reference(String guid, String relatedEndType, Map<String, Object> uniqueAttributes) {
         setRelationshipGuid(guid);
         setRelatedEndType(relatedEndType);

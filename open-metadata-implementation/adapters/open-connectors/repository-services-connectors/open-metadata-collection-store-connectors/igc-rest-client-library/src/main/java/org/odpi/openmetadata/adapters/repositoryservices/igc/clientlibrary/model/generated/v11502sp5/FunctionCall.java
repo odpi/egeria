@@ -101,6 +101,9 @@ public class FunctionCall extends Reference {
         "stage_trigger",
         "call_context"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "function_name"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = new ArrayList<>();
     private static final List<String> ALL_PROPERTIES = Arrays.asList(
         "function_name",
@@ -112,6 +115,7 @@ public class FunctionCall extends Reference {
         "used_in_filter_constraint"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isFunctionCall(Object obj) { return (obj.getClass() == FunctionCall.class); }

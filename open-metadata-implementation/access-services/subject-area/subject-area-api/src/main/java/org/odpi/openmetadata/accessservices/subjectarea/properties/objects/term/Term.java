@@ -193,8 +193,7 @@ public class Term extends GovernedNode implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
 
         Term term = (Term) o;
-        Node node = (Node) o;
-        if (!(node.equals((Node)o))) return false;
+        if (!(this.equals((Node)o))) return false;
         if (glossary != null ? !glossary.equals(term.glossary) : term.glossary != null) return false;
         if (summary != null ? !summary.equals(term.summary) : term.summary != null) return false;
         return  true;
