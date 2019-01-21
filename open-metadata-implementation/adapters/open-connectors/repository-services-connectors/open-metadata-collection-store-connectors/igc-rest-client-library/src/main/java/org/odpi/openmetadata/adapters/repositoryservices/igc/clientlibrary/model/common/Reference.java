@@ -431,6 +431,23 @@ public class Reference extends ObjectPrinter {
     public boolean hasModificationDetails() { return this.hasProperty("modified_on"); }
 
     /**
+     * Indicates whether IGC assets of the POJO class are capable of being created (true) or not (false).
+     *
+     * @param pojoClass the POJO for which to check an asset's create-ability
+     * @return boolean
+     */
+    public static boolean isCreatableFromPOJO(Class pojoClass) {
+        boolean creatable = false;
+        try {
+            Method canBeCreated = pojoClass.getMethod("canBeCreated");
+            creatable = (Boolean) canBeCreated.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve creatable status from IGC POJO: {}", pojoClass, e);
+        }
+        return creatable;
+    }
+
+    /**
      * Retrieves the IGC asset display name from the provided POJO.
      *
      * @param pojoClass the POJO for which to retrieve an asset's type display name

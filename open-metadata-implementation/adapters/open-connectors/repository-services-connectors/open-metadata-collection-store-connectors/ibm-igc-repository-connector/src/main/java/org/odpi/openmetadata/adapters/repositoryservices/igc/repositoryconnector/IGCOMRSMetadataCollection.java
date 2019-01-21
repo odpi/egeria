@@ -339,19 +339,18 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Perform operation
          */
-        // TODO: implement
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        List<TypeDef> typeDefs = new ArrayList<>();
+        for (ImplementedMapping implementedMapping : implementedMappings) {
 
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                this.getClass().getName(),
-                repositoryName);
+            TypeDef candidate = implementedMapping.getTypeDef();
+            if (candidate.getName().matches(searchCriteria)) {
+                typeDefs.add(candidate);
+            }
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
+        }
+
+        return typeDefs;
+
     }
 
     /**
@@ -620,19 +619,20 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Perform operation
          */
-        // TODO: implement
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        List<AttributeTypeDef> attributeTypeDefs = newTypes.getAttributeTypeDefs();
+        if (attributeTypeDefs != null) {
+            for (AttributeTypeDef attributeTypeDef : attributeTypeDefs) {
+                addAttributeTypeDef(userId, attributeTypeDef);
+            }
+        }
 
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                this.getClass().getName(),
-                repositoryName);
+        List<TypeDef> typeDefs = newTypes.getTypeDefs();
+        if (typeDefs != null) {
+            for (TypeDef typeDef : typeDefs) {
+                addTypeDef(userId, typeDef);
+            }
+        }
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
     }
 
     /**
@@ -814,7 +814,48 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, typeDef, methodName);
 
-        return (getMappingForEntityType(typeDef.getGUID()) != null);
+        // Validate that we support all of the valid InstanceStatus settings before deciding whether we
+        // fully-support the TypeDef or not
+        HashSet<InstanceStatus> validStatuses = new HashSet<>(typeDef.getValidInstanceStatusList());
+        Set<String> mappedProperties = new HashSet<>();
+        boolean bVerified = false;
+
+        ImplementedMapping implementedMapping = getMappingForEntityType(typeDef.getGUID());
+        if (implementedMapping != null) {
+            HashSet<InstanceStatus> implementedStatuses = new HashSet<>();
+            switch (implementedMapping.getType()) {
+                case ENTITY:
+                    EntityMapping entityMapping = implementedMapping.getEntityMapping();
+                    mappedProperties = entityMapping.getPropertyMappings().getAllMappedOmrsProperties();
+                    implementedStatuses = new HashSet<>(entityMapping.getSupportedStatuses());
+                    break;
+                case RELATIONSHIP:
+                    RelationshipMapping relationshipMapping = implementedMapping.getRelationshipMapping();
+                    mappedProperties = relationshipMapping.getMappedOmrsPropertyNames();
+                    implementedStatuses = new HashSet<>(relationshipMapping.getSupportedStatuses());
+                    break;
+                case CLASSIFICATION:
+                    ClassificationMapping classificationMapping = implementedMapping.getClassificationMapping();
+                    mappedProperties = classificationMapping.getMappedOmrsPropertyNames();
+                    implementedStatuses = new HashSet<>(classificationMapping.getSupportedStatuses());
+                    break;
+            }
+            bVerified = validStatuses.equals(implementedStatuses);
+        }
+
+        // Validate that we support all of the possible properties before deciding whether we
+        // fully-support the TypeDef or not
+        if (bVerified) {
+            List<TypeDefAttribute> properties = typeDef.getPropertiesDefinition();
+            for (TypeDefAttribute typeDefAttribute : properties) {
+                String omrsPropertyName = typeDefAttribute.getAttributeName();
+                if (!mappedProperties.contains(omrsPropertyName)) {
+                    bVerified = false;
+                }
+            }
+        }
+
+        return bVerified;
 
     }
 
@@ -1465,8 +1506,18 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         ArrayList<Relationship> alRelationships = new ArrayList<>();
 
         // Immediately throw unimplemented exception if trying to retrieve historical view or sequence by property
-        if (asOfTime != null
-                || sequencingProperty != null
+        if (asOfTime != null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                    this.getClass().getName(),
+                    repositoryName);
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        } else if (sequencingProperty != null
                 || (sequencingOrder != null
                 &&
                 (sequencingOrder.equals(SequencingOrder.PROPERTY_ASCENDING)
@@ -1629,7 +1680,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
                     this.getClass().getName(),
                     repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
@@ -1820,7 +1871,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
                     this.getClass().getName(),
                     repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
@@ -1993,7 +2044,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
                     this.getClass().getName(),
                     repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
@@ -3496,19 +3547,137 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Validation complete, ok to create new instance
          */
-        // TODO: implement
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        Relationship relationship = null;
 
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                this.getClass().getName(),
-                repositoryName);
+        try {
+            TypeDef relationshipTypeDef = getTypeDefByGUID(userId, relationshipTypeGUID);
+            if (relationshipTypeDef != null) {
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
+                String relationshipTypeName = relationshipTypeDef.getName();
+                Reference entityOne = this.igcRestClient.getAssetRefById(entityOneGUID);
+                Reference entityTwo = this.igcRestClient.getAssetRefById(entityTwoGUID);
+
+                if (entityOne == null) {
+                    OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                            entityOneGUID,
+                            methodName,
+                            repositoryName
+                    );
+                    throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction());
+                }
+                if (entityTwo == null) {
+                    OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                            entityTwoGUID,
+                            methodName,
+                            repositoryName
+                    );
+                    throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction());
+                }
+
+                RelationshipMapping relationshipMapping = getRelationshipMapper(
+                        relationshipTypeName,
+                        entityOne.getType(),
+                        entityTwo.getType()
+                );
+
+                if (relationshipMapping != null) {
+
+                    // If there is a relationship-level asset, these cannot be created, so we need to simply fail
+                    if (relationshipMapping.hasRelationshipLevelAsset()) {
+                        String relationshipLevelAssetType = relationshipMapping.getRelationshipLevelIgcAsset();
+                        Class pojo = igcRestClient.getPOJOForType(relationshipLevelAssetType);
+                        if (!Reference.isCreatableFromPOJO(pojo)) {
+                            OMRSErrorCode errorCode = OMRSErrorCode.REPOSITORY_LOGIC_ERROR;
+                            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                                    repositoryName,
+                                    methodName,
+                                    "Cannot create relationship for IGC asset type: " + relationshipLevelAssetType
+                            );
+                            throw new RepositoryErrorException(
+                                    errorCode.getHTTPErrorCode(),
+                                    this.getClass().getName(),
+                                    methodName,
+                                    errorMessage,
+                                    errorCode.getSystemAction(),
+                                    errorCode.getUserAction()
+                            );
+                        } else {
+                            // TODO: for creatable relationship-level assets, create a new one to represent this relationship
+                            log.info("Creating a relationship-level asset for IGC type {} is not yet implemented.", relationshipLevelAssetType);
+                        }
+                    } else {
+                        // TODO: implement relationship update based on provided parameters
+                        //  Start from the optimal end in order to define the relationship in the most simple way
+                        //relationshipMapping.getOptimalStart()
+                        log.info("Creating a new relationship between {} and {} is not yet implemented.", entityOne.getType(), entityTwo.getType());
+                    }
+
+                } else {
+                    OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NAME_NOT_KNOWN;
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                            relationshipTypeName,
+                            methodName,
+                            repositoryName
+                    );
+                    throw new TypeErrorException(
+                            errorCode.getHTTPErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction()
+                    );
+                }
+
+            } else {
+                OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                        relationshipTypeGUID,
+                        guidParameterName,
+                        methodName,
+                        repositoryName
+                );
+                throw new TypeErrorException(
+                        errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction()
+                );
+            }
+        } catch (TypeDefNotKnownException e) {
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    relationshipTypeGUID,
+                    guidParameterName,
+                    methodName,
+                    repositoryName
+            );
+            throw new TypeErrorException(
+                    errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction()
+            );
+        }
+
+        return relationship;
+
     }
 
 
