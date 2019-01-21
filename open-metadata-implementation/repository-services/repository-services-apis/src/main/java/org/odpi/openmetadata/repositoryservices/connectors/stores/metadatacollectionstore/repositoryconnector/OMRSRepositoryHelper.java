@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector;
 
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -898,4 +899,53 @@ public interface OMRSRepositoryHelper
      * @return String unique identifier
      */
     String  getEnd2EntityGUID(Relationship   relationship);
+
+    /**
+     * Use the paging and sequencing parameters to format the results for a repository call that returns a list of
+     * entity instances.
+     *
+     * @param fullResults - the full list of results in an arbitrary order
+     * @param fromElement - the starting element number of the instances to return. This is used when retrieving elements
+     *                    beyond the first page of results. Zero means start from the first element.
+     * @param sequencingProperty - String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder - Enum defining how the results should be ordered.
+     * @param pageSize - the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return results array as requested
+     * @throws PropertyErrorException the sequencing property specified is not valid for any of the requested types of
+     *                                  entity.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     */
+    List<EntityDetail>  formatEntityResults(List<EntityDetail>   fullResults,
+                                            int                  fromElement,
+                                            String               sequencingProperty,
+                                            SequencingOrder      sequencingOrder,
+                                            int                  pageSize) throws PagingErrorException,
+                                                                                  PropertyErrorException;
+
+
+    /**
+     * Use the paging and sequencing parameters to format the results for a repository call that returns a list of
+     * relationship instances.
+     *
+     * @param fullResults - the full list of results in an arbitrary order. This is supplied not empty.
+     * @param fromElement - the starting element number of the instances to return. This is used when retrieving elements
+     *                    beyond the first page of results. Zero means start from the first element.
+     * @param sequencingProperty - String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder - Enum defining how the results should be ordered.
+     * @param pageSize - the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return results array as requested
+     * @throws PropertyErrorException the sequencing property specified is not valid for any of the requested types of
+     *                                  relationship.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     */
+     List<Relationship>  formatRelationshipResults(List<Relationship>   fullResults,
+                                                   int                  fromElement,
+                                                   String               sequencingProperty,
+                                                   SequencingOrder      sequencingOrder,
+                                                   int                  pageSize) throws PagingErrorException,
+                                                                                         PropertyErrorException;
 }
