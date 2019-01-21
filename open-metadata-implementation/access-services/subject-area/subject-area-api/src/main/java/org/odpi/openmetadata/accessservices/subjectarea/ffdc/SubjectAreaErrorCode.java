@@ -196,7 +196,7 @@ public enum SubjectAreaErrorCode {
             "Retry the request with a known relationship."),
 
 
-    // The following Exceptions are not descriptive enough - they need more informaiton from the OMRS Exception
+    // The following Exceptions are not descriptive enough - they need more information from the OMRS Exception
     INVALID_PARAMETER(400, "OMAS-SUBJECTAREA-400-046 ",
             "Invalid parameter.",
             "The system is unable to process the request.",
