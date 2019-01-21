@@ -26,7 +26,6 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
 {
     private List<GlossaryTerm> meanings            = null;
     private int                startingFromElement = 0;
-    private int                totalListSize       = 0;
 
 
     /**
@@ -50,7 +49,6 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
         if (template != null)
         {
             this.startingFromElement = template.getStartingFromElement();
-            this.totalListSize = template.getTotalListSize();
             this.meanings = template.getMeanings();
         }
     }
@@ -119,28 +117,6 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
 
 
     /**
-     * Return the size of the list at the server side.
-     *
-     * @return int
-     */
-    public int getTotalListSize()
-    {
-        return totalListSize;
-    }
-
-
-    /**
-     * Set up the size of the list at the server side.
-     *
-     * @param totalListSize int
-     */
-    public void setTotalListSize(int totalListSize)
-    {
-        this.totalListSize = totalListSize;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -151,7 +127,6 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
         return "MeaningListResponse{" +
                 "meanings=" + meanings +
                 ", startingFromElement=" + startingFromElement +
-                ", totalListSize=" + totalListSize +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -185,7 +160,6 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
         }
         MeaningListResponse that = (MeaningListResponse) objectToCompare;
         return getStartingFromElement() == that.getStartingFromElement() &&
-                getTotalListSize() == that.getTotalListSize() &&
                 Objects.equals(getMeanings(), that.getMeanings());
     }
 
@@ -198,6 +172,6 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getMeanings(), getStartingFromElement(), getTotalListSize());
+        return Objects.hash(super.hashCode(), getMeanings(), getStartingFromElement());
     }
 }
