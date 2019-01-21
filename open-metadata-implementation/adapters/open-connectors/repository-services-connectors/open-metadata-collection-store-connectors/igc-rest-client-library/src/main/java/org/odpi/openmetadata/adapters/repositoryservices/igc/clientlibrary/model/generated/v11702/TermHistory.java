@@ -120,6 +120,15 @@ public class TermHistory extends Reference {
         "workflow_event",
         "workflow_new_state"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "comment",
+        "edited_by",
+        "user_task_name",
+        "user_task_key",
+        "workflow_instance_id",
+        "workflow_event",
+        "workflow_new_state"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "changed_properties"
     );
@@ -136,6 +145,7 @@ public class TermHistory extends Reference {
         "workflow_new_state"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isTermHistory(Object obj) { return (obj.getClass() == TermHistory.class); }
