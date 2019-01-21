@@ -35,6 +35,7 @@ public class OMRSRegistryEvent extends OMRSEvent
     /*
      * Registration information describing a specific repository.
      */
+    private  String                      metadataCollectionName          = null;
     private  Date                        registrationTimestamp           = null;
     private  Connection                  remoteConnection                = null;
 
@@ -62,9 +63,10 @@ public class OMRSRegistryEvent extends OMRSEvent
 
         if (registrySection != null)
         {
-            this.registryEventType     = registrySection.getRegistryEventType();
-            this.registrationTimestamp = registrySection.getRegistrationTimestamp();
-            this.remoteConnection      = registrySection.getRemoteConnection();
+            this.registryEventType      = registrySection.getRegistryEventType();
+            this.registrationTimestamp  = registrySection.getRegistrationTimestamp();
+            this.remoteConnection       = registrySection.getRemoteConnection();
+            this.metadataCollectionName = registrySection.getMetadataCollectionName();
         }
 
         if (super.genericErrorCode != null)
@@ -92,16 +94,19 @@ public class OMRSRegistryEvent extends OMRSEvent
      *
      * @param registryEventType type of event (REGISTRATION_EVENT, REFRESH_REGISTRATION_REQUEST, RE_REGISTRATION_EVENT)
      * @param registrationTimestamp time that the local repository registered.
+     * @param metadataCollectionName name of the metadata collection being registered.
      * @param remoteConnection remote connection to this local repository.
      */
     public OMRSRegistryEvent(OMRSRegistryEventType          registryEventType,
                              Date                           registrationTimestamp,
+                             String                         metadataCollectionName,
                              Connection                     remoteConnection)
     {
         super(OMRSEventCategory.REGISTRY);
 
         this.registryEventType           = registryEventType;
         this.registrationTimestamp       = registrationTimestamp;
+        this.metadataCollectionName      = metadataCollectionName;
         this.remoteConnection            = remoteConnection;
     }
 
@@ -168,6 +173,17 @@ public class OMRSRegistryEvent extends OMRSEvent
 
 
     /**
+     * Return the display name for the repository's metadata collection.
+     *
+     * @return string name
+     */
+    public String getMetadataCollectionName()
+    {
+        return metadataCollectionName;
+    }
+
+
+    /**
      * Return the remote connection used to create a connector used to call the repository across the network.
      * If this is a normal registry event then this connection is for the local repository.
      * If this an error event, then this is the connection for the target repository.
@@ -204,6 +220,7 @@ public class OMRSRegistryEvent extends OMRSEvent
 
         registrySection.setRegistryEventType(this.registryEventType);
         registrySection.setRegistrationTimestamp(this.registrationTimestamp);
+        registrySection.setMetadataCollectionName(this.metadataCollectionName);
         registrySection.setRemoteConnection(this.remoteConnection);
 
         omrsEvent.setRegistryEventSection(registrySection);
@@ -223,6 +240,7 @@ public class OMRSRegistryEvent extends OMRSEvent
         return "OMRSRegistryEvent{" +
                 "registryEventType=" + registryEventType +
                 ", registrationTimestamp=" + registrationTimestamp +
+                ", metadataCollectionName=" + metadataCollectionName +
                 ", remoteConnection=" + remoteConnection +
                 ", errorCode=" + errorCode +
                 ", eventTimestamp=" + eventTimestamp +

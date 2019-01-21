@@ -39,7 +39,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public abstract class GovernanceReferenceableHeader extends GovernanceHeader
 {
     private List<ExternalReference>    externalReferences   = null;
-    private Map<String, Object>        additionalProperties = null;
+    private Map<String, String>        additionalProperties = null;
 
     /**
      * Default Constructor
@@ -102,7 +102,7 @@ public abstract class GovernanceReferenceableHeader extends GovernanceHeader
      *
      * @return map from string to object.
      */
-    public Map<String, Object> getAdditionalProperties()
+    public Map<String, String> getAdditionalProperties()
     {
         if (additionalProperties == null)
         {
@@ -124,7 +124,7 @@ public abstract class GovernanceReferenceableHeader extends GovernanceHeader
      *
      * @param additionalProperties map from string to object.
      */
-    public void setAdditionalProperties(Map<String, Object> additionalProperties)
+    public void setAdditionalProperties(Map<String, String> additionalProperties)
     {
         this.additionalProperties = additionalProperties;
     }

@@ -44,7 +44,7 @@ public class PersonalProfilesResource
 
     public GUIDResponse createPersonalProfile(@PathVariable String                     serverName,
                                               @PathVariable String                     userId,
-                                              @RequestBody PersonalDetailsRequestBody requestBody)
+                                              @RequestBody PersonalProfileRequestBody requestBody)
     {
         return restAPI.createPersonalProfile(serverName, userId, requestBody);
     }
@@ -68,7 +68,7 @@ public class PersonalProfilesResource
     public VoidResponse   updatePersonalProfile(@PathVariable String                     serverName,
                                                 @PathVariable String                     userId,
                                                 @PathVariable String                     profileGUID,
-                                                @RequestBody  PersonalDetailsRequestBody requestBody)
+                                                @RequestBody PersonalProfileRequestBody requestBody)
     {
         return restAPI.updatePersonalProfile(serverName, userId, profileGUID, requestBody);
     }
@@ -127,7 +127,7 @@ public class PersonalProfilesResource
      * @param employeeNumber personnel/serial/unique employee number of the individual.
      * @return personal profile object or
      * InvalidParameterException the employee number is null or
-     * EmployeeNumberNotUniqueException more than one personal profile was found or
+     * QualifiedNameNotUniqueException more than one personal profile was found or
      * PropertyServerException the server is not available or
      * UserNotAuthorizedException the calling user is not authorized to issue the call.
      */

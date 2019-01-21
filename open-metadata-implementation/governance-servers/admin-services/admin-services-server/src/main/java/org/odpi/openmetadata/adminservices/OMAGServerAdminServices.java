@@ -814,6 +814,85 @@ public class OMAGServerAdminServices
 
 
     /**
+     * Set up the local metadata collection name.  If this is not set then the default value is the
+     * local server name.
+     *
+     * @param userId                      user that is issuing the request.
+     * @param serverName                  local server name.
+     * @param localMetadataCollectionName metadata collection name
+     * @return void response or
+     * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or name parameter or
+     * OMAGConfigurationErrorException the event bus is not set.
+     */
+    public VoidResponse setLocalMetadataCollectionName(String               userId,
+                                                       String               serverName,
+                                                       String               localMetadataCollectionName)
+    {
+        final String methodName = "setLocalMetadataCollectionName";
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateMetadataCollectionName(localMetadataCollectionName, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+
+            RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+            LocalRepositoryConfig    localRepositoryConfig    = null;
+
+            /*
+             * Extract any existing local repository configuration
+             */
+            if (repositoryServicesConfig != null)
+            {
+                localRepositoryConfig = repositoryServicesConfig.getLocalRepositoryConfig();
+            }
+
+            /*
+             * The local repository should be partially configured already by setLocalRepositoryMode()
+             */
+            if (localRepositoryConfig == null)
+            {
+                OMAGErrorCode errorCode    = OMAGErrorCode.LOCAL_REPOSITORY_MODE_NOT_SET;
+                String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+
+                throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                          this.getClass().getName(),
+                                                          methodName,
+                                                          errorMessage,
+                                                          errorCode.getSystemAction(),
+                                                          errorCode.getUserAction());
+            }
+
+            /*
+             * Set up the metadata collection name in the local repository config and save.
+             */
+            localRepositoryConfig.setMetadataCollectionName(localMetadataCollectionName);
+
+            this.setLocalRepositoryConfig(userId, serverName, localRepositoryConfig);
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            errorHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGConfigurationErrorException  error)
+        {
+            errorHandler.captureConfigurationErrorException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            errorHandler.captureNotAuthorizedException(response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
      * Enable registration of server to an open metadata repository cohort.  This is a group of open metadata
      * repositories that are sharing metadata.  An OMAG server can connect to zero, one or more cohorts.
      * Each cohort needs a unique name.  The members of the cohort use a shared topic to exchange registration

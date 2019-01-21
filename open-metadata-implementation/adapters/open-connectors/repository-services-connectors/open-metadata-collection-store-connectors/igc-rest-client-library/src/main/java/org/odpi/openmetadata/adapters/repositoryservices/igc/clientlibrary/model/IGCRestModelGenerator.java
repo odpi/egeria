@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCVersionEnum;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,6 +96,14 @@ public class IGCRestModelGenerator {
 
     public void generateForAllIgcTypesInEnvironment(String directory) {
 
+        // First ensure the target directory has been created / exists
+        File dir = new File(directory);
+        if (!dir.exists()){
+            System.out.println("Creating directory: " + directory);
+            dir.mkdirs();
+        }
+
+        // Then generate the POJOs within that directory
         System.out.println("Generating POJOs for IGC version: " + igcRestClient.getIgcVersion());
         ArrayNode types = igcRestClient.getTypes();
         for (int i = 0; i < types.size(); i++) {
@@ -264,9 +273,9 @@ public class IGCRestModelGenerator {
 
     }
 
-    private void createPOJOForType(JsonNode jsonProps, String directory, String version) {
+    private void createPOJOForType(JsonNode jsonProps, String directory, IGCVersionEnum version) {
 
-        String packageName = IGCRestConstants.IGC_REST_GENERATED_MODEL_PKG + "." + version;
+        String packageName = IGCRestConstants.IGC_REST_GENERATED_MODEL_PKG + "." + version.getVersionString();
 
         String id   = jsonProps.path("_id").asText();
         String name = jsonProps.path("_name").asText();
@@ -275,8 +284,9 @@ public class IGCRestModelGenerator {
         if (!IGNORE_TYPES.contains(id)) {
 
             String className = IGCRestConstants.getClassNameForAssetType(id);
-            String filename = directory + File.separator + className + ".java";
 
+            // Write the file for any type that should not be ignored
+            String filename = directory + File.separator + className + ".java";
             try (BufferedWriter fs = new BufferedWriter(new FileWriter(filename))) {
 
                 fs.append("/* SPDX-License-Identifier: Apache-2.0 */");

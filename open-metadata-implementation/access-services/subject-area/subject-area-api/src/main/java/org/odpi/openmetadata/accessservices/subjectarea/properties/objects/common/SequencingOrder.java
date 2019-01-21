@@ -2,9 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 
 import java.io.Serializable;
 
@@ -50,6 +48,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum SequencingOrder implements Serializable
 {
     ANY                  (0, "Any Order",                       "Any order."),
@@ -104,19 +103,15 @@ public enum SequencingOrder implements Serializable
      */
     public String getDescription() { return description; }
 
-
-    /**
-     * toString() JSON-style
-     *
-     * @return string description
-     */
-    @Override
-    public String toString()
-    {
-        return "SequencingOrder{" +
-                "ordinal=" + ordinal +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                '}';
-    }
+//
+//    /**
+//     * toString() JSON-style
+//     *
+//     * @return string description
+//     */
+//    @Override
+//    public String toString()
+//    {
+//        return name;
+//    }
 }

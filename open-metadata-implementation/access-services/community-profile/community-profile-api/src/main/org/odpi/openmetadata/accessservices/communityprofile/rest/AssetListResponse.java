@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.communityprofile.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.Asset;
+import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetCollectionMember;
 
 import java.util.List;
 import java.util.Objects;
@@ -23,9 +23,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class AssetListResponse extends CommunityProfileOMASAPIResponse
 {
-    private List<Asset> assets              = null;
-    private int         startingFromElement = 0;
-    private int         totalListSize       = 0;
+    private List<AssetCollectionMember> assets              = null;
+    private int                         startingFromElement = 0;
+    private int                         totalListSize       = 0;
 
 
     /**
@@ -60,7 +60,7 @@ public class AssetListResponse extends CommunityProfileOMASAPIResponse
      *
      * @return list of assets
      */
-    public List<Asset> getAssets()
+    public List<AssetCollectionMember> getAssets()
     {
         if (assets == null)
         {
@@ -82,7 +82,7 @@ public class AssetListResponse extends CommunityProfileOMASAPIResponse
      *
      * @param assets list of assets
      */
-    public void setAssets(List<Asset> assets)
+    public void setAssets(List<AssetCollectionMember> assets)
     {
         this.assets = assets;
     }

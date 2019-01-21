@@ -31,7 +31,7 @@ import java.util.List;
  */
 public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 {
-    private String eventManagerName;
+    private String                           eventManagerName;
     private boolean                          isActive               = false;
     private List<OMRSTypeDefEvent>           typeDefEventBuffer     = new ArrayList<>();
     private List<OMRSInstanceEvent>          instanceEventBuffer    = new ArrayList<>();
@@ -282,7 +282,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     		List<EntityDetail> validEntities = new ArrayList<EntityDetail>();
     		List<Relationship> validRelationships = new ArrayList<Relationship>();
     		
-    		for(EntityDetail entity: eventEntities)
+    		for (EntityDetail entity: eventEntities)
     		{
     			if(exchangeRule.processInstanceEvent(entity))
     			{
@@ -291,15 +291,16 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     		}
     		
     		
-    		for(Relationship relationship: eventRelationships)
+    		for (Relationship relationship: eventRelationships)
     		{
-    			if(exchangeRule.processInstanceEvent(relationship))
+    			if (exchangeRule.processInstanceEvent(relationship))
     			{
     				validRelationships.add(relationship);
     			}
     		}
     		
-    		if(validEntities.size() > 0 || validRelationships.size() > 0) {
+    		if (validEntities.size() > 0 || validRelationships.size() > 0)
+    		{
     			// Can't just update the instance graph on the event, so we'll
     			// construct a new event with the updated instances and adjust...
     			InstanceGraph validInstanceGraph = new InstanceGraph(validEntities, validRelationships);

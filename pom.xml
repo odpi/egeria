@@ -122,9 +122,12 @@
         <surefire.plugin.version>3.0.0-M1</surefire.plugin.version>
         <maven-download.version>1.4.1</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
-	<maven-install.version>3.0.0-M1</maven-install.version>
-	<maven-shade.version>3.2.1</maven-shade.version>
-	<maven-compiler.version>3.8.0</maven-compiler.version>
+	    <maven-install.version>3.0.0-M1</maven-install.version>
+	    <maven-shade.version>3.2.1</maven-shade.version>
+	    <maven-compiler.version>3.8.0</maven-compiler.version>
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.jacoco.reportPaths>${maven.multiModuleProjectDirectory}/target/jacoco.exec</sonar.jacoco.reportPaths>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     </properties>
 
     <dependencyManagement>
@@ -348,7 +351,24 @@
                     </execution>
                 </executions>
             </plugin>
-
+            <!-- Sonar-JaCoCo integration plugin -->
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.8.2</version>
+                <configuration>
+                    <destFile>${sonar.jacoco.reportPaths}</destFile>
+                    <append>true</append>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
