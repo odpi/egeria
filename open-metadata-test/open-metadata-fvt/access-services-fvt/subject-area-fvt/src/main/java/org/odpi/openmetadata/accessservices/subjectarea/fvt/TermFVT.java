@@ -5,6 +5,15 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaTerm;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Confidence;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Confidentiality;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Criticality;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Retention;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.ConfidenceLevel;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.ConfidentialityLevel;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.CriticalityLevel;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.RetentionBasis;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
@@ -61,11 +70,13 @@ public class TermFVT
     {
         Glossary glossary= glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         System.out.println("Create a term1 using glossary name");
-        Term term1 = createTermWithGlossaryGuid(DEFAULT_TEST_TERM_NAME, glossary.getSystemAttributes().getGUID());
+        Term term1 = createTerm(DEFAULT_TEST_TERM_NAME, glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(term1);
         System.out.println("Create a term2 using glossary guid");
-        Term term2 = createTermWithGlossaryGuid(DEFAULT_TEST_TERM_NAME, glossary.getSystemAttributes().getGUID());
+        Term term2 = createTerm(DEFAULT_TEST_TERM_NAME, glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(term2);
+        System.out.println("Create a term2 using glossary guid");
+
         Term termForUpdate = new Term();
         termForUpdate.setName(DEFAULT_TEST_TERM_NAME_UPDATED);
         System.out.println("Get the term1");
@@ -83,10 +94,45 @@ public class TermFVT
         FVTUtils.validateNode(gotTerm);
         System.out.println("Purge a term1");
         purgeTerm(guid);
+        System.out.println("Create term3 with governance actions");
+        GovernanceActions governanceActions = createGovernanceActions();
+        Term term3 = createTermWithGovernanceActions(DEFAULT_TEST_TERM_NAME, glossary.getSystemAttributes().getGUID(),governanceActions);
+        FVTUtils.validateNode(term3);
+        if (!governanceActions.getConfidence().getLevel().equals(term3.getGovernanceActions().getConfidence().getLevel())){
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions confidence not returned  as expected", "", "");
+        }
+        if (!governanceActions.getConfidentiality().getLevel().equals(term3.getGovernanceActions().getConfidentiality().getLevel())) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions confidentiality not returned  as expected", "", "");
+        }
+        if (!governanceActions.getRetention().getBasis().equals(term3.getGovernanceActions().getRetention().getBasis())) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions retention not returned  as expected", "", "");
+        }
+        if (!governanceActions.getCriticality().getLevel().equals(term3.getGovernanceActions().getCriticality().getLevel())) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions criticality not returned  as expected", "", "");
+        }
+        GovernanceActions governanceActions2 = create2ndGovernanceActions();
+        System.out.println("Update term3 with and change governance actions");
+        Term term3ForUpdate = new Term();
+        term3ForUpdate.setName(DEFAULT_TEST_TERM_NAME_UPDATED);
+        term3ForUpdate.setGovernanceActions(governanceActions2);
 
+        Term updatedTerm3 = updateTerm(term3.getSystemAttributes().getGUID(), term3ForUpdate);
+        FVTUtils.validateNode(updatedTerm3);
+        if (!governanceActions2.getConfidence().getLevel().equals(updatedTerm3.getGovernanceActions().getConfidence().getLevel())){
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions confidence not returned  as expected", "", "");
+        }
+        if (!governanceActions2.getConfidentiality().getLevel().equals(updatedTerm3.getGovernanceActions().getConfidentiality().getLevel())) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions confidentiality not returned  as expected", "", "");
+        }
+        if (!(updatedTerm3.getGovernanceActions().getRetention()==null)) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions retention not null as expected", "", "");
+        }
+        if (!(updatedTerm3.getGovernanceActions().getCriticality().getLevel()==null)) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions criticality not returned  as expected", "", "");
+        }
     }
 
-    public  Term createTermWithGlossaryGuid(String termName, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
+    public  Term createTerm(String termName, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
     {
         Term term = new Term();
         term.setName(termName);
@@ -99,6 +145,59 @@ public class TermFVT
             System.out.println("Created Term " + newTerm.getName() + " with guid " + newTerm.getSystemAttributes().getGUID());
         }
         return newTerm;
+    }
+    public  Term createTermWithGovernanceActions(String termName, String glossaryGuid,GovernanceActions governanceActions) throws SubjectAreaCheckedExceptionBase
+    {
+        Term term = new Term();
+        term.setName(termName);
+        GlossarySummary glossarySummary = new GlossarySummary();
+        glossarySummary.setGuid(glossaryGuid);
+        term.setGlossary(glossarySummary);
+        term.setGovernanceActions(governanceActions);
+        Term newTerm = subjectAreaTerm.createTerm(serverName,FVTConstants.USERID, term);
+
+        if (newTerm != null)
+        {
+            System.out.println("Created Term " + newTerm.getName() + " with guid " + newTerm.getSystemAttributes().getGUID());
+        }
+        return newTerm;
+    }
+
+    private GovernanceActions createGovernanceActions() {
+        GovernanceActions governanceActions = new GovernanceActions();
+        Confidentiality confidentiality = new Confidentiality();
+        confidentiality.setLevel(ConfidentialityLevel.Confidential);
+        governanceActions.setConfidentiality(confidentiality);
+
+        Confidence confidence = new Confidence();
+        confidence.setLevel(ConfidenceLevel.Authoritative);
+        governanceActions.setConfidence(confidence);
+
+        Criticality criticality = new Criticality();
+        criticality.setLevel(CriticalityLevel.Catastrophic);
+        governanceActions.setCriticality(criticality);
+
+        Retention retention = new Retention();
+        retention.setBasis(RetentionBasis.ProjectLifetime);
+        governanceActions.setRetention(retention);
+        return governanceActions;
+    }
+    private GovernanceActions create2ndGovernanceActions() {
+        GovernanceActions governanceActions = new GovernanceActions();
+        Confidentiality confidentiality = new Confidentiality();
+        confidentiality.setLevel(ConfidentialityLevel.Internal);
+        governanceActions.setConfidentiality(confidentiality);
+
+        Confidence confidence = new Confidence();
+        confidence.setLevel(ConfidenceLevel.AdHoc);
+        governanceActions.setConfidence(confidence);
+        // remove this classification level
+        Criticality criticality = new Criticality();
+        criticality.setLevel(null);
+        governanceActions.setCriticality(criticality);
+        // remove retention by nulling it
+        governanceActions.setRetention(null);
+        return governanceActions;
     }
 
 
