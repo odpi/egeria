@@ -1581,7 +1581,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
             return null;
         }
 
-        return formatRelationshipResults(entityRelationships,
+        return repositoryHelper.formatRelationshipResults(entityRelationships,
                                          fromRelationshipElement,
                                          sequencingProperty,
                                          sequencingOrder,
@@ -1690,7 +1690,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
             }
         }
 
-        return formatEntityResults(foundEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+        return repositoryHelper.formatEntityResults(foundEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
     }
 
 
@@ -1850,7 +1850,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
             }
         }
 
-        return formatEntityResults(foundEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+        return repositoryHelper.formatEntityResults(foundEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
     }
 
 
@@ -1946,7 +1946,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
             }
         }
 
-        return formatEntityResults(foundEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+        return repositoryHelper.formatEntityResults(foundEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
     }
 
 
@@ -2173,7 +2173,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
             }
         }
 
-        return formatRelationshipResults(foundRelationships,
+        return repositoryHelper.formatRelationshipResults(foundRelationships,
                                          fromRelationshipElement,
                                          sequencingProperty,
                                          sequencingOrder,
@@ -2268,7 +2268,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
             }
         }
 
-        return formatRelationshipResults(foundRelationships,
+        return repositoryHelper.formatRelationshipResults(foundRelationships,
                                          fromRelationshipElement,
                                          sequencingProperty,
                                          sequencingOrder,
@@ -2533,7 +2533,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                            errorCode.getUserAction());
 
 
-        // return formatEntityResults(relatedEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
+        // return repositoryHelper.formatEntityResults(relatedEntities, fromEntityElement, sequencingProperty, sequencingOrder, pageSize);
     }
 
 
@@ -4793,111 +4793,6 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                            errorCode.getSystemAction(),
                                            errorCode.getUserAction());
     }
-
-
-
-
-    /**
-     * Use the paging and sequencing parameters to format the results for a repository call that returns a list of
-     * entity instances.
-     *
-     * @param fullResults - the full list of results in an arbitrary order
-     * @param fromElement - the starting element number of the instances to return. This is used when retrieving elements
-     *                    beyond the first page of results. Zero means start from the first element.
-     * @param sequencingProperty - String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder - Enum defining how the results should be ordered.
-     * @param pageSize - the maximum number of result entities that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
-     * @return results array as requested
-     * @throws PropertyErrorException the sequencing property specified is not valid for any of the requested types of
-     *                                  entity.
-     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     */
-    private List<EntityDetail>    formatEntityResults(List<EntityDetail>   fullResults,
-                                                      int                  fromElement,
-                                                      String               sequencingProperty,
-                                                      SequencingOrder      sequencingOrder,
-                                                      int                  pageSize) throws PagingErrorException,
-                                                                                            PropertyErrorException
-    {
-        if (fullResults == null)
-        {
-            return null;
-        }
-
-        if (fullResults.isEmpty())
-        {
-            return null;
-        }
-
-        if (fromElement > fullResults.size())
-        {
-            return null;
-        }
-
-        List<EntityDetail>  sortedResults = fullResults;
-        // todo sort list according to properties
-
-        if ((pageSize == 0) || (pageSize > sortedResults.size()))
-        {
-            return sortedResults;
-        }
-
-        return new ArrayList<>(fullResults.subList(fromElement, fromElement + pageSize - 1));
-    }
-
-
-    /**
-     * Use the paging and sequencing parameters to format the results for a repository call that returns a list of
-     * entity instances.
-     *
-     * @param fullResults - the full list of results in an arbitrary order
-     * @param fromElement - the starting element number of the instances to return. This is used when retrieving elements
-     *                    beyond the first page of results. Zero means start from the first element.
-     * @param sequencingProperty - String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder - Enum defining how the results should be ordered.
-     * @param pageSize - the maximum number of result entities that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
-     * @return results array as requested
-     * @throws PropertyErrorException the sequencing property specified is not valid for any of the requested types of
-     *                                  entity.
-     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     */
-    private List<Relationship>    formatRelationshipResults(List<Relationship>   fullResults,
-                                                            int                  fromElement,
-                                                            String               sequencingProperty,
-                                                            SequencingOrder      sequencingOrder,
-                                                            int                  pageSize) throws PagingErrorException,
-                                                                                                  PropertyErrorException
-    {
-        if (fullResults == null)
-        {
-            return null;
-        }
-
-        if (fullResults.isEmpty())
-        {
-            return null;
-        }
-
-        if (fromElement > fullResults.size())
-        {
-            return null;
-        }
-
-        List<Relationship>  sortedResults = fullResults;
-        // todo sort list according to properties
-
-        if ((pageSize == 0) || (pageSize > sortedResults.size()))
-        {
-            return sortedResults;
-        }
-
-        return new ArrayList<>(fullResults.subList(fromElement, fromElement + pageSize - 1));
-    }
-
 
     /**
      * Validate that type's identifier is not null.

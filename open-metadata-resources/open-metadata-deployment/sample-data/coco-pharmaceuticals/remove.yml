@@ -1,0 +1,22 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+- name: remove CocoPharmaceutical samples
+  hosts: all
+  any_errors_fatal: true
+  vars_files:
+    - defaults/main.yml
+    - vars/users.yml
+    - vars/databases.yml
+  tasks:
+    - name: remove sample data files
+      include_tasks: data-files/remove.yml
+      when: ('egeria-samples-files-host' in group_names) or ('egeria-samples-db-host' in group_names)
+
+    - name: remove sample databases
+      include_tasks: "database/{{ egeria_samples_cocopharma_db_type }}/drop-databases.yml"
+      when: ('egeria-samples-db-host' in group_names)
+
+    - name: remove sample metadata
+      include_tasks: "metadata/{{ egeria_samples_metadata_backend }}/remove.yml"
