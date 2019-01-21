@@ -88,12 +88,6 @@ public class RelationshipEnd implements Serializable {
         this(null, typeName, uniqueAttributes);
     }
 
-    public RelationshipEnd(String typeName, final String attrName, final Object attrValue) {
-        this(null, typeName, new HashMap<String, Object>() {{
-            put(attrName, attrValue);
-        }});
-    }
-
     public RelationshipEnd(String guid, String typeName, Map<String, Object> uniqueAttributes) {
         setRelationshipGuid(guid);
         setTypeName(typeName);
