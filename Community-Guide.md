@@ -10,9 +10,9 @@ willing to follow the simple processes outlined below, as well as adhere to the
 ## Steps to contribute
 
 1. Review the [developer guidelines](developer-resources/Developer-Guidelines.md).
-1. Open an issue on JIRA to cover the proposed change (see [Getting a Jira account and submitting an issue](#getting-a-jira-account-and-creating-an-issue)).
+1. Open an issue on [GitHub](https://github.com/) to cover the proposed change (you may need to create an account on GitHub first).
 1. Clone the repository and prepare your contribution in a new git branch (see [Using git to prepare a contribution](#using-git-to-prepare-a-contribution)).
-1. As you commit your changes, make sure they are signed (see [Why the DCO?](#why-the-dco)).
+1. As you commit your changes, make sure they are signed (see [Why the DCO?](#why-the-dco?)).
 1. Issue a [git pull request](#creating-a-pull-request) from [GitHub](https://github.com/odpi/egeria) to initiate the review.
 1. Wait for a maintainer to review and approve the commit.
 
@@ -31,21 +31,13 @@ For more detail see [this article](https://github.com/msysgit/msysgit/wiki/Git-c
 
 This is not required on MacOS or Linux.
 
-## Getting a JIRA account and creating an issue
+## Creating a Linux Foundation account and creating an issue
 
-JIRAs should be opened for defects that are to be fixed by someone else, or for significant features where discussion is needed as to the
-correct approach, architecture, need, use cases.  GitHub issues may be used by developers for submitting their own bug fixes or incremental
-updates.
+The Linux Foundation provide build and distribution facilities.
+You need an account to access some of the reports from the build.
 
-1. If you have not already, create a [Linux Foundation account](https://identity.linuxfoundation.org). 
+This is the link to create a [Linux Foundation account](https://identity.linuxfoundation.org). 
 Note the username and password you selected.
-1. Login to the [ODPi JIRA](https://jira.odpi.org/projects/EGERIA/issues/) with the Linux Foundation username and password you selected above.
-1. In the menu bar, click 'Create'.
-1. In the Create dialog that comes up, you will need to fill out the following items:
-	* Project: 'Egeria' (should be the default option)
-	* Issue Type: Select 'Improvement' or 'Bug' as appropriate (do not worry if you get this wrong)
-	* Summary: One line subject of the feedback or issue seen
-	* Description: Detailed explanation of the feedback or concerns seen with the spec.
 
 ## Using git to prepare a contribution
 

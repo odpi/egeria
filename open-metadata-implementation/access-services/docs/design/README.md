@@ -37,14 +37,14 @@ annotations.  This module is designed to be replaceable with a module using othe
 API should be 1-1 with the *omas-name*-server API.
 
 Each OMAS should also have an FVT test suite called ***omas-name*-fvt** implemented
-under the [access-services-fvt](../../../../open-metadata-test/open-metadata-fvt/access-services-fvt).  This is
-in addition to the unit tests for the module's components that are implemented within each module.
+under the [access-services-fvt](../../../../open-metadata-test/open-metadata-fvt/access-services-fvt) module.
+This is in addition to the unit tests for the module's components that are implemented within each module.
 The FVT test suite should test all of the API calls through to the repository to show that the OMAS
 can find, create, update and delete all of the necessary metadata on behalf of its consumer.
 
 It is also expected that each OMAS will feature in multiple demos, samples and scenarios found under
 [open-metadata-resources](../../../../open-metadata-resources).  However, these are not the responsibility of
-the OMAS component status.
+the OMAS component owner.
 
 ### Java package names
 
@@ -145,7 +145,7 @@ implementing the OMAS one scenario at a time.
   Ultimately, they will run as part of the centralized build.
  
 * Design the event payloads that are sent and received through the OMAS's 
-  [OutTopic](../concepts/out-topic.md) and [InTopic](../concepts/in-topic.md) respectively.
+  [OutTopic](../concepts/client-server/out-topic.md) and [InTopic](../concepts/client-server/in-topic.md) respectively.
 
 * Design the FVT test for the Events.
 
@@ -159,7 +159,7 @@ implementing the OMAS one scenario at a time.
   
   Implementing the admin interface requires you to know if the OMAS supports (1) receiving events from
   the repository services, (2) receiving events from external application through the OMAS's InTopic and/or (3)
-  sending events on the OMAS's OutTopic.
+  sending events on the OMAS's OutTopic. 
   
   Create the skeleton classes for the listeners and publisher as necessary.
   
@@ -203,7 +203,12 @@ implementing the OMAS one scenario at a time.
   Document the REST API operations in ***omas-name*/*omas-name*-server/docs/user**
   
   Link to the the top-level README.md for the OMAS's server module (***omas-name*/*omas-name*-server/README.md**).
-
+  
+  Implement the ***omas-name*/*omas-name*-server-spring module for the OMAS.  This contains the sever-side
+  resource classes that support the REST API.
+  
+  Add the ***omas-name*/*omas-name*-server-spring module to the `pom.xml` file for the 
+  [OMAG Server Chassis](../../../governance-servers/server-chassis/server-chassis-spring).
 
 * Design and implement the event handling.
 
