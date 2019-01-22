@@ -32,7 +32,7 @@ image:
 
   atlasinit:
     repository: planetf1/atlas-init-egeria
-    tag: 0.1.4
+    tag: 0.1.5
     pullPolicy: IfNotPresent
 
   igcproxy:
@@ -43,6 +43,11 @@ image:
   kafkamonitor:
     repository: planetf1/kafka-monitor-egeriavdc
     tag: 0.1.4
+    pullPolicy: IfNotPresent
+
+  egeriainit:
+    repository: planetf1/egeria-init-egeria
+    tag: 0.1.1
     pullPolicy: IfNotPresent
 
   nameOverride: ""
@@ -66,6 +71,7 @@ service:
 
 # Confluent kafka chart configuration
 cp-helm-charts:
+  brokers: 1
   cp-schema-registry:
     enabled: false
   cp-kafka-rest:

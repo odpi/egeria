@@ -11,7 +11,8 @@ metadata:
         app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
         ATLAS_ENDPOINT: http://{{ include "myapp.fullname" . }}-atlas-service.default.svc.cluster.local:21000
-        KAFKA_ENDPOINT: {{ .Release.Name }}-kafka.default.svc.cluster.local:9092
+        EGERIA_ENDPOINT: http://{{ include "myapp.fullname" . }}-egeria-service.default.svc.cluster.local:8080
+        KAFKA_ENDPOINT: {{ .Release.Name }}-cp-kafka-0.{{ .Release.Name }}-cp-kafka-headless.default.svc.cluster.local:9092
         EGERIA_USER: myuser
         EGERIA_COHORT: coco
         EGERIA_SERVER: myserver
