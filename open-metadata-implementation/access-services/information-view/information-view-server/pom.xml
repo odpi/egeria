@@ -28,13 +28,13 @@
 
     <dependencies>
 
-        <dependency>
+       <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>information-view-api</artifactId>
             <version>${open-metadata.version}</version>
-        </dependency>
+       </dependency>
 
-        <dependency>
+       <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <version>${mockito.version}</version>
@@ -51,6 +51,13 @@
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-implementation</artifactId>
             <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
         </dependency>
 
     </dependencies>

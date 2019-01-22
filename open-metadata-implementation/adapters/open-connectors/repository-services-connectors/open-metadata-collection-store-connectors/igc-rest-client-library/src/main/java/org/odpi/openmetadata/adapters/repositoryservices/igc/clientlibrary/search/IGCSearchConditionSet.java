@@ -18,8 +18,6 @@ public class IGCSearchConditionSet {
     private String conditionJoin = "and";
     private boolean negateAll = false;
 
-    private IGCSearchConditionSet nestedConditions;
-
     public IGCSearchConditionSet() {
         this.conditions = nf.arrayNode();
     }
@@ -65,7 +63,7 @@ public class IGCSearchConditionSet {
      * @param igcConditions the set of criteria to add as nested criteria
      */
     public void addNestedConditionSet(IGCSearchConditionSet igcConditions) {
-        this.nestedConditions = igcConditions;
+        this.conditions.add(igcConditions.getConditionSetObject());
     }
 
     /**
@@ -90,10 +88,6 @@ public class IGCSearchConditionSet {
         }
         if (negateAll) {
             condSet.set("negated", nf.booleanNode(true));
-        }
-        if (nestedConditions != null) {
-            ArrayNode condSetOuter = (ArrayNode) condSet.get("conditions");
-            condSetOuter.add(nestedConditions.getConditionSetObject());
         }
         return condSet;
     }

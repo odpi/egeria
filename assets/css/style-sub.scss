@@ -1,0 +1,334 @@
+/* SPDX-License-Identifier: CC-BY-4.0
+ * Copyright Contributors to the ODPi Egeria project. */
+---
+---
+
+@import "{{ site.theme }}";
+
+body {
+  margin: 0 auto;
+}
+
+img {
+
+  width:100%:
+  padding-top:2%;
+  padding-bottom:2%;
+}
+
+*
+{
+    margin:0;padding:0;
+}
+
+p {
+  margin-bottom:2%;
+}
+
+html,body,.container, .sideBar, .content {
+
+}
+
+hr {
+
+  margin-top:5%;
+  margin-bottom:2%;
+}
+
+li {
+  margin-left:2%;
+}
+
+.container {
+    margin-top: -50px;
+    padding-top: 50px;
+    box-sizing: border-box;
+}
+
+ol {
+  margin-left:2%;
+}
+
+ul {
+  margin-bottom:2%;
+}
+
+.sideBar {
+    float:left;
+    height:205% !important;
+    width: 160px;
+    color:white;
+    margin-right:3%;
+    padding:2%;
+    padding-right:2.3%;
+    background-image:url("../img/bg2.jpg");
+    background-size: cover;
+    background-size: 100%;
+    position:fixed;
+}
+
+.sideBartext {
+  text-align:center;
+  width:100%;
+  padding-top:5%;
+  line-height:1.3em;
+  display:block;
+  font-size:18px;
+}
+
+button {
+  background-color: #28adba;
+  border: none;
+  color: white;
+  padding: 8%;
+  text-align: center;
+  margin-top:20%;
+  text-decoration: none;
+  display: inline-block;
+  font-weight:bold;
+  font-size: 1.2em;
+  line-height:1.2em;
+}
+
+.links {
+  text-align:center;
+  padding-top:5%;
+  color: #28adba;
+  font-weight:bold;
+  font-size:1.1em;
+  width:60%;
+  margin-left:20%;
+  line-height:1.5em;
+  margin-top:15%;
+}
+
+.links a {
+  color: #28adba !important;
+  text-decoration:none;
+}
+
+.content {
+  overflow:hidden;
+  padding:3%;
+  margin-left:20%;
+  margin-right:3%;
+  padding-top:11%;
+  background: white;
+}
+
+body {
+  background-color:#ffffff !important;
+  font-family: 'Lato', sans-serif !important;
+}
+
+#main_content {
+  max-width:1000px !important;
+}
+
+#main_content_wrap {
+    background-color:#ffffff !important;
+}
+
+.inner {
+  max-width:1000px !important;
+  padding-left:5%;
+  padding-right:5%;
+}
+
+h1 {
+  font-family: 'Lato', sans-serif !important;
+  font-size: 2.2em !important;
+  color:#303030 !important;
+  line-height:1.2em;
+  padding-top:3% !important;
+  padding-bottom:2% !important;
+  letter-spacing:0.004em !important;
+}
+
+#header_wrap {
+  background:#00aeb9 !important;
+  padding:0px !important;
+  float:left;
+}
+
+#header_wrap .inner {
+  padding:0px 10px 30px 10px !important;
+}
+
+#header_wrap2 {
+  text-align:center !important;
+  background-image:url("bg.jpg");
+  padding-bottom:6% !important;
+  padding-top:6% !important;
+  float:left;
+  background-size: 100%;
+  font-family: 'Roboto', sans-serif !important;
+  color:white !important;
+  margin-bottom:4% !important;
+}
+
+#forkme_banner{
+  background-color:black !important;
+  color: white !important;
+}
+
+h2 {
+  font-family: 'Lato', sans-serif !important;
+  font-size:1.5em !important;
+  letter-spacing:0.01em;
+  color:#00aeb9 !important;
+  margin-top:3% !important;
+  margin-bottom:2% !important;
+}
+
+h3 {
+  font-family: 'Lato', sans-serif !important;
+  font-size:1.5em !important;
+  letter-spacing:0.01em;
+  color:#00aeb9 !important;
+  margin-top:3% !important;
+  margin-bottom:2% !important;
+}
+
+
+a {
+  color:#086166 !important;
+}
+
+.sublogo {
+  width:100% !important;
+  float:left;
+  background:url("../img/egeria3.png");
+  background-size: 100%;
+  background-repeat:no-repeat;
+  max-width:100% !important;
+  box-shadow:0px white;
+  border:0px solid white !important;
+  -webkit-box-shadow: 0 0 0px white !important;
+  box-shadow: 0px !important;
+  margin-bottom:10%;
+}
+
+.sublogo img {
+  width:100% !important;
+  float:left;
+  background:url("../img/egeria3.png");
+  background-size: 100%;
+  background-repeat:no-repeat;
+  max-width:100% !important;
+  box-shadow:0px white;
+  border:0px solid white !important;
+  -webkit-box-shadow: 0 0 0px white !important;
+  box-shadow: 0px !important;
+  margin-bottom:10%;
+}
+
+.img {
+  box-shadow:0px white;
+  border:0px solid white !important;
+  -webkit-box-shadow: 0 0 0px white !important;
+  box-shadow: 0px !important;
+  width:100%:
+  padding-top:2%;
+  padding-bottom:2%;
+}
+
+@media only screen and (max-width: 900px) and (min-width: 800px){
+
+.content {
+  margin-left:25%;
+
+}
+}
+
+
+@media only screen and (max-width: 800px) and (min-width: 500px){
+
+
+    .links {
+      display:none;
+      text-align:center;
+      padding-top:0%;
+      color: #28adba;
+      font-weight:bold;
+      font-size:1em;
+      margin-top:3%;
+
+    }
+
+
+}
+
+@media (max-width:800px) {
+.sideBar {
+  width:100% !important;
+  height:15% !important;
+}
+
+.sideBartext {
+  float:right;
+  width:28% !important;
+  font-size:12px;
+  padding-right:5%;
+}
+
+.content {
+margin-left:5%;
+margin-top:15%;
+}
+
+.sublogo img {
+  width:30% !important;
+  float:left;
+  margin-top:3%;
+  margin-right:4%;
+}
+
+.sublogo {
+  width:30% !important;
+  float:left;
+  margin-top:3%;
+  margin-right:4%;
+}
+
+button {
+  background-color: #28adba;
+  border: none;
+  color: white;
+  padding: 2%;
+  text-align: center;
+  margin-top:5%;
+  margin-left:2%;
+  text-decoration: none;
+  display: inline-block;
+  font-weight:bold;
+  font-size: 12px;
+}
+}
+
+@media (max-width:500px) {
+
+
+  .links {
+    display:none;
+    text-align:center;
+    padding-top:0%;
+    color: #28adba;
+    font-weight:bold;
+    font-size:1em;
+    word-spacing:1.2em;
+    margin-top:8%;
+  }
+
+.content {
+  overflow:hidden;
+  padding:3%;
+  margin-left:5%;
+  margin-right:5%;
+  word-spacing:5px;
+  padding-top:25%;
+  background: white;
+}
+
+
+}
