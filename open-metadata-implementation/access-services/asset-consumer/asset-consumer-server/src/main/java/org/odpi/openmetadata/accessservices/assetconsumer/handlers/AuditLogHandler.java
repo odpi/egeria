@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.server;
+package org.odpi.openmetadata.accessservices.assetconsumer.handlers;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.auditlog.AssetConsumerAuditCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.InvalidParameterException;
@@ -30,8 +30,7 @@ public class AuditLogHandler
      * @param serviceName  name of this service
      * @param auditLog  connector to the property server.
      */
-    AuditLogHandler(String       serviceName,
-                    OMRSAuditLog auditLog)
+    public AuditLogHandler(String       serviceName, OMRSAuditLog auditLog)
     {
         this.serviceName = serviceName;
         this.auditLog = auditLog;

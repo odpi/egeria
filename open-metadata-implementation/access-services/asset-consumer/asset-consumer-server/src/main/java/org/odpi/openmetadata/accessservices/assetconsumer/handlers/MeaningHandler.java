@@ -1,14 +1,16 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.server;
+package org.odpi.openmetadata.accessservices.assetconsumer.handlers;
 
 
+import org.odpi.openmetadata.accessservices.assetconsumer.AssetConsumerGlossaryInterface;
 import org.odpi.openmetadata.accessservices.assetconsumer.converters.GlossaryTermConverter;
 import org.odpi.openmetadata.accessservices.assetconsumer.converters.ReferenceableHeaderConverter;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.UserNotAuthorizedException;
+import org.odpi.openmetadata.accessservices.assetconsumer.handlers.ErrorHandler;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTerm;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -23,7 +25,7 @@ import java.util.List;
  * MeaningHandler retrieves Glossary Term objects from the property server.  It runs server-side in the AssetConsumer
  * OMAS and retrieves Glossary Term entities through the OMRSRepositoryConnector.
  */
-class MeaningHandler
+public class MeaningHandler implements AssetConsumerGlossaryInterface
 {
     private static final String glossaryTermGUID          = "0db3e6ec-f5ef-4d75-ae38-b7ee6fd6ec0a";
 
@@ -40,8 +42,8 @@ class MeaningHandler
      * @param serviceName  name of this service
      * @param repositoryConnector  connector to the property server.
      */
-    MeaningHandler(String                  serviceName,
-                   OMRSRepositoryConnector repositoryConnector)
+    public MeaningHandler(String                  serviceName,
+                          OMRSRepositoryConnector repositoryConnector)
     {
         this.serviceName = serviceName;
         if (repositoryConnector != null)
@@ -66,11 +68,10 @@ class MeaningHandler
      * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    List<GlossaryTerm> getMeaningsByName(String    userId,
-                                         String    name,
-                                         int       startFrom,
-                                         int       pageSize) throws InvalidParameterException,
-                                                                    PropertyServerException,
+    public List<GlossaryTerm> getMeaningByName(String    userId,
+                                               String    name,
+                                               int       startFrom,
+                                               int       pageSize) throws InvalidParameterException, PropertyServerException,
                                                                     UserNotAuthorizedException
     {
         final  String   methodName = "getMeaningsByName";
@@ -161,10 +162,10 @@ class MeaningHandler
      * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    GlossaryTerm getMeaningByGUID(String     userId,
-                                  String     guid) throws InvalidParameterException,
-                                                          PropertyServerException,
-                                                          UserNotAuthorizedException
+    public GlossaryTerm getMeaning(String     userId,
+                                   String     guid) throws InvalidParameterException,
+                                                           PropertyServerException,
+                                                           UserNotAuthorizedException
     {
         final  String   methodName = "getMeaningByGUID";
         final  String   guidParameter = "guid";
