@@ -1,13 +1,15 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.securitysyncservices.model.Ranger;
+package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model;
+
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants;
 
 import java.util.List;
 import java.util.Map;
 
 public class RangerResource {
 
-    private String op = "add_or_update";
+    private String op = Constants.ADD_OR_UPDATE;
     private String serviceName;
     private Long tagVersion;
     private String tagUpdateTime;

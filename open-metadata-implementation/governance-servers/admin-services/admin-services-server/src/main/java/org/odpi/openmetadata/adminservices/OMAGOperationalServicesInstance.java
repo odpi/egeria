@@ -18,7 +18,7 @@ public class OMAGOperationalServicesInstance
     private OMAGServerConfig         operationalConfiguration          = null;
     private OMRSOperationalServices  operationalRepositoryServices     = null;
     private List<AccessServiceAdmin> operationalAccessServiceAdminList = new ArrayList<>();
-    private SecuritySyncAdmin operationalSecuritySyncAdmin = null;
+    private SecuritySyncAdmin        operationalSecuritySyncAdmin      = null;
 
     /**
      * Default constructor
@@ -99,7 +99,8 @@ public class OMAGOperationalServicesInstance
      * Return the the reference to the admin object for Security Sync component
      * @return the admin Security Sync object
      */
-    public SecuritySyncAdmin getOperationalSecuritySyncAdmin() {
+    public SecuritySyncAdmin getOperationalSecuritySyncAdmin()
+    {
         return operationalSecuritySyncAdmin;
     }
 
@@ -108,7 +109,8 @@ public class OMAGOperationalServicesInstance
      *
      * @param operationalSecuritySyncAdmin SecuritySyncAdmin object
      */
-    public void setOperationalSecuritySyncAdmin(SecuritySyncAdmin operationalSecuritySyncAdmin) {
+    public void setOperationalSecuritySyncAdmin(SecuritySyncAdmin operationalSecuritySyncAdmin)
+    {
         this.operationalSecuritySyncAdmin = operationalSecuritySyncAdmin;
     }
 }

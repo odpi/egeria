@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.securitysyncservices.model.Ranger;
+package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model;
 
 import java.util.Map;
 
