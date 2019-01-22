@@ -31,10 +31,10 @@ RUN apt-get update && apt-get install -y kafkacat
 COPY dist/kafka-tail.sh .
 
 # Contains a list of topics to monitor
-ENV KAFKA_OMRS_TOPIC null
+ENV KAFKA_TOPIC null
 ENV KAFKA_ENDPOINT  null
 
-ENTRYPOINT [ "/bin/sh","-c",""dist/entrypoint.sh"
+ENTRYPOINT [ "/bin/sh","-c","./kafka-tail.sh" ]
 
 
 
