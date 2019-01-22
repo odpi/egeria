@@ -4,10 +4,11 @@
 # Open Metadata Access Services (OMAS) Documentation
 
 
-The OMAS documentation is divided in two parts:
+The OMAS documentation is divided in the following parts:
 
-* [Designing and Implementing an OMAS](design)
+* [General Concepts and Vocabulary](concepts)
 * [User Documentation for the OMASs](user)
+* [Designing and Implementing an OMAS](design)
 
 
 ----

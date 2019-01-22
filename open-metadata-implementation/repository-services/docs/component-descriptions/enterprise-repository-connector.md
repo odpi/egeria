@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Enterprise Repository Connector
 
@@ -14,3 +15,9 @@ a heterogeneous collection of repositories.
 The **[Enterprise Connector Manager](enterprise-connector-manager.md)**
 dynamically configures the enterprise repository connector with appropriate
 instances of the OMRS connectors using information from the [cohort registry](cohort-registry.md).
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

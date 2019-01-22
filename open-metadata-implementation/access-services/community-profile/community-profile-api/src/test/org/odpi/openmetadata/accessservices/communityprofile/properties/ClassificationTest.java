@@ -23,7 +23,7 @@ public class ClassificationTest
      */
     public ClassificationTest()
     {
-
+        classificationProperties.put("TestPropertyName", "TestPropertyValue");
     }
 
 
