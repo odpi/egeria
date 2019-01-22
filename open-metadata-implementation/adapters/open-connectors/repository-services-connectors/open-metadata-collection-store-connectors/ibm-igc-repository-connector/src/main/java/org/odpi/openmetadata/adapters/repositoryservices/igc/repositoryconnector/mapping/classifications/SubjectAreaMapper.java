@@ -39,6 +39,7 @@ public class SubjectAreaMapper extends ClassificationMapping {
                 "category_path",
                 "SubjectArea"
         );
+        addMappedOmrsProperty("name");
     }
 
     /**
