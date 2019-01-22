@@ -63,7 +63,7 @@ public class GovernanceEngineEventProcessor {
             return;
         }
 
-        GovernanceEngineEvent governanceEvent = getGovernanceEngineEvent(glossaryTerm);
+        GovernanceEngineEvent governanceEvent = getGovernanceEngineEvent(glossaryTerm, GovernanceEngineEventType.NEW_CLASSIFIED_ASSET);
         sendEvent(governanceEvent);
     }
 
@@ -73,15 +73,21 @@ public class GovernanceEngineEventProcessor {
             return;
         }
 
-        GovernanceEngineEvent governanceEvent = getGovernanceEngineEvent(entityDetail);
+        GovernanceEngineEvent governanceEvent = getGovernanceEngineEvent(entityDetail, GovernanceEngineEventType.NEW_CLASSIFIED_ASSET);
 
         sendEvent(governanceEvent);
     }
 
-    private GovernanceEngineEvent getGovernanceEngineEvent(EntityDetail entityDetail) throws EntityProxyOnlyException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
+    public void processReclassifiedEntity(EntityDetail entityDetail) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
+        GovernanceEngineEvent governanceEvent = getGovernanceEngineEvent(entityDetail, GovernanceEngineEventType.RE_CLASSIFIED_ASSET);
+
+        sendEvent(governanceEvent);
+    }
+
+    private GovernanceEngineEvent getGovernanceEngineEvent(EntityDetail entityDetail, GovernanceEngineEventType governanceEngineEventType) throws EntityProxyOnlyException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
         GovernanceEngineEvent governanceEvent = new GovernanceEngineEvent();
 
-        governanceEvent.setEventType(GovernanceEngineEventType.NEW_CLASSIFIED_ASSET);
+        governanceEvent.setEventType(governanceEngineEventType);
         GovernedAsset governedAsset = getGovernedAsset(entityDetail);
         governanceEvent.setGovernedAsset(governedAsset);
 

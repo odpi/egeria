@@ -65,16 +65,9 @@ public class GovernanceEnginePublisher implements OMRSInstanceEventProcessor {
     public void processClassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
         log.info("GE Process Classified Entity");
 
-        final String typeDefName = entity.getType().getTypeDefName();
-        if (!(typeDefName.equals(RELATIONAL_COLUMN) || typeDefName.equals(RELATIONAL_TABLE) || typeDefName.equals(GLOSSARY_TERM))) {
-            log.info("GE OMAS processes only Relational Column, Relational Table and Glossary Terms");
-            return;
-        }
+        if (validateEntityType(entity)) return;
 
-        if (entity.getClassifications() == null || entity.getClassifications().isEmpty()) {
-            log.info("GE OMAS does not processes entities without classifications, this is a wrong event!");
-            return;
-        }
+        if (validateClassifications(entity)) return;
 
         try {
             governanceEngineEventProcessor.processClassifiedEntity(entity);
@@ -90,7 +83,17 @@ public class GovernanceEnginePublisher implements OMRSInstanceEventProcessor {
 
     @Override
     public void processReclassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
+        log.info("GE Process Re-Classified Entity");
 
+        if (validateEntityType(entity)) return;
+
+        if (validateClassifications(entity)) return;
+
+        try {
+            governanceEngineEventProcessor.processReclassifiedEntity(entity);
+        } catch (EntityProxyOnlyException | RepositoryErrorException | InvalidParameterException | UserNotAuthorizedException | PagingErrorException | TypeDefNotKnownException | EntityNotKnownException | PropertyErrorException | FunctionNotSupportedException | TypeErrorException e) {
+            log.error(e.getErrorMessage());
+        }
     }
 
     @Override
@@ -209,5 +212,22 @@ public class GovernanceEnginePublisher implements OMRSInstanceEventProcessor {
 
     @Override
     public void processConflictingTypeEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, String targetMetadataCollectionId, TypeDefSummary targetTypeDef, String targetInstanceGUID, TypeDefSummary otherTypeDef, String errorMessage) {
+    }
+
+    private boolean validateEntityType(EntityDetail entity) {
+        final String typeDefName = entity.getType().getTypeDefName();
+        if (!(typeDefName.equals(RELATIONAL_COLUMN) || typeDefName.equals(RELATIONAL_TABLE) || typeDefName.equals(GLOSSARY_TERM))) {
+            log.info("GE OMAS processes only Relational Column, Relational Table and Glossary Terms");
+            return true;
+        }
+        return false;
+    }
+
+    private boolean validateClassifications(EntityDetail entity) {
+        if (entity.getClassifications() == null || entity.getClassifications().isEmpty()) {
+            log.info("GE OMAS does not processes entities without classifications, this is a wrong event!");
+            return true;
+        }
+        return false;
     }
 }

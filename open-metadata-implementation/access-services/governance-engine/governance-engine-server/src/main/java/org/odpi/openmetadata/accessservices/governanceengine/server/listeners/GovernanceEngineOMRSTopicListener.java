@@ -93,6 +93,13 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
                             instanceEventOriginator.getOrganizationName(),
                             instanceEvent.getEntity());
                     break;
+                case RECLASSIFIED_ENTITY_EVENT:
+                    instanceEventProcessor.processReclassifiedEntityEvent("EnterpriseOMRSTopic",
+                            instanceEventOriginator.getMetadataCollectionId(),
+                            instanceEventOriginator.getServerName(),
+                            instanceEventOriginator.getServerType(),
+                            instanceEventOriginator.getOrganizationName(),
+                            instanceEvent.getEntity());
 
                 default:
 

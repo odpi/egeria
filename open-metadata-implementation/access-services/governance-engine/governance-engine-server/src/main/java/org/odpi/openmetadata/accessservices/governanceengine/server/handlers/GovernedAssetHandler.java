@@ -145,13 +145,28 @@ public class GovernedAssetHandler {
      */
     public GovernedAsset getGovernedAsset(String userId, String assetGuid) throws InvalidParameterException {
         final String methodName = "getGovernedAsset";
-        final String assetParm = "assetGuid";
+        final String assetParameter = "assetGuid";
 
         GovernanceEngineValidator.validateUserId(userId, methodName);
-        GovernanceEngineValidator.validateGUID(assetGuid, assetParm, methodName);
+        GovernanceEngineValidator.validateGUID(assetGuid, assetParameter, methodName);
 
-        return new GovernedAsset();
+        try {
+            EntityDetail entityDetail = getEntityDetailById(userId, assetGuid);
+            if(entityDetail == null){
+                return null;
+            }
+            GovernedAsset governedAsset = getGovernedAsset(entityDetail);
+
+            if(entityDetail.getClassifications() != null && !entityDetail.getClassifications().isEmpty()){
+                List<GovernanceClassification> governanceClassifications =  getGovernanceClassifications(entityDetail.getClassifications());
+                governedAsset.setAssignedGovernanceClassifications(governanceClassifications);
+            }
+        } catch (TypeErrorException | EntityProxyOnlyException | TypeDefNotKnownException | EntityNotKnownException | FunctionNotSupportedException | PropertyErrorException | RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | UserNotAuthorizedException | PagingErrorException e) {
+            log.error(e.getErrorMessage());
+        }
+        return null;
     }
+
 
     public boolean containsGovernedClassification(EntityDetail entityDetail) {
         if (entityDetail.getClassifications() == null || entityDetail.getClassifications().isEmpty()) {
@@ -384,4 +399,15 @@ public class GovernedAssetHandler {
         }
         return null;
     }
+
+    private EntityDetail getEntityDetailById(String userId, String assetGuid) {
+        try {
+            return metadataCollection.getEntityDetail(userId, assetGuid);
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | EntityProxyOnlyException | RepositoryErrorException | EntityNotKnownException | UserNotAuthorizedException e) {
+            log.error(e.getErrorMessage());
+        }
+
+        return null;
+    }
+
 }
