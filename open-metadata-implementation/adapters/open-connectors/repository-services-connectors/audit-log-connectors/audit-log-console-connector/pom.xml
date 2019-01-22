@@ -3,26 +3,23 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>open-connectors</artifactId>
+        <artifactId>audit-log-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>0.3-SNAPSHOT</version>
     </parent>
 
-    <name>Access Services Connectors</name>
-    <description>
-        Access Services Connectors contains the topic connector implementations
-        for each of the access services that support inbound events through an InTopic.
-    </description>
-
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>access-services-connectors</artifactId>
+    <name>Audit Log Console Connector</name>
+    <description>
+        Provides a stdout console audit log for the Open Metadata Repository Services (OMRS).
+    </description>
 
+    <artifactId>audit-log-console-connector</artifactId>
 
 </project>
