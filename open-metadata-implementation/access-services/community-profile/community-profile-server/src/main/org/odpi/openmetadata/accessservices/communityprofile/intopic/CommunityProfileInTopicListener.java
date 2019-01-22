@@ -24,19 +24,19 @@ public class CommunityProfileInTopicListener implements OMRSTopicListener
      * The constructor is given the connection to the out topic for Community Profile OMAS
      * along with classes for testing and manipulating instances.
      *
-     * @param assetConsumerOutTopic  connection to the out topic
+     * @param communityProfileOutTopic  connection to the out topic
      * @param repositoryConnector  provides methods for retrieving metadata instances
      * @param repositoryHelper  provides methods for working with metadata instances
      * @param repositoryValidator  provides validation of metadata instance
      * @param componentName  name of component
      */
-    public CommunityProfileInTopicListener(Connection              assetConsumerOutTopic,
+    public CommunityProfileInTopicListener(Connection              communityProfileOutTopic,
                                            OMRSRepositoryConnector repositoryConnector,
                                            OMRSRepositoryHelper    repositoryHelper,
                                            OMRSRepositoryValidator repositoryValidator,
                                            String                  componentName)
     {
-        publisher = new CommunityProfilePublisher(assetConsumerOutTopic,
+        publisher = new CommunityProfilePublisher(communityProfileOutTopic,
                                                   repositoryConnector,
                                                   repositoryHelper,
                                                   repositoryValidator,

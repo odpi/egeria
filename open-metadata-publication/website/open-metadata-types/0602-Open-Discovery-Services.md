@@ -7,7 +7,7 @@
 are pluggable components that analyse data sources and document the results.
 
 The OpenDiscoveryService entity describes an implementation of an open discovery service.
-This implementation is an [OCF Connector](../../../open-metadata-implementation/frameworks/open-connector-framework/docs/connector.md)
+This implementation is an [OCF Connector](../../../open-metadata-implementation/frameworks/open-connector-framework/docs/concepts/connector.md)
 so the OpenDiscoveryService is linked with a DiscoveryServiceImplementation relationship to a 
 [Connection](0201-Connectors-and-Connections.md) entity
 that defines how to create an instance of the open discovery service.

@@ -23,7 +23,7 @@ public class CommunityProfilePublisher
 
     private static final Logger log = LoggerFactory.getLogger(CommunityProfilePublisher.class);
 
-    private Connection              personalProfileConsumerOutTopic;
+    private Connection              communityProfileOutTopic;
     private OMRSRepositoryHelper    repositoryHelper;
     private OMRSRepositoryValidator repositoryValidator;
     private PersonalProfilesHandler profilesHandler;
@@ -34,19 +34,19 @@ public class CommunityProfilePublisher
      * The constructor is given the connection to the out topic for Community Profile OMAS
      * along with classes for testing and manipulating instances.
      *
-     * @param personalProfileConsumerOutTopic  connection to the out topic
+     * @param communityProfileOutTopic  connection to the out topic
      * @param repositoryConnector  provides methods for retrieving metadata instances
      * @param repositoryHelper  provides methods for working with metadata instances
      * @param repositoryValidator  provides validation of metadata instance
      * @param serviceName  name of this service.
      */
-    public CommunityProfilePublisher(Connection              personalProfileConsumerOutTopic,
+    public CommunityProfilePublisher(Connection              communityProfileOutTopic,
                                      OMRSRepositoryConnector repositoryConnector,
                                      OMRSRepositoryHelper    repositoryHelper,
                                      OMRSRepositoryValidator repositoryValidator,
                                      String                  serviceName)
     {
-        this.personalProfileConsumerOutTopic = personalProfileConsumerOutTopic;
+        this.communityProfileOutTopic = communityProfileOutTopic;
         this.repositoryHelper = repositoryHelper;
         this.repositoryValidator = repositoryValidator;
         this.profilesHandler = new PersonalProfilesHandler(serviceName, repositoryConnector);
