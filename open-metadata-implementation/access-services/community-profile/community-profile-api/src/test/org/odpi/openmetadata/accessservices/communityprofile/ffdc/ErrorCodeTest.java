@@ -44,7 +44,7 @@ public class ErrorCodeTest
         String                  testInfo;
 
         assertTrue(isUniqueOrdinal(testValue.getErrorMessageId()));
-        assertTrue(testValue.getErrorMessageId().contains("ASSET-CONSUMER"));
+        assertTrue(testValue.getErrorMessageId().contains("COMMUNITY-PROFILE"));
         assertTrue(testValue.getErrorMessageId().endsWith(" "));
         assertTrue(testValue.getHTTPErrorCode() != 0);
         testInfo = testValue.getUnformattedErrorMessage();
@@ -72,8 +72,6 @@ public class ErrorCodeTest
         testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_USER_ID);
         testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_GUID);
         testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_NAME);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.NO_CONNECTED_ASSET);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.TOO_MANY_CONNECTIONS);
         testSingleErrorCodeValues(CommunityProfileErrorCode.USER_NOT_AUTHORIZED);
         testSingleErrorCodeValues(CommunityProfileErrorCode.PROPERTY_SERVER_ERROR);
         testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_ENUM);
@@ -84,13 +82,7 @@ public class ErrorCodeTest
         testSingleErrorCodeValues(CommunityProfileErrorCode.OMRS_NOT_INITIALIZED);
         testSingleErrorCodeValues(CommunityProfileErrorCode.OMRS_NOT_AVAILABLE);
         testSingleErrorCodeValues(CommunityProfileErrorCode.NO_METADATA_COLLECTION);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.GUID_IS_NULL);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.PROXY_CONNECTION_FOUND);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.ASSET_NOT_FOUND);
         testSingleErrorCodeValues(CommunityProfileErrorCode.MULTIPLE_INSTANCES_FOUND);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.UNKNOWN_ASSET);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_CONNECTION_RETURNED);
-        testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_CONNECTOR_RETURNED);
         testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_END2_RETURNED);
         testSingleErrorCodeValues(CommunityProfileErrorCode.NULL_RESPONSE_FROM_API);
         testSingleErrorCodeValues(CommunityProfileErrorCode.CLIENT_SIDE_REST_API_ERROR);
