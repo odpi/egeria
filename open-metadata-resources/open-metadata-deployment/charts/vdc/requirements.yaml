@@ -2,11 +2,11 @@
 # Copyright Contributors to the Egeria project.
 dependencies:
   - name: kafka
-    version: 0.11.1
+    version: 0.13.4
     repository: https://kubernetes-charts-incubator.storage.googleapis.com
   - name: openldap
-    version: 0.2.4
+    version: 0.3.0
     repository: https://kubernetes-charts.storage.googleapis.com/
   - name: postgresql
-    version: 3.9.1
+    version: 3.9.2
     repository: https://kubernetes-charts.storage.googleapis.com/
