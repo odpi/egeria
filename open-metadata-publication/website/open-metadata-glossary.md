@@ -3,8 +3,6 @@
 
 # Open Metadata Glossary
 
-Below are links to common terms and concepts used in Egeria.
-
 ## A
 
 * [Access Services (OMAS)](../../open-metadata-implementation/access-services)
@@ -120,8 +118,8 @@ Below are links to common terms and concepts used in Egeria.
 ## F
 
 * Files
-  * [omag.server.<servername>.config](../../open-metadata-implementation/repository-services/docs/component-descriptions/connectors/cohort-registry-store-connector.md)
-  * [<servername>.<cohortname>.registrystore](../../open-metadata-implementation/governance-servers/admin-services/Using-the-Admin-Services.md)
+  * [omag.server.servername.config](../../open-metadata-implementation/repository-services/docs/component-descriptions/connectors/cohort-registry-store-connector.md)
+  * [servername.cohortname.registrystore](../../open-metadata-implementation/governance-servers/admin-services/Using-the-Admin-Services.md)
 * [Frameworks](../../open-metadata-implementation/frameworks)
   * [Open Connector Framework (OCF)](../../open-metadata-implementation/frameworks/open-connector-framework)
   * [Open Discovery Framework (ODF)](../../open-metadata-implementation/frameworks/open-discovery-framework)
@@ -177,7 +175,7 @@ Below are links to common terms and concepts used in Egeria.
 
 ## O
 
-* [omag.server.<servername>.config file](../../open-metadata-implementation/repository-services/docs/component-descriptions/connectors/cohort-registry-store-connector.md)
+* [omag.server.servername.config file](../../open-metadata-implementation/repository-services/docs/component-descriptions/connectors/cohort-registry-store-connector.md)
 * [OMAS - Open Metadata Access Services](../../open-metadata-implementation/access-services)
   * [Asset Catalog OMAS](../../open-metadata-implementation/access-services/asset-catalog)
   * [Asset Consumer](../../open-metadata-implementation/access-services/asset-consumer)
