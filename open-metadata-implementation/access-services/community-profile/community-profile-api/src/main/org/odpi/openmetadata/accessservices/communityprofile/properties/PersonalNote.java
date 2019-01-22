@@ -48,13 +48,13 @@ public class PersonalNote extends NoteEntryHeader
                 "qualifiedName='" + getQualifiedName() + '\'' +
                 ", title='" + getTitle() + '\'' +
                 ", text='" + getText() + '\'' +
-                ", qualifiedName='" + getQualifiedName() + '\'' +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", classifications=" + getClassifications() +
                 ", GUID='" + getGUID() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
                 ", typeDescription='" + getTypeDescription() + '\'' +
+                ", originId='" + getOriginId() + '\'' +
+                ", originName='" + getOriginName() + '\'' +
+                ", originType='" + getOriginType() + '\'' +
+                ", originLicense='" + getOriginLicense() + '\'' +
                 '}';
     }
 

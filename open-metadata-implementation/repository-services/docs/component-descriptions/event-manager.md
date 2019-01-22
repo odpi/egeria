@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # OMRS Repository Event Manager
 
@@ -7,3 +8,9 @@ repositories between:
 * the **[Cohort Services](../subsystem-descriptions/cohort-services.md)**,
 * the **[Local Repository Services](../subsystem-descriptions/local-repository-services.md)** and
 * the **[Enterprise Repository Services](../subsystem-descriptions/enterprise-repository-services.md)**.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
