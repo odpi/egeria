@@ -43,6 +43,7 @@ public class PrimaryKeyMapper extends ClassificationMapping {
                 C_PRIMARY_KEY
         );
         addIgcRelationshipProperty("selected_primary_key");
+        addMappedOmrsProperty("name");
     }
 
     /**
