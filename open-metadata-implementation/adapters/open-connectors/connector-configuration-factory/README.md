@@ -4,7 +4,7 @@
 # Connector Configuration Factory
 
 The connector configuration factory 
-creates **[Connection](../../../frameworks/open-connector-framework/docs/connection.md)**
+creates **[Connection](../../../frameworks/open-connector-framework/docs/concepts/connection.md)**
 objects for the repository services connectors that are directly supported by Egeria.
 
 This includes:
