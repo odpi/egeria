@@ -34,7 +34,7 @@ delay=30
 
 while [ $loop -gt 0 ]
 do
-  kafkacat -b $KAFKA_ENDPOINT -t $KAFKA_TOPIC -C -c2 -f'\nKey (%K bytes): %k\t\nValue (%S bytes): %s\nTimestamp: %T\tPartition: %p\tOffset: %o\n--\n'
+  kafkacat -b $KAFKA_ENDPOINT -t $KAFKA_TOPIC -o beginning -C -c2 -f'\nKey (%K bytes): %k\t\nValue (%S bytes): %s\nTimestamp: %T\tPartition: %p\tOffset: %o\n--\n'
     rc=$?
     if [ $rc -eq 4 ]
     then
