@@ -12,6 +12,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>ranger-connector</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-apis</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>governance-engine-api</artifactId>
+            <version>0.3-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 
 </project>

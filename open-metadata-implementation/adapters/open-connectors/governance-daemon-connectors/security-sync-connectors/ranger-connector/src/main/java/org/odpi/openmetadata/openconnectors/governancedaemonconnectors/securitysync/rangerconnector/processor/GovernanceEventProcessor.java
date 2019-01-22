@@ -1,21 +1,19 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.securitysyncservices.processor;
+package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.processor;
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
-import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SecuritySyncProcessor {
+public class GovernanceEventProcessor {
 
-    private static final Logger log = LoggerFactory.getLogger(SecuritySyncProcessor.class);
-    private SecuritySyncConfig securitySyncConfig;
+    private static final Logger log = LoggerFactory.getLogger(GovernanceEventProcessor.class);
     private OMRSAuditLog auditLog;
 
-    public SecuritySyncProcessor(SecuritySyncConfig securitySyncConfig, OMRSAuditLog auditLog) {
-        this.securitySyncConfig = securitySyncConfig;
+    public GovernanceEventProcessor(OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog) {
         this.auditLog = auditLog;
     }
 

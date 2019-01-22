@@ -4,8 +4,8 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
-import org.odpi.openmetadata.adminservices.configuration.registration.SecuritySyncAdmin;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
+import org.odpi.openmetadata.securitysyncservices.configuration.registration.SecuritySyncOperationalServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +15,10 @@ import java.util.List;
  */
 public class OMAGOperationalServicesInstance
 {
-    private OMAGServerConfig         operationalConfiguration          = null;
-    private OMRSOperationalServices  operationalRepositoryServices     = null;
-    private List<AccessServiceAdmin> operationalAccessServiceAdminList = new ArrayList<>();
-    private SecuritySyncAdmin        operationalSecuritySyncAdmin      = null;
+    private OMAGServerConfig         operationalConfiguration               = null;
+    private OMRSOperationalServices  operationalRepositoryServices          = null;
+    private List<AccessServiceAdmin> operationalAccessServiceAdminList      = new ArrayList<>();
+    private SecuritySyncOperationalServices securitySyncOperationalServices = null;
 
     /**
      * Default constructor
@@ -95,22 +95,22 @@ public class OMAGOperationalServicesInstance
     }
 
     /**
+     * Return the running instance of the Security Sync
      *
-     * Return the the reference to the admin object for Security Sync component
-     * @return the admin Security Sync object
+     * @return SecuritySyncOperationalServices object
      */
-    public SecuritySyncAdmin getOperationalSecuritySyncAdmin()
+    public SecuritySyncOperationalServices getSecuritySyncOperationalServices()
     {
-        return operationalSecuritySyncAdmin;
+        return securitySyncOperationalServices;
     }
 
     /**
-     * Set up the reference to the admin object for Security Sync component
+     * Set up the running instance of the Security Sync
      *
-     * @param operationalSecuritySyncAdmin SecuritySyncAdmin object
+     * @param securitySyncOperationalServices SecuritySyncOperationalServices object
      */
-    public void setOperationalSecuritySyncAdmin(SecuritySyncAdmin operationalSecuritySyncAdmin)
+    public void setSecuritySyncOperationalServices(SecuritySyncOperationalServices securitySyncOperationalServices)
     {
-        this.operationalSecuritySyncAdmin = operationalSecuritySyncAdmin;
+        this.securitySyncOperationalServices = securitySyncOperationalServices;
     }
 }

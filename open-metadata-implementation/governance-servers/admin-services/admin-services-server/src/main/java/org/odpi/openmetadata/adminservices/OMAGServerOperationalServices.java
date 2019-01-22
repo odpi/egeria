@@ -8,7 +8,6 @@ import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerCo
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
-import org.odpi.openmetadata.adminservices.configuration.registration.SecuritySyncAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
@@ -17,7 +16,7 @@ import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
-import org.odpi.openmetadata.securitysyncservices.admin.SecuritySync;
+import org.odpi.openmetadata.securitysyncservices.configuration.registration.SecuritySyncOperationalServices;
 
 import java.util.List;
 
@@ -124,7 +123,7 @@ public class OMAGServerOperationalServices
              */
             OMRSOperationalServices  operationalRepositoryServices     = instance.getOperationalRepositoryServices();
             List<AccessServiceAdmin> operationalAccessServiceAdminList = instance.getOperationalAccessServiceAdminList();
-            SecuritySyncAdmin operationalSecuritySync                  = instance.getOperationalSecuritySyncAdmin();
+            SecuritySyncOperationalServices operationalSecuritySync    = instance.getSecuritySyncOperationalServices();
             /*
              * Shut down any running instances for this server
              */
@@ -247,12 +246,22 @@ public class OMAGServerOperationalServices
             instanceMap.setNewInstance(serverName, instance);
 
             /*Initialize the Security Sync component*/
-            SecuritySyncAdmin securitySyncAdmin = initializeSecuritySync(configuration,
-                                                                        operationalRepositoryServices,
-                                                                        enterpriseTopicConnector);
-            if (securitySyncAdmin != null)
+            SecuritySyncConfig securitySyncConfig = configuration.getSecuritySyncConfig();
+            if(securitySyncConfig != null)
             {
-                instance.setOperationalSecuritySyncAdmin(securitySyncAdmin);
+                operationalSecuritySync = new SecuritySyncOperationalServices(configuration.getLocalServerName(),
+                                                                            configuration.getLocalServerType(),
+                                                                            configuration.getOrganizationName(),
+                                                                            configuration.getLocalServerUserId(),
+                                                                            configuration.getLocalServerURL(),
+                                                                            configuration.getMaxPageSize());
+                instance.setSecuritySyncOperationalServices(operationalSecuritySync);
+                operationalSecuritySync.initialize(securitySyncConfig,
+                                                   operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(securitySyncConfig.getSecuritySyncName()),
+                                                   operationalRepositoryServices.getAuditLog(securitySyncConfig.getSecuritySyncId(),
+                                                                                            securitySyncConfig.getSecuritySyncName(),
+                                                                                            securitySyncConfig.getSecuritySyncDescription(),
+                                                                                            securitySyncConfig.getSecuritySyncWiki()));
             }
 
             /*
@@ -297,26 +306,6 @@ public class OMAGServerOperationalServices
         return response;
     }
 
-    private SecuritySyncAdmin initializeSecuritySync(OMAGServerConfig configuration,
-                                                     OMRSOperationalServices operationalRepositoryServices,
-                                                     OMRSTopicConnector enterpriseTopicConnector) throws OMAGConfigurationErrorException
-    {
-        SecuritySyncConfig securitySyncConfig = configuration.getSecuritySyncConfig();
-        if (securitySyncConfig != null)
-        {
-            SecuritySyncAdmin securitySyncAdmin = new SecuritySync();
-            securitySyncAdmin.initialize(securitySyncConfig,
-                                        enterpriseTopicConnector,
-                                        operationalRepositoryServices.getAuditLog(securitySyncConfig.getSecuritySyncId(),
-                                        securitySyncConfig.getSecuritySyncName(),
-                                        securitySyncConfig.getSecuritySyncDescription(),
-                                        securitySyncConfig.getSecuritySyncWiki()),
-                                        configuration.getLocalServerUserId());
-            return securitySyncAdmin;
-        }
-        return null;
-    }
-
 
     /**
      * Shutdown any running services.
@@ -327,7 +316,7 @@ public class OMAGServerOperationalServices
      */
     private void deactivateRunningServiceInstances(OMRSOperationalServices  operationalRepositoryServices,
                                                    List<AccessServiceAdmin> operationalAccessServiceAdminList,
-                                                   SecuritySyncAdmin securitySyncAdmin,
+                                                   SecuritySyncOperationalServices securitySyncOperationalServices,
                                                    boolean permanentDeactivation) {
         /*
          * Shutdown the access services
@@ -346,9 +335,9 @@ public class OMAGServerOperationalServices
         /*
          * Shutdown the security sync
          */
-        if (securitySyncAdmin != null)
+        if (securitySyncOperationalServices != null)
         {
-            securitySyncAdmin.shutdown();
+            securitySyncOperationalServices.disconnect(permanentDeactivation);
         }
 
         /*
@@ -384,7 +373,7 @@ public class OMAGServerOperationalServices
 
             deactivateRunningServiceInstances(instance.getOperationalRepositoryServices(),
                                               instance.getOperationalAccessServiceAdminList(),
-                                              instance.getOperationalSecuritySyncAdmin(),
+                                              instance.getSecuritySyncOperationalServices(),
                                               false);
 
             instanceMap.removeInstance(serverName);
@@ -429,7 +418,7 @@ public class OMAGServerOperationalServices
 
             deactivateRunningServiceInstances(instance.getOperationalRepositoryServices(),
                                               instance.getOperationalAccessServiceAdminList(),
-                                              instance.getOperationalSecuritySyncAdmin(),
+                                              instance.getSecuritySyncOperationalServices(),
                                               true);
 
             instanceMap.removeInstance(serverName);
