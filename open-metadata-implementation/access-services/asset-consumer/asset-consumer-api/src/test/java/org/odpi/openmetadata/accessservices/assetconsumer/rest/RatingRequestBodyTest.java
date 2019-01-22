@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 import org.testng.annotations.Test;
 
@@ -29,9 +28,9 @@ public class RatingRequestBodyTest
      *
      * @return filled in object
      */
-    private RatingRequestBody getTestObject()
+    private ReviewRequestBody getTestObject()
     {
-        RatingRequestBody testObject = new RatingRequestBody();
+        ReviewRequestBody testObject = new ReviewRequestBody();
 
         testObject.setReview("TestReviewText");
         testObject.setStarRating(StarRating.FIVE_STARS);
@@ -45,7 +44,7 @@ public class RatingRequestBodyTest
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(RatingRequestBody  resultObject)
+    private void validateResultObject(ReviewRequestBody resultObject)
     {
         assertTrue(resultObject.getReview().equals("TestReviewText"));
         assertTrue(resultObject.getStarRating() == StarRating.FIVE_STARS);
@@ -57,12 +56,12 @@ public class RatingRequestBodyTest
      */
     @Test public void testNullObject()
     {
-        RatingRequestBody    nullObject = new RatingRequestBody();
+        ReviewRequestBody nullObject = new ReviewRequestBody();
 
         assertTrue(nullObject.getStarRating() == null);
         assertTrue(nullObject.getReview() == null);
 
-        nullObject = new RatingRequestBody(null);
+        nullObject = new ReviewRequestBody(null);
 
         assertTrue(nullObject.getStarRating() == null);
         assertTrue(nullObject.getReview() == null);
@@ -78,10 +77,10 @@ public class RatingRequestBodyTest
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        RatingRequestBody  sameObject = getTestObject();
+        ReviewRequestBody sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        RatingRequestBody  differentObject = getTestObject();
+        ReviewRequestBody differentObject = getTestObject();
         differentObject.setStarRating(StarRating.ONE_STAR);
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -101,7 +100,7 @@ public class RatingRequestBodyTest
      */
     @Test public void testClone()
     {
-        validateResultObject(new RatingRequestBody(getTestObject()));
+        validateResultObject(new ReviewRequestBody(getTestObject()));
     }
 
 
@@ -128,7 +127,7 @@ public class RatingRequestBodyTest
 
         try
         {
-            validateResultObject(objectMapper.readValue(jsonString, RatingRequestBody.class));
+            validateResultObject(objectMapper.readValue(jsonString, ReviewRequestBody.class));
         }
         catch (Throwable  exc)
         {
@@ -151,7 +150,7 @@ public class RatingRequestBodyTest
 
         try
         {
-            validateResultObject((RatingRequestBody) objectMapper.readValue(jsonString, AssetConsumerOMASAPIRequestBody.class));
+            validateResultObject((ReviewRequestBody) objectMapper.readValue(jsonString, AssetConsumerOMASAPIRequestBody.class));
         }
         catch (Throwable  exc)
         {

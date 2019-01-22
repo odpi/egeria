@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices;
 
+import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -75,11 +76,56 @@ public class ConnectorConfigurationFactory
 
 
     /**
-     * Return the connection for the default audit log.
+     * Return the connection for the file-based audit log.
      * By default, the Audit log is stored in a directory called localServerName.auditlog.
      *
      * @param localServerName   name of the local server
-     * @return OCF Connection used to create the file-based audit logger
+     * @return OCF Connection used to create the file based audit logger
+     */
+    public Connection getFileBasedAuditLogConnection(String localServerName)
+    {
+        final String endpointGUID      = "836efeae-ab34-4425-89f0-6adf2faa1f2e";
+        final String connectionGUID    = "5390bf3e-6b38-4eda-b34a-de55ac4252a7";
+
+        final String endpointDescription = "OMRS default audit log endpoint.";
+
+        String endpointAddress = localServerName + ".auditlog";
+        String endpointName    = "DefaultAuditLog.Endpoint." + endpointAddress;
+
+        Endpoint endpoint = new Endpoint();
+
+        endpoint.setType(this.getEndpointType());
+        endpoint.setGUID(endpointGUID);
+        endpoint.setQualifiedName(endpointName);
+        endpoint.setDisplayName(endpointName);
+        endpoint.setDescription(endpointDescription);
+        endpoint.setAddress(endpointAddress);
+
+        final String connectionDescription = "OMRS default audit log connection.";
+
+        String connectionName = "DefaultAuditLog.Connection." + localServerName;
+
+        Connection connection = new Connection();
+
+        connection.setType(this.getConnectionType());
+        connection.setGUID(connectionGUID);
+        connection.setQualifiedName(connectionName);
+        connection.setDisplayName(connectionName);
+        connection.setDescription(connectionDescription);
+        connection.setEndpoint(endpoint);
+        connection.setConnectorType(getConnectorType(FileBasedAuditLogStoreProvider.class.getName()));
+
+        return connection;
+    }
+
+
+
+    /**
+     * Return the connection for the default audit log.
+     * By default, the Audit log written to stdout.
+     *
+     * @param localServerName   name of the local server
+     * @return OCF Connection used to create the stdout console audit logger
      */
     public Connection getDefaultAuditLogConnection(String localServerName)
     {
@@ -112,7 +158,7 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
-        connection.setConnectorType(getConnectorType(FileBasedAuditLogStoreProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(ConsoleAuditLogStoreProvider.class.getName()));
 
         return connection;
     }

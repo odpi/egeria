@@ -17,7 +17,8 @@ import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 /**
- * AssetConsumerPublisher is the connector responsible .
+ * AssetConsumerPublisher is the connector responsible for publishing information about
+ * new and changed assets.
  */
 public class AssetConsumerPublisher
 {
