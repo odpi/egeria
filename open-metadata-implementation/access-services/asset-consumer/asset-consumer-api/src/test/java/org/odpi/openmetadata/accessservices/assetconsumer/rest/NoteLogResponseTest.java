@@ -56,7 +56,6 @@ public class NoteLogResponseTest
         testObject.setExceptionProperties(additionalProperties);
 
         testObject.setStartingFromElement(10);
-        testObject.setTotalListSize(100);
         testObject.setNoteLog(noteLog);
         testObject.setNotes(notes);
 
@@ -80,7 +79,6 @@ public class NoteLogResponseTest
         assertTrue(resultObject.getExceptionProperties() == null);
 
         assertTrue(resultObject.getStartingFromElement() == 10);
-        assertTrue(resultObject.getTotalListSize() == 100);
         assertTrue(resultObject.getNoteLog().equals(noteLog));
         assertTrue(resultObject.getNotes().equals(notes));
     }

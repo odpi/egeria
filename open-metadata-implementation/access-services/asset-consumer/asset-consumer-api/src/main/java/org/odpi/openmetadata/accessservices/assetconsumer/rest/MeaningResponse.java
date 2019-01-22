@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTerm;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.util.Objects;
 
@@ -16,8 +15,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * ConnectionResponse is the response structure used on the Asset Consumer OMAS REST API calls that returns a
- * Connection object as a response.
+ * MeaningResponse is the response structure used on the Asset Consumer OMAS REST API calls that returns a
+ * Glossary Term object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -52,9 +51,9 @@ public class MeaningResponse extends AssetConsumerOMASAPIResponse
 
 
     /**
-     * Return the Connection object.
+     * Return the glossary term object.
      *
-     * @return connection
+     * @return glossary term object
      */
     public GlossaryTerm getGlossaryTerm()
     {
@@ -70,9 +69,9 @@ public class MeaningResponse extends AssetConsumerOMASAPIResponse
 
 
     /**
-     * Set up the Connection object.
+     * Set up the glossary term object.
      *
-     * @param glossaryTerm - connection object
+     * @param glossaryTerm - glossary term object
      */
     public void setGlossaryTerm(GlossaryTerm glossaryTerm)
     {
@@ -143,4 +142,5 @@ public class MeaningResponse extends AssetConsumerOMASAPIResponse
             return glossaryTerm.hashCode();
         }
     }
+
 }

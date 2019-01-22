@@ -95,7 +95,7 @@ processes, data stores and data sets.
 **[Area 2](../../../../../open-metadata-publication/website/open-metadata-types/Area-2-models.md)** is where the asset definitions are built out.
 
 In addition, model [0205](../../../../../open-metadata-publication/website/open-metadata-types/0205-Connection-Linkage.md) shows how
-an Asset is associated with a [Connection](../../../../frameworks/open-connector-framework/docs/connection.md) object.
+an Asset is associated with a [Connection](../../../../frameworks/open-connector-framework/docs/concepts/connection.md) object.
 The connection object provides the properties necessary to create a connectors to access the asset's contents as described in section
 [Accessing Assets](#accessing-assets) above.
 

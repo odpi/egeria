@@ -13,7 +13,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class CommunityProfileEventTest
 {
-    private CommunityProfileEventType eventType                = CommunityProfileEventType.NEW_ASSET_EVENT;
+    private CommunityProfileEventType eventType                = CommunityProfileEventType.NEW_PERSONAL_PROFILE_EVENT;
 
 
     /**

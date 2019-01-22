@@ -58,10 +58,19 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testAllErrorCodeValues()
     {
-        testSingleErrorCodeValues(CommunityProfileEventType.UNKNOWN_ASSET_CONSUMER_EVENT);
-        testSingleErrorCodeValues(CommunityProfileEventType.NEW_ASSET_EVENT);
-        testSingleErrorCodeValues(CommunityProfileEventType.UPDATED_ASSET_EVENT);
-        testSingleErrorCodeValues(CommunityProfileEventType.DELETED_ASSET_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.UNKNOWN_COMMUNITY_PROFILE_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.NEW_PERSONAL_PROFILE_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.NEW_REF_PERSONAL_PROFILE_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.UPDATED_PERSONAL_PROFILE_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.DELETED_PERSONAL_PROFILE_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.NEW_ASSET_IN_COLLECTION_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.ASSET_REMOVED_FROM_COLLECTION_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.NEW_PROJECT_IN_COLLECTION_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.PROJECT_REMOVED_FROM_COLLECTION_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.NEW_COMMUNITY_IN_COLLECTION_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.COMMUNITY_REMOVED_FROM_COLLECTION_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.RESOURCE_IN_COLLECTION_EVENT);
+        testSingleErrorCodeValues(CommunityProfileEventType.RESOURCE_REMOVED_FROM_COLLECTION_EVENT);
     }
 
 
@@ -77,7 +86,7 @@ public class AccessServiceEventTypeTest
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(CommunityProfileEventType.NEW_ASSET_EVENT);
+            jsonString = objectMapper.writeValueAsString(CommunityProfileEventType.NEW_REF_PERSONAL_PROFILE_EVENT);
         }
         catch (Throwable  exc)
         {
@@ -86,7 +95,7 @@ public class AccessServiceEventTypeTest
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, CommunityProfileEventType.class) == CommunityProfileEventType.NEW_ASSET_EVENT);
+            assertTrue(objectMapper.readValue(jsonString, CommunityProfileEventType.class) == CommunityProfileEventType.NEW_REF_PERSONAL_PROFILE_EVENT);
         }
         catch (Throwable  exc)
         {
@@ -100,7 +109,7 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testToString()
     {
-        assertTrue(CommunityProfileEventType.DELETED_ASSET_EVENT.toString().contains("AssetConsumerEventType"));
+        assertTrue(CommunityProfileEventType.DELETED_PERSONAL_PROFILE_EVENT.toString().contains("CommunityProfileEventType"));
     }
 
 
@@ -109,8 +118,8 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testEquals()
     {
-        assertTrue(CommunityProfileEventType.NEW_ASSET_EVENT.equals(CommunityProfileEventType.NEW_ASSET_EVENT));
-        assertFalse(CommunityProfileEventType.NEW_ASSET_EVENT.equals(CommunityProfileEventType.DELETED_ASSET_EVENT));
+        assertTrue(CommunityProfileEventType.NEW_PERSONAL_PROFILE_EVENT.equals(CommunityProfileEventType.NEW_PERSONAL_PROFILE_EVENT));
+        assertFalse(CommunityProfileEventType.NEW_PERSONAL_PROFILE_EVENT.equals(CommunityProfileEventType.DELETED_PERSONAL_PROFILE_EVENT));
     }
 
 
@@ -119,7 +128,7 @@ public class AccessServiceEventTypeTest
      */
     @Test public void testHashcode()
     {
-        assertTrue(CommunityProfileEventType.UPDATED_ASSET_EVENT.hashCode() == CommunityProfileEventType.UPDATED_ASSET_EVENT.hashCode());
-        assertFalse(CommunityProfileEventType.UPDATED_ASSET_EVENT.hashCode() == CommunityProfileEventType.UNKNOWN_ASSET_CONSUMER_EVENT.hashCode());
+        assertTrue(CommunityProfileEventType.UPDATED_PERSONAL_PROFILE_EVENT.hashCode() == CommunityProfileEventType.UPDATED_PERSONAL_PROFILE_EVENT.hashCode());
+        assertFalse(CommunityProfileEventType.UPDATED_PERSONAL_PROFILE_EVENT.hashCode() == CommunityProfileEventType.UNKNOWN_COMMUNITY_PROFILE_EVENT.hashCode());
     }
 }
