@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: CC-BY-4.0
  * Copyright Contributors to the ODPi Egeria project. */
 ---
----
 
 @import "{{ site.theme }}";
 
@@ -11,7 +10,7 @@ body {
 
 img {
 
-  width:100%:
+  width:100%;
   padding-top:2%;
   padding-bottom:2%;
 }
@@ -157,7 +156,7 @@ h1 {
 
 #header_wrap2 {
   text-align:center !important;
-  background-image:url("bg.jpg");
+  background-image:url("../img/bg2.jpg");
   padding-bottom:6% !important;
   padding-top:6% !important;
   float:left;
@@ -228,7 +227,7 @@ a {
   border:0px solid white !important;
   -webkit-box-shadow: 0 0 0px white !important;
   box-shadow: 0px !important;
-  width:100%:
+  width:100%;
   padding-top:2%;
   padding-bottom:2%;
 }
