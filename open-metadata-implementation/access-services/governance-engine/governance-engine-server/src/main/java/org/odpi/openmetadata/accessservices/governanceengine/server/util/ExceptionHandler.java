@@ -1,4 +1,5 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server.util;
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.ClassificationNotFoundException;

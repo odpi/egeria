@@ -28,19 +28,6 @@ public class GovernanceEngineOMASResource {
     private static final Logger log = LoggerFactory.getLogger(GovernanceEngineOMASResource.class);
 
     /**
-     * Constructor
-     */
-    public GovernanceEngineOMASResource() {
-
-        final String methodName = "initialize";
-
-        log.debug(">>" + methodName);
-
-        log.debug("<<" + methodName);
-
-    }
-
-    /**
      * Returns the list of governance tags for the enforcement engine
      * <p>
      * These are the definitions - so tell us the name, guid, attributes
@@ -61,10 +48,7 @@ public class GovernanceEngineOMASResource {
     @RequestMapping(method = RequestMethod.GET, path = "/classificationdefs")
     public GovernanceClassificationDefListAPIResponse getGovernanceClassificationDefs(@PathVariable String serverName,
                                                                                       @PathVariable String userId,
-                                                                                      @RequestParam(value =
-                                                                                              "classification"
-                                                                                              , required = false) List<String> classification
-    ) {
+                                                                                      @RequestParam(value = "classification", required = false) List<String> classification) {
         return restAPI.getGovernanceClassificationDefs(serverName, userId, classification);
     }
 
@@ -130,7 +114,7 @@ public class GovernanceEngineOMASResource {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetComponentGuid}")
+    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGuid}")
     public GovernedAssetAPIResponse getGovernedAsset(@PathVariable String serverName,
                                                      @PathVariable String userId,
                                                      @PathVariable String assetGuid) {
