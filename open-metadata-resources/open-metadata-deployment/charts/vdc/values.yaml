@@ -63,3 +63,12 @@ service:
   #LoadBalancer is another option (not for IBM Cloud free cluster)
   type: NodePort
   externalName:  default.svc.cluster.local
+
+# Confluent kafka chart configuration
+cp-helm-charts:
+  cp-schema-registry:
+    enabled: false
+  cp-kafka-rest:
+    enabled: false
+  cp-kafka-connect:
+    enabled: false
