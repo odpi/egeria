@@ -41,6 +41,7 @@ public class ConfidentialityMapper extends ClassificationMapping {
                 "assigned_to_terms",
                 "Confidentiality"
         );
+        addMappedOmrsProperty("level");
     }
 
     /**

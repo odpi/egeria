@@ -58,6 +58,11 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
         addAlternativePropertyFromOne("selected_classification");
         addAlternativePropertyFromTwo("classifications_selected");
         setRelationshipLevelIgcAsset("classification");
+        addMappedOmrsProperty("confidence");
+        addMappedOmrsProperty(P_THRESHOLD);
+        addMappedOmrsProperty("partialMatch");
+        addMappedOmrsProperty("valueFrequency");
+        addMappedOmrsProperty("status");
     }
 
     /**

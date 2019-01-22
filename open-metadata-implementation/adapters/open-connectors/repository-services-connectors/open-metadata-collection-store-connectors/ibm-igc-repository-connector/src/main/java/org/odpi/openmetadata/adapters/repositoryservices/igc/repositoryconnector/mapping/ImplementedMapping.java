@@ -57,6 +57,13 @@ public class ImplementedMapping {
     }
 
     /**
+     * Retrieve the type of mapping that is implemented.
+     *
+     * @return Type
+     */
+    public Type getType() { return this.type; }
+
+    /**
      * Retrieve the OMRS TypeDef processed by the implemented mapping.
      *
      * @return TypeDef
