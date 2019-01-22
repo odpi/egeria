@@ -16,7 +16,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 class CommunityProfileInstanceHandler
 {
     private static CommunityProfileServicesInstanceMap instanceMap   = new CommunityProfileServicesInstanceMap();
-    private static AccessServiceDescription         myDescription = AccessServiceDescription.ASSET_CONSUMER_OMAS;
+    private static AccessServiceDescription         myDescription = AccessServiceDescription.COMMUNITY_PROFILE_OMAS;
 
     /**
      * Default constructor registers the access service
