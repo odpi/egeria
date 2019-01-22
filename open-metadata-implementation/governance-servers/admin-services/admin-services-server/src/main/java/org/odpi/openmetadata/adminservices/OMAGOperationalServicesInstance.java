@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.SecuritySyncAdmin;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class OMAGOperationalServicesInstance
     private OMAGServerConfig         operationalConfiguration          = null;
     private OMRSOperationalServices  operationalRepositoryServices     = null;
     private List<AccessServiceAdmin> operationalAccessServiceAdminList = new ArrayList<>();
+    private SecuritySyncAdmin operationalSecuritySyncAdmin = null;
 
     /**
      * Default constructor
@@ -90,5 +92,23 @@ public class OMAGOperationalServicesInstance
     public void setOperationalAccessServiceAdminList(List<AccessServiceAdmin> operationalAccessServiceAdminList)
     {
         this.operationalAccessServiceAdminList = operationalAccessServiceAdminList;
+    }
+
+    /**
+     *
+     * Return the the reference to the admin object for Security Sync component
+     * @return the admin Security Sync object
+     */
+    public SecuritySyncAdmin getOperationalSecuritySyncAdmin() {
+        return operationalSecuritySyncAdmin;
+    }
+
+    /**
+     * Set up the reference to the admin object for Security Sync component
+     *
+     * @param operationalSecuritySyncAdmin SecuritySyncAdmin object
+     */
+    public void setOperationalSecuritySyncAdmin(SecuritySyncAdmin operationalSecuritySyncAdmin) {
+        this.operationalSecuritySyncAdmin = operationalSecuritySyncAdmin;
     }
 }
