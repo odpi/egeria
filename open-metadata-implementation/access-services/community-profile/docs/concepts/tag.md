@@ -7,9 +7,11 @@ A tag is a descriptive name with optional description that can be
 attached to resources such as personal profiles, personal messages, personal notes,
 community forums and forum contributions, comments and communities.
 
+The process of adding a tag to an object is called [tagging](../../../docs/concepts/attachments/tagging.md).
+
 A Tag can be public (visible to all users) or private (visible only to the user that created it).
 
-## Working with tags
+## Working with tags 
 
 * [Finding existing tags](../scenarios/finding-a-tag.md)
 * [Accessing resources attached to a tag](../scenarios/accessing-tagged-resources.md)
