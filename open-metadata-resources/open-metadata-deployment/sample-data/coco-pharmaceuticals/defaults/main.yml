@@ -21,6 +21,7 @@ egeria_samples_metadata_backend: ibm-igc
 #  - ibm-igc => file => dsadm / dstage
 #  - ibm-db2 => db => db2inst1 / db2iadm1
 #  - postgresql => db => postgres / postgres
+#  - mariadb => db => root / root
 egeria_samples_credentials:
   file_owner: dsadm
   file_group: dstage
@@ -30,6 +31,7 @@ egeria_samples_credentials:
 
 # Name of the schema under which to create the sample database
 # Defaults:
-#  - postgresql => public
 #  - ibm-db2 => "{{ egeria_samples_credentials.db_owner | upper }}"
+#  - postgresql => public
+#  - mariadb => ???
 egeria_samples_db_schema: "{{ egeria_samples_credentials.db_owner | upper }}"

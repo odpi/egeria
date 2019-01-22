@@ -1,0 +1,14 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+- name: create databases
+  shell: >
+    mysql
+    -u root
+    -e "create database IF NOT EXISTS {{ item | upper }} character set = UTF8"
+  args:
+    executable: /bin/bash
+  become: yes
+  become_user: "{{ egeria_samples_credentials.db_owner }}"
+  with_items: "{{ egeria_samples_cocopharma_databases }}"
