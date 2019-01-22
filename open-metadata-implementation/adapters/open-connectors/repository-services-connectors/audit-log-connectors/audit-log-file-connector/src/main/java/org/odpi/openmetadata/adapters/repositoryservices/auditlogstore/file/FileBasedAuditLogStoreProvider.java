@@ -5,7 +5,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorTyp
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
 
 /**
- * FileBasedAuditLogStoreProvider is the OCF connector provider for the file based cohort registry store.
+ * FileBasedAuditLogStoreProvider is the OCF connector provider for the file based audit log store.
  */
 public class FileBasedAuditLogStoreProvider extends OMRSAuditLogStoreProviderBase
 {
