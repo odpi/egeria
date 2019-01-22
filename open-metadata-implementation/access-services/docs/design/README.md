@@ -145,7 +145,7 @@ implementing the OMAS one scenario at a time.
   Ultimately, they will run as part of the centralized build.
  
 * Design the event payloads that are sent and received through the OMAS's 
-  [OutTopic](../concepts/out-topic.md) and [InTopic](../concepts/in-topic.md) respectively.
+  [OutTopic](../concepts/client-server/out-topic.md) and [InTopic](../concepts/client-server/in-topic.md) respectively.
 
 * Design the FVT test for the Events.
 
@@ -159,7 +159,7 @@ implementing the OMAS one scenario at a time.
   
   Implementing the admin interface requires you to know if the OMAS supports (1) receiving events from
   the repository services, (2) receiving events from external application through the OMAS's InTopic and/or (3)
-  sending events on the OMAS's OutTopic.
+  sending events on the OMAS's OutTopic. 
   
   Create the skeleton classes for the listeners and publisher as necessary.
   
@@ -203,7 +203,12 @@ implementing the OMAS one scenario at a time.
   Document the REST API operations in ***omas-name*/*omas-name*-server/docs/user**
   
   Link to the the top-level README.md for the OMAS's server module (***omas-name*/*omas-name*-server/README.md**).
-
+  
+  Implement the ***omas-name*/*omas-name*-server-spring module for the OMAS.  This contains the sever-side
+  resource classes that support the REST API.
+  
+  Add the ***omas-name*/*omas-name*-server-spring module to the `pom.xml` file for the 
+  [OMAG Server Chassis](../../../governance-servers/server-chassis/server-chassis-spring).
 
 * Design and implement the event handling.
 

@@ -4,7 +4,7 @@
 # Open Metadata Access Services (OMASs) Configuration Properties
 
 The configuration properties for each OMAS is stored in the
-[configuration document]() for the 
+[configuration document](../../../../governance-servers/admin-services/Using-the-Admin-Services.md) for the 
 [server](../../../../../open-metadata-publication/website/omag-server) where the
 [OMAS's server module](../client-server/omas-server-module.md) is running.
 
