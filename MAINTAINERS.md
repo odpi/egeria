@@ -20,6 +20,8 @@ The current Egeria maintainers are:
 | Ruxandra Gabriela Rosu | ruxandra-gabriela.rosu@ing.com |
 | Daniela Valentina Otelea | daniela-valentina.otelea@ing.com |
 | Wu Yue Feng | wyf1116@gmail.com |
+| Chris Grote | chris@thegrotes.net |
+| Raluca Popa | raluca.popa2@ing.com |
 
 
 
