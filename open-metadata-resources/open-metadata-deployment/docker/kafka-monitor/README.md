@@ -9,7 +9,7 @@
 ## Usage
 
  - switch into this directory
- - docker build -t kafka-monitor:0.1.0 .
+ - docker build -t kafka-monitor-egeriavdc:0.1.0 .
 
 ## Publishing the build
 
@@ -18,6 +18,6 @@ egeria-centric id.
 
  - docker login
  - {enter credentials}
- - docker tag kafka-monitor:0.1.0 planetf1/kafka-monitor:0.1.0
- - docker push planetf1/kafka-monitor:0.1.0
+ - docker tag kafka-monitor-egeriavdc:0.1.0 planetf1/kafka-monitor-egeriavdc:0.1.0
+ - docker push planetf1/kafka-monitor-egeriavdc:0.1.0
 
