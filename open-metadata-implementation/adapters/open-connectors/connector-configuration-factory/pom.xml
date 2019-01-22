@@ -38,6 +38,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>audit-log-console-connector</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>cohort-registry-file-store-connector</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
