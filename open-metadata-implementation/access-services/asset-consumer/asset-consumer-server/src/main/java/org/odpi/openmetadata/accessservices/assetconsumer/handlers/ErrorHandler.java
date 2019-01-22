@@ -1,11 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.server;
+package org.odpi.openmetadata.accessservices.assetconsumer.handlers;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.UnrecognizedGUIDException;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
@@ -382,38 +381,4 @@ class ErrorHandler
 
     }
 
-
-    /**
-     * Throw an exception if the supplied guid is not recognized
-     *
-     * @param userId  user name to validate
-     * @param methodName  name of the method making the call.
-     * @param serverName  name of this server
-     * @param expectedType  name of object to return
-     * @throws UnrecognizedGUIDException the guid is not recognized
-     */
-    void handleUnrecognizedGUIDException(String userId,
-                                         String methodName,
-                                         String serverName,
-                                         String expectedType,
-                                         String guid) throws UnrecognizedGUIDException
-    {
-        AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.INSTANCE_NOT_FOUND_BY_GUID;
-        String                 errorMessage = errorCode.getErrorMessageId()
-                                            + errorCode.getFormattedErrorMessage(methodName,
-                                                                                 expectedType,
-                                                                                 guid,
-                                                                                 userId,
-                                                                                 serverName);
-
-        throw new UnrecognizedGUIDException(errorCode.getHTTPErrorCode(),
-                                            this.getClass().getName(),
-                                            methodName,
-                                            errorMessage,
-                                            errorCode.getSystemAction(),
-                                            errorCode.getUserAction(),
-                                            expectedType,
-                                            guid);
-
-    }
 }

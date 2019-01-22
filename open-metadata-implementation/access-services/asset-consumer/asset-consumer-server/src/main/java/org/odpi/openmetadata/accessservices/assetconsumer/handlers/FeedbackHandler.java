@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetconsumer.server;
+package org.odpi.openmetadata.accessservices.assetconsumer.handlers;
 
+import org.odpi.openmetadata.accessservices.assetconsumer.AssetConsumerFeedbackInterface;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
 import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.InvalidParameterException;
@@ -20,16 +21,8 @@ import java.util.Date;
  * FeedbackHandler manages the creation of asset feedback (likes, ratings, comments and tags) in the
  * property server.
  */
-class FeedbackHandler
+public class FeedbackHandler implements AssetConsumerFeedbackInterface
 {
-    private static final String informalTagTypeName                  = "InformalTag";
-    private static final String informalTagTypeGUID                  = "ba846a7b-2955-40bf-952b-2793ceca090a";
-    private static final String privateTagTypeName                   = "PrivateTag";
-    private static final String privateTagTypeGUID                   = "9b3f5443-2475-4522-bfda-8f1f17e9a6c3";
-    private static final String tagNamePropertyName                  = "TagName";
-    private static final String tagDescriptionPropertyName           = "TagDescription";
-    private static final String attachedTagTypeGUID                  = "4b1641c4-3d1a-4213-86b2-d6968b6c65ab";
-
     private static final String likeTypeName                         = "Like";
     private static final String likeTypeGUID                         = "deaa5ca0-47a0-483d-b943-d91c76744e01";
     private static final String attachedLikeTypeGUID                 = "e2509715-a606-415d-a995-61d00503dad4";
@@ -47,7 +40,7 @@ class FeedbackHandler
     private static final String commentTypePropertyName              = "commentType";
     private static final String attachedCommentTypeGUID              = "0d90501b-bf29-4621-a207-0c8c953bdac9";
 
-
+    private static final String assetTypeName                        = "Asset";
 
 
     private String               serviceName;
@@ -55,6 +48,7 @@ class FeedbackHandler
     private String               serverName       = null;
     private OMRSRepositoryHelper repositoryHelper = null;
     private ErrorHandler         errorHandler     = null;
+    private RepositoryHandler    basicHandler     = null;
 
 
     /**
@@ -64,8 +58,8 @@ class FeedbackHandler
      * @param serviceName  name of this service
      * @param repositoryConnector  connector to the property server.
      */
-    FeedbackHandler(String                  serviceName,
-                    OMRSRepositoryConnector repositoryConnector)
+    public FeedbackHandler(String                  serviceName,
+                           OMRSRepositoryConnector repositoryConnector)
     {
         this.serviceName = serviceName;
 
@@ -74,193 +68,33 @@ class FeedbackHandler
             this.repositoryHelper = repositoryConnector.getRepositoryHelper();
             this.serverName = repositoryConnector.getServerName();
             errorHandler = new ErrorHandler(repositoryConnector);
+            basicHandler = new RepositoryHandler(serviceName, repositoryConnector);
         }
     }
 
 
     /**
-     * Adds a new public tag to the asset's properties.
+     * Adds a star rating and optional review text to the asset.
      *
-     * @param userId          String - userId of user making request.
-     * @param assetGUID       String - unique id for the asset.
-     * @param tagName         String - name of the tag.
-     * @param tagDescription  String - (optional) description of the tag.  Setting a description, particularly in
-     *                       a public tag makes the tag more valuable to other users and can act as an embryonic
-     *                       glossary term.
+     * @param userId      userId of user making request.
+     * @param assetGUID   unique identifier for the asset.
+     * @param starRating  StarRating enumeration for not recommended, one to five stars.
+     * @param review      user review of asset.  This can be null.
      *
-     * @return String - GUID for new tag.
-     * @throws InvalidParameterException  - one of the parameters is null or invalid.
-     * @throws PropertyServerException    - There is a problem adding the asset properties to
-     *                                    the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    String addTagToAsset(String userId,
-                         String assetGUID,
-                         String tagName,
-                         String tagDescription) throws InvalidParameterException,
-                                                       PropertyServerException,
-                                                       UserNotAuthorizedException
-    {
-        final String methodName = "addTagToAsset";
-
-        return this.addTagToAsset(informalTagTypeGUID,
-                                  userId,
-                                  assetGUID,
-                                  tagName,
-                                  tagDescription,
-                                  methodName);
-    }
-
-
-    /**
-     * Adds a new private tag to the asset's properties.
+     * @return guid of new review object.
      *
-     * @param userId          String - userId of user making request.
-     * @param assetGUID       String - unique id for the asset.
-     * @param tagName         String - name of the tag.
-     * @param tagDescription  String - (optional) description of the tag.  Setting a description, particularly in
-     *                       a public tag makes the tag more valuable to other users and can act as an embryonic
-     *                       glossary term.
-     *
-     * @return String - GUID for new tag.
-     * @throws InvalidParameterException  - one of the parameters is null or invalid.
-     * @throws PropertyServerException    - There is a problem adding the asset properties to the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    String addPrivateTagToAsset(String userId,
-                                String assetGUID,
-                                String tagName,
-                                String tagDescription) throws InvalidParameterException,
-                                                              PropertyServerException,
-                                                              UserNotAuthorizedException
-    {
-        final String methodName = "addPrivateTagToAsset";
-
-        return this.addTagToAsset(privateTagTypeGUID,
-                                  userId,
-                                  assetGUID,
-                                  tagName,
-                                  tagDescription,
-                                  methodName);
-    }
-
-
-    /**
-     * Adds a new public tag to the asset's properties.
-     *
-     * @param userId          String - userId of user making request.
-     * @param assetGUID       String - unique id for the asset.
-     * @param tagName         String - name of the tag.
-     * @param tagDescription  String - (optional) description of the tag.  Setting a description, particularly in
-     *                       a public tag makes the tag more valuable to other users and can act as an embryonic
-     *                       glossary term.
-     *
-     * @return String - GUID for new tag.
-     * @throws InvalidParameterException  - one of the parameters is null or invalid.
-     * @throws PropertyServerException    - There is a problem adding the asset properties to the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private String addTagToAsset(String tagTypeGUID,
-                                 String userId,
-                                 String assetGUID,
-                                 String tagName,
-                                 String tagDescription,
-                                 String methodName) throws InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException
-    {
-        final String guidParameter = "assetGUID";
-        final String nameParameter = "tagName";
-
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(assetGUID, guidParameter, methodName);
-        errorHandler.validateName(tagName, nameParameter, methodName);
-
-        OMRSMetadataCollection metadataCollection = errorHandler.validateRepositoryConnector(methodName);
-
-        this.validateEntity(userId, assetGUID, metadataCollection, methodName);
-
-        try
-        {
-            /*
-             * Create the Tag Entity
-             */
-            InstanceProperties properties;
-
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      tagNamePropertyName,
-                                                                      tagName,
-                                                                      methodName);
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      tagDescriptionPropertyName,
-                                                                      tagDescription,
-                                                                      methodName);
-            EntityDetail feedbackEntity = metadataCollection.addEntity(userId,
-                                                                       tagTypeGUID,
-                                                                       properties,
-                                                                       null,
-                                                                       InstanceStatus.ACTIVE);
-
-            String  feedbackGUID = null;
-
-            if (feedbackEntity != null)
-            {
-                feedbackGUID = feedbackEntity.getGUID();
-
-                /*
-                 * Link the tag to the asset
-                 */
-                metadataCollection.addRelationship(userId,
-                                                   attachedTagTypeGUID,
-                                                   null,
-                                                   assetGUID,
-                                                   feedbackGUID,
-                                                   InstanceStatus.ACTIVE);
-            }
-
-            return feedbackGUID;
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId,
-                                                methodName,
-                                                serverName,
-                                                serviceName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error,
-                                               methodName,
-                                               serverName,
-                                               serviceName);
-        }
-
-        return null;
-    }
-
-    /**
-     * Adds a rating to the asset.
-     *
-     * @param userId      String - userId of user making request.
-     * @param assetGUID   String - unique id for the asset.
-     * @param starRating  StarRating  - enumeration for none, one to five stars.
-     * @param review      String - user review of asset.
-     *
-     * @return guid of new rating object.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException There is a problem adding the asset properties to the property server.
+     * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    String addRatingToAsset(String     userId,
-                            String     assetGUID,
-                            StarRating starRating,
-                            String     review) throws InvalidParameterException,
-                                                      PropertyServerException,
-                                                      UserNotAuthorizedException
+    public String addReviewToAsset(String     userId,
+                                   String     assetGUID,
+                                   StarRating starRating,
+                                   String     review) throws InvalidParameterException,
+                                                             PropertyServerException,
+                                                             UserNotAuthorizedException
     {
-        final String methodName = "addRatingToAsset";
+        final String methodName = "addReviewToAsset";
         final String guidParameter = "assetGUID";
         final String ratingParameter = "starRating";
 
@@ -270,7 +104,7 @@ class FeedbackHandler
 
         OMRSMetadataCollection  metadataCollection = errorHandler.validateRepositoryConnector(methodName);
 
-        this.validateEntity(userId, assetGUID, metadataCollection, methodName);
+        basicHandler.validateEntityGUID(userId, assetGUID, assetTypeName, metadataCollection, methodName);
 
         try
         {
@@ -329,6 +163,30 @@ class FeedbackHandler
 
         return null;
     }
+
+
+    /**
+     * Updates the rating and optional review text attached to the asset by this user.
+     *
+     * @param userId      userId of user making request.
+     * @param reviewGUID  unique identifier for the review.
+     * @param starRating  StarRating enumeration for none, one to five stars.
+     * @param review      user review of asset.  This can be null.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the asset properties to the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public void updateReviewOnAsset(String     userId,
+                                    String     reviewGUID,
+                                    StarRating starRating,
+                                    String     review) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
+    {
+        return;
+    }
+
 
 
     /**
@@ -421,20 +279,65 @@ class FeedbackHandler
 
 
     /**
-     * Adds a "Like" to the asset.
+     * Removes of a review that was added to the asset by this user.
      *
-     * @param userId      String - userId of user making request.
-     * @param assetGUID   String - unique id for the asset
+     * @param userId      userId of user making request.
+     * @param reviewGUID  unique identifier for the review object.
      *
-     * @return guid of new like object.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException There is a problem adding the asset properties to the property server.
+     * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    String addLikeToAsset(String       userId,
-                          String       assetGUID) throws InvalidParameterException,
-                                                         PropertyServerException,
-                                                         UserNotAuthorizedException
+    public void   removeReviewFromAsset(String     userId,
+                                        String     reviewGUID) throws InvalidParameterException,
+                                                                      PropertyServerException,
+                                                                      UserNotAuthorizedException
+    {
+        final String methodName = "removeRatingFromAsset";
+        final String guidParameter = "reviewGUID";
+
+        errorHandler.validateUserId(userId, methodName);
+        errorHandler.validateGUID(reviewGUID, guidParameter, methodName);
+
+        OMRSMetadataCollection  metadataCollection = errorHandler.validateRepositoryConnector(methodName);
+
+        try
+        {
+            metadataCollection.deleteEntity(userId, ratingTypeGUID, ratingTypeName, reviewGUID);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId,
+                                                methodName,
+                                                serverName,
+                                                serviceName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error,
+                                               methodName,
+                                               serverName,
+                                               serviceName);
+        }
+    }
+
+
+    /**
+     * Adds a "Like" to the asset.
+     *
+     * @param userId      userId of user making request.
+     * @param assetGUID   unique identifier for the asset
+     *
+     * @return guid of new like object.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the asset properties to the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String addLikeToAsset(String       userId,
+                                 String       assetGUID) throws InvalidParameterException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
     {
         final String methodName = "addLikeToAsset";
         final String guidParameter = "assetGUID";
@@ -444,7 +347,7 @@ class FeedbackHandler
 
         OMRSMetadataCollection  metadataCollection = errorHandler.validateRepositoryConnector(methodName);
 
-        this.validateEntity(userId, assetGUID, metadataCollection, methodName);
+        basicHandler.validateEntityGUID(userId, assetGUID, assetTypeName, metadataCollection, methodName);
 
         try
         {
@@ -496,23 +399,67 @@ class FeedbackHandler
 
 
     /**
-     * Adds a comment to the asset.
+     * Removes a "Like" added to the asset by this user.
      *
-     * @param userId       String - userId of user making request.
-     * @param assetGUID    String - unique id for the asset.
-     * @param commentType  type of comment enum.
-     * @param commentText  String - the text of the comment.
+     * @param userId   userId of user making request.
+     * @param likeGUID unique identifier for the like object.
      *
-     * @return guid of new comment.
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException There is a problem adding the asset properties to
-     *                                   the property server.
+     * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    String addCommentToAsset(String      userId,
-                             String      assetGUID,
-                             CommentType commentType,
-                             String      commentText) throws InvalidParameterException,
+    public void   removeLikeFromAsset(String     userId,
+                                      String     likeGUID) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
+    {
+        final String methodName = "removeLikeFromAsset";
+        final String guidParameter = "likeGUID";
+
+        errorHandler.validateUserId(userId, methodName);
+        errorHandler.validateGUID(likeGUID, guidParameter, methodName);
+
+        OMRSMetadataCollection  metadataCollection = errorHandler.validateRepositoryConnector(methodName);
+
+        try
+        {
+            metadataCollection.deleteEntity(userId, likeTypeGUID, likeTypeName, likeGUID);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId,
+                                                methodName,
+                                                serverName,
+                                                serviceName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error,
+                                               methodName,
+                                               serverName,
+                                               serviceName);
+        }
+    }
+
+
+    /**
+     * Adds a comment to the asset.
+     *
+     * @param userId        userId of user making request.
+     * @param assetGUID     unique identifier for the asset.
+     * @param commentType   type of comment enum.
+     * @param commentText   the text of the comment.
+     *
+     * @return guid of new comment.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem adding the asset properties to the property server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public String addCommentToAsset(String      userId,
+                                    String      assetGUID,
+                                    CommentType commentType,
+                                    String      commentText) throws InvalidParameterException,
                                                                     PropertyServerException,
                                                                     UserNotAuthorizedException
     {
@@ -522,31 +469,30 @@ class FeedbackHandler
         return this.addCommentToEntity(userId, assetGUID, guidParameter, commentType, commentText, methodName);
     }
 
+
     /**
-     * Adds a comment to the asset.
+     * Adds a comment to another comment.
      *
-     * @param userId      String - userId of user making request.
-     * @param commentGUID String - unique id for an existing comment.  Used to add a reply to a comment.
-     * @param commentType type of comment enum.
-     * @param commentText String - the text of the comment.
+     * @param userId        userId of user making request.
+     * @param commentGUID   unique identifier for an existing comment.  Used to add a reply to a comment.
+     * @param commentType   type of comment enum.
+     * @param commentText   the text of the comment.
      *
      * @return guid of new comment.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException There is a problem adding the asset properties to
-     *                                   the property server.
+     * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    String addCommentReply(String      userId,
-                           String      commentGUID,
-                           CommentType commentType,
-                           String      commentText) throws InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException
+    public String addCommentReply(String      userId,
+                                  String      commentGUID,
+                                  CommentType commentType,
+                                  String      commentText) throws InvalidParameterException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
         final String methodName = "addCommentReply";
         final String guidParameter = "assetGUID";
-
 
         return this.addCommentToEntity(userId, commentGUID, guidParameter, commentType, commentText, methodName);
     }
@@ -632,6 +578,8 @@ class FeedbackHandler
     }
 
 
+
+
     /**
      * Adds a comment and links it to the supplied entity.
      *
@@ -666,7 +614,7 @@ class FeedbackHandler
 
         OMRSMetadataCollection  metadataCollection = errorHandler.validateRepositoryConnector(methodName);
 
-        this.validateEntity(userId, entityGUID, metadataCollection, methodName);
+        basicHandler.validateEntityGUID(userId, entityGUID, assetTypeName, metadataCollection, methodName);
 
         try
         {
@@ -733,195 +681,43 @@ class FeedbackHandler
 
 
     /**
-     * Removes a tag from the asset that was added by this user.
+     * Update an existing comment.
      *
-     * @param userId   String - userId of user making request.
-     * @param tagGUID  String - unique id for the tag.
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException There is a problem updating the asset properties in the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    void   removeTagFromAsset(String     userId,
-                              String     tagGUID) throws InvalidParameterException,
-                                                         PropertyServerException,
-                                                         UserNotAuthorizedException
-    {
-        final String methodName = "removeTagFromAsset";
-        final String guidParameter = "tagGUID";
-
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(tagGUID, guidParameter, methodName);
-
-        OMRSMetadataCollection  metadataCollection = errorHandler.validateRepositoryConnector(methodName);
-
-        try
-        {
-            metadataCollection.deleteEntity(userId, informalTagTypeGUID, informalTagTypeName, tagGUID);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId,
-                                                methodName,
-                                                serverName,
-                                                serviceName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error,
-                                               methodName,
-                                               serverName,
-                                               serviceName);
-        }
-    }
-
-
-    /**
-     * Removes a tag from the asset that was added by this user.
-     *
-     * @param userId  String - userId of user making request.
-     * @param tagGUID  String - unique id for the tag.
+     * @param userId        userId of user making request.
+     * @param commentGUID   unique identifier for the comment to change.
+     * @param commentType   type of comment enum.
+     * @param commentText   the text of the comment.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException There is a problem updating the asset properties in the property server.
+     * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    void   removePrivateTagFromAsset(String     userId,
-                                     String     tagGUID) throws InvalidParameterException,
+    public void   updateComment(String      userId,
+                                String      commentGUID,
+                                CommentType commentType,
+                                String      commentText) throws InvalidParameterException,
                                                                 PropertyServerException,
                                                                 UserNotAuthorizedException
     {
-        final String methodName = "removePrivateTagFromAsset";
-        final String guidParameter = "tagGUID";
-
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(tagGUID, guidParameter, methodName);
-
-        OMRSMetadataCollection  metadataCollection = errorHandler.validateRepositoryConnector(methodName);
-
-        try
-        {
-            metadataCollection.deleteEntity(userId, privateTagTypeGUID, privateTagTypeName, tagGUID);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId,
-                                                methodName,
-                                                serverName,
-                                                serviceName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error,
-                                               methodName,
-                                               serverName,
-                                               serviceName);
-        }
+        // todo
     }
 
-
-    /**
-     * Removes of a star rating that was added to the asset by this user.
-     *
-     * @param userId  String - userId of user making request.
-     * @param ratingGUID  String - unique id for the rating object
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException There is a problem updating the asset properties in the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    void   removeRatingFromAsset(String     userId,
-                                 String     ratingGUID) throws InvalidParameterException,
-                                                               PropertyServerException,
-                                                               UserNotAuthorizedException
-    {
-        final String methodName = "removeRatingFromAsset";
-        final String guidParameter = "ratingGUID";
-
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(ratingGUID, guidParameter, methodName);
-
-        OMRSMetadataCollection  metadataCollection = errorHandler.validateRepositoryConnector(methodName);
-
-        try
-        {
-            metadataCollection.deleteEntity(userId, ratingTypeGUID, ratingTypeName, ratingGUID);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId,
-                                                methodName,
-                                                serverName,
-                                                serviceName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error,
-                                               methodName,
-                                               serverName,
-                                               serviceName);
-        }
-    }
-
-
-    /**
-     * Removes a "Like" added to the asset by this user.
-     *
-     * @param userId  String - userId of user making request.
-     * @param likeGUID  String - unique id for the like object
-     *
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException There is a problem updating the asset properties in the property server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    void   removeLikeFromAsset(String     userId,
-                               String     likeGUID) throws InvalidParameterException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException
-    {
-        final String methodName = "removeLikeFromAsset";
-        final String guidParameter = "likeGUID";
-
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(likeGUID, guidParameter, methodName);
-
-        OMRSMetadataCollection  metadataCollection = errorHandler.validateRepositoryConnector(methodName);
-
-        try
-        {
-            metadataCollection.deleteEntity(userId, likeTypeGUID, likeTypeName, likeGUID);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId,
-                                                methodName,
-                                                serverName,
-                                                serviceName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error,
-                                               methodName,
-                                               serverName,
-                                               serviceName);
-        }
-    }
 
 
     /**
      * Removes a comment added to the asset by this user.
      *
-     * @param userId  String - userId of user making request.
-     * @param commentGUID  String - unique id for the comment object
+     * @param userId       userId of user making request.
+     * @param commentGUID  unique identifier for the comment object.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws PropertyServerException There is a problem updating the asset properties in the property server.
+     * @throws PropertyServerException there is a problem updating the asset properties in the property server.
      * @throws UserNotAuthorizedException the user does not have permission to perform this request.
      */
-    void   removeCommentFromAsset(String     userId,
-                                  String     commentGUID) throws InvalidParameterException,
-                                                                 PropertyServerException,
-                                                                 UserNotAuthorizedException
+    public void   removeCommentFromAsset(String     userId,
+                                         String     commentGUID) throws InvalidParameterException,
+                                                                        PropertyServerException,
+                                                                        UserNotAuthorizedException
     {
         final String methodName = "removeCommentFromAsset";
         final String guidParameter = "commentGUID";
@@ -941,54 +737,6 @@ class FeedbackHandler
                                                 methodName,
                                                 serverName,
                                                 serviceName);        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error,
-                                               methodName,
-                                               serverName,
-                                               serviceName);
-        }
-    }
-
-
-    /**
-     * Validate that the supplied GUID is for a real entity.
-     *
-     * @param userId  user making the request.
-     * @param assetGUID  unique identifier of the asset.
-     * @param metadataCollection  repository's metadata collection
-     * @param methodName  name of method called.
-     *
-     * @throws InvalidParameterException entity not known
-     * @throws PropertyServerException problem accessing property server
-     * @throws UserNotAuthorizedException security access problem
-     */
-    private void validateEntity(String                  userId,
-                                String                  assetGUID,
-                                OMRSMetadataCollection  metadataCollection,
-                                String                  methodName) throws InvalidParameterException,
-                                                                           PropertyServerException,
-                                                                           UserNotAuthorizedException
-    {
-        try
-        {
-            metadataCollection.getEntitySummary(userId, assetGUID);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
-        {
-            errorHandler.handleUnknownAsset(error,
-                                            assetGUID,
-                                            methodName,
-                                            serverName,
-                                            serviceName);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId,
-                                                methodName,
-                                                serverName,
-                                                serviceName);
-        }
         catch (Throwable   error)
         {
             errorHandler.handleRepositoryError(error,

@@ -54,7 +54,7 @@ public interface AssetConsumerFeedbackInterface
      * @throws PropertyServerException there is a problem adding the asset properties to the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    String updateReviewOnAsset(String     userId,
+    void   updateReviewOnAsset(String     userId,
                                String     reviewGUID,
                                StarRating starRating,
                                String     review) throws InvalidParameterException,
