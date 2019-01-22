@@ -22,7 +22,7 @@ public class CommunityProfileRegistration
      */
     public static void registerAccessService()
     {
-        AccessServiceDescription myDescription = AccessServiceDescription.ASSET_CONSUMER_OMAS;
+        AccessServiceDescription myDescription = AccessServiceDescription.COMMUNITY_PROFILE_OMAS;
 
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
                                                                                  myDescription.getAccessServiceName(),

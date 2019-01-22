@@ -13,7 +13,7 @@ services.
 This configuration determines which of the open metadata services are active.  It also supports
 querying the runtime (operational) state of the open metadata components.
 
-* **[discovery-engine](discovery-engine)** - the discovery engine provides the server
+* **[discovery-engine](discovery-engine-services)** - the discovery engine provides the server
 capability to run [Open Discovery Services](../frameworks/open-discovery-framework/docs/discovery-service.md)
 on demand.
 
