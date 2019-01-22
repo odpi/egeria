@@ -120,6 +120,38 @@
   loop_control:
     loop_var: db_name
 
+# TODO: need to first download and install the open source ODBC drivers for MySQL, DataDirect drivers do not support community editions of mysql
+
+- name: harvest MariaDB metadata via IBM Metadata Asset Manager
+  include_role:
+    name: IBM.infosvr-metadata-asset-manager
+  vars:
+    odbc_entries:
+      - name: CocoPharma_{{ db_name | upper }}
+        description: ODBC database connection for CocoPharma {{ db_name }} sample database
+        type: mysql
+        database: "{{ db_name | upper }}"
+        host: "{{ groups['egeria-samples-db-host'][0] | upper }}"
+    import_areas:
+      - name: CocoPharma_{{ db_name }}
+        type: ODBCConnector
+        description: "Import area for CocoPharma {{ db_name }} sample database"
+        metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
+        dcn:
+          name: CocoPharma_{{ db_name }}
+          description: "CocoPharma MariaDB connection"
+          data_source: "CocoPharma_{{ db_name | upper }}"
+          username: "{{ egeria_samples_credentials.db_owner }}"
+          password: "{{ egeria_samples_credentials.db_passwd }}"
+        assets_to_import:
+          - "schema[{{ db_name | upper }}|public]"
+        hostname: "{{ groups['egeria-samples-db-host'][0] | upper }}"
+        database_name: "{{ db_name | upper }}"
+  with_items: "{{ egeria_samples_cocopharma_databases }}"
+  when: (egeria_samples_cocopharma_db_type == 'mariadb')
+  loop_control:
+    loop_var: db_name
+
 - name: transform relationships to appropriate database
   template:
     src: metadata/ibm-igc/{{ item }}
