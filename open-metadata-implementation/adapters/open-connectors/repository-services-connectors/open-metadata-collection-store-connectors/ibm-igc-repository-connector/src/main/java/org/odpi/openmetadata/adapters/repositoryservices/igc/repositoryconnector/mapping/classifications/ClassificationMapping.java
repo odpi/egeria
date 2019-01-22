@@ -10,6 +10,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
@@ -29,6 +30,8 @@ public abstract class ClassificationMapping {
     private List<String> igcRelationshipProperties;
     private String omrsClassificationType;
     private Set<String> excludeIgcAssetType;
+    private List<InstanceStatus> omrsSupportedStatuses;
+    private Set<String> mappedOmrsPropertyNames;
 
     public ClassificationMapping(String igcAssetType,
                                  String igcRelationshipProperty,
@@ -38,7 +41,39 @@ public abstract class ClassificationMapping {
         this.igcRelationshipProperties.add(igcRelationshipProperty);
         this.omrsClassificationType = omrsClassificationType;
         this.excludeIgcAssetType = new HashSet<>();
+        this.omrsSupportedStatuses = new ArrayList<>();
+        this.mappedOmrsPropertyNames = new HashSet<>();
+        addSupportedStatus(InstanceStatus.ACTIVE);
+        addSupportedStatus(InstanceStatus.DELETED);
     }
+
+    /**
+     * Add the provided status as one supported by this classification mapping.
+     *
+     * @param status a status that is supported by the mapping
+     */
+    public void addSupportedStatus(InstanceStatus status) { this.omrsSupportedStatuses.add(status); }
+
+    /**
+     * Retrieve the list of statuses that are supported by the classification mapping.
+     *
+     * @return List<InstanceStatus>
+     */
+    public List<InstanceStatus> getSupportedStatuses() { return this.omrsSupportedStatuses; }
+
+    /**
+     * Add the provided property name as one supported by this classification mapping.
+     *
+     * @param name the name of the OMRS property supported by the mapping
+     */
+    public void addMappedOmrsProperty(String name) { this.mappedOmrsPropertyNames.add(name); }
+
+    /**
+     * Retrieve the set of OMRS properties that are supported by the classification mapping.
+     *
+     * @return Set<String>
+     */
+    public Set<String> getMappedOmrsPropertyNames() { return this.mappedOmrsPropertyNames; }
 
     /**
      * Retrieve the IGC asset type to which this classification mapping applies.

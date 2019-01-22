@@ -41,6 +41,9 @@ public abstract class RelationshipMapping {
     private String relationshipLevelIgcAsset;
     private String linkingAssetType;
 
+    private ArrayList<InstanceStatus> omrsSupportedStatuses;
+    private Set<String> mappedOmrsPropertyNames;
+
     /**
      * The optimal endpoint from which to retrieve the relationship:
      *  - ONE = from ProxyOne
@@ -110,7 +113,39 @@ public abstract class RelationshipMapping {
         this.omrsRelationshipType = omrsRelationshipType;
         this.optimalStart = OptimalStart.OPPOSITE;
         this.subtypes = new ArrayList<>();
+        this.omrsSupportedStatuses = new ArrayList<>();
+        this.mappedOmrsPropertyNames = new HashSet<>();
+        addSupportedStatus(InstanceStatus.ACTIVE);
+        addSupportedStatus(InstanceStatus.DELETED);
     }
+
+    /**
+     * Add the provided status as one supported by this relationship mapping.
+     *
+     * @param status a status that is supported by the mapping
+     */
+    public void addSupportedStatus(InstanceStatus status) { this.omrsSupportedStatuses.add(status); }
+
+    /**
+     * Retrieve the list of statuses that are supported by the relationship mapping.
+     *
+     * @return List<InstanceStatus>
+     */
+    public List<InstanceStatus> getSupportedStatuses() { return this.omrsSupportedStatuses; }
+
+    /**
+     * Add the provided property name as one supported by this classification mapping.
+     *
+     * @param name the name of the OMRS property supported by the mapping
+     */
+    public void addMappedOmrsProperty(String name) { this.mappedOmrsPropertyNames.add(name); }
+
+    /**
+     * Retrieve the set of OMRS properties that are supported by the classification mapping.
+     *
+     * @return Set<String>
+     */
+    public Set<String> getMappedOmrsPropertyNames() { return this.mappedOmrsPropertyNames; }
 
     /**
      * Sets a relationship-level IGC asset type (these very rarely exist, only known example is 'classification').
