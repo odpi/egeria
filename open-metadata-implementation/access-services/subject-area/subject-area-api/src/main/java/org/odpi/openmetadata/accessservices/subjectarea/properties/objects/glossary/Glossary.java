@@ -160,10 +160,7 @@ public class Glossary extends Node{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
-        Glossary term = (Glossary) o;
-        Node node = (Node) o;
-        if (!(node.equals((Node)o))) return false;
+        if (!(this.equals((Node)o))) return false;
         return  true;
     }
 
