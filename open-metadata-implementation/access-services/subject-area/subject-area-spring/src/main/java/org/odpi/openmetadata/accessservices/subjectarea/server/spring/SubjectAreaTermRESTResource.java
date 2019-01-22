@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
@@ -77,26 +78,40 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
     public  SubjectAreaOMASAPIResponse getTermByGuid(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid) {
         return restAPI.getTermByGuid(serverName, userId,guid);
     }
-    /**
+
+    /*
      * Get Term relationships
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the term to get
-     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
-     * @param findRequestParameters find request
-     * @return response which when successful contains the relationships associated with the requested Term guid
+     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
+     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     *                 beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize the maximum number of elements that can be returned on this request.
+     *                 0 means there is not limit to the page size
+     * @param sequencingOrder the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @return a response which when successful contains the term relationships
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
+
+
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/terms/{guid}/relationships")
-    public  SubjectAreaOMASAPIResponse getTermRelationships(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid, @PathVariable Date asOfTime, @RequestBody FindRequest findRequestParameters) {
-        return restAPI.getTermRelationships(serverName, userId,guid,findRequestParameters,asOfTime);
+    public  SubjectAreaOMASAPIResponse getTermRelationships(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid,
+                                                            @RequestParam(value = "asOfTime", required=false) Date asOfTime,
+                                                            @RequestParam(value = "offset", required=false) Integer offset,
+                                                            @RequestParam(value = "pageSize", required=false) Integer pageSize,
+                                                            @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
+                                                            @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty
+                                                            ) {
+        return restAPI.getTermRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
     }
 
     /**
@@ -108,7 +123,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      * @param userId       userId under which the request is performed
      * @param guid         guid of the term to update
      * @param suppliedTerm term to be updated
-     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated. The GovernanceAction content is always replaced.
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
      * <ul>

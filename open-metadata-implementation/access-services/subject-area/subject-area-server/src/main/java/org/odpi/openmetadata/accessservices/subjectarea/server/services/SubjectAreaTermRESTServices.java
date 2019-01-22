@@ -7,9 +7,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermAnchor.TermAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.server.SubjectAreaBeansToAccessOMRS;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
@@ -18,6 +18,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodes
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.ClassificationGroupByOperation;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.TypeGuids;
@@ -29,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.Set;
 
 
 /**
@@ -41,6 +43,23 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaTermRESTServices.class);
 
     private static final String className = SubjectAreaTermRESTServices.class.getName();
+
+    public static final Set<String> SUBJECT_AREA_TERM_CLASSIFICATIONS= new HashSet(Arrays.asList(
+            // spine objects
+            SpineObject.class.getSimpleName(),
+            SpineAttribute.class.getSimpleName(),
+            ObjectIdentifier.class.getSimpleName(),
+            //governance actions
+            Confidentiality.class.getSimpleName(),
+            Confidence.class.getSimpleName(),
+            Criticality.class.getSimpleName(),
+            Retention.class.getSimpleName(),
+            // dictionary
+            AbstractConcept.class.getSimpleName(),
+            ActivityDescription.class.getSimpleName(),
+            DataValue.class.getSimpleName(),
+            // context
+            ContextDefinition.class.getSimpleName()));
 
     /**
      * Default constructor
@@ -244,25 +263,38 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         }
         return response;
     }
-    /**
+    /*
      * Get Term relationships
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the term to get
-     * @param findRequestParameters find request
-     * @param asOfTime the reltionships are to be returned as they were at this time. null indicated at the current time.
-     * @return response which when successful contains the relationships associated with the requested Term guid
-     * when not successful the following Exception responses can occur
-     * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
-     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * </ul>
+     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
+     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     *                 beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize the maximum number of elements that can be returned on this request.
+     *                 0 means there is not limit to the page size
+     * @param sequencingOrder the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @return the relationships associated with the requested Term guid
+     *
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException   Function not supported
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public SubjectAreaOMASAPIResponse getTermRelationships(String serverName, String userId, String guid, FindRequest findRequestParameters,Date asOfTime)
-    {
+
+    public  SubjectAreaOMASAPIResponse getTermRelationships(String serverName, String userId,String guid,
+                                                           Date asOfTime,
+                                                           Integer offset,
+                                                           Integer pageSize,
+                                                           org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                                           String sequencingProperty
+    ) {
         final String methodName = "getTermRelationships";
         if (log.isDebugEnabled())
         {
@@ -275,23 +307,49 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             // initialise omrs API helper with the right instance based on the server name
             SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            SequencingOrder sequenceOrder=null;
-            Set<Line> termRelationships = subjectAreaOmasREST.getGlossaryTermRelationships(
+            // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
+            if (offset ==null) {
+                offset = new Integer(0);
+            }
+            if (pageSize == null) {
+                pageSize = new Integer(0);
+            }
+            SequencingOrder omrsSequencingOrder =  SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
+            Set<Line> omrsTermRelationships = subjectAreaOmasREST.getGlossaryTermRelationships(
                     userId,
                     guid,
                     null,
-                    findRequestParameters.getOffset(),
+                    offset,
                     asOfTime,
-                    findRequestParameters.getSequencingProperty(),
-                    sequenceOrder,
-                    findRequestParameters.getPageSize());
+                    sequencingProperty,
+                    omrsSequencingOrder,
+                    pageSize);
+            List<Line> termRelationships = SubjectAreaUtils.convertOMRSLinesToOMASLines(omrsTermRelationships);
+            //TODO change the follow to a while loop . refactor to a method so it can be reused for find.
 
-            for (Line termRelationship:termRelationships)
-            {
-                //TODO
+            int sizeToGet = 0;
+            if (omrsTermRelationships.size() > termRelationships.size()) {
+                sizeToGet = omrsTermRelationships.size() - termRelationships.size();
             }
-            response = null;
 
+            while (sizeToGet >0) {
+
+                // there are more relationships we need to get
+                omrsTermRelationships = subjectAreaOmasREST.getGlossaryTermRelationships(
+                        userId,
+                        guid,
+                        null,
+                        offset + sizeToGet,
+                        asOfTime,
+                        sequencingProperty,
+                        omrsSequencingOrder,
+                        sizeToGet);
+                if (omrsTermRelationships != null) {
+                    sizeToGet = getSizeToGet(omrsTermRelationships, termRelationships);
+                    offset = +sizeToGet;
+                }
+            }
+            response =new TermRelationshipsResponse(termRelationships);
         } catch (InvalidParameterException e)
         {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
@@ -306,7 +364,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
         } catch (FunctionNotSupportedException e)
         {
-            //should not occur TODO appropriate error/log
+            //should not occur as it is issued when a type guid is supplied - we supply null. TODO appropriate error/log
         }
 
 
@@ -317,17 +375,29 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         return response;
     }
 
+    private int getSizeToGet(Set<Line> omrsTermRelationships, List<Line> termRelationships) {
+        int sizeToGet =0;
+        List<Line> moreTermRelationships = SubjectAreaUtils.convertOMRSLinesToOMASLines(omrsTermRelationships);
+        if ( moreTermRelationships !=null && moreTermRelationships.size() >0) {
+            for (Line moreTermRelationship : moreTermRelationships) {
+                termRelationships.add(moreTermRelationship);
+            }
+            sizeToGet = omrsTermRelationships.size() - moreTermRelationships.size();
+
+        }
+        return sizeToGet;
+    }
 
     /**
      * Update a Term
      * <p>
      * Status is not updated using this call.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       userId under which the request is performed
      * @param guid         guid of the term to update
      * @param suppliedTerm term to be updated
-     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated. The GovernanceAction content is always replaced.
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
      * <ul>
@@ -367,7 +437,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                     Status status = suppliedTerm.getSystemAttributes().getStatus();
                     SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.STATUS_UPDATE_TO_DELETED_NOT_ALLOWED);
                 }
-                Term updateTerm = originalTerm;
+                Term updateTerm = new Term();
+                updateTerm.setSystemAttributes(originalTerm.getSystemAttributes());
                 if (isReplace)
                 {
                     // copy over attributes
@@ -381,60 +452,90 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                     updateTerm.setSpineAttribute(suppliedTerm.isSpineAttribute());
                     updateTerm.setObjectIdentifier(suppliedTerm.isObjectIdentifier());
                     updateTerm.setAdditionalProperties(suppliedTerm.getAdditionalProperties());
-                    //TODO handle governance classifications and other classifications
+                    //TODO handle other classifications
                 } else
                 {
                     // copy over attributes if specified
-                    if (suppliedTerm.getName() != null)
+                    if (suppliedTerm.getName() == null)
+                    {
+                        updateTerm.setName(originalTerm.getName());
+                    } else
                     {
                         updateTerm.setName(suppliedTerm.getName());
                     }
-                    if (suppliedTerm.getQualifiedName() != null)
+                    if (suppliedTerm.getQualifiedName() == null)
+                    {
+                        updateTerm.setQualifiedName(originalTerm.getQualifiedName());
+                    } else
                     {
                         updateTerm.setQualifiedName(suppliedTerm.getQualifiedName());
                     }
-                    if (suppliedTerm.getDescription() != null)
+                    if (suppliedTerm.getDescription() == null)
+                    {
+                        updateTerm.setDescription(originalTerm.getDescription());
+                    } else
                     {
                         updateTerm.setDescription(suppliedTerm.getDescription());
                     }
-                    if (suppliedTerm.getUsage() != null)
+                    if (suppliedTerm.getUsage() == null)
+                    {
+                        updateTerm.setUsage(originalTerm.getUsage());
+                    } else
                     {
                         updateTerm.setUsage(suppliedTerm.getUsage());
                     }
-                    if (suppliedTerm.getAbbreviation() != null)
+                    if (suppliedTerm.getAbbreviation() == null)
+                    {
+                        updateTerm.setAbbreviation(originalTerm.getAbbreviation());
+                    } else
                     {
                         updateTerm.setAbbreviation(suppliedTerm.getAbbreviation());
                     }
-                    if (suppliedTerm.getAdditionalProperties() != null)
+                    if (suppliedTerm.getAdditionalProperties() == null)
+                    {
+                        updateTerm.setAdditionalProperties(originalTerm.getAdditionalProperties());
+                    } else
                     {
                         updateTerm.setAdditionalProperties(suppliedTerm.getAdditionalProperties());
                     }
-                    if (suppliedTerm.getExamples() != null)
+                    if (suppliedTerm.getExamples() == null)
+                    {
+                        updateTerm.setExamples(originalTerm.getExamples());
+                    } else
                     {
                         updateTerm.setExamples(suppliedTerm.getExamples());
                     }
-                    if (suppliedTerm.isSpineObject())
-                    {
-                        updateTerm.setSpineObject(suppliedTerm.isSpineObject());
-                    }
-                    if (suppliedTerm.isSpineObject())
-                    {
-                        updateTerm.setSpineAttribute(suppliedTerm.isSpineAttribute());
-                    }
-                    if (suppliedTerm.isObjectIdentifier())
-                    {
-                        updateTerm.setObjectIdentifier(suppliedTerm.isObjectIdentifier());
-                    }
-                    //TODO handle governance classifications and other classifications
+                    //TODO handle other classifications
                 }
-                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm generatedTerm = null;
+                // always update the governance actions for a replace or an update
+                GovernanceActions suppliedGovernanceActions = suppliedTerm.getGovernanceActions();
+                updateTerm.setGovernanceActions(suppliedGovernanceActions);
+                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm generatedTerm = TermMapper.mapTermToOMRSBean(updateTerm);
 
-                generatedTerm = TermMapper.mapTermToOMRSBean(updateTerm);
-                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm updatedGeneratedTerm = null;
+                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm updatedGeneratedTerm = subjectAreaOmasREST.updateGlossaryTerm(userId, generatedTerm);
 
-                updatedGeneratedTerm = subjectAreaOmasREST.updateGlossaryTerm(userId, generatedTerm);
+                // deal with the classifications that the Subject Area is concerned about
 
+                Set<Classification> suppliedClassifications = getClassificationFromTerm(suppliedTerm, suppliedGovernanceActions);
+                Set<Classification> existingClassifications = getClassificationFromTerm(originalTerm,originalTerm.getGovernanceActions());
+                ClassificationGroupByOperation classificationGroupByOperation = new ClassificationGroupByOperation(SUBJECT_AREA_TERM_CLASSIFICATIONS,existingClassifications,suppliedClassifications);
+                List<Classification> addClassifications = classificationGroupByOperation.getAddClassifications();
+                List<String> removeClassificationNames = classificationGroupByOperation.getRemoveClassifications();
+                List<Classification> updateClassifications = classificationGroupByOperation.getUpdateClassifications();
+                if (!addClassifications.isEmpty()) {
+                    updatedGeneratedTerm = subjectAreaOmasREST.addGlossaryTermClassifications(userId,guid, addClassifications);
+                }
+                if (!removeClassificationNames.isEmpty()) {
+                    for (String classificationName:removeClassificationNames) {
+                        updatedGeneratedTerm = subjectAreaOmasREST.deleteGlossaryTermClassification(userId, guid, classificationName);
+                    }
+                }
+                if (!updateClassifications.isEmpty()) {
+
+                    updatedGeneratedTerm  = subjectAreaOmasREST.updateGlossaryTermClassification(userId,guid, updateClassifications);
+                }
                 org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term updatedTerm = TermMapper.mapOMRSBeantoTerm(updatedGeneratedTerm);
+
                 response = new TermResponse(updatedTerm);
             }
         } catch (InvalidParameterException e)
@@ -449,6 +550,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         } catch (UnrecognizedGUIDException e)
         {
             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+        } catch (ClassificationException e) {
+            response = OMASExceptionToResponse.convertClassificationException(e);
         }
 
         if (log.isDebugEnabled())
@@ -457,6 +560,39 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         }
         return response;
 
+    }
+
+    private Set<Classification> getClassificationFromTerm(Term suppliedTerm, GovernanceActions governanceActions) {
+        Set<Classification> classifications = new HashSet<>();
+        if ( suppliedTerm.isObjectIdentifier()) {
+            classifications.add(new ObjectIdentifier());
+        }
+        if ( suppliedTerm.isSpineObject()) {
+            classifications.add(new SpineObject());
+        }
+        if ( suppliedTerm.isSpineAttribute()) {
+            classifications.add(new SpineAttribute());
+        }
+        if (governanceActions !=null) {
+            Retention suppliedRetention = governanceActions.getRetention();
+            Confidentiality suppliedConfidentiality = governanceActions.getConfidentiality();
+            Confidence suppliedConfidence = governanceActions.getConfidence();
+            Criticality suppliedCriticallity = governanceActions.getCriticality();
+
+            if (suppliedRetention !=null) {
+                classifications.add(suppliedRetention);
+            }
+            if (suppliedConfidentiality !=null) {
+                classifications.add(suppliedConfidentiality);
+            }
+            if (suppliedConfidence != null) {
+                classifications.add(suppliedConfidence);
+            }
+            if (suppliedCriticallity !=null) {
+                classifications.add(suppliedCriticallity);
+            }
+        }
+        return classifications;
     }
 
 

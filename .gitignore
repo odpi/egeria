@@ -83,6 +83,11 @@ omag.server.*.config
 open-metadata-implementation/access-services/subject-area/subject-area-server/src/main/java/org/odpi/openmetadata/accessservices/subjectarea/generated/**
 open-metadata-implementation/access-services/subject-area/subject-area-server/src/test/java/org/odpi/openmetadata/accessservices/subjectarea/generated/**
 
+# Ignore Deployment / Samples Generated content
+open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/cache/**
+open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/*.retry
+open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/metadata/ibm-igc/generated_*
+
 # Ignore private maven repo (jenkins)
 .repository
 

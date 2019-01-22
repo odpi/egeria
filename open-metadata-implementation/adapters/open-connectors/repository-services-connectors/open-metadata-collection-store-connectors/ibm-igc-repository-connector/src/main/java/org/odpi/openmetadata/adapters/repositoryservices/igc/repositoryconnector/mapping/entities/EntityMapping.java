@@ -48,6 +48,7 @@ public abstract class EntityMapping {
     protected EntityDetail omrsDetail;
     protected ArrayList<Classification> omrsClassifications;
     protected ArrayList<Relationship> omrsRelationships;
+    private ArrayList<InstanceStatus> omrsSupportedStatuses;
 
     public EntityMapping(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
                          String igcAssetType,
@@ -69,6 +70,9 @@ public abstract class EntityMapping {
         this.classificationMappers = new ArrayList<>();
 
         this.omrsRelationships = new ArrayList<>();
+        this.omrsSupportedStatuses = new ArrayList<>();
+        addSupportedStatus(InstanceStatus.ACTIVE);
+        addSupportedStatus(InstanceStatus.DELETED);
 
         this.otherIgcTypes = new ArrayList<>();
         this.otherPOJOs = new ArrayList<>();
@@ -91,6 +95,20 @@ public abstract class EntityMapping {
         }
 
     }
+
+    /**
+     * Add the provided status as one supported by this entity mapping.
+     *
+     * @param status a status that is supported by the mapping
+     */
+    public void addSupportedStatus(InstanceStatus status) { this.omrsSupportedStatuses.add(status); }
+
+    /**
+     * Retrieve the list of statuses that are supported by the entity mapping.
+     *
+     * @return List<InstanceStatus>
+     */
+    public List<InstanceStatus> getSupportedStatuses() { return this.omrsSupportedStatuses; }
 
     /**
      * Retrieve the primary IGC asset type used by this mapping.

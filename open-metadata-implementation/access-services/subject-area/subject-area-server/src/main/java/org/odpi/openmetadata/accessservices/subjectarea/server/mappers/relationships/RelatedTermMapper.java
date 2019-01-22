@@ -43,9 +43,6 @@ public class RelatedTermMapper
         {
             String[] properties = org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.RelatedTerm.RelatedTerm.PROPERTY_NAMES_SET_VALUES;
             if (properties!=null && properties.length >0) {
-                if (extraAttributes ==null) {
-                    extraAttributes =new HashMap<>();
-                }
                 for (String property : properties) {
                     if (extraAttributes.containsKey(property)) {
                         extraAttributes.remove(property);
