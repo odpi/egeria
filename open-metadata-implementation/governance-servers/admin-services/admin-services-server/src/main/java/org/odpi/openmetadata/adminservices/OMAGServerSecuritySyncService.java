@@ -11,7 +11,7 @@ import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 
 import java.util.UUID;
 
-public class OMAGServerAdminSecuritySyncService {
+public class OMAGServerSecuritySyncService {
 
     private OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
     private static final String defaultOutTopicName = "OutTopic";

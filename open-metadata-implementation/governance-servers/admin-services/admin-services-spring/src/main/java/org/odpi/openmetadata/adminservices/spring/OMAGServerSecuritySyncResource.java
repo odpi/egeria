@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.spring;
 
-import org.odpi.openmetadata.adminservices.OMAGServerAdminSecuritySyncService;
+import org.odpi.openmetadata.adminservices.OMAGServerSecuritySyncService;
 import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/open-metadata/security-sync/users/{userId}/servers/{serverName}")
+@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
 public class OMAGServerSecuritySyncResource {
 
-    private OMAGServerAdminSecuritySyncService adminAPI = new OMAGServerAdminSecuritySyncService();
+    private OMAGServerSecuritySyncService adminAPI = new OMAGServerSecuritySyncService();
 
     /**
      * @param userId             user that is issuing the request.

@@ -1,25 +1,24 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.securitysyncservices.listener;
+package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.governanceengine.api.events.GovernanceEngineEvent;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.processor.GovernanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
-import org.odpi.openmetadata.securitysyncservices.admin.SecuritySync;
-import org.odpi.openmetadata.securitysyncservices.processor.SecuritySyncProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class SecuritySyncListener implements OpenMetadataTopicListener {
+public class GovernanceEventListener implements OpenMetadataTopicListener {
 
-    private static final Logger log = LoggerFactory.getLogger(SecuritySync.class);
+    private static final Logger log = LoggerFactory.getLogger(GovernanceEventListener.class);
     private OMRSAuditLog auditLog;
-    private SecuritySyncProcessor securitySyncProcessor;
+    private GovernanceEventProcessor securitySyncProcessor;
     private static ObjectMapper objectMapper = new ObjectMapper();
 
-    public SecuritySyncListener(OMRSAuditLog auditLog, SecuritySyncProcessor securitySyncProcessor) {
+    public GovernanceEventListener(OMRSAuditLog auditLog, GovernanceEventProcessor securitySyncProcessor) {
         this.auditLog = auditLog;
         this.securitySyncProcessor = securitySyncProcessor;
     }
