@@ -17,6 +17,7 @@ import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
+import org.odpi.openmetadata.securitysyncservices.admin.SecuritySync;
 
 import java.util.List;
 
@@ -123,7 +124,7 @@ public class OMAGServerOperationalServices
              */
             OMRSOperationalServices  operationalRepositoryServices     = instance.getOperationalRepositoryServices();
             List<AccessServiceAdmin> operationalAccessServiceAdminList = instance.getOperationalAccessServiceAdminList();
-            SecuritySyncAdmin operationalSecuritySync = instance.getOperationalSecuritySyncAdmin();
+            SecuritySyncAdmin operationalSecuritySync                  = instance.getOperationalSecuritySyncAdmin();
             /*
              * Shut down any running instances for this server
              */
@@ -246,8 +247,11 @@ public class OMAGServerOperationalServices
             instanceMap.setNewInstance(serverName, instance);
 
             /*Initialize the Security Sync component*/
-            SecuritySyncAdmin securitySyncAdmin = initializeSecuritySync(serverName, configuration, methodName, operationalRepositoryServices, enterpriseTopicConnector);
-            if (securitySyncAdmin != null) {
+            SecuritySyncAdmin securitySyncAdmin = initializeSecuritySync(configuration,
+                                                                        operationalRepositoryServices,
+                                                                        enterpriseTopicConnector);
+            if (securitySyncAdmin != null)
+            {
                 instance.setOperationalSecuritySyncAdmin(securitySyncAdmin);
             }
 
@@ -293,50 +297,22 @@ public class OMAGServerOperationalServices
         return response;
     }
 
-    private SecuritySyncAdmin initializeSecuritySync(String serverName, OMAGServerConfig configuration, String methodName, OMRSOperationalServices operationalRepositoryServices, OMRSTopicConnector enterpriseTopicConnector) throws OMAGConfigurationErrorException {
+    private SecuritySyncAdmin initializeSecuritySync(OMAGServerConfig configuration,
+                                                     OMRSOperationalServices operationalRepositoryServices,
+                                                     OMRSTopicConnector enterpriseTopicConnector) throws OMAGConfigurationErrorException
+    {
         SecuritySyncConfig securitySyncConfig = configuration.getSecuritySyncConfig();
-        if (securitySyncConfig != null) {
-            String securitySyncAdminClassName = securitySyncConfig.getSecuritySyncAdminClass();
-
-            if (securitySyncAdminClassName != null) {
-
-                try {
-                    SecuritySyncAdmin securitySyncAdmin = (SecuritySyncAdmin) Class.forName(securitySyncAdminClassName).newInstance();
-                    securitySyncAdmin.initialize(securitySyncConfig,
-                            enterpriseTopicConnector,
-                            operationalRepositoryServices.getAuditLog(securitySyncConfig.getSecuritySyncId(),
-                                    securitySyncConfig.getSecuritySyncName(),
-                                    securitySyncConfig.getSecuritySyncDescription(),
-                                    securitySyncConfig.getSecuritySyncWiki()),
-                            configuration.getLocalServerUserId());
-                    return securitySyncAdmin;
-                } catch (InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-                    OMAGErrorCode errorCode = OMAGErrorCode.BAD_ACCESS_SERVICE_ADMIN_CLASS;
-                    String errorMessage = errorCode.getErrorMessageId()
-                            + errorCode.getFormattedErrorMessage(serverName,
-                            securitySyncAdminClassName,
-                            securitySyncConfig.getSecuritySyncName());
-
-                    throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                            this.getClass().getName(),
-                            methodName,
-                            errorMessage,
-                            errorCode.getSystemAction(),
-                            errorCode.getUserAction());
-                }
-            } else {
-                OMAGErrorCode errorCode = OMAGErrorCode.NULL_ACCESS_SERVICE_ADMIN_CLASS;
-                String errorMessage = errorCode.getErrorMessageId()
-                        + errorCode.getFormattedErrorMessage(serverName,
-                        securitySyncConfig.getSecuritySyncName());
-
-                throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
-            }
+        if (securitySyncConfig != null)
+        {
+            SecuritySyncAdmin securitySyncAdmin = new SecuritySync();
+            securitySyncAdmin.initialize(securitySyncConfig,
+                                        enterpriseTopicConnector,
+                                        operationalRepositoryServices.getAuditLog(securitySyncConfig.getSecuritySyncId(),
+                                        securitySyncConfig.getSecuritySyncName(),
+                                        securitySyncConfig.getSecuritySyncDescription(),
+                                        securitySyncConfig.getSecuritySyncWiki()),
+                                        configuration.getLocalServerUserId());
+            return securitySyncAdmin;
         }
         return null;
     }
@@ -370,7 +346,8 @@ public class OMAGServerOperationalServices
         /*
          * Shutdown the security sync
          */
-        if (securitySyncAdmin != null) {
+        if (securitySyncAdmin != null)
+        {
             securitySyncAdmin.shutdown();
         }
 
