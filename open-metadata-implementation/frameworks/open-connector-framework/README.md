@@ -75,8 +75,8 @@ See [docs](docs/concepts/connector-broker.md) for more information.
 * **Connector Provider** - this is a factory for a specific type of connector.
 It is used by the Connector Broker. See [docs](docs/concepts/connector-provider.md) for more information.
 
-* **Connected Asset** - this is the properties of the Asset that the connector is accessing.
-It is hosted by a metadata server.  See the [Connected Asset OMAS](../../access-services/connected-asset) for more information.
+* **Connected Asset Properties** - this is the properties of the Asset that the connector is accessing.
+It is hosted by a metadata server.  See [docs](docs/concepts/connected-asset-properties.md) for more information.
 
 
 ## Open Metadata Types
