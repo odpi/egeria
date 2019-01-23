@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreProviderBase;
 
 /**
- * FileBasedAuditLogStoreProvider is the OCF connector provider for the file based cohort registry store.
+ * FileBasedAuditLogStoreProvider is the OCF connector provider for the file based audit log store.
  */
 public class FileBasedAuditLogStoreProvider extends OMRSAuditLogStoreProviderBase
 {
