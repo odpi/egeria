@@ -7,19 +7,27 @@ import java.text.MessageFormat;
 public enum RangerConnectorAuditCode {
 
     SERVICE_INITIALIZING("RANGER-CONNECTOR-0001",
-            "The Security Sync is initializing a new server instance",
-            "The local server has started up a new instance of the Security Sync.",
+            "The Ranger Connector is initializing a new server instance",
+            "The local server has started up a new instance of the Ranger Connector.",
             "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_INITIALIZED("RANGER-CONNECTOR-0002",
-            "The Security Sync has initialized a new instance for server {0}",
-            "The Security Sync has completed initialization of a new instance.",
+            "The Ranger Connector has initialized a new instance for server {0}",
+            "The Ranger Connector has completed initialization of a new instance.",
             "No action is required.  This is part of the normal operation of the service."),
 
     SERVICE_SHUTDOWN("RANGER-CONNECTOR-0003",
-            "The Security Sync is shutting down its instance for server {0}",
-            "The local server has requested shut down of a Security Sync instance.",
-            "No action is required.  This is part of the normal operation of the service.");
+            "The Ranger Connector is shutting down its instance for server {0}",
+            "The local server has requested shut down of a Ranger Connector instance.",
+            "No action is required.  This is part of the normal operation of the service."),
+    CLASSIFIED_GOVERNED_ASSET_EVENT_REVEICED("RANGER-CONNECTOR-0004",
+            "The Ranger Connector received a new event for classified governed asset",
+            "The Ranger Connector instance should sinchronize the Ranger Server instance with the repository.",
+            "No action is required.  This is part of the normal flow."),
+    RE_CLASSIFIED_GOVERNED_ASSET_EVENT_REVEICED("RANGER-CONNECTOR-0004",
+            "The Ranger Connector received a new event for re-classified governed asset",
+            "The Ranger Connector instance should sinchronize the Ranger Server instance with the repository.",
+            "No action is required.  This is part of the normal flow.");
 
     private String logMessageId;
     private String logMessage;

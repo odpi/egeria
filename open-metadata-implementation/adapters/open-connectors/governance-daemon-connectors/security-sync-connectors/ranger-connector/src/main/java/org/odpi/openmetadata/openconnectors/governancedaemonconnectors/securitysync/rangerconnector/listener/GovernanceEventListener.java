@@ -4,7 +4,6 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.security
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.governanceengine.api.events.GovernanceEngineEvent;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.processor.GovernanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
@@ -25,11 +24,20 @@ public class GovernanceEventListener implements OpenMetadataTopicListener {
 
     @Override
     public void processEvent(String receivedEvent) {
-        log.info("[Security Sync] Event Received");
+        log.info("[Ranger Connector Sync] Event Received");
 
         try {
             GovernanceEngineEvent event = objectMapper.readValue(receivedEvent, GovernanceEngineEvent.class);
-            securitySyncProcessor.processGovernedEvent(new GovernedAsset());
+            switch (event.getEventType()) {
+                case NEW_CLASSIFIED_ASSET:
+                    securitySyncProcessor.processClassifiedGovernedAssetEvent(event.getGovernedAsset());
+                    break;
+                case RE_CLASSIFIED_ASSET:
+                    securitySyncProcessor.processReClassifiedGovernedAssetEvent(event.getGovernedAsset());
+                    break;
+                default:
+                    break;
+            }
         } catch (Exception e) {
         }
     }

@@ -5,9 +5,8 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.security
 public class Constants {
 
     public static final String ADD_OR_UPDATE = "add_or_update";
-    public static final String TAG_SVC = "tagsvc";
     public static final String DEFAULT_SCHEMA_NAME = "gaian";
-    public static final String SECURITY_SYNC = "Security Sync";
+    public static final String SECURITY_SYNC = "Egeria - Ranger Connector";
     public static final String CONFIDENTIALITY = "Confidentiality";
     public static final String LEVEL = "level";
 

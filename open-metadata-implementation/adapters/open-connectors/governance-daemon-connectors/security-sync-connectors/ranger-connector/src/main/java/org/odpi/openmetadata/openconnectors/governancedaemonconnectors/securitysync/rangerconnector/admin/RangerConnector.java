@@ -24,7 +24,7 @@
         private static final Logger log = LoggerFactory.getLogger(RangerConnector.class);
 
         public void initialize(SecuritySyncConfig securitySyncConfig, OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog){
-            GovernanceEventProcessor governanceEventProcessor = new GovernanceEventProcessor(enterpriseConnector, auditLog);
+            GovernanceEventProcessor governanceEventProcessor = new GovernanceEventProcessor(securitySyncConfig, auditLog);
 
             OpenMetadataTopicConnector inTopic = getTopicConnector(securitySyncConfig.getSecuritySyncInTopic(), auditLog);
             OpenMetadataTopicListener governanceEventListener = new GovernanceEventListener(auditLog, governanceEventProcessor);
