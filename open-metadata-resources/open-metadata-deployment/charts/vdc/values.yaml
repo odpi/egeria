@@ -17,7 +17,7 @@ image:
 
   egeria:
     repository: planetf1/egeria-egeriavdc
-    tag: 0.1.1
+    tag: 0.1.2
     pullPolicy: IfNotPresent
 
   gaian:
