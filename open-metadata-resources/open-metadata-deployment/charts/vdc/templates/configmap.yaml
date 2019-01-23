@@ -15,6 +15,7 @@ data:
         EGERIA_USER: myuser
         EGERIA_COHORT: coco
         EGERIA_SERVER: myserver
+        KAFKA_TOPIC: open-metadata.repository-services.cohort.coco.OMRSTopic
 
 
 
