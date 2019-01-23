@@ -16,7 +16,7 @@ margin:0 auto !important;
 }
 
 .container {
-    margin-top: -25px;
+    margin-top:
     padding-top: -50px !important;
     box-sizing: border-box;
 }
@@ -29,7 +29,7 @@ margin:0 auto !important;
     margin-right:3%;
     padding:2%;
     padding-right:2.3%;
-    background-image:url("bg2.jpg");
+    background-image:url("../img/bg2.jpg");
     background-size: cover;
     background-size: 100%;
     position:fixed;
@@ -77,7 +77,7 @@ button {
 }
 
 .content {
-  overflow:hidden;
+  overflow:scroll;
   padding:3%;
   margin-left:17%;
   padding-top:11%;
@@ -135,7 +135,7 @@ h1 {
   background-size: 100%;
   font-family: 'Roboto', sans-serif !important;
   color:white !important;
-  margin-bottom:4% !important;
+  margin-bottom:6% !important;
 }
 
 #forkme_banner{
@@ -145,7 +145,7 @@ h1 {
   margin-right:1%;
 }
 
-h2 {
+h2 h3 {
   font-family: 'Lato', sans-serif !important;
   font-size:1.5em !important;
   letter-spacing:0.01em;
@@ -154,11 +154,12 @@ h2 {
   margin-bottom:2% !important;
 }
 
-h3 {
+.hometitle {
   font-family: 'Lato', sans-serif !important;
   font-size:2.5em !important;
   line-height:1.3em;
   color:white !important;
+  font-weight:700;
 }
 
 a {
@@ -166,7 +167,7 @@ a {
 }
 
 .logo img {
-  width:25% !important;
+  width:22% !important;
   float:left;
   max-width:25% !important;
   margin-top:2%;

@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
   
-# What is Project Egeria?
+# What is ODPi Egeria?
 
 Egeria creates a set of open APIs, [types](open-metadata-types/README.md)
 and interchange protocols to allow all metadata repositories

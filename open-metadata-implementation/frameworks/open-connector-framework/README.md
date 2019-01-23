@@ -64,19 +64,19 @@ in the [Connected Asset OMAS](../../access-services/connected-asset) service.
 There are a number of key components within the OCF:
 
 * **Connector** -  this is a Java object for accessing an asset and its
-related metadata and governance functions. See [docs](docs/connector.md) for more information.
+related metadata and governance functions. See [docs](docs/concepts/connector.md) for more information.
 
 * **Connection** - this is a Java object containing the properties needed to
-create a connector instance. See [docs](docs/connection.md) for more information.
+create a connector instance. See [docs](docs/concepts/connection.md) for more information.
 
 * **Connector Broker** - this is a generic factory for all OCF connectors.
-See [docs](docs/connector-broker.md) for more information.
+See [docs](docs/concepts/connector-broker.md) for more information.
 
 * **Connector Provider** - this is a factory for a specific type of connector.
-It is used by the Connector Broker. See [docs](docs/connector-provider.md) for more information.
+It is used by the Connector Broker. See [docs](docs/concepts/connector-provider.md) for more information.
 
-* **Connected Asset** - this is the properties of the Asset that the connector is accessing.
-It is hosted by a metadata server.  See the [Connected Asset OMAS](../../access-services/connected-asset) for more information.
+* **Connected Asset Properties** - this is the properties of the Asset that the connector is accessing.
+It is hosted by a metadata server.  See [docs](docs/concepts/connected-asset-properties.md) for more information.
 
 
 ## Open Metadata Types

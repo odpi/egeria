@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.assetconsumer.ffdc;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -73,7 +72,7 @@ public class ErrorCodeTest
         testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_USER_ID);
         testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_GUID);
         testSingleErrorCodeValues(AssetConsumerErrorCode.NULL_NAME);
-        testSingleErrorCodeValues(AssetConsumerErrorCode.NO_CONNECTED_ASSET);
+        testSingleErrorCodeValues(AssetConsumerErrorCode.NO_ASSET_PROPERTIES);
         testSingleErrorCodeValues(AssetConsumerErrorCode.TOO_MANY_CONNECTIONS);
         testSingleErrorCodeValues(AssetConsumerErrorCode.USER_NOT_AUTHORIZED);
         testSingleErrorCodeValues(AssetConsumerErrorCode.PROPERTY_SERVER_ERROR);
