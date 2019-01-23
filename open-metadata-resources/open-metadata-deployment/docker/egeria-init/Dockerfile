@@ -11,7 +11,7 @@ LABEL org.label-schema.version="0.1.0"
 LABEL org.label-schema.schema-version = "1.0"
 
 # Install Git, which is missing from the Ubuntu base images.
-RUN apt-get update && apt-get install -y git python openjdk-8-jdk maven wget httpie
+RUN apt-get update && apt-get install -y git python openjdk-8-jdk maven wget httpie kafkacat
 
 # Stup the cohort (cannot set empty string)
 ENV EGERIA_ENDPOINT null
