@@ -74,20 +74,18 @@ the maintainers per the voting process below.
 Emeritus maintainers can rejoin the maintainer list through a vote of the
 existing maintainers.
 
-### Data Governance PMC Leader
+### ODPi Egeria leadership
 
-The data governance PMC is responsible for planning and release management of the
-Egeria content.
-Project members can join the PMC meetings and contribute to the discussion.
-
-The data governance PMC has a leader.  This position is appointed annually by election by the Egeria maintainers.
-The position is currently held by Mandy Chessell and expires at the end of 2018.
+The leadership of ODPi Egeria is grated through a vote of the Egeria maintainers.
+ODPi Egeria is currently lead by Mandy Chessell.
 
 ## Egeria project meetings
 
-Some meetings are face-to-face, but most are conference calls.
+Some meetings are face-to-face, but most are conference calls.  For example, there is 
+a weekly call covering both the ODPi Egeria, and its sister project **ODPi Data Governance**,
+every Thursday.  [Follow this link to find out more](https://github.com/odpi/data-governance/wiki).
 
-Attendance is open to all.  Conference calls can be joined without an explicit invitation.
+Attendance at meetings is open to all.  Conference calls can be joined without an explicit invitation.
 However, due to physical security requirements at some of the venues we use,
 it is necessary to ensure you are added to the invitee list of any face-to-face meetings
 that you wish to attend and complete the necessary formalities for the venue.
@@ -109,20 +107,16 @@ Additional channels will be added as new workgroups and discussion topics are es
 
 ## Egeria email
 
-Egeria uses the [data governance PMC distribution list](https://lists.odpi.org/g/odpi-pmc-datagovernance)
+Egeria uses the [following distribution list](https://lists.odpi.org/g/odpi-project-egeria)
 to advertise events and news for the community.
 
 ## Egeria content management tools
 
-The Egeria content is managed in GitHub under https://github.com/odpi/egeria.
+The Egeria content is managed in GitHub under [https://github.com/odpi/egeria](https://github.com/odpi/egeria).
 It may be developed using patches, branches from master, or forks/git pull requests.
-Each change should have either a Jira or Git issue explaining why the change is being made.
+Each change should have a [GitHub issue](https://github.com/odpi/egeria/issues) explaining why the change is being made.
 The new or updated content should follow the Egeria
 [developer guidelines](https://odpi.github.io/egeria/developer-resources/Developer-Guidelines).
-
-The [ODPi Jira system](https://jira.odpi.org/projects/EGERIA) can be used to describe and manage large
-enhancements to Egeria since it has support for epics and user stories and tasks.
-[Git issues](https://github.com/odpi/egeria/issues) are adequate for tracking simple defect fixes.
 
 When new content proposed to the project, the person contributing is required to sign the contribution
 to confirm it conforms to the [Developer Certificate of Origin (DCO)](https://developercertificate.org/).
