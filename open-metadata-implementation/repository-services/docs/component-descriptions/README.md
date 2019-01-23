@@ -67,3 +67,9 @@ it to act as a member of an open metadata repository cohort.
 cohort on behalf of the local server.
 
 
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+
+

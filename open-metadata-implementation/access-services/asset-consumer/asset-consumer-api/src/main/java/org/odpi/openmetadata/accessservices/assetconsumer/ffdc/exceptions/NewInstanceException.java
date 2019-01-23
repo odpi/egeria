@@ -2,9 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions;
 
-
-import java.util.Objects;
-
 /**
  * NewInstanceException is thrown if the access service is not able to register a new instance
  * of itself in its instance map.

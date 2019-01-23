@@ -158,7 +158,7 @@ public class ColumnContextEventBuilder {
             }
             databaseColumn.setNullable(EntityPropertiesUtils.getBooleanValueForProperty(columnEntity.getProperties(), Constants.IS_NULLABLE));
             databaseColumn.setUnique(EntityPropertiesUtils.getBooleanValueForProperty(columnEntity.getProperties(), Constants.IS_UNIQUE));
-            databaseColumn.setForeignKey(getForeignKey(columnEntity));
+            databaseColumn.setReferencedColumn(getReferencedColumn(columnEntity));
             EntityDetail columnTypeUniverse = getColumnType(columnEntity);
             databaseColumn.setType(EntityPropertiesUtils.getStringValueForProperty(columnTypeUniverse.getProperties(), Constants.DATA_TYPE));
             databaseColumn.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.QUALIFIED_NAME));
@@ -168,7 +168,7 @@ public class ColumnContextEventBuilder {
         return allColumns;
     }
 
-    private ForeignKey getForeignKey(EntityDetail columnEntity) throws RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException, UserNotAuthorizedException, TypeErrorException, FunctionNotSupportedException, EntityNotKnownException, PagingErrorException, PropertyErrorException, EntityProxyOnlyException, RelationshipNotKnownException {
+    private ForeignKey getReferencedColumn(EntityDetail columnEntity) throws RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException, UserNotAuthorizedException, TypeErrorException, FunctionNotSupportedException, EntityNotKnownException, PagingErrorException, PropertyErrorException, EntityProxyOnlyException, RelationshipNotKnownException {
 
         log.debug("Load foreign keys for entity with guid {}", columnEntity.getGUID());
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.FOREIGN_KEY).getGUID();
@@ -177,36 +177,50 @@ public class ColumnContextEventBuilder {
             return null;
         }
 
-        Relationship relationship = columnForeignKeys.get(0);
-        if(relationship.getEntityTwoProxy().getGUID().equals(columnEntity.getGUID())){
-            return null;
+        List<ForeignKey> foreignKeys = new ArrayList<>();
+
+        for(Relationship relationship : columnForeignKeys){
+            if (relationship.getEntityTwoProxy().getGUID().equals(columnEntity.getGUID())) {
+                EntityDetail foreignKeyEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, relationship.getEntityOneProxy().getGUID());
+                ForeignKey foreignKey = new ForeignKey();
+                foreignKey.setColumnGuid(foreignKeyEntity.getGUID());
+                foreignKey.setForeignKeyName(EntityPropertiesUtils.getStringValueForProperty(relationship.getProperties(), Constants.NAME));
+                foreignKey.setColumnName(EntityPropertiesUtils.getStringValueForProperty(foreignKeyEntity.getProperties(), Constants.NAME));
+                List<EntityDetail> tablesForColumn = getTablesForColumn(foreignKeyEntity.getGUID());
+                foreignKey.setTableName(EntityPropertiesUtils.getStringValueForProperty(tablesForColumn.get(0).getProperties(), Constants.NAME));//TODO should check for table from same database
+                foreignKeys.add(foreignKey);
+            }
         }
 
-        EntityDetail foreignKeyEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, getOtherEntityGuid(columnEntity.getGUID(), relationship));
-
-        ForeignKey foreignKey = new ForeignKey();
-
-        foreignKey.setColumnGuid(relationship.getEntityTwoProxy().getGUID());
-        foreignKey.setForeignKeyName(EntityPropertiesUtils.getStringValueForProperty(foreignKeyEntity.getProperties(), Constants.NAME));
-        EntityDetail otherColumnEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, relationship.getEntityTwoProxy().getGUID());
-        foreignKey.setColumnName(EntityPropertiesUtils.getStringValueForProperty(otherColumnEntity.getProperties(), Constants.NAME));
-        foreignKey.setTableName(getTableForColumn(otherColumnEntity));
-        return foreignKey;
-
+        if (foreignKeys.size() == 1) {
+            return foreignKeys.get(0);
+        }
+        if (foreignKeys.size() > 1) {
+            String allReferencedColumns = foreignKeys.stream().map(k -> k.getColumnGuid()).collect(Collectors.joining(", "));
+            log.error("Column {} is referencing more than one column from another table: {}", columnEntity.getGUID(), allReferencedColumns);
+        }
+        return null;
 
     }
 
-    private String getTableForColumn(EntityDetail columnEntity) throws InvalidParameterException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, EntityProxyOnlyException, UserNotAuthorizedException, TypeErrorException, RepositoryErrorException {
-        log.debug("Load table for column with guid {}", columnEntity.getGUID());
+    public List<EntityDetail> getTablesForColumn(String columnEntityGuid) throws InvalidParameterException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, EntityProxyOnlyException, UserNotAuthorizedException, TypeErrorException, RepositoryErrorException {
+        log.debug("Load table for column with guid {}", columnEntityGuid);
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
-        Relationship columnToTableType = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, columnEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
-        EntityDetail tableTypeEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, getOtherEntityGuid(columnEntity.getGUID(), columnToTableType));
+        Relationship columnToTableType = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, columnEntityGuid, relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
+        EntityDetail tableTypeEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, getOtherEntityGuid(columnEntityGuid, columnToTableType));
 
         relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.SCHEMA_ATTRIBUTE_TYPE).getGUID();
-        Relationship relationshipToTable = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, tableTypeEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
-        EntityDetail tableEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, getOtherEntityGuid(tableTypeEntity.getGUID(), relationshipToTable));
+        List<Relationship> relationshipToTable = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, tableTypeEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0);
+        List<EntityDetail> tableEntities = relationshipToTable.stream().map(r -> {
+            try {
+                return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, getOtherEntityGuid(tableTypeEntity.getGUID(), r));
+            } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | UserNotAuthorizedException | EntityProxyOnlyException e) {
+                log.error(e.getMessage(), e);
+                return null;
+            }
+        }).collect(Collectors.toList());
 
-        return EntityPropertiesUtils.getStringValueForProperty(tableEntity.getProperties(), Constants.NAME);
+        return tableEntities;
     }
 
     private String getPrimaryKeyClassification(EntityDetail columnEntity) {
