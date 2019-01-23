@@ -120,6 +120,14 @@ public class TransformsFunction extends Reference {
         "modified_by",
         "modified_on"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "name",
+        "short_description",
+        "long_description",
+        "source_code",
+        "created_by",
+        "modified_by"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "arguments"
     );
@@ -136,6 +144,7 @@ public class TransformsFunction extends Reference {
         "modified_on"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isTransformsFunction(Object obj) { return (obj.getClass() == TransformsFunction.class); }

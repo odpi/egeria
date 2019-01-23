@@ -1214,12 +1214,12 @@ public class OMAGServerAdminServices
              * Retrieve the existing configuration and validate it is ok to set up event bus.
              */
             OMAGServerConfig serverConfig   = configStore.getServerConfig(serverName, methodName);
-            VirtualiserConfig virtualiserConfig = new VirtualiserConfig();
+            VirtualizerConfig virtualizerConfig = new VirtualizerConfig();
 
-            virtualiserConfig.setConnectorProvider(connectorProvider);
-            virtualiserConfig.setAdditionalProperties(additionalProperties);
+            virtualizerConfig.setConnectorProvider(connectorProvider);
+            virtualizerConfig.setAdditionalProperties(additionalProperties);
 
-            serverConfig.setVirtualiserConfig(virtualiserConfig);
+            serverConfig.setVirtualizerConfig(virtualizerConfig);
 
             /*
              * Save the config away

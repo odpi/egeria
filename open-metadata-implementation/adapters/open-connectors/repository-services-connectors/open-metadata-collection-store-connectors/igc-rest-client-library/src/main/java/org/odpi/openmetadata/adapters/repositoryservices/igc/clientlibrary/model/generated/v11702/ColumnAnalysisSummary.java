@@ -374,6 +374,20 @@ public class ColumnAnalysisSummary extends Reference {
         "inferred_scale",
         "inferred_precision"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "short_&_long_description",
+        "short_description",
+        "long_description",
+        "project_name",
+        "created_by",
+        "modified_by",
+        "inferred_format",
+        "mask",
+        "domain_type",
+        "average_length",
+        "longest_length",
+        "shortest_length"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "assigned_to_terms",
         "steward"
@@ -416,6 +430,7 @@ public class ColumnAnalysisSummary extends Reference {
         "inferred_precision"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isColumnAnalysisSummary(Object obj) { return (obj.getClass() == ColumnAnalysisSummary.class); }

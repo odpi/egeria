@@ -1,0 +1,19 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+- name: copy data load scripts
+  template:
+    src: "database/postgresql/load{{ item }}.sql"
+    dest: "/tmp/load{{ item }}.sql"
+  become_user: "{{ egeria_samples_credentials.db_owner }}"
+  become: yes
+  with_items: "{{ egeria_samples_cocopharma_databases }}"
+
+- name: load sample data to database
+  shell: psql postgres -f /tmp/load{{ item }}.sql
+  args:
+    executable: /bin/bash
+  become_user: "{{ egeria_samples_credentials.db_owner }}"
+  become: yes
+  with_items: "{{ egeria_samples_cocopharma_databases }}"
