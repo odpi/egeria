@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file;
 
 import org.slf4j.Logger;
@@ -10,7 +11,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorExcept
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogRecord;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.auditlogstore.OMRSAuditLogStoreConnectorBase;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -88,11 +88,11 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
      * @throws InvalidParameterException indicates that the start and/or end date parameters are invalid.
      * @throws PagingErrorException indicates that the offset or the maximumRecords parameters are invalid.
      */
-    public ArrayList<OMRSAuditLogRecord> getAuditLogRecordsByTimeStamp(Date    startDate,
-                                                                       Date    endDate,
-                                                                       int     offset,
-                                                                       int     maximumRecords) throws InvalidParameterException,
-                                                                                                      PagingErrorException
+    public List<OMRSAuditLogRecord> getAuditLogRecordsByTimeStamp(Date    startDate,
+                                                                  Date    endDate,
+                                                                  int     offset,
+                                                                  int     maximumRecords) throws InvalidParameterException,
+                                                                                                 PagingErrorException
     {
         return null;
     }
@@ -110,12 +110,12 @@ public class FileBasedAuditLogStoreConnector extends OMRSAuditLogStoreConnectorB
      * @throws InvalidParameterException indicates that the severity, start and/or end date parameters are invalid.
      * @throws PagingErrorException indicates that the offset or the maximumRecords parameters are invalid.
      */
-    public ArrayList<OMRSAuditLogRecord> getAuditLogRecordsBySeverity(String   severity,
-                                                                      Date     startDate,
-                                                                      Date     endDate,
-                                                                      int      offset,
-                                                                      int      maximumRecords) throws InvalidParameterException,
-                                                                                                      PagingErrorException
+    public List<OMRSAuditLogRecord> getAuditLogRecordsBySeverity(String   severity,
+                                                                 Date     startDate,
+                                                                 Date     endDate,
+                                                                 int      offset,
+                                                                 int      maximumRecords) throws InvalidParameterException,
+                                                                                                 PagingErrorException
     {
         return null;
     }
