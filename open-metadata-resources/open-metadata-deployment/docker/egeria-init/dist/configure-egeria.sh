@@ -53,6 +53,17 @@ echo "Egeria user name  : ${EGERIA_USER}"
 echo "Egeria server name: ${EGERIA_SERVER}"
 echo "Egeria Cohort     : ${EGERIA_COHORT}"
 
+echo "Checking KAFKA is up"
+
+n=0
+   until [ $n -ge 100 ]
+   do
+      kafkacat -b ${KAFKA_ENDPOINT} -L  && break  # substitute your command here
+      n=$[$n+1]
+      sleep 30
+   done
+
+
 echo "Checking EGERIA is up"
 
 loop=100
@@ -117,11 +128,23 @@ fi
 http --verbose --ignore-stdin \
 	--check-status \
         --auth admin:admin \
-        POST ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-url-root?url=${EGERIA_ENDPOINT}/egeria
+        POST ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-url-root?url=${EGERIA_ENDPOINT}
 rc=$?
 if [ $rc -ne 0 ]
 then
         printf "\nEgeria setup Failed configuring root\n"
+        exit 1
+fi
+
+# Server in-memory repo
+http --verbose --ignore-stdin \
+        --check-status \
+        --auth admin:admin \
+        POST ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/local-repository/mode/in-memory-repository
+rc=$?
+if [ $rc -ne 0 ]
+then
+        printf "\nEgeria setup Failed setting in-memory repo\n"
         exit 1
 fi
 
