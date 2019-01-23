@@ -3,12 +3,12 @@
 
 # 0205 Connection Linkage
 
-The purpose of a [connector](../../../open-metadata-implementation/frameworks/open-connector-framework/docs/connector.md)
+The purpose of a [connector](../../../open-metadata-implementation/frameworks/open-connector-framework/docs/concepts/connector.md)
 is to access the content and related properties (metadata) about an
 [Asset](../../../open-metadata-implementation/access-services/docs/concepts/assets/README.md) owned or used by an organization.
 
 In order for the connector to provide details of the know properties of an Asset, the open metadata
-types support a relationship between a [Connection](../../../open-metadata-implementation/frameworks/open-connector-framework/docs/connection.md) and
+types support a relationship between a [Connection](../../../open-metadata-implementation/frameworks/open-connector-framework/docs/concepts/connection.md) and
 the Asset.
 
 Notice that the connection can only be associated with one asset, although an Asset may support multiple
