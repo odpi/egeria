@@ -37,6 +37,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -154,9 +155,8 @@ public class EntitiesCreatorHelper {
      * @param typeName      name of the type def for the entity to be retrieved
      * @param qualifiedName qualified name property of the entity to be retrieved
      * @return the existing entity with the given qualified name or null if it doesn't exist
-     * @throws Exception
      */
-    public EntityDetail getEntity(String typeName, String qualifiedName) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+    public EntityDetail getEntity(String typeName, String qualifiedName)  {
         InstanceProperties matchProperties = buildMatchingInstanceProperties(Constants.QUALIFIED_NAME, qualifiedName);
         TypeDef typeDef = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.USER_ID, typeName);
         List<EntityDetail> existingEntities;
@@ -185,7 +185,7 @@ public class EntitiesCreatorHelper {
                     auditCode.getUserAction(),
                     e);
 
-            throw e;
+            return null;
         }
 
     }
@@ -219,7 +219,7 @@ public class EntitiesCreatorHelper {
      */
     private Relationship getRelationship(String relationshipType,
                                          String guid1,
-                                         String guid2) throws InvalidParameterException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException {
+                                         String guid2)  {
         List<Relationship> relationships;
         try {
             relationships = getRelationships(relationshipType, guid2);
@@ -233,7 +233,7 @@ public class EntitiesCreatorHelper {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
                     e);
-            throw e;
+            return null;
         }
         if (relationships != null && !relationships.isEmpty())
             for (Relationship relationship : relationships) {
@@ -245,21 +245,33 @@ public class EntitiesCreatorHelper {
         return null;
     }
 
-    public List<Relationship> getRelationships(String relationshipType, String guid2) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException {
-        List<Relationship> relationships;
+    public List<Relationship> getRelationships(String relationshipType, String guid2)  {
+        List<Relationship> relationships = new ArrayList<>();
         String relationshipTypeGuid = enterpriseConnector.getRepositoryHelper()
                 .getTypeDefByName(Constants.USER_ID, relationshipType)
                 .getGUID();
-        relationships = enterpriseConnector.getMetadataCollection()
-                .getRelationshipsForEntity(Constants.USER_ID,
-                        guid2,
-                        relationshipTypeGuid,
-                        0,
-                        Collections.singletonList(InstanceStatus.ACTIVE),
-                        null,
-                        null,
-                        null,
-                        0);
+        try {
+            relationships = enterpriseConnector.getMetadataCollection()
+                    .getRelationshipsForEntity(Constants.USER_ID,
+                            guid2,
+                            relationshipTypeGuid,
+                            0,
+                            Collections.singletonList(InstanceStatus.ACTIVE),
+                            null,
+                            null,
+                            null,
+                            0);
+        } catch (Exception e) {
+            InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
+            auditLog.logException("getRelationships",
+                    auditCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    auditCode.getFormattedErrorMessage(relationshipType, e.getMessage()),
+                    "relationship with type" + relationshipType + " gor {" + guid2 + "}",
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction(),
+                    e);
+        }
         return relationships;
     }
 
