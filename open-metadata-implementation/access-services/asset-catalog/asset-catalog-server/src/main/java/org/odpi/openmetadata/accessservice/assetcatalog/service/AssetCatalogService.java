@@ -638,16 +638,18 @@ public class AssetCatalogService {
         for (AssetDescription assetDescription : assetDescriptions) {
 
             List<Context> contexts = assetDescription.getContexts();
-            for (Context context : contexts) {
-                if (context.getDatabase() != null && context.getDatabase().getGuid() != null) {
-                    Connection connection;
-                    if (containsDetails) {
-                        connection = getConnectionDetails(metadataCollectionForSearch, userId, context.getDatabase().getGuid());
-                    } else {
-                        connection = getConnectionId(userId, context.getDatabase().getGuid());
+            if(contexts != null) {
+                for (Context context : contexts) {
+                    if (context.getDatabase() != null && context.getDatabase().getGuid() != null) {
+                        Connection connection;
+                        if (containsDetails) {
+                            connection = getConnectionDetails(metadataCollectionForSearch, userId, context.getDatabase().getGuid());
+                        } else {
+                            connection = getConnectionId(userId, context.getDatabase().getGuid());
 
+                        }
+                        context.setConnection(connection);
                     }
-                    context.setConnection(connection);
                 }
             }
         }
