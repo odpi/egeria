@@ -365,6 +365,46 @@ public class Reference extends ObjectPrinter {
     }
 
     /**
+     * Ensures that the modification details of the asset are populated (takes no action if already populated or
+     * the asset does not support them).
+     *
+     * @param igcrest a REST API connection to use in populating the modification details
+     * @return boolean indicating whether details were successfully / already populated (true) or not (false)
+     */
+    public boolean populateModificationDetails(IGCRestClient igcrest) {
+
+        boolean success = true;
+        // Only bother retrieving the details if the object supports them and they aren't already present
+
+        boolean bHasModificationDetails = this.hasModificationDetails();
+        String createdBy = (String) this.getPropertyByName(IGCRestConstants.MOD_CREATED_BY);
+
+        if (bHasModificationDetails && createdBy == null) {
+
+            IGCSearchCondition idOnly = new IGCSearchCondition("_id", "=", this.getId());
+            IGCSearchConditionSet idOnlySet = new IGCSearchConditionSet(idOnly);
+            IGCSearch igcSearch = new IGCSearch(this.getType(), idOnlySet);
+            igcSearch.addProperties(IGCRestConstants.getModificationProperties());
+            igcSearch.setPageSize(2);
+            ReferenceList assetsWithModDetails = igcrest.search(igcSearch);
+            success = (!assetsWithModDetails.getItems().isEmpty());
+            if (success) {
+
+                Reference assetWithModDetails = assetsWithModDetails.getItems().get(0);
+                this.setPropertyByName(IGCRestConstants.MOD_CREATED_ON, assetWithModDetails.getPropertyByName(IGCRestConstants.MOD_CREATED_ON));
+                this.setPropertyByName(IGCRestConstants.MOD_CREATED_BY, assetWithModDetails.getPropertyByName(IGCRestConstants.MOD_CREATED_BY));
+                this.setPropertyByName(IGCRestConstants.MOD_MODIFIED_ON, assetWithModDetails.getPropertyByName(IGCRestConstants.MOD_MODIFIED_ON));
+                this.setPropertyByName(IGCRestConstants.MOD_MODIFIED_BY, assetWithModDetails.getPropertyByName(IGCRestConstants.MOD_MODIFIED_BY));
+
+            }
+
+        }
+
+        return success;
+
+    }
+
+    /**
      * Ensures that the _context of the asset is populated (takes no action if already populated).
      * In addition, if the asset type supports them, will also retrieve and set modification details.
      *
