@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# IGC Connector Startup.postman_collection.json
+# Egeria IGC repo connector.postman_collection.json
 
 This script can be used to configure Egeria for use with an existing IBM Information Governance Catalog ("IGC") environment.
 
