@@ -53,6 +53,16 @@ echo "Egeria user name  : ${EGERIA_USER}"
 echo "Egeria server name: ${EGERIA_SERVER}"
 echo "Egeria Cohort     : ${EGERIA_COHORT}"
 
+echo "Checking KAFKA is up"
+
+n=0
+   until [ $n -ge 100 ]
+   do
+      kafkacat -b ${KAFKA_ENDPOINT} -L  && break  # substitute your command here
+      n=$[$n+1]
+      sleep 30
+   done
+
 echo "Checking ATLAS is up"
 
 loop=100
