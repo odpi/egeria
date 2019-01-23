@@ -1934,7 +1934,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
         {
             if (entity != null)
             {
-                if ((entity.getStatus() == InstanceStatus.DELETED) &&
+                if ((entity.getStatus() != InstanceStatus.DELETED) &&
                     (repositoryValidator.verifyInstanceType(entityTypeGUID, entity)) &&
                     (repositoryValidator.verifyInstancePropertiesMatchSearchCriteria(repositoryName,
                                                                                     entity.getProperties(),

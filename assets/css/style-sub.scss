@@ -1,17 +1,41 @@
 /* SPDX-License-Identifier: CC-BY-4.0
  * Copyright Contributors to the ODPi Egeria project. */
 ---
----
 
 @import "{{ site.theme }}";
+
+body {
+  margin: 0 auto;
+}
+
+img {
+
+  width:100%;
+  padding-top:2%;
+  padding-bottom:2%;
+}
 
 *
 {
     margin:0;padding:0;
 }
 
+p {
+  margin-bottom:2%;
+}
+
 html,body,.container, .sideBar, .content {
-height:150%;
+
+}
+
+hr {
+
+  margin-top:5%;
+  margin-bottom:2%;
+}
+
+li {
+  margin-left:2%;
 }
 
 .container {
@@ -22,6 +46,10 @@ height:150%;
 
 ol {
   margin-left:2%;
+}
+
+ul {
+  margin-bottom:2%;
 }
 
 .sideBar {
@@ -66,18 +94,22 @@ button {
   padding-top:5%;
   color: #28adba;
   font-weight:bold;
-  font-size:1.2em;
+  font-size:1.1em;
+  width:60%;
+  margin-left:20%;
+  line-height:1.5em;
   margin-top:15%;
 }
 
 .links a {
   color: #28adba !important;
+  text-decoration:none;
 }
 
 .content {
   overflow:hidden;
   padding:3%;
-  margin-left:17%;
+  margin-left:20%;
   margin-right:3%;
   padding-top:11%;
   background: white;
@@ -124,7 +156,7 @@ h1 {
 
 #header_wrap2 {
   text-align:center !important;
-  background-image:url("bg.jpg");
+  background-image:url("../img/bg2.jpg");
   padding-bottom:6% !important;
   padding-top:6% !important;
   float:left;
@@ -150,19 +182,38 @@ h2 {
 
 h3 {
   font-family: 'Lato', sans-serif !important;
-  font-size:2.5em !important;
-  line-height:1.3em;
-  color:white !important;
+  font-size:1.5em !important;
+  letter-spacing:0.01em;
+  color:#00aeb9 !important;
+  margin-top:3% !important;
+  margin-bottom:2% !important;
 }
+
 
 a {
   color:#086166 !important;
 }
 
+.sublogo {
+  width:100% !important;
+  float:left;
+  background:url("../img/egeria3.png");
+  background-size: 100%;
+  background-repeat:no-repeat;
+  max-width:100% !important;
+  box-shadow:0px white;
+  border:0px solid white !important;
+  -webkit-box-shadow: 0 0 0px white !important;
+  box-shadow: 0px !important;
+  margin-bottom:10%;
+}
+
 .sublogo img {
   width:100% !important;
   float:left;
-  background:url("../img/egeria2.png");
+  background:url("../img/egeria3.png");
+  background-size: 100%;
+  background-repeat:no-repeat;
   max-width:100% !important;
   box-shadow:0px white;
   border:0px solid white !important;
@@ -176,14 +227,25 @@ a {
   border:0px solid white !important;
   -webkit-box-shadow: 0 0 0px white !important;
   box-shadow: 0px !important;
+  width:100%;
+  padding-top:2%;
+  padding-bottom:2%;
 }
 
+@media only screen and (max-width: 900px) and (min-width: 800px){
+
+.content {
+  margin-left:25%;
+
+}
+}
 
 
 @media only screen and (max-width: 800px) and (min-width: 500px){
 
 
     .links {
+      display:none;
       text-align:center;
       padding-top:0%;
       color: #28adba;
@@ -199,13 +261,13 @@ a {
 @media (max-width:800px) {
 .sideBar {
   width:100% !important;
-  height:25% !important;
+  height:15% !important;
 }
 
 .sideBartext {
   float:right;
   width:28% !important;
-  font-size:14px;
+  font-size:12px;
   padding-right:5%;
 }
 
@@ -215,6 +277,13 @@ margin-top:15%;
 }
 
 .sublogo img {
+  width:30% !important;
+  float:left;
+  margin-top:3%;
+  margin-right:4%;
+}
+
+.sublogo {
   width:30% !important;
   float:left;
   margin-top:3%;
@@ -232,7 +301,7 @@ button {
   text-decoration: none;
   display: inline-block;
   font-weight:bold;
-  font-size: 14px;
+  font-size: 12px;
 }
 }
 
@@ -240,6 +309,7 @@ button {
 
 
   .links {
+    display:none;
     text-align:center;
     padding-top:0%;
     color: #28adba;
