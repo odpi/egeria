@@ -17,3 +17,10 @@ supported by these repositories.
   * Enterprise OMRS Metadata Collection - Manages calls to the list of open metadata repositories
   registered with the OMRS Enterprise Connector Manager on behalf of the Enterprise OMRS Repository Connector.
   * Enterprise OMRS Connector Properties - Provides the connected asset properties for the Enterprise OMRS Repository Connector.
+  
+  
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+
