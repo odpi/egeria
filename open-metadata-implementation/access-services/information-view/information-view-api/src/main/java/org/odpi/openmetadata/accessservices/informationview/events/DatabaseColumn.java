@@ -25,7 +25,7 @@ public class DatabaseColumn {
     private String type;
     private String primaryKeyName;
     private BusinessTerm businessTerm;
-    private ForeignKey foreignKey;
+    private ForeignKey referencedColumn;
     private boolean isUnique;
     private boolean isPrimaryKey;
     private boolean isNullable;
@@ -178,12 +178,12 @@ public class DatabaseColumn {
         this.primaryKeyName = primaryKeyName;
     }
 
-    public ForeignKey getForeignKey() {
-        return foreignKey;
+    public ForeignKey getReferencedColumn() {
+        return referencedColumn;
     }
 
-    public void setForeignKey(ForeignKey foreignKey) {
-        this.foreignKey = foreignKey;
+    public void setReferencedColumn(ForeignKey referencedColumn) {
+        this.referencedColumn = referencedColumn;
     }
 
     @JsonProperty("isUnique")
@@ -225,7 +225,7 @@ public class DatabaseColumn {
                 ", type='" + type + '\'' +
                 ", primaryKeyName='" + primaryKeyName + '\'' +
                 ", businessTerm=" + businessTerm +
-                ", foreignKey=" + foreignKey +
+                ", referencedColumn=" + referencedColumn +
                 ", isUnique=" + isUnique +
                 ", isPrimaryKey=" + isPrimaryKey +
                 ", isNullable=" + isNullable +
