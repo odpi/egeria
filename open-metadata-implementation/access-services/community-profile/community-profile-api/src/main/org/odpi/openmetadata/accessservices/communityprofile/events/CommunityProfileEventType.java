@@ -113,7 +113,7 @@ public enum CommunityProfileEventType implements Serializable
     @Override
     public String toString()
     {
-        return "AssetConsumerEventType{" +
+        return "CommunityProfileEventType{" +
                 "eventTypeCode=" + eventTypeCode +
                 ", eventTypeName='" + eventTypeName + '\'' +
                 ", eventTypeDescription='" + eventTypeDescription + '\'' +

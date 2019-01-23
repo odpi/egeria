@@ -21,6 +21,7 @@
         open metadata audit log messages.
     </description>
     <modules>
+        <module>audit-log-console-connector</module>
         <module>audit-log-file-connector</module>
     </modules>
 
