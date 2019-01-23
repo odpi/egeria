@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -13,7 +14,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>subject-area-fvt</artifactId>
-    <name>Subject Area OMAS Client Samples</name>
+    <name>Subject Area OMAS FVT</name>
     <description>
         FVT resources for the Subject Area Open Metadata Access Service (OMAS).
     </description>

@@ -21,7 +21,7 @@ OMAS with other systems.
   into an open metadata repository.
 * [Synchronizing the organization's departmental structure with another system](synchronizing-departmental-structure.md)
 * [Capturing karma point plateaus](capturing-karma-point-plateaus.md)
-  emitted from the Community Profile OMAS [OutTopic](../../../docs/concepts/out-topic.md).
+  emitted from the Community Profile OMAS [OutTopic](../../../docs/concepts/client-server/out-topic.md).
 * [Synchronizing collaboration activity with another system](synchronizing-collaboration-activity.md)
 
 
