@@ -120,7 +120,30 @@
   loop_control:
     loop_var: db_name
 
-# TODO: need to first download and install the open source ODBC drivers for MySQL, DataDirect drivers do not support community editions of mysql
+- name: install mysql open source ODBC drivers
+  yum:
+    name: mysql-connector-odbc
+    state: present
+  when: (egeria_samples_cocopharma_db_type == 'mariadb')
+
+- name: add mysql open source ODBC drivers to Information Server
+  lineinfile:
+    dest: "{{ ibm_infosvr_install_location.linux }}/Server/DSEngine/dsenv"
+    regexp: 'export LD_LIBRARY_PATH$'
+    line: "        LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64;export LD_LIBRARY_PATH"
+  become: yes
+  when: (egeria_samples_cocopharma_db_type == 'mariadb')
+  register: __ibm_infosvr_dsenv
+
+- include_role:
+    name: IBM.infosvr
+    tasks_from: ops/stop_engine.yml
+  when: __ibm_infosvr_dsenv is changed
+
+- include_role:
+    name: IBM.infosvr
+    tasks_from: ops/start_engine.yml
+  when: __ibm_infosvr_dsenv is changed
 
 - name: harvest MariaDB metadata via IBM Metadata Asset Manager
   include_role:
@@ -129,7 +152,7 @@
     odbc_entries:
       - name: CocoPharma_{{ db_name | upper }}
         description: ODBC database connection for CocoPharma {{ db_name }} sample database
-        type: mysql
+        type: mysql_open
         database: "{{ db_name | upper }}"
         host: "{{ groups['egeria-samples-db-host'][0] | upper }}"
     import_areas:
@@ -144,7 +167,7 @@
           username: "{{ egeria_samples_credentials.db_owner }}"
           password: "{{ egeria_samples_credentials.db_passwd }}"
         assets_to_import:
-          - "schema[{{ db_name | upper }}|public]"
+          - "schema[{{ db_name | upper }}|{{ db_name | upper }}]"
         hostname: "{{ groups['egeria-samples-db-host'][0] | upper }}"
         database_name: "{{ db_name | upper }}"
   with_items: "{{ egeria_samples_cocopharma_databases }}"
@@ -205,7 +228,7 @@
         - number_of: term
           meeting_all_conditions:
             - { property: "parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
-          is: 51
+          is: 52
         - number_of: database_column
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "COMPDIR" }

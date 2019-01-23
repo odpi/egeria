@@ -33,5 +33,5 @@ egeria_samples_credentials:
 # Defaults:
 #  - ibm-db2 => "{{ egeria_samples_credentials.db_owner | upper }}"
 #  - postgresql => public
-#  - mariadb => ???
+#  - mariadb => not used, can be any value
 egeria_samples_db_schema: "{{ egeria_samples_credentials.db_owner | upper }}"
