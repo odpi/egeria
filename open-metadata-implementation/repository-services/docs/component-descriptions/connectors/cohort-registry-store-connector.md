@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # Cohort Registry Store Connector
 
@@ -23,4 +24,10 @@ Figure 2 shows the logical structure inside the cohort registry store.
 cohort registry store.
 
 There is one local registration record describing the information sent to
-the other members of the cohort
+the other members of the cohort and a list of remote registration records received from
+the other members of the cohort.
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

@@ -11,7 +11,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * AssetConsumerEventHeader provides a common base for all events from the access service.
+ * CommunityProfileEventHeader provides a common base for all events from the access service.
  * It implements Serializable and a version Id.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
