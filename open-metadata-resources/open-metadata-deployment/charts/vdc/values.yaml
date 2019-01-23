@@ -32,7 +32,7 @@ image:
 
   atlasinit:
     repository: planetf1/atlas-init-egeria
-    tag: 0.1.5
+    tag: 0.1.6
     pullPolicy: IfNotPresent
 
   igcproxy:
@@ -47,7 +47,7 @@ image:
 
   egeriainit:
     repository: planetf1/egeria-init-egeria
-    tag: 0.1.1
+    tag: 0.1.2
     pullPolicy: IfNotPresent
 
   nameOverride: ""
