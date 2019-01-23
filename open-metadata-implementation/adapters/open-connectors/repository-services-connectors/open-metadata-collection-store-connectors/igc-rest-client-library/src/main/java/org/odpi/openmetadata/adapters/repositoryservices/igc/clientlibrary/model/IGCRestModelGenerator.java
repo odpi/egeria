@@ -251,6 +251,9 @@ public class IGCRestModelGenerator {
                     propertiesList.addToAllProperties(propName);
                     if (!details.getJavaType().contains("Reference")) {
                         propertiesList.addNonRelationshipProperty(propName);
+                        if (details.getJavaType().contains("String") && !"enum".equals(typeObj.path("name").asText())) {
+                            propertiesList.addStringProperty(propName);
+                        }
                     } else if (details.getJavaType().contains("ReferenceList")) {
                         propertiesList.addRelationshipProperty(propName);
                     }
@@ -363,6 +366,22 @@ public class IGCRestModelGenerator {
                         fs.append("    private static final List<String> NON_RELATIONAL_PROPERTIES = new ArrayList<>();");
                         fs.append(System.lineSeparator());
                     }
+                    List<String> stringProperties = propertyList.getStringProperties();
+                    if (!stringProperties.isEmpty()) {
+                        fs.append("    private static final List<String> STRING_PROPERTIES = Arrays.asList(");
+                        fs.append(System.lineSeparator());
+                        for (int i = 0; i < stringProperties.size() - 1; i++) {
+                            fs.append("        \"" + stringProperties.get(i) + "\",");
+                            fs.append(System.lineSeparator());
+                        }
+                        fs.append("        \"" + stringProperties.get(stringProperties.size() - 1) + "\"");
+                        fs.append(System.lineSeparator());
+                        fs.append("    );");
+                        fs.append(System.lineSeparator());
+                    } else {
+                        fs.append("    private static final List<String> STRING_PROPERTIES = new ArrayList<>();");
+                        fs.append(System.lineSeparator());
+                    }
                     List<String> relationshipProperties = propertyList.getRelationshipProperties();
                     if (!relationshipProperties.isEmpty()) {
                         fs.append("    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(");
@@ -396,6 +415,8 @@ public class IGCRestModelGenerator {
                         fs.append(System.lineSeparator());
                     }
                     fs.append("    public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }");
+                    fs.append(System.lineSeparator());
+                    fs.append("    public static List<String> getStringProperties() { return STRING_PROPERTIES; }");
                     fs.append(System.lineSeparator());
                     fs.append("    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }");
                     fs.append(System.lineSeparator());
@@ -446,6 +467,7 @@ public class IGCRestModelGenerator {
         private List<String> gettersSetters;
 
         private List<String> nonRelationship;
+        private List<String> stringProperties;
         private List<String> relationship;
         private List<String> allProperties;
 
@@ -453,6 +475,7 @@ public class IGCRestModelGenerator {
             members = new ArrayList<>();
             gettersSetters = new ArrayList<>();
             nonRelationship = new ArrayList<>();
+            stringProperties = new ArrayList<>();
             relationship = new ArrayList<>();
             allProperties = new ArrayList<>();
         }
@@ -463,9 +486,11 @@ public class IGCRestModelGenerator {
         public List<String> getGettersSetters() { return this.gettersSetters; }
 
         public void addNonRelationshipProperty(String propertyName) { nonRelationship.add(propertyName); }
+        public void addStringProperty(String propertyName) { stringProperties.add(propertyName); }
         public void addRelationshipProperty(String propertyName) { relationship.add(propertyName); }
         public void addToAllProperties(String propertyName) { allProperties.add(propertyName); }
         public List<String> getNonRelationshipProperties() { return this.nonRelationship; }
+        public List<String> getStringProperties() { return this.stringProperties; }
         public List<String> getRelationshipProperties() { return this.relationship; }
         public List<String> getAllProperties() { return this.allProperties; }
 

@@ -8,9 +8,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Gloss
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermAnchor.TermAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermISATypeOFRelationship.TermISATypeOFRelationshipMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.server.SubjectAreaBeansToAccessOMRS;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
@@ -19,6 +19,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodes
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.ClassificationGroupByOperation;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.TypeGuids;
@@ -30,6 +31,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.Set;
 
 
 /**
@@ -42,6 +44,23 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaTermRESTServices.class);
 
     private static final String className = SubjectAreaTermRESTServices.class.getName();
+
+    public static final Set<String> SUBJECT_AREA_TERM_CLASSIFICATIONS= new HashSet(Arrays.asList(
+            // spine objects
+            SpineObject.class.getSimpleName(),
+            SpineAttribute.class.getSimpleName(),
+            ObjectIdentifier.class.getSimpleName(),
+            //governance actions
+            Confidentiality.class.getSimpleName(),
+            Confidence.class.getSimpleName(),
+            Criticality.class.getSimpleName(),
+            Retention.class.getSimpleName(),
+            // dictionary
+            AbstractConcept.class.getSimpleName(),
+            ActivityDescription.class.getSimpleName(),
+            DataValue.class.getSimpleName(),
+            // context
+            ContextDefinition.class.getSimpleName()));
 
     /**
      * Default constructor
@@ -375,11 +394,11 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <p>
      * Status is not updated using this call.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       userId under which the request is performed
      * @param guid         guid of the term to update
      * @param suppliedTerm term to be updated
-     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated. The GovernanceAction content is always replaced.
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
      * <ul>
@@ -419,7 +438,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                     Status status = suppliedTerm.getSystemAttributes().getStatus();
                     SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.STATUS_UPDATE_TO_DELETED_NOT_ALLOWED);
                 }
-                Term updateTerm = originalTerm;
+                Term updateTerm = new Term();
+                updateTerm.setSystemAttributes(originalTerm.getSystemAttributes());
                 if (isReplace)
                 {
                     // copy over attributes
@@ -433,60 +453,90 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                     updateTerm.setSpineAttribute(suppliedTerm.isSpineAttribute());
                     updateTerm.setObjectIdentifier(suppliedTerm.isObjectIdentifier());
                     updateTerm.setAdditionalProperties(suppliedTerm.getAdditionalProperties());
-                    //TODO handle governance classifications and other classifications
+                    //TODO handle other classifications
                 } else
                 {
                     // copy over attributes if specified
-                    if (suppliedTerm.getName() != null)
+                    if (suppliedTerm.getName() == null)
+                    {
+                        updateTerm.setName(originalTerm.getName());
+                    } else
                     {
                         updateTerm.setName(suppliedTerm.getName());
                     }
-                    if (suppliedTerm.getQualifiedName() != null)
+                    if (suppliedTerm.getQualifiedName() == null)
+                    {
+                        updateTerm.setQualifiedName(originalTerm.getQualifiedName());
+                    } else
                     {
                         updateTerm.setQualifiedName(suppliedTerm.getQualifiedName());
                     }
-                    if (suppliedTerm.getDescription() != null)
+                    if (suppliedTerm.getDescription() == null)
+                    {
+                        updateTerm.setDescription(originalTerm.getDescription());
+                    } else
                     {
                         updateTerm.setDescription(suppliedTerm.getDescription());
                     }
-                    if (suppliedTerm.getUsage() != null)
+                    if (suppliedTerm.getUsage() == null)
+                    {
+                        updateTerm.setUsage(originalTerm.getUsage());
+                    } else
                     {
                         updateTerm.setUsage(suppliedTerm.getUsage());
                     }
-                    if (suppliedTerm.getAbbreviation() != null)
+                    if (suppliedTerm.getAbbreviation() == null)
+                    {
+                        updateTerm.setAbbreviation(originalTerm.getAbbreviation());
+                    } else
                     {
                         updateTerm.setAbbreviation(suppliedTerm.getAbbreviation());
                     }
-                    if (suppliedTerm.getAdditionalProperties() != null)
+                    if (suppliedTerm.getAdditionalProperties() == null)
+                    {
+                        updateTerm.setAdditionalProperties(originalTerm.getAdditionalProperties());
+                    } else
                     {
                         updateTerm.setAdditionalProperties(suppliedTerm.getAdditionalProperties());
                     }
-                    if (suppliedTerm.getExamples() != null)
+                    if (suppliedTerm.getExamples() == null)
+                    {
+                        updateTerm.setExamples(originalTerm.getExamples());
+                    } else
                     {
                         updateTerm.setExamples(suppliedTerm.getExamples());
                     }
-                    if (suppliedTerm.isSpineObject())
-                    {
-                        updateTerm.setSpineObject(suppliedTerm.isSpineObject());
-                    }
-                    if (suppliedTerm.isSpineObject())
-                    {
-                        updateTerm.setSpineAttribute(suppliedTerm.isSpineAttribute());
-                    }
-                    if (suppliedTerm.isObjectIdentifier())
-                    {
-                        updateTerm.setObjectIdentifier(suppliedTerm.isObjectIdentifier());
-                    }
-                    //TODO handle governance classifications and other classifications
+                    //TODO handle other classifications
                 }
-                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm generatedTerm = null;
+                // always update the governance actions for a replace or an update
+                GovernanceActions suppliedGovernanceActions = suppliedTerm.getGovernanceActions();
+                updateTerm.setGovernanceActions(suppliedGovernanceActions);
+                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm generatedTerm = TermMapper.mapTermToOMRSBean(updateTerm);
 
-                generatedTerm = TermMapper.mapTermToOMRSBean(updateTerm);
-                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm updatedGeneratedTerm = null;
+                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm updatedGeneratedTerm = subjectAreaOmasREST.updateGlossaryTerm(userId, generatedTerm);
 
-                updatedGeneratedTerm = subjectAreaOmasREST.updateGlossaryTerm(userId, generatedTerm);
+                // deal with the classifications that the Subject Area is concerned about
 
+                Set<Classification> suppliedClassifications = getClassificationFromTerm(suppliedTerm, suppliedGovernanceActions);
+                Set<Classification> existingClassifications = getClassificationFromTerm(originalTerm,originalTerm.getGovernanceActions());
+                ClassificationGroupByOperation classificationGroupByOperation = new ClassificationGroupByOperation(SUBJECT_AREA_TERM_CLASSIFICATIONS,existingClassifications,suppliedClassifications);
+                List<Classification> addClassifications = classificationGroupByOperation.getAddClassifications();
+                List<String> removeClassificationNames = classificationGroupByOperation.getRemoveClassifications();
+                List<Classification> updateClassifications = classificationGroupByOperation.getUpdateClassifications();
+                if (!addClassifications.isEmpty()) {
+                    updatedGeneratedTerm = subjectAreaOmasREST.addGlossaryTermClassifications(userId,guid, addClassifications);
+                }
+                if (!removeClassificationNames.isEmpty()) {
+                    for (String classificationName:removeClassificationNames) {
+                        updatedGeneratedTerm = subjectAreaOmasREST.deleteGlossaryTermClassification(userId, guid, classificationName);
+                    }
+                }
+                if (!updateClassifications.isEmpty()) {
+
+                    updatedGeneratedTerm  = subjectAreaOmasREST.updateGlossaryTermClassification(userId,guid, updateClassifications);
+                }
                 org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term updatedTerm = TermMapper.mapOMRSBeantoTerm(updatedGeneratedTerm);
+
                 response = new TermResponse(updatedTerm);
             }
         } catch (InvalidParameterException e)
@@ -501,6 +551,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         } catch (UnrecognizedGUIDException e)
         {
             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+        } catch (ClassificationException e) {
+            response = OMASExceptionToResponse.convertClassificationException(e);
         }
 
         if (log.isDebugEnabled())
@@ -509,6 +561,39 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         }
         return response;
 
+    }
+
+    private Set<Classification> getClassificationFromTerm(Term suppliedTerm, GovernanceActions governanceActions) {
+        Set<Classification> classifications = new HashSet<>();
+        if ( suppliedTerm.isObjectIdentifier()) {
+            classifications.add(new ObjectIdentifier());
+        }
+        if ( suppliedTerm.isSpineObject()) {
+            classifications.add(new SpineObject());
+        }
+        if ( suppliedTerm.isSpineAttribute()) {
+            classifications.add(new SpineAttribute());
+        }
+        if (governanceActions !=null) {
+            Retention suppliedRetention = governanceActions.getRetention();
+            Confidentiality suppliedConfidentiality = governanceActions.getConfidentiality();
+            Confidence suppliedConfidence = governanceActions.getConfidence();
+            Criticality suppliedCriticallity = governanceActions.getCriticality();
+
+            if (suppliedRetention !=null) {
+                classifications.add(suppliedRetention);
+            }
+            if (suppliedConfidentiality !=null) {
+                classifications.add(suppliedConfidentiality);
+            }
+            if (suppliedConfidence != null) {
+                classifications.add(suppliedConfidence);
+            }
+            if (suppliedCriticallity !=null) {
+                classifications.add(suppliedCriticallity);
+            }
+        }
+        return classifications;
     }
 
 

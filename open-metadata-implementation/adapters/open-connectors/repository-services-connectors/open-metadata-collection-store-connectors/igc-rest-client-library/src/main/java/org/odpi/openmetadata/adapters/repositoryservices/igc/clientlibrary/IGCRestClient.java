@@ -113,11 +113,11 @@ public class IGCRestClient {
         // Register the non-generated types
         this.registerPOJO(Paging.class);
 
-        // Start with vanilla 11.5.0.2
-        this.igcVersion = IGCVersionEnum.V11502;
+        // Start with lowest version supported
+        this.igcVersion = IGCVersionEnum.values()[0];
         ArrayNode igcTypes = getTypes();
         for (JsonNode node : igcTypes) {
-            // Check for a type that does not exist in v11.5.0.2 against higher versions, and if found
+            // Check for a type that does not exist in the lowest version supported against higher versions, and if found
             // set our version to that higher version
             String assetType = node.path("_id").asText();
             for (IGCVersionEnum aVersion : IGCVersionEnum.values()) {
@@ -127,6 +127,7 @@ public class IGCRestClient {
                 }
             }
         }
+        log.info("Detected IGC version: {}", this.igcVersion.getVersionString());
 
     }
 
@@ -406,6 +407,7 @@ public class IGCRestClient {
         }
         ResponseEntity<String> response;
         try {
+            log.debug("{}ing to {} with: {}", method, endpoint, payload);
             response = new RestTemplate().exchange(
                     endpoint,
                     method,

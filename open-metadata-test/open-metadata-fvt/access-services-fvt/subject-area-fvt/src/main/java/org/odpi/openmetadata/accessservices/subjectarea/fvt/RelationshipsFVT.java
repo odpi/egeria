@@ -63,13 +63,13 @@ public class RelationshipsFVT
 
         Glossary glossary = glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         System.out.println("Create a term1 using glossary guid");
-        Term term1 = termFVT.createTermWithGlossaryGuid(DEFAULT_TEST_TERM_NAME, glossary.getSystemAttributes().getGUID());
+        Term term1 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME, glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(term1);
         System.out.println("Create a term2 using glossary guid");
-        Term term2 = termFVT.createTermWithGlossaryGuid(DEFAULT_TEST_TERM_NAME2, glossary.getSystemAttributes().getGUID());
+        Term term2 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME2, glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(term2);
         System.out.println("Create a term3 using glossary guid");
-        Term term3 = termFVT.createTermWithGlossaryGuid(DEFAULT_TEST_TERM_NAME3, glossary.getSystemAttributes().getGUID());
+        Term term3 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME3, glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(term3);
 
         synonymFVT(term1, term2);
@@ -151,7 +151,7 @@ public class RelationshipsFVT
         }
         if (!updatedTermISATypeOFRelationship.getSource().equals(createdTermISATypeOFRelationship.getSource()))
         {
-            new SubjectAreaFVTCheckedException(0, "", "", "ERROR: TermISATypeOFRelationship update source not as expected", "", "");
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: TermISATypeOFRelationship update source not as expected", "", "");
         }
         if (!updatedTermISATypeOFRelationship.getSteward().equals(createdTermISATypeOFRelationship.getSteward()))
         {
@@ -225,7 +225,7 @@ public class RelationshipsFVT
         }
         if (!updatedIsa.getSource().equals(createdIsa.getSource()))
         {
-            new SubjectAreaFVTCheckedException(0, "", "", "ERROR: isa update source not as expected", "", "");
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: isa update source not as expected", "", "");
         }
         if (!updatedIsa.getExpression().equals(createdIsa.getExpression()))
         {
@@ -319,7 +319,7 @@ public class RelationshipsFVT
         }
         if (!updatedTermTYPEDBYRelationship.getSource().equals(createdTermTYPEDBYRelationship.getSource()))
         {
-            new SubjectAreaFVTCheckedException(0, "", "", "ERROR: termTYPEDBYRelationship update source not as expected", "", "");
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: termTYPEDBYRelationship update source not as expected", "", "");
         }
         if (!updatedTermTYPEDBYRelationship.getSteward().equals(createdTermTYPEDBYRelationship.getSteward()))
         {
@@ -404,7 +404,7 @@ public class RelationshipsFVT
         }
         if (!updatedReplacementTerm.getSource().equals(createdReplacementTerm.getSource()))
         {
-            new SubjectAreaFVTCheckedException(0, "", "", "ERROR: replacementTerm update source not as expected", "", "");
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: replacementTerm update source not as expected", "", "");
         }
         if (!updatedReplacementTerm.getExpression().equals(createdReplacementTerm.getExpression()))
         {
@@ -497,7 +497,7 @@ public class RelationshipsFVT
         }
         if (!updatedValidValue.getSource().equals(createdValidValue.getSource()))
         {
-            new SubjectAreaFVTCheckedException(0, "", "", "ERROR: validValue update source not as expected", "", "");
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: validValue update source not as expected", "", "");
         }
         if (!updatedValidValue.getExpression().equals(createdValidValue.getExpression()))
         {
@@ -590,7 +590,7 @@ public class RelationshipsFVT
         }
         if (!updatedPreferredTerm.getSource().equals(createdPreferredTerm.getSource()))
         {
-            new SubjectAreaFVTCheckedException(0, "", "", "ERROR: preferredTerm update source not as expected", "", "");
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: preferredTerm update source not as expected", "", "");
         }
         if (!updatedPreferredTerm.getExpression().equals(createdPreferredTerm.getExpression()))
         {
@@ -684,7 +684,7 @@ public class RelationshipsFVT
         }
         if (!updatedUsedInContext.getSource().equals(createdUsedInContext.getSource()))
         {
-            new SubjectAreaFVTCheckedException(0, "", "", "ERROR: usedInContext update source not as expected", "", "");
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: usedInContext update source not as expected", "", "");
         }
         if (!updatedUsedInContext.getExpression().equals(createdUsedInContext.getExpression()))
         {
@@ -778,7 +778,7 @@ public class RelationshipsFVT
         }
         if (!updatedTranslation.getSource().equals(createdTranslation.getSource()))
         {
-            new SubjectAreaFVTCheckedException(0, "", "", "ERROR: translation update source not as expected", "", "");
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: translation update source not as expected", "", "");
         }
         if (!updatedTranslation.getExpression().equals(createdTranslation.getExpression()))
         {
@@ -871,7 +871,7 @@ public class RelationshipsFVT
         }
         if (!updatedHASATerm.getSource().equals(createdHASATerm.getSource()))
         {
-            new SubjectAreaFVTCheckedException(0, "", "", "ERROR: HASARelationship update source not as expected", "", "");
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: HASARelationship update source not as expected", "", "");
         }
         if (!updatedHASATerm.getSteward().equals(createdHASATerm.getSteward()))
         {
@@ -956,7 +956,7 @@ public class RelationshipsFVT
         }
         if (!updatedRelatedTerm.getSource().equals(createdRelatedTerm.getSource()))
         {
-            new SubjectAreaFVTCheckedException(0, "", "", "ERROR: RelatedTerm update source not as expected", "", "");
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: RelatedTerm update source not as expected", "", "");
         }
         if (!updatedRelatedTerm.getExpression().equals(createdRelatedTerm.getExpression()))
         {
@@ -1050,7 +1050,7 @@ public class RelationshipsFVT
         }
         if (!updatedAntonym.getSource().equals(createdAntonym.getSource()))
         {
-            new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Antonym update source not as expected", "", "");
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Antonym update source not as expected", "", "");
         }
         if (!updatedAntonym.getExpression().equals(createdAntonym.getExpression()))
         {
@@ -1146,7 +1146,7 @@ public class RelationshipsFVT
         }
         if (!updatedSynonym.getSource().equals(createdSynonym.getSource()))
         {
-            new SubjectAreaFVTCheckedException(0, "", "", "ERROR: synonym update source not as expected", "", "");
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: synonym update source not as expected", "", "");
         }
         if (!updatedSynonym.getExpression().equals(createdSynonym.getExpression()))
         {
