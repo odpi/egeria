@@ -40,6 +40,11 @@ image:
     tag: 0.1.0
     pullPolicy: IfNotPresent
 
+  kafkamonitor:
+    repository: planetf1/kafka-monitor-egeriavdc
+    tag: 0.1.4
+    pullPolicy: IfNotPresent
+
   nameOverride: ""
   fullnameOverride: ""
 
@@ -50,8 +55,6 @@ kafka:
     enabled: false
     type: NodePort
   configurationOverrides:
-    "advertised.listeners": |-
-       PLAINTEXT://${KAFKA_ENDPOINT}
     "auto.create.topics.enable": true
 
 
