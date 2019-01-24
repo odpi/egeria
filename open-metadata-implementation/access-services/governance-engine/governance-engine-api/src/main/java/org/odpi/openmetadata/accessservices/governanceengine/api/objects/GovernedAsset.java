@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -14,16 +14,39 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-
 public class GovernedAsset {
 
-    // Attributes of a Governed Asset Component - we use this term as it may refer to only part of an asset - for example a single
-    // column (referred to in a schema - not an asset in OMRS terms), or it may be the asset itself
-    // Mostly we focus on the granularity needed by enforcement engines like Apache Ranger or other governance engines
-    // Also note that this is a tiny subset of what can be retrieved via the Asset Consumer OMAS
+    private String guid;
+    private String fullQualifiedName;
+    private String name;
+    private String type;
+    private String owner;
+    private List<Context> contexts;
+    private List<GovernanceClassification> assignedGovernanceClassifications;
 
-    private String guid; // GUID of the asset that has been classified (TODO: Not sure what we'll put here for part of an asset)
-    private String fqname; // Fully qualified Common name of the asset for example MYDATABASE.MYTABLE.MYCOLUMN
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
+
+    public String getFullQualifiedName() {
+        return fullQualifiedName;
+    }
+
+    public void setFullQualifiedName(String fullQualifiedName) {
+        this.fullQualifiedName = fullQualifiedName;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getType() {
         return type;
@@ -33,54 +56,27 @@ public class GovernedAsset {
         this.type = type;
     }
 
-    private String type; // The asset type (name)
-    private String owner;// asset owner
-
-
-    // Asset components of interest will have classifications associated with them )
-    List<GovernanceClassificationUsage> assignedGovernanceClassifications;
-
-    public String getGuid() {
-        return guid;
+    public String getOwner() {
+        return owner;
     }
 
-    /**
-     *
-     * @param guid - unique identifier
-     */
-    public void setGuid(String guid) {
-        this.guid = guid;
+    public void setOwner(String owner) {
+        this.owner = owner;
     }
 
-
-    /**
-     * @return fqname - fully qualified name
-     */
-    public String getFqName() {
-        return fqname;
+    public List<Context> getContexts() {
+        return contexts;
     }
 
-    /**
-     *
-     * @param fqname - fully qualified asset / asset component name
-     */
-    public void setFqName(String fqname) {
-        this.fqname = fqname;
+    public void setContexts(List<Context> contexts) {
+        this.contexts = contexts;
     }
 
-    /**
-     * @return assignedGovernanceClassifications
-     */
-    public List<GovernanceClassificationUsage> getAssignedGovernanceClassifications() {
+    public List<GovernanceClassification> getAssignedGovernanceClassifications() {
         return assignedGovernanceClassifications;
     }
-    /**
-     *
-     * @param assignedGovernanceClassifications
-     */
-    public void setAssignedGovernanceClassifications(List<GovernanceClassificationUsage> assignedGovernanceClassifications) {
+
+    public void setAssignedGovernanceClassifications(List<GovernanceClassification> assignedGovernanceClassifications) {
         this.assignedGovernanceClassifications = assignedGovernanceClassifications;
     }
-
-
 }

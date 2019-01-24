@@ -445,7 +445,9 @@ public class IGCRestClient {
                 false
         );
         JsonNode jsonNode = null;
-        if (response.hasBody()) {
+        if (response == null) {
+            log.error("Unable to make request -- are you certain the authentication details for IGC are correct?");
+        } else if (response.hasBody()) {
             try {
                 jsonNode = mapper.readTree(response.getBody());
             } catch (IOException e) {
