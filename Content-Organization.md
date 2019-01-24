@@ -18,7 +18,6 @@ The Egeria content is organized into the following modules:
     * **[data-platform](open-metadata-implementation/access-services/data-platform)** - exchange metadata with a data platform.
     * **[data-privacy](open-metadata-implementation/access-services/data-privacy)** - support a data privacy officer.
     * **[data-process](open-metadata-implementation/access-services/data-process)** - exchange metadata with a data processing engine.
-    * **[data-protection](open-metadata-implementation/access-services/data-protection)** - set up rules to protect data.
     * **[data-science](open-metadata-implementation/access-services/data-science)** - manage metadata for analytics.
     * **[dev-ops](open-metadata-implementation/access-services/dev-ops)** - manage metadata for a devOps pipeline.
     * **[digital-architecture](open-metadata-implementation/access-services/digital-architecture)** - support the definition of data standards and models.
@@ -27,6 +26,7 @@ The Egeria content is organized into the following modules:
     * **[governance-program](open-metadata-implementation/access-services/governance-program)** - set up and manage a governance program.
     * **[information-view](open-metadata-implementation/access-services/information-view)** - configure and manage metadata for data tools that create virtual views over data - such as business intelligence tools and data virtualization platforms.
     * **[project-management](open-metadata-implementation/access-services/project-management)** - manage definitions of projects for metadata management and governance.
+    * **[security-officer](open-metadata-implementation/access-services/security-officer)** - set up rules to protect data.
     * **[software-developer](open-metadata-implementation/access-services/software-developer)** - deliver useful metadata to software developers.
     * **[stewardship-action](open-metadata-implementation/access-services/stewardship-action)** - manage metadata as part of a data steward's work to improve the data landscape.
     * **[subject-area](open-metadata-implementation/access-services/subject-area)** - develop a definition of a subject area including glossary terms, reference data and rules.
