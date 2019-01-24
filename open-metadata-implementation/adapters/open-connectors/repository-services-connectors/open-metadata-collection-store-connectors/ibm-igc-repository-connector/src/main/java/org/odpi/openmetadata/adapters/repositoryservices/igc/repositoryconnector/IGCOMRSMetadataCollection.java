@@ -1531,7 +1531,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
-        } else if (limitResultsByStatus == null || limitResultsByStatus.equals(InstanceStatus.ACTIVE)) {
+        } else if (limitResultsByStatus == null
+                || (limitResultsByStatus.size() == 1 && limitResultsByStatus.contains(InstanceStatus.ACTIVE))) {
 
             // Otherwise, only bother searching if we are after ACTIVE (or "all") entities -- non-ACTIVE means we
             // will just return an empty list
@@ -1684,7 +1685,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
-        } else if (limitResultsByStatus == null || limitResultsByStatus.equals(InstanceStatus.ACTIVE)) {
+        } else if (limitResultsByStatus == null
+                || (limitResultsByStatus.size() == 1 && limitResultsByStatus.contains(InstanceStatus.ACTIVE))) {
 
             // Otherwise, only bother searching if we are after ACTIVE (or "all") entities -- non-ACTIVE means we
             // will just return an empty list
@@ -1875,7 +1877,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
-        } else if (limitResultsByStatus == null || limitResultsByStatus.equals(InstanceStatus.ACTIVE)) {
+        } else if (limitResultsByStatus == null
+                || (limitResultsByStatus.size() == 1 && limitResultsByStatus.contains(InstanceStatus.ACTIVE))) {
 
             // Otherwise, only bother searching if we are after ACTIVE (or "all") entities -- non-ACTIVE means we
             // will just return an empty list
@@ -2048,7 +2051,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
-        } else if (limitResultsByStatus == null || limitResultsByStatus.equals(InstanceStatus.ACTIVE)) {
+        } else if (limitResultsByStatus == null
+                || (limitResultsByStatus.size() == 1 && limitResultsByStatus.contains(InstanceStatus.ACTIVE))) {
 
             // Otherwise, only bother searching if we are after ACTIVE (or "all") entities -- non-ACTIVE means we
             // will just return an empty list
