@@ -108,7 +108,7 @@
         <log4j.version>1.2.17</log4j.version>
         <slf4j.version>1.7.25</slf4j.version>
         <jackson.version>2.9.8</jackson.version>
-        <spring-boot.version>2.1.1.RELEASE</spring-boot.version>
+        <spring-boot.version>2.1.2.RELEASE</spring-boot.version>
         <spring-web.version>5.1.3.RELEASE</spring-web.version>
         <commons-io.version>2.4</commons-io.version>
         <commons-collections.version>3.2.2</commons-collections.version>
@@ -137,6 +137,11 @@
                 <artifactId>plexus-utils</artifactId>
                 <version>3.1.1</version>
             </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>1.2.3</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -151,16 +156,8 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.logging.log4j</groupId>
-            <artifactId>log4j-to-slf4j</artifactId>
-            <version>2.10.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version>
             <scope>test</scope>
         </dependency>
 
