@@ -4,13 +4,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
-  name: {{ include "myapp.fullname" . }}-egeria-deployment
+  name: {{ include "myapp.fullname" . }}-kafka-monitor-deployment
   labels:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: egeria-service
+    app.kubernetes.io/component: kafka-monitor-deployment
 
 spec:
   replicas: 1
@@ -18,7 +18,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "myapp.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-      app.kubernetes.io/component: egeria-service
+      app.kubernetes.io/component: kafka-monitor-deployment
 
   strategy: {}
   template:
@@ -27,22 +27,16 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "myapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/component: egeria-service
+        app.kubernetes.io/component: kafka-monitor-deployment
 
     spec:
       containers:
-      - image: "{{ .Values.image.egeria.repository }}:{{ .Values.image.egeria.tag }}"
+      - image: "{{ .Values.image.kafkamonitor.repository }}:{{ .Values.image.kafkamonitor.tag }}"
         ImagePullPolicy: Always
-        name: {{ include "myapp.fullname" . }}-egeria
-        ports:
-        - containerPort: 8080
+        name: {{ include "myapp.fullname" . }}-kafka-monitor
         resources: {}
-        restartPolicy: Always
-      - image: "{{ .Values.image.egeriainit.repository }}:{{ .Values.image.egeriainit.tag }}"
-        name: {{ include "myapp.fullname" . }}-egeriainit
-        ImagePullPolicy: "{{ .Values.image.egeriainit.pullPolicy }}"
         envFrom:
         - configMapRef:
-           name: {{ include "myapp.fullname" . }}-configmap
-        resources: {}
+            name: {{ include "myapp.fullname" . }}-configmap
+      restartPolicy: Always
 status: {}

@@ -313,8 +313,14 @@ public enum SubjectAreaErrorCode {
             "Correct the code in the caller to either not use the effective To date or use an effective date in the future."),
     INCORRECT_EFFECTIVE_DATE_RANGE(400, "OMAS-SUBJECTAREA-400-074 ",
             "The supplied effectivity Date range  is incorrect, as it starts after it ends on the {0} operation",
-            "The system is unable to process the request that requests sn incorrect effectivity range.",
+            "The system is unable to process a request with an incorrect effectivity range.",
             "Correct the code in the caller to either not use the effectivity dates or to ensure the from is before the to Date."),
+    ERROR_ENCODING_QUERY_PARAMETER(400, "OMAS-SUBJECTAREA-400-075 ",
+            "An error occurred when attempting to encode the value of Query parameter {0}",
+            "The client is unable to send the rest call as the supplied query parameter {0} cannot be encoded.",
+            "Correct the code in the caller to supply a query parameter that can be encoded."),
+
+
     OMRS_NOT_INITIALIZED(404, "OMAS-SUBJECTAREA-404-001 ",
             "The open metadata repository services are not initialized for the {0} operation",
             "The system is unable to connect to the open metadata property org.odpi.openmetadata.accessservices.subjectarea.server.",

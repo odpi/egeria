@@ -5,3 +5,9 @@
 This is work in progress.
 Component definitions are being added, and the chart is syntactically correct and will deploy to kubernetes
 However no testing has yet been done on the function of each component
+
+
+** Required helm repositories
+
+helm repo add confluent https://confluentinc.github.io/cp-helm-charts/
+helm repo update
