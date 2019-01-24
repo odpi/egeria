@@ -290,6 +290,24 @@ public class DetectUtils {
         }
         return term;
     }
+    /**
+     * Detect and return a List of Terms from the supplied response. If we do not find one then throw an Exception
+     * @param methodName - name of the method called
+     * @param restResponse - response from the rest call.  This generated in the remote handlers.
+     * @return List of Terms if the supplied response is a terms response
+     * @throws UnexpectedResponseException - if the response is not a Terms then throw this exception
+     */
+    public static List<Term> detectAndReturnTerms(String methodName,
+                                           SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+       List<Term> terms = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.Terms)) {
+            TermsResponse termsResponse = (TermsResponse)restResponse;
+            terms = termsResponse.getTerms();
+        } else {
+            CategoryErrorResponse(methodName, restResponse);
+        }
+        return terms;
+    }
 
     /*
      * Detect and return a List of term relationships from the supplied response. If we do not find the expected response then throw an Exception
@@ -505,4 +523,5 @@ public class DetectUtils {
         }
         return semanticAssignment;
     }
+
 }
