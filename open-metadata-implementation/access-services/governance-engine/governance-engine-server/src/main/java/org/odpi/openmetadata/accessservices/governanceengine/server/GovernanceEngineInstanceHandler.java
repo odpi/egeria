@@ -13,10 +13,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * access service instances.  The instance map is thread-safe.  Instances are added
  * and removed by the GovernanceEngineAdmin class.
  */
-class GovernanceEngineInstanceHandler
-{
-    private static GovernanceEngineServicesInstanceMap instanceMap   = new GovernanceEngineServicesInstanceMap();
-    private static AccessServiceDescription            myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
+class GovernanceEngineInstanceHandler {
+    private static GovernanceEngineServicesInstanceMap instanceMap = new GovernanceEngineServicesInstanceMap();
+    private static AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
 
 
     /**
@@ -34,7 +33,7 @@ class GovernanceEngineInstanceHandler
      * @return String name
      * @throws PropertyServerException no available instance for the requested server
      */
-    public String  getAccessServiceName(String serverName) throws PropertyServerException {
+    public String getAccessServiceName(String serverName) throws PropertyServerException {
         GovernanceEngineServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {
@@ -42,15 +41,15 @@ class GovernanceEngineInstanceHandler
         } else {
             final String methodName = "getAccessServiceName";
 
-            GovernanceEngineErrorCode errorCode    = GovernanceEngineErrorCode.SERVICE_NOT_INITIALIZED;
-            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
+            GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.SERVICE_NOT_INITIALIZED;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
     }
 
@@ -70,15 +69,15 @@ class GovernanceEngineInstanceHandler
         } else {
             final String methodName = "getMetadataCollection";
 
-            GovernanceEngineErrorCode errorCode    = GovernanceEngineErrorCode.SERVICE_NOT_INITIALIZED;
-            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
+            GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.SERVICE_NOT_INITIALIZED;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
     }
 
@@ -89,8 +88,7 @@ class GovernanceEngineInstanceHandler
      * @return OMRSRepositoryConnector object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public OMRSRepositoryConnector getRepositoryConnector(String  serverName) throws PropertyServerException
-    {
+    public OMRSRepositoryConnector getRepositoryConnector(String serverName) throws PropertyServerException {
         GovernanceEngineServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {
@@ -98,15 +96,15 @@ class GovernanceEngineInstanceHandler
         } else {
             final String methodName = "getRepositoryConnector";
 
-            GovernanceEngineErrorCode errorCode    = GovernanceEngineErrorCode.SERVICE_NOT_INITIALIZED;
-            String                    errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
+            GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.SERVICE_NOT_INITIALIZED;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName, methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
     }
 }
