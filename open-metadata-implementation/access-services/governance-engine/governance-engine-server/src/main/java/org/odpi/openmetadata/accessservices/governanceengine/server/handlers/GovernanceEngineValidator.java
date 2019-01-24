@@ -1,4 +1,5 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.governanceengine.server.handlers;
 
@@ -15,9 +16,9 @@ import java.util.List;
  * ErrorValidator class that provides api validation routines for the other handler classes
  */
 public final class GovernanceEngineValidator {
+
     private static final Logger log = LoggerFactory.getLogger(GovernanceEngineValidator.class);
 
-    // Static class for utility only
     private GovernanceEngineValidator() {
     }
 
@@ -30,13 +31,12 @@ public final class GovernanceEngineValidator {
      * @throws InvalidParameterException - the userId is null
      */
     public static void validateUserId(String userId,
-                               String methodName) throws InvalidParameterException {
+                                      String methodName) throws InvalidParameterException {
         if (StringUtils.isEmpty(userId)) {
             GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.EMPTY_USER_ID;
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage(methodName);
 
-            //TODO Exception reports utility class, but caller method by string - could be better
             throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
                     MethodHandles.lookup().lookupClass().getName(),
                     methodName,
@@ -56,8 +56,8 @@ public final class GovernanceEngineValidator {
      * @throws InvalidParameterException - the guid is null
      */
     public static void validateGUID(String guid,
-                             String parameterName,
-                             String methodName) throws InvalidParameterException {
+                                    String parameterName,
+                                    String methodName) throws InvalidParameterException {
         if (StringUtils.isEmpty(guid)) {
             GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.NULL_GUID;
             String errorMessage = errorCode.getErrorMessageId()
@@ -82,10 +82,9 @@ public final class GovernanceEngineValidator {
      * @throws InvalidParameterException - the guid is null
      */
     public static void validateClassification(List<String> rootClassification,
-                                       String parameterName,
-                                       String methodName) throws InvalidParameterException {
+                                              String parameterName,
+                                              String methodName) throws InvalidParameterException {
 
-        //NULL is valid so no further checks for now
         return;
     }
 
@@ -98,12 +97,9 @@ public final class GovernanceEngineValidator {
      * @throws InvalidParameterException - the guid is null
      */
     public static void validateType(List<String> rootAssetType,
-                             String parameterName,
-                             String methodName) throws InvalidParameterException {
+                                    String parameterName,
+                                    String methodName) throws InvalidParameterException {
         // NULL is valid, so no further checks for now
         return;
     }
-
-
-
 }
