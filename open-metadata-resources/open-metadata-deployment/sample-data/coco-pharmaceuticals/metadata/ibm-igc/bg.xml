@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
-<glossary xmlns="http://www.ibm.com/is/bg/importexport" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ibm.com/is/bg/importexport BGSchema.xsd" version="1.6" exportTime="1545406246550" ignoreAssignedAssets="true" ignoreLabeledAssets="true" ignoreAssetCollections="true" ignoreStewards="true">
+<glossary xmlns="http://www.ibm.com/is/bg/importexport" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ibm.com/is/bg/importexport BGSchema.xsd" version="1.6" exportTime="1548112093458" ignoreAssignedAssets="true" ignoreLabeledAssets="true" ignoreAssetCollections="true" ignoreStewards="true">
     <categories>
         <category rid="6662c0f2.ee6a64fe.00263pfar.1a0mm9a.lfjd3c.rmgl1cdd5fcd4bijur3g3" name="Coco Pharmaceuticals" shortDescription="This category contains Glossary Terms and Classifications that are related to the Coco Pharmaceuticals data"/>
         <category rid="6662c0f2.ee6a64fe.00263v5kq.vfvo181.0dogg1.qbngmle6tcsbik903jtoh" name="Confidentiality">
@@ -84,19 +84,19 @@
         </category>
     </categories>
     <terms>
-        <term rid="6662c0f2.e1b1ec6c.00263v5ma.ggkavjk.k8336l.ecj6gedj8i5j3d7n7u3eb" name="Confidential" status="ACCEPTED" type="NONE">
+        <term rid="6662c0f2.e1b1ec6c.00263v5ma.ggkavjk.k8336l.ecj6gedj8i5j3d7n7u3eb" name="Confidential" shortDescription="The data should be protected and only shared with people with a need to see it." status="STANDARD" type="NONE">
             <parentCategory rid="6662c0f2.ee6a64fe.00263v5kq.vfvo181.0dogg1.qbngmle6tcsbik903jtoh" identity="Coco Pharmaceuticals::Confidentiality"/>
             <assignedAssets>
                 <termRef rid="6662c0f2.e1b1ec6c.00263pgtg.ibgp6ju.f2hgql.kh1o8e0p85uahptrt97s0" identity="Coco Pharmaceuticals::Terms::Annual Leave Allowance"/>
-                <termRef rid="6662c0f2.e1b1ec6c.00263ph2k.b6kb0d8.k164b7.5g8ghnulmmemam4b7btsj" identity="Coco Pharmaceuticals::Terms::Employee Contract Type"/>
                 <termRef rid="6662c0f2.e1b1ec6c.00263pfrb.66t5p8c.jk5353.69k7s3u2do49odaavci58" identity="Coco Pharmaceuticals::Terms::Employee Status"/>
+                <termRef rid="6662c0f2.e1b1ec6c.00263ph2k.b6kb0d8.k164b7.5g8ghnulmmemam4b7btsj" identity="Coco Pharmaceuticals::Terms::Employee Contract Type"/>
                 <termRef rid="6662c0f2.e1b1ec6c.00263pgh3.t31gl2q.lmuj3g.l1serkqbms76e5v8n8mes" identity="Coco Pharmaceuticals::Terms::Job Level"/>
                 <termRef rid="6662c0f2.e1b1ec6c.54865omh1.pco9ecb.c3g5f1.pfvf6bdv95dnc67jq2jli" identity="Coco Pharmaceuticals::Terms::First Name"/>
                 <termRef rid="6662c0f2.e1b1ec6c.54865omgq.rfvlanh.nnt92o.b897ae4a46b6lji08q04c" identity="Coco Pharmaceuticals::Terms::Last Name"/>
                 <termRef rid="6662c0f2.e1b1ec6c.000ma7vav.iq3ffqq.q7f55j.4f9lr6n61uumoi3r8c70h" identity="Coco Pharmaceuticals::Terms::Contact Type"/>
             </assignedAssets>
         </term>
-        <term rid="6662c0f2.e1b1ec6c.00263v5ln.ako8t79.5ve76f.urbfgjnj98q0168uijncd" name="Internal" status="ACCEPTED" type="NONE">
+        <term rid="6662c0f2.e1b1ec6c.00263v5ln.ako8t79.5ve76f.urbfgjnj98q0168uijncd" name="Internal" shortDescription="The data should not be exposed outside of this organization." status="STANDARD" type="NONE">
             <parentCategory rid="6662c0f2.ee6a64fe.00263v5kq.vfvo181.0dogg1.qbngmle6tcsbik903jtoh" identity="Coco Pharmaceuticals::Confidentiality"/>
             <assignedAssets>
                 <termRef rid="6662c0f2.e1b1ec6c.00263pgk7.nu7f3ut.c2hoo7.orafl03b4mu13d5l5alll" identity="Coco Pharmaceuticals::Terms::Work Location"/>
@@ -115,27 +115,17 @@
                 <termRef rid="6662c0f2.e1b1ec6c.00263sgot.jbooooq.ji0mav.nq8i0vihjej8sqkht0nl1" identity="Coco Pharmaceuticals::Terms::Work Location Code"/>
             </assignedAssets>
         </term>
-        <term rid="6662c0f2.e1b1ec6c.00263v5ld.od5hdj5.1jfg6r.rjhgjgoh5et2dohv7tcm5" name="Public" status="ACCEPTED" type="NONE">
+        <term rid="6662c0f2.e1b1ec6c.och6gskvf.g7abp3p.kj0jsh.vcehf9ug0opnsv3hh1bg5" name="Other" shortDescription="Another confidentially level." status="STANDARD" type="NONE">
             <parentCategory rid="6662c0f2.ee6a64fe.00263v5kq.vfvo181.0dogg1.qbngmle6tcsbik903jtoh" identity="Coco Pharmaceuticals::Confidentiality"/>
-            <assignedAssets>
-                <termRef rid="6662c0f2.e1b1ec6c.00263shfo.saio2gr.knhn4a.kdncgj3iep5q1d3fj6f80" identity="Coco Pharmaceuticals::Terms::Area"/>
-                <termRef rid="6662c0f2.e1b1ec6c.000ma7vkc.1q7pifm.16u2c4.04elvefnrcs699ie6q9qs" identity="Coco Pharmaceuticals::Terms::Country"/>
-                <termRef rid="6662c0f2.e1b1ec6c.00263shdl.1ls41uc.3reopg.qglt013gvgcafq4rqict5" identity="Coco Pharmaceuticals::Terms::Building Name"/>
-                <termRef rid="6662c0f2.e1b1ec6c.00263she3.v0qf9as.7lrrql.s9sj7plnahfu8tljp86jl" identity="Coco Pharmaceuticals::Terms::Street Name"/>
-                <termRef rid="6662c0f2.e1b1ec6c.00263ph63.beh4unk.9jn1qm.db96h9bqgj8gkjoj7qhh6" identity="Coco Pharmaceuticals::Terms::Street"/>
-                <termRef rid="6662c0f2.e1b1ec6c.00263phfe.hdcsrms.095jod.69a74ckl4hrfodcsgeu2d" identity="Coco Pharmaceuticals::Terms::State"/>
-                <termRef rid="6662c0f2.e1b1ec6c.00263shfh.q2hgvt3.4pqkpm.ok2o0md4t43u9do004b2v" identity="Coco Pharmaceuticals::Terms::City"/>
-                <termRef rid="6662c0f2.e1b1ec6c.00263shf5.71q7b5r.i13rle.cqjfgla5ut5c7j593cq5n" identity="Coco Pharmaceuticals::Terms::District"/>
-            </assignedAssets>
         </term>
-        <term rid="6662c0f2.e1b1ec6c.00263v5mk.q4qjl76.4ocj4r.rqnida04tij6cav6cujj7" name="Secret" status="ACCEPTED" type="NONE">
+        <term rid="6662c0f2.e1b1ec6c.och6gskv6.od33879.uauvh5.gnd9iri6djood7rlf7tqp" name="Restricted" shortDescription="The data is very valuable and must be restricted to a very small number of people." status="STANDARD" type="NONE">
             <parentCategory rid="6662c0f2.ee6a64fe.00263v5kq.vfvo181.0dogg1.qbngmle6tcsbik903jtoh" identity="Coco Pharmaceuticals::Confidentiality"/>
             <assignedAssets>
-                <termRef rid="6662c0f2.e1b1ec6c.00263ph4a.8t5bomo.aqcege.rpl6gvjifgv1d8gh5labg" identity="Coco Pharmaceuticals::Terms::Annual Salary"/>
                 <termRef rid="6662c0f2.e1b1ec6c.00263ph59.aqte17n.28ed5t.81mkudrsucorsqicli64s" identity="Coco Pharmaceuticals::Terms::Discretionary Bonus"/>
+                <termRef rid="6662c0f2.e1b1ec6c.00263ph4a.8t5bomo.aqcege.rpl6gvjifgv1d8gh5labg" identity="Coco Pharmaceuticals::Terms::Annual Salary"/>
             </assignedAssets>
         </term>
-        <term rid="6662c0f2.e1b1ec6c.00263v5m1.ndvvihb.el8642.43pilmph1981vcqpln1at" name="Sensitive" status="ACCEPTED" type="NONE">
+        <term rid="6662c0f2.e1b1ec6c.00263v5m1.ndvvihb.el8642.43pilmph1981vcqpln1at" name="Sensitive" shortDescription="The data is sensitive and inappropriate use may adversely impact the data subject." status="STANDARD" type="NONE">
             <parentCategory rid="6662c0f2.ee6a64fe.00263v5kq.vfvo181.0dogg1.qbngmle6tcsbik903jtoh" identity="Coco Pharmaceuticals::Confidentiality"/>
             <assignedAssets>
                 <termRef rid="6662c0f2.e1b1ec6c.00263sh0s.jh26jeo.qf1k24.ip1nbj5vhcv53hif03093" identity="Coco Pharmaceuticals::Terms::Phone Number"/>
@@ -150,6 +140,19 @@
                 <termRef rid="6662c0f2.e1b1ec6c.00263shml.beko45i.c0evnb.dtnbci8731alks6c2j53k" identity="Coco Pharmaceuticals::Terms::Address Line 5"/>
                 <termRef rid="6662c0f2.e1b1ec6c.00263pfjd.mdc3fge.hf83cl.cbijntvurs6875rtm5lig" identity="Coco Pharmaceuticals::Terms::Years of Service"/>
                 <termRef rid="6662c0f2.e1b1ec6c.00263shm4.ftiu77d.1a2qti.5s7cdcl4eavm5smikm9q0" identity="Coco Pharmaceuticals::Terms::Address Line 3"/>
+            </assignedAssets>
+        </term>
+        <term rid="6662c0f2.e1b1ec6c.och6gsksh.nl604g6.931p5e.a8vd5nphaem8iblvrpfg0" name="Unclassified" shortDescription="The data is public information." status="STANDARD" type="NONE">
+            <parentCategory rid="6662c0f2.ee6a64fe.00263v5kq.vfvo181.0dogg1.qbngmle6tcsbik903jtoh" identity="Coco Pharmaceuticals::Confidentiality"/>
+            <assignedAssets>
+                <termRef rid="6662c0f2.e1b1ec6c.00263shfo.saio2gr.knhn4a.kdncgj3iep5q1d3fj6f80" identity="Coco Pharmaceuticals::Terms::Area"/>
+                <termRef rid="6662c0f2.e1b1ec6c.000ma7vkc.1q7pifm.16u2c4.04elvefnrcs699ie6q9qs" identity="Coco Pharmaceuticals::Terms::Country"/>
+                <termRef rid="6662c0f2.e1b1ec6c.00263shdl.1ls41uc.3reopg.qglt013gvgcafq4rqict5" identity="Coco Pharmaceuticals::Terms::Building Name"/>
+                <termRef rid="6662c0f2.e1b1ec6c.00263she3.v0qf9as.7lrrql.s9sj7plnahfu8tljp86jl" identity="Coco Pharmaceuticals::Terms::Street Name"/>
+                <termRef rid="6662c0f2.e1b1ec6c.00263ph63.beh4unk.9jn1qm.db96h9bqgj8gkjoj7qhh6" identity="Coco Pharmaceuticals::Terms::Street"/>
+                <termRef rid="6662c0f2.e1b1ec6c.00263phfe.hdcsrms.095jod.69a74ckl4hrfodcsgeu2d" identity="Coco Pharmaceuticals::Terms::State"/>
+                <termRef rid="6662c0f2.e1b1ec6c.00263shfh.q2hgvt3.4pqkpm.ok2o0md4t43u9do004b2v" identity="Coco Pharmaceuticals::Terms::City"/>
+                <termRef rid="6662c0f2.e1b1ec6c.00263shf5.71q7b5r.i13rle.cqjfgla5ut5c7j593cq5n" identity="Coco Pharmaceuticals::Terms::District"/>
             </assignedAssets>
         </term>
         <term rid="6662c0f2.e1b1ec6c.000mfkabd.cnqudif.58d1v3.mchnq8gmq5e3mo3kpev7l" name="Employee" status="CANDIDATE" type="NONE">
