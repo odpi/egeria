@@ -306,10 +306,9 @@ public class OMRSAPIHelper {
 
     }
 
-    public List<EntityDetail> callFindEntitiesByProperty(String             userId,
+    public List<EntityDetail> callFindEntitiesByPropertyValue(String               userId,
                                                          String                    entityTypeGUID,
-                                                         InstanceProperties        matchProperties,
-                                                         MatchCriteria matchCriteria,
+                                                         String                    searchCriteria ,
                                                          int                       fromEntityElement,
                                                          List<InstanceStatus>      limitResultsByStatus,
                                                          List<String>              limitResultsByClassification,
@@ -322,7 +321,7 @@ public class OMRSAPIHelper {
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException,
             MetadataServerUncontactableException {
 
-        String methodName = "callFindEntitiesByProperty";
+        String methodName = "callFindEntitiesByPropertyValue";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName );
         }
@@ -334,10 +333,9 @@ public class OMRSAPIHelper {
 
 
         try {
-            foundEntities =  getOMRSMetadataCollection().findEntitiesByProperty(userId,
+            foundEntities = getOMRSMetadataCollection().findEntitiesByPropertyValue(userId,
                     entityTypeGUID,
-                    matchProperties,
-                    matchCriteria,
+                    searchCriteria,
                     fromEntityElement,
                     limitResultsByStatus,
                     limitResultsByClassification,
@@ -386,7 +384,6 @@ public class OMRSAPIHelper {
         }
         return foundEntities;
     }
-
     public EntityDetail callOMRSUpdateEntity(String userId, EntityDetail entityDetail) throws
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException,
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException,
@@ -1165,6 +1162,8 @@ public class OMRSAPIHelper {
         }
         return relationships;
     }
+
+
 
     // type
     public String callGetTypeGuid(String userId, String typeName) throws

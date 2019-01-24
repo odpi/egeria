@@ -57,9 +57,13 @@ public enum GovernanceEngineAuditCode {
             OMRSAuditLogRecordSeverity.ERROR,
             "The Governance Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
             "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
-            "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server.")
-    ;
-
+            "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
+    ERROR_INITIALIZING_TOPIC_CONNECTION("OMAS-GOVERNANCE-ENGINE-0007",
+            OMRSAuditLogRecordSeverity.EXCEPTION,
+            "Unable to initialize the Governance Engice Open Metadata Access Service (OMAS) topic connection {0} for server instance {1}; error message was: {2}",
+            "The connection could not be initialized.",
+            "Review the exception and resolve the configuration. ");
+    
     private String logMessageId;
     private OMRSAuditLogRecordSeverity severity;
     private String logMessage;
