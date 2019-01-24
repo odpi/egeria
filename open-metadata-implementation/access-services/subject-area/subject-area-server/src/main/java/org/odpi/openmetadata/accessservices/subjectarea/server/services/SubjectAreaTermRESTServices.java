@@ -5,12 +5,12 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTermMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermAnchor.TermAnchor;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermISATypeOFRelationship.TermISATypeOFRelationshipMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.server.SubjectAreaBeansToAccessOMRS;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
@@ -19,17 +19,24 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodes
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.TermMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.ClassificationGroupByOperation;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.TypeGuids;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.RestValidator;
+import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveAccessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.*;
+import java.util.Set;
 
 
 /**
@@ -42,6 +49,23 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaTermRESTServices.class);
 
     private static final String className = SubjectAreaTermRESTServices.class.getName();
+
+    public static final Set<String> SUBJECT_AREA_TERM_CLASSIFICATIONS= new HashSet(Arrays.asList(
+            // spine objects
+            SpineObject.class.getSimpleName(),
+            SpineAttribute.class.getSimpleName(),
+            ObjectIdentifier.class.getSimpleName(),
+            //governance actions
+            Confidentiality.class.getSimpleName(),
+            Confidence.class.getSimpleName(),
+            Criticality.class.getSimpleName(),
+            Retention.class.getSimpleName(),
+            // dictionary
+            AbstractConcept.class.getSimpleName(),
+            ActivityDescription.class.getSimpleName(),
+            DataValue.class.getSimpleName(),
+            // context
+            ContextDefinition.class.getSimpleName()));
 
     /**
      * Default constructor
@@ -296,6 +320,13 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             if (pageSize == null) {
                 pageSize = new Integer(0);
             }
+            if (sequencingProperty !=null) {
+                try {
+                    sequencingProperty = URLDecoder.decode(sequencingProperty,"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    // TODO error
+                }
+            }
             SequencingOrder omrsSequencingOrder =  SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
             Set<Line> omrsTermRelationships = subjectAreaOmasREST.getGlossaryTermRelationships(
                     userId,
@@ -356,6 +387,115 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         }
         return response;
     }
+    /**
+     * Find Term
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param searchCriteria String expression matching Term property values (this does not include the GlossarySummary content). When not specified, all terms are returned.
+     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
+     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     *                 beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize the maximum number of elements that can be returned on this request.
+     *                 0 means there is no limit to the page size
+     * @param sequencingOrder the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @return A list of Terms meeting the search Criteria
+     *
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
+     * </ul>
+     */
+    public  SubjectAreaOMASAPIResponse findTerm(String serverName, String userId,
+                               String searchCriteria,
+                               Date asOfTime,
+                               Integer offset,
+                               Integer pageSize,
+                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                               String sequencingProperty) {
+
+        final String methodName = "findTerm";
+        if (log.isDebugEnabled())
+        {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        List<Term> terms = null;
+        SubjectAreaOMASAPIResponse response =null;
+        try
+        {
+            // initialise omrs API helper with the right instance based on the server name
+            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
+            // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
+            if (offset == null) {
+                offset = new Integer(0);
+            }
+            if (pageSize == null) {
+                pageSize = new Integer(0);
+            }
+            if (sequencingProperty !=null) {
+                try {
+                    sequencingProperty = URLDecoder.decode(sequencingProperty,"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    // TODO error
+                }
+            }
+            if (searchCriteria !=null) {
+                try {
+                   searchCriteria = URLDecoder.decode(searchCriteria,"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    // TODO error
+                }
+            }
+            SequencingOrder omrsSequencingOrder =  SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
+            OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
+            TypeDef typeDef =archiveAccessor.getEntityDefByName("GlossaryTerm");
+            String entityTypeGUID = typeDef.getGUID();
+            List<EntityDetail> entitydetails = oMRSAPIHelper.callFindEntitiesByPropertyValue(
+                    userId,
+                    entityTypeGUID,
+                    searchCriteria,
+                    offset.intValue(),
+                    null,       // TODO limit by status ?
+                    null,  // TODO limit by classification ?
+                    asOfTime,
+                    sequencingProperty,
+                    omrsSequencingOrder,
+                    pageSize);
+            if (entitydetails !=null) {
+                terms= new ArrayList<>();
+                for (EntityDetail entityDetail : entitydetails) {
+                    GlossaryTerm glossaryTerm = GlossaryTermMapper.mapOmrsEntityDetailToGlossaryTerm(entityDetail);
+                    Term term = TermMapper.mapOMRSBeantoTerm(glossaryTerm);
+                    terms.add(term);
+                }
+            }
+            response =new TermsResponse(terms);
+        } catch (InvalidParameterException e)
+        {
+            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (UserNotAuthorizedException e)
+        {
+            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+        } catch (MetadataServerUncontactableException e)
+        {
+            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
+        }
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", Response=" + response);
+        }
+        return response;
+
+
+    }
+
 
     private int getSizeToGet(Set<Line> omrsTermRelationships, List<Line> termRelationships) {
         int sizeToGet =0;
@@ -375,11 +515,11 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <p>
      * Status is not updated using this call.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param serverName   serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId       userId under which the request is performed
      * @param guid         guid of the term to update
      * @param suppliedTerm term to be updated
-     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated. The GovernanceAction content is always replaced.
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
      * <ul>
@@ -419,7 +559,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                     Status status = suppliedTerm.getSystemAttributes().getStatus();
                     SubjectAreaUtils.checkStatusNotDeleted(status, SubjectAreaErrorCode.STATUS_UPDATE_TO_DELETED_NOT_ALLOWED);
                 }
-                Term updateTerm = originalTerm;
+                Term updateTerm = new Term();
+                updateTerm.setSystemAttributes(originalTerm.getSystemAttributes());
                 if (isReplace)
                 {
                     // copy over attributes
@@ -433,60 +574,90 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                     updateTerm.setSpineAttribute(suppliedTerm.isSpineAttribute());
                     updateTerm.setObjectIdentifier(suppliedTerm.isObjectIdentifier());
                     updateTerm.setAdditionalProperties(suppliedTerm.getAdditionalProperties());
-                    //TODO handle governance classifications and other classifications
+                    //TODO handle other classifications
                 } else
                 {
                     // copy over attributes if specified
-                    if (suppliedTerm.getName() != null)
+                    if (suppliedTerm.getName() == null)
+                    {
+                        updateTerm.setName(originalTerm.getName());
+                    } else
                     {
                         updateTerm.setName(suppliedTerm.getName());
                     }
-                    if (suppliedTerm.getQualifiedName() != null)
+                    if (suppliedTerm.getQualifiedName() == null)
+                    {
+                        updateTerm.setQualifiedName(originalTerm.getQualifiedName());
+                    } else
                     {
                         updateTerm.setQualifiedName(suppliedTerm.getQualifiedName());
                     }
-                    if (suppliedTerm.getDescription() != null)
+                    if (suppliedTerm.getDescription() == null)
+                    {
+                        updateTerm.setDescription(originalTerm.getDescription());
+                    } else
                     {
                         updateTerm.setDescription(suppliedTerm.getDescription());
                     }
-                    if (suppliedTerm.getUsage() != null)
+                    if (suppliedTerm.getUsage() == null)
+                    {
+                        updateTerm.setUsage(originalTerm.getUsage());
+                    } else
                     {
                         updateTerm.setUsage(suppliedTerm.getUsage());
                     }
-                    if (suppliedTerm.getAbbreviation() != null)
+                    if (suppliedTerm.getAbbreviation() == null)
+                    {
+                        updateTerm.setAbbreviation(originalTerm.getAbbreviation());
+                    } else
                     {
                         updateTerm.setAbbreviation(suppliedTerm.getAbbreviation());
                     }
-                    if (suppliedTerm.getAdditionalProperties() != null)
+                    if (suppliedTerm.getAdditionalProperties() == null)
+                    {
+                        updateTerm.setAdditionalProperties(originalTerm.getAdditionalProperties());
+                    } else
                     {
                         updateTerm.setAdditionalProperties(suppliedTerm.getAdditionalProperties());
                     }
-                    if (suppliedTerm.getExamples() != null)
+                    if (suppliedTerm.getExamples() == null)
+                    {
+                        updateTerm.setExamples(originalTerm.getExamples());
+                    } else
                     {
                         updateTerm.setExamples(suppliedTerm.getExamples());
                     }
-                    if (suppliedTerm.isSpineObject())
-                    {
-                        updateTerm.setSpineObject(suppliedTerm.isSpineObject());
-                    }
-                    if (suppliedTerm.isSpineObject())
-                    {
-                        updateTerm.setSpineAttribute(suppliedTerm.isSpineAttribute());
-                    }
-                    if (suppliedTerm.isObjectIdentifier())
-                    {
-                        updateTerm.setObjectIdentifier(suppliedTerm.isObjectIdentifier());
-                    }
-                    //TODO handle governance classifications and other classifications
+                    //TODO handle other classifications
                 }
-                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm generatedTerm = null;
+                // always update the governance actions for a replace or an update
+                GovernanceActions suppliedGovernanceActions = suppliedTerm.getGovernanceActions();
+                updateTerm.setGovernanceActions(suppliedGovernanceActions);
+                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm generatedTerm = TermMapper.mapTermToOMRSBean(updateTerm);
 
-                generatedTerm = TermMapper.mapTermToOMRSBean(updateTerm);
-                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm updatedGeneratedTerm = null;
+                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm updatedGeneratedTerm = subjectAreaOmasREST.updateGlossaryTerm(userId, generatedTerm);
 
-                updatedGeneratedTerm = subjectAreaOmasREST.updateGlossaryTerm(userId, generatedTerm);
+                // deal with the classifications that the Subject Area is concerned about
 
+                Set<Classification> suppliedClassifications = getClassificationFromTerm(suppliedTerm, suppliedGovernanceActions);
+                Set<Classification> existingClassifications = getClassificationFromTerm(originalTerm,originalTerm.getGovernanceActions());
+                ClassificationGroupByOperation classificationGroupByOperation = new ClassificationGroupByOperation(SUBJECT_AREA_TERM_CLASSIFICATIONS,existingClassifications,suppliedClassifications);
+                List<Classification> addClassifications = classificationGroupByOperation.getAddClassifications();
+                List<String> removeClassificationNames = classificationGroupByOperation.getRemoveClassifications();
+                List<Classification> updateClassifications = classificationGroupByOperation.getUpdateClassifications();
+                if (!addClassifications.isEmpty()) {
+                    updatedGeneratedTerm = subjectAreaOmasREST.addGlossaryTermClassifications(userId,guid, addClassifications);
+                }
+                if (!removeClassificationNames.isEmpty()) {
+                    for (String classificationName:removeClassificationNames) {
+                        updatedGeneratedTerm = subjectAreaOmasREST.deleteGlossaryTermClassification(userId, guid, classificationName);
+                    }
+                }
+                if (!updateClassifications.isEmpty()) {
+
+                    updatedGeneratedTerm  = subjectAreaOmasREST.updateGlossaryTermClassification(userId,guid, updateClassifications);
+                }
                 org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term updatedTerm = TermMapper.mapOMRSBeantoTerm(updatedGeneratedTerm);
+
                 response = new TermResponse(updatedTerm);
             }
         } catch (InvalidParameterException e)
@@ -501,6 +672,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         } catch (UnrecognizedGUIDException e)
         {
             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+        } catch (ClassificationException e) {
+            response = OMASExceptionToResponse.convertClassificationException(e);
         }
 
         if (log.isDebugEnabled())
@@ -509,6 +682,39 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         }
         return response;
 
+    }
+
+    private Set<Classification> getClassificationFromTerm(Term suppliedTerm, GovernanceActions governanceActions) {
+        Set<Classification> classifications = new HashSet<>();
+        if ( suppliedTerm.isObjectIdentifier()) {
+            classifications.add(new ObjectIdentifier());
+        }
+        if ( suppliedTerm.isSpineObject()) {
+            classifications.add(new SpineObject());
+        }
+        if ( suppliedTerm.isSpineAttribute()) {
+            classifications.add(new SpineAttribute());
+        }
+        if (governanceActions !=null) {
+            Retention suppliedRetention = governanceActions.getRetention();
+            Confidentiality suppliedConfidentiality = governanceActions.getConfidentiality();
+            Confidence suppliedConfidence = governanceActions.getConfidence();
+            Criticality suppliedCriticallity = governanceActions.getCriticality();
+
+            if (suppliedRetention !=null) {
+                classifications.add(suppliedRetention);
+            }
+            if (suppliedConfidentiality !=null) {
+                classifications.add(suppliedConfidentiality);
+            }
+            if (suppliedConfidence != null) {
+                classifications.add(suppliedConfidence);
+            }
+            if (suppliedCriticallity !=null) {
+                classifications.add(suppliedCriticallity);
+            }
+        }
+        return classifications;
     }
 
 

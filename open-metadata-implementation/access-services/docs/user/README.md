@@ -6,6 +6,7 @@
 * [General Concepts and Vocabulary](../concepts)
 
 * User documentation for each OMAS
+  * [Asset Consumer OMAS User Documentation](../../asset-consumer/docs/user)
   * [Community Profile OMAS User Documentation](../../community-profile/docs/user)
 
 

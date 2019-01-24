@@ -5,10 +5,14 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,6 +43,7 @@ public class PrimaryKeyMapper extends ClassificationMapping {
                 C_PRIMARY_KEY
         );
         addIgcRelationshipProperty("selected_primary_key");
+        addMappedOmrsProperty("name");
     }
 
     /**
@@ -106,6 +111,41 @@ public class PrimaryKeyMapper extends ClassificationMapping {
             }
 
         }
+
+    }
+
+    /**
+     * Search for PrimaryKey by looking for either a defined or selected primary key in IGC.
+     *
+     * @param matchClassificationProperties the criteria to use when searching for the classification
+     * @return IGCSearchConditionSet - the IGC search criteria to find entities based on this classification
+     */
+    @Override
+    public IGCSearchConditionSet getIGCSearchCriteria(InstanceProperties matchClassificationProperties) {
+
+        IGCSearchCondition igcSearchCondition = new IGCSearchCondition(
+                "selected_primary_key",
+                "=",
+                "true"
+        );
+        IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet(igcSearchCondition);
+
+        // We can only search by name, so we will ignore all other properties
+        InstancePropertyValue value = matchClassificationProperties.getPropertyValue("name");
+        if (value instanceof PrimitivePropertyValue) {
+            PrimitivePropertyValue name = (PrimitivePropertyValue) value;
+            String keyName = (String) name.getPrimitiveValue();
+            IGCSearchCondition propertyCondition = new IGCSearchCondition(
+                    "defined_primary_key.name",
+                    "=",
+                    keyName
+            );
+            igcSearchConditionSet.addCondition(propertyCondition);
+        }
+
+        igcSearchConditionSet.setMatchAnyCondition(true);
+
+        return igcSearchConditionSet;
 
     }
 

@@ -147,6 +147,17 @@ public class StewardGroup extends Reference {
         "modified_by",
         "modified_on"
     );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+        "group_name",
+        "type",
+        "email_address",
+        "web_address",
+        "organization",
+        "location",
+        "principal_id",
+        "created_by",
+        "modified_by"
+    );
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "managed_assets",
         "managed_assets_basic"
@@ -167,6 +178,7 @@ public class StewardGroup extends Reference {
         "modified_on"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isStewardGroup(Object obj) { return (obj.getClass() == StewardGroup.class); }

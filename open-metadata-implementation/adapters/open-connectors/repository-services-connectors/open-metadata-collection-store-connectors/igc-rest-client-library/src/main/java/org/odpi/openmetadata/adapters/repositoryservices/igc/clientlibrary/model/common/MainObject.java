@@ -145,15 +145,44 @@ public class MainObject extends Reference {
     public static Boolean canBeCreated() { return false; }
     public static Boolean includesModificationDetails() { return true; }
     private static final List<String> NON_RELATIONAL_PROPERTIES = Arrays.asList(
-        "name",
-        "short_description",
-        "long_description",
-        "created_by",
-        "created_on",
-        "modified_by",
-        "modified_on"
+            "name",
+            "short_description",
+            "long_description",
+            "created_by",
+            "created_on",
+            "modified_by",
+            "modified_on"
+    );
+    private static final List<String> STRING_PROPERTIES = Arrays.asList(
+            "name",
+            "short_description",
+            "long_description"
+    );
+    private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
+            "labels",
+            "stewards",
+            "assigned_to_terms",
+            "implements_rules",
+            "governed_by_rules"
+    );
+    private static final List<String> ALL_PROPERTIES = Arrays.asList(
+            "name",
+            "short_description",
+            "long_description",
+            "labels",
+            "stewards",
+            "assigned_to_terms",
+            "implements_rules",
+            "governed_by_rules",
+            "created_by",
+            "created_on",
+            "modified_by",
+            "modified_on"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
+    public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
+    public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static final Boolean isMainObject(Object obj) { return (obj.getClass() == MainObject.class); }
 
 }

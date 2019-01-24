@@ -21,6 +21,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
+        @JsonSubTypes.Type(value = Tag.class, name = "Tag"),
         @JsonSubTypes.Type(value = ReferenceableHeader.class, name = "ReferenceableHeader"),
         @JsonSubTypes.Type(value = ReferenceableClassification.class, name = "ReferenceableClassification")
 })

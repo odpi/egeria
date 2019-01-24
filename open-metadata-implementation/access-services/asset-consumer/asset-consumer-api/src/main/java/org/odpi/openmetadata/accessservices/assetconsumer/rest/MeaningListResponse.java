@@ -16,7 +16,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- *  AssetListResponse returns a list of assets from the server.   The list may be too long to
+ *  MeaningListResponse returns a list of meanings from the server.   The list may be too long to
  *  retrieve in a single call so there is support for paging of replies.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -26,7 +26,6 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
 {
     private List<GlossaryTerm> meanings            = null;
     private int                startingFromElement = 0;
-    private int                totalListSize       = 0;
 
 
     /**
@@ -50,7 +49,6 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
         if (template != null)
         {
             this.startingFromElement = template.getStartingFromElement();
-            this.totalListSize = template.getTotalListSize();
             this.meanings = template.getMeanings();
         }
     }
@@ -86,9 +84,9 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
 
 
     /**
-     * Set up the list of assets for the response.
+     * Set up the list of glossary terms for the response.
      *
-     * @param meanings list of assets
+     * @param meanings list
      */
     public void setMeanings(List<GlossaryTerm> meanings)
     {
@@ -119,28 +117,6 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
 
 
     /**
-     * Return the size of the list at the server side.
-     *
-     * @return int
-     */
-    public int getTotalListSize()
-    {
-        return totalListSize;
-    }
-
-
-    /**
-     * Set up the size of the list at the server side.
-     *
-     * @param totalListSize int
-     */
-    public void setTotalListSize(int totalListSize)
-    {
-        this.totalListSize = totalListSize;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -151,7 +127,6 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
         return "MeaningListResponse{" +
                 "meanings=" + meanings +
                 ", startingFromElement=" + startingFromElement +
-                ", totalListSize=" + totalListSize +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -185,7 +160,6 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
         }
         MeaningListResponse that = (MeaningListResponse) objectToCompare;
         return getStartingFromElement() == that.getStartingFromElement() &&
-                getTotalListSize() == that.getTotalListSize() &&
                 Objects.equals(getMeanings(), that.getMeanings());
     }
 
@@ -198,6 +172,6 @@ public class MeaningListResponse extends AssetConsumerOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getMeanings(), getStartingFromElement(), getTotalListSize());
+        return Objects.hash(super.hashCode(), getMeanings(), getStartingFromElement());
     }
 }

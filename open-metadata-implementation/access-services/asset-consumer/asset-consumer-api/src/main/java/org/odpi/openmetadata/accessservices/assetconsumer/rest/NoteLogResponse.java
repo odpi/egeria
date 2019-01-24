@@ -14,7 +14,6 @@ public class NoteLogResponse extends AssetConsumerOMASAPIResponse
     private NoteLog    noteLog             = null;
     private List<Note> notes               = null;
     private int        startingFromElement = 0;
-    private int        totalListSize       = 0;
 
 
     /**
@@ -40,7 +39,6 @@ public class NoteLogResponse extends AssetConsumerOMASAPIResponse
             this.noteLog = template.getNoteLog();
             this.notes = template.getNotes();
             this.startingFromElement = template.getStartingFromElement();
-            this.totalListSize = template.getTotalListSize();
         }
     }
 
@@ -131,28 +129,6 @@ public class NoteLogResponse extends AssetConsumerOMASAPIResponse
 
 
     /**
-     * Return the size of the list at the server side.
-     *
-     * @return int
-     */
-    public int getTotalListSize()
-    {
-        return totalListSize;
-    }
-
-
-    /**
-     * Set up the size of the list at the server side.
-     *
-     * @param totalListSize int
-     */
-    public void setTotalListSize(int totalListSize)
-    {
-        this.totalListSize = totalListSize;
-    }
-
-
-    /**
      * JSON-style toString
      *
      * @return return string containing the property names and values
@@ -164,7 +140,6 @@ public class NoteLogResponse extends AssetConsumerOMASAPIResponse
                 "noteLog=" + noteLog +
                 ", notes=" + notes +
                 ", startingFromElement=" + startingFromElement +
-                ", totalListSize=" + totalListSize +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -198,7 +173,6 @@ public class NoteLogResponse extends AssetConsumerOMASAPIResponse
         }
         NoteLogResponse that = (NoteLogResponse) objectToCompare;
         return getStartingFromElement() == that.getStartingFromElement() &&
-                getTotalListSize() == that.getTotalListSize() &&
                 Objects.equals(getNoteLog(), that.getNoteLog()) &&
                 Objects.equals(getNotes(), that.getNotes());
     }
@@ -212,6 +186,6 @@ public class NoteLogResponse extends AssetConsumerOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getNoteLog(), getNotes(), getStartingFromElement(), getTotalListSize());
+        return Objects.hash(super.hashCode(), getNoteLog(), getNotes(), getStartingFromElement());
     }
 }

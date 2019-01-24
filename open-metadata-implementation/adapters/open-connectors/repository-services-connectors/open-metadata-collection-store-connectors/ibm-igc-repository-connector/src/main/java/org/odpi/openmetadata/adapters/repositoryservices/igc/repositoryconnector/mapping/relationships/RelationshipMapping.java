@@ -12,6 +12,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.ReferenceableMapper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -39,6 +40,9 @@ public abstract class RelationshipMapping {
     private List<RelationshipMapping> subtypes;
     private String relationshipLevelIgcAsset;
     private String linkingAssetType;
+
+    private ArrayList<InstanceStatus> omrsSupportedStatuses;
+    private Set<String> mappedOmrsPropertyNames;
 
     /**
      * The optimal endpoint from which to retrieve the relationship:
@@ -109,7 +113,39 @@ public abstract class RelationshipMapping {
         this.omrsRelationshipType = omrsRelationshipType;
         this.optimalStart = OptimalStart.OPPOSITE;
         this.subtypes = new ArrayList<>();
+        this.omrsSupportedStatuses = new ArrayList<>();
+        this.mappedOmrsPropertyNames = new HashSet<>();
+        addSupportedStatus(InstanceStatus.ACTIVE);
+        addSupportedStatus(InstanceStatus.DELETED);
     }
+
+    /**
+     * Add the provided status as one supported by this relationship mapping.
+     *
+     * @param status a status that is supported by the mapping
+     */
+    public void addSupportedStatus(InstanceStatus status) { this.omrsSupportedStatuses.add(status); }
+
+    /**
+     * Retrieve the list of statuses that are supported by the relationship mapping.
+     *
+     * @return List<InstanceStatus>
+     */
+    public List<InstanceStatus> getSupportedStatuses() { return this.omrsSupportedStatuses; }
+
+    /**
+     * Add the provided property name as one supported by this classification mapping.
+     *
+     * @param name the name of the OMRS property supported by the mapping
+     */
+    public void addMappedOmrsProperty(String name) { this.mappedOmrsPropertyNames.add(name); }
+
+    /**
+     * Retrieve the set of OMRS properties that are supported by the classification mapping.
+     *
+     * @return Set<String>
+     */
+    public Set<String> getMappedOmrsPropertyNames() { return this.mappedOmrsPropertyNames; }
 
     /**
      * Sets a relationship-level IGC asset type (these very rarely exist, only known example is 'classification').
@@ -579,7 +615,20 @@ public abstract class RelationshipMapping {
         String proxyOneRid = null;
         String proxyTwoRid = null;
 
-        if (relationshipMapping.sameTypeOnBothEnds()
+        if (igcPropertyName != null && igcPropertyName.equals(SELF_REFERENCE_SENTINEL)) {
+            // When self-referencing, it should be the same entity on both sides, but we need to
+            // prefix the correct RID based on where the relationship mapping tells us it belongs
+            // (ie. ordering IS important, unlike next conditional)
+            // (the actual prefixing is done further below, for non-self-referencing as well)
+            proxyOneRid = endOne.getId();
+            proxyTwoRid = endTwo.getId();
+            if (pmOne.getIgcRidPrefix() == null && pmTwo.getIgcRidPrefix() == null) {
+                log.warn("Self-referencing relationship expected, but no prefix found for relationship {} from {} to {} via {}", omrsRelationshipName, proxyOneRid, proxyTwoRid, igcPropertyName);
+            }
+            if (!proxyOneRid.equals(proxyTwoRid)) {
+                log.warn("Self-referencing relationship expected for {}, but RIDs of ends do not match: {} and {}", omrsRelationshipName, proxyOneRid, proxyTwoRid);
+            }
+        } else if (relationshipMapping.sameTypeOnBothEnds()
                 && pmOne.matchesAssetType(endOneType)) {
             if (relationshipMapping.samePropertiesOnBothEnds()) {
                 // If both the types and property names of both ends of the mapping are the same (eg. synonyms and
@@ -723,64 +772,75 @@ public abstract class RelationshipMapping {
      *
      * @param igcomrsRepositoryConnector OMRS connector to the IBM IGC repository
      * @param igcObj the IGC object for which to retrieve an EntityProxy
-     * @param omrsTypeName the OMRS entity type
      * @param userId the user through which to retrieve the EntityProxy (unused)
      * @param ridPrefix any prefix required on the object's ID to make it unique
      * @return EntityProxy
      */
     public static EntityProxy getEntityProxyForObject(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
                                                       Reference igcObj,
-                                                      String omrsTypeName,
                                                       String userId,
                                                       String ridPrefix) {
 
         IGCRestClient igcRestClient = igcomrsRepositoryConnector.getIGCRestClient();
         String igcType = igcObj.getType();
-        PrimitivePropertyValue qualifiedName = null;
 
         EntityProxy entityProxy = null;
 
         if (igcType != null) {
-            // Construct 'qualifiedName' from the Identity of the object
-            String identity = igcObj.getIdentity(igcRestClient).toString();
-            if (ridPrefix != null) {
-                identity = ridPrefix + identity;
-            }
-            qualifiedName = EntityMapping.getPrimitivePropertyValue(identity);
 
-            // 'qualifiedName' is the only unique InstanceProperty we need on an EntityProxy
-            InstanceProperties uniqueProperties = new InstanceProperties();
-            uniqueProperties.setProperty("qualifiedName", qualifiedName);
+            IGCOMRSMetadataCollection igcomrsMetadataCollection = (IGCOMRSMetadataCollection) igcomrsRepositoryConnector.getMetadataCollection();
+            ReferenceableMapper referenceableMapper = igcomrsMetadataCollection.getMapperForParameters(igcObj, ridPrefix, userId);
 
-            try {
-                entityProxy = igcomrsRepositoryConnector.getRepositoryHelper().getNewEntityProxy(
-                        igcomrsRepositoryConnector.getRepositoryName(),
-                        igcomrsRepositoryConnector.getMetadataCollectionId(),
-                        InstanceProvenanceType.LOCAL_COHORT,
-                        userId,
-                        omrsTypeName,
-                        uniqueProperties,
-                        null
-                );
+            if (referenceableMapper != null) {
+
+                // Construct 'qualifiedName' from the Identity of the object
+                String identity = igcObj.getIdentity(igcRestClient).toString();
                 if (ridPrefix != null) {
-                    entityProxy.setGUID(ridPrefix + igcObj.getId());
-                } else {
-                    entityProxy.setGUID(igcObj.getId());
+                    identity = ridPrefix + identity;
                 }
+                PrimitivePropertyValue qualifiedName = EntityMapping.getPrimitivePropertyValue(identity);
 
-                if (igcObj.hasModificationDetails()) {
-                    entityProxy.setCreatedBy((String)igcObj.getPropertyByName(IGCRestConstants.MOD_CREATED_BY));
-                    entityProxy.setCreateTime((Date)igcObj.getPropertyByName(IGCRestConstants.MOD_CREATED_ON));
-                    entityProxy.setUpdatedBy((String)igcObj.getPropertyByName(IGCRestConstants.MOD_MODIFIED_BY));
-                    entityProxy.setUpdateTime((Date)igcObj.getPropertyByName(IGCRestConstants.MOD_MODIFIED_ON));
-                    if (entityProxy.getUpdateTime() != null) {
-                        entityProxy.setVersion(entityProxy.getUpdateTime().getTime());
+                // 'qualifiedName' is the only unique InstanceProperty we need on an EntityProxy
+                InstanceProperties uniqueProperties = new InstanceProperties();
+                uniqueProperties.setProperty("qualifiedName", qualifiedName);
+
+                try {
+                    entityProxy = igcomrsRepositoryConnector.getRepositoryHelper().getNewEntityProxy(
+                            igcomrsRepositoryConnector.getRepositoryName(),
+                            igcomrsRepositoryConnector.getMetadataCollectionId(),
+                            InstanceProvenanceType.LOCAL_COHORT,
+                            userId,
+                            referenceableMapper.getOmrsTypeDefName(),
+                            uniqueProperties,
+                            null
+                    );
+                    if (ridPrefix != null) {
+                        entityProxy.setGUID(ridPrefix + igcObj.getId());
+                    } else {
+                        entityProxy.setGUID(igcObj.getId());
                     }
+
+                    if (igcObj.hasModificationDetails()) {
+                        igcObj.populateModificationDetails(igcRestClient);
+                        entityProxy.setCreatedBy((String) igcObj.getPropertyByName(IGCRestConstants.MOD_CREATED_BY));
+                        entityProxy.setCreateTime((Date) igcObj.getPropertyByName(IGCRestConstants.MOD_CREATED_ON));
+                        entityProxy.setUpdatedBy((String) igcObj.getPropertyByName(IGCRestConstants.MOD_MODIFIED_BY));
+                        entityProxy.setUpdateTime((Date) igcObj.getPropertyByName(IGCRestConstants.MOD_MODIFIED_ON));
+                        if (entityProxy.getUpdateTime() != null) {
+                            entityProxy.setVersion(entityProxy.getUpdateTime().getTime());
+                        }
+                    }
+
+                } catch (TypeErrorException e) {
+                    log.error("Unable to create new EntityProxy.", e);
                 }
 
-            } catch (TypeErrorException e) {
-                log.error("Unable to create new EntityProxy.", e);
+            } else {
+                log.error("Unable to find mapper for IGC object type '{}' with prefix '{}', cannot setup EntityProxy for {}", igcType, ridPrefix, igcObj.getId());
             }
+
+        } else {
+            log.error("Unable to find type for provided IGC object: {}", igcObj);
         }
 
         return entityProxy;
@@ -1239,7 +1299,16 @@ public abstract class RelationshipMapping {
             );
             relationship.setType(instanceType);
         } catch (TypeErrorException e) {
-            log.error("Unable to set instance type.", e);
+            log.error("Unable to construct and set InstanceType -- skipping relationship: {}", omrsRelationshipName);
+            OMRSErrorCode errorCode = OMRSErrorCode.INVALID_INSTANCE;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                    omrsRelationshipDef.getName());
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    RelationshipMapping.class.getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
 
         if (proxyOne != null && proxyTwo != null) {
@@ -1254,12 +1323,26 @@ public abstract class RelationshipMapping {
 
             if (relationshipGUID == null) {
                 log.error("Unable to construct relationship GUID -- skipping relationship: {}", omrsRelationshipName);
-            } else {
-                relationship.setGUID(relationshipGUID);
+                String omrsEndOneProperty = omrsRelationshipDef.getEndDef1().getAttributeName();
+                String omrsEndTwoProperty = omrsRelationshipDef.getEndDef2().getAttributeName();
+                OMRSErrorCode errorCode = OMRSErrorCode.INVALID_RELATIONSHIP_ENDS;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                        repositoryName,
+                        omrsRelationshipName,
+                        omrsEndOneProperty,
+                        omrsEndTwoProperty);
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                        RelationshipMapping.class.getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
             }
 
+            relationship.setGUID(relationshipGUID);
             relationship.setMetadataCollectionId(igcomrsRepositoryConnector.getMetadataCollectionId());
             relationship.setStatus(InstanceStatus.ACTIVE);
+            relationship.setInstanceProvenanceType(InstanceProvenanceType.LOCAL_COHORT);
 
             String guidForEP1 = RelationshipMapping.getProxyOneGUIDFromRelationshipGUID(relationshipGUID);
             String guidForEP2 = RelationshipMapping.getProxyTwoGUIDFromRelationshipGUID(relationshipGUID);
@@ -1274,14 +1357,12 @@ public abstract class RelationshipMapping {
                 ep1 = RelationshipMapping.getEntityProxyForObject(
                         igcomrsRepositoryConnector,
                         proxyOne,
-                        omrsRelationshipDef.getEndDef1().getEntityType().getName(),
                         userId,
                         relationshipMapping.getProxyOneMapping().getIgcRidPrefix()
                 );
                 ep2 = RelationshipMapping.getEntityProxyForObject(
                         igcomrsRepositoryConnector,
                         proxyTwo,
-                        omrsRelationshipDef.getEndDef2().getEntityType().getName(),
                         userId,
                         relationshipMapping.getProxyTwoMapping().getIgcRidPrefix()
                 );
@@ -1289,32 +1370,52 @@ public abstract class RelationshipMapping {
                 ep1 = RelationshipMapping.getEntityProxyForObject(
                         igcomrsRepositoryConnector,
                         proxyTwo,
-                        omrsRelationshipDef.getEndDef1().getEntityType().getName(),
                         userId,
                         relationshipMapping.getProxyOneMapping().getIgcRidPrefix()
                 );
                 ep2 = RelationshipMapping.getEntityProxyForObject(
                         igcomrsRepositoryConnector,
                         proxyOne,
-                        omrsRelationshipDef.getEndDef2().getEntityType().getName(),
                         userId,
                         relationshipMapping.getProxyTwoMapping().getIgcRidPrefix()
                 );
             } else {
                 log.error("Unable to determine both ends of the relationship {} from {} to {}", omrsRelationshipName, proxyOne.getId(), proxyTwo.getId());
+                String omrsEndOneProperty = omrsRelationshipDef.getEndDef1().getAttributeName();
+                String omrsEndTwoProperty = omrsRelationshipDef.getEndDef2().getAttributeName();
+                OMRSErrorCode errorCode = OMRSErrorCode.INVALID_RELATIONSHIP_ENDS;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                        repositoryName,
+                        omrsRelationshipName,
+                        omrsEndOneProperty,
+                        omrsEndTwoProperty);
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                        RelationshipMapping.class.getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
             }
 
             // Set the the version of the relationship to the epoch time of whichever end of the relationship has
             // modification details (they should be the same if both have modification details)
             if (ep1 != null && ep1.getUpdateTime() != null) {
                 relationship.setVersion(ep1.getUpdateTime().getTime());
+                relationship.setCreateTime(ep1.getUpdateTime());
+                relationship.setCreatedBy(ep1.getCreatedBy());
+                relationship.setUpdatedBy(ep1.getUpdatedBy());
+                relationship.setUpdateTime(ep1.getUpdateTime());
             } else if (ep2 != null && ep2.getUpdateTime() != null) {
                 relationship.setVersion(ep2.getUpdateTime().getTime());
+                relationship.setCreateTime(ep2.getUpdateTime());
+                relationship.setCreatedBy(ep2.getCreatedBy());
+                relationship.setUpdatedBy(ep2.getUpdatedBy());
+                relationship.setUpdateTime(ep2.getUpdateTime());
             }
 
             if (ep1 != null && ep2 != null) {
-                relationship.setEntityOneProxy(ep1);
-                relationship.setEntityTwoProxy(ep2);
+                 relationship.setEntityOneProxy(ep1);
+                 relationship.setEntityTwoProxy(ep2);
             }
 
         } else {
