@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.api.objects;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
@@ -14,28 +14,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
+public class GovernanceClassification extends GovernanceClassificationBase {
 
-// We use this to manage objects associated with the classification of an asset component
-// for example confidentiality=C3
-public class GovernanceClassificationUsage extends GovernanceClassificationBase {
-
-    // Additional Attributes of a Tag Definition
-
-    private Map<String,String> AttributeValues;  // key-value pair of attribute definitions (name, type)
+    private Map<String, String> attributes;
 
     /**
-     *
-     * @param attributeValues - key/value pairs for additional objects of Classification
+     * @param attributes - key/value pairs for additional objects of Classification
      */
-    public void setAttributeValues(Map <String,String> attributeValues) {
-        this.AttributeValues = attributeValues;
+    public void setAttributes(Map<String, String> attributes) {
+        this.attributes = attributes;
     }
 
     /**
      * @return attributeValues - key/value pairs for additional objects of Classification
      */
-    public Map<String,String> getAttributevalues() {
-        return AttributeValues;
+    public Map<String, String> getAttributes() {
+        return attributes;
     }
 
 }
