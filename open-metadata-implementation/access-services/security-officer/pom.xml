@@ -15,20 +15,19 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Data Protection OMAS</name>
+    <name>Security Officer OMAS</name>
     <description>
-        The Data Protection Open Metadata Access Service (OMAS) provides APIs and events for tools and applications
-        that are defining the data protection requirements an implementations for
-        a governance program.
+        The Security Officer Open Metadata Access Service (OMAS) provides APIs and events for tools and applications
+        that are defining the data protection requirements an implementations for a governance program.
     </description>
 
-    <artifactId>data-protection</artifactId>
+    <artifactId>security-officer</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>data-protection-api</module>
-        <module>data-protection-client</module>
-        <module>data-protection-server</module>
-        <module>data-protection-spring</module>
+        <module>security-officer-api</module>
+        <module>security-officer-client</module>
+        <module>security-officer-server</module>
+        <module>security-officer-spring</module>
     </modules>
 
 

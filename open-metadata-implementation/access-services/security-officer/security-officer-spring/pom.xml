@@ -8,27 +8,29 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>data-protection</artifactId>
+        <artifactId>security-officer</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>0.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Data Protection OMAS Client</name>
+    <name>Security Officer OMAS with Spring</name>
     <description>
-        Client library for the Data Protection Open Metadata Access Service (OMAS).
+        Spring-based REST API for the Security Officer Open Metadata Access Service (OMAS).
     </description>
 
-    <artifactId>data-protection-client</artifactId>
+    <artifactId>security-officer-spring</artifactId>
 
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-protection-api</artifactId>
+            <artifactId>security-officer-server</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
+
+        <!-- Spring for REST APIs -->
 
         <dependency>
             <groupId>org.springframework</groupId>
