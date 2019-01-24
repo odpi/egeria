@@ -1,5 +1,5 @@
-/* SPDX-License-Identifier: Apache-2.0 */
-
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode;
 
 import org.slf4j.Logger;
@@ -27,9 +27,6 @@ import java.util.Arrays;
  * <li>UserAction - describes how a GovernanceEngineInterface should correct the error</li>
  * </ul>
  */
-
-//TODO Update descriptions for error codes with more information
-
 public enum GovernanceEngineErrorCode {
     SERVER_URL_NOT_SPECIFIED(400, "OMAS-GOVERNANCEENGINE-400-001 ",
             "The OMAS Server URL is empty or null",
