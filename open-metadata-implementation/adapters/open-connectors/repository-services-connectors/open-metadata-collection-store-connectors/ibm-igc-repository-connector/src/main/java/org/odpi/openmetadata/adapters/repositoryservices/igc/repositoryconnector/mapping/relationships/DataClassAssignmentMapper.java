@@ -221,7 +221,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                     );
 
                     Object confidence = detectedClassification.getPropertyByName("confidencePercent");
-                    InstanceProperties relationshipProperties = null;
+                    InstanceProperties relationshipProperties = new InstanceProperties();
 
                     /* Before adding to the overall set of relationships, setup the relationship properties
                      * we have in IGC from the 'classification' object. */
@@ -407,7 +407,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                     );
 
                     Object confidence = detectedClassification.getPropertyByName("confidencePercent");
-                    InstanceProperties relationshipProperties = null;
+                    InstanceProperties relationshipProperties = new InstanceProperties();
 
                     /* Before adding to the overall set of relationships, setup the relationship properties
                      * we have in IGC from the 'classification' object. */
