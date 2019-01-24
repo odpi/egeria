@@ -12,6 +12,7 @@ public enum ResponseCategory {
     PossibleClassifications,
     PossibleRelationships,
     Term,
+    Terms,
     Category,
     SubjectAreaDefinition,
     Glossary,

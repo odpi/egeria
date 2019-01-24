@@ -70,10 +70,11 @@ public class TermFVT
     {
         Glossary glossary= glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         System.out.println("Create a term1 using glossary name");
-        Term term1 = createTerm(DEFAULT_TEST_TERM_NAME, glossary.getSystemAttributes().getGUID());
+        String glossaryGuid = glossary.getSystemAttributes().getGUID();
+        Term term1 = createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
         FVTUtils.validateNode(term1);
         System.out.println("Create a term2 using glossary guid");
-        Term term2 = createTerm(DEFAULT_TEST_TERM_NAME, glossary.getSystemAttributes().getGUID());
+        Term term2 = createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
         FVTUtils.validateNode(term2);
         System.out.println("Create a term2 using glossary guid");
 
@@ -96,7 +97,7 @@ public class TermFVT
         purgeTerm(guid);
         System.out.println("Create term3 with governance actions");
         GovernanceActions governanceActions = createGovernanceActions();
-        Term term3 = createTermWithGovernanceActions(DEFAULT_TEST_TERM_NAME, glossary.getSystemAttributes().getGUID(),governanceActions);
+        Term term3 = createTermWithGovernanceActions(DEFAULT_TEST_TERM_NAME, glossaryGuid,governanceActions);
         FVTUtils.validateNode(term3);
         if (!governanceActions.getConfidence().getLevel().equals(term3.getGovernanceActions().getConfidence().getLevel())){
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions confidence not returned  as expected", "", "");
@@ -130,15 +131,49 @@ public class TermFVT
         if (!(updatedTerm3.getGovernanceActions().getCriticality().getLevel()==null)) {
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Governance actions criticality not returned  as expected", "", "");
         }
+
+        System.out.println("create terms to find");
+        Term termForFind1 = getTermForInput("abc",glossaryGuid);
+        termForFind1.setQualifiedName("yyy");
+        termForFind1 = issueCreateTerm(termForFind1);
+        FVTUtils.validateNode(termForFind1);
+        Term termForFind2 = createTerm("yyy",glossaryGuid);
+        FVTUtils.validateNode(termForFind2);
+        Term termForFind3 = createTerm("zzz",glossaryGuid);
+        FVTUtils.validateNode(termForFind3);
+        Term termForFind4 = createTerm("This is a Term with spaces in name",glossaryGuid);
+        FVTUtils.validateNode(termForFind4);
+
+        List<Term>  results = findTerms("zzz");
+        if (results.size() !=1 ) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+        }
+        results = findTerms("yyy");
+        if (results.size() !=2 ) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 2 back on the find got " +results.size(), "", "");
+        }
+        //soft delete a term and check it is not found
+        Term deleted4 = deleteTerm(termForFind2.getSystemAttributes().getGUID());
+        FVTUtils.validateNode(deleted4);
+        results = findTerms("yyy");
+        if (results.size() !=1 ) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+        }
+
+       // search for a term with a name with spaces in
+        results = findTerms("This is a Term with spaces in name");
+        if (results.size() !=1 ) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+        }
     }
 
     public  Term createTerm(String termName, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
     {
-        Term term = new Term();
-        term.setName(termName);
-        GlossarySummary glossarySummary = new GlossarySummary();
-        glossarySummary.setGuid(glossaryGuid);
-        term.setGlossary(glossarySummary);
+        Term term = getTermForInput(termName, glossaryGuid);
+        return issueCreateTerm(term);
+    }
+
+    private Term issueCreateTerm(Term term) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException {
         Term newTerm = subjectAreaTerm.createTerm(serverName,FVTConstants.USERID, term);
         if (newTerm != null)
         {
@@ -146,20 +181,21 @@ public class TermFVT
         }
         return newTerm;
     }
-    public  Term createTermWithGovernanceActions(String termName, String glossaryGuid,GovernanceActions governanceActions) throws SubjectAreaCheckedExceptionBase
-    {
+
+    private Term getTermForInput(String termName, String glossaryGuid) {
         Term term = new Term();
         term.setName(termName);
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setGuid(glossaryGuid);
         term.setGlossary(glossarySummary);
-        term.setGovernanceActions(governanceActions);
-        Term newTerm = subjectAreaTerm.createTerm(serverName,FVTConstants.USERID, term);
+        return term;
+    }
 
-        if (newTerm != null)
-        {
-            System.out.println("Created Term " + newTerm.getName() + " with guid " + newTerm.getSystemAttributes().getGUID());
-        }
+    public  Term createTermWithGovernanceActions(String termName, String glossaryGuid,GovernanceActions governanceActions) throws SubjectAreaCheckedExceptionBase
+    {
+        Term term = getTermForInput(termName, glossaryGuid);
+        term.setGovernanceActions(governanceActions);
+        Term newTerm = issueCreateTerm(term);
         return newTerm;
     }
 
@@ -209,6 +245,19 @@ public class TermFVT
             System.out.println("Got Term " + term.getName() + " with guid " + term.getSystemAttributes().getGUID() + " and status " + term.getSystemAttributes().getStatus());
         }
         return term;
+    }
+    public List<Term> findTerms(String criteria) throws SubjectAreaCheckedExceptionBase
+    {
+        List<Term> terms = subjectAreaTerm.findTerm(
+                serverName,
+                FVTConstants.USERID,
+                criteria,
+                null,
+        0,
+         0,
+     null,
+                null);
+        return terms;
     }
 
     public Term updateTerm(String guid, Term term) throws SubjectAreaCheckedExceptionBase
