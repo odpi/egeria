@@ -19,6 +19,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.ReferenceableMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.PropertyMappingSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.model.OMRSStub;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.stores.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -55,10 +56,13 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     public static final String GENERATED_TYPE_POSTFIX = "|__";
 
     private IGCRestClient igcRestClient;
+    private IGCOMRSRepositoryConnector igcomrsRepositoryConnector;
 
-    private HashSet<ImplementedMapping> implementedMappings;
-    private HashMap<String, TypeDef> unimplementedTypeDefs;
-    private HashSet<ImplementedAttribute> implementedAttributes;
+    private TypeDefStore typeDefStore;
+    private EntityMappingStore entityMappingStore;
+    private RelationshipMappingStore relationshipMappingStore;
+    private ClassificationMappingStore classificationMappingStore;
+    private AttributeMappingStore attributeMappingStore;
 
     private XMLOutputFactory xmlOutputFactory;
 
@@ -77,11 +81,16 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                                      OMRSRepositoryValidator repositoryValidator,
                                      String metadataCollectionId) {
         super(parentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId);
+        log.debug("Constructing IGCOMRSMetadataCollection with name: {}", repositoryName);
+        parentConnector.setRepositoryName(repositoryName);
         this.igcRestClient = parentConnector.getIGCRestClient();
+        this.igcomrsRepositoryConnector = parentConnector;
         this.xmlOutputFactory = XMLOutputFactory.newInstance();
-        this.implementedMappings = new HashSet<>();
-        this.unimplementedTypeDefs = new HashMap<>();
-        this.implementedAttributes = new HashSet<>();
+        this.typeDefStore = new TypeDefStore();
+        this.entityMappingStore = new EntityMappingStore();
+        this.relationshipMappingStore = new RelationshipMappingStore();
+        this.classificationMappingStore = new ClassificationMappingStore();
+        this.attributeMappingStore = new AttributeMappingStore();
     }
 
     /**
@@ -115,22 +124,17 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
          * Perform operation
          */
         TypeDefGallery typeDefGallery = new TypeDefGallery();
-        ArrayList<TypeDef> typeDefs = new ArrayList<>();
-        for (ImplementedMapping implementedMapping : implementedMappings) {
-            typeDefs.add(implementedMapping.getTypeDef());
-        }
+        List<TypeDef> typeDefs = typeDefStore.getAllTypeDefs();
+        log.debug("Retrieved {} implemented TypeDefs for this repository.", typeDefs.size());
         typeDefGallery.setTypeDefs(typeDefs);
 
-        ArrayList<AttributeTypeDef> attributeTypeDefs = new ArrayList<>();
-        for (ImplementedAttribute implementedAttribute : implementedAttributes) {
-            attributeTypeDefs.add(implementedAttribute.getAttributeTypeDef());
-        }
+        List<AttributeTypeDef> attributeTypeDefs = attributeMappingStore.getAllAttributeTypeDefs();
+        log.debug("Retrieved {} implemented AttributeTypeDefs for this repository.", attributeTypeDefs.size());
         typeDefGallery.setAttributeTypeDefs(attributeTypeDefs);
 
         return typeDefGallery;
+
     }
-
-
 
     /**
      * Returns all of the TypeDefs for a specific category.
@@ -159,12 +163,17 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateTypeDefCategory(repositoryName, categoryParameterName, category, methodName);
 
-        ArrayList<TypeDef> typeDefs = new ArrayList<>();
-        for (ImplementedMapping implementedMapping : implementedMappings) {
-            TypeDef candidate = implementedMapping.getTypeDef();
-            if (candidate.getCategory().equals(category)) {
-                typeDefs.add(candidate);
-            }
+        List<TypeDef> typeDefs = new ArrayList<>();
+        switch(category) {
+            case ENTITY_DEF:
+                typeDefs = entityMappingStore.getTypeDefs();
+                break;
+            case RELATIONSHIP_DEF:
+                typeDefs = relationshipMappingStore.getTypeDefs();
+                break;
+            case CLASSIFICATION_DEF:
+                typeDefs = classificationMappingStore.getTypeDefs();
+                break;
         }
         return typeDefs;
 
@@ -198,14 +207,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateAttributeTypeDefCategory(repositoryName, categoryParameterName, category, methodName);
 
-        ArrayList<AttributeTypeDef> attributeTypeDefs = new ArrayList<>();
-        for (ImplementedAttribute implementedAttribute : implementedAttributes) {
-            AttributeTypeDef candidate = implementedAttribute.getAttributeTypeDef();
-            if (candidate.getCategory().equals(category)) {
-                attributeTypeDefs.add(candidate);
-            }
-        }
-        return attributeTypeDefs;
+        return attributeMappingStore.getAttributeTypeDefsByCategory(category);
 
     }
 
@@ -338,13 +340,20 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
          * Perform operation
          */
         List<TypeDef> typeDefs = new ArrayList<>();
-        for (ImplementedMapping implementedMapping : implementedMappings) {
-
-            TypeDef candidate = implementedMapping.getTypeDef();
+        for (TypeDef candidate : entityMappingStore.getTypeDefs()) {
             if (candidate.getName().matches(searchCriteria)) {
                 typeDefs.add(candidate);
             }
-
+        }
+        for (TypeDef candidate : relationshipMappingStore.getTypeDefs()) {
+            if (candidate.getName().matches(searchCriteria)) {
+                typeDefs.add(candidate);
+            }
+        }
+        for (TypeDef candidate : classificationMappingStore.getTypeDefs()) {
+            if (candidate.getName().matches(searchCriteria)) {
+                typeDefs.add(candidate);
+            }
         }
 
         return typeDefs;
@@ -381,14 +390,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
 
-        TypeDef found = null;
-        for (ImplementedMapping implementedMapping : implementedMappings) {
-            String typeDefGUID = implementedMapping.getTypeDef().getGUID();
-            if (typeDefGUID.equals(guid)) {
-                found = implementedMapping.getTypeDef();
-                break;
-            }
-        }
+        TypeDef found = typeDefStore.getTypeDefByGUID(guid);
+
         if (found == null) {
             OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
@@ -396,13 +399,14 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     guidParameterName,
                     methodName,
                     repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         }
+
         return found;
 
     }
@@ -437,14 +441,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
 
-        AttributeTypeDef found = null;
-        for (ImplementedAttribute implementedAttribute : implementedAttributes) {
-            String attributeTypeDefGUID = implementedAttribute.getAttributeTypeDef().getGUID();
-            if (attributeTypeDefGUID.equals(guid)) {
-                found = implementedAttribute.getAttributeTypeDef();
-                break;
-            }
-        }
+        AttributeTypeDef found = attributeMappingStore.getAttributeTypeDefByGUID(guid);
         if (found == null) {
             OMRSErrorCode errorCode = OMRSErrorCode.ATTRIBUTE_TYPEDEF_ID_NOT_KNOWN;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
@@ -452,7 +449,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     guid,
                     methodName,
                     repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
@@ -497,27 +494,22 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Perform operation
          */
-        TypeDef found = null;
-        for (ImplementedMapping implementedMapping : implementedMappings) {
-            TypeDef candidate = implementedMapping.getTypeDef();
-            if (candidate.getName().equals(name)) {
-                found = candidate;
-                break;
-            }
-        }
+        TypeDef found = typeDefStore.getTypeDefByName(name);
+
         if (found == null) {
             OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NAME_NOT_KNOWN;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
                     name,
                     methodName,
                     repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         }
+
         return found;
 
     }
@@ -552,21 +544,14 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateTypeName(repositoryName, nameParameterName, name, methodName);
 
-        AttributeTypeDef found = null;
-        for (ImplementedAttribute implementedAttribute : implementedAttributes) {
-            AttributeTypeDef candidate = implementedAttribute.getAttributeTypeDef();
-            if (candidate.getName().equals(name)) {
-                found = candidate;
-                break;
-            }
-        }
+        AttributeTypeDef found = attributeMappingStore.getAttributeTypeDefByName(name);
         if (found == null) {
             OMRSErrorCode errorCode = OMRSErrorCode.ATTRIBUTE_TYPEDEF_NAME_NOT_KNOWN;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
                     name,
                     methodName,
                     repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
@@ -685,7 +670,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             case CLASSIFICATION_DEF:
                 sbMapperClassname.append("classifications.");
                 break;
-            default:
+            case ENTITY_DEF:
                 sbMapperClassname.append("entities.");
                 break;
         }
@@ -693,22 +678,39 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         sbMapperClassname.append("Mapper");
 
         try {
+
             Class mappingClass = Class.forName(sbMapperClassname.toString());
             log.debug(" ... found mapping class: {}", mappingClass);
 
-            ImplementedMapping implementedMapping = new ImplementedMapping(
-                    newTypeDef,
-                    mappingClass,
-                    (IGCOMRSRepositoryConnector)parentConnector,
-                    userId
-            );
-            implementedMapping.registerPOJOs(this.igcRestClient);
-            implementedMappings.add(implementedMapping);
+            boolean success = false;
+
+            switch(typeDefCategory) {
+                case RELATIONSHIP_DEF:
+                    success = relationshipMappingStore.addMapping(newTypeDef, mappingClass);
+                    break;
+                case CLASSIFICATION_DEF:
+                    success = classificationMappingStore.addMapping(newTypeDef, mappingClass);
+                    break;
+                case ENTITY_DEF:
+                    success = entityMappingStore.addMapping(newTypeDef,
+                            mappingClass,
+                            igcomrsRepositoryConnector,
+                            userId);
+                    break;
+            }
+
+            if (!success) {
+                typeDefStore.addUnimplementedTypeDef(newTypeDef);
+                throw new TypeDefNotSupportedException(404, IGCOMRSMetadataCollection.class.getName(), methodName, omrsTypeDefName + " is not supported.", "", "Request support through Egeria GitHub issue.");
+            } else {
+                typeDefStore.addTypeDef(newTypeDef);
+            }
 
         } catch (ClassNotFoundException e) {
-            unimplementedTypeDefs.put(newTypeDef.getGUID(), newTypeDef);
+            typeDefStore.addUnimplementedTypeDef(newTypeDef);
             throw new TypeDefNotSupportedException(404, IGCOMRSMetadataCollection.class.getName(), methodName, omrsTypeDefName + " is not supported.", "", "Request support through Egeria GitHub issue.");
         }
+
     }
 
     /**
@@ -765,13 +767,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         try {
             Class mappingClass = Class.forName(sbMapperClassname.toString());
             log.debug(" ... found mapping class: {}", mappingClass);
-
-            ImplementedAttribute implementedAttribute = new ImplementedAttribute(
-                    newAttributeTypeDef,
-                    mappingClass
-            );
-            implementedAttributes.add(implementedAttribute);
-
+            attributeMappingStore.addMapping(newAttributeTypeDef, mappingClass);
         } catch (ClassNotFoundException e) {
             throw new TypeDefNotSupportedException(404, IGCOMRSMetadataCollection.class.getName(), methodName, omrsTypeDefName + " is not supported.", "", "Request support through Egeria GitHub issue.");
         }
@@ -815,31 +811,35 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         // Validate that we support all of the valid InstanceStatus settings before deciding whether we
         // fully-support the TypeDef or not
         HashSet<InstanceStatus> validStatuses = new HashSet<>(typeDef.getValidInstanceStatusList());
-        Set<String> mappedProperties = new HashSet<>();
         boolean bVerified = false;
 
-        ImplementedMapping implementedMapping = getMappingForEntityType(typeDef.getGUID());
-        if (implementedMapping != null) {
-            HashSet<InstanceStatus> implementedStatuses = new HashSet<>();
-            switch (implementedMapping.getType()) {
-                case ENTITY:
-                    EntityMapping entityMapping = implementedMapping.getEntityMapping();
+        Set<String> mappedProperties = new HashSet<>();
+        HashSet<InstanceStatus> implementedStatuses = new HashSet<>();
+        String guid = typeDef.getGUID();
+        switch (typeDef.getCategory()) {
+            case ENTITY_DEF:
+                EntityMapping entityMapping = entityMappingStore.getMappingByOmrsTypeGUID(guid);
+                if (entityMapping != null) {
                     mappedProperties = entityMapping.getPropertyMappings().getAllMappedOmrsProperties();
                     implementedStatuses = new HashSet<>(entityMapping.getSupportedStatuses());
-                    break;
-                case RELATIONSHIP:
-                    RelationshipMapping relationshipMapping = implementedMapping.getRelationshipMapping();
+                }
+                break;
+            case RELATIONSHIP_DEF:
+                RelationshipMapping relationshipMapping = relationshipMappingStore.getMappingByOmrsTypeGUID(guid);
+                if (relationshipMapping != null) {
                     mappedProperties = relationshipMapping.getMappedOmrsPropertyNames();
                     implementedStatuses = new HashSet<>(relationshipMapping.getSupportedStatuses());
-                    break;
-                case CLASSIFICATION:
-                    ClassificationMapping classificationMapping = implementedMapping.getClassificationMapping();
+                }
+                break;
+            case CLASSIFICATION_DEF:
+                ClassificationMapping classificationMapping = classificationMappingStore.getMappingByOmrsTypeGUID(guid);
+                if (classificationMapping != null) {
                     mappedProperties = classificationMapping.getMappedOmrsPropertyNames();
                     implementedStatuses = new HashSet<>(classificationMapping.getSupportedStatuses());
-                    break;
-            }
-            bVerified = validStatuses.equals(implementedStatuses);
+                }
+                break;
         }
+        bVerified = validStatuses.equals(implementedStatuses);
 
         // Validate that we support all of the possible properties before deciding whether we
         // fully-support the TypeDef or not
@@ -904,7 +904,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 bImplemented = true;
                 break;
             case ENUM_DEF:
-                bImplemented = (getMappingForAttributeType(attributeTypeDef.getGUID()) != null);
+                bImplemented = (attributeMappingStore.getAttributeTypeDefByGUID(attributeTypeDef.getGUID()) != null);
                 break;
             default:
                 bImplemented = false;
@@ -1689,11 +1689,11 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             // Otherwise, only bother searching if we are after ACTIVE (or "all") entities -- non-ACTIVE means we
             // will just return an empty list
 
-            List<ImplementedMapping> mappingsToSearch = getMappingsToSearch(entityTypeGUID, userId);
+            List<EntityMapping> mappingsToSearch = getMappingsToSearch(entityTypeGUID, userId);
 
             // Now iterate through all of the mappings we need to search, construct and run an appropriate search
             // for each one
-            for (ImplementedMapping mapping : mappingsToSearch) {
+            for (EntityMapping mapping : mappingsToSearch) {
 
                 IGCSearch igcSearch = new IGCSearch();
                 igcSearch.addType(mapping.getIgcAssetType());
@@ -1880,16 +1880,16 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             // Otherwise, only bother searching if we are after ACTIVE (or "all") entities -- non-ACTIVE means we
             // will just return an empty list
 
-            List<ImplementedMapping> mappingsToSearch = getMappingsToSearch(entityTypeGUID, userId);
+            List<EntityMapping> mappingsToSearch = getMappingsToSearch(entityTypeGUID, userId);
 
             // Now iterate through all of the mappings we need to search, construct and run an appropriate search
             // for each one
-            for (ImplementedMapping mapping : mappingsToSearch) {
+            for (EntityMapping mapping : mappingsToSearch) {
 
                 ClassificationMapping foundMapping = null;
 
                 // Check which classifications (if any) are implemented for the entity mapping
-                List<ClassificationMapping> classificationMappings = mapping.getEntityMapping().getClassificationMappers();
+                List<ClassificationMapping> classificationMappings = mapping.getClassificationMappers();
                 for (ClassificationMapping classificationMapping : classificationMappings) {
 
                     // Check whether the implemented classification matches the one we're searching based on
@@ -1949,7 +1949,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
 
                 } else {
-                    log.info("No classification mapping has been implemented for {} on entity {} -- skipping from search.", classificationName, mapping.getTypeDef().getName());
+                    log.info("No classification mapping has been implemented for {} on entity {} -- skipping from search.", classificationName, mapping.getOmrsTypeDefName());
                 }
 
             }
@@ -2053,11 +2053,11 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             // Otherwise, only bother searching if we are after ACTIVE (or "all") entities -- non-ACTIVE means we
             // will just return an empty list
 
-            List<ImplementedMapping> mappingsToSearch = getMappingsToSearch(entityTypeGUID, userId);
+            List<EntityMapping> mappingsToSearch = getMappingsToSearch(entityTypeGUID, userId);
 
             // Now iterate through all of the mappings we need to search, construct and run an appropriate search
             // for each one
-            for (ImplementedMapping mapping : mappingsToSearch) {
+            for (EntityMapping mapping : mappingsToSearch) {
 
                 IGCSearch igcSearch = new IGCSearch();
                 String igcAssetType = addTypeToSearch(mapping, igcSearch);
@@ -2224,7 +2224,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         if (relationshipLevelRid != null) {
             Reference relationshipAsset = igcRestClient.getAssetRefById(proxyOneIgcRid);
             String relationshipAssetType = relationshipAsset.getType();
-            relationshipMapping = getRelationshipMapper(
+            relationshipMapping = relationshipMappingStore.getMappingByTypes(
                     omrsRelationshipName,
                     relationshipAssetType,
                     relationshipAssetType
@@ -2235,7 +2235,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         } else {
             proxyOne = igcRestClient.getAssetRefById(proxyOneIgcRid);
             proxyTwo = igcRestClient.getAssetRefById(proxyTwoIgcRid);
-            relationshipMapping = getRelationshipMapper(
+            relationshipMapping = relationshipMappingStore.getMappingByTypes(
                     omrsRelationshipName,
                     proxyOne.getType(),
                     proxyTwo.getType()
@@ -2253,7 +2253,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 String igcPropertyName = relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties().get(0);
                 log.debug(" ... using property: {}", igcPropertyName);
                 found = RelationshipMapping.getMappedRelationship(
-                        (IGCOMRSRepositoryConnector)parentConnector,
+                        igcomrsRepositoryConnector,
                         relationshipMapping,
                         omrsRelationshipDef,
                         proxyOne,
@@ -3584,7 +3584,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                             errorCode.getUserAction());
                 }
 
-                RelationshipMapping relationshipMapping = getRelationshipMapper(
+                RelationshipMapping relationshipMapping = relationshipMappingStore.getMappingByTypes(
                         relationshipTypeName,
                         entityOne.getType(),
                         entityTwo.getType()
@@ -4883,38 +4883,6 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     }
 
     /**
-     * Retrieve any mapping that exists for the provided entityTypeGUID (or null if there are none).
-     *
-     * @param entityTypeGUID the OMRS entityTypeGUID for which to find a mapping
-     * @return EntityMapping
-     */
-    private ImplementedMapping getMappingForEntityType(String entityTypeGUID) {
-        ImplementedMapping mapping = null;
-        for (ImplementedMapping implementedMapping : implementedMappings) {
-            if (entityTypeGUID.equals(implementedMapping.getTypeDef().getGUID())) {
-                mapping = implementedMapping;
-            }
-        }
-        return mapping;
-    }
-
-    /**
-     * Retrieve any mapping that exists for the provided attributeTypeGUID (or null if there are none).
-     *
-     * @param attributeTypeGUID the GUID of the OMRS attribute type for which to find a mapping
-     * @return
-     */
-    private AttributeMapping getMappingForAttributeType(String attributeTypeGUID) {
-        AttributeMapping mapping = null;
-        for (ImplementedAttribute implementedAttribute : implementedAttributes) {
-            if (attributeTypeGUID.equals(implementedAttribute.getAttributeTypeDef().getGUID())) {
-                mapping = implementedAttribute.getAttributeMapping();
-            }
-        }
-        return mapping;
-    }
-
-    /**
      * Retrieve a mapping from IGC property name to the OMRS relationship type it represents.
      *
      * @param assetType the IGC asset type for which to find mappings
@@ -4925,8 +4893,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
         HashMap<String, List<RelationshipMapping>> map = new HashMap<>();
 
-        List<ReferenceableMapper> mappers = getMappers(assetType, userId);
-        for (ReferenceableMapper mapper : mappers) {
+        List<EntityMapping> mappers = getMappers(assetType, userId);
+        for (EntityMapping mapper : mappers) {
             List<RelationshipMapping> relationshipMappings = mapper.getRelationshipMappers();
             for (RelationshipMapping relationshipMapping : relationshipMappings) {
                 if (relationshipMapping.getProxyOneMapping().matchesAssetType(assetType)) {
@@ -4965,7 +4933,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @param igcSearch the IGC search object to which to add the criteria
      * @return String - the IGC asset type that will be used for the search
      */
-    private String addTypeToSearch(ImplementedMapping mapping, IGCSearch igcSearch) {
+    private String addTypeToSearch(EntityMapping mapping, IGCSearch igcSearch) {
         String igcType = DEFAULT_IGC_TYPE;
         if (mapping == null) {
             // If no TypeDef was provided, run against all types
@@ -4984,13 +4952,10 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @param userId the userId making the request
      * @return PropertyMappingSet
      */
-    private PropertyMappingSet getEntityPropertiesFromMapping(ImplementedMapping mapping, String userId) {
+    private PropertyMappingSet getEntityPropertiesFromMapping(EntityMapping mapping, String userId) {
         PropertyMappingSet propertyMappingSet = null;
         if (mapping != null) {
-            EntityMapping entityMapping = mapping.getEntityMapping();
-            if (entityMapping != null) {
-                propertyMappingSet = entityMapping.getPropertyMappings();
-            }
+            propertyMappingSet = mapping.getPropertyMappings();
         }
         return propertyMappingSet;
     }
@@ -5010,7 +4975,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         } else {
             /* So if none has been specified, we'll set a large pageSize to be able to more efficiently
              * retrieve all pages of results */
-            igcSearch.setPageSize(parentConnector.getMaxPageSize());
+            igcSearch.setPageSize(igcomrsRepositoryConnector.getMaxPageSize());
         }
         igcSearch.setBeginAt(beginAt);
     }
@@ -5040,8 +5005,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             if (!reference.getType().equals(DEFAULT_IGC_TYPE)) {
                 EntityDetail ed = null;
 
-                List<ReferenceableMapper> mappers = getMappers(reference.getType(), userId);
-                for (ReferenceableMapper mapper : mappers) {
+                List<EntityMapping> mappers = getMappers(reference.getType(), userId);
+                for (EntityMapping mapper : mappers) {
                     log.debug("processResults with mapper: {}", mapper.getClass().getCanonicalName());
                     String idToLookup;
                     if (mapper.igcRidNeedsPrefix()) {
@@ -5077,43 +5042,41 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      *
      * @param entityTypeGUID the GUID of the OMRS entity type for which to search
      * @param userId the userId through which to search
-     * @return List<ImplementedMapping>
+     * @return List<EntityMapping>
      */
-    private List<ImplementedMapping> getMappingsToSearch(String entityTypeGUID, String userId) throws
+    private List<EntityMapping> getMappingsToSearch(String entityTypeGUID, String userId) throws
             InvalidParameterException,
             RepositoryErrorException,
             UserNotAuthorizedException {
 
-        List<ImplementedMapping> mappingsToSearch = new ArrayList<>();
+        List<EntityMapping> mappingsToSearch = new ArrayList<>();
 
         // If no entityType was provided, add all implemented types (except Referenceable, as that could itself
         // include many objects that are not implemented)
         if (entityTypeGUID == null) {
-            for (ImplementedMapping candidate : implementedMappings) {
-                if (candidate.getTypeDef().getCategory().equals(TypeDefCategory.ENTITY_DEF)) {
-                    if (!candidate.getTypeDef().getName().equals("Referenceable")) {
-                        mappingsToSearch.add(candidate);
-                    }
+            for (EntityMapping candidate : entityMappingStore.getAllMappings()) {
+                if (!candidate.getOmrsTypeDefName().equals("Referenceable")) {
+                    mappingsToSearch.add(candidate);
                 }
             }
         } else {
 
-            ImplementedMapping mappingExact = getMappingForEntityType(entityTypeGUID);
+            EntityMapping mappingExact = entityMappingStore.getMappingByOmrsTypeGUID(entityTypeGUID);
             String requestedTypeName;
             // If no implemented mapping could be found, at least retrieve the TypeDef for further introspection
             // (so that if it has any implemented subtypes, we can still search for those)
             if (mappingExact == null) {
-                TypeDef unimplemented = unimplementedTypeDefs.get(entityTypeGUID);
+                TypeDef unimplemented = typeDefStore.getUnimplementedTypeDefByGUID(entityTypeGUID);
                 requestedTypeName = unimplemented.getName();
             } else {
-                requestedTypeName = mappingExact.getTypeDef().getName();
+                requestedTypeName = mappingExact.getOmrsTypeDefName();
             }
 
             // Walk the hierarchy of types to ensure we search across all subtypes of the requested TypeDef as well
             List<TypeDef> allEntityTypes = findTypeDefsByCategory(userId, TypeDefCategory.ENTITY_DEF);
 
             for (TypeDef typeDef : allEntityTypes) {
-                ImplementedMapping implementedMapping = getMappingForEntityType(typeDef.getGUID());
+                EntityMapping implementedMapping = entityMappingStore.getMappingByOmrsTypeGUID(typeDef.getGUID());
                 if (implementedMapping != null) {
                     if (repositoryHelper.isTypeOf(metadataCollectionId, typeDef.getName(), requestedTypeName)) {
                         // Add any subtypes of the requested type into the search
@@ -5218,28 +5181,14 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
         log.debug("Looking for mapper for type {} with prefix {}", igcAssetType, prefix);
 
-        List<ReferenceableMapper> mappers = getMappers(igcAssetType, userId);
-
-        ReferenceableMapper candidateMapper = null;
-        for (int i = 0; i < mappers.size(); i++) {
-            candidateMapper = mappers.get(i);
-            String mapperPrefix = candidateMapper.getIgcRidPrefix();
-            if ( (prefix == null && mapperPrefix == null)
-                    || (prefix != null && mapperPrefix != null && mapperPrefix.equals(prefix)) ) {
-                // If we didn't receive any prefix and this Mapper doesn't use a prefix, use it
-                // or if we did receive a prefix and it matches this Mapper's prefix, use it
-                break;
-            }
-            // Otherwise keep looping until we find one that meets above criteria (or we run out of options)
-        }
-
+        EntityMapping found = entityMappingStore.getMappingByIgcAssetTypeAndPrefix(igcAssetType, prefix);
         ReferenceableMapper referenceMapper = null;
-        if (candidateMapper != null) {
-            log.debug("Found mapper class: {}", candidateMapper.getClass().getCanonicalName());
+        if (found != null) {
+            log.debug("Found mapper class: {} ({})", found.getClass().getCanonicalName(), found);
             // Translate the provided asset to a base asset type for the mapper, if needed
             // (if not needed the 'getBaseIgcAssetFromAlternative' is effecitively a NOOP and gives back same object)
-            referenceMapper = candidateMapper.initialize(
-                    candidateMapper.getBaseIgcAssetFromAlternative(igcObject),
+            referenceMapper = ((ReferenceableMapper) found).initialize(
+                    found.getBaseIgcAssetFromAlternative(igcObject),
                     igcObject);
         } else {
             log.debug("No mapper class found!");
@@ -5252,114 +5201,32 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * Retrieves the classes to use for mapping the provided IGC asset type to an OMRS entity.
      *
      * @param igcAssetType the name of the IGC asset type
-     * @return List<Class>
+     * @return List<EntityMapping>
      */
-    public List<ReferenceableMapper> getMappers(String igcAssetType, String userId) {
-        ArrayList<ReferenceableMapper> mappers = new ArrayList<>();
-        for (ImplementedMapping mapping : implementedMappings) {
-            String mappingAssetType = mapping.getIgcAssetType();
-            // For now skip over the default Referenceable mapping, if no other candidate is found we will add
-            // this default mapping back in below
-            if (mappingAssetType != null && !mappingAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
-                if (mapping.matchesAssetType(igcAssetType)) {
-                    log.debug(" ... adding candidate: {}", mapping.getEntityMapping().getClass().getCanonicalName());
-                    mappers.add((ReferenceableMapper) mapping.getEntityMapping());
-                } else {
-                    for (String otherType : mapping.getOtherIgcAssetTypes()) {
-                        if (igcAssetType.equals(otherType)) {
-                            log.debug(" ... adding other candidate: {}", mapping.getEntityMapping().getClass().getCanonicalName());
-                            mappers.add((ReferenceableMapper) mapping.getEntityMapping());
-                        }
-                    }
-                }
-            }
-        }
+    public List<EntityMapping> getMappers(String igcAssetType, String userId) {
+
+        List<EntityMapping> mappers = entityMappingStore.getMappingsByIgcAssetType(igcAssetType);
+
         if (mappers.isEmpty()) {
-            try {
-                ReferenceableMapper defaultMapper = (ReferenceableMapper) ImplementedMapping.getEntityMapper(
-                        Class.forName(MAPPING_PKG + "entities.ReferenceableMapper"),
-                        (IGCOMRSRepositoryConnector)parentConnector,
-                        userId
-                );
+            EntityMapping defaultMapper = entityMappingStore.getDefaultEntityMapper(igcomrsRepositoryConnector, userId);
+            if (defaultMapper != null) {
                 mappers.add(defaultMapper);
-            } catch (ClassNotFoundException e) {
-                log.error("Unable to find default ReferenceableMapper class: " + MAPPING_PKG + "entities.ReferenceableMapper", e);
             }
         }
+
         return mappers;
+
     }
 
     /**
-     * Retrieves a RelationshipMapping by OMRS relationship type from those that are listed as implemented.
+     * Retrieves a mapping from attribute name to TypeDefAttribute for all OMRS attributes defined for the provided
+     * OMRS TypeDef name.
      *
-     * @param omrsRelationshipType the name of the OMRS relationship type for which to retrieve a mapping
-     * @return RelationshipMapping
+     * @param omrsTypeName the name of the OMRS TypeDef for which to retrieve the attributes
+     * @return Map<String, TypeDefAttribute>
      */
-    public RelationshipMapping getRelationshipMapper(String omrsRelationshipType,
-                                                     String proxyOneType,
-                                                     String proxyTwoType) {
-        RelationshipMapping found = null;
-        for (ImplementedMapping mapping : implementedMappings) {
-            RelationshipMapping candidate = mapping.getRelationshipMapping();
-            // If the mapping has a relationship mapping, and its type equals the one we're looking for,
-            // set it to found and short-circuit out of the loop
-            if (candidate != null) {
-                if (matchingRelationshipMapper(candidate, omrsRelationshipType, proxyOneType, proxyTwoType)) {
-                    found = candidate;
-                    break;
-                } else if (candidate.hasSubTypes()) {
-                    for (RelationshipMapping subMapping : candidate.getSubTypes()) {
-                        if (matchingRelationshipMapper(subMapping, omrsRelationshipType, proxyOneType, proxyTwoType)) {
-                            found = subMapping;
-                            break;
-                        }
-                    }
-                } else if (candidate.hasRelationshipLevelAsset()) {
-                    String relationshipLevelAssetType = candidate.getRelationshipLevelIgcAsset();
-                    if (proxyOneType.equals(relationshipLevelAssetType) && proxyTwoType.equals(relationshipLevelAssetType)) {
-                        found = candidate;
-                        break;
-                    }
-                }
-
-            }
-        }
-        return found;
-    }
-
-    /**
-     * Indicates whether the provided relationship mapping matches the provided criteria.
-     *
-     * @param candidate the relationship mapping to check
-     * @param omrsRelationshipType the OMRS relationship type to confirm
-     * @param proxyOneType the asset type of endpoint 1 of the relationship to confirm
-     * @param proxyTwoType the asset type of endpoint 2 of the relationship to confirm
-     * @return
-     */
-    private boolean matchingRelationshipMapper(RelationshipMapping candidate,
-                                               String omrsRelationshipType,
-                                               String proxyOneType,
-                                               String proxyTwoType) {
-        return (candidate != null
-                && candidate.getOmrsRelationshipType().equals(omrsRelationshipType)
-                && candidate.getProxyOneMapping().matchesAssetType(proxyOneType)
-                && candidate.getProxyTwoMapping().matchesAssetType(proxyTwoType));
-    }
-
-    /**
-     * Retrieves the OMRS TypeDefs that are mapped to by the provided IGC asset display name.
-     *
-     * @param igcAssetName the display name of the IGC asset type
-     * @return List<TypeDef>
-     */
-    public List<TypeDef> getTypeDefsForAssetName(String igcAssetName) {
-        ArrayList<TypeDef> typeDefs = new ArrayList<>();
-        for (ImplementedMapping mapping : implementedMappings) {
-            if (igcAssetName.equals(mapping.getIgcAssetTypeDisplayName())) {
-                typeDefs.add(mapping.getTypeDef());
-            }
-        }
-        return typeDefs;
+    public Map<String, TypeDefAttribute> getTypeDefAttributesForType(String omrsTypeName) {
+        return typeDefStore.getAllTypeDefAttributesForName(omrsTypeName);
     }
 
     /**
@@ -5370,14 +5237,12 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @return String
      */
     public String getIgcAssetTypeForAssetName(String igcAssetName) {
-        String assetType = null;
-        for (ImplementedMapping mapping : implementedMappings) {
-            if (igcAssetName.equals(mapping.getIgcAssetTypeDisplayName())) {
-                assetType = mapping.getIgcAssetType();
-                break;
-            }
+        EntityMapping mapping = entityMappingStore.getMappingByIgcAssetDisplayName(igcAssetName);
+        if (mapping != null) {
+            return mapping.getIgcAssetType();
+        } else {
+            return null;
         }
-        return assetType;
     }
 
     /**

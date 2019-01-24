@@ -82,9 +82,17 @@ public class EndpointMapper extends ReferenceableMapper {
     @Override
     protected void complexPropertyMappings(InstanceProperties instanceProperties) {
 
+        final String methodName = "complexPropertyMappings";
+
         // Map from name to networkAddress, without clobbering the simple name mapping
         String networkAddress = (String) igcEntity.getPropertyByName("name");
-        instanceProperties.setProperty("networkAddress", getPrimitivePropertyValue(networkAddress));
+        instanceProperties = igcomrsRepositoryConnector.getRepositoryHelper().addStringPropertyToInstance(
+                igcomrsRepositoryConnector.getRepositoryName(),
+                instanceProperties,
+                "name",
+                networkAddress,
+                methodName
+        );
 
     }
 
