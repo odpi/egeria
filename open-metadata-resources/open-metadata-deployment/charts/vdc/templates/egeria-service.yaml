@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: egeria-service
 
-  name: egeria
+  name: {{ include "myapp.fullname" . }}-egeria-service
 
 spec:
   type: "{{ .Values.service.type }}"
