@@ -53,6 +53,16 @@ echo "Egeria user name  : ${EGERIA_USER}"
 echo "Egeria server name: ${EGERIA_SERVER}"
 echo "Egeria Cohort     : ${EGERIA_COHORT}"
 
+echo "Checking KAFKA is up"
+
+n=0
+   until [ $n -ge 100 ]
+   do
+      kafkacat -b ${KAFKA_ENDPOINT} -L  && break  # substitute your command here
+      n=$[$n+1]
+      sleep 30
+   done
+
 echo "Checking ATLAS is up"
 
 loop=100
@@ -87,6 +97,7 @@ fi
 
 # Issue requests against atlas
 http --verbose --ignore-stdin \
+	--check-status \
 	--auth admin:admin \
 	POST ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/event-bus   \
 	producer:='{"bootstrap.servers":"'${KAFKA_ENDPOINT}'"}' \
@@ -102,6 +113,7 @@ fi
 # Repository type configuration
 
 http --verbose --ignore-stdin \
+	--check-status \
         --auth admin:admin \
         POST ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/atlas-repository   
 rc=$?
@@ -113,6 +125,7 @@ fi
 
 # Server root configuration
 http --verbose --ignore-stdin \
+	--check-status \
         --auth admin:admin \
         POST ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-url-root?url=${ATLAS_ENDPOINT}/egeria
 rc=$?
@@ -124,6 +137,7 @@ fi
 
 # Cohort configuration
 http --verbose --ignore-stdin \
+	--check-status \
         --auth admin:admin \
         POST ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/cohorts/${EGERIA_COHORT}
 rc=$?
@@ -136,6 +150,7 @@ fi
 # Activation - note 5 minute timeout
 echo "Configuration complete -- now activating (may take a few minutes)"
 http --verbose --ignore-stdin \
+	--check-status \
         --auth admin:admin \
 	--timeout 900 \
         POST ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/instance

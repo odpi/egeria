@@ -821,6 +821,7 @@ public abstract class RelationshipMapping {
                     }
 
                     if (igcObj.hasModificationDetails()) {
+                        igcObj.populateModificationDetails(igcRestClient);
                         entityProxy.setCreatedBy((String) igcObj.getPropertyByName(IGCRestConstants.MOD_CREATED_BY));
                         entityProxy.setCreateTime((Date) igcObj.getPropertyByName(IGCRestConstants.MOD_CREATED_ON));
                         entityProxy.setUpdatedBy((String) igcObj.getPropertyByName(IGCRestConstants.MOD_MODIFIED_BY));
