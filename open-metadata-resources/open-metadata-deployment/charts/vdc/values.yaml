@@ -1,0 +1,80 @@
+# SPDX-License-Identifier: Apache-2.0 
+# Copyright Contributors to the Egeria project.
+# Default values for ranger.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  ranger:
+    repository: planetf1/ranger-admin-egeriavdc
+    tag: 0.2.1
+    pullPolicy: IfNotPresent
+
+  mariadb:
+    repository: mariadb
+    tag: latest
+    pullPolicy: IfNotPresent
+
+  egeria:
+    repository: planetf1/egeria-egeriavdc
+    tag: 0.1.2
+    pullPolicy: IfNotPresent
+
+  gaian:
+    repository: planetf1/gaian-egeriavdc
+    tag: 0.1.0
+    pullPolicy: IfNotPresent
+
+  atlas:
+    repository: planetf1/atlas-1773-egeria
+    tag: 0.1.5
+    pullPolicy: IfNotPresent
+
+  atlasinit:
+    repository: planetf1/atlas-init-egeria
+    tag: 0.1.6
+    pullPolicy: IfNotPresent
+
+  igcproxy:
+    repository: planetf1/igcproxy-egeriavdc
+    tag: 0.1.0
+    pullPolicy: IfNotPresent
+
+  kafkamonitor:
+    repository: planetf1/kafka-monitor-egeriavdc
+    tag: 0.1.4
+    pullPolicy: IfNotPresent
+
+  egeriainit:
+    repository: planetf1/egeria-init-egeria
+    tag: 0.1.2
+    pullPolicy: IfNotPresent
+
+  nameOverride: ""
+  fullnameOverride: ""
+
+
+kafka:
+  #replicas: 1
+  external:
+    enabled: false
+    type: NodePort
+  configurationOverrides:
+    "auto.create.topics.enable": true
+
+
+# Network configuration
+service:
+  #LoadBalancer is another option (not for IBM Cloud free cluster)
+  type: NodePort
+  externalName:  default.svc.cluster.local
+
+# Confluent kafka chart configuration
+cp-helm-charts:
+  brokers: 1
+  cp-schema-registry:
+    enabled: false
+  cp-kafka-rest:
+    enabled: false
+  cp-kafka-connect:
+    enabled: false

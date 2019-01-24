@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # OMRS Events
 
@@ -52,3 +53,8 @@ The error section has an error code, error message and a target metadata
 collection id.  The target metadata collection id indicates which member
 of the cohort is the target for the error message.
 Other members may pick up the error and act on it as well.
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

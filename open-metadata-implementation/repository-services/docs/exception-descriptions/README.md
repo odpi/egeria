@@ -1,4 +1,5 @@
-<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 # OMRS Exception Descriptions
 
@@ -45,3 +46,10 @@ It is typically wrapping an OCF checked exception.
 * `OMRSLogicErrorException` - used when the OMRS detects an error in its processing.
 This may be due to a configuration error but is much more likely to be a bug in the
 OMRS code.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
+

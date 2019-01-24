@@ -1,0 +1,433 @@
+---
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+- name: setup Information Server variables
+  import_role:
+    name: IBM.infosvr
+    tasks_from: setup_vars.yml
+
+- name: setup Information Server certificate
+  import_role:
+    name: IBM.infosvr
+    tasks_from: get_certificate.yml
+
+- name: post-check remote database catalog status
+  shell: "source ~/.bashrc && db2 list database directory"
+  args:
+    executable: /bin/bash
+  become_user: "{{ ibm_infosvr_users.db2inst1 }}"
+  become: yes
+  ignore_errors: yes
+  register: __cocopharma_db2catalog_completion
+  changed_when: False
+  when: >
+    ('ibm-information-server-engine' in group_names)
+    and (egeria_samples_cocopharma_db_type == 'ibm-db2')
+
+- name: catalog remote data nodes
+  shell: >
+          source ~/.bashrc &&
+          db2 catalog database {{ item | upper }} at node REPO &&
+          db2 terminate
+  args:
+    executable: /bin/bash
+  when: >
+    ('ibm-information-server-engine' in group_names)
+    and (egeria_samples_cocopharma_db_type == 'ibm-db2')
+    and __cocopharma_db2catalog_completion.stdout.find(item) == -1
+  with_items: "{{ egeria_samples_cocopharma_databases }}"
+  become_user: "{{ ibm_infosvr_users.db2inst1 }}"
+  become: yes
+
+- name: setup mappings
+  set_fact:
+    rest_mappings:
+      - { type: "host", property: "name", from: "ENG.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
+      - { type: "host_(engine)", property: "name", from: "ENG.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
+      - { type: "host", property: "name", from: "DB.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+      - { type: "host_(engine)", property: "name", from: "DB.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+      - { type: "data_file", property: "path", from: "/data/files/CocoPharma", to: "{{ egeria_samples_cocopharma_targets.files }}" }
+    iaxml_mappings:
+      - { type: "DataSource", attr: "host", from: "DB.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+
+- name: harvest file metadata via IBM Metadata Asset Manager
+  include_role:
+    name: IBM.infosvr-metadata-asset-manager
+  vars:
+    import_areas:
+      - name: CocoPharma_SampleFiles
+        type: LocalFileConnector
+        description: "Loads metadata for CocoPharma sample files"
+        metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
+        dcn:
+          name: LOCALFS
+        assets_to_import:
+          - "folder[{{ egeria_samples_cocopharma_targets.files }}]"
+        hostname: "{{ groups['ibm-information-server-engine'][0] | upper }}"
+
+- name: harvest DB2 metadata via IBM Metadata Asset Manager
+  include_role:
+    name: IBM.infosvr-metadata-asset-manager
+  vars:
+    import_areas:
+      - name: CocoPharma_{{ db_name }}
+        type: DB2Connector
+        description: "Import area for CocoPharma {{ db_name }} sample database"
+        metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
+        dcn:
+          name: CocoPharma_{{ db_name }}
+          description: "CocoPharma DB2 connection"
+          database: "{{ db_name | upper }}"
+          username: "{{ ibm_infosvr_users.db2inst1 }}"
+          password: "{{ ibm_infosvr_upwds.db2inst1 }}"
+        assets_to_import:
+            - "database[{{ db_name | upper }}]"
+        hostname: "{{ groups['egeria-samples-db-host'][0] | upper }}"
+        database_name: "{{ db_name | upper }}"
+  with_items: "{{ egeria_samples_cocopharma_databases }}"
+  when: (egeria_samples_cocopharma_db_type == 'ibm-db2')
+  loop_control:
+    loop_var: db_name
+
+- name: harvest PostgreSQL metadata via IBM Metadata Asset Manager
+  include_role:
+    name: IBM.infosvr-metadata-asset-manager
+  vars:
+    odbc_entries:
+      - name: CocoPharma_{{ db_name | upper }}
+        description: ODBC database connection for CocoPharma {{ db_name }} sample database
+        type: postgres
+        database: "{{ db_name | upper }}"
+        host: "{{ groups['egeria-samples-db-host'][0] | upper }}"
+    import_areas:
+      - name: CocoPharma_{{ db_name }}
+        type: ODBCConnector
+        description: "Import area for CocoPharma {{ db_name }} sample database"
+        metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
+        dcn:
+          name: CocoPharma_{{ db_name }}
+          description: "CocoPharma PostgreSQL connection"
+          data_source: "CocoPharma_{{ db_name | upper }}"
+          username: "{{ egeria_samples_credentials.db_owner }}"
+          password: "{{ egeria_samples_credentials.db_passwd }}"
+        assets_to_import:
+          - "schema[{{ db_name | upper }}|public]"
+        hostname: "{{ groups['egeria-samples-db-host'][0] | upper }}"
+        database_name: "{{ db_name | upper }}"
+  with_items: "{{ egeria_samples_cocopharma_databases }}"
+  when: (egeria_samples_cocopharma_db_type == 'postgresql')
+  loop_control:
+    loop_var: db_name
+
+- name: install mysql open source ODBC drivers
+  yum:
+    name: mysql-connector-odbc
+    state: present
+  when: (egeria_samples_cocopharma_db_type == 'mariadb')
+
+- name: add mysql open source ODBC drivers to Information Server
+  lineinfile:
+    dest: "{{ ibm_infosvr_install_location.linux }}/Server/DSEngine/dsenv"
+    regexp: 'export LD_LIBRARY_PATH$'
+    line: "        LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64;export LD_LIBRARY_PATH"
+  become: yes
+  when: (egeria_samples_cocopharma_db_type == 'mariadb')
+  register: __ibm_infosvr_dsenv
+
+- include_role:
+    name: IBM.infosvr
+    tasks_from: ops/stop_engine.yml
+  when: __ibm_infosvr_dsenv is changed
+
+- include_role:
+    name: IBM.infosvr
+    tasks_from: ops/start_engine.yml
+  when: __ibm_infosvr_dsenv is changed
+
+- name: harvest MariaDB metadata via IBM Metadata Asset Manager
+  include_role:
+    name: IBM.infosvr-metadata-asset-manager
+  vars:
+    odbc_entries:
+      - name: CocoPharma_{{ db_name | upper }}
+        description: ODBC database connection for CocoPharma {{ db_name }} sample database
+        type: mysql_open
+        database: "{{ db_name | upper }}"
+        host: "{{ groups['egeria-samples-db-host'][0] | upper }}"
+    import_areas:
+      - name: CocoPharma_{{ db_name }}
+        type: ODBCConnector
+        description: "Import area for CocoPharma {{ db_name }} sample database"
+        metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
+        dcn:
+          name: CocoPharma_{{ db_name }}
+          description: "CocoPharma MariaDB connection"
+          data_source: "CocoPharma_{{ db_name | upper }}"
+          username: "{{ egeria_samples_credentials.db_owner }}"
+          password: "{{ egeria_samples_credentials.db_passwd }}"
+        assets_to_import:
+          - "schema[{{ db_name | upper }}|{{ db_name | upper }}]"
+        hostname: "{{ groups['egeria-samples-db-host'][0] | upper }}"
+        database_name: "{{ db_name | upper }}"
+  with_items: "{{ egeria_samples_cocopharma_databases }}"
+  when: (egeria_samples_cocopharma_db_type == 'mariadb')
+  loop_control:
+    loop_var: db_name
+
+- name: transform relationships to appropriate database
+  template:
+    src: metadata/ibm-igc/{{ item }}
+    dest: metadata/ibm-igc/generated_{{ item }}
+  delegate_to: localhost
+  with_items:
+    - dbcol2term.json
+    - ia.xml
+
+- import_role: name=IBM.infosvr-import-export
+  vars:
+    ingest:
+      glossary:
+        - from: "metadata/ibm-igc/bg.xml"
+          merged_by: overwrite
+      relationships:
+        - from: "metadata/ibm-igc/generated_dbcol2term.json"
+          using_mode: REPLACE_ALL
+          with_options:
+            transformed_by: "{{ rest_mappings }}"
+        - from: "metadata/ibm-igc/dfcol2term.json"
+          using_mode: REPLACE_ALL
+          with_options:
+            transformed_by: "{{ rest_mappings }}"
+      infoanalyzer:
+        - from: "metadata/ibm-igc/generated_ia.xml"
+          into_project: CocoPharma
+          with_options:
+            transformed_by: "{{ iaxml_mappings }}"
+    progress:
+      - assets_of_type: category
+        using_action: publish
+        with_options:
+          only_with_conditions:
+            - { property: "parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
+            - { property: "name", operator: "=", value: "Coco Pharmaceuticals" }
+          condition_join: OR
+          with_comment: "Auto-publication by samples import process"
+      - assets_of_type: term
+        using_action: publish
+        with_options:
+          only_with_conditions:
+            - { property: "parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
+          with_comment: "Auto-publication by samples import process"
+    validate:
+      that:
+        - number_of: category
+          meeting_any_conditions:
+            - { property: "parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
+          is: 4
+        - number_of: term
+          meeting_all_conditions:
+            - { property: "parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
+          is: 52
+        - number_of: database_column
+          meeting_all_conditions:
+            - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "COMPDIR" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+          is: 13
+        - number_of: database_column
+          meeting_all_conditions:
+            - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "EMPLOYEE" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+          is: 11
+        - number_of: database_column
+          meeting_all_conditions:
+            - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "EMPLSANL" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+          is: 22
+        - number_of: database_column
+          meeting_all_conditions:
+            - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "LOCATION" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+          is: 9
+        - number_of: database_column
+          meeting_all_conditions:
+            - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "PATIENT" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+          is: 8
+        - number_of: database_column
+          meeting_all_conditions:
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+            - { property: "assigned_to_terms.parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
+          is: 61
+        - number_of: data_file_field
+          meeting_all_conditions:
+            - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
+            - { property: "data_file_record.data_file.path", operator: "=", value: "{{ egeria_samples_cocopharma_targets.files }}" }
+          is: 63
+        - number_of: data_file_field
+          meeting_all_conditions:
+            - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
+            - { property: "data_file_record.data_file.path", operator: "=", value: "{{ egeria_samples_cocopharma_targets.files }}" }
+            - { property: "assigned_to_terms.parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
+          is: 61
+
+- name: remove cached files
+  file:
+    path: cache/__ibm_infosvr_cert_root.crt
+    state: absent
+  delegate_to: localhost
+
+- name: list groups
+  shell: >
+    {{ ibm_infosvr_locations.linux }}/ASBNode/bin/DirectoryCommand.sh
+    -user {{ ibm_infosvr_users.isadmin }}
+    -password {{ ibm_infosvr_upwds.isadmin }}
+    -url https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}
+    -list GROUPS
+  args:
+    executable: /bin/bash
+  when: egeria_samples_cocopharma_groups is defined and ('ibm-information-server-engine' in group_names)
+  register: __cocopharma_existing_groups
+
+- name: add group creation to command-list
+  lineinfile:
+    path: /tmp/__cocopharma_users_command_list.x
+    regexp: ^-add_group {{ item.id }}
+    line: -add_group {{ item.id }}~{{ item.name }};
+    state: present
+    insertafter: EOF
+    create: yes
+  when: >
+    __cocopharma_existing_groups is defined
+    and __cocopharma_existing_groups.stdout.find(item.id) == -1
+    and ('ibm-information-server-engine' in group_names)
+  with_items: "{{ egeria_samples_cocopharma_groups }}"
+  loop_control:
+    label: "{{ item.id }}"
+
+- name: add group role assignment to command-list
+  lineinfile:
+    path: /tmp/__cocopharma_users_command_list.x
+    regexp: ^-assign_group_roles {{ item.id }}
+    line: -assign_group_roles {{ item.id }}${{ item.roles | join("~") }};
+    state: present
+    insertafter: EOF
+    create: yes
+  with_items: "{{ egeria_samples_cocopharma_groups }}"
+  when: egeria_samples_cocopharma_groups is defined and ('ibm-information-server-engine' in group_names)
+  loop_control:
+    label: "{{ item.id }}"
+
+- name: list users
+  shell: >
+    {{ ibm_infosvr_locations.linux }}/ASBNode/bin/DirectoryCommand.sh
+    -user {{ ibm_infosvr_users.isadmin }}
+    -password {{ ibm_infosvr_upwds.isadmin }}
+    -url https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}
+    -list USERS
+  args:
+    executable: /bin/bash
+  when: egeria_samples_cocopharma_groups is defined and ('ibm-information-server-engine' in group_names)
+  register: __cocopharma_existing_users
+
+- name: add users to command-list
+  lineinfile:
+    path: /tmp/__cocopharma_users_command_list.x
+    regexp: ^-add_user {{ item.username }}
+    line: -add_user {{ item.username }}~{{ item.password }}~{{ item.firstname }}~{{ item.lastname }}~{{ item.title }}~{{ item.jobtitle }}~~~~~~~~{{ item.email }};
+    state: present
+    insertafter: EOF
+    create: yes
+  with_items: "{{ egeria_samples_cocopharma_users }}"
+  when: >
+    __cocopharma_existing_users is defined
+    and __cocopharma_existing_users.stdout.find(item.username) == -1
+    and ('ibm-information-server-engine' in group_names)
+  loop_control:
+    label: "{{ item.username }}"
+
+- name: add group assignment to command-list
+  lineinfile:
+    path: /tmp/__cocopharma_users_command_list.x
+    regexp: ^-add_users_group {{ item.username }}
+    line: -add_users_group {{ item.username }}${{ item.groups | join("~") }};
+    state: present
+    insertafter: EOF
+    create: yes
+  with_items: "{{ egeria_samples_cocopharma_users }}"
+  when: egeria_samples_cocopharma_users is defined and ('ibm-information-server-engine' in group_names)
+  loop_control:
+    label: "{{ item.username }}"
+
+- name: create groups and users
+  shell: >
+    {{ ibm_infosvr_locations.linux }}/ASBNode/bin/DirectoryCommand.sh
+    -user {{ ibm_infosvr_users.isadmin }}
+    -password {{ ibm_infosvr_upwds.isadmin }}
+    -url https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}
+    -f /tmp/__cocopharma_users_command_list.x
+  args:
+    executable: /bin/bash
+  when: ('ibm-information-server-engine' in group_names)
+
+- name: remove command-list
+  file:
+    path: /tmp/__cocopharma_users_command_list.x
+    state: absent
+  when: ('ibm-information-server-engine' in group_names)
+
+- name: get RIDs for users
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}/ibm/iis/igc-rest/v1/search/"
+    method: POST
+    user: "{{ ibm_infosvr_users.isadmin }}"
+    password: "{{ ibm_infosvr_upwds.isadmin }}"
+    body: '{"properties":["principal_id"],"types":["user"],"pageSize":"1000"}'
+    body_format: json
+    validate_certs: no
+    status_code: 200
+    headers:
+      Content-Type: "application/json"
+  changed_when: False
+  register: __cocopharma_existing_users_rids
+  when: ('ibm-information-server-engine' in group_names)
+
+- name: add users as stewards
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports_ext.console }}/ibm/iis/igc-rest/v1/administration/stewards"
+    method: POST
+    user: "{{ ibm_infosvr_users.isadmin }}"
+    password: "{{ ibm_infosvr_upwds.isadmin }}"
+    body: >
+      {"id":"{{ __cocopharma_existing_users_rids.json | json_query("items[?principal_id=='" + item.username + "']._id") | first }}"}
+    body_format: json
+    validate_certs: no
+    status_code: 200
+    headers:
+      Content-Type: "application/json"
+  with_items: "{{ egeria_samples_cocopharma_users }}"
+  when: egeria_samples_cocopharma_users is defined and ('ibm-information-server-engine' in group_names)
+  loop_control:
+    label: "{{ item.username }}"
+
+- name: discover database sources
+  include_role:
+    name: IBM.infosvr-metadata-asset-manager
+  vars:
+    discover_sources:
+      - dcn: CocoPharma_{{ db_name }}
+        project: CocoPharma
+        target_host: "{{ groups['egeria-samples-db-host'][0] | upper }}"
+        steps:
+          - import
+          - columnAnalysis
+          - termAssignment
+          - dataQualityAnalysis
+          - publish
+        parameters:
+          rootAssets: schema[{{ db_name | upper }}|{{ egeria_samples_db_schema }}]
+          Asset_description_already_exists: Replace_existing_description
+  with_items: "{{ egeria_samples_cocopharma_databases }}"
+  when: ('ibm-information-server-engine' in group_names) and (egeria_samples_cocopharma_db_type == 'ibm-db2')
+  loop_control:
+    loop_var: db_name

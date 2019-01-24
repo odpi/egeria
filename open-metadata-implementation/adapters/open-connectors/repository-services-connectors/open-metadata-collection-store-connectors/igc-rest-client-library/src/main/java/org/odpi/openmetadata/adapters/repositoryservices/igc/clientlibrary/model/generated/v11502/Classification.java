@@ -118,6 +118,7 @@ public class Classification extends Reference {
         "threshold",
         "date"
     );
+    private static final List<String> STRING_PROPERTIES = new ArrayList<>();
     private static final List<String> PAGED_RELATIONAL_PROPERTIES = Arrays.asList(
         "column_analysis"
     );
@@ -133,6 +134,7 @@ public class Classification extends Reference {
         "column_analysis"
     );
     public static List<String> getNonRelationshipProperties() { return NON_RELATIONAL_PROPERTIES; }
+    public static List<String> getStringProperties() { return STRING_PROPERTIES; }
     public static List<String> getPagedRelationshipProperties() { return PAGED_RELATIONAL_PROPERTIES; }
     public static List<String> getAllProperties() { return ALL_PROPERTIES; }
     public static Boolean isClassification(Object obj) { return (obj.getClass() == Classification.class); }

@@ -365,6 +365,46 @@ public class Reference extends ObjectPrinter {
     }
 
     /**
+     * Ensures that the modification details of the asset are populated (takes no action if already populated or
+     * the asset does not support them).
+     *
+     * @param igcrest a REST API connection to use in populating the modification details
+     * @return boolean indicating whether details were successfully / already populated (true) or not (false)
+     */
+    public boolean populateModificationDetails(IGCRestClient igcrest) {
+
+        boolean success = true;
+        // Only bother retrieving the details if the object supports them and they aren't already present
+
+        boolean bHasModificationDetails = this.hasModificationDetails();
+        String createdBy = (String) this.getPropertyByName(IGCRestConstants.MOD_CREATED_BY);
+
+        if (bHasModificationDetails && createdBy == null) {
+
+            IGCSearchCondition idOnly = new IGCSearchCondition("_id", "=", this.getId());
+            IGCSearchConditionSet idOnlySet = new IGCSearchConditionSet(idOnly);
+            IGCSearch igcSearch = new IGCSearch(this.getType(), idOnlySet);
+            igcSearch.addProperties(IGCRestConstants.getModificationProperties());
+            igcSearch.setPageSize(2);
+            ReferenceList assetsWithModDetails = igcrest.search(igcSearch);
+            success = (!assetsWithModDetails.getItems().isEmpty());
+            if (success) {
+
+                Reference assetWithModDetails = assetsWithModDetails.getItems().get(0);
+                this.setPropertyByName(IGCRestConstants.MOD_CREATED_ON, assetWithModDetails.getPropertyByName(IGCRestConstants.MOD_CREATED_ON));
+                this.setPropertyByName(IGCRestConstants.MOD_CREATED_BY, assetWithModDetails.getPropertyByName(IGCRestConstants.MOD_CREATED_BY));
+                this.setPropertyByName(IGCRestConstants.MOD_MODIFIED_ON, assetWithModDetails.getPropertyByName(IGCRestConstants.MOD_MODIFIED_ON));
+                this.setPropertyByName(IGCRestConstants.MOD_MODIFIED_BY, assetWithModDetails.getPropertyByName(IGCRestConstants.MOD_MODIFIED_BY));
+
+            }
+
+        }
+
+        return success;
+
+    }
+
+    /**
      * Ensures that the _context of the asset is populated (takes no action if already populated).
      * In addition, if the asset type supports them, will also retrieve and set modification details.
      *
@@ -431,6 +471,23 @@ public class Reference extends ObjectPrinter {
     public boolean hasModificationDetails() { return this.hasProperty("modified_on"); }
 
     /**
+     * Indicates whether IGC assets of the POJO class are capable of being created (true) or not (false).
+     *
+     * @param pojoClass the POJO for which to check an asset's create-ability
+     * @return boolean
+     */
+    public static boolean isCreatableFromPOJO(Class pojoClass) {
+        boolean creatable = false;
+        try {
+            Method canBeCreated = pojoClass.getMethod("canBeCreated");
+            creatable = (Boolean) canBeCreated.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve creatable status from IGC POJO: {}", pojoClass, e);
+        }
+        return creatable;
+    }
+
+    /**
      * Retrieves the IGC asset display name from the provided POJO.
      *
      * @param pojoClass the POJO for which to retrieve an asset's type display name
@@ -494,6 +551,23 @@ public class Reference extends ObjectPrinter {
             list = (List<String>) getNonRelationshipProperties.invoke(null);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
             log.error("Unable to retrieve non-relationship properties from IGC POJO: {}", pojoClass, e);
+        }
+        return list;
+    }
+
+    /**
+     * Retrieves the list of property names for the asset that are string-valued.
+     *
+     * @param pojoClass the POJO for which to retrieve string-valued property names
+     * @return List<String>
+     */
+    public static List<String> getStringPropertiesFromPOJO(Class pojoClass) {
+        List<String> list = null;
+        try {
+            Method getStringProperties = pojoClass.getMethod("getStringProperties");
+            list = (List<String>) getStringProperties.invoke(null);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            log.error("Unable to retrieve string properties from IGC POJO: {}", pojoClass, e);
         }
         return list;
     }

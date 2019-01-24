@@ -54,6 +54,12 @@ public class OMRSAPIHelper {
     public OMRSRepositoryHelper getOMRSRepositoryHelper() {
         return omrsConnector.getRepositoryHelper();
     }
+
+    /**
+     * Set the OMRS repository connector
+     * @param connector connector cannot be null
+     * @throws MetadataServerUncontactableException Metadata server not contactable
+     */
     public void setOMRSRepositoryConnector(OMRSRepositoryConnector connector) throws MetadataServerUncontactableException {
         //TODO pass the API name down the call stack
         String restAPIName ="";
@@ -62,15 +68,11 @@ public class OMRSAPIHelper {
             log.debug("==> Method: " + methodName + "connector="+connector);
         }
 
-        if (connector==null ) {
-            // TODO error
-        }
-
         try {
             this.oMRSMetadataCollection = connector.getMetadataCollection();
-        } catch ( org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.METADATA_SERVER_UNCONTACTABLE_ERROR;
-            String                 errorMessage = errorCode.getErrorMessageId()
+            String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage(e.getMessage(),
                     restAPIName,
                     serviceName,
@@ -83,6 +85,7 @@ public class OMRSAPIHelper {
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         }
+
         if (log.isDebugEnabled()) {
             log.debug("<== Method: " + methodName);
         }
@@ -303,10 +306,9 @@ public class OMRSAPIHelper {
 
     }
 
-    public List<EntityDetail> callFindEntitiesByProperty(String             userId,
+    public List<EntityDetail> callFindEntitiesByPropertyValue(String               userId,
                                                          String                    entityTypeGUID,
-                                                         InstanceProperties        matchProperties,
-                                                         MatchCriteria matchCriteria,
+                                                         String                    searchCriteria ,
                                                          int                       fromEntityElement,
                                                          List<InstanceStatus>      limitResultsByStatus,
                                                          List<String>              limitResultsByClassification,
@@ -319,7 +321,7 @@ public class OMRSAPIHelper {
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException,
             MetadataServerUncontactableException {
 
-        String methodName = "callFindEntitiesByProperty";
+        String methodName = "callFindEntitiesByPropertyValue";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName );
         }
@@ -331,10 +333,9 @@ public class OMRSAPIHelper {
 
 
         try {
-            foundEntities =  getOMRSMetadataCollection().findEntitiesByProperty(userId,
+            foundEntities = getOMRSMetadataCollection().findEntitiesByPropertyValue(userId,
                     entityTypeGUID,
-                    matchProperties,
-                    matchCriteria,
+                    searchCriteria,
                     fromEntityElement,
                     limitResultsByStatus,
                     limitResultsByClassification,
@@ -383,7 +384,6 @@ public class OMRSAPIHelper {
         }
         return foundEntities;
     }
-
     public EntityDetail callOMRSUpdateEntity(String userId, EntityDetail entityDetail) throws
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException,
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException,
@@ -814,6 +814,12 @@ public class OMRSAPIHelper {
             updatedRelationship = getOMRSMetadataCollection().updateRelationshipProperties(userId,
                     relationship.getGUID(),
                     relationship.getProperties());
+            if ( relationship.getStatus() !=null && updatedRelationship !=null &&
+                    !relationship.getStatus().equals(updatedRelationship.getStatus())) {
+                updatedRelationship = getOMRSMetadataCollection().updateRelationshipStatus(userId,
+                        relationship.getGUID(),
+                        relationship.getStatus());
+            }
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
             this.errorHandler.handleInvalidParameterException(e,
                     restAPIName,
@@ -840,40 +846,11 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        }
-        // update the status if we have one and it is different
-        if ( relationship.getStatus() !=null &&
-             !relationship.getStatus().equals(updatedRelationship.getStatus())) {
-            try {
-                updatedRelationship = getOMRSMetadataCollection().updateRelationshipStatus(userId,
-                        relationship.getGUID(),
-                        relationship.getStatus());
-            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
-                this.errorHandler.handleInvalidParameterException(e,
-                        restAPIName,
-                        serverName,
-                        serviceName);
-            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
-                this.errorHandler.handleRepositoryError(e,
-                        restAPIName,
-                        serverName,
-                        serviceName);
-            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
-                this.errorHandler.handleUnauthorizedUser(userId,
-                        restAPIName,
-                        serverName,
-                        serviceName);
-            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException e) {
-                this.errorHandler.handleStatusNotSupportedException(e,
-                        restAPIName,
-                        serverName,
-                        serviceName);
-            } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException e) {
-                this.errorHandler.handleRelationshipNotKnownException(relationship.getGUID(),
-                        restAPIName,
-                        serverName,
-                        serviceName);
-            }
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException e) {
+            this.errorHandler.handleStatusNotSupportedException(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== Method: " + methodName);
@@ -1186,6 +1163,8 @@ public class OMRSAPIHelper {
         return relationships;
     }
 
+
+
     // type
     public String callGetTypeGuid(String userId, String typeName) throws
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException,
@@ -1197,9 +1176,10 @@ public class OMRSAPIHelper {
         }
         //TODO cascade
         String restAPIName = methodName;
-        TypeDef typeDef = null;
+        String typeDefGuid = null;
         try {
-            typeDef = getOMRSMetadataCollection().getTypeDefByName(userId, typeName);
+            TypeDef typeDef = getOMRSMetadataCollection().getTypeDefByName(userId, typeName);
+            typeDefGuid = typeDef.getGUID().toString();
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException e) {
             this.errorHandler.handleInvalidParameterException(e,
                     restAPIName,
@@ -1225,7 +1205,7 @@ public class OMRSAPIHelper {
         if (log.isDebugEnabled()) {
             log.debug("<== Method: " + methodName);
         }
-        return typeDef.getGUID().toString();
+        return typeDefGuid;
     }
     public InstanceGraph callGetEntityNeighbourhood(String userId, String entityGUID, List<String> entityTypeGUIDs,
                                                     List<String> relationshipTypeGUIDs,

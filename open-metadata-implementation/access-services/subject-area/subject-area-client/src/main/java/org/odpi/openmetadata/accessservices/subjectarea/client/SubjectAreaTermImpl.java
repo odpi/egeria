@@ -4,8 +4,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.client;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.FindRequest;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -16,6 +16,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidato
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.List;
 
@@ -197,24 +199,24 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
             sequencingOrder = SequencingOrder.ANY;
         }
         StringBuffer queryStringSB = new StringBuffer();
-        prependCharacterToQuery(queryStringSB);
+        addCharacterToQuery(queryStringSB);
         queryStringSB.append("sequencingOrder="+ sequencingOrder);
         if (asOfTime != null) {
-            prependCharacterToQuery(queryStringSB);
-            queryStringSB.append("asOftime="+ asOfTime);
+            addCharacterToQuery(queryStringSB);
+            queryStringSB.append("asOfTime="+ asOfTime);
         }
         if (offset != 0) {
-            prependCharacterToQuery(queryStringSB);
+            addCharacterToQuery(queryStringSB);
             queryStringSB.append("offset="+ offset);
         }
         if (pageSize != 0) {
-            prependCharacterToQuery(queryStringSB);
+            addCharacterToQuery(queryStringSB);
             queryStringSB.append("pageSize="+ pageSize);
         }
 
         if (sequencingProperty !=null) {
-            prependCharacterToQuery(queryStringSB);
-            queryStringSB.append("sequencingProperty="+ sequencingProperty);
+            // encode the string
+            encodeQueryParam("sequencingProperty",sequencingProperty, methodName, queryStringSB);
         }
         if (queryStringSB.length() >0) {
             url = url + queryStringSB.toString();
@@ -230,7 +232,20 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
         return relationships;
     }
 
-    private void prependCharacterToQuery(StringBuffer queryStringSB) {
+    private void encodeQueryParam(String queryParamName, String queryParamValue, String methodName, StringBuffer queryStringSB) throws InvalidParameterException {
+        try {
+            String encodedString = URLEncoder.encode(queryParamValue, "UTF-8");
+            addCharacterToQuery(queryStringSB);
+            queryStringSB.append(queryParamName+"="+encodedString);
+        } catch (UnsupportedEncodingException e) {
+            SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.ERROR_ENCODING_QUERY_PARAMETER;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName,queryParamName+"=");
+            log.error(errorMessage);
+            throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
+        }
+    }
+
+    private void addCharacterToQuery(StringBuffer queryStringSB) {
         String prependCharacter ="&";
         if (queryStringSB.length() ==0) {
             prependCharacter ="?";
@@ -241,7 +256,8 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
     /**
      * Replace a Term. This means to override all the existing attributes with the supplied attributes.
      * <p>
-     * Status is not updated using this call.
+     * Status is not updated using this call
+     * The GovernanceAction content if specified replaces what is on the server.
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId           userId under which the request is performed
@@ -410,28 +426,30 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
         }
     }
     /*
-   *  Update Term.
-   *
-   * If the caller has chosen to incorporate the term name in their Term Terms qualified name, renaming the term will cause those
-   * qualified names to mismatch the Term name.
-   * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-   * @param userId userId under which the request is performed
-   * @param guid guid of the term to update
-   * @param suppliedTerm Term to be updated
-   * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-   * @return the updated term.
-   *
-   * Exceptions returned by the server
-   * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-   * @throws FunctionNotSupportedException   Function not supported
-   * @throws InvalidParameterException one of the parameters is null or invalid
-   *
-   * Client library Exceptions
-   * @throws MetadataServerUncontactableException Unable to contact the server
-   * @throws UnexpectedResponseException an unexpected response was returned from the server
-   */
+     *  Update Term.
+     *
+     * If the caller has chosen to incorporate the term name in their Term Terms qualified name, renaming the term will cause those
+     * qualified names to mismatch the Term name.
+     * The GovernanceAction content if specified replaces what is on the server.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId userId under which the request is performed
+     * @param guid guid of the term to update
+     * @param suppliedTerm Term to be updated
+     * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return the updated term.
+     *
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws FunctionNotSupportedException   Function not supported
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
     private Term updateTerm(String serverName, String userId,String guid,Term suppliedTerm,boolean isReplace) throws
-                                                                                                              UserNotAuthorizedException,
+    UserNotAuthorizedException,
                                                                                                               InvalidParameterException,
                                                                                                               FunctionNotSupportedException,
                                                                                                               MetadataServerUncontactableException,
@@ -506,5 +524,89 @@ public class SubjectAreaTermImpl implements org.odpi.openmetadata.accessservices
         }
         return term;
     }
+ /**
+ * Find Term
+ *
+ * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+ * @param userId unique identifier for requesting user, under which the request is performed
+ * @param searchCriteria String expression matching Term property values (this does not include the GlossarySummary content). When not specified, all terms are returned.
+ * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
+ * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+ *                 beyond the first page of results. Zero means the results start from the first element.
+ * @param pageSize the maximum number of elements that can be returned on this request.
+ *                 0 means there is no limit to the page size
+ * @param sequencingOrder the sequencing order for the results.
+ * @param sequencingProperty the name of the property that should be used to sequence the results.
+ * @return the relationships associated with the requested Term guid
+ *
+ * Exceptions returned by the server
+ * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+ * @throws InvalidParameterException one of the parameters is null or invalid.
+ * @throws FunctionNotSupportedException   Function not supported
+ *
+ * Client library Exceptions
+ * @throws MetadataServerUncontactableException Unable to contact the server
+ * @throws UnexpectedResponseException an unexpected response was returned from the server
+ */
+public List<Term> findTerm(String serverName, String userId,
+                           String searchCriteria,
+                           Date asOfTime,
+                           int offset,
+                           int pageSize,
+                           org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                           String sequencingProperty) throws
+        MetadataServerUncontactableException,
+        UserNotAuthorizedException,
+        InvalidParameterException,
+        FunctionNotSupportedException,
+        UnexpectedResponseException  {
+
+    final String methodName = "findTerm";
+    if (log.isDebugEnabled()) {
+        log.debug("==> Method: " + methodName + ",userId=" + userId);
+    }
+    InputValidator.validateUserIdNotNull(className, methodName, userId);
+    final String urlTemplate = this.omasServerURL + BASE_URL;
+    String url = String.format(urlTemplate, serverName, userId );
+
+    if (sequencingOrder==null) {
+        sequencingOrder = SequencingOrder.ANY;
+    }
+    StringBuffer queryStringSB = new StringBuffer();
+    addCharacterToQuery(queryStringSB);
+    queryStringSB.append("sequencingOrder="+ sequencingOrder);
+    if (asOfTime != null) {
+        addCharacterToQuery(queryStringSB);
+        queryStringSB.append("asOfTime="+ asOfTime);
+    }
+    if (searchCriteria != null) {
+        // encode the string
+        encodeQueryParam("searchCriteria",searchCriteria, methodName, queryStringSB);
+    }
+    if (offset != 0) {
+        addCharacterToQuery(queryStringSB);
+        queryStringSB.append("offset="+ offset);
+    }
+    if (pageSize != 0) {
+        addCharacterToQuery(queryStringSB);
+        queryStringSB.append("pageSize="+ pageSize);
+    }
+    if (sequencingProperty !=null) {
+        // encode the string
+        encodeQueryParam("sequencingProperty",sequencingProperty, methodName, queryStringSB);
+    }
+    if (queryStringSB.length() >0) {
+        url = url + queryStringSB.toString();
+    }
+    SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className,methodName,url);
+    DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
+    DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
+    DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
+    List<Term> terms = DetectUtils.detectAndReturnTerms(methodName,restResponse);
+    if (log.isDebugEnabled()) {
+        log.debug("<== successful method : " + methodName + ",userId="+userId );
+    }
+    return terms;
+}
 
 }
