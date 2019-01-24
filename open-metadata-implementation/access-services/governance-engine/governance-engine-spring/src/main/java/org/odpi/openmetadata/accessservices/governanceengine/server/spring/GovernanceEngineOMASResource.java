@@ -9,7 +9,11 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Governe
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -24,19 +28,6 @@ public class GovernanceEngineOMASResource {
     private static final Logger log = LoggerFactory.getLogger(GovernanceEngineOMASResource.class);
 
     /**
-     * Constructor
-     */
-    public GovernanceEngineOMASResource() {
-
-        final String methodName = "initialize";
-
-        log.debug(">>" + methodName);
-
-        log.debug("<<" + methodName);
-
-    }
-
-    /**
      * Returns the list of governance tags for the enforcement engine
      * <p>
      * These are the definitions - so tell us the name, guid, attributes
@@ -45,7 +36,7 @@ public class GovernanceEngineOMASResource {
      * when they change, since any existing assets classified with the tags
      * are affected
      *
-     * @param userId             - String - userId of user making request.
+     * @param userId         - String - userId of user making request.
      * @param classification - this may be the qualifiedName or displayName of the connection.
      * @return GovernanceClassificationDefinitionList or
      * InvalidParameterException - one of the parameters is null or invalid.
@@ -57,10 +48,7 @@ public class GovernanceEngineOMASResource {
     @RequestMapping(method = RequestMethod.GET, path = "/classificationdefs")
     public GovernanceClassificationDefListAPIResponse getGovernanceClassificationDefs(@PathVariable String serverName,
                                                                                       @PathVariable String userId,
-                                                                                             @RequestParam(value =
-                                                                                                     "classification"
-                                                                                                     , required = false) List<String> classification
-    ) {
+                                                                                      @RequestParam(value = "classification", required = false) List<String> classification) {
         return restAPI.getGovernanceClassificationDefs(serverName, userId, classification);
     }
 
@@ -73,7 +61,7 @@ public class GovernanceEngineOMASResource {
      * when they change, since any existing assets classified with the tags
      * are affected
      *
-     * @param userId  - String - userId of user making request.
+     * @param userId             - String - userId of user making request.
      * @param classificationGuid - guid of the definition to retrieve
      * @return GovernanceClassificationDef or
      * InvalidParameterException - one of the parameters is null or invalid.
@@ -85,7 +73,7 @@ public class GovernanceEngineOMASResource {
     @RequestMapping(method = RequestMethod.GET, path = "/classificationdefs/{classificationGuid}")
     GovernanceClassificationDefAPIResponse getGovernanceClassificationDef(@PathVariable String serverName,
                                                                           @PathVariable String userId,
-                                                                                 @PathVariable String classificationGuid) {
+                                                                          @PathVariable String classificationGuid) {
         return restAPI.getClassificationDefs(serverName, userId, classificationGuid);
     }
 
@@ -94,7 +82,7 @@ public class GovernanceEngineOMASResource {
      * <p>
      * These include the tag associations but not the definitions of those tags
      *
-     * @param userId             - String - userId of user making request.
+     * @param userId         - String - userId of user making request.
      * @param classification - this may be the qualifiedName or displayName of the connection.
      * @param type
      * @return GovernedAssetComponentList or
@@ -107,8 +95,8 @@ public class GovernanceEngineOMASResource {
     @RequestMapping(method = RequestMethod.GET, path = "/assets")
     GovernedAssetListAPIResponse getGovernedAssets(@PathVariable String serverName,
                                                    @PathVariable String userId,
-                                                            @RequestParam(value = "classification", required = false) List<String> classification,
-                                                            @RequestParam(value = "type", required = false) List<String> type) {
+                                                   @RequestParam(value = "classification", required = false) List<String> classification,
+                                                   @RequestParam(value = "type", required = false) List<String> type) {
         return restAPI.getGovernedAssets(serverName, userId, classification, type);
     }
 
@@ -117,7 +105,7 @@ public class GovernanceEngineOMASResource {
      * <p>
      * These include the tag associations but not the definitions of those tags
      *
-     * @param userId             - String - userId of user making request.
+     * @param userId    - String - userId of user making request.
      * @param assetGuid - Guid of the asset component to retrieve
      * @return GovernedAsset or
      * InvalidParameterException - one of the parameters is null or invalid.
@@ -126,10 +114,10 @@ public class GovernanceEngineOMASResource {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetComponentGuid}")
+    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGuid}")
     public GovernedAssetAPIResponse getGovernedAsset(@PathVariable String serverName,
                                                      @PathVariable String userId,
-                                                              @PathVariable String assetGuid) {
+                                                     @PathVariable String assetGuid) {
         return restAPI.getGovernedAsset(serverName, userId, assetGuid);
     }
 
