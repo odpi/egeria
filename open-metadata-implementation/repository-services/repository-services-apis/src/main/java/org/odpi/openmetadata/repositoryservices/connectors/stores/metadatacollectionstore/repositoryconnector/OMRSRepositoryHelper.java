@@ -807,6 +807,60 @@ public interface OMRSRepositoryHelper
      * @param methodName  calling method name
      * @return instance properties object.
      */
+    InstanceProperties addLongPropertyToInstance(String             sourceName,
+                                                 InstanceProperties properties,
+                                                 String             propertyName,
+                                                 long               propertyValue,
+                                                 String             methodName);
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addFloatPropertyToInstance(String             sourceName,
+                                                  InstanceProperties properties,
+                                                  String             propertyName,
+                                                  float              propertyValue,
+                                                  String             methodName);
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addDatePropertyToInstance(String             sourceName,
+                                                 InstanceProperties properties,
+                                                 String             propertyName,
+                                                 Date               propertyValue,
+                                                 String             methodName);
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
     InstanceProperties addBooleanPropertyToInstance(String             sourceName,
                                                     InstanceProperties properties,
                                                     String             propertyName,
