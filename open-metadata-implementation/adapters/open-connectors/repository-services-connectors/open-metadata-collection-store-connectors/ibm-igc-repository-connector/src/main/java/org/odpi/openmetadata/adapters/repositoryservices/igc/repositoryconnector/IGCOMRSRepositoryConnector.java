@@ -94,7 +94,7 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
          */
         if (successfulInit) {
             metadataCollection = new IGCOMRSMetadataCollection(this,
-                    super.serverName,
+                    serverName,
                     repositoryHelper,
                     repositoryValidator,
                     metadataCollectionId);
@@ -109,11 +109,6 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
 
         // Close the session on the IGC REST client
         this.igcRestClient.disconnect();
-
-        super.metadataCollection = new IGCOMRSMetadataCollection(this,
-                super.serverName,
-                repositoryHelper,
-                repositoryValidator, metadataCollectionId);
 
     }
 

@@ -13,6 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +61,10 @@ public class PrimaryKeyMapper extends ClassificationMapping {
                                              Reference fromIgcObject,
                                              String userId) {
 
+        final String methodName = "addMappedOMRSClassifications";
+        OMRSRepositoryHelper repositoryHelper = igcomrsRepositoryConnector.getRepositoryHelper();
+        String repositoryName = igcomrsRepositoryConnector.getRepositoryName();
+
         IGCRestClient igcRestClient = igcomrsRepositoryConnector.getIGCRestClient();
 
         // Retrieve all assigned_to_terms relationships from this IGC object
@@ -71,8 +76,13 @@ public class PrimaryKeyMapper extends ClassificationMapping {
         if (definedPK.getItems().isEmpty()) {
             if (bSelectedPK) {
                 try {
-                    InstanceProperties classificationProperties = new InstanceProperties();
-                    classificationProperties.setProperty("name", EntityMapping.getPrimitivePropertyValue(fromIgcObject.getName()));
+                    InstanceProperties classificationProperties = repositoryHelper.addStringPropertyToInstance(
+                            repositoryName,
+                            null,
+                            "name",
+                            fromIgcObject.getName(),
+                            methodName
+                    );
                     Classification classification = getMappedClassification(
                             igcomrsRepositoryConnector,
                             C_PRIMARY_KEY,
@@ -93,8 +103,13 @@ public class PrimaryKeyMapper extends ClassificationMapping {
             for (Reference candidateKey : definedPK.getItems()) {
 
                 try {
-                    InstanceProperties classificationProperties = new InstanceProperties();
-                    classificationProperties.setProperty("name", EntityMapping.getPrimitivePropertyValue(candidateKey.getName()));
+                    InstanceProperties classificationProperties = repositoryHelper.addStringPropertyToInstance(
+                            repositoryName,
+                            null,
+                            "name",
+                            candidateKey.getName(),
+                            methodName
+                    );
                     Classification classification = getMappedClassification(
                             igcomrsRepositoryConnector,
                             C_PRIMARY_KEY,

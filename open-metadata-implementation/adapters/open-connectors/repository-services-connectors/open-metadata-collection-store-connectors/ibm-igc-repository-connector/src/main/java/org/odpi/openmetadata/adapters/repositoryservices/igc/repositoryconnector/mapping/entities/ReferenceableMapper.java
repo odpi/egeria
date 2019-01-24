@@ -4,25 +4,18 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchSorting;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.attributes.AttributeMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.classifications.ClassificationMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.AttachedTagMapper;
-import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.RelatedTermMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.RelationshipMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.SemanticAssignmentMapper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefAttribute;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -286,65 +279,91 @@ public class ReferenceableMapper extends EntityMapping {
      */
     private InstanceProperties getMappedInstanceProperties(PropertyMappingSet mappings, List<String> nonRelationshipProperties) {
 
-        InstanceProperties instanceProperties = new InstanceProperties();
+        final String methodName = "getMappedInstanceProperties";
+
+        OMRSRepositoryHelper omrsRepositoryHelper = igcomrsRepositoryConnector.getRepositoryHelper();
+        String repositoryName = igcomrsRepositoryConnector.getRepositoryName();
 
         // We'll always start by using the Identity string as the qualified name
         String qualifiedName = igcEntity.getIdentity(igcomrsRepositoryConnector.getIGCRestClient()).toString();
-        instanceProperties.setProperty("qualifiedName", getPrimitivePropertyValue(qualifiedName));
+
+        InstanceProperties instanceProperties = omrsRepositoryHelper.addStringPropertyToInstance(
+                repositoryName,
+                null,
+                "qualifiedName",
+                qualifiedName,
+                methodName
+        );
+
+        Map<String, TypeDefAttribute> omrsAttributeMap = igcomrsMetadataCollection.getTypeDefAttributesForType(getOmrsTypeDefName());
 
         // Then we'll iterate through the provided mappings to set an OMRS instance property for each one
         for (String igcPropertyName : mappings.getSimpleMappedIgcProperties()) {
             String omrsAttribute = mappings.getOmrsPropertyName(igcPropertyName);
-            instanceProperties.setProperty(
-                    omrsAttribute,
-                    getPrimitivePropertyValue(igcEntity.getPropertyByName(igcPropertyName))
-            );
+            if (omrsAttributeMap.containsKey(omrsAttribute)) {
+                TypeDefAttribute typeDefAttribute = omrsAttributeMap.get(omrsAttribute);
+                instanceProperties = AttributeMapping.addPrimitivePropertyToInstance(
+                        omrsRepositoryHelper,
+                        repositoryName,
+                        instanceProperties,
+                        typeDefAttribute,
+                        igcEntity.getPropertyByName(igcPropertyName),
+                        methodName
+                );
+            } else {
+                log.warn("No OMRS attribute {} defined for asset type {} -- skipping mapping.", omrsAttribute, getOmrsTypeDefName());
+            }
         }
 
         // Then we'll apply any complex property mappings
         complexPropertyMappings(instanceProperties);
 
         // Finally we'll map any simple (non-relationship) properties that remain
-        // to Referenceable's 'additionalProperties'
-        Set<String> alreadyMapped = mappings.getAllMappedIgcProperties();
-        if (nonRelationshipProperties != null) {
+        // to Referenceable's 'additionalProperties' (so long as that property exists on this entity)
+        if (omrsAttributeMap.containsKey("additionalProperties")) {
+            Map<String, String> additionalProperties = new HashMap<>();
 
-            // Remove all of the already-mapped properties from our list of non-relationship properties
-            Set<String> nonRelationshipsSet = new HashSet<>(nonRelationshipProperties);
-            nonRelationshipsSet.removeAll(alreadyMapped);
+            Set<String> alreadyMapped = mappings.getAllMappedIgcProperties();
+            if (nonRelationshipProperties != null) {
 
-            // Iterate through the remaining property names, and add them to a map
-            MapPropertyValue mapValue = new MapPropertyValue();
-            for (String propertyName : nonRelationshipsSet) {
-                Object propertyValue = igcEntity.getPropertyByName(propertyName);
-                if (propertyValue instanceof ArrayList) {
-                    ArrayPropertyValue arrayValue = new ArrayPropertyValue();
-                    arrayValue.setArrayCount(((ArrayList<Object>) propertyValue).size());
-                    int count = 0;
-                    for (Object value : (ArrayList<Object>)propertyValue) {
-                        arrayValue.setArrayValue(
-                                count,
-                                getPrimitivePropertyValue(value)
-                        );
-                        count++;
+                // Remove all of the already-mapped properties from our list of non-relationship properties
+                Set<String> nonRelationshipsSet = new HashSet<>(nonRelationshipProperties);
+                nonRelationshipsSet.removeAll(alreadyMapped);
+
+                // Iterate through the remaining property names, and add them to a map
+                // Note that because 'additionalProperties' is a string-to-string map, we will just convert everything
+                // to strings (even arrays of values, we'll concatenate into a single string)
+                for (String propertyName : nonRelationshipsSet) {
+                    Object propertyValue = igcEntity.getPropertyByName(propertyName);
+                    String value = null;
+                    if (propertyValue instanceof ArrayList) {
+                        StringBuilder sb = new StringBuilder();
+                        List<Object> list = (List<Object>) propertyValue;
+                        if (!list.isEmpty()) {
+                            for (int i = 0; i < list.size() - 1; i++) {
+                                sb.append(list.get(i).toString() + ", ");
+                            }
+                            sb.append(list.get(list.size() - 1));
+                        }
+                        value = sb.toString();
+                    } else if (propertyValue != null) {
+                        value = propertyValue.toString();
                     }
-                    mapValue.setMapValue(
-                            propertyName,
-                            arrayValue
-                    );
-                } else {
-                    mapValue.setMapValue(
-                            propertyName,
-                            getPrimitivePropertyValue(propertyValue));
+                    if (value != null) {
+                        additionalProperties.put(propertyName, value);
+                    }
                 }
+
+                // and finally setup the 'additionalProperties' attribute using this map
+                instanceProperties = omrsRepositoryHelper.addMapPropertyToInstance(
+                        repositoryName,
+                        instanceProperties,
+                        "additionalProperties",
+                        additionalProperties,
+                        methodName
+                );
+
             }
-
-            // Then set that map as the "additionalProperties" of the OMRS entity
-            instanceProperties.setProperty(
-                    "additionalProperties",
-                    mapValue
-            );
-
         }
 
         return instanceProperties;

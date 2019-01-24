@@ -19,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.RelationshipDef;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -172,6 +173,10 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                                                    Reference fromIgcObject,
                                                    String userId) {
 
+        final String methodName = "mapDetectedClassifications_fromDataClass";
+        OMRSRepositoryHelper repositoryHelper = igcomrsRepositoryConnector.getRepositoryHelper();
+        String repositoryName = igcomrsRepositoryConnector.getRepositoryName();
+
         // One of the few relationships in IGC that actually has properties of its own!
         // So we need to retrieve this relationship linking object (IGC type 'classification')
         IGCSearchCondition igcSearchCondition = new IGCSearchCondition("data_class", "=", fromIgcObject.getId());
@@ -194,7 +199,6 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
         for (Reference detectedClassification : detectedClassifications.getItems()) {
 
             Reference classifiedObj = (Reference) detectedClassification.getPropertyByName("classifies_asset");
-            InstanceProperties relationshipProperties = new InstanceProperties();
 
             /* Only proceed with the classified object if it is not a 'main_object' asset
              * (in this scenario, 'main_object' represents ColumnAnalysisMaster objects that are not accessible
@@ -216,27 +220,49 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                             detectedClassification.getId()
                     );
 
-                    Number confidence = (Number) detectedClassification.getPropertyByName("confidencePercent");
+                    Object confidence = detectedClassification.getPropertyByName("confidencePercent");
+                    InstanceProperties relationshipProperties = null;
 
                     /* Before adding to the overall set of relationships, setup the relationship properties
                      * we have in IGC from the 'classification' object. */
-                    relationshipProperties.setProperty(
-                            "confidence",
-                            EntityMapping.getPrimitivePropertyValue(confidence.intValue())
-                    );
-                    relationshipProperties.setProperty(
-                            P_THRESHOLD,
-                            EntityMapping.getPrimitivePropertyValue(detectedClassification.getPropertyByName(P_THRESHOLD))
-                    );
-                    relationshipProperties.setProperty(
-                            "partialMatch",
-                            EntityMapping.getPrimitivePropertyValue((confidence.intValue() < 100))
-                    );
-                    if (igcVersion.isEqualTo(IGCVersionEnum.V11702) || igcVersion.isHigherThan(IGCVersionEnum.V11702)) {
-                        relationshipProperties.setProperty(
-                                "valueFrequency",
-                                EntityMapping.getPrimitivePropertyValue(detectedClassification.getPropertyByName("value_frequency"))
+                    if (confidence != null) {
+                        int confidenceVal = ((Number)confidence).intValue();
+                        relationshipProperties = repositoryHelper.addIntPropertyToInstance(
+                                repositoryName,
+                                relationshipProperties,
+                                "confidence",
+                                confidenceVal,
+                                methodName
                         );
+                        relationshipProperties = repositoryHelper.addBooleanPropertyToInstance(
+                                repositoryName,
+                                relationshipProperties,
+                                "partialMatch",
+                                (confidenceVal < 100),
+                                methodName
+                        );
+                    }
+                    Object threshold = detectedClassification.getPropertyByName(P_THRESHOLD);
+                    if (threshold != null) {
+                        relationshipProperties = repositoryHelper.addFloatPropertyToInstance(
+                                repositoryName,
+                                relationshipProperties,
+                                P_THRESHOLD,
+                                (Float) threshold,
+                                methodName
+                        );
+                    }
+                    if (igcVersion.isEqualTo(IGCVersionEnum.V11702) || igcVersion.isHigherThan(IGCVersionEnum.V11702)) {
+                        Object valFreq = detectedClassification.getPropertyByName("value_frequency");
+                        if (valFreq != null) {
+                            relationshipProperties = repositoryHelper.addLongPropertyToInstance(
+                                    repositoryName,
+                                    relationshipProperties,
+                                    "valueFrequency",
+                                    (Long) valFreq,
+                                    methodName
+                            );
+                        }
                     }
                     EnumPropertyValue status = DataClassAssignmentStatusMapper.getInstance().getEnumMappingByIgcValue("discovered");
                     relationshipProperties.setProperty(
@@ -333,6 +359,10 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                                                           Reference fromIgcObject,
                                                           String userId) {
 
+        final String methodName = "mapDetectedClassifications_toDataClass";
+        OMRSRepositoryHelper repositoryHelper = igcomrsRepositoryConnector.getRepositoryHelper();
+        String repositoryName = igcomrsRepositoryConnector.getRepositoryName();
+
         // One of the few relationships in IGC that actually has properties of its own!
         // So we need to retrieve this relationship linking object (IGC type 'classification')
         IGCSearchCondition igcSearchCondition = new IGCSearchCondition("classifies_asset", "=", fromIgcObject.getId());
@@ -355,7 +385,6 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
         for (Reference detectedClassification : detectedClassifications.getItems()) {
 
             Reference dataClassObj = (Reference) detectedClassification.getPropertyByName("data_class");
-            InstanceProperties relationshipProperties = new InstanceProperties();
 
             /* Only proceed with the classified object if it is not a 'main_object' asset
              * (in this scenario, 'main_object' represents ColumnAnalysisMaster objects that are not accessible
@@ -377,27 +406,49 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                             detectedClassification.getId()
                     );
 
-                    Number confidence = (Number) detectedClassification.getPropertyByName("confidencePercent");
+                    Object confidence = detectedClassification.getPropertyByName("confidencePercent");
+                    InstanceProperties relationshipProperties = null;
 
                     /* Before adding to the overall set of relationships, setup the relationship properties
                      * we have in IGC from the 'classification' object. */
-                    relationshipProperties.setProperty(
-                            "confidence",
-                            EntityMapping.getPrimitivePropertyValue(confidence.intValue())
-                    );
-                    relationshipProperties.setProperty(
-                            P_THRESHOLD,
-                            EntityMapping.getPrimitivePropertyValue(detectedClassification.getPropertyByName(P_THRESHOLD))
-                    );
-                    relationshipProperties.setProperty(
-                            "partialMatch",
-                            EntityMapping.getPrimitivePropertyValue((confidence.intValue() < 100))
-                    );
-                    if (igcVersion.isEqualTo(IGCVersionEnum.V11702) || igcVersion.isHigherThan(IGCVersionEnum.V11702)) {
-                        relationshipProperties.setProperty(
-                                "valueFrequency",
-                                EntityMapping.getPrimitivePropertyValue(detectedClassification.getPropertyByName("value_frequency"))
+                    if (confidence != null) {
+                        int confidenceVal = ((Number)confidence).intValue();
+                        relationshipProperties = repositoryHelper.addIntPropertyToInstance(
+                                repositoryName,
+                                relationshipProperties,
+                                "confidence",
+                                confidenceVal,
+                                methodName
                         );
+                        relationshipProperties = repositoryHelper.addBooleanPropertyToInstance(
+                                repositoryName,
+                                relationshipProperties,
+                                "partialMatch",
+                                (confidenceVal < 100),
+                                methodName
+                        );
+                    }
+                    Object threshold = detectedClassification.getPropertyByName(P_THRESHOLD);
+                    if (threshold != null) {
+                        relationshipProperties = repositoryHelper.addFloatPropertyToInstance(
+                                repositoryName,
+                                relationshipProperties,
+                                P_THRESHOLD,
+                                (Float) threshold,
+                                methodName
+                        );
+                    }
+                    if (igcVersion.isEqualTo(IGCVersionEnum.V11702) || igcVersion.isHigherThan(IGCVersionEnum.V11702)) {
+                        Object valFreq = detectedClassification.getPropertyByName("value_frequency");
+                        if (valFreq != null) {
+                            relationshipProperties = repositoryHelper.addLongPropertyToInstance(
+                                    repositoryName,
+                                    relationshipProperties,
+                                    "valueFrequency",
+                                    (Long) valFreq,
+                                    methodName
+                            );
+                        }
                     }
                     EnumPropertyValue status = DataClassAssignmentStatusMapper.getInstance().getEnumMappingByIgcValue("discovered");
                     relationshipProperties.setProperty(

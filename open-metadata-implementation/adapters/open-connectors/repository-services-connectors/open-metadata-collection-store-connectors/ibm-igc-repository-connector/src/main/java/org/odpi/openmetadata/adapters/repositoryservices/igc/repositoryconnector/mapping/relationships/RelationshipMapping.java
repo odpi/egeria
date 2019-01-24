@@ -11,6 +11,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.attributes.AttributeMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.ReferenceableMapper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -781,6 +782,8 @@ public abstract class RelationshipMapping {
                                                       String userId,
                                                       String ridPrefix) {
 
+        final String methodName = "getEntityProxyForObject";
+
         IGCRestClient igcRestClient = igcomrsRepositoryConnector.getIGCRestClient();
         String igcType = igcObj.getType();
 
@@ -798,11 +801,14 @@ public abstract class RelationshipMapping {
                 if (ridPrefix != null) {
                     identity = ridPrefix + identity;
                 }
-                PrimitivePropertyValue qualifiedName = EntityMapping.getPrimitivePropertyValue(identity);
 
-                // 'qualifiedName' is the only unique InstanceProperty we need on an EntityProxy
-                InstanceProperties uniqueProperties = new InstanceProperties();
-                uniqueProperties.setProperty("qualifiedName", qualifiedName);
+                InstanceProperties uniqueProperties = igcomrsRepositoryConnector.getRepositoryHelper().addStringPropertyToInstance(
+                        igcomrsRepositoryConnector.getRepositoryName(),
+                        null,
+                        "qualifiedName",
+                        identity,
+                        methodName
+                );
 
                 try {
                     entityProxy = igcomrsRepositoryConnector.getRepositoryHelper().getNewEntityProxy(

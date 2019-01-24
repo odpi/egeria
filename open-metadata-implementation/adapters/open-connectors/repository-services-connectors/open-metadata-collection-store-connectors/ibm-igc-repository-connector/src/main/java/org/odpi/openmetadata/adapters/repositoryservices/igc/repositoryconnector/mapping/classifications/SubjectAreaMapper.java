@@ -58,6 +58,8 @@ public class SubjectAreaMapper extends ClassificationMapping {
                                              Reference fromIgcObject,
                                              String userId) {
 
+        final String methodName = "addMappedOMRSClassifications";
+
         IGCRestClient igcRestClient = igcomrsRepositoryConnector.getIGCRestClient();
 
         // Retrieve all ancestral category relationships from this IGC object
@@ -81,10 +83,12 @@ public class SubjectAreaMapper extends ClassificationMapping {
 
             if (isSubjectArea) {
 
-                InstanceProperties classificationProperties = new InstanceProperties();
-                classificationProperties.setProperty(
+                InstanceProperties classificationProperties = igcomrsRepositoryConnector.getRepositoryHelper().addStringPropertyToInstance(
+                        igcomrsRepositoryConnector.getRepositoryName(),
+                        null,
                         "name",
-                        EntityMapping.getPrimitivePropertyValue(fromIgcObject.getName())
+                        fromIgcObject.getName(),
+                        methodName
                 );
                 try {
                     Classification classification = getMappedClassification(
