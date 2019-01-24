@@ -48,6 +48,9 @@ public class EntityPropertiesUtils {
         PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
         propertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
         propertyValue.setPrimitiveValue(value);
+        propertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+        propertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+
         return propertyValue;
     }
 
@@ -55,12 +58,16 @@ public class EntityPropertiesUtils {
         PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
         propertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
         propertyValue.setPrimitiveValue(value);
+        propertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getGUID());
+        propertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
         return propertyValue;
     }
 
     public static PrimitivePropertyValue createPrimitiveDatePropertyValue(Long timestamp) {
         PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
         propertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+        propertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
+        propertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
         propertyValue.setPrimitiveValue(timestamp);
         return propertyValue;
     }
