@@ -124,30 +124,10 @@ public class TestSubjectAreaTermRESTServices {
         EntityDetail mockEntityAdd = createMockGlossaryTerm(displayName,summary,description,testtermguid, abbreviation, examples);
         EntityDetail mockEntityGetTerm = createMockGlossaryTerm(displayName,summary,description,testtermguid, abbreviation, examples);
         EntityDetail mockEntityGetGlossary = createMockGlossary("GlossaryName1");
-        List<EntityDetail> mockGlossaryList = new ArrayList<>();
-        EntityDetail mockGlossary= createMockGlossary(displayName);
-        mockGlossaryList.add(mockGlossary);
-
         TermAnchor termAnchor = new TermAnchor();
         termAnchor.setEntity1Guid(testglossaryguid);
         termAnchor.setEntity2Guid(testglossaryguid);
         Relationship mockRelationship =   TermAnchorMapper.mapTermAnchorToOmrsRelationship(termAnchor);
-
-        // mock out the get the glossary by name
-        when( oMRSAPIHelper.callFindEntitiesByProperty(
-                any(),
-                any(),
-                any(),
-                any(),
-                anyInt(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                anyInt()
-
-        )).thenReturn(mockGlossaryList);
         // mock out the add entity
         when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntityAdd);
         // mock out the creation of the relationship to the glossary
@@ -277,24 +257,6 @@ public class TestSubjectAreaTermRESTServices {
         String displayName = "string0";
         String summary = "string1";
         String description = "string2 fsdgsdg";
-        // set up the mocks
-        List<EntityDetail> mockGlossaryList = new ArrayList<>();
-
-        // mock out the get the glossary by name
-        when( oMRSAPIHelper.callFindEntitiesByProperty(
-                any(),
-                any(),
-                any(),
-                any(),
-                anyInt(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                anyInt()
-
-        )).thenReturn(mockGlossaryList);
 
         when( oMRSAPIHelper.callOMRSGetEntityByGuid(
                 any(),
