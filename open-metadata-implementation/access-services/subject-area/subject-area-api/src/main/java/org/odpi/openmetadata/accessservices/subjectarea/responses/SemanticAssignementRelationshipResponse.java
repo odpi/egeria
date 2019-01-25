@@ -32,8 +32,8 @@ public class SemanticAssignementRelationshipResponse extends SubjectAreaOMASAPIR
     }
     public SemanticAssignementRelationshipResponse(SemanticAssignment semanticAssignment)
     {
+        this();
         this.semanticAssignment =semanticAssignment;
-        this.setResponseCategory(ResponseCategory.SemanticAssignmentRelationship);
     }
 
     /**

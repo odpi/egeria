@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 
 import java.util.List;
 
@@ -14,56 +14,56 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * TermsResponse is the response structure used on the Subject Area OMAS REST API calls that returns a List of
- * Terms as a response.
+ * CategoriesResponse is the response structure used on the Subject Area OMAS REST API calls that returns a List of
+ * Categories as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TermsResponse extends SubjectAreaOMASAPIResponse
+public class CategoriesResponse extends SubjectAreaOMASAPIResponse
 {
-    private List<Term> terms = null;
+    private List<Category> categories = null;
 
     /**
      * Default constructor
      */
-    public TermsResponse()
+    public CategoriesResponse()
     {
-        this.setResponseCategory(ResponseCategory.Terms);
+        this.setResponseCategory(ResponseCategory.Categories);
     }
-    public TermsResponse(List<Term> terms)
+    public CategoriesResponse(List<Category> categories)
     {
         this();
-        this.terms=terms;
+        this.categories=categories;
     }
 
 
     /**
-     * Return the Terms object.
+     * Return the Categories object.
      *
-     * @return terms
+     * @return categories
      */
-    public List<Term> getTerms()
+    public List<Category> getCategories()
     {
-        return terms;
+        return categories;
     }
 
     /**
-     * Set up the Terms object.
+     * Set up the Categories object.
      *
-     * @param terms - terms object
+     * @param categories - categories object
      */
-    public void setTerms(List<Term> terms)
+    public void setCategories(List<Category> categories)
     {
-        this.terms = terms;
+        this.categories = categories;
     }
 
 
     @Override
     public String toString()
     {
-        return "TermResponse{" +
-                "terms=" + terms +
+        return "CategoryResponse{" +
+                "categories=" + categories +
                 ", relatedHTTPCode=" + relatedHTTPCode +
                 '}';
     }

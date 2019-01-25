@@ -31,8 +31,8 @@ public class TermResponse extends SubjectAreaOMASAPIResponse
     }
     public TermResponse(Term term)
     {
+        this();
         this.term=term;
-        this.setResponseCategory(ResponseCategory.Term);
     }
 
 
