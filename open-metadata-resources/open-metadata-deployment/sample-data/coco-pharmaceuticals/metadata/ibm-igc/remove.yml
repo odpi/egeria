@@ -86,7 +86,35 @@
     conditions:
       - { property: "name", operator: "=", value: "Coco Pharmaceuticals" }
 
-#- name: remove Information Analyzer project
+- name: list Information Analyzer projects
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports.console }}\
+            /ibm/iis/ia/api/projects"
+    method: GET
+    user: "{{ ibm_infosvr_user_isadmin }}"
+    password: "{{ ibm_infosvr_upwd_isadmin }}"
+    force_basic_auth: yes
+    status_code: 200
+    validate_certs: no
+    timeout: 10
+    return_content: yes
+  register: __egeria_samples_ia_projects
+  when: ('ibm-information-server-domain' in group_names)
+
+- name: remove Information Analyzer project
+  uri:
+    url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports.console }}\
+            /ibm/iis/ia/api/project?projectName=CocoPharma"
+    method: DELETE
+    user: "{{ ibm_infosvr_user_isadmin }}"
+    password: "{{ ibm_infosvr_upwd_isadmin }}"
+    force_basic_auth: yes
+    status_code: 200
+    validate_certs: no
+    timeout: 10
+  when: >
+    __egeria_samples_ia_projects.content.find('CocoPharma') != -1
+    and ('ibm-information-server-domain' in group_names)
 
 - import_role: name=IBM.infosvr-import-export
   vars:
