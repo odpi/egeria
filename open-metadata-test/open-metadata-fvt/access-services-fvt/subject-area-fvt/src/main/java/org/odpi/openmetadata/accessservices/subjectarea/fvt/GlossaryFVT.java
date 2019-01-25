@@ -2,15 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * FVT resource to call subject area glossary client API
@@ -86,16 +85,62 @@ public class GlossaryFVT
         System.out.println("Create glossary with the same name as a deleted one");
         glossary = createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME);
         FVTUtils.validateNode(glossary);
+
+        System.out.println("create glossaries to find");
+        Glossary glossaryForFind1 = getGlossaryForInput("abc");
+        glossaryForFind1.setQualifiedName("yyy");
+        glossaryForFind1 = issueCreateGlossary(glossaryForFind1);
+        FVTUtils.validateNode(glossaryForFind1);
+        Glossary glossaryForFind2 = createGlossary("yyy");
+        FVTUtils.validateNode(glossaryForFind2);
+        Glossary glossaryForFind3 = createGlossary("zzz");
+        FVTUtils.validateNode(glossaryForFind3);
+        Glossary glossaryForFind4 = createGlossary("This is a Glossary with spaces in name");
+        FVTUtils.validateNode(glossaryForFind4);
+
+        List<Glossary> results = findGlossaries("zzz");
+        if (results.size() !=1 ) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+        }
+        results = findGlossaries("yyy");
+        if (results.size() !=2 ) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 2 back on the find got " +results.size(), "", "");
+        }
+        //soft delete a glossary and check it is not found
+        Glossary deleted4 = deleteGlossary(glossaryForFind2.getSystemAttributes().getGUID());
+        FVTUtils.validateNode(deleted4);
+        results = findGlossaries("yyy");
+        if (results.size() !=1 ) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+        }
+
+        // search for a glossary with a name with spaces in
+        results = findGlossaries("This is a Glossary with spaces in name");
+        if (results.size() !=1 ) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+        }
+
     }
 
-    public  Glossary createGlossary(String name) throws SubjectAreaCheckedExceptionBase
+    public  Glossary createGlossary(String glossaryName) throws SubjectAreaCheckedExceptionBase
     {
-        Glossary glossary = new Glossary();
-        glossary.setName(name);
-        Glossary newGlossary  = subjectAreaGlossary.createGlossary(serverName,FVTConstants.USERID, glossary);
-        FVTUtils.validateNode(newGlossary);
-        System.out.println("Created Glossary " + newGlossary.getName() + " with guid " + newGlossary.getSystemAttributes().getGUID());
+        Glossary glossary = getGlossaryForInput(glossaryName);
+        return issueCreateGlossary(glossary);
+    }
+
+    private Glossary issueCreateGlossary(Glossary glossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, UnrecognizedGUIDException {
+        Glossary newGlossary = subjectAreaGlossary.createGlossary(serverName,FVTConstants.USERID, glossary);
+        if (newGlossary != null)
+        {
+            System.out.println("Created Glossary " + newGlossary.getName() + " with guid " + newGlossary.getSystemAttributes().getGUID());
+        }
         return newGlossary;
+    }
+
+    private Glossary getGlossaryForInput(String glossaryName) {
+        Glossary glossary = new Glossary();
+        glossary.setName(glossaryName);
+        return glossary;
     }
     public  Glossary createPastToGlossary(String name) throws SubjectAreaCheckedExceptionBase
     {
@@ -143,16 +188,27 @@ public class GlossaryFVT
         System.out.println("Created Glossary " + newGlossary.getName() + " with guid " + newGlossary.getSystemAttributes().getGUID());
         return newGlossary;
     }
-
-    public  Glossary getGlossaryByGUID(String guid) throws SubjectAreaCheckedExceptionBase
+    public List<Glossary> findGlossaries(String criteria) throws SubjectAreaCheckedExceptionBase
     {
-        Glossary glossary = subjectAreaGlossary.getGlossaryByGuid(serverName,FVTConstants.USERID, guid);
+        List<Glossary> glossaries = subjectAreaGlossary.findGlossary(
+                serverName,
+                FVTConstants.USERID,
+                criteria,
+                null,
+                0,
+                0,
+                null,
+                null);
+        return glossaries;
+    }
+
+    public  Glossary getGlossaryByGUID(String guid) throws SubjectAreaCheckedExceptionBase {
+        Glossary glossary = subjectAreaGlossary.getGlossaryByGuid(serverName, FVTConstants.USERID, guid);
         FVTUtils.validateNode(glossary);
         System.out.println("Got Glossary " + glossary.getName() + " with guid " + glossary.getSystemAttributes().getGUID() + " and status " + glossary.getSystemAttributes().getStatus());
 
         return glossary;
     }
-
     public  Glossary updateGlossary(String guid, Glossary glossary) throws SubjectAreaCheckedExceptionBase
     {
         Glossary updatedGlossary = subjectAreaGlossary.updateGlossary(serverName,FVTConstants.USERID, guid, glossary);

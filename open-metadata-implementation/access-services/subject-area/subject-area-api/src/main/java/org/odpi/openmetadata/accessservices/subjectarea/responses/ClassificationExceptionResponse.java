@@ -32,12 +32,11 @@ public class ClassificationExceptionResponse extends SubjectAreaOMASAPIResponse
     }
     public ClassificationExceptionResponse(SubjectAreaCheckedExceptionBase e)
     {
+        this();
         this.exceptionClassName = e.getReportingClassName();
         this.exceptionErrorMessage = e.getErrorMessage();
         this.exceptionSystemAction = e.getReportedSystemAction();
         this.exceptionUserAction = e.getReportedUserAction();
-        this.setResponseCategory(ResponseCategory.ClassificationException);
-
     }
 
     @Override

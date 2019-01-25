@@ -31,8 +31,8 @@ public class TermISARelationshipResponse extends SubjectAreaOMASAPIResponse
     }
     public TermISARelationshipResponse(ISARelationship termISARelationship)
     {
+        this();
         this.termISARelationship =termISARelationship;
-        this.setResponseCategory(ResponseCategory.TermISARelationship);
     }
 
 
