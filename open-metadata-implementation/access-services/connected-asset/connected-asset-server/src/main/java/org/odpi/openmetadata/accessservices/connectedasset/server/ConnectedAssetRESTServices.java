@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.connectedasset.server;
 
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.connectedasset.handlers.AssetHandler;
 import org.odpi.openmetadata.accessservices.connectedasset.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -57,12 +58,12 @@ public class ConnectedAssetRESTServices
 
         try
         {
-            AssetHandler   assetHandler = new AssetHandler(instanceHandler.getAccessServiceName(),
-                                                           serverName,
-                                                           instanceHandler.getRepositoryConnector(serverName),
-                                                           userId,
-                                                           assetGUID,
-                                                           connectionGUID);
+            AssetHandler assetHandler = new AssetHandler(instanceHandler.getAccessServiceName(),
+                                                         serverName,
+                                                         instanceHandler.getRepositoryConnector(serverName),
+                                                         userId,
+                                                         assetGUID,
+                                                         connectionGUID);
 
             response.setAsset(assetHandler.getAsset());
             response.setAnnotationCount(assetHandler.getAnnotationCount());
@@ -176,26 +177,6 @@ public class ConnectedAssetRESTServices
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
 
         return response;
-    }
-
-
-    /**
-     * Returns the identifier of the asset linked to a specific connection.
-     *
-     * @param serverName   String   name of server instance to call.
-     * @param userId             userId of user making request.
-     * @param connectionGUID     unique id for connection.
-     *
-     * @return a bean with the basic properties about the asset or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse getAssetIdForConnection(String   serverName,
-                                                String   userId,
-                                                String   connectionGUID)
-    {
-        return null;
     }
 
 
