@@ -17,7 +17,7 @@ image:
 
   egeria:
     repository: planetf1/egeria-egeriavdc
-    tag: 0.1.2
+    tag: 0.1.3
     pullPolicy: IfNotPresent
 
   gaian:
@@ -27,7 +27,7 @@ image:
 
   atlas:
     repository: planetf1/atlas-1773-egeria
-    tag: 0.1.5
+    tag: 0.1.6
     pullPolicy: IfNotPresent
 
   atlasinit:
@@ -35,14 +35,18 @@ image:
     tag: 0.1.6
     pullPolicy: IfNotPresent
 
+    #igcproxy:
+    #repository: planetf1/igcproxy-egeriavdc
+    #tag: 0.1.2
+    #pullPolicy: IfNotPresent
   igcproxy:
-    repository: planetf1/igcproxy-egeriavdc
-    tag: 0.1.2
+    repository: planetf1/egeria-egeriavdc
+    tag: 0.1.3
     pullPolicy: IfNotPresent
 
   kafkamonitor:
     repository: planetf1/kafka-monitor-egeriavdc
-    tag: 0.1.4
+    tag: 0.1.5
     pullPolicy: IfNotPresent
 
   egeriainit:
@@ -52,7 +56,7 @@ image:
 
   igcproxyinit:
     repository: planetf1/igcproxy-init-egeriavdc
-    tag: 0.1.1
+    tag: 0.1.2
     pullPolicy: IfNotPresent
 
   nameOverride: ""
