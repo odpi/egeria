@@ -12,11 +12,15 @@ metadata:
 data:
         ATLAS_ENDPOINT: http://{{ include "myapp.fullname" . }}-atlas-service.default.svc.cluster.local:21000
         EGERIA_ENDPOINT: http://{{ include "myapp.fullname" . }}-egeria-service.default.svc.cluster.local:8080
+        IGCPROXY_ENDPOINT: http://{{ include "myapp.fullname" . }}-igcproxy-service.default.svc.cluster.local:8080
         KAFKA_ENDPOINT: {{ .Release.Name }}-cp-kafka.default.svc.cluster.local:9092
+        IGC_KAFKA_ENDPOINT: 158.176.66.121:59092
         EGERIA_USER: myuser
         EGERIA_COHORT: coco
         EGERIA_SERVER: myserver
         KAFKA_TOPIC: open-metadata.repository-services.cohort.coco.OMRSTopic
+        IGC_USER: isadmin
+        IGC_PASSWORD: isadmin
 
 
 

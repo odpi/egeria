@@ -37,7 +37,7 @@ image:
 
   igcproxy:
     repository: planetf1/igcproxy-egeriavdc
-    tag: 0.1.0
+    tag: 0.1.2
     pullPolicy: IfNotPresent
 
   kafkamonitor:
@@ -48,6 +48,11 @@ image:
   egeriainit:
     repository: planetf1/egeria-init-egeria
     tag: 0.1.2
+    pullPolicy: IfNotPresent
+
+  igcproxyinit:
+    repository: planetf1/igcproxy-init-egeriavdc
+    tag: 0.1.1
     pullPolicy: IfNotPresent
 
   nameOverride: ""
