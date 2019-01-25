@@ -5,14 +5,14 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * FVT resource to call subject area category client API
@@ -66,6 +66,7 @@ public class CategoryFVT
 
         System.out.println("Create a glossary");
         Glossary glossary = glossaryFVT.createGlossary(serverName+" "+DEFAULT_TEST_GLOSSARY_NAME);
+        String glossaryGuid = glossary.getSystemAttributes().getGUID();
         System.out.println("Create a category1 using glossary name");
         Category category1 = createCategoryWithGlossaryGuid(serverName+" "+DEFAULT_TEST_CATEGORY_NAME,glossary.getSystemAttributes().getGUID());
         System.out.println("Create a category2 using glossary guid");
@@ -100,6 +101,41 @@ public class CategoryFVT
         System.out.println("Create a category with a parent category");
         Category category3 = createCategoryWithParentGlossaryGuid(serverName, serverName + " " + DEFAULT_TEST_CATEGORY_NAME3,category2.getSystemAttributes().getGUID(), glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(category3);
+
+
+        System.out.println("create categories to find");
+        Category categoryForFind1 = getCategoryForInput("abc",glossaryGuid);
+        categoryForFind1.setQualifiedName("yyy");
+        categoryForFind1 = issueCreateCategory(categoryForFind1);
+        FVTUtils.validateNode(categoryForFind1);
+        Category categoryForFind2 = createCategory("yyy",glossaryGuid);
+        FVTUtils.validateNode(categoryForFind2);
+        Category categoryForFind3 = createCategory("zzz",glossaryGuid);
+        FVTUtils.validateNode(categoryForFind3);
+        Category categoryForFind4 = createCategory("This is a Category with spaces in name",glossaryGuid);
+        FVTUtils.validateNode(categoryForFind4);
+
+        List<Category> results = findCategories("zzz");
+        if (results.size() !=1 ) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+        }
+        results = findCategories("yyy");
+        if (results.size() !=2 ) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 2 back on the find got " +results.size(), "", "");
+        }
+        //soft delete a category and check it is not found
+        Category deleted4 = deleteCategory(categoryForFind2.getSystemAttributes().getGUID());
+        FVTUtils.validateNode(deleted4);
+        results = findCategories("yyy");
+        if (results.size() !=1 ) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+        }
+
+        // search for a category with a name with spaces in
+        results = findCategories("This is a Category with spaces in name");
+        if (results.size() !=1 ) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+        }
     }
     private Category createCategoryWithParentGlossaryGuid(String serverName,String subjectAreaName, String parentGuid, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
     {
@@ -130,6 +166,32 @@ public class CategoryFVT
         return newCategory;
     }
 
+    public  Category createCategory(String categoryName, String glossaryGuid) throws SubjectAreaCheckedExceptionBase
+    {
+        Category category = getCategoryForInput(categoryName, glossaryGuid);
+        return issueCreateCategory(category);
+    }
+
+    private Category issueCreateCategory(Category category) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, UnrecognizedGUIDException {
+        Category newCategory = subjectAreaCategory.createCategory(serverName,FVTConstants.USERID, category);
+        if (newCategory != null)
+        {
+            System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
+        }
+        return newCategory;
+    }
+
+    private Category getCategoryForInput(String categoryName, String glossaryGuid) {
+        Category category = new Category();
+        category.setName(categoryName);
+        GlossarySummary glossarySummary = new GlossarySummary();
+        glossarySummary.setGuid(glossaryGuid);
+        category.setGlossary(glossarySummary);
+        return category;
+    }
+
+
+
     public Category getCategoryByGUID(String guid) throws SubjectAreaCheckedExceptionBase
     {
         Category category = subjectAreaCategory.getCategoryByGuid(serverName,FVTConstants.USERID, guid);
@@ -137,7 +199,19 @@ public class CategoryFVT
         System.out.println("Got Category " + category.getName() + " with guid " + category.getSystemAttributes().getGUID() + " and status " + category.getSystemAttributes().getStatus());
         return category;
     }
-
+    public List<Category> findCategories(String criteria) throws SubjectAreaCheckedExceptionBase
+    {
+        List<Category> categories = subjectAreaCategory.findCategory(
+                serverName,
+                FVTConstants.USERID,
+                criteria,
+                null,
+                0,
+                0,
+                null,
+                null);
+        return categories;
+    }
     public Category updateCategory(String guid, Category category) throws SubjectAreaCheckedExceptionBase
     {
         Category updatedCategory = subjectAreaCategory.updateCategory(serverName,FVTConstants.USERID, guid, category);

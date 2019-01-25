@@ -33,11 +33,11 @@ public class StatusNotsupportedExceptionResponse extends SubjectAreaOMASAPIRespo
     }
     public StatusNotsupportedExceptionResponse(SubjectAreaCheckedExceptionBase e)
     {
+        this();
         this.exceptionClassName = e.getReportingClassName();
         this.exceptionErrorMessage = e.getErrorMessage();
         this.exceptionSystemAction = e.getReportedSystemAction();
         this.exceptionUserAction = e.getReportedUserAction();
-        this.setResponseCategory(ResponseCategory.StatusNotSupportedException);
     }
 
     @Override
