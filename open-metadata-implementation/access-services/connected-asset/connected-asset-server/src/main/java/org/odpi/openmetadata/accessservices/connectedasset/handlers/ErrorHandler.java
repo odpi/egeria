@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.connectedasset.server;
+package org.odpi.openmetadata.accessservices.connectedasset.handlers;
 
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.InvalidParameterException;
@@ -288,6 +288,41 @@ class ErrorHandler
     /**
      * Throw an exception if the supplied userId is not authorized to perform a request
      *
+     * @param userId  user name to validate
+     * @param methodName  name of the method making the call.
+     * @param serverName  name of this server
+     * @param serviceName  name of this access service
+     * @param exceptionMessage error message from repository
+     *
+     * @throws UserNotAuthorizedException the userId is unauthorised for the request
+     */
+    void handleUnauthorizedUser(String userId,
+                                String methodName,
+                                String serverName,
+                                String serviceName,
+                                String exceptionMessage) throws UserNotAuthorizedException
+    {
+        ConnectedAssetErrorCode errorCode = ConnectedAssetErrorCode.USER_NOT_AUTHORIZED_BY_REPOSITORY;
+        String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(userId,
+                                                                                                                 methodName,
+                                                                                                                 serviceName,
+                                                                                                                 serverName,
+                                                                                                                 exceptionMessage);
+
+        throw new UserNotAuthorizedException(errorCode.getHTTPErrorCode(),
+                                             this.getClass().getName(),
+                                             methodName,
+                                             errorMessage,
+                                             errorCode.getSystemAction(),
+                                             errorCode.getUserAction(),
+                                             userId);
+
+    }
+
+
+    /**
+     * Throw an exception if the supplied userId is not authorized to perform a request
+     *
      * @param error  caught exception
      * @param methodName  name of the method making the call.
      * @param serverName  name of this server
@@ -360,21 +395,64 @@ class ErrorHandler
      * @param methodName  name of the method making the call.
      * @param serverName  name of this server
      * @param expectedType  name of object to return
+     * @param exceptionMessage message from exception thrown by the repositories.
+     *
      * @throws UnrecognizedGUIDException the guid is not recognized
      */
     void handleUnrecognizedGUIDException(String userId,
                                          String methodName,
                                          String serverName,
                                          String expectedType,
-                                         String guid) throws UnrecognizedGUIDException
+                                         String guid,
+                                         String exceptionMessage) throws UnrecognizedGUIDException
     {
         ConnectedAssetErrorCode errorCode = ConnectedAssetErrorCode.INSTANCE_NOT_FOUND_BY_GUID;
-        String                 errorMessage = errorCode.getErrorMessageId()
-                                            + errorCode.getFormattedErrorMessage(methodName,
-                                                                                 expectedType,
-                                                                                 guid,
-                                                                                 userId,
-                                                                                 serverName);
+        String                  errorMessage = errorCode.getErrorMessageId()
+                                             + errorCode.getFormattedErrorMessage(methodName,
+                                                                                  expectedType,
+                                                                                  guid,
+                                                                                  userId,
+                                                                                  serverName,
+                                                                                  exceptionMessage);
+
+        throw new UnrecognizedGUIDException(errorCode.getHTTPErrorCode(),
+                                            this.getClass().getName(),
+                                            methodName,
+                                            errorMessage,
+                                            errorCode.getSystemAction(),
+                                            errorCode.getUserAction(),
+                                            expectedType,
+                                            guid);
+
+    }
+
+
+    /**
+     * Throw an exception if the supplied guid is not recognized
+     *
+     * @param userId  user name to validate
+     * @param methodName  name of the method making the call.
+     * @param serverName  name of this server
+     * @param expectedType  name of object to return
+     * @param exceptionMessage message from exception thrown by the repositories.
+     *
+     * @throws UnrecognizedGUIDException the guid is not recognized
+     */
+    void  handleEntityProxyGUIDException(String userId,
+                                         String methodName,
+                                         String serverName,
+                                         String expectedType,
+                                         String guid,
+                                         String exceptionMessage) throws UnrecognizedGUIDException
+    {
+        ConnectedAssetErrorCode errorCode = ConnectedAssetErrorCode.ENTITY_PROXY_FOUND;
+        String                  errorMessage = errorCode.getErrorMessageId()
+                                             + errorCode.getFormattedErrorMessage(methodName,
+                                                                                  expectedType,
+                                                                                  guid,
+                                                                                  userId,
+                                                                                  serverName,
+                                                                                  exceptionMessage);
 
         throw new UnrecognizedGUIDException(errorCode.getHTTPErrorCode(),
                                             this.getClass().getName(),

@@ -1,15 +1,15 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.connectedasset.server;
+package org.odpi.openmetadata.accessservices.connectedasset.handlers;
 
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedAssetGUIDException;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedConnectionGUIDException;
+import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedGUIDException;
+import org.odpi.openmetadata.accessservices.connectedasset.mappers.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -23,7 +23,7 @@ import java.util.*;
  * The calls to the metadata repositories happen in the constructor.  Then getters are available to
  * populate the response to the REST request.
  */
-class AssetHandler
+public class AssetHandler
 {
     private static final String connectionTypeGUID                      = "114e9f8f-5ff3-4c32-bd37-a7eb42712253";
     private static final String connectionConnectorTypeRelationshipGUID = "e542cfc1-0b4b-42b9-9921-f0a5a88aaf96";
@@ -36,9 +36,11 @@ class AssetHandler
     private static final String descriptionPropertyName                 = "description";
     private static final String connectorProviderPropertyName           = "connectorProviderClassName";
     private static final String ownerPropertyName                       = "owner";
-    private static final String shortDescfriptionPropertyName           = "assetSummary";
+    private static final String shortDescriptionPropertyName            = "assetSummary";
     private static final String endpointProtocolPropertyName            = "protocol";
     private static final String endpointEncryptionPropertyName          = "encryptionMethod";
+
+    private static final int    MAX_PAGE_SIZE = 25;
 
     private String               serviceName;
     private OMRSRepositoryHelper repositoryHelper = null;
@@ -47,8 +49,24 @@ class AssetHandler
     private TypeHandler          typeHandler      = new TypeHandler();
 
     private EntityDetail         assetEntity;
-    private List<Relationship>   assetRelationships;
     private String               connectionGUID;
+    private RepositoryHandler    repositoryHandler;
+
+    private int        annotationCount            = 0;
+    private int        certificationCount         = 0;
+    private int        commentCount               = 0;
+    private int        connectionCount            = 0;
+    private int        externalIdentifierCount    = 0;
+    private int        externalReferencesCount    = 0;
+    private int        informalTagCount           = 0;
+    private int        licenseCount               = 0;
+    private int        likeCount                  = 0;
+    private int        knownLocationsCount        = 0;
+    private int        noteLogsCount              = 0;
+    private int        ratingsCount               = 0;
+    private int        relatedAssetCount          = 0;
+    private int        relatedMediaReferenceCount = 0;
+    private SchemaType schemaType                 = null;
 
 
     /**
@@ -66,22 +84,37 @@ class AssetHandler
      * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    AssetHandler(String                  serviceName,
-                 String                  serverName,
-                 OMRSRepositoryConnector repositoryConnector,
-                 String                  userId,
-                 String                  assetGUID) throws InvalidParameterException,
-                                                           UnrecognizedAssetGUIDException,
-                                                           PropertyServerException,
-                                                           UserNotAuthorizedException
+    public AssetHandler(String                  serviceName,
+                        String                  serverName,
+                        OMRSRepositoryConnector repositoryConnector,
+                        String                  userId,
+                        String                  assetGUID) throws InvalidParameterException,
+                                                                  UnrecognizedAssetGUIDException,
+                                                                  PropertyServerException,
+                                                                  UserNotAuthorizedException
     {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.repositoryHelper = repositoryConnector.getRepositoryHelper();
-        this.serverName = repositoryConnector.getServerName();
         this.errorHandler = new ErrorHandler(repositoryConnector);
-        this.assetEntity = retrieveAssetEntity(userId, assetGUID);
-        this.assetRelationships = retrieveAssetRelationships(userId, assetGUID);
+
+        this.repositoryHandler = new RepositoryHandler(serviceName, serverName, repositoryConnector);
+
+        try
+        {
+            this.assetEntity = repositoryHandler.retrieveEntity(userId, AssetMapper.TYPE_NAME, assetGUID);
+            this.countAssetAttachments(userId, assetGUID);
+        }
+        catch (UnrecognizedGUIDException  error)
+        {
+            throw new UnrecognizedAssetGUIDException(error.getReportedHTTPCode(),
+                                                     error.getReportingClassName(),
+                                                     error.getReportingActionDescription(),
+                                                     error.getErrorMessage(),
+                                                     error.getReportedSystemAction(),
+                                                     error.getReportedUserAction(),
+                                                     assetGUID);
+        }
     }
 
 
@@ -102,229 +135,21 @@ class AssetHandler
      * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    AssetHandler(String                  serviceName,
-                 String                  serverName,
-                 OMRSRepositoryConnector repositoryConnector,
-                 String                  userId,
-                 String                  assetGUID,
-                 String                  connectionGUID) throws InvalidParameterException,
-                                                                UnrecognizedAssetGUIDException,
-                                                                UnrecognizedConnectionGUIDException,
-                                                                PropertyServerException,
-                                                                UserNotAuthorizedException
+    public AssetHandler(String                  serviceName,
+                        String                  serverName,
+                        OMRSRepositoryConnector repositoryConnector,
+                        String                  userId,
+                        String                  assetGUID,
+                        String                  connectionGUID) throws InvalidParameterException,
+                                                                       UnrecognizedAssetGUIDException,
+                                                                       UnrecognizedConnectionGUIDException,
+                                                                       PropertyServerException,
+                                                                       UserNotAuthorizedException
     {
         this(serviceName, serverName, repositoryConnector, userId, assetGUID);
+
+
         this.connectionGUID = connectionGUID;
-    }
-
-
-    /**
-     * Returns the entity object corresponding to the supplied asset GUID.
-     *
-     * @param userId  String - userId of user making request.
-     * @param assetGUID  the unique id for the connection within the property server.
-     *
-     * @return Connection retrieved from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UnrecognizedAssetGUIDException the supplied GUID is not recognized by the metadata repository.
-     * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private EntityDetail retrieveAssetEntity(String     userId,
-                                             String     assetGUID) throws InvalidParameterException,
-                                                                          UnrecognizedAssetGUIDException,
-                                                                          PropertyServerException,
-                                                                          UserNotAuthorizedException
-    {
-        final  String   methodName = "retrieveAssetEntity";
-        final  String   guidParameter = "assetGUID";
-
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(assetGUID, guidParameter, methodName);
-
-        OMRSMetadataCollection metadataCollection = errorHandler.validateRepositoryConnector(methodName);
-
-        try
-        {
-            return metadataCollection.getEntityDetail(userId, assetGUID);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
-        {
-            ConnectedAssetErrorCode errorCode = ConnectedAssetErrorCode.ASSET_NOT_FOUND;
-            String                  errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(assetGUID,
-                                                                                                                      serverName,
-                                                                                                                      error.getErrorMessage());
-
-            throw new UnrecognizedAssetGUIDException(errorCode.getHTTPErrorCode(),
-                                                          this.getClass().getName(),
-                                                          methodName,
-                                                          errorMessage,
-                                                          errorCode.getSystemAction(),
-                                                          errorCode.getUserAction(),
-                                                          assetGUID);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException error)
-        {
-            ConnectedAssetErrorCode errorCode = ConnectedAssetErrorCode.PROXY_CONNECTION_FOUND;
-            String                  errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(assetGUID,
-                                                                                                                      serverName,
-                                                                                                                      error.getErrorMessage());
-
-            throw new UnrecognizedAssetGUIDException(errorCode.getHTTPErrorCode(),
-                                                     this.getClass().getName(),
-                                                     methodName,
-                                                     errorMessage,
-                                                     errorCode.getSystemAction(),
-                                                     errorCode.getUserAction(),
-                                                     assetGUID);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName, serverName, serviceName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, serverName, serviceName);
-        }
-
-        return null;
-    }
-
-
-    /**
-     * Returns the list of relationships attached to the identified asset entity from the metadata collections.
-     *
-     * @param userId  String - userId of user making request.
-     * @param assetGUID  the unique id for the connection within the property server.
-     *
-     * @return Connection retrieved from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UnrecognizedAssetGUIDException the supplied GUID is not recognized by the metadata repository.
-     * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     */
-    private List<Relationship> retrieveAssetRelationships(String     userId,
-                                                          String     assetGUID) throws InvalidParameterException,
-                                                                                       UnrecognizedAssetGUIDException,
-                                                                                       PropertyServerException,
-                                                                                       UserNotAuthorizedException
-    {
-        final  String   methodName = "retrieveAssetRelationships";
-        final  String   guidParameter = "assetGUID";
-
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(assetGUID, guidParameter, methodName);
-
-        OMRSMetadataCollection  metadataCollection = errorHandler.validateRepositoryConnector(methodName);
-
-        try
-        {
-            return metadataCollection.getRelationshipsForEntity(userId,
-                                                                assetGUID,
-                                                                null,
-                                                                0,
-                                                                null,
-                                                                null,
-                                                                null,
-                                                                null,
-                                                                0);
-
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
-        {
-            ConnectedAssetErrorCode errorCode = ConnectedAssetErrorCode.ASSET_NOT_FOUND;
-            String                  errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(assetGUID,
-                                                                                                                      serverName,
-                                                                                                                      error.getErrorMessage());
-
-            throw new UnrecognizedAssetGUIDException(errorCode.getHTTPErrorCode(),
-                                                     this.getClass().getName(),
-                                                     methodName,
-                                                     errorMessage,
-                                                     errorCode.getSystemAction(),
-                                                     errorCode.getUserAction(),
-                                                     assetGUID);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName, serverName, serviceName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, serverName, serviceName);
-        }
-
-        return null;
-    }
-
-
-
-
-
-    /**
-     * Extract an additional properties object from the instance properties within a map property value.
-     *
-     * @param propertyName  name of the property that is a map
-     * @param properties  instance properties containing the map property
-     * @param methodName  calling method
-     * @return an AdditionalProperties object or null
-     */
-    private Map<String, Object> getAdditionalPropertiesFromEntity(String              propertyName,
-                                                                  InstanceProperties  properties,
-                                                                  String              methodName)
-    {
-        /*
-         * Extract the map property
-         */
-        InstanceProperties mapProperty = repositoryHelper.getMapProperty(serviceName,
-                                                                         propertyName,
-                                                                         properties,
-                                                                         methodName);
-
-        if (mapProperty != null)
-        {
-            /*
-             * The contents should be primitives.  Need to step through all of the property names
-             * and add each primitive value to a map.  This map is then used to set up the additional properties
-             * object for return
-             */
-            Iterator<String> additionalPropertyNames = mapProperty.getPropertyNames();
-
-            if (additionalPropertyNames != null)
-            {
-                Map<String,Object> additionalPropertiesMap = new HashMap<>();
-
-                while (additionalPropertyNames.hasNext())
-                {
-                    String                additionalPropertyName  = additionalPropertyNames.next();
-                    InstancePropertyValue additionalPropertyValue = mapProperty.getPropertyValue(additionalPropertyName);
-
-                    if (additionalPropertyValue != null)
-                    {
-                        /*
-                         * If the property is not primitive it is ignored.
-                         */
-                        if (additionalPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
-                        {
-                            PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) additionalPropertyValue;
-
-                            additionalPropertiesMap.put(additionalPropertyName, primitivePropertyValue.getPrimitiveValue());
-                        }
-                    }
-                }
-
-                if (additionalPropertiesMap.isEmpty())
-                {
-                    return null;
-                }
-                else
-                {
-                    return additionalPropertiesMap;
-                }
-            }
-        }
-
-        return null;
     }
 
 
@@ -334,7 +159,7 @@ class AssetHandler
      *
      * @return unique identifier
      */
-    Asset getAsset()
+    public Asset getAsset()
     {
         final  String   methodName = "getAsset";
 
@@ -383,13 +208,114 @@ class AssetHandler
 
 
     /**
+     *
+     * @param userId
+     * @param assetGUID
+     * @throws InvalidParameterException
+     * @throws UnrecognizedGUIDException
+     * @throws PropertyServerException
+     * @throws UserNotAuthorizedException
+     */
+    private void countAssetAttachments(String userId,
+                                       String assetGUID) throws InvalidParameterException,
+                                                                UnrecognizedGUIDException,
+                                                                PropertyServerException,
+                                                                UserNotAuthorizedException
+    {
+        int                   elementCount = 0;
+        List<Relationship>    retrievedRelationships;
+
+        do
+        {
+            retrievedRelationships = repositoryHandler.retrieveRelationships(userId, AssetMapper.TYPE_NAME, assetGUID, elementCount, MAX_PAGE_SIZE);
+
+            if (retrievedRelationships != null)
+            {
+                if (retrievedRelationships.isEmpty())
+                {
+                    retrievedRelationships = null;
+                }
+                else
+                {
+                    annotationCount            = annotationCount            + countRelationshipsOfACertainType(retrievedRelationships, AnnotationMapper.RELATIONSHIP_TYPE_NAME);
+                    certificationCount         = certificationCount         + countRelationshipsOfACertainType(retrievedRelationships, CertificationMapper.RELATIONSHIP_TYPE_NAME);
+                    commentCount               = commentCount               + countRelationshipsOfACertainType(retrievedRelationships, CommentMapper.RELATIONSHIP_TYPE_NAME);
+                    connectionCount            = connectionCount            + countRelationshipsOfACertainType(retrievedRelationships, ConnectionMapper.RELATIONSHIP_TYPE_NAME);
+                    externalIdentifierCount    = externalIdentifierCount    + countRelationshipsOfACertainType(retrievedRelationships, ExternalIdentifierMapper.RELATIONSHIP_TYPE_NAME);
+                    externalReferencesCount    = externalReferencesCount    + countRelationshipsOfACertainType(retrievedRelationships, ExternalReferenceMapper.RELATIONSHIP_TYPE_NAME);
+                    informalTagCount           = informalTagCount           + countRelationshipsOfACertainType(retrievedRelationships, InformalTagMapper.RELATIONSHIP_TYPE_NAME);
+                    licenseCount               = licenseCount               + countRelationshipsOfACertainType(retrievedRelationships, LicenseMapper.RELATIONSHIP_TYPE_NAME);
+                    likeCount                  = likeCount                  + countRelationshipsOfACertainType(retrievedRelationships, LikeMapper.RELATIONSHIP_TYPE_NAME);
+                    knownLocationsCount        = knownLocationsCount        + countRelationshipsOfACertainType(retrievedRelationships, LocationMapper.RELATIONSHIP_TYPE_NAME);
+                    noteLogsCount              = noteLogsCount              + countRelationshipsOfACertainType(retrievedRelationships, NoteLogMapper.RELATIONSHIP_TYPE_NAME);
+                    ratingsCount               = ratingsCount               + countRelationshipsOfACertainType(retrievedRelationships, ReviewMapper.RELATIONSHIP_TYPE_NAME);
+                    relatedAssetCount          = relatedAssetCount          + countRelationshipsOfACertainType(retrievedRelationships, AssetMapper.RELATIONSHIP_TYPE_NAME);
+                    relatedMediaReferenceCount = relatedMediaReferenceCount + countRelationshipsOfACertainType(retrievedRelationships, RelatedMediaReferenceMapper.RELATIONSHIP_TYPE_NAME);
+
+                    if (schemaType == null)
+                    {
+                        schemaType = getSchemaType(userId, retrievedRelationships);
+                    }
+
+                    if (retrievedRelationships.size() == MAX_PAGE_SIZE)
+                    {
+                        /*
+                         * There may be more relationships to retrieve.
+                         */
+                        elementCount = elementCount + MAX_PAGE_SIZE;
+                    }
+                }
+            }
+
+        }  while (retrievedRelationships != null);
+    }
+
+
+    /**
+     * Return the number of relationships (attachments) of a requested type on the asset.
+     *
+     * @param relationships list of asset relationships retrieved from the repository.
+     * @param relationshipTypeName type name of interest.
+     * @return count of the relationships.
+     */
+    private int countRelationshipsOfACertainType(List<Relationship>   relationships,
+                                                 String               relationshipTypeName)
+    {
+        List<Relationship>   classifiedRelationships = repositoryHandler.getRelationshipsOfACertainType(relationships, relationshipTypeName);
+
+        if (classifiedRelationships == null)
+        {
+            return 0;
+        }
+        else
+        {
+            return classifiedRelationships.size();
+        }
+    }
+
+
+    /**
+     * Retrieve the schema type (if any) attached to the asset.
+     *
+     * @param userId userId of the call to retrieve the schema type entity.
+     * @param relationships list of relationships attached to the asset.
+     * @return SchemaType bean or null.
+     */
+    private SchemaType getSchemaType(String               userId,
+                                     List<Relationship>   relationships)
+    {
+        return null;
+    }
+
+
+    /**
      * Return the count of attached annotations.
      *
      * @return count
      */
-    int getAnnotationCount()
+    public int getAnnotationCount()
     {
-        return 0;
+        return annotationCount;
     }
 
 
@@ -398,9 +324,9 @@ class AssetHandler
      *
      * @return count
      */
-    int getCertificationCount()
+    public int getCertificationCount()
     {
-        return 0;
+        return certificationCount;
     }
 
 
@@ -411,7 +337,7 @@ class AssetHandler
      */
     public int getCommentCount()
     {
-        return 0;
+        return commentCount;
     }
 
 
@@ -422,7 +348,7 @@ class AssetHandler
      */
     public int getConnectionCount()
     {
-        return 0;
+        return connectionCount;
     }
 
 
@@ -433,7 +359,7 @@ class AssetHandler
      */
     public int getExternalIdentifierCount()
     {
-        return 0;
+        return externalIdentifierCount;
     }
 
 
@@ -442,9 +368,9 @@ class AssetHandler
      *
      * @return count
      */
-    int getExternalReferencesCount()
+    public int getExternalReferencesCount()
     {
-        return 0;
+        return externalReferencesCount;
     }
 
 
@@ -453,9 +379,9 @@ class AssetHandler
      *
      * @return count
      */
-    int getInformalTagCount()
+    public int getInformalTagCount()
     {
-        return 0;
+        return informalTagCount;
     }
 
 
@@ -464,9 +390,9 @@ class AssetHandler
      *
      * @return count
      */
-    int getLicenseCount()
+    public int getLicenseCount()
     {
-        return 0;
+        return licenseCount;
     }
 
 
@@ -475,9 +401,9 @@ class AssetHandler
      *
      * @return count
      */
-    int getLikeCount()
+    public int getLikeCount()
     {
-        return 0;
+        return likeCount;
     }
 
 
@@ -486,9 +412,9 @@ class AssetHandler
      *
      * @return count
      */
-    int getKnownLocationsCount()
+    public int getKnownLocationsCount()
     {
-        return 0;
+        return knownLocationsCount;
     }
 
 
@@ -497,9 +423,9 @@ class AssetHandler
      *
      * @return count
      */
-    int getNoteLogsCount()
+    public int getNoteLogsCount()
     {
-        return 0;
+        return noteLogsCount;
     }
 
 
@@ -508,9 +434,9 @@ class AssetHandler
      *
      * @return count
      */
-    int getRatingsCount()
+    public int getRatingsCount()
     {
-        return 0;
+        return ratingsCount;
     }
 
 
@@ -519,9 +445,9 @@ class AssetHandler
      *
      * @return count
      */
-    int getRelatedAssetCount()
+    public int getRelatedAssetCount()
     {
-        return 0;
+        return relatedAssetCount;
     }
 
 
@@ -530,9 +456,9 @@ class AssetHandler
      *
      * @return count
      */
-    int getRelatedMediaReferenceCount()
+    public int getRelatedMediaReferenceCount()
     {
-        return 0;
+        return relatedMediaReferenceCount;
     }
 
 
@@ -541,9 +467,9 @@ class AssetHandler
      *
      * @return schema type bean
      */
-    SchemaType getSchemaType()
+    public SchemaType getSchemaType()
     {
-        return null;
+        return schemaType;
     }
 
 

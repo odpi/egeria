@@ -41,7 +41,7 @@ public class ConnectedAssetOMASResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/via-connection/{connectionGUID}")
 
-    private AssetResponse getConnectedAssetSummary(@PathVariable String   serverName,
+    public  AssetResponse getConnectedAssetSummary(@PathVariable String   serverName,
                                                    @PathVariable String   userId,
                                                    @PathVariable String   assetGUID,
                                                    @PathVariable String   connectionGUID)
