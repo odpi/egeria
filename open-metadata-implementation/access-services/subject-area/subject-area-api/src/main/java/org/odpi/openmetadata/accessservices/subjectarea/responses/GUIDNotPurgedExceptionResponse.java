@@ -40,11 +40,11 @@ public class GUIDNotPurgedExceptionResponse extends SubjectAreaOMASAPIResponse
     }
     public GUIDNotPurgedExceptionResponse(SubjectAreaCheckedExceptionBase e)
     {
+        this();
         this.exceptionClassName = e.getReportingClassName();
         this.exceptionErrorMessage = e.getErrorMessage();
         this.exceptionSystemAction = e.getReportedSystemAction();
         this.exceptionUserAction = e.getReportedUserAction();
-        this.setResponseCategory(ResponseCategory.GUIDNotPurgedException);
         this.guid = ((GUIDNotPurgedException)e).getGuid();
     }
 

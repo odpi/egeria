@@ -40,11 +40,11 @@ public class GUIDNotDeletedExceptionResponse extends SubjectAreaOMASAPIResponse
     }
     public GUIDNotDeletedExceptionResponse(SubjectAreaCheckedExceptionBase e)
     {
+        this();
         this.exceptionClassName = e.getReportingClassName();
         this.exceptionErrorMessage = e.getErrorMessage();
         this.exceptionSystemAction = e.getReportedSystemAction();
         this.exceptionUserAction = e.getReportedUserAction();
-        this.setResponseCategory(ResponseCategory.GUIDNotDeletedException);
         this.guid = ((GUIDNotPurgedException)e).getGuid();
     }
 
