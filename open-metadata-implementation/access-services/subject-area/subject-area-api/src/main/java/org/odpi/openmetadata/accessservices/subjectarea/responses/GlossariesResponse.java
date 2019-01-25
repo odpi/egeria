@@ -5,8 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
-
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -14,56 +13,56 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * TermsResponse is the response structure used on the Subject Area OMAS REST API calls that returns a List of
- * Terms as a response.
+ * GlossariesResponse is the response structure used on the Subject Area OMAS REST API calls that returns a List of
+ * Glossaries as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TermsResponse extends SubjectAreaOMASAPIResponse
+public class GlossariesResponse extends SubjectAreaOMASAPIResponse
 {
-    private List<Term> terms = null;
+    private List<Glossary> glossaries = null;
 
     /**
      * Default constructor
      */
-    public TermsResponse()
+    public GlossariesResponse()
     {
-        this.setResponseCategory(ResponseCategory.Terms);
+        this.setResponseCategory(ResponseCategory.Glossaries);
     }
-    public TermsResponse(List<Term> terms)
+    public GlossariesResponse(List<Glossary> glossaries)
     {
         this();
-        this.terms=terms;
+        this.glossaries=glossaries;
     }
 
 
     /**
-     * Return the Terms object.
+     * Return the Glossaries object.
      *
-     * @return terms
+     * @return glossaries
      */
-    public List<Term> getTerms()
+    public List<Glossary> getGlossaries()
     {
-        return terms;
+        return glossaries;
     }
 
     /**
-     * Set up the Terms object.
+     * Set up the Glossaries object.
      *
-     * @param terms - terms object
+     * @param glossaries - glossaries object
      */
-    public void setTerms(List<Term> terms)
+    public void setGlossaries(List<Glossary> glossaries)
     {
-        this.terms = terms;
+        this.glossaries = glossaries;
     }
 
 
     @Override
     public String toString()
     {
-        return "TermResponse{" +
-                "terms=" + terms +
+        return "GlossaryResponse{" +
+                "glossaries=" + glossaries +
                 ", relatedHTTPCode=" + relatedHTTPCode +
                 '}';
     }

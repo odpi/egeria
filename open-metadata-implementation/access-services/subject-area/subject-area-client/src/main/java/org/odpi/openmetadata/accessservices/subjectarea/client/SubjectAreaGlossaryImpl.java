@@ -5,37 +5,35 @@ package org.odpi.openmetadata.accessservices.subjectarea.client;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
+import org.odpi.openmetadata.accessservices.subjectarea.utils.QueryUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.RestCaller;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.UnsupportedEncodingException;
+import java.util.Date;
+import java.util.List;
 
 
 /**
  * SubjectAreaImpl is the OMAS client library implementation of the SubjectAreaImpl OMAS.
  * This interface provides glossary authoring interface for subject area experts.
  */
-public class SubjectAreaGlossaryImpl implements org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary
+public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary
 {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaGlossaryImpl.class);
 
     private static final String className = SubjectAreaGlossaryImpl.class.getName();
 
     private static final String BASE_URL = SubjectAreaImpl.SUBJECT_AREA_BASE_URL +"glossaries";
-
-    /*
-     * The URL of the server where OMAS is active
-     */
-    private String                    omasServerURL = null;
-    /*
-     * serverName is a name that picks out a specific named running instance on the server.
-     */
-    private String serverName;
 
 
     /**
@@ -46,11 +44,7 @@ public class SubjectAreaGlossaryImpl implements org.odpi.openmetadata.accessserv
      */
     public SubjectAreaGlossaryImpl(String   omasServerURL, String serverName)
     {
-        /*
-         * Save OMAS Server URL
-         */
-        this.omasServerURL = omasServerURL;
-        this.serverName = serverName;
+        super(omasServerURL,serverName);
     }
 
 
@@ -159,6 +153,92 @@ public class SubjectAreaGlossaryImpl implements org.odpi.openmetadata.accessserv
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
         return glossary;
+    }
+
+    /**
+     * Find Glossary
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param searchCriteria String expression matching Category property values (this does not include the GlossarySummary content).
+     * @param asOfTime the glossaries returned as they were at this time. null indicates at the current time.
+     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     *                 beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize the maximum number of elements that can be returned on this request.
+     *                 0 means there is no limit to the page size
+     * @param sequencingOrder the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @return A list of Glossaries meeting the search Criteria
+     *
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException   Function not supported
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public List<Glossary> findGlossary(String serverName, String userId,
+                                   String searchCriteria,
+                                   Date asOfTime,
+                                   int offset,
+                                   int pageSize,
+                                   org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                   String sequencingProperty) throws
+            MetadataServerUncontactableException,
+            UserNotAuthorizedException,
+            InvalidParameterException,
+            FunctionNotSupportedException,
+            UnexpectedResponseException  {
+
+        final String methodName = "findGlossaryy";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        InputValidator.validateUserIdNotNull(className, methodName, userId);
+        final String urlTemplate = this.omasServerURL + BASE_URL;
+        String url = String.format(urlTemplate, serverName, userId );
+
+        if (sequencingOrder==null) {
+            sequencingOrder = SequencingOrder.ANY;
+        }
+        StringBuffer queryStringSB = new StringBuffer();
+        QueryUtils.addCharacterToQuery(queryStringSB);
+        queryStringSB.append("sequencingOrder="+ sequencingOrder);
+        if (asOfTime != null) {
+            QueryUtils.addCharacterToQuery(queryStringSB);
+            queryStringSB.append("asOfTime="+ asOfTime);
+        }
+        if (searchCriteria != null) {
+            // encode the string
+
+            encodeQueryProperty( "searchCriteria",searchCriteria,methodName, queryStringSB);
+        }
+        if (offset != 0) {
+            QueryUtils.addCharacterToQuery(queryStringSB);
+            queryStringSB.append("offset="+ offset);
+        }
+        if (pageSize != 0) {
+            QueryUtils.addCharacterToQuery(queryStringSB);
+            queryStringSB.append("pageSize="+ pageSize);
+        }
+        if (sequencingProperty !=null) {
+            // encode the string
+            encodeQueryProperty("sequencingProperty",sequencingProperty, methodName, queryStringSB);
+        }
+        if (queryStringSB.length() >0) {
+            url = url + queryStringSB.toString();
+        }
+        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className,methodName,url);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
+        List<Glossary> glossaries = DetectUtils.detectAndReturnGlossaries(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return glossaries;
     }
 
     /**
