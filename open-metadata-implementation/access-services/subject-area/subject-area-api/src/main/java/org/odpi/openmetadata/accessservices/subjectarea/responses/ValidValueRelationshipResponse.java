@@ -31,8 +31,8 @@ public class ValidValueRelationshipResponse extends SubjectAreaOMASAPIResponse
     }
     public ValidValueRelationshipResponse(ValidValue termValidValueRelationship)
     {
+        this();
         this.termValidValueRelationship=termValidValueRelationship;
-        this.setResponseCategory(ResponseCategory.ValidValueRelationship);
     }
 
 
