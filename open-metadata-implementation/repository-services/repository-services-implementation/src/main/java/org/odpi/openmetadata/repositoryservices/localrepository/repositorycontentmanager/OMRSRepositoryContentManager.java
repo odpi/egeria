@@ -2274,21 +2274,21 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
             // TODO log an error to say that the TypeDef contains bad values.
 
             log.error("TypeDef not added because repository thinks it is invalid: " + typeDef);
-            log.error("InvalidTypeDefException: " + error);
+            log.error("InvalidTypeDefException: ", error);
         }
         catch (TypeDefKnownException error)
         {
             // TODO log an error to say that a logic error has occurred
 
             log.error("TypeDef not added because repository has a logic error: " + typeDef);
-            log.error("TypeDefKnownException: " + error);
+            log.error("TypeDefKnownException: ", error);
         }
         catch (Throwable  error)
         {
             // TODO log an error to say that an unexpected error has occurred
 
             log.error("TypeDef not added because repository has an unexpected error: " + typeDef);
-            log.error("Throwable: " + error);
+            log.error("Throwable: ", error);
         }
     }
 
@@ -2423,21 +2423,21 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
             // TODO log an error to say that the TypeDef contains bad values.
 
             log.error("TypeDef not added because repository thinks it is invalid: " + attributeTypeDef);
-            log.error("InvalidTypeDefException: " + error);
+            log.error("InvalidTypeDefException: ", error);
         }
         catch (TypeDefKnownException error)
         {
             // TODO log an error to say that a logic error has occurred
 
             log.error("TypeDef not added because repository has a logic error: " + attributeTypeDef);
-            log.error("TypeDefKnownException: " + error);
+            log.error("TypeDefKnownException: ", error);
         }
         catch (Throwable  error)
         {
             // TODO log an error to say that an unexpected error has occurred
 
             log.error("TypeDef not added because repository has an unexpected error: " + attributeTypeDef);
-            log.error("Throwable: " + error);
+            log.error("Throwable: ", error);
         }
     }
 
@@ -2490,7 +2490,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
             if (log.isDebugEnabled())
             {
                 log.debug("Patch not applied because TypeDef does not exist: " + typeDefPatch);
-                log.debug("TypeDefNotKnownException: " + error);
+                log.debug("TypeDefNotKnownException: ", error);
             }
         }
         catch (PatchErrorException error)
@@ -2500,7 +2500,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
             if (log.isDebugEnabled())
             {
                 log.debug("Patch not applied because it is invalid: " + typeDefPatch);
-                log.debug("PatchErrorException: " + error);
+                log.debug("PatchErrorException: ", error);
             }
         }
         catch (Throwable error)
@@ -2510,7 +2510,7 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
             if (log.isDebugEnabled())
             {
                 log.debug("Patch not applied because of an error " + typeDefPatch);
-                log.debug("Throwable: " + error);
+                log.debug("Throwable: ", error);
             }
         }
     }
