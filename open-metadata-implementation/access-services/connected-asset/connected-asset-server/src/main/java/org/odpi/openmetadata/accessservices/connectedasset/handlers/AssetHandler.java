@@ -258,39 +258,7 @@ class AssetHandler
     }
 
 
-    /**
-     * Scan the complete list of relationships and extract those that match the supplied type name.
-     *
-     * @param assetRelationships full list of relationships attached to the asset.
-     * @param typeName relationship type name
-     * @return list of selected relationships (or empty list)
-     */
-    private List<Relationship>  getRelationshipsOfACertainType(List<Relationship>  assetRelationships,
-                                                               String              typeName)
-    {
-        List<Relationship>   results = new ArrayList<>();
 
-        if (assetRelationships != null)
-        {
-            for (Relationship   relationship : assetRelationships)
-            {
-                if (relationship != null)
-                {
-                    InstanceType   instanceType = relationship.getType();
-
-                    if (instanceType != null)
-                    {
-                        if (instanceType.getTypeDefName().equals(typeName))
-                        {
-                            results.add(relationship);
-                        }
-                    }
-                }
-            }
-        }
-
-        return results;
-    }
 
 
     /**
