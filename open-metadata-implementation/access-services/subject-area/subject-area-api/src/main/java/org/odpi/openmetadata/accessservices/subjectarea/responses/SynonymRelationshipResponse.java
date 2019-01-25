@@ -31,8 +31,8 @@ public class SynonymRelationshipResponse extends SubjectAreaOMASAPIResponse
     }
     public SynonymRelationshipResponse(Synonym synonym)
     {
+        this();
         this.synonym =synonym;
-        this.setResponseCategory(ResponseCategory.SynonymRelationship);
     }
 
     /**

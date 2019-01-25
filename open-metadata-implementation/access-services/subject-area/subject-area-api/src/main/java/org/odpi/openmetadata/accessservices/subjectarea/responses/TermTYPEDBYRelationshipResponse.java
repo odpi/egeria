@@ -31,8 +31,8 @@ public class TermTYPEDBYRelationshipResponse extends SubjectAreaOMASAPIResponse
     }
     public TermTYPEDBYRelationshipResponse(TermTYPEDBYRelationship termTYPEDBYRelationship)
     {
+        this();
         this.termTYPEDBYRelationship=termTYPEDBYRelationship;
-        this.setResponseCategory(ResponseCategory.TermTYPEDBYRelationship);
     }
 
 
