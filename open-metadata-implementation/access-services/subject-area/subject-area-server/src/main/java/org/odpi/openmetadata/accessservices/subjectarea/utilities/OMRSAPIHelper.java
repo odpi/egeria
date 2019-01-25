@@ -5,8 +5,10 @@ package org.odpi.openmetadata.accessservices.subjectarea.utilities;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.StatusNotSupportedException;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.server.SubjectAreaBeansToAccessOMRS;
 import org.odpi.openmetadata.accessservices.subjectarea.server.handlers.ErrorHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
+import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveAccessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -28,6 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -1281,5 +1285,43 @@ public class OMRSAPIHelper {
                     serviceName);
         }
         return instanceGraph;
+    }
+    public static List<EntityDetail> findEntitiesByType(OMRSAPIHelper oMRSAPIHelper, String serverName, String userId, String type, String searchCriteria, Date asOfTime, Integer offset, Integer pageSize, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder, String sequencingProperty, String methodName) throws MetadataServerUncontactableException, org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException, org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.FunctionNotSupportedException {
+        // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
+        if (offset == null) {
+            offset = new Integer(0);
+        }
+        if (pageSize == null) {
+            pageSize = new Integer(0);
+        }
+        if (sequencingProperty !=null) {
+            try {
+                sequencingProperty = URLDecoder.decode(sequencingProperty,"UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                // TODO error
+            }
+        }
+        if (searchCriteria !=null) {
+            try {
+                searchCriteria = URLDecoder.decode(searchCriteria,"UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                // TODO error
+            }
+        }
+        SequencingOrder omrsSequencingOrder =  SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
+        OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
+        TypeDef typeDef =archiveAccessor.getEntityDefByName(type);
+        String entityTypeGUID = typeDef.getGUID();
+        return oMRSAPIHelper.callFindEntitiesByPropertyValue(
+                userId,
+                entityTypeGUID,
+                searchCriteria,
+                offset.intValue(),
+                null,       // TODO limit by status ?
+                null,  // TODO limit by classification ?
+                asOfTime,
+                sequencingProperty,
+                omrsSequencingOrder,
+                pageSize);
     }
 }

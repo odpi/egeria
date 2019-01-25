@@ -125,7 +125,6 @@ public class RestCaller {
     )
             throws MetadataServerUncontactableException {
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(new MediaType[] { MediaType.APPLICATION_JSON }));
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<?> entity = new HttpEntity<Object>(requestBody, headers);
 
@@ -149,7 +148,6 @@ public class RestCaller {
 
 
         HttpHeaders headers = new HttpHeaders();
-        headers.setAccept(Arrays.asList(new MediaType[] { MediaType.APPLICATION_JSON }));
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<?> entity = new HttpEntity<Object>( headers);
         return issueExchange(className, methodName, httpMethod, url, entity);
