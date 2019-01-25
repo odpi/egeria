@@ -13,6 +13,15 @@ each time you want to issue a request.
 Postman supports the definition of variables like hostname, kafka queue, userId.  These can then be used in specific
 postman commands.  This makes it easier for them to be used by multiple users, or with different configurations
 
+Example environments are provided under [environment/](environment/).
+
 ## Collections
 
 Collections help to group related REST API calls together.
+
+Example collections are provided under [collection/](collection/).
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

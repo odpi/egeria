@@ -78,8 +78,6 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                                      String metadataCollectionId) {
         super(parentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId);
         this.igcRestClient = parentConnector.getIGCRestClient();
-        upsertOMRSBundleZip();
-        this.igcRestClient.registerPOJO(OMRSStub.class);
         this.xmlOutputFactory = XMLOutputFactory.newInstance();
         this.implementedMappings = new HashSet<>();
         this.unimplementedTypeDefs = new HashMap<>();
@@ -5790,25 +5788,6 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         }
 
         return fullAsset;
-
-    }
-
-    /**
-     * Generates a zip file for the OMRS OpenIGC bundle, needed to enable change tracking for the event mapper.
-     */
-    private void upsertOMRSBundleZip() {
-
-        ClassPathResource bundleResource = new ClassPathResource("/bundleOMRS");
-        try {
-            File bundle = this.igcRestClient.createOpenIgcBundleFile(bundleResource.getFile());
-            if (bundle != null) {
-                this.igcRestClient.upsertOpenIgcBundle("OMRS", bundle.getAbsolutePath());
-            } else {
-                log.error("Unable to generate OMRS bundle.");
-            }
-        } catch (IOException e) {
-            log.error("Unable to open bundle resource for OMRS.", e);
-        }
 
     }
 

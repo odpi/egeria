@@ -20,8 +20,7 @@ There should not be any need to restart the environment after enabling the event
 notification.
 
 You will need to configure the OMAG server as follows (order is important). For 
-example payloads and endpoints, see the [Postman](docs/postman) assets included 
-in the `docs` directory.
+example payloads and endpoints, see the [Postman samples](../../../../../../open-metadata-resources/open-metadata-samples/postman-rest-samples/README.md).
 
 1. Configure your event bus for Egeria, by POSTing a payload like the following:
 
