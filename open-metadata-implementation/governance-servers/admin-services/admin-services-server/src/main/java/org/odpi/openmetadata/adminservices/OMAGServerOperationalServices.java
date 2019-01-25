@@ -1,4 +1,4 @@
-/* SPDX-License-Identifier: Apache 2.0 */
+/* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices;
 
@@ -6,6 +6,7 @@ package org.odpi.openmetadata.adminservices;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -15,6 +16,7 @@ import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
+import org.odpi.openmetadata.securitysyncservices.configuration.registration.SecuritySyncOperationalServices;
 
 import java.util.List;
 
@@ -121,12 +123,13 @@ public class OMAGServerOperationalServices
              */
             OMRSOperationalServices  operationalRepositoryServices     = instance.getOperationalRepositoryServices();
             List<AccessServiceAdmin> operationalAccessServiceAdminList = instance.getOperationalAccessServiceAdminList();
-
+            SecuritySyncOperationalServices operationalSecuritySync    = instance.getSecuritySyncOperationalServices();
             /*
              * Shut down any running instances for this server
              */
             deactivateRunningServiceInstances(operationalRepositoryServices,
                                               operationalAccessServiceAdminList,
+                                              operationalSecuritySync,
                                               false);
 
             /*
@@ -242,6 +245,25 @@ public class OMAGServerOperationalServices
             instance.setOperationalAccessServiceAdminList(operationalAccessServiceAdminList);
             instanceMap.setNewInstance(serverName, instance);
 
+            /*Initialize the Security Sync component*/
+            SecuritySyncConfig securitySyncConfig = configuration.getSecuritySyncConfig();
+            if(securitySyncConfig != null)
+            {
+                operationalSecuritySync = new SecuritySyncOperationalServices(configuration.getLocalServerName(),
+                                                                            configuration.getLocalServerType(),
+                                                                            configuration.getOrganizationName(),
+                                                                            configuration.getLocalServerUserId(),
+                                                                            configuration.getLocalServerURL(),
+                                                                            configuration.getMaxPageSize());
+                instance.setSecuritySyncOperationalServices(operationalSecuritySync);
+                operationalSecuritySync.initialize(securitySyncConfig,
+                                                   operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(securitySyncConfig.getSecuritySyncName()),
+                                                   operationalRepositoryServices.getAuditLog(securitySyncConfig.getSecuritySyncId(),
+                                                                                            securitySyncConfig.getSecuritySyncName(),
+                                                                                            securitySyncConfig.getSecuritySyncDescription(),
+                                                                                            securitySyncConfig.getSecuritySyncWiki()));
+            }
+
             /*
              * The enterprise topic passes OMRS Events from the cohort to the listening access services.
              * During the access services start up, they registered listeners with the enterprise topic.
@@ -294,8 +316,8 @@ public class OMAGServerOperationalServices
      */
     private void deactivateRunningServiceInstances(OMRSOperationalServices  operationalRepositoryServices,
                                                    List<AccessServiceAdmin> operationalAccessServiceAdminList,
-                                                   boolean                  permanentDeactivation)
-    {
+                                                   SecuritySyncOperationalServices securitySyncOperationalServices,
+                                                   boolean permanentDeactivation) {
         /*
          * Shutdown the access services
          */
@@ -308,6 +330,14 @@ public class OMAGServerOperationalServices
                     accessServiceAdmin.shutdown();
                 }
             }
+        }
+
+        /*
+         * Shutdown the security sync
+         */
+        if (securitySyncOperationalServices != null)
+        {
+            securitySyncOperationalServices.disconnect(permanentDeactivation);
         }
 
         /*
@@ -343,6 +373,7 @@ public class OMAGServerOperationalServices
 
             deactivateRunningServiceInstances(instance.getOperationalRepositoryServices(),
                                               instance.getOperationalAccessServiceAdminList(),
+                                              instance.getSecuritySyncOperationalServices(),
                                               false);
 
             instanceMap.removeInstance(serverName);
@@ -387,6 +418,7 @@ public class OMAGServerOperationalServices
 
             deactivateRunningServiceInstances(instance.getOperationalRepositoryServices(),
                                               instance.getOperationalAccessServiceAdminList(),
+                                              instance.getSecuritySyncOperationalServices(),
                                               true);
 
             instanceMap.removeInstance(serverName);
