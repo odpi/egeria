@@ -74,7 +74,7 @@ echo "Egeria server name: ${EGERIA_SERVER}"
 echo "Egeria Cohort     : ${EGERIA_COHORT}"
 echo "IGC User          : ${IGC_USER}"
 
-IGC_USERPASS=`echo "${IGC_USER}:${IGC_PASSWORD}" | base64`
+IGC_USERPASS=`echo -n "${IGC_USER}:${IGC_PASSWORD}" | base64`
 
 echo "Checking KAFKA is up"
 
