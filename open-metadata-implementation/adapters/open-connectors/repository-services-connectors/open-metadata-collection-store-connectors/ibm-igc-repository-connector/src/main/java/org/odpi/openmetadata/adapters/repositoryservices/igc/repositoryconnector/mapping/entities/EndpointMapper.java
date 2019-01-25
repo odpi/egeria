@@ -89,7 +89,7 @@ public class EndpointMapper extends ReferenceableMapper {
         instanceProperties = igcomrsRepositoryConnector.getRepositoryHelper().addStringPropertyToInstance(
                 igcomrsRepositoryConnector.getRepositoryName(),
                 instanceProperties,
-                "name",
+                "networkAddress",
                 networkAddress,
                 methodName
         );
