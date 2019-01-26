@@ -56,7 +56,7 @@ image:
 
   igcproxyinit:
     repository: planetf1/igcproxy-init-egeriavdc
-    tag: 0.1.2
+    tag: 0.1.3
     pullPolicy: IfNotPresent
 
   nameOverride: ""

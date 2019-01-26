@@ -34,6 +34,9 @@ spec:
       - image: "{{ .Values.image.igcproxy.repository }}:{{ .Values.image.igcproxy.tag }}"
         ImagePullPolicy: Always
         name: {{ include "myapp.fullname" . }}-igcproxy
+        envFrom:
+        - configMapRef:
+           name: {{ include "myapp.fullname" . }}-configmap
         ports:
         - containerPort: 8080
         resources: {}

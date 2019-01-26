@@ -22,6 +22,9 @@ ENV IGC_USER null
 ENV IGC_PASSWORD null
 ENV EGERIA_SERVER null
 ENV EGERIA_COHORT null
+ENV IGCPROXY_ENDPOINT null
+ENV IGC_USER null
+ENV IGC_PASSWORD null
 
 WORKDIR /root
 COPY dist/configure-igcproxy.sh /root
