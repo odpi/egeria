@@ -11,7 +11,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetNoteLog;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetNoteLogs;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetPropertyBase;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +24,11 @@ import java.util.List;
  */
 public class ConnectedAssetNoteLogs extends AssetNoteLogs
 {
-    private String              serverName;
-    private String              userId;
-    private String              omasServerURL;
-    private String              assetGUID;
-    private ConnectedAsset      connectedAsset;
+    private String                 serverName;
+    private String                 userId;
+    private String                 omasServerURL;
+    private String                 assetGUID;
+    private ConnectedAssetUniverse connectedAsset;
 
 
     /**
@@ -48,7 +47,7 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
                            String              userId,
                            String              omasServerURL,
                            String              assetGUID,
-                           ConnectedAsset      parentAsset,
+                           ConnectedAssetUniverse parentAsset,
                            int                 totalElementCount,
                            int                 maxCacheSize)
     {
@@ -68,7 +67,7 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
      * @param parentAsset descriptor of parent asset
      * @param template type-specific iterator to copy; null to create an empty iterator
      */
-    private ConnectedAssetNoteLogs(ConnectedAsset   parentAsset, ConnectedAssetNoteLogs template)
+    private ConnectedAssetNoteLogs(ConnectedAssetUniverse parentAsset, ConnectedAssetNoteLogs template)
     {
         super(parentAsset, template);
 

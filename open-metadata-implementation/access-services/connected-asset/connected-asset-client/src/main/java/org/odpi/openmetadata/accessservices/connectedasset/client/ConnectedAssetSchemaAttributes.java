@@ -20,12 +20,12 @@ import java.util.List;
  */
 public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
 {
-    private String         serverName;
-    private String         userId;
-    private String         omasServerURL;
-    private String         schemaGUID;
-    private ConnectedAsset connectedAsset;
-    private int            maxCacheSize;
+    private String                 serverName;
+    private String                 userId;
+    private String                 omasServerURL;
+    private String                 schemaGUID;
+    private ConnectedAssetUniverse connectedAsset;
+    private int                    maxCacheSize;
 
 
 
@@ -45,7 +45,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
                                    String              userId,
                                    String              omasServerURL,
                                    String              schemaGUID,
-                                   ConnectedAsset      parentAsset,
+                                   ConnectedAssetUniverse parentAsset,
                                    int                 totalElementCount,
                                    int                 maxCacheSize)
     {
@@ -67,7 +67,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
      * @param parentAsset descriptor of parent asset
      * @param template type-specific iterator to copy; null to create an empty iterator
      */
-    private ConnectedAssetSchemaAttributes(ConnectedAsset parentAsset, ConnectedAssetSchemaAttributes template)
+    private ConnectedAssetSchemaAttributes(ConnectedAssetUniverse parentAsset, ConnectedAssetSchemaAttributes template)
     {
         super(parentAsset, template);
 

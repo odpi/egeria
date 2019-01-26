@@ -24,11 +24,11 @@ import java.util.List;
  */
 public class ConnectedAssetCertifications extends AssetCertifications
 {
-    private String              serverName;
-    private String              userId;
-    private String              omasServerURL;
-    private String              assetGUID;
-    private ConnectedAsset      connectedAsset;
+    private String                 serverName;
+    private String                 userId;
+    private String                 omasServerURL;
+    private String                 assetGUID;
+    private ConnectedAssetUniverse connectedAsset;
 
 
     /**
@@ -47,7 +47,7 @@ public class ConnectedAssetCertifications extends AssetCertifications
                                  String              userId,
                                  String              omasServerURL,
                                  String              assetGUID,
-                                 ConnectedAsset      parentAsset,
+                                 ConnectedAssetUniverse parentAsset,
                                  int                 totalElementCount,
                                  int                 maxCacheSize)
     {
@@ -67,7 +67,7 @@ public class ConnectedAssetCertifications extends AssetCertifications
      * @param parentAsset descriptor of parent asset
      * @param template type-specific iterator to copy; null to create an empty iterator
      */
-    private ConnectedAssetCertifications(ConnectedAsset   parentAsset, ConnectedAssetCertifications template)
+    private ConnectedAssetCertifications(ConnectedAssetUniverse parentAsset, ConnectedAssetCertifications template)
     {
         super(parentAsset, template);
 

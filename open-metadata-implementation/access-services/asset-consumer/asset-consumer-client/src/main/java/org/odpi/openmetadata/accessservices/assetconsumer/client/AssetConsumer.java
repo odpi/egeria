@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.Tag;
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
-import org.odpi.openmetadata.accessservices.connectedasset.client.ConnectedAsset;
+import org.odpi.openmetadata.accessservices.connectedasset.client.ConnectedAssetUniverse;
 import org.odpi.openmetadata.accessservices.connectedasset.client.ConnectedAssetProperties;
 import org.odpi.openmetadata.frameworks.connectors.Connector;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -214,7 +214,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
              * Make use of the ConnectedAsset OMAS Service which provides the metadata services for the
              * Open Connector Framework (OCF).
              */
-            return new ConnectedAsset(serverName, omasServerURL, userId, assetGUID);
+            return new ConnectedAssetUniverse(serverName, omasServerURL, userId, assetGUID);
         }
         catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
         {

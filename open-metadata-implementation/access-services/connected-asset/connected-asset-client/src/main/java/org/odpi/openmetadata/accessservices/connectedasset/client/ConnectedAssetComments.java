@@ -25,12 +25,12 @@ import java.util.List;
  */
 public class ConnectedAssetComments extends AssetComments
 {
-    private String              serverName;
-    private String              userId;
-    private String              omasServerURL;
-    private String              assetGUID;
-    private ConnectedAsset      connectedAsset;
-    private int                 maxCacheSize;
+    private String                 serverName;
+    private String                 userId;
+    private String                 omasServerURL;
+    private String                 assetGUID;
+    private ConnectedAssetUniverse connectedAsset;
+    private int                    maxCacheSize;
 
 
 
@@ -50,7 +50,7 @@ public class ConnectedAssetComments extends AssetComments
                            String              userId,
                            String              omasServerURL,
                            String              assetGUID,
-                           ConnectedAsset      parentAsset,
+                           ConnectedAssetUniverse parentAsset,
                            int                 totalElementCount,
                            int                 maxCacheSize)
     {
@@ -72,7 +72,7 @@ public class ConnectedAssetComments extends AssetComments
      * @param parentAsset descriptor of parent asset
      * @param template type-specific iterator to copy; null to create an empty iterator
      */
-    private ConnectedAssetComments(ConnectedAsset   parentAsset, ConnectedAssetComments template)
+    private ConnectedAssetComments(ConnectedAssetUniverse parentAsset, ConnectedAssetComments template)
     {
         super(parentAsset, template);
 

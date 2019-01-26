@@ -8,12 +8,12 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaType;
 
 public abstract class ConnectedAssetSchemaType extends AssetSchemaType
 {
-    protected String         serverName;
-    protected String         userId;
-    protected String         omasServerURL;
-    protected String         assetGUID;
-    protected ConnectedAsset connectedAsset;
-    protected int            maxCacheSize;
+    protected String                 serverName;
+    protected String                 userId;
+    protected String                 omasServerURL;
+    protected String                 assetGUID;
+    protected ConnectedAssetUniverse connectedAsset;
+    protected int                    maxCacheSize;
 
 
     /**
@@ -32,7 +32,7 @@ public abstract class ConnectedAssetSchemaType extends AssetSchemaType
                              String                userId,
                              String                omasServerURL,
                              String                assetGUID,
-                             ConnectedAsset        parentAsset,
+                             ConnectedAssetUniverse parentAsset,
                              int                   maxCacheSize)
     {
         super(parentAsset);
