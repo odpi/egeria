@@ -10,7 +10,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: igcproxy-service
 
-  name: igcproxy
+  name: {{ include "myapp.fullname" . }}-igcproxy-service
 
 spec:
   type: "{{ .Values.service.type }}"
