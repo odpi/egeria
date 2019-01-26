@@ -10,12 +10,12 @@ import org.odpi.openmetadata.frameworks.connectors.properties.AssetLineage;
  */
 public class ConnectedAssetLineage extends AssetLineage
 {
-    private String              serverName;
-    private String              userId;
-    private String              omasServerURL;
-    private String              assetGUID;
-    private ConnectedAsset      connectedAsset;
-    private int                 maxCacheSize;
+    private String                 serverName;
+    private String                 userId;
+    private String                 omasServerURL;
+    private String                 assetGUID;
+    private ConnectedAssetUniverse connectedAsset;
+    private int                    maxCacheSize;
 
 
     /**
@@ -34,7 +34,7 @@ public class ConnectedAssetLineage extends AssetLineage
                           String              userId,
                           String              omasServerURL,
                           String              assetGUID,
-                          ConnectedAsset      parentAsset,
+                          ConnectedAssetUniverse parentAsset,
                           int                 maxCacheSize)
     {
         super(parentAsset);

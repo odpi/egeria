@@ -24,11 +24,11 @@ import java.util.List;
  */
 public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
 {
-    private String              serverName;
-    private String              userId;
-    private String              omasServerURL;
-    private String              assetGUID;
-    private ConnectedAsset      connectedAsset;
+    private String                 serverName;
+    private String                 userId;
+    private String                 omasServerURL;
+    private String                 assetGUID;
+    private ConnectedAssetUniverse connectedAsset;
 
 
     /**
@@ -47,7 +47,7 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
                                       String              userId,
                                       String              omasServerURL,
                                       String              assetGUID,
-                                      ConnectedAsset      parentAsset,
+                                      ConnectedAssetUniverse parentAsset,
                                       int                 totalElementCount,
                                       int                 maxCacheSize)
     {
@@ -67,7 +67,7 @@ public class ConnectedAssetExternalIdentifiers extends AssetExternalIdentifiers
      * @param parentAsset descriptor of parent asset
      * @param template type-specific iterator to copy; null to create an empty iterator
      */
-    private ConnectedAssetExternalIdentifiers(ConnectedAsset   parentAsset, ConnectedAssetExternalIdentifiers template)
+    private ConnectedAssetExternalIdentifiers(ConnectedAssetUniverse parentAsset, ConnectedAssetExternalIdentifiers template)
     {
         super(parentAsset, template);
 

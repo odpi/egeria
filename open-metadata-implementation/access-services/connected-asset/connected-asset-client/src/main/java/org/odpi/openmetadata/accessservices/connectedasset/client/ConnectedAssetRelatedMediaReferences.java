@@ -24,11 +24,11 @@ import java.util.List;
  */
 public class ConnectedAssetRelatedMediaReferences extends AssetRelatedMediaReferences
 {
-    private String              serverName;
-    private String              userId;
-    private String              omasServerURL;
-    private String              assetGUID;
-    private ConnectedAsset      connectedAsset;
+    private String                 serverName;
+    private String                 userId;
+    private String                 omasServerURL;
+    private String                 assetGUID;
+    private ConnectedAssetUniverse connectedAsset;
 
 
     /**
@@ -47,7 +47,7 @@ public class ConnectedAssetRelatedMediaReferences extends AssetRelatedMediaRefer
                                          String              userId,
                                          String              omasServerURL,
                                          String              assetGUID,
-                                         ConnectedAsset      parentAsset,
+                                         ConnectedAssetUniverse parentAsset,
                                          int                 totalElementCount,
                                          int                 maxCacheSize)
     {
@@ -67,7 +67,7 @@ public class ConnectedAssetRelatedMediaReferences extends AssetRelatedMediaRefer
      * @param parentAsset descriptor of parent asset
      * @param template type-specific iterator to copy; null to create an empty iterator
      */
-    private ConnectedAssetRelatedMediaReferences(ConnectedAsset   parentAsset, ConnectedAssetRelatedMediaReferences template)
+    private ConnectedAssetRelatedMediaReferences(ConnectedAssetUniverse parentAsset, ConnectedAssetRelatedMediaReferences template)
     {
         super(parentAsset, template);
 

@@ -21,7 +21,7 @@ import java.util.Map;
  * supported by all Open Connector Framework (OCF)
  * connectors.   It provides access to the metadata about the Asset that the connector is linked to.
  */
-public class ConnectedAsset extends AssetUniverse
+public class ConnectedAssetUniverse extends AssetUniverse
 {
     /*
      * The name and URL of the server where OMAS is active
@@ -46,10 +46,10 @@ public class ConnectedAsset extends AssetUniverse
      * @throws PropertyServerException There is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ConnectedAsset(String   serverName,
-                          String   omasServerURL,
-                          String   userId,
-                          String   assetGUID) throws UnrecognizedAssetGUIDException,
+    public ConnectedAssetUniverse(String   serverName,
+                                  String   omasServerURL,
+                                  String   userId,
+                                  String   assetGUID) throws UnrecognizedAssetGUIDException,
                                                      UnrecognizedConnectionGUIDException,
                                                      InvalidParameterException,
                                                      PropertyServerException,
@@ -74,11 +74,11 @@ public class ConnectedAsset extends AssetUniverse
      * @throws PropertyServerException There is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public ConnectedAsset(String   serverName,
-                          String   omasServerURL,
-                          String   userId,
-                          String   assetGUID,
-                          String   connectionGUID) throws UnrecognizedAssetGUIDException,
+    public ConnectedAssetUniverse(String   serverName,
+                                  String   omasServerURL,
+                                  String   userId,
+                                  String   assetGUID,
+                                  String   connectionGUID) throws UnrecognizedAssetGUIDException,
                                                           UnrecognizedConnectionGUIDException,
                                                           InvalidParameterException,
                                                           PropertyServerException,

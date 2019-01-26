@@ -24,11 +24,11 @@ import java.util.List;
  */
 public class ConnectedAssetExternalReferences extends AssetExternalReferences
 {
-    private String              serverName;
-    private String              userId;
-    private String              omasServerURL;
-    private String              assetGUID;
-    private ConnectedAsset      connectedAsset;
+    private String                 serverName;
+    private String                 userId;
+    private String                 omasServerURL;
+    private String                 assetGUID;
+    private ConnectedAssetUniverse connectedAsset;
 
 
     /**
@@ -47,7 +47,7 @@ public class ConnectedAssetExternalReferences extends AssetExternalReferences
                                      String              userId,
                                      String              omasServerURL,
                                      String              assetGUID,
-                                     ConnectedAsset      parentAsset,
+                                     ConnectedAssetUniverse parentAsset,
                                      int                 totalElementCount,
                                      int                 maxCacheSize)
     {
@@ -67,7 +67,7 @@ public class ConnectedAssetExternalReferences extends AssetExternalReferences
      * @param parentAsset descriptor of parent asset
      * @param template type-specific iterator to copy; null to create an empty iterator
      */
-    private ConnectedAssetExternalReferences(ConnectedAsset   parentAsset, ConnectedAssetExternalReferences template)
+    private ConnectedAssetExternalReferences(ConnectedAssetUniverse parentAsset, ConnectedAssetExternalReferences template)
     {
         super(parentAsset, template);
 

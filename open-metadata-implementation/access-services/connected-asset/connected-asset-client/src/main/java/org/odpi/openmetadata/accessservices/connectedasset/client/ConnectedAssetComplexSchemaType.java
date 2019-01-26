@@ -22,7 +22,7 @@ public class ConnectedAssetComplexSchemaType extends AssetComplexSchemaType
     ConnectedAssetComplexSchemaType(String                serverName,
                                     String                userId,
                                     String                omasServerURL,
-                                    ConnectedAsset        parentAsset,
+                                    ConnectedAssetUniverse parentAsset,
                                     int                   maxCacheSize,
                                     ComplexSchemaType     schemaBean)
     {

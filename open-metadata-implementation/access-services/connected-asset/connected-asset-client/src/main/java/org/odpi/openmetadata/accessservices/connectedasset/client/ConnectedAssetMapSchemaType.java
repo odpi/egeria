@@ -15,7 +15,7 @@ public class ConnectedAssetMapSchemaType extends AssetMapSchemaType
      * @param connectedAsset descriptor of parent asset.
      * @param mapSchemaTypeBean bean describing the map.
      */
-    ConnectedAssetMapSchemaType(ConnectedAsset        connectedAsset,
+    ConnectedAssetMapSchemaType(ConnectedAssetUniverse connectedAsset,
                                 String                userId,
                                 MapSchemaType         mapSchemaTypeBean)
     {

@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.connectedasset.client;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,7 +98,7 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
 
         try
         {
-            assetProperties = new ConnectedAsset(serverName, omasServerURL, userId, assetGUID);
+            assetProperties = new ConnectedAssetUniverse(serverName, omasServerURL, userId, assetGUID);
         }
         catch (UserNotAuthorizedException  error)
         {

@@ -15,7 +15,7 @@ public class ConnectedAssetBoundedSchemaType extends AssetBoundedSchemaType
      * @param parentAsset descriptor of parent asset.
      * @param schemaBean details of the schema object.
      */
-    ConnectedAssetBoundedSchemaType(ConnectedAsset        parentAsset,
+    ConnectedAssetBoundedSchemaType(ConnectedAssetUniverse parentAsset,
                                     String                userId,
                                     BoundedSchemaType     schemaBean)
     {

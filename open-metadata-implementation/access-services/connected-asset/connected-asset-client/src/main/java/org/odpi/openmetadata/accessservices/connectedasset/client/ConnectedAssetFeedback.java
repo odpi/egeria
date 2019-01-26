@@ -11,12 +11,12 @@ import org.odpi.openmetadata.frameworks.connectors.properties.AssetFeedback;
  */
 public class ConnectedAssetFeedback extends AssetFeedback
 {
-    private String              serverName;
-    private String              userId;
-    private String              omasServerURL;
-    private String              assetGUID;
-    private ConnectedAsset      connectedAsset;
-    private int                 maxCacheSize;
+    private String                 serverName;
+    private String                 userId;
+    private String                 omasServerURL;
+    private String                 assetGUID;
+    private ConnectedAssetUniverse connectedAsset;
+    private int                    maxCacheSize;
 
 
     /**
@@ -39,7 +39,7 @@ public class ConnectedAssetFeedback extends AssetFeedback
                            String              userId,
                            String              omasServerURL,
                            String              assetGUID,
-                           ConnectedAsset      parentAsset,
+                           ConnectedAssetUniverse parentAsset,
                            int                 commentCount,
                            int                 likeCount,
                            int                 ratingCount,
