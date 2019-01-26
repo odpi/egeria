@@ -34,8 +34,8 @@ delay=30
 
 while [ $loop -gt 0 ]
 do
-  #kafkacat -b $KAFKA_ENDPOINT -t $KAFKA_TOPIC -o beginning -C -c2 -f'\nKey (%K bytes): %k\t\nValue (%S bytes): %s\nTimestamp: %T\tPartition: %p\tOffset: %o\n--\n'
-  /root/kafka_2.12-2.1.0/bin/kafka-console-consumer.sh  --bootstrap-server $KAFKA_ENDPOINT --topic $KAFKA_TOPIC --from-beginning
+  kafkacat -b $KAFKA_ENDPOINT -t $KAFKA_TOPIC -o beginning -C -c2 -f'\nKey (%K bytes): %k\t\nValue (%S bytes): %s\nTimestamp: %T\tPartition: %p\tOffset: %o\n--\n'
+  #/root/kafka_2.12-2.1.0/bin/kafka-console-consumer.sh  --bootstrap-server $KAFKA_ENDPOINT --topic $KAFKA_TOPIC --from-beginning
     rc=$?
     if [ $rc -eq 4 ]
     then
