@@ -29,7 +29,7 @@ The implementation is not complete. The following has been implemented :
 * Java and REST API for the Term to Term relationships HASA, RelatedTerm, Synonym, Antonym, Translations, used in context,
   preferred terms, valid values, replacement terms, typed by, is a, is a type of.
 * getTermRelationships
-* findTerm  
+* findTerm. findCategory and findGlossary  
 
 ## Example JAVA calls: 
 See the [Subject Area samples](../../../open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples/README.md) and [Subject Area FVT](../../../open-metadata-test/open-metadata-fvt/access-services-fvt/README.md) projects for examples around how to use the Java API.    
@@ -85,8 +85,8 @@ area API Term and Category create and update APIs expect a glossary to be suppli
 
 There are a number of types of APIs associated with the Subject Area OMAS.  
 * Create, update, replace, get, delete (hard and soft) and restore for Glossary, Category, Term and relationships.
-* get relationships associated with a Term - implmented
-* Find APIs allow content to be found - findTerm implemented
+* get relationships associated with a Term - implemented
+* Find APIs allow content to be found - findTerm, findCategory and findGlossary implemented
 * Collaboration APIs allow comments and TODO and the like to be associate with glossary content
 * A report API, allows glossary content to be analysed, the API response highlights areas that the subject Area Expert might want to amend. - not implemented yet
 * Node orientated APIs

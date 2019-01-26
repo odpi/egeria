@@ -31,8 +31,8 @@ public class LibraryTermReferenceResponse extends SubjectAreaOMASAPIResponse
     }
     public LibraryTermReferenceResponse(LibraryTermReference libraryTermReference)
     {
+        this();
         this.libraryTermReference =libraryTermReference;
-        this.setResponseCategory(ResponseCategory.LibraryTermReferenceRelationshipRelationship);
     }
 
     /**

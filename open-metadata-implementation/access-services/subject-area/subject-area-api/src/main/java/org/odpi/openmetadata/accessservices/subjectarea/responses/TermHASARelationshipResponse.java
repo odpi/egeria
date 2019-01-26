@@ -32,8 +32,8 @@ public class TermHASARelationshipResponse extends SubjectAreaOMASAPIResponse
     }
     public TermHASARelationshipResponse(TermHASARelationship termHASARelationship)
     {
+        this();
         this.termHASARelationship=termHASARelationship;
-        this.setResponseCategory(ResponseCategory.TermHASARelationship);
     }
 
 

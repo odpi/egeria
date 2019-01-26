@@ -31,8 +31,8 @@ public class ProjectResponse extends SubjectAreaOMASAPIResponse
     }
     public ProjectResponse(Project project)
     {
+        this();
         this.project=project;
-        this.setResponseCategory(ResponseCategory.Project);
     }
 
 
