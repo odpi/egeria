@@ -9,13 +9,14 @@ public enum ResponseCategory {
     Unknown,
     // valid rest
     Void,
-    PossibleClassifications,
-    PossibleRelationships,
     Term,
     Terms,
     Category,
+    Categories,
     SubjectAreaDefinition,
+    SubjectAreaDefinitions,
     Glossary,
+    Glossaries,
     Project,
     Comment,
 

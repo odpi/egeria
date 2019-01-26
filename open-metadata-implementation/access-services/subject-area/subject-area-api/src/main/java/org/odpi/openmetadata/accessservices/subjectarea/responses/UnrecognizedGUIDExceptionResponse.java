@@ -39,11 +39,11 @@ public class UnrecognizedGUIDExceptionResponse extends SubjectAreaOMASAPIRespons
     }
     public UnrecognizedGUIDExceptionResponse(SubjectAreaCheckedExceptionBase e)
     {
+        this();
         this.exceptionClassName = e.getReportingClassName();
         this.exceptionErrorMessage = e.getErrorMessage();
         this.exceptionSystemAction = e.getReportedSystemAction();
         this.exceptionUserAction = e.getReportedUserAction();
-        this.setResponseCategory(ResponseCategory.UnrecognizedGUIDException);
         this.guid = ((UnrecognizedGUIDException)e).getGuid();
     }
 
