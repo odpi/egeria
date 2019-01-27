@@ -306,18 +306,6 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                                     restClient);
         }
 
-        if (assetResponse.getAnnotationCount() > 0)
-        {
-            super.analysis = new ConnectedAssetAnnotations(remoteServerName,
-                                                           userId,
-                                                           omasServerURL,
-                                                           assetGUID,
-                                                           this,
-                                                           assetResponse.getAnnotationCount(),
-                                                           MAX_CACHE_SIZE,
-                                                           restClient);
-        }
-
         super.feedback = new ConnectedAssetFeedback(remoteServerName,
                                                     userId,
                                                     omasServerURL,
