@@ -67,7 +67,6 @@ public class MockRelatedAssetProperties extends RelatedAssetProperties
         AssetComments      comments     = new MockAssetComments(null, 15, 50);
         List<AssetMeaning> meanings     = new ArrayList<>();
         AssetSchemaType    schema       = new AssetPrimitiveSchemaType((PrimitiveSchemaType)null);
-        AssetAnnotations   analysis     = new MockAssetAnnotations(null, 15, 50);
         AssetFeedback feedback               = new AssetFeedback(null,
                                                                  informalTags,
                                                                  likes,
@@ -87,7 +86,6 @@ public class MockRelatedAssetProperties extends RelatedAssetProperties
                                                      certifications,
                                                      meanings,
                                                      schema,
-                                                     analysis,
                                                      feedback,
                                                      knownLocations,
                                                      lineage,

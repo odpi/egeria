@@ -34,7 +34,6 @@ public class TestAssetUniverse
     private AssetCertifications         certifications         = null;
     private List<AssetMeaning>          meanings               = null;
     private AssetSchemaType             schema                 = null;
-    private AssetAnnotations            analysis               = null;
     private AssetFeedback               feedback               = null;
     private AssetLocations              knownLocations         = null;
     private AssetLineage                lineage                = null;
@@ -81,7 +80,6 @@ public class TestAssetUniverse
                                  certifications,
                                  meanings,
                                  schema,
-                                 analysis,
                                  feedback,
                                  knownLocations,
                                  lineage,
@@ -120,7 +118,6 @@ public class TestAssetUniverse
                                  certifications,
                                  meanings,
                                  schema,
-                                 analysis,
                                  feedback,
                                  knownLocations,
                                  lineage,
@@ -159,7 +156,6 @@ public class TestAssetUniverse
                                  certifications,
                                  meanings,
                                  schema,
-                                 new MockAssetAnnotations(null, 34, 56),
                                  feedback,
                                  knownLocations,
                                  lineage,
@@ -174,7 +170,6 @@ public class TestAssetUniverse
     {
         List<AssetMeaning> meanings       = null;
         AssetSchemaType    schema         = null;
-        AssetAnnotations   analysis       = null;
         AssetFeedback      feedback       = null;
         AssetLocations     knownLocations = null;
         AssetLineage       lineage        = null;
@@ -190,7 +185,6 @@ public class TestAssetUniverse
                                                      certifications,
                                                      meanings,
                                                      schema,
-                                                     analysis,
                                                      feedback,
                                                      knownLocations,
                                                      lineage,
@@ -198,7 +192,6 @@ public class TestAssetUniverse
 
         assertTrue(testObject.getMeanings() == null);
         assertTrue(testObject.getSchema() == null);
-        assertTrue(testObject.getAnalysis() == null);
         assertTrue(testObject.getFeedback() == null);
         assertTrue(testObject.getKnownLocations() == null);
         assertTrue(testObject.getLineage() == null);
@@ -217,7 +210,6 @@ public class TestAssetUniverse
         AssetComments      comments     = new MockAssetComments(null, 15, 50);
         List<AssetMeaning> meanings     = new ArrayList<>();
         AssetSchemaType    schema       = new AssetPrimitiveSchemaType((PrimitiveSchemaType) null);
-        AssetAnnotations   analysis     = new MockAssetAnnotations(null, 15, 50);
         AssetFeedback      feedback             = new AssetFeedback(null,
                                                                  informalTags,
                                                                  likes,
@@ -237,7 +229,6 @@ public class TestAssetUniverse
                                                      certifications,
                                                      meanings,
                                                      schema,
-                                                     analysis,
                                                      feedback,
                                                      knownLocations,
                                                      lineage,
@@ -245,7 +236,6 @@ public class TestAssetUniverse
 
         assertTrue(testObject.getMeanings() == null);
         assertTrue(testObject.getSchema() != null);
-        assertTrue(testObject.getAnalysis() != null);
         assertTrue(testObject.getFeedback() != null);
         assertTrue(testObject.getKnownLocations() != null);
         assertTrue(testObject.getLineage() != null);
@@ -275,7 +265,6 @@ public class TestAssetUniverse
         AssetComments      comments     = new MockAssetComments(null, 15, 50);
         List<AssetMeaning> meanings     = new ArrayList<>();
         AssetSchemaType    schema       = new AssetPrimitiveSchemaType((PrimitiveSchemaType) null);
-        AssetAnnotations   analysis     = new MockAssetAnnotations(null, 15, 50);
         AssetFeedback      feedback       = new AssetFeedback(null, informalTags, likes, ratings, comments);
         AssetLocations     knownLocations = new MockAssetLocations(null, 15, 50);
         AssetLineage       lineage        = new AssetLineage();
@@ -291,7 +280,6 @@ public class TestAssetUniverse
                                                        certifications,
                                                        meanings,
                                                        schema,
-                                                       analysis,
                                                        feedback,
                                                        knownLocations,
                                                        lineage,
