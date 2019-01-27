@@ -363,7 +363,7 @@ public class IGCRestClient {
         HttpHeaders headers = getHttpHeaders(forceLogin);
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        ResponseEntity<String> response;
+        ResponseEntity<String> response = null;
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", new FileSystemResource(filePath));
 
@@ -377,6 +377,7 @@ public class IGCRestClient {
                     String.class
             );
         } catch (HttpClientErrorException e) {
+            log.warn("Request failed -- session may have expired, retrying...", e);
             // If the response was forbidden (fails with exception), the session may have expired -- create a new one
             response = openNewSessionWithUpload(
                     endpoint,
@@ -384,6 +385,8 @@ public class IGCRestClient {
                     filePath,
                     forceLogin
             );
+        } catch (RestClientException e) {
+            log.error("Request failed -- check IGC environment connectivity and authentication details.", e);
         }
 
         return response;
@@ -434,12 +437,7 @@ public class IGCRestClient {
                     method,
                     toSend,
                     String.class);
-            if (response == null) {
-                log.error("Unable to complete request -- check IGC environment connectivity and authentication details.");
-                throw new NullPointerException("Unable to complete request -- check IGC environment connectivity and authentication details.");
-            } else {
-                setCookiesFromResponse(response);
-            }
+            setCookiesFromResponse(response);
         } catch (HttpClientErrorException e) {
             log.warn("Request failed -- session may have expired, retrying...", e);
             // If the response was forbidden (fails with exception), the session may have expired -- create a new one
