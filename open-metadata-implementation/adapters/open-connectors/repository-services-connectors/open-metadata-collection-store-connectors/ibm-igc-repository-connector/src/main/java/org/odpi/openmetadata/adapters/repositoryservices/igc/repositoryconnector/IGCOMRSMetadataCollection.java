@@ -2320,7 +2320,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         }
         else
         {
-            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,

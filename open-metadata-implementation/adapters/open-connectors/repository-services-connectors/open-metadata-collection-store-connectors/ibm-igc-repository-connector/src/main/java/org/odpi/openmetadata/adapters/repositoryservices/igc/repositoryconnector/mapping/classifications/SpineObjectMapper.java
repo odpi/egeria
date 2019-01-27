@@ -135,7 +135,7 @@ public class SpineObjectMapper extends ClassificationMapping {
             classificationProperties = initialProperties.getInstanceProperties();
         }
 
-        if (classificationProperties != null || !classificationProperties.isEmpty()) {
+        if (classificationProperties != null && !classificationProperties.isEmpty()) {
 
             log.error("SpineObject classification has no properties, yet properties were included: {}", initialProperties);
             IGCOMRSErrorCode errorCode = IGCOMRSErrorCode.CLASSIFICATION_EXCEEDS_REPOSITORY;
