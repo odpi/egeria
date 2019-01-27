@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.connectedasset.server;
 
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.connectedasset.handlers.AssetHandler;
+import org.odpi.openmetadata.accessservices.connectedasset.handlers.CommentsHandler;
 import org.odpi.openmetadata.accessservices.connectedasset.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -181,31 +182,6 @@ public class ConnectedAssetRESTServices
 
 
     /**
-     * Returns the list of annotations for the asset.
-     *
-     * @param serverName   String   name of server instance to call.
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     * @param elementStart int      starting position for fist returned element.
-     * @param maxElements  int      maximum number of elements to return on the call.
-     *
-     * @return a list of annotations  or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public AnnotationsResponse getAnnotations(String  serverName,
-                                              String  userId,
-                                              String  assetGUID,
-                                              int     elementStart,
-                                              int     maxElements)
-    {
-        return null;
-    }
-
-
-    /**
      * Returns the list of certifications for the asset.
      *
      * @param serverName   String   name of server instance to call.
@@ -216,7 +192,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of certifications  or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -226,6 +201,8 @@ public class ConnectedAssetRESTServices
                                                     int     elementStart,
                                                     int     maxElements)
     {
+        final String        methodName = "getCertifications";
+
         return null;
     }
 
@@ -241,7 +218,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of comments or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -251,6 +227,8 @@ public class ConnectedAssetRESTServices
                                         int     elementStart,
                                         int     maxElements)
     {
+        final String        methodName = "getComments";
+
         return null;
     }
 
@@ -266,7 +244,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of comments or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -276,6 +253,8 @@ public class ConnectedAssetRESTServices
                                               int     elementStart,
                                               int     maxElements)
     {
+        final String        methodName = "getCommentReplies";
+
         return null;
     }
 
@@ -291,7 +270,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of connections or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -301,6 +279,8 @@ public class ConnectedAssetRESTServices
                                               int     elementStart,
                                               int     maxElements)
     {
+        final String        methodName = "getConnections";
+
         return null;
     }
 
@@ -316,7 +296,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of external identifiers or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -326,6 +305,8 @@ public class ConnectedAssetRESTServices
                                                               int     elementStart,
                                                               int     maxElements)
     {
+        final String        methodName = "getExternalIdentifiers";
+
         return null;
     }
 
@@ -341,7 +322,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of external references or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -351,6 +331,8 @@ public class ConnectedAssetRESTServices
                                                             int     elementStart,
                                                             int     maxElements)
     {
+        final String        methodName = "getExternalReferences";
+
         return null;
     }
 
@@ -366,7 +348,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of informal tags or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -376,6 +357,8 @@ public class ConnectedAssetRESTServices
                                                 int     elementStart,
                                                 int     maxElements)
     {
+        final String        methodName = "getInformalTags";
+
         return null;
     }
 
@@ -391,7 +374,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of licenses or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -401,6 +383,8 @@ public class ConnectedAssetRESTServices
                                         int     elementStart,
                                         int     maxElements)
     {
+        final String        methodName = "getLicenses";
+
         return null;
     }
 
@@ -416,7 +400,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of likes or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -426,6 +409,8 @@ public class ConnectedAssetRESTServices
                                   int     elementStart,
                                   int     maxElements)
     {
+        final String        methodName = "getLikes";
+
         return null;
     }
 
@@ -441,7 +426,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of known locations or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -451,6 +435,8 @@ public class ConnectedAssetRESTServices
                                                int     elementStart,
                                                int     maxElements)
     {
+        final String        methodName = "getKnownLocations";
+
         return null;
     }
 
@@ -466,7 +452,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of note logs or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -476,6 +461,8 @@ public class ConnectedAssetRESTServices
                                         int     elementStart,
                                         int     maxElements)
     {
+        final String        methodName = "getNoteLogs";
+
         return null;
     }
 
@@ -491,7 +478,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of notes or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -501,6 +487,8 @@ public class ConnectedAssetRESTServices
                                   int     elementStart,
                                   int     maxElements)
     {
+        final String        methodName = "getNotes";
+
         return null;
     }
 
@@ -516,7 +504,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of ratings or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -526,6 +513,8 @@ public class ConnectedAssetRESTServices
                                       int     elementStart,
                                       int     maxElements)
     {
+        final String        methodName = "getRatings";
+
         return null;
     }
 
@@ -541,7 +530,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of assets or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -551,6 +539,8 @@ public class ConnectedAssetRESTServices
                                                   int     elementStart,
                                                   int     maxElements)
     {
+        final String        methodName = "getRelatedAssets";
+
         return null;
     }
 
@@ -566,7 +556,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of related media references or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -576,6 +565,8 @@ public class ConnectedAssetRESTServices
                                                                     int     elementStart,
                                                                     int     maxElements)
     {
+        final String        methodName = "getRelatedMediaReferences";
+
         return null;
     }
 
@@ -591,7 +582,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a schema attributes response or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -601,6 +591,8 @@ public class ConnectedAssetRESTServices
                                                        int     elementStart,
                                                        int     maxElements)
     {
+        final String        methodName = "getSchemaAttributes";
+
         return null;
     }
 
