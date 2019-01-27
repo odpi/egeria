@@ -3,9 +3,9 @@
 package org.odpi.openmetadata.accessservices.connectedasset.mappers;
 
 /**
- * ReviewMapper provides property name mapping for Ratings.
+ * RatingMapper provides property name mapping for Ratings.
  */
-public class ReviewMapper
+public class RatingMapper
 {
     public static final String TYPE_NAME                                = "Rating";               /* from Rating entity */
     public static final String RELATIONSHIP_TYPE_NAME                   = "Dummy";                /* from Dummy relationship */
