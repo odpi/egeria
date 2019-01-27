@@ -403,7 +403,7 @@ public class IGCRestClient {
      */
     public boolean uploadFile(String endpoint, HttpMethod method, String filePath) {
         ResponseEntity<String> response = uploadFile(endpoint, method, filePath, false);
-        return (response.getStatusCode() == HttpStatus.OK);
+        return (response == null ? false : response.getStatusCode() == HttpStatus.OK);
     }
 
     /**
