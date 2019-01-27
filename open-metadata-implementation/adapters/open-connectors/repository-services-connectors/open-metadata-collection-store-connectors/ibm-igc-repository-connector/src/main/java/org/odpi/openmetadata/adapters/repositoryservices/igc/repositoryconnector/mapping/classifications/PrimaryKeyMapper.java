@@ -7,18 +7,18 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSErrorCode;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Singleton defining the mapping to the OMRS "PrimaryKey" classification.
@@ -146,21 +146,61 @@ public class PrimaryKeyMapper extends ClassificationMapping {
         IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet(igcSearchCondition);
 
         // We can only search by name, so we will ignore all other properties
-        InstancePropertyValue value = matchClassificationProperties.getPropertyValue("name");
-        if (value instanceof PrimitivePropertyValue) {
-            PrimitivePropertyValue name = (PrimitivePropertyValue) value;
-            String keyName = (String) name.getPrimitiveValue();
-            IGCSearchCondition propertyCondition = new IGCSearchCondition(
-                    "defined_primary_key.name",
-                    "=",
-                    keyName
-            );
-            igcSearchConditionSet.addCondition(propertyCondition);
+        if (matchClassificationProperties != null) {
+            Map<String, InstancePropertyValue> properties = matchClassificationProperties.getInstanceProperties();
+            if (properties.containsKey("name")) {
+                PrimitivePropertyValue name = (PrimitivePropertyValue) properties.get("name");
+                String keyName = (String) name.getPrimitiveValue();
+                IGCSearchCondition propertyCondition = new IGCSearchCondition(
+                        "defined_primary_key.name",
+                        "=",
+                        keyName
+                );
+                igcSearchConditionSet.addCondition(propertyCondition);
+                igcSearchConditionSet.setMatchAnyCondition(true);
+            }
         }
 
-        igcSearchConditionSet.setMatchAnyCondition(true);
-
         return igcSearchConditionSet;
+
+    }
+
+    /**
+     * Implement this method to define how to add an OMRS classification to an existing IGC asset. (Since IGC has no
+     * actual concept of classification, this is left as a method to-be-implemented depending on how the implementation
+     * desires the classification to be represented within IGC.)
+     *
+     * @param igcomrsRepositoryConnector connectivity to the IGC repository via OMRS connector
+     * @param igcEntity the IGC object to which to add the OMRS classification
+     * @param entityGUID the GUID of the OMRS entity (ie. including any prefix)
+     * @param initialProperties the set of classification-specific properties to add to the classification
+     * @param userId the user requesting the classification to be added (currently unused)
+     * @return EntityDetail the updated entity with the OMRS classification added
+     * @throws RepositoryErrorException
+     */
+    @Override
+    public EntityDetail addClassificationToIGCAsset(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                    Reference igcEntity,
+                                                    String entityGUID,
+                                                    InstanceProperties initialProperties,
+                                                    String userId) throws RepositoryErrorException {
+
+        final String methodName = "addClassificationToIGCAsset";
+
+        log.error("PrimaryKey classification cannot be changed through IGC REST API.");
+        IGCOMRSErrorCode errorCode = IGCOMRSErrorCode.CLASSIFICATION_NOT_EDITABLE;
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                getOmrsClassificationType(),
+                entityGUID
+        );
+        throw new RepositoryErrorException(
+                errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction()
+        );
 
     }
 

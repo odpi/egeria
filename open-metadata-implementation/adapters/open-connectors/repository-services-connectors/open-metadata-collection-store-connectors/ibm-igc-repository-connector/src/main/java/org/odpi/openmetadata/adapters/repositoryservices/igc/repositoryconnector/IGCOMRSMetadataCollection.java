@@ -242,19 +242,24 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Perform operation
          */
-        // TODO: implement
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        List<TypeDef> typeDefs = typeDefStore.getAllTypeDefs();
+        List<TypeDef> results = new ArrayList<>();
+        if (matchCriteria != null) {
+            Map<String, Object> properties = matchCriteria.getTypeDefProperties();
+            for (TypeDef candidate : typeDefs) {
+                List<TypeDefAttribute> candidateProperties = candidate.getPropertiesDefinition();
+                for (TypeDefAttribute candidateAttribute : candidateProperties) {
+                    String candidateName = candidateAttribute.getAttributeName();
+                    if (properties.containsKey(candidateName)) {
+                        results.add(candidate);
+                    }
+                }
+            }
+            results = typeDefs;
+        }
 
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                this.getClass().getName(),
-                repositoryName);
+        return results;
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
     }
 
     /**
@@ -292,19 +297,29 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Perform operation
          */
-        // TODO: implement
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        List<TypeDef> typeDefs = typeDefStore.getAllTypeDefs();
+        List<TypeDef> results;
+        if (standard == null && organization == null && identifier == null) {
+            results = typeDefs;
+        } else {
+            results = new ArrayList<>();
+            for (TypeDef typeDef : typeDefs) {
+                List<ExternalStandardMapping> externalStandardMappings = typeDef.getExternalStandardMappings();
+                for (ExternalStandardMapping externalStandardMapping : externalStandardMappings) {
+                    String candidateStandard = externalStandardMapping.getStandardName();
+                    String candidateOrg = externalStandardMapping.getStandardOrganization();
+                    String candidateId = externalStandardMapping.getStandardTypeName();
+                    if ( (standard == null || standard.equals(candidateStandard))
+                            && (organization == null || organization.equals(candidateOrg))
+                            && (identifier == null || identifier.equals(candidateId))) {
+                        results.add(typeDef);
+                    }
+                }
+            }
+        }
 
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                this.getClass().getName(),
-                repositoryName);
+        return results;
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
     }
 
     /**
@@ -941,28 +956,11 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             UserNotAuthorizedException
     {
         final String  methodName           = "updateTypeDef";
-        final String  typeDefParameterName = "typeDefPatch";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefPatch(repositoryName, typeDefPatch, methodName);
-
-        /*
-         * Perform operation
-         */
-        // TODO: implement
         OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
                 this.getClass().getName(),
                 repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
                 this.getClass().getName(),
                 methodName,
                 errorMessage,
@@ -999,34 +997,11 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             UserNotAuthorizedException
     {
         final String    methodName        = "deleteTypeDef";
-        final String    guidParameterName = "obsoleteTypeDefGUID";
-        final String    nameParameterName = "obsoleteTypeDefName";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                guidParameterName,
-                nameParameterName,
-                obsoleteTypeDefGUID,
-                obsoleteTypeDefName,
-                methodName);
-
-        /*
-         * Perform operation
-         */
-        // TODO: implement
         OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
                 this.getClass().getName(),
                 repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
                 this.getClass().getName(),
                 methodName,
                 errorMessage,
@@ -1063,34 +1038,11 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             UserNotAuthorizedException
     {
         final String    methodName        = "deleteAttributeTypeDef";
-        final String    guidParameterName = "obsoleteTypeDefGUID";
-        final String    nameParameterName = "obsoleteTypeDefName";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateAttributeTypeDefIds(repositoryName,
-                guidParameterName,
-                nameParameterName,
-                obsoleteTypeDefGUID,
-                obsoleteTypeDefName,
-                methodName);
-
-        /*
-         * Perform operation
-         */
-        // TODO: implement
         OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
                 this.getClass().getName(),
                 repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
                 this.getClass().getName(),
                 methodName,
                 errorMessage,
@@ -1130,42 +1082,11 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             UserNotAuthorizedException
     {
         final String    methodName                = "reIdentifyTypeDef";
-        final String    originalGUIDParameterName = "originalTypeDefGUID";
-        final String    originalNameParameterName = "originalTypeDefName";
-        final String    newGUIDParameterName      = "newTypeDefGUID";
-        final String    newNameParameterName      = "newTypeDefName";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                originalGUIDParameterName,
-                originalNameParameterName,
-                originalTypeDefGUID,
-                originalTypeDefName,
-                methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                newGUIDParameterName,
-                newNameParameterName,
-                newTypeDefGUID,
-                newTypeDefName,
-                methodName);
-
-        /*
-         * Perform operation
-         */
-        // TODO: implement
         OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
                 this.getClass().getName(),
                 repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
                 this.getClass().getName(),
                 methodName,
                 errorMessage,
@@ -1205,41 +1126,10 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             UserNotAuthorizedException
     {
         final String    methodName                = "reIdentifyAttributeTypeDef";
-        final String    originalGUIDParameterName = "originalAttributeTypeDefGUID";
-        final String    originalNameParameterName = "originalAttributeTypeDefName";
-        final String    newGUIDParameterName      = "newAttributeTypeDefGUID";
-        final String    newNameParameterName      = "newAttributeTypeDefName";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                originalGUIDParameterName,
-                originalNameParameterName,
-                originalAttributeTypeDefGUID,
-                originalAttributeTypeDefName,
-                methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                newGUIDParameterName,
-                newNameParameterName,
-                newAttributeTypeDefGUID,
-                newAttributeTypeDefName,
-                methodName);
-
-        /*
-         * Perform operation
-         */
-        // TODO: implement
         OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
                 this.getClass().getName(),
                 repositoryName);
-
         throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
                 this.getClass().getName(),
                 methodName,
@@ -1697,61 +1587,77 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             // for each one
             for (EntityMapping mapping : mappingsToSearch) {
 
-                IGCSearch igcSearch = new IGCSearch();
-                igcSearch.addType(mapping.getIgcAssetType());
+                String igcAssetType = mapping.getIgcAssetType();
+                IGCSearchConditionSet classificationLimiters = getSearchCriteriaForClassifications(
+                        igcAssetType,
+                        limitResultsByClassification
+                );
 
-                /* We need to first retrieve the mapping so we know how to translate
-                 * the provided OMRS property names to IGC property names */
-                PropertyMappingSet propertyMappingSet = getEntityPropertiesFromMapping(mapping, userId);
+                if (limitResultsByClassification != null && !limitResultsByClassification.isEmpty() && classificationLimiters == null) {
+                    log.info("Classification limiters were specified, but none apply to thie asset type {}, so excluding this asset type from search.", igcAssetType);
+                } else {
 
-                /* Provided there is a mapping, build up a list of IGC-specific properties
-                 * and search criteria, based on the values of the InstanceProperties provided */
-                ArrayList<String> properties = new ArrayList<>();
-                IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+                    IGCSearch igcSearch = new IGCSearch();
+                    igcSearch.addType(igcAssetType);
 
-                Iterator iPropertyNames = matchProperties.getPropertyNames();
-                while (propertyMappingSet != null && iPropertyNames.hasNext()) {
-                    String omrsPropertyName = (String) iPropertyNames.next();
-                    InstancePropertyValue value = matchProperties.getPropertyValue(omrsPropertyName);
-                    addSearchConditionFromValue(
-                            igcSearchConditionSet,
-                            omrsPropertyName,
-                            properties,
-                            propertyMappingSet,
-                            value
-                    );
-                }
+                    /* We need to first retrieve the mapping so we know how to translate
+                     * the provided OMRS property names to IGC property names */
+                    PropertyMappingSet propertyMappingSet = getEntityPropertiesFromMapping(mapping, userId);
 
-                IGCSearchSorting igcSearchSorting = null;
-                if (sequencingProperty == null && sequencingOrder != null) {
-                    igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
-                }
+                    /* Provided there is a mapping, build up a list of IGC-specific properties
+                     * and search criteria, based on the values of the InstanceProperties provided */
+                    ArrayList<String> properties = new ArrayList<>();
+                    IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
 
-                if (matchCriteria != null) {
-                    switch (matchCriteria) {
-                        case ALL:
-                            igcSearchConditionSet.setMatchAnyCondition(false);
-                            break;
-                        case ANY:
-                            igcSearchConditionSet.setMatchAnyCondition(true);
-                            break;
-                        case NONE:
-                            igcSearchConditionSet.setMatchAnyCondition(false);
-                            igcSearchConditionSet.setNegateAll(true);
-                            break;
+                    Iterator iPropertyNames = matchProperties.getPropertyNames();
+                    while (propertyMappingSet != null && iPropertyNames.hasNext()) {
+                        String omrsPropertyName = (String) iPropertyNames.next();
+                        InstancePropertyValue value = matchProperties.getPropertyValue(omrsPropertyName);
+                        addSearchConditionFromValue(
+                                igcSearchConditionSet,
+                                omrsPropertyName,
+                                properties,
+                                propertyMappingSet,
+                                value
+                        );
                     }
+
+                    if (classificationLimiters != null) {
+                        igcSearchConditionSet.addNestedConditionSet(classificationLimiters);
+                    }
+
+                    IGCSearchSorting igcSearchSorting = null;
+                    if (sequencingProperty == null && sequencingOrder != null) {
+                        igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
+                    }
+
+                    if (matchCriteria != null) {
+                        switch (matchCriteria) {
+                            case ALL:
+                                igcSearchConditionSet.setMatchAnyCondition(false);
+                                break;
+                            case ANY:
+                                igcSearchConditionSet.setMatchAnyCondition(true);
+                                break;
+                            case NONE:
+                                igcSearchConditionSet.setMatchAnyCondition(false);
+                                igcSearchConditionSet.setNegateAll(true);
+                                break;
+                        }
+                    }
+
+                    igcSearch.addProperties(properties);
+                    igcSearch.addConditions(igcSearchConditionSet);
+
+                    setPagingForSearch(igcSearch, fromEntityElement, pageSize);
+
+                    if (igcSearchSorting != null) {
+                        igcSearch.addSortingCriteria(igcSearchSorting);
+                    }
+
+                    processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+
                 }
-
-                igcSearch.addProperties(properties);
-                igcSearch.addConditions(igcSearchConditionSet);
-
-                setPagingForSearch(igcSearch, fromEntityElement, pageSize);
-
-                if (igcSearchSorting != null) {
-                    igcSearch.addSortingCriteria(igcSearchSorting);
-                }
-
-                processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
 
             }
 
@@ -1977,7 +1883,6 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      *                                beyond the first page of results. Zero means start from the first element.
      * @param limitResultsByStatus Not implemented for IGC, only ACTIVE entities will be returned.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
-     *                                     (currently not implemented for IGC)
      * @param asOfTime Must be null (history not implemented for IGC).
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
@@ -2072,45 +1977,62 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
                 if (pojo != null) {
 
-                    List<String> properties = Reference.getStringPropertiesFromPOJO(pojo);
-                    // POST'd search to IGC doesn't work on v11.7.0.2 using long_description
-                    // Using "searchText" requires using "searchProperties" (no "where" conditions) -- but does not
-                    // work with 'main_object', must be used with a specific asset type
-                    // Therefore for v11.7.0.2 we will simply drop long_description from the fields we search
-                    if (igcRestClient.getIgcVersion().isEqualTo(IGCVersionEnum.V11702)) {
-                        ArrayList<String> propertiesWithoutLongDescription = new ArrayList<>();
-                        for (String property : properties) {
-                            if (!property.equals("long_description")) {
-                                propertiesWithoutLongDescription.add(property);
+                    IGCSearchConditionSet classificationLimiters = getSearchCriteriaForClassifications(
+                            igcAssetType,
+                            limitResultsByClassification
+                    );
+
+                    if (limitResultsByClassification != null && !limitResultsByClassification.isEmpty() && classificationLimiters == null) {
+                        log.info("Classification limiters were specified, but none apply to thie asset type {}, so excluding this asset type from search.", igcAssetType);
+                    } else {
+
+                        List<String> properties = Reference.getStringPropertiesFromPOJO(pojo);
+                        // POST'd search to IGC doesn't work on v11.7.0.2 using long_description
+                        // Using "searchText" requires using "searchProperties" (no "where" conditions) -- but does not
+                        // work with 'main_object', must be used with a specific asset type
+                        // Therefore for v11.7.0.2 we will simply drop long_description from the fields we search
+                        if (igcRestClient.getIgcVersion().isEqualTo(IGCVersionEnum.V11702)) {
+                            ArrayList<String> propertiesWithoutLongDescription = new ArrayList<>();
+                            for (String property : properties) {
+                                if (!property.equals("long_description")) {
+                                    propertiesWithoutLongDescription.add(property);
+                                }
                             }
+                            properties = propertiesWithoutLongDescription;
                         }
-                        properties = propertiesWithoutLongDescription;
+
+                        IGCSearchSorting igcSearchSorting = null;
+                        if (sequencingProperty == null && sequencingOrder != null) {
+                            igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
+                        }
+
+                        IGCSearchConditionSet outerConditions = new IGCSearchConditionSet();
+                        IGCSearchConditionSet innerConditions = new IGCSearchConditionSet();
+                        innerConditions.setMatchAnyCondition(true);
+                        for (String property : properties) {
+                            innerConditions.addCondition(new IGCSearchCondition(
+                                    property,
+                                    "like %{0}%",
+                                    searchCriteria
+                            ));
+                        }
+                        outerConditions.addNestedConditionSet(innerConditions);
+                        if (classificationLimiters != null) {
+                            outerConditions.addNestedConditionSet(classificationLimiters);
+                            outerConditions.setMatchAnyCondition(false);
+                        }
+
+                        igcSearch.addConditions(outerConditions);
+
+                        setPagingForSearch(igcSearch, fromEntityElement, pageSize);
+
+                        if (igcSearchSorting != null) {
+                            igcSearch.addSortingCriteria(igcSearchSorting);
+                        }
+
+                        processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+
                     }
-
-                    IGCSearchSorting igcSearchSorting = null;
-                    if (sequencingProperty == null && sequencingOrder != null) {
-                        igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
-                    }
-
-                    IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
-                    igcSearchConditionSet.setMatchAnyCondition(true);
-                    for (String property : properties) {
-                        igcSearchConditionSet.addCondition(new IGCSearchCondition(
-                                property,
-                                "like %{0}%",
-                                searchCriteria
-                        ));
-                    }
-
-                    igcSearch.addConditions(igcSearchConditionSet);
-
-                    setPagingForSearch(igcSearch, fromEntityElement, pageSize);
-
-                    if (igcSearchSorting != null) {
-                        igcSearch.addSortingCriteria(igcSearchSorting);
-                    }
-
-                    processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
 
                 } else {
                     log.warn("Unable to find POJO to handle IGC asset type '{}' -- skipping search against this asset type.", igcAssetType);
@@ -2389,7 +2311,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
         if (asOfTime == null)
         {
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
@@ -3114,35 +3036,10 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             UserNotAuthorizedException
     {
         final String  methodName               = "deleteEntity";
-        final String  typeDefGUIDParameterName = "typeDefGUID";
-        final String  typeDefNameParameterName = "typeDefName";
-        final String  entityGUIDParameterName  = "obsoleteEntityGUID";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                typeDefGUIDParameterName,
-                typeDefNameParameterName,
-                typeDefGUID,
-                typeDefName,
-                methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, obsoleteEntityGUID, methodName);
-
-        /*
-         * Locate Entity
-         */
-        // TODO: implement
         OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
                 this.getClass().getName(),
                 repositoryName);
-
         throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
                 this.getClass().getName(),
                 methodName,
@@ -3239,27 +3136,10 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             UserNotAuthorizedException
     {
         final String  methodName              = "restoreEntity";
-        final String  entityGUIDParameterName = "deletedEntityGUID";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, deletedEntityGUID, methodName);
-
-        /*
-         * Locate entity
-         */
-        // TODO: implement
         OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
                 this.getClass().getName(),
                 repositoryName);
-
         throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
                 this.getClass().getName(),
                 methodName,
@@ -3315,19 +3195,96 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Locate entity
          */
-        // TODO: implement
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        EntityDetail entityDetail = null;
 
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                this.getClass().getName(),
-                repositoryName);
+        try {
+            TypeDef classificationTypeDef = getTypeDefByName(userId, classificationName);
+            if (classificationTypeDef != null) {
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
+                String rid = getRidFromGeneratedId(entityGUID);
+                Reference igcEntity = this.igcRestClient.getAssetRefById(rid);
+
+                if (igcEntity == null) {
+                    OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                            entityGUID,
+                            methodName,
+                            repositoryName
+                    );
+                    throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction());
+                }
+
+                ClassificationMapping classificationMapping = classificationMappingStore.getMappingByOmrsTypeName(classificationName);
+
+                if (classificationMapping != null) {
+
+                    entityDetail = classificationMapping.addClassificationToIGCAsset(
+                            igcomrsRepositoryConnector,
+                            igcEntity,
+                            entityGUID,
+                            classificationProperties,
+                            userId
+                    );
+
+                } else {
+                    OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NAME_NOT_KNOWN;
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                            classificationName,
+                            methodName,
+                            repositoryName
+                    );
+                    throw new ClassificationErrorException(
+                            errorCode.getHTTPErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction()
+                    );
+                }
+
+            } else {
+                OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                        classificationName,
+                        classificationParameterName,
+                        methodName,
+                        repositoryName
+                );
+                throw new ClassificationErrorException(
+                        errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction()
+                );
+            }
+        } catch (TypeDefNotKnownException e) {
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    classificationName,
+                    classificationParameterName,
+                    methodName,
+                    repositoryName
+            );
+            throw new ClassificationErrorException(
+                    errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction()
+            );
+        }
+
+        return entityDetail;
+
     }
 
 
@@ -3551,6 +3508,22 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
          */
         Relationship relationship = null;
 
+        if (initialStatus != null && initialStatus != InstanceStatus.ACTIVE) {
+            OMRSErrorCode errorCode = OMRSErrorCode.BAD_INSTANCE_STATUS;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    initialStatus.getName(),
+                    initialStatusParameterName,
+                    methodName,
+                    repositoryName,
+                    relationshipTypeGUID);
+            throw new StatusNotSupportedException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
         try {
             TypeDef relationshipTypeDef = getTypeDefByGUID(userId, relationshipTypeGUID);
             if (relationshipTypeDef != null) {
@@ -3596,35 +3569,14 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
                 if (relationshipMapping != null) {
 
-                    // If there is a relationship-level asset, these cannot be created, so we need to simply fail
-                    if (relationshipMapping.hasRelationshipLevelAsset()) {
-                        String relationshipLevelAssetType = relationshipMapping.getRelationshipLevelIgcAsset();
-                        Class pojo = igcRestClient.getPOJOForType(relationshipLevelAssetType);
-                        if (!Reference.isCreatableFromPOJO(pojo)) {
-                            OMRSErrorCode errorCode = OMRSErrorCode.REPOSITORY_LOGIC_ERROR;
-                            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
-                                    repositoryName,
-                                    methodName,
-                                    "Cannot create relationship for IGC asset type: " + relationshipLevelAssetType
-                            );
-                            throw new RepositoryErrorException(
-                                    errorCode.getHTTPErrorCode(),
-                                    this.getClass().getName(),
-                                    methodName,
-                                    errorMessage,
-                                    errorCode.getSystemAction(),
-                                    errorCode.getUserAction()
-                            );
-                        } else {
-                            // TODO: for creatable relationship-level assets, create a new one to represent this relationship
-                            log.info("Creating a relationship-level asset for IGC type {} is not yet implemented.", relationshipLevelAssetType);
-                        }
-                    } else {
-                        // TODO: implement relationship update based on provided parameters
-                        //  Start from the optimal end in order to define the relationship in the most simple way
-                        //relationshipMapping.getOptimalStart()
-                        log.info("Creating a new relationship between {} and {} is not yet implemented.", entityOne.getType(), entityTwo.getType());
-                    }
+                    relationship = RelationshipMapping.addIgcRelationship(
+                            igcomrsRepositoryConnector,
+                            relationshipMapping,
+                            initialProperties,
+                            entityOne,
+                            entityTwo,
+                            userId
+                    );
 
                 } else {
                     OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NAME_NOT_KNOWN;
@@ -5037,6 +4989,60 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             results.getNextPage(this.igcRestClient);
             processResults(results, entityDetails, pageSize, userId);
         }
+
+    }
+
+    /**
+     * Retrieve the IGC search conditions to limit results by the provided classification. Will return null if the
+     * provided classification cannot be applied to the provided IGC asset type.
+     *
+     * @param igcAssetType name of the IGC asset type for which to limit the search results
+     * @param classificationName name of the classification by which to limit results
+     * @return IGCSearchConditionSet
+     */
+    private IGCSearchConditionSet getSearchCriteriaForClassification(String igcAssetType,
+                                                                     String classificationName) {
+
+        IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+
+        ClassificationMapping classificationMapping = classificationMappingStore.getMappingByOmrsTypeName(classificationName);
+        if (classificationMapping.matchesAssetType(igcAssetType)) {
+            igcSearchConditionSet = classificationMapping.getIGCSearchCriteria(null);
+        } else {
+            log.warn("Classification {} cannot be applied to IGC asset type {} - excluding from search limitations.", classificationName, igcAssetType);
+        }
+
+        return (igcSearchConditionSet.size() > 0 ? igcSearchConditionSet : null);
+
+    }
+
+    /**
+     * Retrieve the IGC search conditions to limit results by the provided list of classifications.
+     *
+     * @param igcAssetType name of the IGC asset type for which to limit the search results
+     * @param classificationNames list of classification names by which to limit results
+     * @return IGCSearchConditionSet
+     */
+    private IGCSearchConditionSet getSearchCriteriaForClassifications(String igcAssetType,
+                                                                      List<String> classificationNames) {
+
+        final String methodName = "getSearchCriteriaForClassifications";
+        IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+
+        if (classificationNames != null && !classificationNames.isEmpty()) {
+            for (String classificationName : classificationNames) {
+                IGCSearchConditionSet classificationLimiter = getSearchCriteriaForClassification(
+                        igcAssetType,
+                        classificationName
+                );
+                if (classificationLimiter != null) {
+                    igcSearchConditionSet.addNestedConditionSet(classificationLimiter);
+                    igcSearchConditionSet.setMatchAnyCondition(false);
+                }
+            }
+        }
+
+        return (igcSearchConditionSet.size() > 0 ? igcSearchConditionSet : null);
 
     }
 
