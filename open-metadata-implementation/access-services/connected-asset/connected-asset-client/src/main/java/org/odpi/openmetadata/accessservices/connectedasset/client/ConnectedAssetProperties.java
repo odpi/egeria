@@ -33,27 +33,30 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperti
  */
 public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProperties
 {
-    private String               serverName;
-    private String               userId = null;
-    private String               omasServerURL = null;
+    private String               remoteServerName;
+    private String               userId              = null;
+    private String               localServerUserId   = null;
+    private String               localServerPassword = null;
+    private String               omasServerURL       = null;
     private String               connectorInstanceId = null;
-    private ConnectionProperties connection = null;
-    private String               assetGUID = null;
+    private ConnectionProperties connection          = null;
+    private String               assetGUID           = null;
+
 
     private static final Logger log = LoggerFactory.getLogger(ConnectedAssetProperties.class);
 
 
     /**
-     * Typical constructor.
+     * Constructor with no security used on the HTTP request.
      *
-     * @param serverName  name of the server.
+     * @param remoteServerName  name of the server.
      * @param userId  identifier of calling user
      * @param omasServerURL  url of server
      * @param connectorInstanceId  unique identifier of connector.
      * @param connection  connection information for connector.
      * @param assetGUID  String   unique id for connected asset.
      */
-    public ConnectedAssetProperties(String               serverName,
+    public ConnectedAssetProperties(String               remoteServerName,
                                     String               userId,
                                     String               omasServerURL,
                                     String               connectorInstanceId,
@@ -62,12 +65,46 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
     {
         super();
 
-        this.serverName = serverName;
-        this.userId = userId;
-        this.omasServerURL = omasServerURL;
+        this.remoteServerName    = remoteServerName;
+        this.userId              = userId;
+        this.omasServerURL       = omasServerURL;
         this.connectorInstanceId = connectorInstanceId;
-        this.connection = connection;
-        this.assetGUID = assetGUID;
+        this.connection          = connection;
+        this.assetGUID           = assetGUID;
+    }
+
+
+    /**
+     * Constructor with userId and password embedded in the HTTP request.
+     *
+     * @param remoteServerName  name of the server to call.
+     * @param localServerUserId userId to use on the rest call.
+     * @param localServerPassword password to use on the rest call.
+     * @param userId  identifier of calling user
+     * @param omasServerURL  url of server
+     * @param connectorInstanceId  unique identifier of connector.
+     * @param connection  connection information for connector.
+     * @param assetGUID  String   unique id for connected asset.
+     */
+    public ConnectedAssetProperties(String               remoteServerName,
+                                    String               localServerUserId,
+                                    String               localServerPassword,
+                                    String               userId,
+                                    String               omasServerURL,
+                                    String               connectorInstanceId,
+                                    ConnectionProperties connection,
+                                    String               assetGUID)
+    {
+        super();
+
+        this.remoteServerName    = remoteServerName;
+        this.localServerUserId   = localServerUserId;
+        this.localServerPassword = localServerPassword;
+        this.userId              = userId;
+        this.omasServerURL       = omasServerURL;
+        this.connectorInstanceId = connectorInstanceId;
+        this.connection          = connection;
+        this.assetGUID           = assetGUID;
     }
 
 
@@ -82,12 +119,14 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
 
         if (template != null)
         {
-            this.serverName = template.serverName;
-            this.userId = template.userId;
-            this.connection = template.connection;
+            this.remoteServerName    = template.remoteServerName;
+            this.localServerUserId   = template.localServerUserId;
+            this.localServerPassword = template.localServerPassword;
+            this.userId              = template.userId;
+            this.connection          = template.connection;
             this.connectorInstanceId = template.connectorInstanceId;
-            this.omasServerURL = template.omasServerURL;
-            this.assetGUID = template.assetGUID;
+            this.omasServerURL       = template.omasServerURL;
+            this.assetGUID           = template.assetGUID;
         }
     }
 
@@ -109,7 +148,14 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
 
         try
         {
-            assetProperties = new ConnectedAssetUniverse(serverName, omasServerURL, userId, assetGUID, connection.getGUID());
+            if ((localServerUserId != null) && (localServerPassword != null))
+            {
+                assetProperties = new ConnectedAssetUniverse(remoteServerName, localServerUserId, localServerPassword, omasServerURL, userId, assetGUID, connection.getGUID());
+            }
+            else
+            {
+                assetProperties = new ConnectedAssetUniverse(remoteServerName, omasServerURL, userId, assetGUID, connection.getGUID());
+            }
         }
         catch (UserNotAuthorizedException  error)
         {
@@ -146,7 +192,9 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
     public String toString()
     {
         return "ConnectedAssetProperties{" +
-                "userId='" + userId + '\'' +
+                "remoteServerName='" + remoteServerName + '\'' +
+                ", userId='" + userId + '\'' +
+                ", localServerUserId='" + localServerUserId + '\'' +
                 ", omasServerURL='" + omasServerURL + '\'' +
                 ", connectorInstanceId='" + connectorInstanceId + '\'' +
                 ", connection=" + connection +

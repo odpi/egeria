@@ -29,6 +29,8 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
     private String                 omasServerURL;
     private String                 assetGUID;
     private ConnectedAssetUniverse connectedAsset;
+    private RESTClient             restClient;
+
 
 
     /**
@@ -42,14 +44,16 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
      * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
+     * @param restClient client to call REST API
      */
-    ConnectedAssetNoteLogs(String              serverName,
-                           String              userId,
-                           String              omasServerURL,
-                           String              assetGUID,
+    ConnectedAssetNoteLogs(String                 serverName,
+                           String                 userId,
+                           String                 omasServerURL,
+                           String                 assetGUID,
                            ConnectedAssetUniverse parentAsset,
-                           int                 totalElementCount,
-                           int                 maxCacheSize)
+                           int                    totalElementCount,
+                           int                    maxCacheSize,
+                           RESTClient             restClient)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
@@ -58,6 +62,7 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
         this.omasServerURL   = omasServerURL;
         this.assetGUID       = assetGUID;
         this.connectedAsset  = parentAsset;
+        this.restClient      = restClient;
     }
 
 
@@ -73,11 +78,12 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
 
         if (template != null)
         {
-            this.serverName = template.serverName;
-            this.userId = template.userId;
-            this.omasServerURL = template.omasServerURL;
-            this.assetGUID = template.assetGUID;
+            this.serverName     = template.serverName;
+            this.userId         = template.userId;
+            this.omasServerURL  = template.omasServerURL;
+            this.assetGUID      = template.assetGUID;
             this.connectedAsset = parentAsset;
+            this.restClient     = template.restClient;
         }
     }
 
@@ -122,23 +128,25 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
         final String   methodName = "AssetNoteLogs.getCachedList";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/assets/{2}/note-logs?elementStart={3}&maxElements={4}";
 
-        connectedAsset.validateOMASServerURL(methodName);
+        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+        RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
+
+        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
 
         try
         {
-            NoteLogsResponse restResult = (NoteLogsResponse)connectedAsset.callGetRESTCall(methodName,
-                                                                                           NoteLogsResponse.class,
-                                                                                           omasServerURL + urlTemplate,
-                                                                                           serverName,
-                                                                                           userId,
-                                                                                           assetGUID,
-                                                                                           cacheStartPointer,
-                                                                                           maximumSize);
+            NoteLogsResponse restResult = restClient.callNoteLogGetRESTCall(methodName,
+                                                                            omasServerURL + urlTemplate,
+                                                                            serverName,
+                                                                            userId,
+                                                                            assetGUID,
+                                                                            cacheStartPointer,
+                                                                            maximumSize);
 
-            connectedAsset.detectAndThrowInvalidParameterException(methodName, restResult);
-            connectedAsset.detectAndThrowUnrecognizedAssetGUIDException(methodName, restResult);
-            connectedAsset.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            connectedAsset.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+            restExceptionHandler.detectAndThrowUnrecognizedAssetGUIDException(methodName, restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
             List<NoteLogResponse> noteLogResponses = restResult.getList();
             if ((noteLogResponses == null) || (noteLogResponses.isEmpty()))
@@ -163,7 +171,8 @@ public class ConnectedAssetNoteLogs extends AssetNoteLogs
                                                                                     noteLogResponse.getNoteLog().getGUID(),
                                                                                     connectedAsset,
                                                                                     noteLogResponse.getNoteCount(),
-                                                                                    maximumSize)));
+                                                                                    maximumSize,
+                                                                                    restClient)));
                         }
                     }
                 }

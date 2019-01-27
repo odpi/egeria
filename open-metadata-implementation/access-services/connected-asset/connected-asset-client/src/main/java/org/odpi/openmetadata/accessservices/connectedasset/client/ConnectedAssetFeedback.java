@@ -11,14 +11,6 @@ import org.odpi.openmetadata.frameworks.connectors.properties.AssetFeedback;
  */
 public class ConnectedAssetFeedback extends AssetFeedback
 {
-    private String                 serverName;
-    private String                 userId;
-    private String                 omasServerURL;
-    private String                 assetGUID;
-    private ConnectedAssetUniverse connectedAsset;
-    private int                    maxCacheSize;
-
-
     /**
      * Typical constructor creates an AssetFeedback object primed with the iterators for the asset's comments,
      * tags, likes and ratings.
@@ -34,27 +26,21 @@ public class ConnectedAssetFeedback extends AssetFeedback
      * @param tagCount the total number of comments to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
+     * @param restClient client to call REST API
      */
-    ConnectedAssetFeedback(String              serverName,
-                           String              userId,
-                           String              omasServerURL,
-                           String              assetGUID,
+    ConnectedAssetFeedback(String                 serverName,
+                           String                 userId,
+                           String                 omasServerURL,
+                           String                 assetGUID,
                            ConnectedAssetUniverse parentAsset,
-                           int                 commentCount,
-                           int                 likeCount,
-                           int                 ratingCount,
-                           int                 tagCount,
-                           int                 maxCacheSize)
+                           int                    commentCount,
+                           int                    likeCount,
+                           int                    ratingCount,
+                           int                    tagCount,
+                           int                    maxCacheSize,
+                           RESTClient             restClient)
     {
         super(parentAsset);
-
-        this.serverName      = serverName;
-        this.userId          = userId;
-        this.omasServerURL   = omasServerURL;
-        this.assetGUID       = assetGUID;
-        this.connectedAsset  = parentAsset;
-        this.maxCacheSize    = maxCacheSize;
-
 
         if (commentCount > 0)
         {
@@ -64,7 +50,8 @@ public class ConnectedAssetFeedback extends AssetFeedback
                                                         assetGUID,
                                                         parentAsset,
                                                         commentCount,
-                                                        maxCacheSize);
+                                                        maxCacheSize,
+                                                        restClient);
         }
 
 
@@ -76,7 +63,8 @@ public class ConnectedAssetFeedback extends AssetFeedback
                                                   assetGUID,
                                                   parentAsset,
                                                   likeCount,
-                                                  maxCacheSize);
+                                                  maxCacheSize,
+                                                  restClient);
         }
 
         if (ratingCount > 0)
@@ -87,7 +75,8 @@ public class ConnectedAssetFeedback extends AssetFeedback
                                                       assetGUID,
                                                       parentAsset,
                                                       ratingCount,
-                                                      maxCacheSize);
+                                                      maxCacheSize,
+                                                      restClient);
         }
 
         if (tagCount > 0)
@@ -98,7 +87,8 @@ public class ConnectedAssetFeedback extends AssetFeedback
                                                                 assetGUID,
                                                                 parentAsset,
                                                                 tagCount,
-                                                                maxCacheSize);
+                                                                maxCacheSize,
+                                                                restClient);
         }
     }
 }

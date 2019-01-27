@@ -26,7 +26,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
     private String                 schemaGUID;
     private ConnectedAssetUniverse connectedAsset;
     private int                    maxCacheSize;
-
+    private RESTClient             restClient;
 
 
     /**
@@ -40,6 +40,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
      * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
+     * @param restClient client to call REST API
      */
     ConnectedAssetSchemaAttributes(String              serverName,
                                    String              userId,
@@ -47,7 +48,8 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
                                    String              schemaGUID,
                                    ConnectedAssetUniverse parentAsset,
                                    int                 totalElementCount,
-                                   int                 maxCacheSize)
+                                   int                 maxCacheSize,
+                                   RESTClient          restClient)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
@@ -57,6 +59,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
         this.schemaGUID      = schemaGUID;
         this.connectedAsset  = parentAsset;
         this.maxCacheSize    = maxCacheSize;
+        this.restClient      = restClient;
 
     }
 
@@ -79,6 +82,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
             this.schemaGUID      = template.schemaGUID;
             this.connectedAsset  = parentAsset;
             this.maxCacheSize    = template.maxCacheSize;
+            this.restClient      = template.restClient;
         }
     }
 
@@ -123,22 +127,24 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
         final String   methodName = "SchemaAttributes.getCachedList";
         final String   urlTemplate = "/open-metadata/access-services/connected-asset/users/{0}/schemas/{1}/attributes?elementStart={2}&maxElements={3}";
 
-        connectedAsset.validateOMASServerURL(methodName);
+        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+        RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
+
+        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
 
         try
         {
-            SchemaAttributesResponse restResult = (SchemaAttributesResponse)connectedAsset.callGetRESTCall(methodName,
-                                                                                                           SchemaAttributesResponse.class,
-                                                                                                           omasServerURL + urlTemplate,
-                                                                                                           userId,
-                                                                                                           schemaGUID,
-                                                                                                           cacheStartPointer,
-                                                                                                           maximumSize);
+            SchemaAttributesResponse restResult = restClient.callSchemaAttributeGetRESTCall(methodName,
+                                                                                            omasServerURL + urlTemplate,
+                                                                                            userId,
+                                                                                            schemaGUID,
+                                                                                            cacheStartPointer,
+                                                                                            maximumSize);
 
-            connectedAsset.detectAndThrowInvalidParameterException(methodName, restResult);
-            connectedAsset.detectAndThrowUnrecognizedGUIDException(methodName, restResult);
-            connectedAsset.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            connectedAsset.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+            restExceptionHandler.detectAndThrowUnrecognizedGUIDException(methodName, restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
             List<SchemaAttribute> schemaAttributes = restResult.getList();
             if ((schemaAttributes == null) || (schemaAttributes.isEmpty()))
@@ -158,7 +164,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
 
                         if (schemaTypeBean != null)
                         {
-                            AssetSchemaType assetSchemaType = connectedAsset.getAssetSchemaType(userId, schemaTypeBean);
+                            AssetSchemaType assetSchemaType = connectedAsset.getAssetSchemaType(serverName, omasServerURL, userId, schemaTypeBean, restClient);
 
                             resultList.add(new AssetSchemaAttribute(connectedAsset,
                                                                     schemaAttribute,
