@@ -227,7 +227,7 @@ public class AssetHandler
 
         do
         {
-            retrievedRelationships = repositoryHandler.retrieveRelationships(userId, AssetMapper.TYPE_NAME, assetGUID, elementCount, MAX_PAGE_SIZE);
+            retrievedRelationships = repositoryHandler.retrieveAllRelationships(userId, AssetMapper.TYPE_NAME, assetGUID, elementCount, MAX_PAGE_SIZE);
 
             if (retrievedRelationships != null)
             {
@@ -237,7 +237,6 @@ public class AssetHandler
                 }
                 else
                 {
-                    annotationCount            = annotationCount            + countRelationshipsOfACertainType(retrievedRelationships, AnnotationMapper.RELATIONSHIP_TYPE_NAME);
                     certificationCount         = certificationCount         + countRelationshipsOfACertainType(retrievedRelationships, CertificationMapper.RELATIONSHIP_TYPE_NAME);
                     commentCount               = commentCount               + countRelationshipsOfACertainType(retrievedRelationships, CommentMapper.RELATIONSHIP_TYPE_NAME);
                     connectionCount            = connectionCount            + countRelationshipsOfACertainType(retrievedRelationships, ConnectionMapper.RELATIONSHIP_TYPE_NAME);
@@ -305,17 +304,6 @@ public class AssetHandler
                                      List<Relationship>   relationships)
     {
         return null;
-    }
-
-
-    /**
-     * Return the count of attached annotations.
-     *
-     * @return count
-     */
-    public int getAnnotationCount()
-    {
-        return annotationCount;
     }
 
 

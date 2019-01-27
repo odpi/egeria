@@ -71,24 +71,6 @@ class RESTClient
 
 
     /**
-     * Issue a GET REST call that returns an AnnotationsResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return AnnotationsResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    AnnotationsResponse callAnnotationGetRESTCall(String    methodName,
-                                                  String    urlTemplate,
-                                                  Object... params) throws PropertyServerException
-    {
-        return (AnnotationsResponse)this.callGetRESTCall(methodName, AnnotationsResponse.class, urlTemplate, params);
-    }
-
-
-    /**
      * Issue a GET REST call that returns an CertificationsResponse object.
      *
      * @param methodName  name of the method being called.
