@@ -73,33 +73,6 @@ public class ConnectedAssetOMASResource
 
 
     /**
-     * Returns the list of annotations for the asset.
-     *
-     * @param serverName   String   name of server instance to call.
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     * @param elementStart int      starting position for fist returned element.
-     * @param maxElements  int      maximum number of elements to return on the call.
-     *
-     * @return a list of annotations  or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/annotations")
-
-    public AnnotationsResponse getAnnotations(@PathVariable String  serverName,
-                                              @PathVariable String  userId,
-                                              @PathVariable String  assetGUID,
-                                              @RequestParam int     elementStart,
-                                              @RequestParam int     maxElements)
-    {
-        return restAPI.getAnnotations(serverName, userId, assetGUID, elementStart, maxElements);
-    }
-
-
-    /**
      * Returns the list of certifications for the asset.
      *
      * @param serverName   String   name of server instance to call.
