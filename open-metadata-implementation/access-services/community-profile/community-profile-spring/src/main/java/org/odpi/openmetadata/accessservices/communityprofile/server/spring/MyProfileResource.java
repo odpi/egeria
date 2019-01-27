@@ -25,7 +25,6 @@ public class MyProfileResource
     {
     }
 
-
     /**
      * Return the profile for this user.
      *
@@ -40,8 +39,8 @@ public class MyProfileResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/my-profile")
 
-    public MyProfileResponse getMyProfile(@PathVariable String serverName,
-                                          @PathVariable String userId)
+    public PersonalProfileResponse getMyProfile(@PathVariable String serverName,
+                                                @PathVariable String userId)
     {
         return restAPI.getMyProfile(serverName, userId);
     }

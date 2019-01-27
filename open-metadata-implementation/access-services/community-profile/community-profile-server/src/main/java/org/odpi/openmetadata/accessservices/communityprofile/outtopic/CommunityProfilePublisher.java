@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.outtopic;
 
-import org.odpi.openmetadata.accessservices.communityprofile.server.PersonalProfilesHandler;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -26,7 +25,6 @@ public class CommunityProfilePublisher
     private Connection              communityProfileOutTopic;
     private OMRSRepositoryHelper    repositoryHelper;
     private OMRSRepositoryValidator repositoryValidator;
-    private PersonalProfilesHandler profilesHandler;
     private String                  serviceName;
 
 
@@ -49,7 +47,6 @@ public class CommunityProfilePublisher
         this.communityProfileOutTopic = communityProfileOutTopic;
         this.repositoryHelper = repositoryHelper;
         this.repositoryValidator = repositoryValidator;
-        this.profilesHandler = new PersonalProfilesHandler(serviceName, repositoryConnector);
         this.serviceName = serviceName;
     }
 
