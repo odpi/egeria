@@ -96,10 +96,23 @@ public class TypeDefStore {
      * @return TypeDef
      */
     public TypeDef getTypeDefByGUID(String guid) {
+        return getTypeDefByGUID(guid, true);
+    }
+
+    /**
+     * Retrieves an implemented TypeDef by its GUID.
+     *
+     * @param guid of the type definition
+     * @param warnIfNotFound whether to log a warning if GUID is not known (true) or not (false).
+     * @return TypeDef
+     */
+    private TypeDef getTypeDefByGUID(String guid, boolean warnIfNotFound) {
         if (omrsGuidToTypeDef.containsKey(guid)) {
             return omrsGuidToTypeDef.get(guid);
         } else {
-            log.warn("Unable to find OMRS TypeDef: {}", guid);
+            if (warnIfNotFound) {
+                log.warn("Unable to find OMRS TypeDef by GUID: {}", guid);
+            }
             return null;
         }
     }
@@ -111,11 +124,24 @@ public class TypeDefStore {
      * @return TypeDef
      */
     public TypeDef getTypeDefByName(String name) {
+        return getTypeDefByName(name, true);
+    }
+
+    /**
+     * Retrieves an implemented TypeDef by its name.
+     *
+     * @param name of the type definition
+     * @param warnIfNotFound whether to log a warning if name is not known (true) or not (false).
+     * @return TypeDef
+     */
+    private TypeDef getTypeDefByName(String name, boolean warnIfNotFound) {
         if (omrsNameToGuid.containsKey(name)) {
             String guid = omrsNameToGuid.get(name);
-            return getTypeDefByGUID(guid);
+            return getTypeDefByGUID(guid, warnIfNotFound);
         } else {
-            log.warn("Unable to find OMRS TypeDef: {}", name);
+            if (warnIfNotFound) {
+                log.warn("Unable to find OMRS TypeDef by Name: {}", name);
+            }
             return null;
         }
     }
@@ -130,7 +156,7 @@ public class TypeDefStore {
         if (omrsGuidToAttributeMap.containsKey(guid)) {
             return omrsGuidToAttributeMap.get(guid);
         } else {
-            log.warn("Unable to find OMRS TypeDef: {}", guid);
+            log.warn("Unable to find attributes for OMRS TypeDef by GUID: {}", guid);
             return null;
         }
     }
@@ -145,7 +171,7 @@ public class TypeDefStore {
     public Map<String, TypeDefAttribute> getAllTypeDefAttributesForGUID(String guid) {
         Map<String, TypeDefAttribute> all = getTypeDefAttributesByGUID(guid);
         if (all != null) {
-            TypeDef typeDef = getTypeDefByGUID(guid);
+            TypeDef typeDef = getTypeDefByGUID(guid, false);
             if (typeDef == null) {
                 typeDef = getUnimplementedTypeDefByGUID(guid);
             }
@@ -169,7 +195,7 @@ public class TypeDefStore {
             String guid = omrsNameToGuid.get(name);
             return getAllTypeDefAttributesForGUID(guid);
         } else {
-            log.warn("Unable to find OMRS TypeDef: {}", name);
+            log.warn("Unable to find attributes for OMRS TypeDef by Name: {}", name);
             return null;
         }
     }
