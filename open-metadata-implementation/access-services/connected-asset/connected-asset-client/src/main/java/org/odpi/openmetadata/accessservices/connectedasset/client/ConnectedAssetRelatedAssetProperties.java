@@ -36,6 +36,8 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
     private String               userId = null;
     private String               omasServerURL = null;
     private String               assetGUID = null;
+    private RESTClient           restClient;
+
 
     private static final Logger log = LoggerFactory.getLogger(ConnectedAssetRelatedAssetProperties.class);
 
@@ -47,18 +49,21 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
      * @param userId  identifier of calling user
      * @param omasServerURL  url of server
      * @param assetGUID  String   unique id for connected asset.
+     * @param restClient client to call REST API
      */
     public ConnectedAssetRelatedAssetProperties(String               serverName,
                                                 String               userId,
                                                 String               omasServerURL,
-                                                String               assetGUID)
+                                                String               assetGUID,
+                                                RESTClient           restClient)
     {
         super();
 
-        this.serverName = serverName;
-        this.userId = userId;
+        this.serverName    = serverName;
+        this.userId        = userId;
         this.omasServerURL = omasServerURL;
-        this.assetGUID = assetGUID;
+        this.assetGUID     = assetGUID;
+        this.restClient    = restClient;
     }
 
 
@@ -73,10 +78,11 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
 
         if (template != null)
         {
-            this.serverName = template.serverName;
-            this.userId = template.userId;
+            this.serverName    = template.serverName;
+            this.userId        = template.userId;
             this.omasServerURL = template.omasServerURL;
-            this.assetGUID = template.assetGUID;
+            this.assetGUID     = template.assetGUID;
+            this.restClient    = template.restClient;
         }
     }
 
@@ -98,7 +104,7 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
 
         try
         {
-            assetProperties = new ConnectedAssetUniverse(serverName, omasServerURL, userId, assetGUID);
+            assetProperties = new ConnectedAssetUniverse(serverName, omasServerURL, userId, assetGUID, restClient);
         }
         catch (UserNotAuthorizedException  error)
         {
