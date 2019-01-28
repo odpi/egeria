@@ -79,11 +79,11 @@ service:
   externalName:  default.svc.cluster.local
 
 # Confluent kafka chart configuration
-cp-helm-charts:
-  brokers: 1
-  cp-schema-registry:
-    enabled: false
-  cp-kafka-rest:
-    enabled: false
-  cp-kafka-connect:
-    enabled: false
+cp-schema-registry:
+  enabled: false
+cp-kafka-rest:
+  enabled: false
+cp-kafka-connect:
+  enabled: false
+cp-ksql-server:
+  enabled: false
