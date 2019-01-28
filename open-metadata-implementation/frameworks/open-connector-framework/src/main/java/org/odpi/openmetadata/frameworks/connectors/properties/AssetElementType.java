@@ -146,6 +146,17 @@ public class AssetElementType extends AssetPropertyElementBase
 
 
     /**
+     * Return the license associated with this metadata element (null means none).
+     *
+     * @return string license name
+     */
+    public String getElementLicense()
+    {
+        return elementTypeBean.getElementLicense();
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
