@@ -25,16 +25,13 @@ import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUti
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.TypeGuids;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.RestValidator;
-import org.odpi.openmetadata.repositoryservices.archivemanager.OMRSArchiveAccessor;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.*;
 import java.util.Set;
 
@@ -427,43 +424,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         try
         {
             // initialise omrs API helper with the right instance based on the server name
-            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
-            // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
-            if (offset == null) {
-                offset = new Integer(0);
-            }
-            if (pageSize == null) {
-                pageSize = new Integer(0);
-            }
-            if (sequencingProperty !=null) {
-                try {
-                    sequencingProperty = URLDecoder.decode(sequencingProperty,"UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    // TODO error
-                }
-            }
-            if (searchCriteria !=null) {
-                try {
-                   searchCriteria = URLDecoder.decode(searchCriteria,"UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    // TODO error
-                }
-            }
-            SequencingOrder omrsSequencingOrder =  SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
-            OMRSArchiveAccessor archiveAccessor = OMRSArchiveAccessor.getInstance();
-            TypeDef typeDef =archiveAccessor.getEntityDefByName("GlossaryTerm");
-            String entityTypeGUID = typeDef.getGUID();
-            List<EntityDetail> entitydetails = oMRSAPIHelper.callFindEntitiesByPropertyValue(
-                    userId,
-                    entityTypeGUID,
-                    searchCriteria,
-                    offset.intValue(),
-                    null,       // TODO limit by status ?
-                    null,  // TODO limit by classification ?
-                    asOfTime,
-                    sequencingProperty,
-                    omrsSequencingOrder,
-                    pageSize);
+            initializeAPI(serverName, userId, methodName);
+            List<EntityDetail> entitydetails = OMRSAPIHelper.findEntitiesByType(oMRSAPIHelper,serverName, userId, "GlossaryTerm", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
             if (entitydetails !=null) {
                 terms= new ArrayList<>();
                 for (EntityDetail entityDetail : entitydetails) {

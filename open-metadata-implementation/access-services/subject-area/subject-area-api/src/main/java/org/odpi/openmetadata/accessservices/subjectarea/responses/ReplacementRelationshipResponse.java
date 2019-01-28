@@ -31,8 +31,8 @@ public class ReplacementRelationshipResponse extends SubjectAreaOMASAPIResponse
     }
     public ReplacementRelationshipResponse(ReplacementTerm termReplacementRelationship)
     {
+        this();
         this.termReplacementRelationship=termReplacementRelationship;
-        this.setResponseCategory(ResponseCategory.TermReplacementRelationship);
     }
 
 

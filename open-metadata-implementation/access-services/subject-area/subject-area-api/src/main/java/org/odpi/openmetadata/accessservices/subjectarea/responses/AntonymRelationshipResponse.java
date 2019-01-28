@@ -31,8 +31,8 @@ public class AntonymRelationshipResponse extends SubjectAreaOMASAPIResponse
     }
     public AntonymRelationshipResponse(Antonym antonym)
     {
+        this();
         this.antonym =antonym;
-        this.setResponseCategory(ResponseCategory.AntonymRelationship);
     }
 
     /**
