@@ -24,11 +24,13 @@ import java.util.List;
  */
 public class ConnectedAssetRelatedAssets extends RelatedAssets
 {
-    private String              serverName;
-    private String              userId;
-    private String              omasServerURL;
-    private String              assetGUID;
-    private ConnectedAsset      connectedAsset;
+    private String                 serverName;
+    private String                 userId;
+    private String                 omasServerURL;
+    private String                 assetGUID;
+    private ConnectedAssetUniverse connectedAsset;
+    private RESTClient             restClient;
+
 
 
     /**
@@ -42,14 +44,16 @@ public class ConnectedAssetRelatedAssets extends RelatedAssets
      * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
+     * @param restClient client to call REST API
      */
-    ConnectedAssetRelatedAssets(String              serverName,
-                                String              userId,
-                                String              omasServerURL,
-                                String              assetGUID,
-                                ConnectedAsset      parentAsset,
-                                int                 totalElementCount,
-                                int                 maxCacheSize)
+    ConnectedAssetRelatedAssets(String                 serverName,
+                                String                 userId,
+                                String                 omasServerURL,
+                                String                 assetGUID,
+                                ConnectedAssetUniverse parentAsset,
+                                int                    totalElementCount,
+                                int                    maxCacheSize,
+                                RESTClient             restClient)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
@@ -58,6 +62,7 @@ public class ConnectedAssetRelatedAssets extends RelatedAssets
         this.omasServerURL   = omasServerURL;
         this.assetGUID       = assetGUID;
         this.connectedAsset  = parentAsset;
+        this.restClient      = restClient;
     }
 
 
@@ -67,17 +72,18 @@ public class ConnectedAssetRelatedAssets extends RelatedAssets
      * @param parentAsset descriptor of parent asset
      * @param template type-specific iterator to copy; null to create an empty iterator
      */
-    private ConnectedAssetRelatedAssets(ConnectedAsset   parentAsset, ConnectedAssetRelatedAssets template)
+    private ConnectedAssetRelatedAssets(ConnectedAssetUniverse parentAsset, ConnectedAssetRelatedAssets template)
     {
         super(parentAsset, template);
 
         if (template != null)
         {
-            this.serverName = template.serverName;
-            this.userId = template.userId;
-            this.omasServerURL = template.omasServerURL;
-            this.assetGUID = template.assetGUID;
+            this.serverName     = template.serverName;
+            this.userId         = template.userId;
+            this.omasServerURL  = template.omasServerURL;
+            this.assetGUID      = template.assetGUID;
             this.connectedAsset = parentAsset;
+            this.restClient     = template.restClient;
         }
     }
 
@@ -122,22 +128,24 @@ public class ConnectedAssetRelatedAssets extends RelatedAssets
         final String   methodName = "RelatedAssets.getCachedList";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/assets/{2}/related-assets?elementStart={3}&maxElements={4}";
 
-        connectedAsset.validateOMASServerURL(methodName);
+        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+        RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
+
+        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
 
         try
         {
-            RelatedAssetsResponse restResult = (RelatedAssetsResponse)connectedAsset.callGetRESTCall(methodName,
-                                                                                                     RelatedAssetsResponse.class,
-                                                                                                     omasServerURL + urlTemplate,
-                                                                                                     userId,
-                                                                                                     assetGUID,
-                                                                                                     cacheStartPointer,
-                                                                                                     maximumSize);
+            RelatedAssetsResponse restResult = restClient.callRelatedAssetGetRESTCall(methodName,
+                                                                                      omasServerURL + urlTemplate,
+                                                                                      userId,
+                                                                                      assetGUID,
+                                                                                      cacheStartPointer,
+                                                                                      maximumSize);
 
-            connectedAsset.detectAndThrowInvalidParameterException(methodName, restResult);
-            connectedAsset.detectAndThrowUnrecognizedAssetGUIDException(methodName, restResult);
-            connectedAsset.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            connectedAsset.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+            restExceptionHandler.detectAndThrowUnrecognizedAssetGUIDException(methodName, restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
             List<Asset>  beans = restResult.getList();
             if ((beans == null) || (beans.isEmpty()))
@@ -155,7 +163,8 @@ public class ConnectedAssetRelatedAssets extends RelatedAssets
                         resultList.add(new RelatedAsset(connectedAsset, bean, new ConnectedAssetRelatedAssetProperties(serverName,
                                                                                                                        userId,
                                                                                                                        omasServerURL,
-                                                                                                                       assetGUID)));
+                                                                                                                       assetGUID,
+                                                                                                                       restClient)));
                     }
                 }
 

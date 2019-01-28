@@ -7,13 +7,13 @@ import java.util.Objects;
 
 /**
  * The UnrecognizedConnectionGUIDException is thrown by the Connected Asset OMAS when the unique identifier (guid)
- * used to request a connection object from the property server is either unrecognized, or is the identifier
+ * used to request a part of a connected asset from the property server is either unrecognized, or is the identifier
  * for a different type of object.
  */
 public class UnrecognizedGUIDException extends ConnectedAssetCheckedExceptionBase
 {
     private String guid;
-    private String guidType;
+    private String guidTypeName;
 
     /**
      * This is the typical constructor used for creating an exception.
@@ -33,12 +33,12 @@ public class UnrecognizedGUIDException extends ConnectedAssetCheckedExceptionBas
                                      String systemAction,
                                      String userAction,
                                      String guid,
-                                     String guidType)
+                                     String guidTypeName)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
 
         this.guid = guid;
-        this.guidType = guidType;
+        this.guidTypeName = guidTypeName;
     }
 
 
@@ -62,12 +62,12 @@ public class UnrecognizedGUIDException extends ConnectedAssetCheckedExceptionBas
                                      String    userAction,
                                      Throwable caughtError,
                                      String    guid,
-                                     String    guidType)
+                                     String guidTypeName)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
 
         this.guid = guid;
-        this.guidType = guidType;
+        this.guidTypeName = guidTypeName;
     }
 
 
@@ -103,7 +103,7 @@ public class UnrecognizedGUIDException extends ConnectedAssetCheckedExceptionBas
     {
         return "UnrecognizedGUIDException{" +
                 "guid='" + guid + '\'' +
-                "guidType='" + guidType + '\'' +
+                "guidTypeName='" + guidTypeName + '\'' +
                 ", reportedHTTPCode=" + getReportedHTTPCode() +
                 ", reportingClassName='" + getReportingClassName() + '\'' +
                 ", reportingActionDescription='" + getReportingActionDescription() + '\'' +
@@ -138,7 +138,7 @@ public class UnrecognizedGUIDException extends ConnectedAssetCheckedExceptionBas
         }
         UnrecognizedGUIDException that = (UnrecognizedGUIDException) objectToCompare;
         return Objects.equals(guid, that.guid) &&
-                Objects.equals(guidType, that.guidType);
+                Objects.equals(guidTypeName, that.guidTypeName);
     }
 
 
@@ -150,6 +150,6 @@ public class UnrecognizedGUIDException extends ConnectedAssetCheckedExceptionBas
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), guid, guidType);
+        return Objects.hash(super.hashCode(), guid, guidTypeName);
     }
 }
