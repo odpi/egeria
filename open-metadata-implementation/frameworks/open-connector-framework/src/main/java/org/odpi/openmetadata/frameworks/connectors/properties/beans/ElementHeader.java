@@ -25,7 +25,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = Referenceable.class, name = "Referenceable"),
-                @JsonSubTypes.Type(value = Annotation.class, name = "Annotation"),
                 @JsonSubTypes.Type(value = InformalTag.class, name = "InformalTag"),
                 @JsonSubTypes.Type(value = Like.class, name = "Like"),
                 @JsonSubTypes.Type(value = Meaning.class, name = "Meaning"),

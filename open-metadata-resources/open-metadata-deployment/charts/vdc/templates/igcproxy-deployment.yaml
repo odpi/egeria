@@ -30,6 +30,10 @@ spec:
         app.kubernetes.io/component: igcproxy-service
 
     spec:
+      hostAliases:
+      - ip: "158.176.66.119"
+        hostnames:
+        - "igc.openmetadata.ibmcloud.com"
       containers:
       - image: "{{ .Values.image.igcproxy.repository }}:{{ .Values.image.igcproxy.tag }}"
         ImagePullPolicy: Always
