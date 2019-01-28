@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.handlers;
 
+import org.odpi.openmetadata.accessservices.connectedasset.converters.TypeConverter;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedAssetGUIDException;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedConnectionGUIDException;
@@ -46,7 +47,7 @@ public class AssetHandler
     private OMRSRepositoryHelper repositoryHelper = null;
     private String               serverName       = null;
     private ErrorHandler         errorHandler;
-    private TypeHandler          typeHandler      = new TypeHandler();
+    private TypeConverter        typeHandler      = new TypeConverter();
 
     private EntityDetail         assetEntity;
     private String               connectionGUID;
@@ -170,7 +171,8 @@ public class AssetHandler
             asset.setType(typeHandler.getElementType(assetEntity.getType(),
                                                      assetEntity.getInstanceProvenanceType(),
                                                      assetEntity.getMetadataCollectionId(),
-                                                     serverName));
+                                                     serverName,
+                                                     assetEntity.getInstanceLicense()));
             asset.setGUID(assetEntity.getGUID());
             asset.setURL(assetEntity.getInstanceURL());
 
@@ -247,7 +249,7 @@ public class AssetHandler
                     likeCount                  = likeCount                  + countRelationshipsOfACertainType(retrievedRelationships, LikeMapper.RELATIONSHIP_TYPE_NAME);
                     knownLocationsCount        = knownLocationsCount        + countRelationshipsOfACertainType(retrievedRelationships, LocationMapper.RELATIONSHIP_TYPE_NAME);
                     noteLogsCount              = noteLogsCount              + countRelationshipsOfACertainType(retrievedRelationships, NoteLogMapper.RELATIONSHIP_TYPE_NAME);
-                    ratingsCount               = ratingsCount               + countRelationshipsOfACertainType(retrievedRelationships, ReviewMapper.RELATIONSHIP_TYPE_NAME);
+                    ratingsCount               = ratingsCount               + countRelationshipsOfACertainType(retrievedRelationships, RatingMapper.RELATIONSHIP_TYPE_NAME);
                     relatedAssetCount          = relatedAssetCount          + countRelationshipsOfACertainType(retrievedRelationships, AssetMapper.RELATIONSHIP_TYPE_NAME);
                     relatedMediaReferenceCount = relatedMediaReferenceCount + countRelationshipsOfACertainType(retrievedRelationships, RelatedMediaReferenceMapper.RELATIONSHIP_TYPE_NAME);
 

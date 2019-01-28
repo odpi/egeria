@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.handlers;
 
+import org.odpi.openmetadata.accessservices.connectedasset.converters.TypeConverter;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedGUIDException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -26,7 +27,7 @@ public class RepositoryHandler
     private OMRSRepositoryHelper repositoryHelper;
     private String               serverName;
     private ErrorHandler         errorHandler;
-    private TypeHandler          typeHandler      = new TypeHandler();
+    private TypeConverter        typeHandler = new TypeConverter();
 
 
     /**
@@ -72,7 +73,7 @@ public class RepositoryHandler
 
                         if (instanceType != null)
                         {
-                            if (typeName.equals(instanceType.getTypeDefName()))
+                            if (repositoryHelper.isTypeOf(serviceName, typeName, instanceType.getTypeDefName()))
                             {
                                 results.add(relationship);
                             }
@@ -142,12 +143,12 @@ public class RepositoryHandler
 
 
     /**
-     * Returns the list of relationships attached to the identified asset entity from the metadata collections.
+     * Returns the list of relationships attached to the identified asset entity from the open metadata repositories.
      *
      * @param userId  userId of user making request.
      * @param entityTypeName type of entity that these relationships are connected to.
      * @param entityGUID  the unique id for the starting entity within the property server.
-     * @param entityGUID  starting element to return (may be so many elements that paging is needed).
+     * @param startingElement  starting element to return (may be so many elements that paging is needed).
      * @param pageSize  Maximum number of elements to return (may be so many elements that paging is needed).
      *
      * @return relationships retrieved from the property server
@@ -156,16 +157,16 @@ public class RepositoryHandler
      * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public List<Relationship> retrieveRelationships(String     userId,
-                                                    String     entityTypeName,
-                                                    String     entityGUID,
-                                                    int        startingElement,
-                                                    int        pageSize) throws InvalidParameterException,
+    public List<Relationship> retrieveAllRelationships(String     userId,
+                                                       String     entityTypeName,
+                                                       String     entityGUID,
+                                                       int        startingElement,
+                                                       int        pageSize) throws InvalidParameterException,
                                                                                 UnrecognizedGUIDException,
                                                                                 PropertyServerException,
                                                                                 UserNotAuthorizedException
     {
-        final  String   methodName = "retrieveRelationships";
+        final  String   methodName = "retrieveAllRelationships";
         final  String   guidParameter = "entityGUID";
 
         errorHandler.validateUserId(userId, methodName);
@@ -178,6 +179,69 @@ public class RepositoryHandler
             return metadataCollection.getRelationshipsForEntity(userId,
                                                                 entityGUID,
                                                                 null,
+                                                                startingElement,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                null,
+                                                                pageSize);
+
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
+        {
+            errorHandler.handleUnrecognizedGUIDException(userId, methodName, serverName, entityTypeName, entityGUID, error.getErrorMessage());
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName, serverName, serviceName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName, serverName, serviceName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Returns the list of relationships attached to the identified asset entity from the open metadata repositories.
+     *
+     * @param userId  userId of user making request.
+     * @param entityTypeName type of entity that these relationships are connected to.
+     * @param entityGUID  the unique id for the starting entity within the property server.
+     * @param startingElement  starting element to return (may be so many elements that paging is needed).
+     * @param pageSize  Maximum number of elements to return (may be so many elements that paging is needed).
+     *
+     * @return relationships retrieved from the property server
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UnrecognizedGUIDException the supplied GUID is not recognized by the metadata repository.
+     * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<Relationship> retrieveRelationships(String     userId,
+                                                    String     entityTypeName,
+                                                    String     entityGUID,
+                                                    String     relationshipTypeGUID,
+                                                    int        startingElement,
+                                                    int        pageSize) throws InvalidParameterException,
+                                                                                   UnrecognizedGUIDException,
+                                                                                   PropertyServerException,
+                                                                                   UserNotAuthorizedException
+    {
+        final  String   methodName = "retrieveAllRelationships";
+        final  String   guidParameter = "entityGUID";
+
+        errorHandler.validateUserId(userId, methodName);
+        errorHandler.validateGUID(entityGUID, guidParameter, methodName);
+
+        OMRSMetadataCollection metadataCollection = errorHandler.validateRepositoryConnector(methodName);
+
+        try
+        {
+            return metadataCollection.getRelationshipsForEntity(userId,
+                                                                entityGUID,
+                                                                relationshipTypeGUID,
                                                                 startingElement,
                                                                 null,
                                                                 null,
