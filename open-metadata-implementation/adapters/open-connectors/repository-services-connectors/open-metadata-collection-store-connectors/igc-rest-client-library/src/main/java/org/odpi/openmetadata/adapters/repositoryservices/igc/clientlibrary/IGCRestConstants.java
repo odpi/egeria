@@ -6,6 +6,9 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Set of constants for IGC REST API usage.
+ */
 public class IGCRestConstants {
 
     public static final String MOD_CREATED_BY = "created_by";
@@ -44,6 +47,11 @@ public class IGCRestConstants {
         return Collections.unmodifiableMap(map);
     }
 
+    /**
+     * Retrieve a list of the modification detail properties used by the IGC REST API.
+     *
+     * @return List<String>
+     */
     public static final List<String> getModificationProperties() { return MODIFICATION_DETAILS; }
 
     /**
