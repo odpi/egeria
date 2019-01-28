@@ -36,11 +36,11 @@ public class UserNotAuthorizedExceptionResponse extends SubjectAreaOMASAPIRespon
     }
     public UserNotAuthorizedExceptionResponse(SubjectAreaCheckedExceptionBase e)
     {
+        this();
         this.exceptionClassName = e.getReportingClassName();
         this.exceptionErrorMessage = e.getErrorMessage();
         this.exceptionSystemAction = e.getReportedSystemAction();
         this.exceptionUserAction = e.getReportedUserAction();
-        this.setResponseCategory(ResponseCategory.UserNotAuthorizedException);
         this.userId = ((UserNotAuthorizedException)e).getUserId();
     }
 

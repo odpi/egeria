@@ -3,11 +3,14 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
 
 
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaGlossaryRESTServices;
 import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 
 /**
@@ -75,6 +78,40 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
     public  SubjectAreaOMASAPIResponse getGlossary(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid) {
             return restAPI.getGlossaryByGuid(serverName, userId,guid);
     }
+    /**
+     * Find Glossary
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param searchCriteria String expression matching Glossary property values .
+     * @param asOfTime the glossaries returned as they were at this time. null indicates at the current time.
+     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     *                 beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize the maximum number of elements that can be returned on this request.
+     *                 0 means there is no limit to the page size
+     * @param sequencingOrder the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @return A list of glossaries meeting the search Criteria
+     *
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries")
+    public  SubjectAreaOMASAPIResponse findGlossary(@PathVariable String serverName, @PathVariable String userId,
+                                                @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
+                                                @RequestParam(value = "asOfTime", required=false) Date asOfTime,
+                                                @RequestParam(value = "offset", required=false) Integer offset,
+                                                @RequestParam(value = "pageSize", required=false) Integer pageSize,
+                                                @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
+                                                @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty
+    )  {
+        return restAPI.findGlossary(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+    }
+
     /**
      * Update a Glossary
      * <p>

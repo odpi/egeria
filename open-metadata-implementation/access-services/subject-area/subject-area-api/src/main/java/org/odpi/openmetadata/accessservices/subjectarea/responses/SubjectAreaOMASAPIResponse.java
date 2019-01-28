@@ -21,8 +21,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes(
         {
                 @JsonSubTypes.Type(value = CategoryResponse.class, name = "CategoryResponse"),
+                @JsonSubTypes.Type(value = CategoriesResponse.class, name = "CategoriesResponse"),
                 @JsonSubTypes.Type(value = GlossaryResponse.class, name = "GlossaryResponse"),
+                @JsonSubTypes.Type(value = GlossariesResponse.class, name = "GlossariesResponse"),
                 @JsonSubTypes.Type(value = SubjectAreaDefinitionResponse.class, name = "SubjectAreaDefinitionResponse"),
+                @JsonSubTypes.Type(value = SubjectAreaDefinitionsResponse.class, name = "SubjectAreaDefinitionsResponse"),
                 @JsonSubTypes.Type(value = TermResponse.class, name = "TermResponse"),
                 @JsonSubTypes.Type(value = TermsResponse.class, name = "TermsResponse"),
                 @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
@@ -64,8 +67,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = GUIDNotPurgedExceptionResponse.class, name = "GUIDNotPurgedExceptionResponse") ,
                 @JsonSubTypes.Type(value = InvalidParameterExceptionResponse.class, name = "InvalidParameterExceptionResponse") ,
                 @JsonSubTypes.Type(value = MetadataServerUncontactableExceptionResponse.class, name = "MetadataServerUncontactableExceptionResponse") ,
-                @JsonSubTypes.Type(value = PossibleClassificationsResponse.class, name = "PossibleClassificationsResponse") ,
-                @JsonSubTypes.Type(value = PossibleRelationshipsResponse.class, name = "PossibleRelationshipsResponse") ,
                 @JsonSubTypes.Type(value = RelationshipNotDeletedExceptionResponse.class, name = "RelationshipNotDeletedExceptionResponse") ,
                 @JsonSubTypes.Type(value = StatusNotsupportedExceptionResponse.class, name = "StatusNotsupportedExceptionResponse") ,
                 @JsonSubTypes.Type(value = UnrecognizedGUIDExceptionResponse.class, name = "UnrecognizedGUIDExceptionResponse") ,

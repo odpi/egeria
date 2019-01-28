@@ -31,8 +31,8 @@ public class RelatedTermResponse extends SubjectAreaOMASAPIResponse
     }
     public RelatedTermResponse(RelatedTerm relatedTermRelationship)
     {
+        this();
         this.relatedTermRelationship = relatedTermRelationship;
-        this.setResponseCategory(ResponseCategory.RelatedTerm);
     }
 
 

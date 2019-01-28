@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.DataClassAssignmentMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.DataClassHierarchyMapper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,6 +89,10 @@ public class DataClassMapper extends ReferenceableMapper {
     @Override
     protected void complexPropertyMappings(InstanceProperties instanceProperties) {
 
+        final String methodName = "complexPropertyMappings";
+        OMRSRepositoryHelper repositoryHelper = igcomrsRepositoryConnector.getRepositoryHelper();
+        String repositoryName = igcomrsRepositoryConnector.getRepositoryName();
+
         /*
          * setup the OMRS 'dataType' property
          */
@@ -105,18 +110,25 @@ public class DataClassMapper extends ReferenceableMapper {
                 break;
             }
         }
-        instanceProperties.setProperty(
+
+        instanceProperties = repositoryHelper.addStringPropertyToInstance(
+                repositoryName,
+                instanceProperties,
                 "dataType",
-                getPrimitivePropertyValue(dataType)
+                dataType,
+                methodName
         );
 
         /*
          * setup the OMRS 'specificationDetails' property
          */
         String dataClassType = (String) igcEntity.getPropertyByName("data_class_type_single");
-        instanceProperties.setProperty(
+        instanceProperties = repositoryHelper.addStringPropertyToInstance(
+                repositoryName,
+                instanceProperties,
                 "specificationDetails",
-                getPrimitivePropertyValue(dataClassType)
+                dataClassType,
+                methodName
         );
 
         /*
@@ -157,9 +169,12 @@ public class DataClassMapper extends ReferenceableMapper {
                 dataClassDetails = (String) igcEntity.getPropertyByName("java_class_name_single");
                 break;
         }
-        instanceProperties.setProperty(
+        instanceProperties = repositoryHelper.addStringPropertyToInstance(
+                repositoryName,
+                instanceProperties,
                 "specification",
-                getPrimitivePropertyValue(dataClassDetails)
+                dataClassDetails,
+                methodName
         );
 
         /*
@@ -169,9 +184,12 @@ public class DataClassMapper extends ReferenceableMapper {
         IGCVersionEnum igcVersion = igcomrsRepositoryConnector.getIGCVersion();
         if (igcVersion.isEqualTo(IGCVersionEnum.V11702) || igcVersion.isHigherThan(IGCVersionEnum.V11702)) {
             String provider = (String) igcEntity.getPropertyByName("provider");
-            instanceProperties.setProperty(
+            instanceProperties = repositoryHelper.addBooleanPropertyToInstance(
+                    repositoryName,
+                    instanceProperties,
                     "userDefined",
-                    getPrimitivePropertyValue( (provider == null || !provider.equals("IBM")) )
+                    (provider == null || !provider.equals("IBM")),
+                    methodName
             );
         }
 
