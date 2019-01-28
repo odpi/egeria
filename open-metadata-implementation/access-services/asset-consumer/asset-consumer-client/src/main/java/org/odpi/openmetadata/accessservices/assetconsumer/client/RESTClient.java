@@ -66,7 +66,7 @@ class RESTClient
                                                  String    urlTemplate,
                                                  Object... params) throws PropertyServerException
     {
-        return (ConnectionResponse)this.callGetRESTCall(methodName, GUIDResponse.class, urlTemplate, params);
+        return (ConnectionResponse)this.callGetRESTCall(methodName, ConnectionResponse.class, urlTemplate, params);
     }
 
 

@@ -1,6 +1,9 @@
-${Ansi.GREEN}        ____     __  ___    ___    ______          _____
-${Ansi.GREEN}       / __ \   /  |/  /   /   |  / ____/         / ___/  ___    _____ _   __  ___    _____
-${Ansi.GREEN}      / / / /  / /|_/ /   / /| | / / __           \__ \  / _ \  / ___/| | / / / _ \  / ___/
-${Ansi.GREEN}     / /_/ /  / /  / /   / ___ |/ /_/ /          ___/ / /  __/ / /    | |/ / /  __/ / /
-${Ansi.GREEN}     \____/  /_/  /_/   /_/  |_|\____/          /____/  \___/ /_/     |___/  \___/ /_/
-${Ansi.RED} :: Powered by Spring Boot${spring-boot.formatted-version} :: ${Ansi.DEFAULT}
+${AnsiColor.CYAN} ODPi Egeria
+${AnsiColor.CYAN}        ____     __  ___    ___    ______          _____
+${AnsiColor.CYAN}       / __ \   /  |/  /   /   |  / ____/         / ___/  ___    _____ _   __  ___    _____
+${AnsiColor.CYAN}      / / / /  / /|_/ /   / /| | / / __           \__ \  / _ \  / ___/| | / / / _ \  / ___/
+${AnsiColor.CYAN}     / /_/ /  / /  / /   / ___ |/ /_/ /          ___/ / /  __/ / /    | |/ / /  __/ / /
+${AnsiColor.CYAN}     \____/  /_/  /_/   /_/  |_|\____/          /____/  \___/ /_/     |___/  \___/ /_/
+${AnsiColor.CYAN}
+${AnsiColor.CYAN} :: Powered by Spring Boot${spring-boot.formatted-version} ::
+${Ansi.DEFAULT}

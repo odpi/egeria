@@ -28,7 +28,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class AssetResponse extends ConnectedAssetOMASAPIResponse
 {
     private Asset      asset                      = null;
-    private int        annotationCount            = 0;
     private int        certificationCount         = 0;
     private int        commentCount               = 0;
     private int        connectionCount            = 0;
@@ -66,7 +65,6 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
         if (template != null)
         {
             this.asset                      = template.getAsset();
-            this.annotationCount            = template.getAnnotationCount();
             this.certificationCount         = template.getCertificationCount();
             this.commentCount               = template.getCommentCount();
             this.connectionCount            = template.getConnectionCount();
@@ -104,28 +102,6 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
     public void setAsset(Asset asset)
     {
         this.asset = asset;
-    }
-
-
-    /**
-     * Return the count of attached annotations.
-     *
-     * @return count
-     */
-    public int getAnnotationCount()
-    {
-        return annotationCount;
-    }
-
-
-    /**
-     * Set up the count of attached annotations.
-     *
-     * @param annotationCount count
-     */
-    public void setAnnotationCount(int annotationCount)
-    {
-        this.annotationCount = annotationCount;
     }
 
 
@@ -447,7 +423,6 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
     {
         return "AssetResponse{" +
                 "asset=" + asset +
-                ", annotationCount=" + annotationCount +
                 ", certificationCount=" + certificationCount +
                 ", commentCount=" + commentCount +
                 ", connectionCount=" + connectionCount +
@@ -494,8 +469,7 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
             return false;
         }
         AssetResponse that = (AssetResponse) objectToCompare;
-        return getAnnotationCount() == that.getAnnotationCount() &&
-                getCertificationCount() == that.getCertificationCount() &&
+        return getCertificationCount() == that.getCertificationCount() &&
                 getCommentCount() == that.getCommentCount() &&
                 getConnectionCount() == that.getConnectionCount() &&
                 getExternalIdentifierCount() == that.getExternalIdentifierCount() &&
@@ -521,7 +495,7 @@ public class AssetResponse extends ConnectedAssetOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getAsset(), getAnnotationCount(), getCertificationCount(),
+        return Objects.hash(super.hashCode(), getAsset(), getCertificationCount(),
                             getCommentCount(),
                             getConnectionCount(), getExternalIdentifierCount(), getExternalReferencesCount(),
                             getInformalTagCount(), getLicenseCount(), getLikeCount(), getKnownLocationsCount(),
