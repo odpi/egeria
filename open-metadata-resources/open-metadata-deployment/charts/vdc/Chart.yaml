@@ -2,7 +2,7 @@
 # Copyright Contributors to the Egeria project.
 name: vdc
 description: Egeria VDC Environment 
-version: 0.1.4
+version: 0.1.6
 keywords:
   - apache-ranger, ranger, security, odpi, egeria, open-metadata,vdc, virtualization
 sources:
