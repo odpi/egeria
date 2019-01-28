@@ -3,8 +3,7 @@
 package org.odpi.openmetadata.accessservices.connectedasset.server;
 
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.connectedasset.handlers.AssetHandler;
-import org.odpi.openmetadata.accessservices.connectedasset.handlers.CommentsHandler;
+import org.odpi.openmetadata.accessservices.connectedasset.handlers.*;
 import org.odpi.openmetadata.accessservices.connectedasset.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -67,7 +66,6 @@ public class ConnectedAssetRESTServices
                                                          connectionGUID);
 
             response.setAsset(assetHandler.getAsset());
-            response.setAnnotationCount(assetHandler.getAnnotationCount());
             response.setCertificationCount(assetHandler.getCertificationCount());
             response.setCommentCount(assetHandler.getCommentCount());
             response.setConnectionCount(assetHandler.getConnectionCount());
@@ -142,7 +140,6 @@ public class ConnectedAssetRESTServices
                                                            assetGUID);
 
             response.setAsset(assetHandler.getAsset());
-            response.setAnnotationCount(assetHandler.getAnnotationCount());
             response.setCertificationCount(assetHandler.getCertificationCount());
             response.setCommentCount(assetHandler.getCommentCount());
             response.setConnectionCount(assetHandler.getConnectionCount());
@@ -203,7 +200,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getCertifications";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        CertificationsResponse  response = new CertificationsResponse();
+
+        try
+        {
+            CertificationsHandler handler = new CertificationsHandler(instanceHandler.getAccessServiceName(),
+                                                                      serverName,
+                                                                      instanceHandler.getRepositoryConnector(serverName),
+                                                                      userId,
+                                                                      assetGUID,
+                                                                      elementStart,
+                                                                      maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -229,7 +257,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getComments";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        CommentsResponse  response = new CommentsResponse();
+
+        try
+        {
+            CommentsHandler handler = new CommentsHandler(instanceHandler.getAccessServiceName(),
+                                                          serverName,
+                                                          instanceHandler.getRepositoryConnector(serverName),
+                                                          userId,
+                                                          assetGUID,
+                                                          elementStart,
+                                                          maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -255,7 +314,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getCommentReplies";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        CommentsResponse  response = new CommentsResponse();
+
+        try
+        {
+            CommentRepliesHandler handler = new CommentRepliesHandler(instanceHandler.getAccessServiceName(),
+                                                                      serverName,
+                                                                      instanceHandler.getRepositoryConnector(serverName),
+                                                                      userId,
+                                                                      commentGUID,
+                                                                      elementStart,
+                                                                      maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -281,7 +371,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getConnections";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        ConnectionsResponse  response = new ConnectionsResponse();
+
+        try
+        {
+            ConnectionsHandler handler = new ConnectionsHandler(instanceHandler.getAccessServiceName(),
+                                                                serverName,
+                                                                instanceHandler.getRepositoryConnector(serverName),
+                                                                userId,
+                                                                assetGUID,
+                                                                elementStart,
+                                                                maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -307,7 +428,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getExternalIdentifiers";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        ExternalIdentifiersResponse  response = new ExternalIdentifiersResponse();
+
+        try
+        {
+            ExternalIdentifiersHandler handler = new ExternalIdentifiersHandler(instanceHandler.getAccessServiceName(),
+                                                                                serverName,
+                                                                                instanceHandler.getRepositoryConnector(serverName),
+                                                                                userId,
+                                                                                assetGUID,
+                                                                                elementStart,
+                                                                                maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -333,7 +485,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getExternalReferences";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        ExternalReferencesResponse  response = new ExternalReferencesResponse();
+
+        try
+        {
+            ExternalReferencesHandler handler = new ExternalReferencesHandler(instanceHandler.getAccessServiceName(),
+                                                                              serverName,
+                                                                              instanceHandler.getRepositoryConnector(serverName),
+                                                                              userId,
+                                                                              assetGUID,
+                                                                              elementStart,
+                                                                              maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -359,7 +542,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getInformalTags";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        InformalTagsResponse  response = new InformalTagsResponse();
+
+        try
+        {
+            InformalTagsHandler handler = new InformalTagsHandler(instanceHandler.getAccessServiceName(),
+                                                                  serverName,
+                                                                  instanceHandler.getRepositoryConnector(serverName),
+                                                                  userId,
+                                                                  assetGUID,
+                                                                  elementStart,
+                                                                  maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -385,7 +599,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getLicenses";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        LicensesResponse  response = new LicensesResponse();
+
+        try
+        {
+            LicensesHandler handler = new LicensesHandler(instanceHandler.getAccessServiceName(),
+                                                          serverName,
+                                                          instanceHandler.getRepositoryConnector(serverName),
+                                                          userId,
+                                                          assetGUID,
+                                                          elementStart,
+                                                          maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -411,7 +656,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getLikes";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        LikesResponse  response = new LikesResponse();
+
+        try
+        {
+            LikesHandler handler = new LikesHandler(instanceHandler.getAccessServiceName(),
+                                                    serverName,
+                                                    instanceHandler.getRepositoryConnector(serverName),
+                                                    userId,
+                                                    assetGUID,
+                                                    elementStart,
+                                                    maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -437,7 +713,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getKnownLocations";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        LocationsResponse  response = new LocationsResponse();
+
+        try
+        {
+            LocationsHandler handler = new LocationsHandler(instanceHandler.getAccessServiceName(),
+                                                            serverName,
+                                                            instanceHandler.getRepositoryConnector(serverName),
+                                                            userId,
+                                                            assetGUID,
+                                                            elementStart,
+                                                            maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -463,7 +770,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getNoteLogs";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        NoteLogsResponse  response = new NoteLogsResponse();
+
+        try
+        {
+            NoteLogsHandler handler = new NoteLogsHandler(instanceHandler.getAccessServiceName(),
+                                                          serverName,
+                                                          instanceHandler.getRepositoryConnector(serverName),
+                                                          userId,
+                                                          assetGUID,
+                                                          elementStart,
+                                                          maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -489,7 +827,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getNotes";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        NotesResponse  response = new NotesResponse();
+
+        try
+        {
+            NotesHandler handler = new NotesHandler(instanceHandler.getAccessServiceName(),
+                                                    serverName,
+                                                    instanceHandler.getRepositoryConnector(serverName),
+                                                    userId,
+                                                    noteLogGUID,
+                                                    elementStart,
+                                                    maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -515,7 +884,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getRatings";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        RatingsResponse  response = new RatingsResponse();
+
+        try
+        {
+            RatingsHandler handler = new RatingsHandler(instanceHandler.getAccessServiceName(),
+                                                        serverName,
+                                                        instanceHandler.getRepositoryConnector(serverName),
+                                                        userId,
+                                                        assetGUID,
+                                                        elementStart,
+                                                        maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -541,7 +941,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getRelatedAssets";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        RelatedAssetsResponse  response = new RelatedAssetsResponse();
+
+        try
+        {
+            RelatedAssetsHandler handler = new RelatedAssetsHandler(instanceHandler.getAccessServiceName(),
+                                                                    serverName,
+                                                                    instanceHandler.getRepositoryConnector(serverName),
+                                                                    userId,
+                                                                    assetGUID,
+                                                                    elementStart,
+                                                                    maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -567,7 +998,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getRelatedMediaReferences";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        RelatedMediaReferencesResponse  response = new RelatedMediaReferencesResponse();
+
+        try
+        {
+            RelatedMediaReferencesHandler handler = new RelatedMediaReferencesHandler(instanceHandler.getAccessServiceName(),
+                                                                                      serverName,
+                                                                                      instanceHandler.getRepositoryConnector(serverName),
+                                                                                      userId,
+                                                                                      assetGUID,
+                                                                                      elementStart,
+                                                                                      maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -593,7 +1055,38 @@ public class ConnectedAssetRESTServices
     {
         final String        methodName = "getSchemaAttributes";
 
-        return null;
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        SchemaAttributesResponse  response = new SchemaAttributesResponse();
+
+        try
+        {
+            SchemaAttributesHandler handler = new SchemaAttributesHandler(instanceHandler.getAccessServiceName(),
+                                                                          serverName,
+                                                                          instanceHandler.getRepositoryConnector(serverName),
+                                                                          userId,
+                                                                          schemaTypeGUID,
+                                                                          elementStart,
+                                                                          maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -709,41 +1202,6 @@ public class ConnectedAssetRESTServices
         else
         {
             captureCheckedException(response, error, error.getClass().getName());
-        }
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void captureUnrecognizedGUIDException(ConnectedAssetOMASAPIResponse response,
-                                                  UnrecognizedGUIDException error)
-    {
-        Map<String, Object>  exceptionProperties = new HashMap<>();
-
-        String  guid = error.getGUID();
-        String  guidType = error.getGUIDType();
-
-        if (guid != null)
-        {
-            exceptionProperties.put("guid", guid);
-        }
-
-        if (guidType != null)
-        {
-            exceptionProperties.put("guidType", guidType);
-        }
-
-        if (exceptionProperties.isEmpty())
-        {
-            captureCheckedException(response, error, error.getClass().getName());
-        }
-        else
-        {
-            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
         }
     }
 

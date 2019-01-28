@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.handlers;
 
+import org.odpi.openmetadata.accessservices.connectedasset.converters.TypeConverter;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.UnrecognizedGUIDException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -23,7 +24,7 @@ public class MeaningsHandler
     private OMRSRepositoryHelper repositoryHelper;
     private String               serverName;
     private ErrorHandler         errorHandler;
-    private TypeHandler          typeHandler = new TypeHandler();
+    private TypeConverter        typeHandler = new TypeConverter();
 
 
     /**
