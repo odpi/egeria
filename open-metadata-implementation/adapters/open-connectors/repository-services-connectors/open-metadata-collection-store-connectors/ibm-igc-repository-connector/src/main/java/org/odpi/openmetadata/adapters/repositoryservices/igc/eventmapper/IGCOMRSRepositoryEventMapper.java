@@ -15,6 +15,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.model.*;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.ReferenceableMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.RelationshipMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.model.OMRSStub;
@@ -540,8 +541,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             // If we can't retrieve the asset by RID, it no longer exists -- so send a delete event
             sendPurgedEntity(assetType, rid);
             // Find any mapper(s) for this type that use a prefix and send a purge for the prefixed entity as well
-            List<ReferenceableMapper> referenceableMappers = igcomrsMetadataCollection.getMappers(assetType, localServerUserId);
-            for (ReferenceableMapper referenceableMapper : referenceableMappers) {
+            List<EntityMapping> referenceableMappers = igcomrsMetadataCollection.getMappers(assetType, localServerUserId);
+            for (EntityMapping referenceableMapper : referenceableMappers) {
                 List<RelationshipMapping> relationshipMappings = referenceableMapper.getRelationshipMappers();
                 for (RelationshipMapping relationshipMapping : relationshipMappings) {
                     String prefixOne = relationshipMapping.getProxyOneMapping().getIgcRidPrefix();
@@ -1016,8 +1017,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             }
 
             // See if there are any generated entities to send an event for (ie. *Type)
-            List<ReferenceableMapper> referenceableMappers = igcomrsMetadataCollection.getMappers(asset.getType(), localServerUserId);
-            for (ReferenceableMapper referenceableMapper : referenceableMappers) {
+            List<EntityMapping> referenceableMappers = igcomrsMetadataCollection.getMappers(asset.getType(), localServerUserId);
+            for (EntityMapping referenceableMapper : referenceableMappers) {
                 // Generated entities MUST have a prefix, so if there is no prefix ignore that mapper
                 String ridPrefix = referenceableMapper.getIgcRidPrefix();
                 if (ridPrefix != null) {
@@ -1083,8 +1084,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             processClassifications(latest, latest.getClassifications(), last == null ? new ArrayList<>() : last.getClassifications());
 
             // See if there are any generated entities to send an event for (ie. *Type)
-            List<ReferenceableMapper> referenceableMappers = igcomrsMetadataCollection.getMappers(latestVersion.getType(), localServerUserId);
-            for (ReferenceableMapper referenceableMapper : referenceableMappers) {
+            List<EntityMapping> referenceableMappers = igcomrsMetadataCollection.getMappers(latestVersion.getType(), localServerUserId);
+            for (EntityMapping referenceableMapper : referenceableMappers) {
                 // Generated entities MUST have a prefix, so if there is no prefix ignore that mapper
                 String ridPrefix = referenceableMapper.getIgcRidPrefix();
                 if (ridPrefix != null) {
@@ -1242,8 +1243,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
         // as well as non-generated entities)
         String igcAssetType = igcomrsMetadataCollection.getIgcAssetTypeForAssetName(assetTypeName);
         if (igcAssetType != null) {
-            List<ReferenceableMapper> referenceableMappers = igcomrsMetadataCollection.getMappers(igcAssetType, localServerUserId);
-            for (ReferenceableMapper referenceableMapper : referenceableMappers) {
+            List<EntityMapping> referenceableMappers = igcomrsMetadataCollection.getMappers(igcAssetType, localServerUserId);
+            for (EntityMapping referenceableMapper : referenceableMappers) {
                 String typeDefName = referenceableMapper.getOmrsTypeDefName();
                 TypeDef typeDef = igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(
                         igcomrsRepositoryConnector.getRepositoryName(),

@@ -28,8 +28,16 @@ public class SemanticAssignmentMapper extends RelationshipMapping {
         );
         // We will explicitly exclude terms from being applied a SemanticAssignment, as it would overlap with
         // classifications like Confidentiality (and is probably better done via other more meaningful
-        // term-to-term relationships)
-        getProxyOneMapping().addExcludedIgcAssetType("term");
+        // term-to-term relationships) - we also need to exclude other assets which have no 'assigned_to_terms'
+        // relationships
+        ProxyMapping pmOne = getProxyOneMapping();
+        pmOne.addExcludedIgcAssetType("term");
+        pmOne.addExcludedIgcAssetType("connector");
+        pmOne.addExcludedIgcAssetType("data_connection");
+        pmOne.addExcludedIgcAssetType("group");
+        pmOne.addExcludedIgcAssetType("information_governance_policy");
+        pmOne.addExcludedIgcAssetType("label");
+        pmOne.addExcludedIgcAssetType("user");
     }
 
 }

@@ -31,8 +31,8 @@ public class TermAnchorRelationshipResponse extends SubjectAreaOMASAPIResponse
     }
     public TermAnchorRelationshipResponse(TermAnchorRelationship termAnchorRelationship)
     {
+        this();
         this.termAnchorRelationship = termAnchorRelationship;
-        this.setResponseCategory(ResponseCategory.TermAnchorRelationship);
     }
 
     /**
