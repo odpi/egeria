@@ -8310,7 +8310,7 @@ public class OpenMetadataTypesArchive
         final String description     = "A description of a file containing data stored in a file system.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "Referenceable";
+        final String superTypeName = "DataStore";
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,

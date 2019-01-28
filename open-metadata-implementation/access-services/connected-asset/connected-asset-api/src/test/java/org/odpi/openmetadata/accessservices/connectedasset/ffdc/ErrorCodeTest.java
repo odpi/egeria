@@ -87,7 +87,7 @@ public class ErrorCodeTest
         testSingleErrorCodeValues(ConnectedAssetErrorCode.OMRS_NOT_AVAILABLE);
         testSingleErrorCodeValues(ConnectedAssetErrorCode.NO_METADATA_COLLECTION);
         testSingleErrorCodeValues(ConnectedAssetErrorCode.CONNECTION_NOT_FOUND);
-        testSingleErrorCodeValues(ConnectedAssetErrorCode.PROXY_CONNECTION_FOUND);
+        testSingleErrorCodeValues(ConnectedAssetErrorCode.ENTITY_PROXY_FOUND);
         testSingleErrorCodeValues(ConnectedAssetErrorCode.ASSET_NOT_FOUND);
         testSingleErrorCodeValues(ConnectedAssetErrorCode.UNKNOWN_ASSET);
         testSingleErrorCodeValues(ConnectedAssetErrorCode.NULL_CONNECTION_RETURNED);

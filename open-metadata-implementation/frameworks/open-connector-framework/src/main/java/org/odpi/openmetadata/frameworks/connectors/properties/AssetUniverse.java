@@ -16,7 +16,6 @@ import java.util.Objects;
  * <ul>
  *     <li>Meanings - glossary term(s) assigned to this asset.</li>
  *     <li>SchemaType - details of the schema type associated with the asset.</li>
- *     <li>Analysis - details of the annotations added by the discovery services.</li>
  *     <li>Feedback - details of the people, products and feedback that are connected to the asset.</li>
  *     <li>Locations - details of the known locations of the asset.</li>
  *     <li>Lineage - details of the lineage for the asset.</li>
@@ -28,7 +27,6 @@ public class AssetUniverse extends AssetDetail
 {
     protected List<AssetMeaning> meanings       = null;
     protected AssetSchemaType    schema         = null;
-    protected AssetAnnotations   analysis       = null;
     protected AssetFeedback      feedback       = null;
     protected AssetLocations     knownLocations = null;
     protected AssetLineage       lineage        = null;
@@ -57,7 +55,7 @@ public class AssetUniverse extends AssetDetail
      * @param certifications Certifications list of certifications
      * @param meanings Meanings list of glossary definitions.
      * @param schema StructSchemaType object to query schema and related glossary definitions.
-     * @param analysis Annotations from metadata discovery.
+
      * @param feedback Feedback object to query the feedback.
      * @param knownLocations Locations list
      * @param lineage lineage object to query the origin of the asset.
@@ -73,7 +71,6 @@ public class AssetUniverse extends AssetDetail
                          AssetCertifications         certifications,
                          List<AssetMeaning>          meanings,
                          AssetSchemaType             schema,
-                         AssetAnnotations            analysis,
                          AssetFeedback               feedback,
                          AssetLocations              knownLocations,
                          AssetLineage                lineage,
@@ -90,7 +87,6 @@ public class AssetUniverse extends AssetDetail
 
         this.meanings = meanings;
         this.schema = schema;
-        this.analysis = analysis;
         this.feedback = feedback;
         this.knownLocations = knownLocations;
         this.lineage = lineage;
@@ -115,7 +111,6 @@ public class AssetUniverse extends AssetDetail
              * The get methods create clones of the returned objects so no need to duplicate objects here.
              */
             AssetSchemaType  templateSchema        = template.getSchema();
-            AssetAnnotations templateAnalysis      = template.getAnalysis();
             AssetFeedback    templateFeedback      = template.getFeedback();
             AssetLocations   templateLocations     = template.getKnownLocations();
             AssetLineage     templateLineage       = template.getLineage();
@@ -124,10 +119,6 @@ public class AssetUniverse extends AssetDetail
             if (templateSchema != null)
             {
                 templateSchema.cloneAssetSchemaType(this);
-            }
-            if (templateAnalysis != null)
-            {
-                analysis = templateAnalysis.cloneIterator(this);
             }
             if (templateFeedback != null)
             {
@@ -194,24 +185,6 @@ public class AssetUniverse extends AssetDetail
         else
         {
             return schema.cloneAssetSchemaType(this);
-        }
-    }
-
-
-    /**
-     * Return details of the metadata discovery analysis for the asset.
-     *
-     * @return Annotations List of annotations from metadata discovery
-     */
-    public AssetAnnotations getAnalysis()
-    {
-        if (analysis == null)
-        {
-            return null;
-        }
-        else
-        {
-            return analysis.cloneIterator(this);
         }
     }
 
@@ -300,7 +273,6 @@ public class AssetUniverse extends AssetDetail
                 "assetBean=" + assetBean +
                 ", assetMeanings=" + meanings +
                 ", schema=" + schema +
-                ", analysis=" + analysis +
                 ", feedback=" + feedback +
                 ", knownLocations=" + knownLocations +
                 ", lineage=" + lineage +
@@ -339,7 +311,6 @@ public class AssetUniverse extends AssetDetail
         AssetUniverse that = (AssetUniverse) objectToCompare;
         return Objects.equals(getMeanings(), that.getMeanings()) &&
                 Objects.equals(getSchema(), that.getSchema()) &&
-                Objects.equals(getAnalysis(), that.getAnalysis()) &&
                 Objects.equals(getFeedback(), that.getFeedback()) &&
                 Objects.equals(getKnownLocations(), that.getKnownLocations()) &&
                 Objects.equals(getLineage(), that.getLineage()) &&
