@@ -17,7 +17,7 @@ image:
 
   egeria:
     repository: planetf1/egeria-egeriavdc
-    tag: 0.1.4
+    tag: 0.1.5
     pullPolicy: IfNotPresent
 
   gaian:
@@ -27,7 +27,7 @@ image:
 
   atlas:
     repository: planetf1/atlas-1773-egeria
-    tag: 0.1.6
+    tag: 0.1.8
     pullPolicy: IfNotPresent
 
   atlasinit:
@@ -41,7 +41,7 @@ image:
     #pullPolicy: IfNotPresent
   igcproxy:
     repository: planetf1/egeria-egeriavdc
-    tag: 0.1.4
+    tag: 0.1.5
     pullPolicy: IfNotPresent
 
   kafkamonitor:
