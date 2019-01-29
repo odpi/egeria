@@ -84,6 +84,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private DiscoveryEngineConfig     discoveryEngineConfig     = null;
     private StewardshipServicesConfig stewardshipServicesConfig = null;
     private SecuritySyncConfig        securitySyncConfig        = null;
+    private VirtualizerConfig         virtualizerConfig         = null;
 
 
     /**
@@ -119,6 +120,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             discoveryEngineConfig = template.getDiscoveryEngineConfig();
             stewardshipServicesConfig = template.getStewardshipServicesConfig();
             securitySyncConfig = template.getSecuritySyncConfig();
+            virtualizerConfig = template.getVirtualizerConfig();
         }
     }
 
@@ -409,6 +411,23 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         this.securitySyncConfig = securitySyncConfig;
     }
 
+    /**
+     * Return the configuration for the virtualization services.
+     *
+     * @return VirtualizerConfig properties
+     */
+    public VirtualizerConfig getVirtualizerConfig() {
+        return virtualizerConfig;
+    }
+
+    /**
+     * Set up the configuration for the virtualization services.
+     *
+     * @param virtualizerConfig properties
+     */
+    public void setVirtualizerConfig(VirtualizerConfig virtualizerConfig) {
+        this.virtualizerConfig = virtualizerConfig;
+    }
 
     /**
      * Standard toString method.
@@ -432,6 +451,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 ", discoveryEngineConfig=" + discoveryEngineConfig +
                 ", stewardshipServicesConfig=" + stewardshipServicesConfig +
                 ", securitySyncConfig=" + securitySyncConfig +
+                ", virtualizerConfig" + virtualizerConfig +
                 '}';
     }
 
@@ -466,7 +486,8 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
                 Objects.equals(getDiscoveryEngineConfig(), that.getDiscoveryEngineConfig()) &&
                 Objects.equals(getStewardshipServicesConfig(), that.getStewardshipServicesConfig()) &&
-                Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig());
+                Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
+                Objects.equals(getVirtualizerConfig(), that.getVirtualizerConfig());
     }
 
 
@@ -481,6 +502,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         return Objects.hash(getLocalServerId(), getLocalServerName(), getLocalServerType(), getOrganizationName(),
                             getLocalServerURL(), getLocalServerUserId(), getMaxPageSize(), getEventBusConfig(),
                             getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryEngineConfig(),
-                            getStewardshipServicesConfig(), getSecuritySyncConfig());
+                            getStewardshipServicesConfig(), getSecuritySyncConfig(), getVirtualizerConfig());
     }
 }

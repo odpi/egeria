@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -24,19 +25,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class VirtualizerConfig implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class VirtualizerConfig extends AdminServicesConfigHeader {
 
-    private String                 connectorProvider = null;
-    private Map<String, Object> additionalProperties = null;
-    private Connection      virtualizationConnection = null;
-    private Connection            eventbusConnection = null;
+    private String logFileName = "virtualizer.log";
+    private String virtualizationProvider = null;
+    private Connection virtualizationConnection = null;
+    private String ivInTopicName = null;
+    private Connection ivInTipic = null;
+    private String ivOutTopicName = null;
+    private Connection ivOutTipic = null;
+
 
     /**
      * Default constuctor
      */
-    public VirtualizerConfig(){
-
+    public VirtualizerConfig() {
+        super();
     }
 
     /**
@@ -44,70 +48,105 @@ public class VirtualizerConfig implements Serializable {
      *
      * @param template
      */
-    public VirtualizerConfig(VirtualizerConfig template){
-        if (template != null){
-            connectorProvider = template.getConnectorProvider();
-            additionalProperties = template.getAdditionalProperties();
+    public VirtualizerConfig(VirtualizerConfig template) {
+        if (template != null) {
+            this.virtualizationProvider = template.virtualizationProvider;
+            this.virtualizationConnection = template.virtualizationConnection;
+            this.ivInTopicName = template.ivInTopicName;
+            this.ivInTipic = template.ivInTipic;
+            this.ivOutTopicName = template.ivOutTopicName;
+            this.ivOutTipic = template.ivOutTipic;
         }
     }
 
-    /**
-     * Return the class name of the connector provider for the event bus.
-     *
-     * @return class name
-     */
-    public String getConnectorProvider()
-    {
-        return connectorProvider;
+    public String getLogFileName() {
+        return logFileName;
+    }
+
+    public void setLogFileName(String logFileName) {
+        this.logFileName = logFileName;
+    }
+
+    public String getVirtualizationProvider() {
+        return virtualizationProvider;
+    }
+
+    public void setVirtualizationProvider(String virtualizationProvider) {
+        this.virtualizationProvider = virtualizationProvider;
+    }
+
+    public Connection getVirtualizationConnection() {
+        return virtualizationConnection;
+    }
+
+    public void setVirtualizationConnection(Connection virtualizationConnection) {
+        this.virtualizationConnection = virtualizationConnection;
+    }
+
+    public String getIvInTopicName() {
+        return ivInTopicName;
+    }
+
+    public void setIvInTopicName(String ivInTopicName) {
+        this.ivInTopicName = ivInTopicName;
+    }
+
+    public Connection getIvInTipic() {
+        return ivInTipic;
+    }
+
+    public void setIvInTipic(Connection ivInTipic) {
+        this.ivInTipic = ivInTipic;
+    }
+
+    public String getIvOutTopicName() {
+        return ivOutTopicName;
+    }
+
+    public void setIvOutTopicName(String ivOutTopicName) {
+        this.ivOutTopicName = ivOutTopicName;
+    }
+
+    public Connection getIvOutTipic() {
+        return ivOutTipic;
+    }
+
+    public void setIvOutTipic(Connection ivOutTipic) {
+        this.ivOutTipic = ivOutTipic;
     }
 
 
     /**
-     * Set up the class name of the connector provider for the event bus.
+     * Validate that an object is equal depending on their stored values.
      *
-     * @param connectorProvider class name
+     * @param objectToCompare object
+     * @return boolean result
      */
-    public void setConnectorProvider(String connectorProvider)
-    {
-        this.connectorProvider = connectorProvider;
+    @Override
+    public boolean equals(Object objectToCompare) {
+        if (this == objectToCompare) {
+            return true;
+        }
+        if (objectToCompare == null || getClass() != objectToCompare.getClass()) {
+            return false;
+        }
+        VirtualizerConfig that = (VirtualizerConfig) objectToCompare;
+        return  Objects.equals(getIvInTopicName(), that.getIvInTopicName())&&
+                Objects.equals(getIvInTipic(), that.getIvInTipic()) &&
+                Objects.equals(getIvOutTopicName(), that.getIvOutTopicName()) &&
+                Objects.equals(getVirtualizationProvider(), that.getVirtualizationProvider()) &&
+                Objects.equals(getVirtualizationConnection(), that.getVirtualizationConnection());
     }
 
 
     /**
-     * Return the root of the topic URL.  The open metadata modules will add specific names to the root URL.
+     * Return a hash code based on the values of this object.
      *
-     * @return string URL
+     * @return in hash code
      */
-
-    /**
-     * Return the additional properties for the event bus connection.
-     *
-     * @return map of name value pairs
-     */
-    public Map<String, Object> getAdditionalProperties()
-    {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
-    }
-
-
-    /**
-     * Set up the additional properties for the event bus connection.
-     *
-     * @param additionalProperties map of name value pairs
-     */
-    public void setAdditionalProperties(Map<String, Object> additionalProperties)
-    {
-        this.additionalProperties = additionalProperties;
+    @Override
+    public int hashCode(){
+        return  Objects.hash(getIvInTipic(), getIvInTopicName(), getIvOutTipic(), getIvOutTopicName(),
+                             getVirtualizationConnection(), getVirtualizationProvider());
     }
 }
