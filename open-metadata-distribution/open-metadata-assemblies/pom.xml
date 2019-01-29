@@ -37,7 +37,6 @@
                             <descriptors>
                                 <descriptor>src/main/assemblies/src-package.xml</descriptor>
                                 <descriptor>src/main/assemblies/omag-server.xml</descriptor>
-                                <descriptor>src/main/assemblies/igc-repository-proxy-server.xml</descriptor>
                             </descriptors>
                             <finalName>egeria-${open-metadata.version}</finalName>
                             <tarLongFileMode>gnu</tarLongFileMode>
