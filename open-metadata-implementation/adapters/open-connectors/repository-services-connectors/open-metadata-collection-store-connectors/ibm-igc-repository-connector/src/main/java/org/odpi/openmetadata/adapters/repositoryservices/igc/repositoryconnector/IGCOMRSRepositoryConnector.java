@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperti
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,26 +47,46 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
     {
         super.initialize(connectorInstanceId, connectionProperties);
 
+        final String methodName = "initialize";
+        log.debug("Initializing IGCOMRSRepositoryConnector...");
+
         // Retrieve connection details
         String baseURL = (String) this.connectionBean.getAdditionalProperties().get("igcBaseURL");
         String auth = (String) this.connectionBean.getAdditionalProperties().get("igcAuthorization");
 
         // Create new REST API client (opens a new session)
         this.igcRestClient = new IGCRestClient(baseURL, auth);
-        if (getMaxPageSize() > 0) {
-            this.igcRestClient.setDefaultPageSize(getMaxPageSize());
+        if (this.igcRestClient.isSuccessfullyInitialised()) {
+            if (getMaxPageSize() > 0) {
+                this.igcRestClient.setDefaultPageSize(getMaxPageSize());
+            }
+
+            // Set the version based on the IGC client's auto-determination of the IGC environment's version
+            this.igcVersion = this.igcRestClient.getIgcVersion();
+
+            try {
+                boolean success = upsertOMRSBundleZip();
+                this.igcRestClient.registerPOJO(OMRSStub.class);
+                successfulInit = success;
+            } catch (RepositoryErrorException e) {
+                log.error("Unable to create necessary OMRS objects -- failing.", e);
+                successfulInit = false;
+            }
+        } else {
+            successfulInit = false;
         }
 
-        // Set the version based on the IGC client's auto-determination of the IGC environment's version
-        this.igcVersion = this.igcRestClient.getIgcVersion();
-
-        try {
-            boolean success = upsertOMRSBundleZip();
-            this.igcRestClient.registerPOJO(OMRSStub.class);
-            successfulInit = success;
-        } catch (RepositoryErrorException e) {
-            log.error("Unable to create necessary OMRS objects -- failing.", e);
-            successfulInit = false;
+        if (!successfulInit) {
+            IGCOMRSErrorCode errorCode = IGCOMRSErrorCode.REST_CLIENT_FAILURE;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(baseURL);
+            throw new OMRSRuntimeException(
+                    errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction()
+            );
         }
 
     }
@@ -94,7 +115,7 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
          */
         if (successfulInit) {
             metadataCollection = new IGCOMRSMetadataCollection(this,
-                    super.serverName,
+                    serverName,
                     repositoryHelper,
                     repositoryValidator,
                     metadataCollectionId);
@@ -109,11 +130,6 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
 
         // Close the session on the IGC REST client
         this.igcRestClient.disconnect();
-
-        super.metadataCollection = new IGCOMRSMetadataCollection(this,
-                super.serverName,
-                repositoryHelper,
-                repositoryValidator, metadataCollectionId);
 
     }
 
@@ -160,11 +176,8 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
             if (bundle != null) {
                 bAlreadyExists = this.igcRestClient.upsertOpenIgcBundle("OMRS", bundle.getAbsolutePath());
             } else if (!bAlreadyExists) {
-                OMRSErrorCode errorCode = OMRSErrorCode.REPOSITORY_LOGIC_ERROR;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
-                        repositoryName,
-                        methodName,
-                        "Unable to generate OMRS bundle.");
+                IGCOMRSErrorCode errorCode = IGCOMRSErrorCode.OMRS_BUNDLE_FAILURE;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage("generate");
                 throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
                         this.getClass().getName(),
                         methodName,
@@ -174,11 +187,8 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
             }
         } catch (IOException e) {
             if (!bAlreadyExists) {
-                OMRSErrorCode errorCode = OMRSErrorCode.REPOSITORY_LOGIC_ERROR;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
-                        repositoryName,
-                        methodName,
-                        "Unable to open bundle resource for OMRS.");
+                IGCOMRSErrorCode errorCode = IGCOMRSErrorCode.OMRS_BUNDLE_FAILURE;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage("open");
                 throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
                         this.getClass().getName(),
                         methodName,

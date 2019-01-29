@@ -2,13 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.attributes;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDef;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * The base class for all mappings between OMRS AttributeTypeDefs and IGC properties.
@@ -94,30 +96,145 @@ public abstract class AttributeMapping {
     }
 
     /**
-     * Returns the OMRS PrimitivePropertyValue represented by the provided value.
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
      *
-     * @param value the value to represent as an OMRS PrimitivePropertyValue
-     * @return PrimitivePropertyValue
+     * @param omrsRepositoryHelper the OMRS repository helper
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param property  the property
+     * @param propertyValue  value of property
+     * @param methodName  calling method name
+     * @return instance properties object.
      */
-    public static PrimitivePropertyValue getPrimitivePropertyValue(Object value) {
-        PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
-        PrimitiveDef primitiveDef = new PrimitiveDef();
-        if (value instanceof Boolean) {
-            primitiveDef.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
-        } else if (value instanceof Date) {
-            primitiveDef.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
-        } else if (value instanceof Integer) {
-            primitiveDef.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
-        } else if (value instanceof Number) {
-            primitiveDef.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
+    public static InstanceProperties addPrimitivePropertyToInstance(OMRSRepositoryHelper omrsRepositoryHelper,
+                                                                    String sourceName,
+                                                                    InstanceProperties properties,
+                                                                    TypeDefAttribute property,
+                                                                    Object propertyValue,
+                                                                    String methodName) {
+
+        InstanceProperties  resultingProperties = properties;
+
+        if (propertyValue != null) {
+            String propertyName = property.getAttributeName();
+            log.debug("Adding property " + propertyName + " for " + methodName);
+
+            if (property.getAttributeType().getCategory() == AttributeTypeDefCategory.PRIMITIVE) {
+                try {
+                    PrimitiveDef primitiveDef = (PrimitiveDef) property.getAttributeType();
+                    switch (primitiveDef.getPrimitiveDefCategory()) {
+                        case OM_PRIMITIVE_TYPE_BOOLEAN:
+                            boolean booleanValue;
+                            if (propertyValue instanceof Boolean) {
+                                booleanValue = (Boolean) propertyValue;
+                            } else {
+                                booleanValue = Boolean.valueOf(propertyValue.toString());
+                            }
+                            resultingProperties = omrsRepositoryHelper.addBooleanPropertyToInstance(
+                                    sourceName,
+                                    properties,
+                                    propertyName,
+                                    booleanValue,
+                                    methodName
+                            );
+                            break;
+                        case OM_PRIMITIVE_TYPE_INT:
+                            int intValue;
+                            if (propertyValue instanceof Integer) {
+                                intValue = (Integer) propertyValue;
+                            } else if (propertyValue instanceof Number) {
+                                intValue = ((Number) propertyValue).intValue();
+                            } else {
+                                intValue = Integer.valueOf(propertyValue.toString());
+                            }
+                            resultingProperties = omrsRepositoryHelper.addIntPropertyToInstance(
+                                    sourceName,
+                                    properties,
+                                    propertyName,
+                                    intValue,
+                                    methodName
+                            );
+                            break;
+                        case OM_PRIMITIVE_TYPE_LONG:
+                            long longValue;
+                            if (propertyValue instanceof Long) {
+                                longValue = (Long) propertyValue;
+                            } else if (propertyValue instanceof Number) {
+                                longValue = ((Number) propertyValue).longValue();
+                            } else {
+                                longValue = Long.valueOf(propertyValue.toString());
+                            }
+                            resultingProperties = omrsRepositoryHelper.addLongPropertyToInstance(
+                                    sourceName,
+                                    properties,
+                                    propertyName,
+                                    longValue,
+                                    methodName
+                            );
+                            break;
+                        case OM_PRIMITIVE_TYPE_FLOAT:
+                            float floatValue;
+                            if (propertyValue instanceof Float) {
+                                floatValue = (Float) propertyValue;
+                            } else if (propertyValue instanceof Number) {
+                                floatValue = ((Number) propertyValue).floatValue();
+                            } else {
+                                floatValue = Float.valueOf(propertyValue.toString());
+                            }
+                            resultingProperties = omrsRepositoryHelper.addFloatPropertyToInstance(
+                                    sourceName,
+                                    properties,
+                                    propertyName,
+                                    floatValue,
+                                    methodName
+                            );
+                            break;
+                        case OM_PRIMITIVE_TYPE_STRING:
+                            String stringValue;
+                            if (propertyValue instanceof String) {
+                                stringValue = (String) propertyValue;
+                            } else {
+                                stringValue = propertyValue.toString();
+                            }
+                            resultingProperties = omrsRepositoryHelper.addStringPropertyToInstance(
+                                    sourceName,
+                                    properties,
+                                    propertyName,
+                                    stringValue,
+                                    methodName
+                            );
+                            break;
+                        case OM_PRIMITIVE_TYPE_DATE:
+                            if (propertyValue instanceof Date) {
+                                resultingProperties = omrsRepositoryHelper.addDatePropertyToInstance(
+                                        sourceName,
+                                        properties,
+                                        propertyName,
+                                        (Date) propertyValue,
+                                        methodName
+                                );
+                            } else {
+                                log.warn("Unable to parse date automatically -- must be first converted before passing in: {}", propertyValue);
+                            }
+                            break;
+                        default:
+                            log.error("Unhandled primitive type {} for {}", primitiveDef.getPrimitiveDefCategory(), propertyName);
+                    }
+                } catch (ClassCastException e) {
+                    log.error("Unable to cast {} to {} for {}", propertyValue, property.getAttributeType(), propertyName);
+                } catch (NumberFormatException e) {
+                    log.error("Unable to convert {} to {} for {}", propertyValue, property.getAttributeType(), propertyName);
+                }
+            } else {
+                log.error("Cannot translate non-primitive property {} this way.", propertyName);
+            }
         } else {
-            primitiveDef.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+            log.debug("Null property");
         }
-        propertyValue.setPrimitiveValue(value);
-        propertyValue.setPrimitiveDefCategory(primitiveDef.getPrimitiveDefCategory());
-        propertyValue.setTypeGUID(primitiveDef.getGUID());
-        propertyValue.setTypeName(primitiveDef.getName());
-        return propertyValue;
+
+        return resultingProperties;
+
     }
 
 }

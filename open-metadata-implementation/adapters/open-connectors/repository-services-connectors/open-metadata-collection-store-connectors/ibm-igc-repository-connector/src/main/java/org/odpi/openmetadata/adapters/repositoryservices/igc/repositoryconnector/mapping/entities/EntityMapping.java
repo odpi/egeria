@@ -336,31 +336,4 @@ public abstract class EntityMapping {
         }
     }
 
-    /**
-     * Returns the OMRS PrimitivePropertyValue represented by the provided value.
-     *
-     * @param value the value to represent as an OMRS PrimitivePropertyValue
-     * @return PrimitivePropertyValue
-     */
-    public static PrimitivePropertyValue getPrimitivePropertyValue(Object value) {
-        PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
-        PrimitiveDef primitiveDef = new PrimitiveDef();
-        if (value instanceof Boolean) {
-            primitiveDef.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
-        } else if (value instanceof Date) {
-            primitiveDef.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
-        } else if (value instanceof Integer) {
-            primitiveDef.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
-        } else if (value instanceof Number) {
-            primitiveDef.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
-        } else {
-            primitiveDef.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        }
-        propertyValue.setPrimitiveValue(value);
-        propertyValue.setPrimitiveDefCategory(primitiveDef.getPrimitiveDefCategory());
-        propertyValue.setTypeGUID(primitiveDef.getGUID());
-        propertyValue.setTypeName(primitiveDef.getName());
-        return propertyValue;
-    }
-
 }

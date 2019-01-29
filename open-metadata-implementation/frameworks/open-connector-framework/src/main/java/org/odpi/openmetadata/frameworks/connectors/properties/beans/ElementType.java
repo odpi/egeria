@@ -26,6 +26,7 @@ public class ElementType extends PropertyBase
     protected String        elementSourceServer             = null;
     protected ElementOrigin elementOrigin                   = ElementOrigin.CONFIGURATION;;
     protected String        elementHomeMetadataCollectionId = null;
+    protected String        elementLicense                  = null;
 
 
     /**
@@ -55,6 +56,7 @@ public class ElementType extends PropertyBase
             elementSourceServer = templateType.getElementSourceServer();
             elementOrigin = templateType.getElementOrigin();
             elementHomeMetadataCollectionId = templateType.getElementHomeMetadataCollectionId();
+            elementLicense = templateType.getElementLicense();
         }
     }
 
@@ -215,6 +217,28 @@ public class ElementType extends PropertyBase
 
 
     /**
+     * Return the license associated with this metadata element (null means none).
+     *
+     * @return string license name
+     */
+    public String getElementLicense()
+    {
+        return elementLicense;
+    }
+
+
+    /**
+     * Set up the license associated with this metadata element (null means none)
+     *
+     * @param elementLicense string license name
+     */
+    public void setElementLicense(String elementLicense)
+    {
+        this.elementLicense = elementLicense;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -230,6 +254,7 @@ public class ElementType extends PropertyBase
                 ", elementSourceServer='" + elementSourceServer + '\'' +
                 ", elementOrigin=" + elementOrigin +
                 ", elementHomeMetadataCollectionId='" + elementHomeMetadataCollectionId + '\'' +
+                ", elementLicense='" + elementLicense + '\'' +
                 '}';
     }
 
@@ -258,7 +283,8 @@ public class ElementType extends PropertyBase
                 Objects.equals(getElementTypeDescription(), that.getElementTypeDescription()) &&
                 Objects.equals(getElementSourceServer(), that.getElementSourceServer()) &&
                 getElementOrigin() == that.getElementOrigin() &&
-                Objects.equals(getElementHomeMetadataCollectionId(), that.getElementHomeMetadataCollectionId());
+                Objects.equals(getElementHomeMetadataCollectionId(), that.getElementHomeMetadataCollectionId()) &&
+                Objects.equals(getElementLicense(), that.getElementLicense());
     }
 
 

@@ -24,7 +24,7 @@ public class FileFolderMapper extends ReferenceableMapper {
         );
 
         // The list of properties that should be mapped
-        addSimplePropertyMapping("name", "displayName");
+        addSimplePropertyMapping("name", "name");
         addSimplePropertyMapping("short_description", "description");
 
         // The classes to use for mapping any relationships

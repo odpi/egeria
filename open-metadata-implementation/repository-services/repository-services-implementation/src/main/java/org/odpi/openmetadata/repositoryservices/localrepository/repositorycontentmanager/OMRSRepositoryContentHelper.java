@@ -2425,6 +2425,138 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      * Add the supplied property to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.
      *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    public InstanceProperties addLongPropertyToInstance(String             sourceName,
+                                                        InstanceProperties properties,
+                                                        String             propertyName,
+                                                        long               propertyValue,
+                                                        String             methodName)
+    {
+        InstanceProperties  resultingProperties;
+
+        log.debug("Adding property " + propertyName + " for " + methodName);
+
+        if (properties == null)
+        {
+            log.debug("First property");
+
+            resultingProperties = new InstanceProperties();
+        }
+        else
+        {
+            resultingProperties = properties;
+        }
+
+
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
+        primitivePropertyValue.setPrimitiveValue(propertyValue);
+
+        resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+        return resultingProperties;
+    }
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    public InstanceProperties addFloatPropertyToInstance(String             sourceName,
+                                                         InstanceProperties properties,
+                                                         String             propertyName,
+                                                         float              propertyValue,
+                                                         String             methodName)
+    {
+        InstanceProperties  resultingProperties;
+
+        log.debug("Adding property " + propertyName + " for " + methodName);
+
+        if (properties == null)
+        {
+            log.debug("First property");
+
+            resultingProperties = new InstanceProperties();
+        }
+        else
+        {
+            resultingProperties = properties;
+        }
+
+
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
+        primitivePropertyValue.setPrimitiveValue(propertyValue);
+
+        resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+        return resultingProperties;
+    }
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    public InstanceProperties addDatePropertyToInstance(String             sourceName,
+                                                        InstanceProperties properties,
+                                                        String             propertyName,
+                                                        Date               propertyValue,
+                                                        String             methodName)
+    {
+        InstanceProperties  resultingProperties;
+
+        log.debug("Adding property " + propertyName + " for " + methodName);
+
+        if (properties == null)
+        {
+            log.debug("First property");
+
+            resultingProperties = new InstanceProperties();
+        }
+        else
+        {
+            resultingProperties = properties;
+        }
+
+
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+        primitivePropertyValue.setPrimitiveValue(propertyValue);
+
+        resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+        return resultingProperties;
+    }
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
      * @param sourceName name of caller
      * @param properties properties object to add property to, may be null.
      * @param propertyName name of property

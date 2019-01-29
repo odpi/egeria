@@ -29,10 +29,9 @@ public class LibraryCategoryReferenceResponse extends SubjectAreaOMASAPIResponse
     {
         this.setResponseCategory(ResponseCategory.LibraryCategoryReferenceRelationshipRelationship);
     }
-    public LibraryCategoryReferenceResponse(LibraryCategoryReference libraryCategoryReference)
-    {
-        this.libraryCategoryReference =libraryCategoryReference;
-        this.setResponseCategory(ResponseCategory.LibraryCategoryReferenceRelationshipRelationship);
+    public LibraryCategoryReferenceResponse(LibraryCategoryReference libraryCategoryReference) {
+        this();
+        this.libraryCategoryReference = libraryCategoryReference;
     }
 
     /**

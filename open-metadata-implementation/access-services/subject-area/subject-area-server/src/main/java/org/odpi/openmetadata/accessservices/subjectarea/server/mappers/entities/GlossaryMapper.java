@@ -52,6 +52,7 @@ public class GlossaryMapper {
         omrsBean.setDescription(glossary.getDescription());
         omrsBean.setDisplayName(glossary.getName());
         omrsBean.setUsage(glossary.getUsage());
+        omrsBean.setQualifiedName(glossary.getQualifiedName());
         omrsBean.setAdditionalProperties((glossary.getAdditionalProperties()));
         List<Classification> classifications = glossary.getClassifications();
         if (classifications==null) {

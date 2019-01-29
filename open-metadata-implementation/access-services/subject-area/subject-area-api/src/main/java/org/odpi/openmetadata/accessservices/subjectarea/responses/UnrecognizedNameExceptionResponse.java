@@ -39,11 +39,11 @@ public class UnrecognizedNameExceptionResponse extends SubjectAreaOMASAPIRespons
     }
     public UnrecognizedNameExceptionResponse(SubjectAreaCheckedExceptionBase e)
     {
+        this();
         this.exceptionClassName = e.getReportingClassName();
         this.exceptionErrorMessage = e.getErrorMessage();
         this.exceptionSystemAction = e.getReportedSystemAction();
         this.exceptionUserAction = e.getReportedUserAction();
-        this.setResponseCategory(ResponseCategory.UnrecognizedNameException);
         this.name = ((UnrecognizedNameException)e).getName();
     }
 
