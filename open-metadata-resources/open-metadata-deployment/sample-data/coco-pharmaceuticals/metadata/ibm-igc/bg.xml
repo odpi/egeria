@@ -87,7 +87,6 @@
         <term rid="6662c0f2.e1b1ec6c.00263v5ma.ggkavjk.k8336l.ecj6gedj8i5j3d7n7u3eb" name="Confidential" shortDescription="The data should be protected and only shared with people with a need to see it." status="STANDARD" type="NONE">
             <parentCategory rid="6662c0f2.ee6a64fe.00263v5kq.vfvo181.0dogg1.qbngmle6tcsbik903jtoh" identity="Coco Pharmaceuticals::Confidentiality"/>
             <assignedAssets>
-                <termRef rid="6662c0f2.e1b1ec6c.00263pgtg.ibgp6ju.f2hgql.kh1o8e0p85uahptrt97s0" identity="Coco Pharmaceuticals::Terms::Annual Leave Allowance"/>
                 <termRef rid="6662c0f2.e1b1ec6c.00263pfrb.66t5p8c.jk5353.69k7s3u2do49odaavci58" identity="Coco Pharmaceuticals::Terms::Employee Status"/>
                 <termRef rid="6662c0f2.e1b1ec6c.00263ph2k.b6kb0d8.k164b7.5g8ghnulmmemam4b7btsj" identity="Coco Pharmaceuticals::Terms::Employee Contract Type"/>
                 <termRef rid="6662c0f2.e1b1ec6c.00263pgh3.t31gl2q.lmuj3g.l1serkqbms76e5v8n8mes" identity="Coco Pharmaceuticals::Terms::Job Level"/>
@@ -110,9 +109,7 @@
                 <termRef rid="6662c0f2.e1b1ec6c.00263shn0.gh72fkj.n54p96.2u60dcfo2vdvid0hjl8tc" identity="Coco Pharmaceuticals::Terms::Clinical Trial Identifier"/>
                 <termRef rid="6662c0f2.e1b1ec6c.000ma7v2v.22lhucm.1dejbr.d4q1ru9h11id4mi73tfus" identity="Coco Pharmaceuticals::Terms::Department Name"/>
                 <termRef rid="6662c0f2.e1b1ec6c.00263pfur.m0g2a5b.l5676h.5imorjcftp26mv2rr93bp" identity="Coco Pharmaceuticals::Terms::Employee Contract Number"/>
-                <termRef rid="6662c0f2.e1b1ec6c.00263sgoc.mtdloig.b7tn1s.ak70gpnuqo5i7m5rdfo7u" identity="Coco Pharmaceuticals::Terms::Job Description"/>
                 <termRef rid="6662c0f2.e1b1ec6c.00263shju.4n81vfs.ls7stp.av264bv65koi09os7v92l" identity="Coco Pharmaceuticals::Terms::Patient Identifier"/>
-                <termRef rid="6662c0f2.e1b1ec6c.00263sgot.jbooooq.ji0mav.nq8i0vihjej8sqkht0nl1" identity="Coco Pharmaceuticals::Terms::Work Location Code"/>
             </assignedAssets>
         </term>
         <term rid="6662c0f2.e1b1ec6c.och6gskvf.g7abp3p.kj0jsh.vcehf9ug0opnsv3hh1bg5" name="Other" shortDescription="Another confidentially level." status="STANDARD" type="NONE">
@@ -178,12 +175,6 @@
         </term>
         <term rid="6662c0f2.e1b1ec6c.00263shml.beko45i.c0evnb.dtnbci8731alks6c2j53k" name="Address Line 5" status="ACCEPTED" type="NONE">
             <parentCategory rid="6662c0f2.ee6a64fe.000mapgrf.s13u7id.1jj22v.o3lqpcd4vrs1vudmdt9ua" identity="Coco Pharmaceuticals::Terms"/>
-        </term>
-        <term rid="6662c0f2.e1b1ec6c.00263pgtg.ibgp6ju.f2hgql.kh1o8e0p85uahptrt97s0" name="Annual Leave Allowance" shortDescription="Number of annual leave days per year per employee" status="ACCEPTED" type="NONE">
-            <parentCategory rid="6662c0f2.ee6a64fe.000mapgrf.s13u7id.1jj22v.o3lqpcd4vrs1vudmdt9ua" identity="Coco Pharmaceuticals::Terms"/>
-            <referencedByCategories>
-                <categoryRef rid="6662c0f2.ee6a64fe.o1h6evehs.j0f25pn.ihsrb3.m7984f1jgfencf15nopk0" identity="Coco Pharmaceuticals::Subject Areas::Person::Employee"/>
-            </referencedByCategories>
         </term>
         <term rid="6662c0f2.e1b1ec6c.00263ph4a.8t5bomo.aqcege.rpl6gvjifgv1d8gh5labg" name="Annual Salary" status="ACCEPTED" type="NONE">
             <parentCategory rid="6662c0f2.ee6a64fe.000mapgrf.s13u7id.1jj22v.o3lqpcd4vrs1vudmdt9ua" identity="Coco Pharmaceuticals::Terms"/>
@@ -278,12 +269,6 @@
                 <categoryRef rid="6662c0f2.ee6a64fe.o1h6evehs.j0f25pn.ihsrb3.m7984f1jgfencf15nopk0" identity="Coco Pharmaceuticals::Subject Areas::Person::Employee"/>
             </referencedByCategories>
         </term>
-        <term rid="6662c0f2.e1b1ec6c.00263sgoc.mtdloig.b7tn1s.ak70gpnuqo5i7m5rdfo7u" name="Job Description" shortDescription="Job title that is filled in manually by anyone working for the company" status="ACCEPTED" type="NONE">
-            <parentCategory rid="6662c0f2.ee6a64fe.000mapgrf.s13u7id.1jj22v.o3lqpcd4vrs1vudmdt9ua" identity="Coco Pharmaceuticals::Terms"/>
-            <referencedByCategories>
-                <categoryRef rid="6662c0f2.ee6a64fe.o1h6evehs.j0f25pn.ihsrb3.m7984f1jgfencf15nopk0" identity="Coco Pharmaceuticals::Subject Areas::Person::Employee"/>
-            </referencedByCategories>
-        </term>
         <term rid="6662c0f2.e1b1ec6c.00263pgh3.t31gl2q.lmuj3g.l1serkqbms76e5v8n8mes" name="Job Level" status="ACCEPTED" type="NONE">
             <parentCategory rid="6662c0f2.ee6a64fe.000mapgrf.s13u7id.1jj22v.o3lqpcd4vrs1vudmdt9ua" identity="Coco Pharmaceuticals::Terms"/>
             <referencedByCategories>
@@ -342,9 +327,6 @@
             <parentCategory rid="6662c0f2.ee6a64fe.000mapgrf.s13u7id.1jj22v.o3lqpcd4vrs1vudmdt9ua" identity="Coco Pharmaceuticals::Terms"/>
         </term>
         <term rid="6662c0f2.e1b1ec6c.00263pgk7.nu7f3ut.c2hoo7.orafl03b4mu13d5l5alll" name="Work Location" shortDescription="City which is registered as employee work location" status="ACCEPTED" type="NONE">
-            <parentCategory rid="6662c0f2.ee6a64fe.000mapgrf.s13u7id.1jj22v.o3lqpcd4vrs1vudmdt9ua" identity="Coco Pharmaceuticals::Terms"/>
-        </term>
-        <term rid="6662c0f2.e1b1ec6c.00263sgot.jbooooq.ji0mav.nq8i0vihjej8sqkht0nl1" name="Work Location Code" status="ACCEPTED" type="NONE">
             <parentCategory rid="6662c0f2.ee6a64fe.000mapgrf.s13u7id.1jj22v.o3lqpcd4vrs1vudmdt9ua" identity="Coco Pharmaceuticals::Terms"/>
         </term>
         <term rid="6662c0f2.e1b1ec6c.00263pfjd.mdc3fge.hf83cl.cbijntvurs6875rtm5lig" name="Years of Service" shortDescription="Number of years employee worked in the company" status="ACCEPTED" type="NONE">
