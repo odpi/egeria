@@ -19,7 +19,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
-public class OMAGServerAdminResource
+public class  OMAGServerAdminResource
 {
     private OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
 
@@ -39,7 +39,8 @@ public class OMAGServerAdminResource
      * @param typeName  short description for the type of server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverType parameter.
+     * OMAGInvalidParameterE
+     * xception invalid serverName or serverType parameter.
      */
     @RequestMapping(method = RequestMethod.POST, path = "/server-type")
     public VoidResponse setServerType(@PathVariable String userId,
