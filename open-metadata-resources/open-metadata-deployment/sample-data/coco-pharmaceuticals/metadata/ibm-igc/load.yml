@@ -228,7 +228,7 @@
         - number_of: term
           meeting_all_conditions:
             - { property: "parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
-          is: 52
+          is: 49
         - number_of: database_column
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "COMPDIR" }
@@ -258,7 +258,7 @@
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
             - { property: "assigned_to_terms.parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
-          is: 61
+          is: 55
         - number_of: data_file_field
           meeting_all_conditions:
             - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
@@ -269,7 +269,7 @@
             - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
             - { property: "data_file_record.data_file.path", operator: "=", value: "{{ egeria_samples_cocopharma_targets.files }}" }
             - { property: "assigned_to_terms.parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
-          is: 61
+          is: 55
 
 - name: remove cached files
   file:
