@@ -32,8 +32,8 @@ public class TermCategorizationRelationshipResponse extends SubjectAreaOMASAPIRe
     }
     public TermCategorizationRelationshipResponse(TermCategorization termCategorization)
     {
+        this();
         this.termCategorization =termCategorization;
-        this.setResponseCategory(ResponseCategory.TermCategorizationRelationship);
     }
 
     /**

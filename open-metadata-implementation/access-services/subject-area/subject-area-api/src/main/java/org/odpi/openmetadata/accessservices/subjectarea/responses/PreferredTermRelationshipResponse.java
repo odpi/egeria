@@ -31,8 +31,8 @@ public class PreferredTermRelationshipResponse extends SubjectAreaOMASAPIRespons
     }
     public PreferredTermRelationshipResponse(PreferredTerm preferredTermRelationship)
     {
+        this();
         this.preferredTerm =preferredTermRelationship;
-        this.setResponseCategory(ResponseCategory.PreferredTermRelationship);
     }
 
 

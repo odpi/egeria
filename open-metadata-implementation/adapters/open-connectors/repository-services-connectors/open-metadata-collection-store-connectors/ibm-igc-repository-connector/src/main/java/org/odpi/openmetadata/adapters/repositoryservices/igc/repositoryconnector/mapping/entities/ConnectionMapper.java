@@ -24,7 +24,7 @@ public class ConnectionMapper extends ReferenceableMapper {
         );
 
         // The list of properties that should be mapped
-        addSimplePropertyMapping("name", "name");
+        addSimplePropertyMapping("name", "displayName");
         addSimplePropertyMapping("short_description", "description");
 
         // The list of relationships that should be mapped

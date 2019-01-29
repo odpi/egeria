@@ -5,6 +5,7 @@ package org.odpi.openmetadata.adminservices;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
+import org.odpi.openmetadata.securitysyncservices.configuration.registration.SecuritySyncOperationalServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,9 +15,10 @@ import java.util.List;
  */
 public class OMAGOperationalServicesInstance
 {
-    private OMAGServerConfig         operationalConfiguration          = null;
-    private OMRSOperationalServices  operationalRepositoryServices     = null;
-    private List<AccessServiceAdmin> operationalAccessServiceAdminList = new ArrayList<>();
+    private OMAGServerConfig         operationalConfiguration               = null;
+    private OMRSOperationalServices  operationalRepositoryServices          = null;
+    private List<AccessServiceAdmin> operationalAccessServiceAdminList      = new ArrayList<>();
+    private SecuritySyncOperationalServices securitySyncOperationalServices = null;
 
     /**
      * Default constructor
@@ -90,5 +92,25 @@ public class OMAGOperationalServicesInstance
     public void setOperationalAccessServiceAdminList(List<AccessServiceAdmin> operationalAccessServiceAdminList)
     {
         this.operationalAccessServiceAdminList = operationalAccessServiceAdminList;
+    }
+
+    /**
+     * Return the running instance of the Security Sync
+     *
+     * @return SecuritySyncOperationalServices object
+     */
+    public SecuritySyncOperationalServices getSecuritySyncOperationalServices()
+    {
+        return securitySyncOperationalServices;
+    }
+
+    /**
+     * Set up the running instance of the Security Sync
+     *
+     * @param securitySyncOperationalServices SecuritySyncOperationalServices object
+     */
+    public void setSecuritySyncOperationalServices(SecuritySyncOperationalServices securitySyncOperationalServices)
+    {
+        this.securitySyncOperationalServices = securitySyncOperationalServices;
     }
 }

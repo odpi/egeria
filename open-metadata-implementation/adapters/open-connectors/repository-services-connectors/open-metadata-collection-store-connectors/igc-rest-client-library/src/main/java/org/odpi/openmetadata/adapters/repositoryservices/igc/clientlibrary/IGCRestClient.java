@@ -24,6 +24,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.update.IGCUpdate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.FileSystemResource;
@@ -32,6 +33,7 @@ import org.springframework.util.Base64Utils;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -62,6 +64,7 @@ public class IGCRestClient {
     private String baseURL;
     private Boolean workflowEnabled = false;
     private List<String> cookies = null;
+    private boolean successfullyInitialised = false;
 
     private IGCVersionEnum igcVersion;
     private HashMap<String, Class> registeredPojosByType;
@@ -98,8 +101,11 @@ public class IGCRestClient {
         this.mapper.enableDefaultTyping();
         this.registeredPojosByType = new HashMap<>();
 
+        log.debug("Constructing IGCRestClient...");
+
         // Run a simple initial query to obtain a session and setup the cookies
         if (this.baseURL != null && this.authorization != null) {
+
             IGCSearch igcSearch = new IGCSearch("category");
             igcSearch.addType("term");
             igcSearch.addType("information_governance_policy");
@@ -107,29 +113,45 @@ public class IGCRestClient {
             igcSearch.setPageSize(1);
             igcSearch.setDevGlossary(true);
             JsonNode response = searchJson(igcSearch);
-            this.workflowEnabled = response.path("paging").path("numTotal").asInt(0) > 0;
-        }
 
-        // Register the non-generated types
-        this.registerPOJO(Paging.class);
+            if (response != null) {
 
-        // Start with lowest version supported
-        this.igcVersion = IGCVersionEnum.values()[0];
-        ArrayNode igcTypes = getTypes();
-        for (JsonNode node : igcTypes) {
-            // Check for a type that does not exist in the lowest version supported against higher versions, and if found
-            // set our version to that higher version
-            String assetType = node.path("_id").asText();
-            for (IGCVersionEnum aVersion : IGCVersionEnum.values()) {
-                if (aVersion.isHigherThan(this.igcVersion)
-                        && assetType.equals(aVersion.getTypeNameFirstAvailableInThisVersion())) {
-                    this.igcVersion = aVersion;
+                log.debug("Checking for workflow and registering version...");
+                this.workflowEnabled = response.path("paging").path("numTotal").asInt(0) > 0;
+                // Register the non-generated types
+                this.registerPOJO(Paging.class);
+
+                // Start with lowest version supported
+                this.igcVersion = IGCVersionEnum.values()[0];
+                ArrayNode igcTypes = getTypes();
+                for (JsonNode node : igcTypes) {
+                    // Check for a type that does not exist in the lowest version supported against higher versions, and if found
+                    // set our version to that higher version
+                    String assetType = node.path("_id").asText();
+                    for (IGCVersionEnum aVersion : IGCVersionEnum.values()) {
+                        if (aVersion.isHigherThan(this.igcVersion)
+                                && assetType.equals(aVersion.getTypeNameFirstAvailableInThisVersion())) {
+                            this.igcVersion = aVersion;
+                        }
+                    }
                 }
+                log.info("Detected IGC version: {}", this.igcVersion.getVersionString());
+                successfullyInitialised = true;
+
+            } else {
+                log.error("Unable to construct IGCRestClient.");
             }
+
         }
-        log.info("Detected IGC version: {}", this.igcVersion.getVersionString());
 
     }
+
+    /**
+     * Indicates whether the client was successfully initialised (true) or not (false).
+     *
+     * @return boolean
+     */
+    public boolean isSuccessfullyInitialised() { return successfullyInitialised; }
 
     /**
      * Setup the HTTP headers of a request based on either session reuse (forceLogin = false) or forcing a new
@@ -178,7 +200,6 @@ public class IGCRestClient {
             log.error("Opening a new session already attempted without success -- giving up on {} to {} with {}", method, endpoint, payload);
             return null;
         } else {
-            log.info("Session appears to have timed out -- starting a new session and re-trying the request.");
             // By removing cookies, we'll force a login
             this.cookies = null;
             return makeRequest(endpoint, method, contentType, payload, true);
@@ -342,7 +363,7 @@ public class IGCRestClient {
         HttpHeaders headers = getHttpHeaders(forceLogin);
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
-        ResponseEntity<String> response;
+        ResponseEntity<String> response = null;
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
         body.add("file", new FileSystemResource(filePath));
 
@@ -356,6 +377,7 @@ public class IGCRestClient {
                     String.class
             );
         } catch (HttpClientErrorException e) {
+            log.warn("Request failed -- session may have expired, retrying...", e);
             // If the response was forbidden (fails with exception), the session may have expired -- create a new one
             response = openNewSessionWithUpload(
                     endpoint,
@@ -363,6 +385,8 @@ public class IGCRestClient {
                     filePath,
                     forceLogin
             );
+        } catch (RestClientException e) {
+            log.error("Request failed -- check IGC environment connectivity and authentication details.", e);
         }
 
         return response;
@@ -379,7 +403,7 @@ public class IGCRestClient {
      */
     public boolean uploadFile(String endpoint, HttpMethod method, String filePath) {
         ResponseEntity<String> response = uploadFile(endpoint, method, filePath, false);
-        return (response.getStatusCode() == HttpStatus.OK);
+        return (response == null ? false : response.getStatusCode() == HttpStatus.OK);
     }
 
     /**
@@ -405,7 +429,7 @@ public class IGCRestClient {
         } else {
             toSend = new HttpEntity<>(headers);
         }
-        ResponseEntity<String> response;
+        ResponseEntity<String> response = null;
         try {
             log.debug("{}ing to {} with: {}", method, endpoint, payload);
             response = new RestTemplate().exchange(
@@ -415,6 +439,7 @@ public class IGCRestClient {
                     String.class);
             setCookiesFromResponse(response);
         } catch (HttpClientErrorException e) {
+            log.warn("Request failed -- session may have expired, retrying...", e);
             // If the response was forbidden (fails with exception), the session may have expired -- create a new one
             response = openNewSessionWithRequest(
                     endpoint,
@@ -423,6 +448,8 @@ public class IGCRestClient {
                     payload,
                     forceLogin
             );
+        } catch (RestClientException e) {
+            log.error("Request failed -- check IGC environment connectivity and authentication details.", e);
         }
         return response;
     }
@@ -446,7 +473,8 @@ public class IGCRestClient {
         );
         JsonNode jsonNode = null;
         if (response == null) {
-            log.error("Unable to make request -- are you certain the authentication details for IGC are correct?");
+            log.error("Unable to complete request -- check IGC environment connectivity and authentication details.");
+            throw new NullPointerException("Unable to complete request -- check IGC environment connectivity and authentication details.");
         } else if (response.hasBody()) {
             try {
                 jsonNode = mapper.readTree(response.getBody());
@@ -568,7 +596,17 @@ public class IGCRestClient {
      * @return JsonNode - the JSON structure indicating the updated asset's RID and updates made
      */
     public JsonNode updateJson(String rid, JsonNode value) {
-        return makeRequest(baseURL + EP_ASSET, HttpMethod.PUT, MediaType.APPLICATION_JSON, value.toString());
+        return makeRequest(baseURL + EP_ASSET + "/" + rid, HttpMethod.PUT, MediaType.APPLICATION_JSON, value.toString());
+    }
+
+    /**
+     * Apply the update described by the provided update object.
+     *
+     * @param igcUpdate update criteria to use
+     */
+    public boolean update(IGCUpdate igcUpdate) {
+        JsonNode result = updateJson(igcUpdate.getRidToUpdate(), igcUpdate.getUpdate());
+        return (result != null);
     }
 
     /**
@@ -832,7 +870,7 @@ public class IGCRestClient {
             String typeId = (String) getTypeId.invoke(null);
             this.mapper.registerSubtypes(new NamedType(clazz, typeId));
             this.registeredPojosByType.put(typeId, clazz);
-            log.debug("Registered IGC type {} to be handled by handle class: {}", typeId, clazz.getCanonicalName());
+            log.debug("Registered IGC type {} to be handled by POJO: {}", typeId, clazz.getCanonicalName());
         } catch (NoSuchMethodException e) {
             log.error("Unable to find 'getIgcTypeId' method on class: {}", clazz.getCanonicalName(), e);
         } catch (InvocationTargetException | IllegalAccessException e) {

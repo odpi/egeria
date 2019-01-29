@@ -49,7 +49,6 @@ public class AssetResponseTest
         testObject.setExceptionProperties(exceptionProperties);
 
         testObject.setAsset(assetBean);
-        testObject.setAnnotationCount(5);
         testObject.setCertificationCount(5);
         testObject.setCommentCount(5);
         testObject.setConnectionCount(5);
@@ -85,7 +84,6 @@ public class AssetResponseTest
         assertTrue(resultObject.getExceptionProperties() == null);
 
         assertTrue(resultObject.getAsset().equals(assetBean));
-        assertTrue(resultObject.getAnnotationCount() == 5);
         assertTrue(resultObject.getCertificationCount() == 5);
         assertTrue(resultObject.getCommentCount() == 5);
         assertTrue(resultObject.getConnectionCount() == 5);
@@ -117,7 +115,6 @@ public class AssetResponseTest
         assertTrue(nullObject.getExceptionUserAction() == null);
         assertTrue(nullObject.getExceptionProperties() == null);
         assertTrue(nullObject.getAsset() == null);
-        assertTrue(nullObject.getAnnotationCount() == 0);
         assertTrue(nullObject.getCertificationCount() == 0);
         assertTrue(nullObject.getCommentCount() == 0);
         assertTrue(nullObject.getConnectionCount() == 0);
@@ -142,7 +139,6 @@ public class AssetResponseTest
         assertTrue(nullObject.getExceptionUserAction() == null);
         assertTrue(nullObject.getExceptionProperties() == null);
         assertTrue(nullObject.getAsset() == null);
-        assertTrue(nullObject.getAnnotationCount() == 0);
         assertTrue(nullObject.getCertificationCount() == 0);
         assertTrue(nullObject.getCommentCount() == 0);
         assertTrue(nullObject.getConnectionCount() == 0);
