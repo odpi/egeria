@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetlineage.ffdc.exceptions;
+package org.odpi.openmetadata.accessservices.assetlineage.exceptions;
 
 import java.util.Objects;
 
@@ -10,7 +10,7 @@ import java.util.Objects;
  *
  * Typically these errors are either configuration or operational errors that can be fixed by an administrator
  * or the developer that wrote the consuming service.   However, there may be the odd bug that surfaces here.
- * The AssetConsumerErrorCode can be used with this exception to populate it with standard messages.
+ * The AssetLineageErrorCode can be used with this exception to populate it with standard messages.
  * The aim is to be able to uniquely identify the cause and remedy for the error.
  */
 public abstract class AssetLineageCheckedExceptionBase extends Exception

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetlineage.ffdc.exceptions;
+package org.odpi.openmetadata.accessservices.assetlineage.exceptions;
 
 /**
  * The PropertyServerException is thrown by the OMAS when it is not able to communicate with the
