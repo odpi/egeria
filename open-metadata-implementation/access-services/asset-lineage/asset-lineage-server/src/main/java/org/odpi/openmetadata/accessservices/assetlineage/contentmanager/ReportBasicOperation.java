@@ -76,7 +76,7 @@ public abstract class ReportBasicOperation {
         entitiesCreatorHelper.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
                                             parentGuid,
                                             sectionEntity.getGUID(),
-                                            Constants.INFORMATION_VIEW_OMAS_NAME,
+                                            Constants.ASSET_LINEAGE_OMAS_NAME,
                                             new InstanceProperties());
 
 
@@ -100,7 +100,7 @@ public abstract class ReportBasicOperation {
         entitiesCreatorHelper.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
                 parentGuid,
                 derivedColumnEntity.getGUID(),
-                Constants.INFORMATION_VIEW_OMAS_NAME,
+                Constants.ASSET_LINEAGE_OMAS_NAME,
                 new InstanceProperties());
 
         addBusinessTerm(reportColumn, derivedColumnEntity);
@@ -124,7 +124,7 @@ public abstract class ReportBasicOperation {
         entitiesCreatorHelper.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
                                             schemaAttributeEntity.getGUID(),
                                             schemaTypeEntity.getGUID(),
-                                            Constants.INFORMATION_VIEW_OMAS_NAME,
+                                            Constants.ASSET_LINEAGE_OMAS_NAME,
                                             new InstanceProperties());
         return schemaTypeEntity;
     }
@@ -135,7 +135,7 @@ public abstract class ReportBasicOperation {
                 entitiesCreatorHelper.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
                         derivedColumnEntity.getGUID(),
                         businessTermGuid,
-                        Constants.INFORMATION_VIEW_OMAS_NAME,
+                        Constants.ASSET_LINEAGE_OMAS_NAME,
                         new InstanceProperties());
             }
     }
@@ -153,7 +153,7 @@ public abstract class ReportBasicOperation {
                 entitiesCreatorHelper.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
                                                     derivedColumnEntity.getGUID(),
                                                     sourceColumnGUID,
-                                                    Constants.INFORMATION_VIEW_OMAS_NAME,
+                                                    Constants.ASSET_LINEAGE_OMAS_NAME,
                                                     schemaQueryImplProperties);
 
             } else {
@@ -173,7 +173,7 @@ public abstract class ReportBasicOperation {
         entitiesCreatorHelper.addRelationship(Constants.ASSET_SCHEMA_TYPE,
                                                 reportEntity.getGUID(),
                                                 complexSchemaTypeEntity.getGUID(),
-                                                Constants.INFORMATION_VIEW_OMAS_NAME,
+                                                Constants.ASSET_LINEAGE_OMAS_NAME,
                                                 new InstanceProperties());
         return complexSchemaTypeEntity;
     }

@@ -450,7 +450,7 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
         String actionDescription = "Send New Event";
         boolean successFlag = false;
 
-        log.info("Sending event to information view out topic");
+        log.info("Sending event to asset lineage out topic");
         log.debug("event: ", event);
 
         try {

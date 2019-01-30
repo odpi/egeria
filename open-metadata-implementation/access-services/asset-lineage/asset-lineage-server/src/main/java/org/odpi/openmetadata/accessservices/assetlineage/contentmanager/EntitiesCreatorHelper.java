@@ -305,7 +305,7 @@ public class EntitiesCreatorHelper {
         EntityDetailWrapper wrapper;
         entityDetail = getEntity(typeName, qualifiedName);
         if (entityDetail == null) {
-            entityDetail = addEntity("", Constants.USER_ID, typeName, properties, classifications, Constants.INFORMATION_VIEW_OMAS_NAME);
+            entityDetail = addEntity("", Constants.USER_ID, typeName, properties, classifications, Constants.ASSET_LINEAGE_OMAS_NAME);
             log.info("Entity with qualified name {} added", qualifiedName);
             log.info("Entity: {}", entityDetail);
             wrapper = new EntityDetailWrapper(entityDetail, EntityDetailWrapper.EntityStatus.NEW);

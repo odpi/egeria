@@ -137,7 +137,7 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
         try {
             topicConnector.start();
         } catch (ConnectorCheckedException e) {
-            auditCode = AssetLineageAuditCode.ERROR_INITIALIZING_INFORMATION_VIEW_TOPIC_CONNECTION;
+            auditCode = AssetLineageAuditCode.ERROR_INITIALIZING_ASSET_LINEAGE_TOPIC_CONNECTION;
             auditLog.logRecord(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
@@ -242,7 +242,7 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
         try {
             assetLineageInTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {
-            log.error("Error disconnecting information view topic connector");
+            log.error("Error disconnecting asset lineage topic connector");
         }
 
         if (instance != null)

@@ -189,7 +189,7 @@ public class ReportUpdater extends ReportBasicOperation {
                     entitiesCreatorHelper.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
                             columnGuid,
                             sourceColumnGuid,
-                            Constants.INFORMATION_VIEW_OMAS_NAME,
+                            Constants.ASSET_LINEAGE_OMAS_NAME,
                             schemaQueryImplProperties);
                 }
             } else {
@@ -222,7 +222,7 @@ public class ReportUpdater extends ReportBasicOperation {
                 entitiesCreatorHelper.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
                         columnGuid,
                         businessTermAssignedToColumnGuid,
-                        Constants.INFORMATION_VIEW_OMAS_NAME,
+                        Constants.ASSET_LINEAGE_OMAS_NAME,
                         new InstanceProperties());
             }
         }
