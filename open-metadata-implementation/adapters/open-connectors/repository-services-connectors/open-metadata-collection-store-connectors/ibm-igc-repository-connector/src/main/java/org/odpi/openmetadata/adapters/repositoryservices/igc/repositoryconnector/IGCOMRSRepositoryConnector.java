@@ -167,38 +167,20 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
 
         final String methodName = "upsertOMRSBundleZip";
 
-        List<String> existingBundles = this.igcRestClient.getOpenIgcBundles();
-        boolean bAlreadyExists = (existingBundles.contains("OMRS"));
-
-        ClassPathResource bundleResource = new ClassPathResource("/bundleOMRS");
-        try {
-            File bundle = this.igcRestClient.createOpenIgcBundleFile(bundleResource.getFile());
-            if (bundle != null) {
-                bAlreadyExists = this.igcRestClient.upsertOpenIgcBundle("OMRS", bundle.getAbsolutePath());
-            } else if (!bAlreadyExists) {
-                IGCOMRSErrorCode errorCode = IGCOMRSErrorCode.OMRS_BUNDLE_FAILURE;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage("generate");
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
-            }
-        } catch (IOException e) {
-            if (!bAlreadyExists) {
-                IGCOMRSErrorCode errorCode = IGCOMRSErrorCode.OMRS_BUNDLE_FAILURE;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage("open");
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
-            }
+        ClassPathResource bundleResource = new ClassPathResource("OMRS.zip");
+        boolean success = this.igcRestClient.upsertOpenIgcBundle("OMRS", bundleResource);
+        if (!success) {
+            IGCOMRSErrorCode errorCode = IGCOMRSErrorCode.OMRS_BUNDLE_FAILURE;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage("open");
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
 
-        return bAlreadyExists;
+        return success;
 
     }
 
