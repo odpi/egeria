@@ -4,12 +4,12 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.ClassificationOrigin;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.slf4j.Logger;
@@ -28,6 +28,8 @@ public abstract class ClassificationMapping {
     private List<String> igcRelationshipProperties;
     private String omrsClassificationType;
     private Set<String> excludeIgcAssetType;
+    private List<InstanceStatus> omrsSupportedStatuses;
+    private Set<String> mappedOmrsPropertyNames;
 
     public ClassificationMapping(String igcAssetType,
                                  String igcRelationshipProperty,
@@ -37,7 +39,39 @@ public abstract class ClassificationMapping {
         this.igcRelationshipProperties.add(igcRelationshipProperty);
         this.omrsClassificationType = omrsClassificationType;
         this.excludeIgcAssetType = new HashSet<>();
+        this.omrsSupportedStatuses = new ArrayList<>();
+        this.mappedOmrsPropertyNames = new HashSet<>();
+        addSupportedStatus(InstanceStatus.ACTIVE);
+        addSupportedStatus(InstanceStatus.DELETED);
     }
+
+    /**
+     * Add the provided status as one supported by this classification mapping.
+     *
+     * @param status a status that is supported by the mapping
+     */
+    public void addSupportedStatus(InstanceStatus status) { this.omrsSupportedStatuses.add(status); }
+
+    /**
+     * Retrieve the list of statuses that are supported by the classification mapping.
+     *
+     * @return List<InstanceStatus>
+     */
+    public List<InstanceStatus> getSupportedStatuses() { return this.omrsSupportedStatuses; }
+
+    /**
+     * Add the provided property name as one supported by this classification mapping.
+     *
+     * @param name the name of the OMRS property supported by the mapping
+     */
+    public void addMappedOmrsProperty(String name) { this.mappedOmrsPropertyNames.add(name); }
+
+    /**
+     * Retrieve the set of OMRS properties that are supported by the classification mapping.
+     *
+     * @return Set<String>
+     */
+    public Set<String> getMappedOmrsPropertyNames() { return this.mappedOmrsPropertyNames; }
 
     /**
      * Retrieve the IGC asset type to which this classification mapping applies.
@@ -89,6 +123,36 @@ public abstract class ClassificationMapping {
                                                       List<Classification> classifications,
                                                       Reference fromIgcObject,
                                                       String userId);
+
+    /**
+     * Implement this method to define how IGC assets can be searched based on this classification. (Since IGC has no
+     * actual concept of classification, this is left as a method to-be-implemented depending on how the implementation
+     * desires the classification to be represented within IGC.)
+     *
+     * @param matchClassificationProperties the criteria to use when searching for the classification
+     * @return IGCSearchConditionSet - the IGC search criteria to find entities based on this classification
+     */
+    public abstract IGCSearchConditionSet getIGCSearchCriteria(InstanceProperties matchClassificationProperties);
+
+    /**
+     * Implement this method to define how to add an OMRS classification to an existing IGC asset. (Since IGC has no
+     * actual concept of classification, this is left as a method to-be-implemented depending on how the implementation
+     * desires the classification to be represented within IGC.)
+     *
+     * @param igcomrsRepositoryConnector connectivity to the IGC repository via OMRS connector
+     * @param igcAsset the IGC object to which to add the OMRS classification
+     * @param entityGUID the GUID of the OMRS entity (ie. including any prefix)
+     * @param initialProperties the set of classification-specific properties to add to the classification
+     * @param userId the user requesting the classification to be added (currently unused)
+     * @return EntityDetail the updated entity with the OMRS classification added
+     * @throws RepositoryErrorException
+     */
+    public abstract EntityDetail addClassificationToIGCAsset(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                             Reference igcAsset,
+                                                             String entityGUID,
+                                                             InstanceProperties initialProperties,
+                                                             String userId)
+            throws RepositoryErrorException, EntityNotKnownException;
 
     /**
      * Indicates whether this classification mapping matches the provided IGC asset type: that is, this mapping

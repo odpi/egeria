@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.connectedasset.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Annotation;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Like;
 import org.testng.annotations.Test;
 

@@ -32,7 +32,6 @@ public class FindRequest
     {
     }
 
-
     /**
      * Copy/clone constructor
      *
@@ -149,7 +148,7 @@ public class FindRequest
 
     /**
      * set up the time at which the find should be made. null means current time.
-     * @param asOfTime
+     * @param asOfTime Date at which the find should be issued
      */
     public void setAsOfTime(Date asOfTime) {
         this.asOfTime = asOfTime;

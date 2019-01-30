@@ -48,6 +48,7 @@ public abstract class EntityMapping {
     protected EntityDetail omrsDetail;
     protected ArrayList<Classification> omrsClassifications;
     protected ArrayList<Relationship> omrsRelationships;
+    private ArrayList<InstanceStatus> omrsSupportedStatuses;
 
     public EntityMapping(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
                          String igcAssetType,
@@ -69,6 +70,9 @@ public abstract class EntityMapping {
         this.classificationMappers = new ArrayList<>();
 
         this.omrsRelationships = new ArrayList<>();
+        this.omrsSupportedStatuses = new ArrayList<>();
+        addSupportedStatus(InstanceStatus.ACTIVE);
+        addSupportedStatus(InstanceStatus.DELETED);
 
         this.otherIgcTypes = new ArrayList<>();
         this.otherPOJOs = new ArrayList<>();
@@ -91,6 +95,20 @@ public abstract class EntityMapping {
         }
 
     }
+
+    /**
+     * Add the provided status as one supported by this entity mapping.
+     *
+     * @param status a status that is supported by the mapping
+     */
+    public void addSupportedStatus(InstanceStatus status) { this.omrsSupportedStatuses.add(status); }
+
+    /**
+     * Retrieve the list of statuses that are supported by the entity mapping.
+     *
+     * @return List<InstanceStatus>
+     */
+    public List<InstanceStatus> getSupportedStatuses() { return this.omrsSupportedStatuses; }
 
     /**
      * Retrieve the primary IGC asset type used by this mapping.
@@ -316,33 +334,6 @@ public abstract class EntityMapping {
                 log.error("Unable to get skeleton detail entity.", e);
             }
         }
-    }
-
-    /**
-     * Returns the OMRS PrimitivePropertyValue represented by the provided value.
-     *
-     * @param value the value to represent as an OMRS PrimitivePropertyValue
-     * @return PrimitivePropertyValue
-     */
-    public static PrimitivePropertyValue getPrimitivePropertyValue(Object value) {
-        PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
-        PrimitiveDef primitiveDef = new PrimitiveDef();
-        if (value instanceof Boolean) {
-            primitiveDef.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
-        } else if (value instanceof Date) {
-            primitiveDef.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
-        } else if (value instanceof Integer) {
-            primitiveDef.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
-        } else if (value instanceof Number) {
-            primitiveDef.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
-        } else {
-            primitiveDef.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
-        }
-        propertyValue.setPrimitiveValue(value);
-        propertyValue.setPrimitiveDefCategory(primitiveDef.getPrimitiveDefCategory());
-        propertyValue.setTypeGUID(primitiveDef.getGUID());
-        propertyValue.setTypeName(primitiveDef.getName());
-        return propertyValue;
     }
 
 }

@@ -32,7 +32,6 @@
         <module>data-infrastructure</module>
         <module>data-platform</module>
         <module>data-process</module>
-        <module>data-protection</module>
         <module>data-science</module>
         <module>dev-ops</module>
         <module>digital-architecture</module>
@@ -41,6 +40,7 @@
         <module>governance-program</module>
         <module>information-view</module>
         <module>project-management</module>
+        <module>security-officer</module>
         <module>software-developer</module>
         <module>stewardship-action</module>
         <module>subject-area</module>

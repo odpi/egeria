@@ -26,3 +26,9 @@ server's membership in one or more open metadata repository cohorts.
 
 * **[Local Repository Services](local-repository-services.md)** manage the local
 server's open metadata repository.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

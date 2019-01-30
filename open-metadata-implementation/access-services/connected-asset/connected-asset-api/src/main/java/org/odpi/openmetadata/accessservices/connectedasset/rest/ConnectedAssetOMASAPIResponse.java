@@ -23,7 +23,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes(
         {
-                @JsonSubTypes.Type(value = AnnotationsResponse.class, name = "AnnotationsResponse"),
                 @JsonSubTypes.Type(value = AssetResponse.class, name = "AssetResponse"),
                 @JsonSubTypes.Type(value = CertificationsResponse.class, name = "CertificationsResponse"),
                 @JsonSubTypes.Type(value = CommentsResponse.class, name = "CommentsResponse"),

@@ -38,7 +38,7 @@ are located in the **[adapters](../../../../adapters/open-connectors/repository-
 All of these connectors support
 the [Open Connector Framework (OCF)](../../../../frameworks/open-connector-framework)
 which means the OMRS uses the 
-OCF [Connector Broker](../../../../frameworks/open-connector-framework/docs/connector-broker.md)
+OCF [Connector Broker](../../../../frameworks/open-connector-framework/docs/concepts/connector-broker.md)
 to create the instances of the connectors it needs.
 The type of connector needed is defined in a connection object.
 
@@ -48,3 +48,9 @@ server when the open metadata services are activated.
 
 This means that new implementations can be specified without needing
 to change the OMRS code.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

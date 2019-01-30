@@ -28,6 +28,8 @@ The implementation is not complete. The following has been implemented :
 * Java and REST API for create, get and update for Glossary, Category, Term , SubjectAreaDefinition.
 * Java and REST API for the Term to Term relationships HASA, RelatedTerm, Synonym, Antonym, Translations, used in context,
   preferred terms, valid values, replacement terms, typed by, is a, is a type of.
+* getTermRelationships
+* findTerm. findCategory and findGlossary  
 
 ## Example JAVA calls: 
 See the [Subject Area samples](../../../open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples/README.md) and [Subject Area FVT](../../../open-metadata-test/open-metadata-fvt/access-services-fvt/README.md) projects for examples around how to use the Java API.    
@@ -63,7 +65,7 @@ DELETE url : localhost:8080/open-metadata/access-services/subject-area/users/{us
 
 The Subject area OMAS is the access service that subject area experts should use. The intent is that the APIs that are exposed are natural for the 
 tasks that a subject area expert is performing. At this time the subjet area OMAS exposes APIs around the task of Glossary authoring,
-focussing on Glossary, Category and Term objects.
+focusing on Glossary, Category and Term objects.
  
 ## The Subject Area OMAS architecture
 The Subject Area main objects are the Glossary, Category and Terms. There map onto the OMRS types Glossary, GlossaryCategory and GlossaryTerm. The mapping is
@@ -83,10 +85,10 @@ area API Term and Category create and update APIs expect a glossary to be suppli
 
 There are a number of types of APIs associated with the Subject Area OMAS.  
 * Create, update, replace, get, delete (hard and soft) and restore for Glossary, Category, Term and relationships.
-* Find APIs allow content to be found - not implemented yet
+* get relationships associated with a Term - implemented
+* Find APIs allow content to be found - findTerm, findCategory and findGlossary implemented
 * Collaboration APIs allow comments and TODO and the like to be associate with glossary content
 * A report API, allows glossary content to be analysed, the API response highlights areas that the subject Area Expert might want to amend. - not implemented yet
-* More sophisticated get API for example get relationships associated with a Term - not implemented yet
 * Node orientated APIs
 
 

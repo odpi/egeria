@@ -304,14 +304,14 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                     break;
 
                 case PURGED_RELATIONSHIP_EVENT:
-                    this.processPurgedEntityEvent(cohortName,
-                                                  instanceEventOriginator.getMetadataCollectionId(),
-                                                  instanceEventOriginator.getServerName(),
-                                                  instanceEventOriginator.getServerType(),
-                                                  instanceEventOriginator.getOrganizationName(),
-                                                  instanceEvent.getTypeDefGUID(),
-                                                  instanceEvent.getTypeDefName(),
-                                                  instanceEvent.getInstanceGUID());
+                    this.processPurgedRelationshipEvent(cohortName,
+                                                        instanceEventOriginator.getMetadataCollectionId(),
+                                                        instanceEventOriginator.getServerName(),
+                                                        instanceEventOriginator.getServerType(),
+                                                        instanceEventOriginator.getOrganizationName(),
+                                                        instanceEvent.getTypeDefGUID(),
+                                                        instanceEvent.getTypeDefName(),
+                                                        instanceEvent.getInstanceGUID());
                     break;
 
                 case RESTORED_RELATIONSHIP_EVENT:
@@ -1085,13 +1085,31 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
     {
         final String methodName = "processPurgedRelationshipEvent";
 
-        purgeReferenceInstance(sourceName,
-                               methodName,
-                               originatorMetadataCollectionId,
-                               originatorServerName,
-                               typeDefGUID,
-                               typeDefName,
-                               instanceGUID);
+        try
+        {
+            verifyEventProcessor(methodName);
+
+            realMetadataCollection.purgeRelationshipReferenceCopy(sourceName,
+                                                            instanceGUID,
+                                                            typeDefGUID,
+                                                            typeDefName,
+                                                            originatorMetadataCollectionId);
+
+        }
+        catch (Throwable error)
+        {
+            OMRSAuditCode auditCode = OMRSAuditCode.UNEXPECTED_EXCEPTION_FROM_EVENT;
+            auditLog.logRecord(methodName,
+                               auditCode.getLogMessageId(),
+                               auditCode.getSeverity(),
+                               auditCode.getFormattedLogMessage(methodName,
+                                                                originatorServerName,
+                                                                originatorMetadataCollectionId,
+                                                                error.getMessage()),
+                               null,
+                               auditCode.getSystemAction(),
+                               auditCode.getUserAction());
+        }
     }
 
 

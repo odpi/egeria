@@ -272,6 +272,16 @@ public class DetectUtils {
         }
         return glossary;
     }
+    public static List<Glossary> detectAndReturnGlossaries(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        List<Glossary> glossaries = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.Glossaries)) {
+            GlossariesResponse glossariesResponse = (GlossariesResponse)restResponse;
+            glossaries = glossariesResponse.getGlossaries();
+        } else {
+            CategoryErrorResponse(methodName, restResponse);
+        }
+        return glossaries;
+    }
     /**
      * Detect and return a Term object from the supplied response. If we do not find one then throw an Exception
      * @param methodName - name of the method called
@@ -289,6 +299,24 @@ public class DetectUtils {
             CategoryErrorResponse(methodName, restResponse);
         }
         return term;
+    }
+    /**
+     * Detect and return a List of Terms from the supplied response. If we do not find one then throw an Exception
+     * @param methodName - name of the method called
+     * @param restResponse - response from the rest call.  This generated in the remote handlers.
+     * @return List of Terms if the supplied response is a terms response
+     * @throws UnexpectedResponseException - if the response is not a Terms then throw this exception
+     */
+    public static List<Term> detectAndReturnTerms(String methodName,
+                                           SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+       List<Term> terms = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.Terms)) {
+            TermsResponse termsResponse = (TermsResponse)restResponse;
+            terms = termsResponse.getTerms();
+        } else {
+            CategoryErrorResponse(methodName, restResponse);
+        }
+        return terms;
     }
 
     /*
@@ -326,6 +354,16 @@ public class DetectUtils {
             CategoryErrorResponse(methodName, restResponse);
         }
         return category;
+    }
+    public static List<Category> detectAndReturnCategories(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        List<Category> categories = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.Categories)) {
+            CategoriesResponse categoriesResponse = (CategoriesResponse)restResponse;
+            categories = categoriesResponse.getCategories();
+        } else {
+            CategoryErrorResponse(methodName, restResponse);
+        }
+        return categories;
     }
     public static SubjectAreaDefinition detectAndReturnSubjectAreaDefinition(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException
     {
