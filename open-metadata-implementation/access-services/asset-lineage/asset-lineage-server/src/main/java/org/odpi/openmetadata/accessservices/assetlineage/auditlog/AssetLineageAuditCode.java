@@ -55,10 +55,10 @@ public enum AssetLineageAuditCode {
             "The connection could not be initialized.",
             "Review the exception and resolve the configuration. "),
 
-    ERROR_INITIALIZING_INFORMATION_VIEW_TOPIC_CONNECTION("OMAS-ASSET-LINEAGE-0008",
+    ERROR_INITIALIZING_ASSET_LINEAGE_TOPIC_CONNECTION("OMAS-ASSET-LINEAGE-0008",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the connection to topic {0} in the Asset Lineage Open Metadata Access Service (OMAS) instance for server {1} ",
-            "The connection to information view topic could not be initialized.",
+            "The connection to asset lineage topic could not be initialized.",
             "Review the exception and resolve the configuration. ")
     ;
 

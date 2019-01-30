@@ -13,7 +13,7 @@ public class AssetLineageOMASRegistration {
 
     public AssetLineageOMASRegistration() {
 
-        AccessServiceDescription myDescription = AccessServiceDescription.INFORMATION_VIEW_OMAS;
+        AccessServiceDescription myDescription = AccessServiceDescription.ASSET_LINEAGE_OMAS;
         AccessServiceRegistration myRegistration = new AccessServiceRegistration(myDescription.getAccessServiceCode(),
                 myDescription.getAccessServiceName(),
                 myDescription.getAccessServiceDescription(),

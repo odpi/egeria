@@ -35,7 +35,7 @@ public class AssetLineageInTopicListener implements OpenMetadataTopicListener {
     }
 
     /**
-     * @param eventAsString contains all the information needed to build information view like connection details, database
+     * @param eventAsString contains all the information needed to build asset lineage like connection details, database
      *                      name, schema name, table name, derived columns details
      */
     @Override
@@ -85,7 +85,7 @@ public class AssetLineageInTopicListener implements OpenMetadataTopicListener {
                 entitiesCreatorHelper.addRelationship(Constants.SERVER_ENDPOINT,
                         softwareServerEntity.getGUID(),
                         endpointEntity.getGUID(),
-                        Constants.INFORMATION_VIEW_OMAS_NAME,
+                        Constants.ASSET_LINEAGE_OMAS_NAME,
                         new InstanceProperties());
 
                 String qualifiedNameForConnection = qualifiedNameForEndpoint + "." + event.getTableSource().getUser();
@@ -100,7 +100,7 @@ public class AssetLineageInTopicListener implements OpenMetadataTopicListener {
                 entitiesCreatorHelper.addRelationship(Constants.CONNECTION_TO_ENDPOINT,
                         endpointEntity.getGUID(),
                         connectionEntity.getGUID(),
-                        Constants.INFORMATION_VIEW_OMAS_NAME,
+                        Constants.ASSET_LINEAGE_OMAS_NAME,
                         new InstanceProperties());
 
 
@@ -115,7 +115,7 @@ public class AssetLineageInTopicListener implements OpenMetadataTopicListener {
                 entitiesCreatorHelper.addRelationship(Constants.CONNECTION_CONNECTOR_TYPE,
                         connectionEntity.getGUID(),
                         connectorTypeEntity.getGUID(),
-                        Constants.INFORMATION_VIEW_OMAS_NAME,
+                        Constants.ASSET_LINEAGE_OMAS_NAME,
                         new InstanceProperties());
 
                 String qualifiedNameForDataStore = qualifiedNameForConnection + "." + event.getTableSource().getDatabaseName();
@@ -130,7 +130,7 @@ public class AssetLineageInTopicListener implements OpenMetadataTopicListener {
                 entitiesCreatorHelper.addRelationship(Constants.CONNECTION_TO_ASSET,
                         connectionEntity.getGUID(),
                         dataStore.getGUID(),
-                        Constants.INFORMATION_VIEW_OMAS_NAME,
+                        Constants.ASSET_LINEAGE_OMAS_NAME,
                         new InstanceProperties());
 
 
@@ -141,13 +141,13 @@ public class AssetLineageInTopicListener implements OpenMetadataTopicListener {
                         .withStringProperty(Constants.OWNER, "")
                         .withStringProperty(Constants.DESCRIPTION, "This asset is an " + "information " + "view")
                         .build();
-                EntityDetail assetLineageEntity = entitiesCreatorHelper.addEntity(Constants.INFORMATION_VIEW,
+                EntityDetail assetLineageEntity = entitiesCreatorHelper.addEntity(Constants.ASSET_LINEAGE,
                         qualifiedNameForAssetLineage, ivProperties);
 
                 entitiesCreatorHelper.addRelationship(Constants.DATA_CONTENT_FOR_DATASET,
                         dataStore.getGUID(),
                         assetLineageEntity.getGUID(),
-                        Constants.INFORMATION_VIEW_OMAS_NAME,
+                        Constants.ASSET_LINEAGE_OMAS_NAME,
                         new InstanceProperties());
 
                 String qualifiedNameForDbSchemaType = qualifiedNameForAssetLineage +  Constants.TYPE_SUFFIX;
@@ -164,7 +164,7 @@ public class AssetLineageInTopicListener implements OpenMetadataTopicListener {
                 entitiesCreatorHelper.addRelationship(Constants.ASSET_SCHEMA_TYPE,
                         assetLineageEntity.getGUID(),
                         relationalDbSchemaType.getGUID(),
-                        Constants.INFORMATION_VIEW_OMAS_NAME,
+                        Constants.ASSET_LINEAGE_OMAS_NAME,
                         new InstanceProperties());
 
                 String qualifiedNameForTableType = qualifiedNameForAssetLineage + "." + event.getTableSource().getTableName() + Constants.TYPE_SUFFIX;
@@ -191,12 +191,12 @@ public class AssetLineageInTopicListener implements OpenMetadataTopicListener {
                 entitiesCreatorHelper.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
                         tableEntity.getGUID(),
                         tableTypeEntity.getGUID(),
-                        Constants.INFORMATION_VIEW_OMAS_NAME,
+                        Constants.ASSET_LINEAGE_OMAS_NAME,
                         new InstanceProperties());
                 entitiesCreatorHelper.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
                         relationalDbSchemaType.getGUID(),
                         tableEntity.getGUID(),
-                        Constants.INFORMATION_VIEW_OMAS_NAME,
+                        Constants.ASSET_LINEAGE_OMAS_NAME,
                         new InstanceProperties());
 
 
@@ -232,22 +232,22 @@ public class AssetLineageInTopicListener implements OpenMetadataTopicListener {
                     entitiesCreatorHelper.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
                             derivedColumnEntity.getGUID(),
                             derivedColumn.getSourceColumn().getGuid(),
-                            Constants.INFORMATION_VIEW_OMAS_NAME,
+                            Constants.ASSET_LINEAGE_OMAS_NAME,
                             schemaQueryImplProperties);
                     entitiesCreatorHelper.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
                             derivedColumnEntity.getGUID(),
                             columnTypeEntity.getGUID(),
-                            Constants.INFORMATION_VIEW_OMAS_NAME,
+                            Constants.ASSET_LINEAGE_OMAS_NAME,
                             new InstanceProperties());
                     entitiesCreatorHelper.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
                             derivedColumnEntity.getGUID(),
                             derivedColumn.getSourceColumn().getBusinessTerm().getGuid(),
-                            Constants.INFORMATION_VIEW_OMAS_NAME,
+                            Constants.ASSET_LINEAGE_OMAS_NAME,
                             new InstanceProperties());
                     entitiesCreatorHelper.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
                             tableTypeEntity.getGUID(),
                             derivedColumnEntity.getGUID(),
-                            Constants.INFORMATION_VIEW_OMAS_NAME,
+                            Constants.ASSET_LINEAGE_OMAS_NAME,
                             new InstanceProperties());
 
                 }

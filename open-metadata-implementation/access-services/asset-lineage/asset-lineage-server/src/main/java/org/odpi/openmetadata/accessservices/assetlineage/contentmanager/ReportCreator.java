@@ -35,7 +35,7 @@ public class ReportCreator extends ReportBasicOperation {
         entitiesCreatorHelper.addRelationship(Constants.ASSET_SCHEMA_TYPE,
                 reportEntity.getGUID(),
                 complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(),
-                Constants.INFORMATION_VIEW_OMAS_NAME,
+                Constants.ASSET_LINEAGE_OMAS_NAME,
                 new InstanceProperties());
 
         addElements(EntityPropertiesUtils.getStringValueForProperty(reportEntity.getProperties(), Constants.QUALIFIED_NAME), complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), payload.getReportElements());
