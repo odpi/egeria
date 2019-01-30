@@ -32,8 +32,6 @@ public enum AccessServiceDescription implements Serializable
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-privacy/"),
     DATA_PROCESS_OMAS                (1012,   "DataProcess", "Exchange process models and lineage with a data engine",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-process/"),
-    DATA_PROTECTION_OMAS             (1013,   "DataProtection", "Set up rules to protect data",
-                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-protection/"),
     DATA_SCIENCE_OMAS                (1006,   "DataScience", "Create and manage data science definitions and models",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-science/"),
     DEVOPS_OMAS                      (1007,   "DevOps", "Manage a DevOps pipeline",
@@ -50,6 +48,8 @@ public enum AccessServiceDescription implements Serializable
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/information-view/"),
     PROJECT_MANAGEMENT_OMAS          (1017,   "ProjectManagement", "Manage data projects",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/project-management/"),
+    SECURITY_OFFICER_OMAS            (1013,   "SecurityOfficer", "Set up rules to protect data",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/security-officer/"),
     SOFTWARE_DEVELOPMENT_OMAS        (1018,   "SoftwareDeveloper", "Develop software with best practices",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/software-developer/"),
     STEWARDSHIP_ACTION_OMAS          (1019,   "StewardshipAction", "Manage exceptions and actions from open governance",
@@ -84,7 +84,7 @@ public enum AccessServiceDescription implements Serializable
         accessServiceDescriptionList.add(AccessServiceDescription.DATA_PLATFORM_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.DATA_PRIVACY_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.DATA_PROCESS_OMAS);
-        accessServiceDescriptionList.add(AccessServiceDescription.DATA_PROTECTION_OMAS);
+        accessServiceDescriptionList.add(AccessServiceDescription.SECURITY_OFFICER_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.DATA_SCIENCE_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.DEVOPS_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.DIGITAL_ARCHITECTURE_OMAS);

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import com.fasterxml.jackson.databind.JsonNode;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCVersionEnum;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
@@ -11,11 +12,14 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchSorting;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.*;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.attributes.AttributeMapping;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.classifications.ClassificationMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.RelationshipMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.ReferenceableMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.PropertyMappingSet;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.model.OMRSStub;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.stores.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
@@ -52,8 +56,13 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     public static final String GENERATED_TYPE_POSTFIX = "|__";
 
     private IGCRestClient igcRestClient;
+    private IGCOMRSRepositoryConnector igcomrsRepositoryConnector;
 
-    private HashSet<ImplementedMapping> implementedMappings;
+    private TypeDefStore typeDefStore;
+    private EntityMappingStore entityMappingStore;
+    private RelationshipMappingStore relationshipMappingStore;
+    private ClassificationMappingStore classificationMappingStore;
+    private AttributeMappingStore attributeMappingStore;
 
     private XMLOutputFactory xmlOutputFactory;
 
@@ -72,143 +81,16 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                                      OMRSRepositoryValidator repositoryValidator,
                                      String metadataCollectionId) {
         super(parentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId);
+        log.debug("Constructing IGCOMRSMetadataCollection with name: {}", repositoryName);
+        parentConnector.setRepositoryName(repositoryName);
         this.igcRestClient = parentConnector.getIGCRestClient();
-        upsertOMRSBundleZip();
-        this.igcRestClient.registerPOJO(OMRSStub.class);
+        this.igcomrsRepositoryConnector = parentConnector;
         this.xmlOutputFactory = XMLOutputFactory.newInstance();
-        this.implementedMappings = new HashSet<>();
-    }
-
-    /**
-     * Create a definition of a new TypeDef.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param newTypeDef TypeDef structure describing the new TypeDef.
-     * @throws InvalidParameterException the new TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
-     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
-     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
-     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
-     * @throws FunctionNotSupportedException the repository does not support this call.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public void addTypeDef(String       userId,
-                           TypeDef      newTypeDef) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotSupportedException,
-            TypeDefKnownException,
-            TypeDefConflictException,
-            InvalidTypeDefException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException {
-        final String  methodName = "addTypeDef";
-        final String  typeDefParameterName = "newTypeDef";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
-        repositoryValidator.validateUnknownTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
-
-        // TODO: just need to handle AttributeTypeDefs now?
-
-        TypeDefCategory typeDefCategory = newTypeDef.getCategory();
-        String omrsTypeDefName = newTypeDef.getName();
-        log.debug("Looking for mapping for {} of type {}", omrsTypeDefName, typeDefCategory.getName());
-
-        // See if we have a Mapper defined for the class -- if so, it's implemented
-        StringBuilder sbMapperClassname = new StringBuilder();
-        sbMapperClassname.append(MAPPING_PKG);
-        switch(typeDefCategory) {
-            case RELATIONSHIP_DEF:
-                sbMapperClassname.append("relationships.");
-                break;
-            case CLASSIFICATION_DEF:
-                sbMapperClassname.append("classifications.");
-                break;
-            default:
-                sbMapperClassname.append("entities.");
-                break;
-        }
-        sbMapperClassname.append(omrsTypeDefName);
-        sbMapperClassname.append("Mapper");
-
-        try {
-            Class mappingClass = Class.forName(sbMapperClassname.toString());
-            log.debug(" ... found mapping class: {}", mappingClass);
-
-            ImplementedMapping implementedMapping = new ImplementedMapping(
-                    newTypeDef,
-                    mappingClass,
-                    (IGCOMRSRepositoryConnector)parentConnector,
-                    userId
-            );
-            implementedMapping.registerPOJOs(this.igcRestClient);
-            implementedMappings.add(implementedMapping);
-
-        } catch (ClassNotFoundException e) {
-            throw new TypeDefNotSupportedException(404, IGCOMRSMetadataCollection.class.getName(), methodName, omrsTypeDefName + " is not supported.", "", "Request support through Egeria GitHub issue.");
-        }
-    }
-
-    /**
-     * Create a definition of a new AttributeTypeDef.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param newAttributeTypeDef TypeDef structure describing the new TypeDef.
-     * @throws InvalidParameterException the new TypeDef is null.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
-     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
-     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
-     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
-     * @throws FunctionNotSupportedException the repository does not support this call.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public  void addAttributeTypeDef(String             userId,
-                                     AttributeTypeDef   newAttributeTypeDef) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotSupportedException,
-            TypeDefKnownException,
-            TypeDefConflictException,
-            InvalidTypeDefException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException {
-        final String  methodName           = "addAttributeTypeDef";
-        final String  typeDefParameterName = "newAttributeTypeDef";
-
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
-        repositoryValidator.validateUnknownAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
-
-        /*
-         * Perform operation
-         */
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
-
-        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                this.getClass().getName(),
-                repositoryName);
-
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
+        this.typeDefStore = new TypeDefStore();
+        this.entityMappingStore = new EntityMappingStore();
+        this.relationshipMappingStore = new RelationshipMappingStore();
+        this.classificationMappingStore = new ClassificationMappingStore();
+        this.attributeMappingStore = new AttributeMappingStore();
     }
 
     /**
@@ -242,13 +124,355 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
          * Perform operation
          */
         TypeDefGallery typeDefGallery = new TypeDefGallery();
-        ArrayList<TypeDef> typeDefs = new ArrayList<>();
-        for (ImplementedMapping implementedMapping : implementedMappings) {
-            typeDefs.add(implementedMapping.getTypeDef());
-        }
+        List<TypeDef> typeDefs = typeDefStore.getAllTypeDefs();
+        log.debug("Retrieved {} implemented TypeDefs for this repository.", typeDefs.size());
         typeDefGallery.setTypeDefs(typeDefs);
 
+        List<AttributeTypeDef> attributeTypeDefs = attributeMappingStore.getAllAttributeTypeDefs();
+        log.debug("Retrieved {} implemented AttributeTypeDefs for this repository.", attributeTypeDefs.size());
+        typeDefGallery.setAttributeTypeDefs(attributeTypeDefs);
+
         return typeDefGallery;
+
+    }
+
+    /**
+     * Returns all of the TypeDefs for a specific category.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param category enum value for the category of TypeDef to return.
+     * @return TypeDefs list.
+     * @throws InvalidParameterException the TypeDefCategory is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<TypeDef> findTypeDefsByCategory(String          userId,
+                                                TypeDefCategory category) throws InvalidParameterException,
+            RepositoryErrorException,
+            UserNotAuthorizedException {
+        final String methodName            = "findTypeDefsByCategory";
+        final String categoryParameterName = "category";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeDefCategory(repositoryName, categoryParameterName, category, methodName);
+
+        List<TypeDef> typeDefs = new ArrayList<>();
+        switch(category) {
+            case ENTITY_DEF:
+                typeDefs = entityMappingStore.getTypeDefs();
+                break;
+            case RELATIONSHIP_DEF:
+                typeDefs = relationshipMappingStore.getTypeDefs();
+                break;
+            case CLASSIFICATION_DEF:
+                typeDefs = classificationMappingStore.getTypeDefs();
+                break;
+        }
+        return typeDefs;
+
+    }
+
+
+    /**
+     * Returns all of the AttributeTypeDefs for a specific category.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param category enum value for the category of an AttributeTypeDef to return.
+     * @return TypeDefs list.
+     * @throws InvalidParameterException the TypeDefCategory is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<AttributeTypeDef> findAttributeTypeDefsByCategory(String                   userId,
+                                                                  AttributeTypeDefCategory category) throws InvalidParameterException,
+            RepositoryErrorException,
+            UserNotAuthorizedException {
+        final String methodName            = "findAttributeTypeDefsByCategory";
+        final String categoryParameterName = "category";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateAttributeTypeDefCategory(repositoryName, categoryParameterName, category, methodName);
+
+        return attributeMappingStore.getAttributeTypeDefsByCategory(category);
+
+    }
+
+    /**
+     * Return the TypeDefs that have the properties matching the supplied match criteria.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param matchCriteria TypeDefProperties containing a list of property names.
+     * @return TypeDefs list.
+     * @throws InvalidParameterException the matchCriteria is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<TypeDef> findTypeDefsByProperty(String            userId,
+                                                TypeDefProperties matchCriteria) throws InvalidParameterException,
+            RepositoryErrorException,
+            UserNotAuthorizedException
+    {
+        final String  methodName                 = "findTypeDefsByProperty";
+        final String  matchCriteriaParameterName = "matchCriteria";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateMatchCriteria(repositoryName, matchCriteriaParameterName, matchCriteria, methodName);
+
+        /*
+         * Perform operation
+         */
+        List<TypeDef> typeDefs = typeDefStore.getAllTypeDefs();
+        List<TypeDef> results = new ArrayList<>();
+        if (matchCriteria != null) {
+            Map<String, Object> properties = matchCriteria.getTypeDefProperties();
+            for (TypeDef candidate : typeDefs) {
+                List<TypeDefAttribute> candidateProperties = candidate.getPropertiesDefinition();
+                for (TypeDefAttribute candidateAttribute : candidateProperties) {
+                    String candidateName = candidateAttribute.getAttributeName();
+                    if (properties.containsKey(candidateName)) {
+                        results.add(candidate);
+                    }
+                }
+            }
+            results = typeDefs;
+        }
+
+        return results;
+
+    }
+
+    /**
+     * Return the types that are linked to the elements from the specified standard.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param standard name of the standard; null means any.
+     * @param organization name of the organization; null means any.
+     * @param identifier identifier of the element in the standard; null means any.
+     * @return TypeDefs list each entry in the list contains a typedef.  This is is a structure
+     * describing the TypeDef's category and properties.
+     * @throws InvalidParameterException all attributes of the external id are null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<TypeDef> findTypesByExternalID(String    userId,
+                                               String    standard,
+                                               String    organization,
+                                               String    identifier) throws InvalidParameterException,
+            RepositoryErrorException,
+            UserNotAuthorizedException
+    {
+        final String                       methodName = "findTypesByExternalID";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateExternalId(repositoryName, standard, organization, identifier, methodName);
+
+        /*
+         * Perform operation
+         */
+        List<TypeDef> typeDefs = typeDefStore.getAllTypeDefs();
+        List<TypeDef> results;
+        if (standard == null && organization == null && identifier == null) {
+            results = typeDefs;
+        } else {
+            results = new ArrayList<>();
+            for (TypeDef typeDef : typeDefs) {
+                List<ExternalStandardMapping> externalStandardMappings = typeDef.getExternalStandardMappings();
+                for (ExternalStandardMapping externalStandardMapping : externalStandardMappings) {
+                    String candidateStandard = externalStandardMapping.getStandardName();
+                    String candidateOrg = externalStandardMapping.getStandardOrganization();
+                    String candidateId = externalStandardMapping.getStandardTypeName();
+                    if ( (standard == null || standard.equals(candidateStandard))
+                            && (organization == null || organization.equals(candidateOrg))
+                            && (identifier == null || identifier.equals(candidateId))) {
+                        results.add(typeDef);
+                    }
+                }
+            }
+        }
+
+        return results;
+
+    }
+
+    /**
+     * Return the TypeDefs that match the search criteria.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param searchCriteria String search criteria.
+     * @return TypeDefs list where each entry in the list contains a typedef.  This is is a structure
+     * describing the TypeDef's category and properties.
+     * @throws InvalidParameterException the searchCriteria is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public List<TypeDef> searchForTypeDefs(String userId,
+                                           String searchCriteria) throws InvalidParameterException,
+            RepositoryErrorException,
+            UserNotAuthorizedException
+    {
+        final String methodName                  = "searchForTypeDefs";
+        final String searchCriteriaParameterName = "searchCriteria";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateSearchCriteria(repositoryName, searchCriteriaParameterName, searchCriteria, methodName);
+
+        /*
+         * Perform operation
+         */
+        List<TypeDef> typeDefs = new ArrayList<>();
+        for (TypeDef candidate : entityMappingStore.getTypeDefs()) {
+            if (candidate.getName().matches(searchCriteria)) {
+                typeDefs.add(candidate);
+            }
+        }
+        for (TypeDef candidate : relationshipMappingStore.getTypeDefs()) {
+            if (candidate.getName().matches(searchCriteria)) {
+                typeDefs.add(candidate);
+            }
+        }
+        for (TypeDef candidate : classificationMappingStore.getTypeDefs()) {
+            if (candidate.getName().matches(searchCriteria)) {
+                typeDefs.add(candidate);
+            }
+        }
+
+        return typeDefs;
+
+    }
+
+    /**
+     * Return the TypeDef identified by the GUID.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique id of the TypeDef.
+     * @return TypeDef structure describing its category and properties.
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotKnownException The requested TypeDef is not known in the metadata collection.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public TypeDef getTypeDefByGUID(String    userId,
+                                    String    guid) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            UserNotAuthorizedException {
+        final String methodName        = "getTypeDefByGUID";
+        final String guidParameterName = "guid";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+
+        TypeDef found = typeDefStore.getTypeDefByGUID(guid);
+
+        if (found == null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    guid,
+                    guidParameterName,
+                    methodName,
+                    repositoryName);
+            throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+        return found;
+
+    }
+
+    /**
+     * Return the AttributeTypeDef identified by the GUID.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique id of the TypeDef
+     * @return TypeDef structure describing its category and properties.
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotKnownException The requested TypeDef is not known in the metadata collection.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  AttributeTypeDef getAttributeTypeDefByGUID(String    userId,
+                                                       String    guid) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            UserNotAuthorizedException {
+        final String methodName        = "getAttributeTypeDefByGUID";
+        final String guidParameterName = "guid";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+
+        AttributeTypeDef found = attributeMappingStore.getAttributeTypeDefByGUID(guid);
+        if (found == null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.ATTRIBUTE_TYPEDEF_ID_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    "unknown",
+                    guid,
+                    methodName,
+                    repositoryName);
+            throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        return found;
+
     }
 
     /**
@@ -285,29 +509,283 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Perform operation
          */
-        TypeDef typeDef = null;
-        for (ImplementedMapping implementedMapping : implementedMappings) {
-            if (implementedMapping.getTypeDef().getName().equals(name)) {
-                typeDef = implementedMapping.getTypeDef();
-                break;
-            }
-        }
-        if (typeDef == null) {
-            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
+        TypeDef found = typeDefStore.getTypeDefByName(name);
+
+        if (found == null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NAME_NOT_KNOWN;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
                     name,
-                    "unknown",
-                    nameParameterName,
                     methodName,
                     repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
         }
-        return typeDef;
+
+        return found;
+
+    }
+
+    /**
+     * Return the AttributeTypeDef identified by the unique name.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param name String name of the TypeDef.
+     * @return TypeDef structure describing its category and properties.
+     * @throws InvalidParameterException the name is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  AttributeTypeDef getAttributeTypeDefByName(String    userId,
+                                                       String    name) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            UserNotAuthorizedException {
+        final String  methodName = "getAttributeTypeDefByName";
+        final String  nameParameterName = "name";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeName(repositoryName, nameParameterName, name, methodName);
+
+        AttributeTypeDef found = attributeMappingStore.getAttributeTypeDefByName(name);
+        if (found == null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.ATTRIBUTE_TYPEDEF_NAME_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    name,
+                    methodName,
+                    repositoryName);
+            throw new TypeDefNotKnownException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        return found;
+    }
+
+    /**
+     * Create a collection of related types.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param newTypes TypeDefGalleryResponse structure describing the new AttributeTypeDefs and TypeDefs.
+     * @throws InvalidParameterException the new TypeDef is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
+     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
+     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
+     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  void addTypeDefGallery(String          userId,
+                                   TypeDefGallery  newTypes) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotSupportedException,
+            TypeDefKnownException,
+            TypeDefConflictException,
+            InvalidTypeDefException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "addTypeDefGallery";
+        final String  galleryParameterName = "newTypes";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeDefGallery(repositoryName, galleryParameterName, newTypes, methodName);
+
+        /*
+         * Perform operation
+         */
+        List<AttributeTypeDef> attributeTypeDefs = newTypes.getAttributeTypeDefs();
+        if (attributeTypeDefs != null) {
+            for (AttributeTypeDef attributeTypeDef : attributeTypeDefs) {
+                addAttributeTypeDef(userId, attributeTypeDef);
+            }
+        }
+
+        List<TypeDef> typeDefs = newTypes.getTypeDefs();
+        if (typeDefs != null) {
+            for (TypeDef typeDef : typeDefs) {
+                addTypeDef(userId, typeDef);
+            }
+        }
+
+    }
+
+    /**
+     * Create a definition of a new TypeDef.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param newTypeDef TypeDef structure describing the new TypeDef.
+     * @throws InvalidParameterException the new TypeDef is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
+     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
+     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
+     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void addTypeDef(String       userId,
+                           TypeDef      newTypeDef) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotSupportedException,
+            TypeDefKnownException,
+            TypeDefConflictException,
+            InvalidTypeDefException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException {
+        final String  methodName = "addTypeDef";
+        final String  typeDefParameterName = "newTypeDef";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
+        repositoryValidator.validateUnknownTypeDef(repositoryName, typeDefParameterName, newTypeDef, methodName);
+
+        TypeDefCategory typeDefCategory = newTypeDef.getCategory();
+        String omrsTypeDefName = newTypeDef.getName();
+        log.debug("Looking for mapping for {} of type {}", omrsTypeDefName, typeDefCategory.getName());
+
+        // See if we have a Mapper defined for the class -- if so, it's implemented
+        StringBuilder sbMapperClassname = new StringBuilder();
+        sbMapperClassname.append(MAPPING_PKG);
+        switch(typeDefCategory) {
+            case RELATIONSHIP_DEF:
+                sbMapperClassname.append("relationships.");
+                break;
+            case CLASSIFICATION_DEF:
+                sbMapperClassname.append("classifications.");
+                break;
+            case ENTITY_DEF:
+                sbMapperClassname.append("entities.");
+                break;
+        }
+        sbMapperClassname.append(omrsTypeDefName);
+        sbMapperClassname.append("Mapper");
+
+        try {
+
+            Class mappingClass = Class.forName(sbMapperClassname.toString());
+            log.debug(" ... found mapping class: {}", mappingClass);
+
+            boolean success = false;
+
+            switch(typeDefCategory) {
+                case RELATIONSHIP_DEF:
+                    success = relationshipMappingStore.addMapping(newTypeDef, mappingClass);
+                    break;
+                case CLASSIFICATION_DEF:
+                    success = classificationMappingStore.addMapping(newTypeDef, mappingClass);
+                    break;
+                case ENTITY_DEF:
+                    success = entityMappingStore.addMapping(newTypeDef,
+                            mappingClass,
+                            igcomrsRepositoryConnector,
+                            userId);
+                    break;
+            }
+
+            if (!success) {
+                typeDefStore.addUnimplementedTypeDef(newTypeDef);
+                throw new TypeDefNotSupportedException(404, IGCOMRSMetadataCollection.class.getName(), methodName, omrsTypeDefName + " is not supported.", "", "Request support through Egeria GitHub issue.");
+            } else {
+                typeDefStore.addTypeDef(newTypeDef);
+            }
+
+        } catch (ClassNotFoundException e) {
+            typeDefStore.addUnimplementedTypeDef(newTypeDef);
+            throw new TypeDefNotSupportedException(404, IGCOMRSMetadataCollection.class.getName(), methodName, omrsTypeDefName + " is not supported.", "", "Request support through Egeria GitHub issue.");
+        }
+
+    }
+
+    /**
+     * Create a definition of a new AttributeTypeDef.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param newAttributeTypeDef TypeDef structure describing the new TypeDef.
+     * @throws InvalidParameterException the new TypeDef is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws TypeDefNotSupportedException the repository is not able to support this TypeDef.
+     * @throws TypeDefKnownException the TypeDef is already stored in the repository.
+     * @throws TypeDefConflictException the new TypeDef conflicts with an existing TypeDef.
+     * @throws InvalidTypeDefException the new TypeDef has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  void addAttributeTypeDef(String             userId,
+                                     AttributeTypeDef   newAttributeTypeDef) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotSupportedException,
+            TypeDefKnownException,
+            TypeDefConflictException,
+            InvalidTypeDefException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException {
+        final String  methodName           = "addAttributeTypeDef";
+        final String  typeDefParameterName = "newAttributeTypeDef";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
+        repositoryValidator.validateUnknownAttributeTypeDef(repositoryName, typeDefParameterName, newAttributeTypeDef, methodName);
+
+        // Note this is only implemented for Enums, support for other types is indicated directly
+        // in the verifyAttributeTypeDef method
+        AttributeTypeDefCategory attributeTypeDefCategory = newAttributeTypeDef.getCategory();
+        String omrsTypeDefName = newAttributeTypeDef.getName();
+        log.debug("Looking for mapping for {} of type {}", omrsTypeDefName, attributeTypeDefCategory.getName());
+
+        // See if we have a Mapper defined for the class -- if so, it's implemented
+        StringBuilder sbMapperClassname = new StringBuilder();
+        sbMapperClassname.append(MAPPING_PKG);
+        sbMapperClassname.append("attributes.");
+        sbMapperClassname.append(omrsTypeDefName);
+        sbMapperClassname.append("Mapper");
+
+        try {
+            Class mappingClass = Class.forName(sbMapperClassname.toString());
+            log.debug(" ... found mapping class: {}", mappingClass);
+            attributeMappingStore.addMapping(newAttributeTypeDef, mappingClass);
+        } catch (ClassNotFoundException e) {
+            throw new TypeDefNotSupportedException(404, IGCOMRSMetadataCollection.class.getName(), methodName, omrsTypeDefName + " is not supported.", "", "Request support through Egeria GitHub issue.");
+        }
 
     }
 
@@ -345,7 +823,52 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, typeDef, methodName);
 
-        return (getMappingForEntityType(typeDef.getGUID()) != null);
+        // Validate that we support all of the valid InstanceStatus settings before deciding whether we
+        // fully-support the TypeDef or not
+        HashSet<InstanceStatus> validStatuses = new HashSet<>(typeDef.getValidInstanceStatusList());
+        boolean bVerified = false;
+
+        Set<String> mappedProperties = new HashSet<>();
+        HashSet<InstanceStatus> implementedStatuses = new HashSet<>();
+        String guid = typeDef.getGUID();
+        switch (typeDef.getCategory()) {
+            case ENTITY_DEF:
+                EntityMapping entityMapping = entityMappingStore.getMappingByOmrsTypeGUID(guid);
+                if (entityMapping != null) {
+                    mappedProperties = entityMapping.getPropertyMappings().getAllMappedOmrsProperties();
+                    implementedStatuses = new HashSet<>(entityMapping.getSupportedStatuses());
+                }
+                break;
+            case RELATIONSHIP_DEF:
+                RelationshipMapping relationshipMapping = relationshipMappingStore.getMappingByOmrsTypeGUID(guid);
+                if (relationshipMapping != null) {
+                    mappedProperties = relationshipMapping.getMappedOmrsPropertyNames();
+                    implementedStatuses = new HashSet<>(relationshipMapping.getSupportedStatuses());
+                }
+                break;
+            case CLASSIFICATION_DEF:
+                ClassificationMapping classificationMapping = classificationMappingStore.getMappingByOmrsTypeGUID(guid);
+                if (classificationMapping != null) {
+                    mappedProperties = classificationMapping.getMappedOmrsPropertyNames();
+                    implementedStatuses = new HashSet<>(classificationMapping.getSupportedStatuses());
+                }
+                break;
+        }
+        bVerified = validStatuses.equals(implementedStatuses);
+
+        // Validate that we support all of the possible properties before deciding whether we
+        // fully-support the TypeDef or not
+        if (bVerified) {
+            List<TypeDefAttribute> properties = typeDef.getPropertiesDefinition();
+            for (TypeDefAttribute typeDefAttribute : properties) {
+                String omrsPropertyName = typeDefAttribute.getAttributeName();
+                if (!mappedProperties.contains(omrsPropertyName)) {
+                    bVerified = false;
+                }
+            }
+        }
+
+        return bVerified;
 
     }
 
@@ -363,6 +886,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @throws InvalidTypeDefException the new TypeDef has invalid contents.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+    @Override
     public  boolean verifyAttributeTypeDef(String            userId,
                                            AttributeTypeDef  attributeTypeDef) throws InvalidParameterException,
             RepositoryErrorException,
@@ -383,16 +907,230 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateAttributeTypeDef(repositoryName, typeDefParameterName, attributeTypeDef, methodName);
 
-        /*
-         * Perform operation
-         */
-        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        boolean bImplemented;
+        switch (attributeTypeDef.getCategory()) {
+            case PRIMITIVE:
+                bImplemented = true;
+                break;
+            case UNKNOWN_DEF:
+                bImplemented = false;
+                break;
+            case COLLECTION:
+                bImplemented = true;
+                break;
+            case ENUM_DEF:
+                bImplemented = (attributeMappingStore.getAttributeTypeDefByGUID(attributeTypeDef.getGUID()) != null);
+                break;
+            default:
+                bImplemented = false;
+                break;
+        }
 
+        return bImplemented;
+
+    }
+
+    /**
+     * Update one or more properties of the TypeDef.  The TypeDefPatch controls what types of updates
+     * are safe to make to the TypeDef.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param typeDefPatch TypeDef patch describing change to TypeDef.
+     * @return updated TypeDef
+     * @throws InvalidParameterException the TypeDefPatch is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
+     * @throws PatchErrorException the TypeDef can not be updated because the supplied patch is incompatible
+     *                               with the stored TypeDef.
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public TypeDef updateTypeDef(String       userId,
+                                 TypeDefPatch typeDefPatch) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            PatchErrorException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName           = "updateTypeDef";
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
                 this.getClass().getName(),
                 repositoryName);
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
 
-        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+
+    /**
+     * Delete the TypeDef.  This is only possible if the TypeDef has never been used to create instances or any
+     * instances of this TypeDef have been purged from the metadata collection.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param obsoleteTypeDefGUID String unique identifier for the TypeDef.
+     * @param obsoleteTypeDefName String unique name for the TypeDef.
+     * @throws InvalidParameterException the one of TypeDef identifiers is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeDefNotKnownException the requested TypeDef is not found in the metadata collection.
+     * @throws TypeDefInUseException the TypeDef can not be deleted because there are instances of this type in the
+     *                                 the metadata collection.  These instances need to be purged before the
+     *                                 TypeDef can be deleted.
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void deleteTypeDef(String    userId,
+                              String    obsoleteTypeDefGUID,
+                              String    obsoleteTypeDefName) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            TypeDefInUseException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String    methodName        = "deleteTypeDef";
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Delete an AttributeTypeDef.  This is only possible if the AttributeTypeDef has never been used to create
+     * instances or any instances of this AttributeTypeDef have been purged from the metadata collection.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param obsoleteTypeDefGUID String unique identifier for the AttributeTypeDef.
+     * @param obsoleteTypeDefName String unique name for the AttributeTypeDef.
+     * @throws InvalidParameterException the one of AttributeTypeDef identifiers is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeDefNotKnownException the requested AttributeTypeDef is not found in the metadata collection.
+     * @throws TypeDefInUseException the AttributeTypeDef can not be deleted because there are instances of this type in the
+     *                                 the metadata collection.  These instances need to be purged before the
+     *                                 AttributeTypeDef can be deleted.
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void deleteAttributeTypeDef(String    userId,
+                                       String    obsoleteTypeDefGUID,
+                                       String    obsoleteTypeDefName) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            TypeDefInUseException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String    methodName        = "deleteAttributeTypeDef";
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Change the guid or name of an existing TypeDef to a new value.  This is used if two different
+     * TypeDefs are discovered to have the same guid.  This is extremely unlikely but not impossible so
+     * the open metadata protocol has provision for this.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param originalTypeDefGUID the original guid of the TypeDef.
+     * @param originalTypeDefName the original name of the TypeDef.
+     * @param newTypeDefGUID the new identifier for the TypeDef.
+     * @param newTypeDefName new name for this TypeDef.
+     * @return typeDef new values for this TypeDef, including the new guid/name.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeDefNotKnownException the TypeDef identified by the original guid/name is not found
+     *                                    in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  TypeDef reIdentifyTypeDef(String     userId,
+                                      String     originalTypeDefGUID,
+                                      String     originalTypeDefName,
+                                      String     newTypeDefGUID,
+                                      String     newTypeDefName) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String    methodName                = "reIdentifyTypeDef";
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Change the guid or name of an existing TypeDef to a new value.  This is used if two different
+     * TypeDefs are discovered to have the same guid.  This is extremely unlikely but not impossible so
+     * the open metadata protocol has provision for this.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param originalAttributeTypeDefGUID the original guid of the AttributeTypeDef.
+     * @param originalAttributeTypeDefName the original name of the AttributeTypeDef.
+     * @param newAttributeTypeDefGUID the new identifier for the AttributeTypeDef.
+     * @param newAttributeTypeDefName new name for this AttributeTypeDef.
+     * @return attributeTypeDef new values for this AttributeTypeDef, including the new guid/name.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeDefNotKnownException the AttributeTypeDef identified by the original guid/name is not
+     *                                    found in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support this call.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  AttributeTypeDef reIdentifyAttributeTypeDef(String     userId,
+                                                        String     originalAttributeTypeDefGUID,
+                                                        String     originalAttributeTypeDefName,
+                                                        String     newAttributeTypeDefGUID,
+                                                        String     newAttributeTypeDefName) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeDefNotKnownException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String    methodName                = "reIdentifyAttributeTypeDef";
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
                 this.getClass().getName(),
                 methodName,
                 errorMessage,
@@ -401,27 +1139,23 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     }
 
     /**
-     * Return a requested relationship. Note that currently this will only work for relationships known to
-     * (originated within) IGC.
+     * Returns the entity if the entity is stored in the metadata collection, otherwise null.
      *
      * @param userId unique identifier for requesting user.
-     * @param guid String unique identifier for the relationship.
-     * @return a relationship structure.
+     * @param guid String unique identifier for the entity
+     * @return the entity details if the entity is found in the metadata collection; otherwise return null
      * @throws InvalidParameterException the guid is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws RelationshipNotKnownException the metadata collection does not have a relationship with
-     *                                         the requested GUID stored.
+     *                                  the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public Relationship getRelationship(String    userId,
-                                        String    guid) throws InvalidParameterException,
+    public EntityDetail isEntityKnown(String     userId,
+                                      String     guid) throws InvalidParameterException,
             RepositoryErrorException,
-            RelationshipNotKnownException,
             UserNotAuthorizedException
     {
-        final String  methodName = "getRelationship";
+        final String  methodName = "isEntityKnown";
         final String  guidParameterName = "guid";
 
         /*
@@ -434,80 +1168,101 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
 
         /*
-         * Process operation
+         * Perform operation
          */
-
-        // Translate the key properties of the GUID into IGC-retrievables
-        String proxyOneRid = RelationshipMapping.getProxyOneGUIDFromRelationshipGUID(guid);
-        String proxyTwoRid = RelationshipMapping.getProxyTwoGUIDFromRelationshipGUID(guid);
-        String omrsRelationshipName = RelationshipMapping.getRelationshipTypeFromRelationshipGUID(guid);
-
-        String proxyOneIgcRid = proxyOneRid;
-        String proxyTwoIgcRid = proxyTwoRid;
-
-        if (isGeneratedGUID(proxyOneRid)) {
-            proxyOneIgcRid = getRidFromGeneratedId(proxyOneRid);
+        EntityDetail detail = null;
+        try {
+            detail = getEntityDetail(userId, guid);
+        } catch (EntityNotKnownException | EntityProxyOnlyException e) {
+            log.info("Entity {} not known to the repository, or only a proxy.", guid, e);
         }
-        if (isGeneratedGUID(proxyTwoRid)) {
-            proxyTwoIgcRid = getRidFromGeneratedId(proxyTwoRid);
-        }
+        return detail;
+    }
 
-        log.debug("Looking up relationship: {}", guid);
 
-        // Should not need to translate from proxyone / proxytwo to alternative assets, as the RIDs provided
-        // in the relationship GUID should already be pointing to the correct assets
-        String relationshipLevelRid = (proxyOneRid.equals(proxyTwoRid)) ? proxyOneRid : null;
-        Reference proxyOne;
-        Reference proxyTwo;
-        RelationshipMapping relationshipMapping;
-        if (relationshipLevelRid != null) {
-            Reference relationshipAsset = igcRestClient.getAssetRefById(proxyOneIgcRid);
-            String relationshipAssetType = relationshipAsset.getType();
-            relationshipMapping = getRelationshipMapper(
-                    omrsRelationshipName,
-                    relationshipAssetType,
-                    relationshipAssetType
-            );
-            // Only need to translate if the RIDs are relationship-level RIDs
-            proxyOne = relationshipMapping.getProxyOneAssetFromAsset(relationshipAsset, igcRestClient).get(0);
-            proxyTwo = relationshipMapping.getProxyTwoAssetFromAsset(relationshipAsset, igcRestClient).get(0);
+    /**
+     * Return the header and classifications for a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @return EntitySummary structure
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntitySummary getEntitySummary(String     userId,
+                                          String     guid) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            UserNotAuthorizedException
+    {
+        final String  methodName        = "getEntitySummary";
+        final String  guidParameterName = "guid";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+
+        /*
+         * Perform operation
+         */
+        log.debug("getEntitySummary with guid = {}", guid);
+
+        // Lookup the basic asset based on the RID (strip off prefix (indicating a generated type), if there)
+        String rid = getRidFromGeneratedId(guid);
+        Reference asset = this.igcRestClient.getAssetRefById(rid);
+
+        EntitySummary summary = null;
+        String prefix = getPrefixFromGeneratedId(guid);
+
+        // If we could not find any asset by the provided guid, throw an ENTITY_NOT_KNOWN exception
+        if (asset == null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
+                    methodName,
+                    repositoryName);
+            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        } else if (asset.getType().equals(DEFAULT_IGC_TYPE)) {
+            /* If the asset type returned has an IGC-listed type of 'main_object', it isn't one that the REST API
+             * of IGC supports (eg. a data rule detail object, a column analysis master object, etc)...
+             * Trying to further process it will result in failed REST API requests; so we should skip these objects */
+            OMRSErrorCode errorCode = OMRSErrorCode.INVALID_ENTITY_FROM_STORE;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
+                    repositoryName,
+                    methodName,
+                    asset.toString());
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         } else {
-            proxyOne = igcRestClient.getAssetRefById(proxyOneIgcRid);
-            proxyTwo = igcRestClient.getAssetRefById(proxyTwoIgcRid);
-            relationshipMapping = getRelationshipMapper(
-                    omrsRelationshipName,
-                    proxyOne.getType(),
-                    proxyTwo.getType()
-            );
-        }
 
-        Relationship found = null;
+            // Otherwise, retrieve the mapping dynamically based on the type of asset
+            ReferenceableMapper referenceMapper = getMapperForParameters(asset, prefix, userId);
 
-        if (relationshipMapping != null) {
-            try {
-
-                RelationshipDef omrsRelationshipDef = (RelationshipDef) getTypeDefByName(userId, omrsRelationshipName);
-                // Since the ordering should be set by the GUID we're lookup up anyway, we'll simply set the property
-                // to one of the proxyOne properties
-                String igcPropertyName = relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties().get(0);
-                log.debug(" ... using property: {}", igcPropertyName);
-                found = RelationshipMapping.getMappedRelationship(
-                        (IGCOMRSRepositoryConnector)parentConnector,
-                        relationshipMapping,
-                        omrsRelationshipDef,
-                        proxyOne,
-                        proxyTwo,
-                        igcPropertyName,
-                        userId,
-                        relationshipLevelRid
-                );
-
-            } catch (TypeDefNotKnownException e) {
-                OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
+            if (referenceMapper != null) {
+                // 2. Apply the mapping to the object, and retrieve the resulting EntityDetail
+                summary = referenceMapper.getOMRSEntitySummary();
+            } else {
+                OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN_FOR_INSTANCE;
                 String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
-                        omrsRelationshipName,
-                        guid,
-                        guidParameterName,
+                        prefix + asset.getType(),
+                        "IGC asset",
                         methodName,
                         repositoryName);
                 throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
@@ -517,23 +1272,55 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                         errorCode.getSystemAction(),
                         errorCode.getUserAction());
             }
-        } else {
-            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
-                    omrsRelationshipName,
-                    guid,
-                    guidParameterName,
-                    methodName,
-                    repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+
         }
 
-        return found;
+        return summary;
+
+    }
+
+    /**
+     * Return the header, classifications and properties of a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the entity.
+     * @return EntityDetail structure.
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection.
+     * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityDetail getEntityDetail(String userId,
+                                        String guid) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            EntityProxyOnlyException,
+            UserNotAuthorizedException
+    {
+        final String  methodName        = "getEntityDetail";
+        final String  guidParameterName = "guid";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+
+        /*
+         * Perform operation
+         */
+
+        // Lookup the basic asset based on the RID (strip off prefix (indicating a generated type), if there)
+        String rid = getRidFromGeneratedId(guid);
+        Reference asset = this.igcRestClient.getAssetRefById(rid);
+
+        return getEntityDetail(userId, guid, asset);
 
     }
 
@@ -547,7 +1334,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @param fromRelationshipElement the starting element number of the relationships to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus Must be null (relationship status is not implemented for IGC).
+     * @param limitResultsByStatus Not implemented for IGC -- will only retrieve ACTIVE entities.
      * @param asOfTime Must be null (history not implemented for IGC).
      * @param sequencingProperty Must be null (there are no properties on IGC relationships).
      * @param sequencingOrder Enum defining how the results should be ordered.
@@ -606,14 +1393,23 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
          */
         ArrayList<Relationship> alRelationships = new ArrayList<>();
 
-        // Immediately throw unimplemented exception if trying to limit by status or retrieve historical view
-        if (limitResultsByStatus != null
-                || asOfTime != null
-                || sequencingProperty != null
+        // Immediately throw unimplemented exception if trying to retrieve historical view or sequence by property
+        if (asOfTime != null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                    this.getClass().getName(),
+                    repositoryName);
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        } else if (sequencingProperty != null
                 || (sequencingOrder != null
-                    &&
-                    (sequencingOrder.equals(SequencingOrder.PROPERTY_ASCENDING)
-                    || sequencingOrder.equals(SequencingOrder.PROPERTY_DESCENDING)))
+                &&
+                (sequencingOrder.equals(SequencingOrder.PROPERTY_ASCENDING)
+                        || sequencingOrder.equals(SequencingOrder.PROPERTY_DESCENDING)))
         ) {
             OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
@@ -625,7 +1421,11 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
-        } else {
+        } else if (limitResultsByStatus == null
+                || (limitResultsByStatus.size() == 1 && limitResultsByStatus.contains(InstanceStatus.ACTIVE))) {
+
+            // Otherwise, only bother searching if we are after ACTIVE (or "all") entities -- non-ACTIVE means we
+            // will just return an empty list
 
             // 0. see if the entityGUID has a prefix (indicating a generated type)
             String rid = getRidFromGeneratedId(entityGUID);
@@ -693,7 +1493,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus Must be null (relationship status is not implemented for IGC).
+     * @param limitResultsByStatus Not implemented for IGC, only ACTIVE entities will be returned.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param asOfTime Must be null (history not implemented for IGC).
      * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
@@ -741,11 +1541,6 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         final String  asOfTimeParameter            = "asOfTime";
         final String  pageSizeParameter            = "pageSize";
 
-        // TODO: need to walk the hierarchy of types and ensure we do a search across all subtypes of (as well as
-        //  base type received), eg. searching for 'Asset' should also search for RelationalTable, RelationalColumn,
-        //  Database, etc, etc
-        //  - also need search by classification for demo
-
         /*
          * Validate parameters
          */
@@ -768,77 +1563,103 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
          */
         ArrayList<EntityDetail> entityDetails = new ArrayList<>();
 
-        // Immediately throw unimplemented exception if trying to limit by status or retrieve historical view
-        if (limitResultsByStatus != null || asOfTime != null) {
+        // Immediately throw unimplemented exception if trying to retrieve historical view
+        if (asOfTime != null) {
             OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
                     this.getClass().getName(),
                     repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
-        } else {
+        } else if (limitResultsByStatus == null
+                || (limitResultsByStatus.size() == 1 && limitResultsByStatus.contains(InstanceStatus.ACTIVE))) {
 
-            IGCSearch igcSearch = new IGCSearch();
+            // Otherwise, only bother searching if we are after ACTIVE (or "all") entities -- non-ACTIVE means we
+            // will just return an empty list
 
-            ImplementedMapping mapping = getMappingForEntityType(entityTypeGUID);
-            addTypeToSearch(mapping, igcSearch);
+            List<EntityMapping> mappingsToSearch = getMappingsToSearch(entityTypeGUID, userId);
 
-            /* We need to first retrieve the mapping so we know how to translate
-             * the provided OMRS property names to IGC property names */
-            PropertyMappingSet propertyMappingSet = getEntityPropertiesFromMapping(mapping, userId);
+            // Now iterate through all of the mappings we need to search, construct and run an appropriate search
+            // for each one
+            for (EntityMapping mapping : mappingsToSearch) {
 
-            /* Provided there is a mapping, build up a list of IGC-specific properties
-             * and search criteria, based on the values of the InstanceProperties provided */
-            ArrayList<String> properties = new ArrayList<>();
-            IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
-
-            Iterator iPropertyNames = matchProperties.getPropertyNames();
-            while (propertyMappingSet != null && iPropertyNames.hasNext()) {
-                String omrsPropertyName = (String) iPropertyNames.next();
-                InstancePropertyValue value = matchProperties.getPropertyValue(omrsPropertyName);
-                addSearchConditionFromValue(
-                        igcSearchConditionSet,
-                        omrsPropertyName,
-                        properties,
-                        propertyMappingSet,
-                        value
+                String igcAssetType = mapping.getIgcAssetType();
+                IGCSearchConditionSet classificationLimiters = getSearchCriteriaForClassifications(
+                        igcAssetType,
+                        limitResultsByClassification
                 );
-            }
 
-            IGCSearchSorting igcSearchSorting = null;
-            if (sequencingProperty == null && sequencingOrder != null) {
-                igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
-            }
+                if (limitResultsByClassification != null && !limitResultsByClassification.isEmpty() && classificationLimiters == null) {
+                    log.info("Classification limiters were specified, but none apply to thie asset type {}, so excluding this asset type from search.", igcAssetType);
+                } else {
 
-            if (matchCriteria != null) {
-                switch(matchCriteria) {
-                    case ALL:
-                        igcSearchConditionSet.setMatchAnyCondition(false);
-                        break;
-                    case ANY:
-                        igcSearchConditionSet.setMatchAnyCondition(true);
-                        break;
-                    case NONE:
-                        igcSearchConditionSet.setMatchAnyCondition(false);
-                        igcSearchConditionSet.setNegateAll(true);
-                        break;
+                    IGCSearch igcSearch = new IGCSearch();
+                    igcSearch.addType(igcAssetType);
+
+                    /* We need to first retrieve the mapping so we know how to translate
+                     * the provided OMRS property names to IGC property names */
+                    PropertyMappingSet propertyMappingSet = getEntityPropertiesFromMapping(mapping, userId);
+
+                    /* Provided there is a mapping, build up a list of IGC-specific properties
+                     * and search criteria, based on the values of the InstanceProperties provided */
+                    ArrayList<String> properties = new ArrayList<>();
+                    IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+
+                    Iterator iPropertyNames = matchProperties.getPropertyNames();
+                    while (propertyMappingSet != null && iPropertyNames.hasNext()) {
+                        String omrsPropertyName = (String) iPropertyNames.next();
+                        InstancePropertyValue value = matchProperties.getPropertyValue(omrsPropertyName);
+                        addSearchConditionFromValue(
+                                igcSearchConditionSet,
+                                omrsPropertyName,
+                                properties,
+                                propertyMappingSet,
+                                value
+                        );
+                    }
+
+                    if (classificationLimiters != null) {
+                        igcSearchConditionSet.addNestedConditionSet(classificationLimiters);
+                    }
+
+                    IGCSearchSorting igcSearchSorting = null;
+                    if (sequencingProperty == null && sequencingOrder != null) {
+                        igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
+                    }
+
+                    if (matchCriteria != null) {
+                        switch (matchCriteria) {
+                            case ALL:
+                                igcSearchConditionSet.setMatchAnyCondition(false);
+                                break;
+                            case ANY:
+                                igcSearchConditionSet.setMatchAnyCondition(true);
+                                break;
+                            case NONE:
+                                igcSearchConditionSet.setMatchAnyCondition(false);
+                                igcSearchConditionSet.setNegateAll(true);
+                                break;
+                        }
+                    }
+
+                    igcSearch.addProperties(properties);
+                    igcSearch.addConditions(igcSearchConditionSet);
+
+                    setPagingForSearch(igcSearch, fromEntityElement, pageSize);
+
+                    if (igcSearchSorting != null) {
+                        igcSearch.addSortingCriteria(igcSearchSorting);
+                    }
+
+                    processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+
                 }
+
             }
-
-            igcSearch.addProperties(properties);
-            igcSearch.addConditions(igcSearchConditionSet);
-
-            setPagingForSearch(igcSearch, fromEntityElement, pageSize);
-
-            if (igcSearchSorting != null) {
-                igcSearch.addSortingCriteria(igcSearchSorting);
-            }
-
-            processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
 
         }
 
@@ -847,165 +1668,204 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     }
 
     /**
-     * Retrieve any mapping that exists for the provided entityTypeGUID (or null if there are none).
+     * Return a list of entities that have the requested type of classification attached.
      *
-     * @param entityTypeGUID the OMRS entityTypeGUID for which to find a mapping
-     * @return EntityMapping
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID unique identifier for the type of entity requested.  Null mans any type of entity.
+     * @param classificationName name of the classification a null is not valid.
+     * @param matchClassificationProperties list of classification properties used to narrow the search.
+     * @param matchCriteria Enum defining how the properties should be matched to the classifications in the repository.
+     * @param fromEntityElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus Not implemented for IGC, only ACTIVE entities will be returned.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values. (not implemented
+     *                 for IGC, must be null)
+     * @param sequencingProperty String name of the entity property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of entities matching the supplied criteria where null means no matching entities in the metadata
+     * collection.
+     * @throws InvalidParameterException a parameter is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws ClassificationErrorException the classification request is not known to the metadata collection.
+     * @throws PropertyErrorException the properties specified are not valid for the requested type of
+     *                                  classification.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    private ImplementedMapping getMappingForEntityType(String entityTypeGUID) {
-        ImplementedMapping mapping = null;
-        for (ImplementedMapping implementedMapping : implementedMappings) {
-            if (entityTypeGUID.equals(implementedMapping.getTypeDef().getGUID())) {
-                mapping = implementedMapping;
-            }
+    @Override
+    public  List<EntityDetail> findEntitiesByClassification(String                    userId,
+                                                            String                    entityTypeGUID,
+                                                            String                    classificationName,
+                                                            InstanceProperties        matchClassificationProperties,
+                                                            MatchCriteria             matchCriteria,
+                                                            int                       fromEntityElement,
+                                                            List<InstanceStatus>      limitResultsByStatus,
+                                                            Date                      asOfTime,
+                                                            String                    sequencingProperty,
+                                                            SequencingOrder           sequencingOrder,
+                                                            int                       pageSize) throws InvalidParameterException,
+            TypeErrorException,
+            RepositoryErrorException,
+            ClassificationErrorException,
+            PropertyErrorException,
+            PagingErrorException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName                   = "findEntitiesByClassification";
+        final String  classificationParameterName  = "classificationName";
+        final String  entityTypeGUIDParameterName  = "entityTypeGUID";
+
+        final String  matchCriteriaParameterName   = "matchCriteria";
+        final String  matchPropertiesParameterName = "matchClassificationProperties";
+        final String  asOfTimeParameter            = "asOfTime";
+        final String  pageSizeParameter            = "pageSize";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateOptionalTypeGUID(repositoryName, entityTypeGUIDParameterName, entityTypeGUID, methodName);
+        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+
+        /*
+         * Validate TypeDef
+         */
+        if (entityTypeGUID != null)
+        {
+            TypeDef entityTypeDef = repositoryHelper.getTypeDef(repositoryName,
+                    entityTypeGUIDParameterName,
+                    entityTypeGUID,
+                    methodName);
+
+            repositoryValidator.validateTypeDefForInstance(repositoryName,
+                    entityTypeGUIDParameterName,
+                    entityTypeDef,
+                    methodName);
+
+            repositoryValidator.validateClassification(repositoryName,
+                    classificationParameterName,
+                    classificationName,
+                    entityTypeDef.getName(),
+                    methodName);
         }
-        return mapping;
-    }
 
-    /**
-     * Retrieve a mapping from IGC property name to the OMRS relationship type it represents.
-     *
-     * @param assetType the IGC asset type for which to find mappings
-     * @param userId the userId making the request
-     * @return Map<String, RelationshipMapping> - keyed by IGC asset type with values of the RelationshipMappings
-     */
-    public Map<String, List<RelationshipMapping>> getIgcPropertiesToRelationshipMappings(String assetType, String userId) {
+        repositoryValidator.validateMatchCriteria(repositoryName,
+                matchCriteriaParameterName,
+                matchPropertiesParameterName,
+                matchCriteria,
+                matchClassificationProperties,
+                methodName);
 
-        HashMap<String, List<RelationshipMapping>> map = new HashMap<>();
+        ArrayList<EntityDetail> entityDetails = new ArrayList<>();
 
-        List<ReferenceableMapper> mappers = getMappers(assetType, userId);
-        for (ReferenceableMapper mapper : mappers) {
-            List<RelationshipMapping> relationshipMappings = mapper.getRelationshipMappers();
-            for (RelationshipMapping relationshipMapping : relationshipMappings) {
-                if (relationshipMapping.getProxyOneMapping().matchesAssetType(assetType)) {
-                    List<String> relationshipNamesOne = relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties();
-                    for (String relationshipName : relationshipNamesOne) {
-                        if (!map.containsKey(relationshipName)) {
-                            map.put(relationshipName, new ArrayList<>());
-                        }
-                        if (!map.get(relationshipName).contains(relationshipMapping)) {
-                            map.get(relationshipName).add(relationshipMapping);
-                        }
+        // Immediately throw unimplemented exception if trying to retrieve historical view
+        if (asOfTime != null) {
+            OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                    this.getClass().getName(),
+                    repositoryName);
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        } else if (limitResultsByStatus == null
+                || (limitResultsByStatus.size() == 1 && limitResultsByStatus.contains(InstanceStatus.ACTIVE))) {
+
+            // Otherwise, only bother searching if we are after ACTIVE (or "all") entities -- non-ACTIVE means we
+            // will just return an empty list
+
+            List<EntityMapping> mappingsToSearch = getMappingsToSearch(entityTypeGUID, userId);
+
+            // Now iterate through all of the mappings we need to search, construct and run an appropriate search
+            // for each one
+            for (EntityMapping mapping : mappingsToSearch) {
+
+                ClassificationMapping foundMapping = null;
+
+                // Check which classifications (if any) are implemented for the entity mapping
+                List<ClassificationMapping> classificationMappings = mapping.getClassificationMappers();
+                for (ClassificationMapping classificationMapping : classificationMappings) {
+
+                    // Check whether the implemented classification matches the one we're searching based on
+                    String candidateName = classificationMapping.getOmrsClassificationType();
+                    if (candidateName.equals(classificationName)) {
+                        foundMapping = classificationMapping;
+                        break;
                     }
+
                 }
-                if (relationshipMapping.getProxyTwoMapping().matchesAssetType(assetType)) {
-                    List<String> relationshipNamesTwo = relationshipMapping.getProxyTwoMapping().getIgcRelationshipProperties();
-                    for (String relationshipName : relationshipNamesTwo) {
-                        if (!map.containsKey(relationshipName)) {
-                            map.put(relationshipName, new ArrayList<>());
+
+                // Only proceed if we have found a classification mapping for this entity that matches the search
+                // criteria provided
+                if (foundMapping != null) {
+
+                    IGCSearch igcSearch = new IGCSearch();
+                    igcSearch.addType(mapping.getIgcAssetType());
+                    IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+
+                    // Retrieve the list of property names we need for the classification
+                    List<String> igcClassificationProperties = foundMapping.getIgcRelationshipProperties();
+
+                    // Compose the search criteria for the classification as a set of nested conditions, so that
+                    // matchCriteria does not change the meaning of what we're searching
+                    IGCSearchConditionSet baseCriteria = foundMapping.getIGCSearchCriteria(matchClassificationProperties);
+                    igcSearchConditionSet.addNestedConditionSet(baseCriteria);
+
+                    IGCSearchSorting igcSearchSorting = null;
+                    if (sequencingProperty == null && sequencingOrder != null) {
+                        igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
+                    }
+
+                    if (matchCriteria != null) {
+                        switch (matchCriteria) {
+                            case ALL:
+                                igcSearchConditionSet.setMatchAnyCondition(false);
+                                break;
+                            case ANY:
+                                igcSearchConditionSet.setMatchAnyCondition(true);
+                                break;
+                            case NONE:
+                                igcSearchConditionSet.setMatchAnyCondition(false);
+                                igcSearchConditionSet.setNegateAll(true);
+                                break;
                         }
-                        if (!map.get(relationshipName).contains(relationshipMapping)) {
-                            map.get(relationshipName).add(relationshipMapping);
-                        }
                     }
+
+                    igcSearch.addProperties(igcClassificationProperties);
+                    igcSearch.addConditions(igcSearchConditionSet);
+
+                    setPagingForSearch(igcSearch, fromEntityElement, pageSize);
+
+                    if (igcSearchSorting != null) {
+                        igcSearch.addSortingCriteria(igcSearchSorting);
+                    }
+
+                    processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+
+                } else {
+                    log.info("No classification mapping has been implemented for {} on entity {} -- skipping from search.", classificationName, mapping.getOmrsTypeDefName());
                 }
+
             }
+
         }
 
-        return map;
-
-    }
-
-    /**
-     * Add the type to search based on the provided mapping.
-     *
-     * @param mapping the mapping on which to base the search
-     * @param igcSearch the IGC search object to which to add the criteria
-     */
-    private void addTypeToSearch(ImplementedMapping mapping, IGCSearch igcSearch) {
-        if (mapping == null) {
-            // If no TypeDef was provided, run against all types
-            igcSearch.addType(DEFAULT_IGC_TYPE);
-        } else {
-            igcSearch.addType(mapping.getIgcAssetType());
-        }
-    }
-
-    /**
-     * Retrieve the property mappings from the mapping.
-     *
-     * @param mapping the mapping from which to retrieve property mappings
-     * @param userId the userId making the request
-     * @return PropertyMappingSet
-     */
-    private PropertyMappingSet getEntityPropertiesFromMapping(ImplementedMapping mapping, String userId) {
-        PropertyMappingSet propertyMappingSet = null;
-        if (mapping != null) {
-            EntityMapping entityMapping = mapping.getEntityMapping();
-            if (entityMapping != null) {
-                propertyMappingSet = entityMapping.getPropertyMappings();
-            }
-        }
-        return propertyMappingSet;
-    }
-
-    /**
-     * Setup paging properties of the IGC search.
-     *
-     * @param igcSearch the IGC search object to which to add the criteria
-     * @param beginAt the starting index for results
-     * @param pageSize the number of results to include in each page
-     */
-    private void setPagingForSearch(IGCSearch igcSearch, int beginAt, int pageSize) {
-        if (pageSize > 0) {
-            /* Only set pageSize if it has been provided; otherwise we'll end up defaulting to IGC's
-             * minimal pageSize of 10 (so will need to make many calls to get all pages) */
-            igcSearch.setPageSize(pageSize);
-        } else {
-            /* So if none has been specified, we'll set a large pageSize to be able to more efficiently
-             * retrieve all pages of results */
-            igcSearch.setPageSize(parentConnector.getMaxPageSize());
-        }
-        igcSearch.setBeginAt(beginAt);
-    }
-
-    /**
-     * Process the search results into the provided list of EntityDetail objects.
-     *
-     * @param results the IGC search results
-     * @param entityDetails the list of EntityDetails to append
-     * @param pageSize the number of results per page (0 for all results)
-     * @param userId the user making the request
-     */
-    private void processResults(ReferenceList results,
-                                List<EntityDetail> entityDetails,
-                                int pageSize,
-                                String userId) throws RepositoryErrorException {
-
-        if (pageSize == 0) {
-            // If the provided pageSize was 0, we need to retrieve ALL pages of results...
-            results.getAllPages(this.igcRestClient);
-        }
-
-        for (Reference reference : results.getItems()) {
-            /* Only proceed with retrieving the EntityDetail if the type from IGC is not explicitly
-             * a 'main_object' (as these are non-API-accessible asset types in IGC like column analysis master,
-             * etc and will simply result in 400-code Bad Request messages from the API) */
-            if (!reference.getType().equals(DEFAULT_IGC_TYPE)) {
-                EntityDetail ed = null;
-
-                List<ReferenceableMapper> mappers = getMappers(reference.getType(), userId);
-                for (ReferenceableMapper mapper : mappers) {
-                    log.debug("processResults with mapper: {}", mapper.getClass().getCanonicalName());
-                    if (mapper.igcRidNeedsPrefix()) {
-                        log.debug(" ... prefix required, getEntityDetail with: {}", mapper.getIgcRidPrefix() + reference.getId());
-                        ed = getEntityDetail(userId, mapper.getIgcRidPrefix() + reference.getId(), reference);
-                    } else {
-                        log.debug(" ... no prefix required, getEntityDetail with: {}", reference.getId());
-                        ed = getEntityDetail(userId, reference.getId(), reference);
-                    }
-                    if (ed != null) {
-                        entityDetails.add(ed);
-                    }
-                }
-            }
-        }
-
-        // If we haven't filled a page of results (because we needed to skip some above), recurse...
-        if (results.hasMorePages() && entityDetails.size() < pageSize) {
-            results.getNextPage(this.igcRestClient);
-            processResults(results, entityDetails, pageSize, userId);
-        }
+        return entityDetails.isEmpty() ? null : entityDetails;
 
     }
 
@@ -1021,9 +1881,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus Must be null (status is not implemented for IGC).
+     * @param limitResultsByStatus Not implemented for IGC, only ACTIVE entities will be returned.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
-     *                                     (currently not implemented for IGC)
      * @param asOfTime Must be null (history not implemented for IGC).
      * @param sequencingProperty String name of the property that is to be used to sequence the results.
      *                           Null means do not sequence on a property name (see SequencingOrder).
@@ -1085,71 +1944,101 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
          */
         ArrayList<EntityDetail> entityDetails = new ArrayList<>();
 
-        // Immediately throw unimplemented exception if trying to limit by status or retrieve historical view
-        if (limitResultsByStatus != null || asOfTime != null) {
+        // Immediately throw unimplemented exception if trying to retrieve historical view
+        if (asOfTime != null) {
             OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
                     this.getClass().getName(),
                     repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
                     errorCode.getSystemAction(),
                     errorCode.getUserAction());
-        } else {
+        } else if (limitResultsByStatus == null
+                || (limitResultsByStatus.size() == 1 && limitResultsByStatus.contains(InstanceStatus.ACTIVE))) {
 
-            // TODO:
-            //  - POST'd search to IGC doesn't work on latest v11.7.0.2+ using long_description; suggestion
-            //    to instead use "searchText" (TBD; may need to drop 'long_description' from v11.7 search in
-            //    meantime)
-            //  - using "searchText" requires using "searchProperties" (no "where" conditions) -- but does not
-            //    work with 'main_object', must be used with a specific asset type
+            // Otherwise, only bother searching if we are after ACTIVE (or "all") entities -- non-ACTIVE means we
+            // will just return an empty list
 
-            IGCSearch igcSearch = new IGCSearch();
+            List<EntityMapping> mappingsToSearch = getMappingsToSearch(entityTypeGUID, userId);
 
-            ImplementedMapping mapping = getMappingForEntityType(entityTypeGUID);
-            PropertyMappingSet propertyMappingSet = getEntityPropertiesFromMapping(mapping, userId);
-            addTypeToSearch(mapping, igcSearch);
+            // Now iterate through all of the mappings we need to search, construct and run an appropriate search
+            // for each one
+            for (EntityMapping mapping : mappingsToSearch) {
 
-            String[] properties = null;
-            if (propertyMappingSet != null) {
-                properties = propertyMappingSet.getAllMappedIgcProperties().toArray(new String[0]);
-            } else {
-                /* Since IGC requires the set of properties against which to search,
-                 * if no type has been provided we'll use the generic set of the following
-                 * properties for the search (common to all objects) */
-                properties = new String[] {
-                        "name",
-                        "short_description",
-                        "long_description"
-                };
+                IGCSearch igcSearch = new IGCSearch();
+                String igcAssetType = addTypeToSearch(mapping, igcSearch);
+
+                // Get POJO from the asset type, and use this to retrieve a listing of all string properties
+                // for that asset type -- these are the list of properties we should use for the search
+                Class pojo = igcRestClient.getPOJOForType(igcAssetType);
+
+                if (pojo != null) {
+
+                    IGCSearchConditionSet classificationLimiters = getSearchCriteriaForClassifications(
+                            igcAssetType,
+                            limitResultsByClassification
+                    );
+
+                    if (limitResultsByClassification != null && !limitResultsByClassification.isEmpty() && classificationLimiters == null) {
+                        log.info("Classification limiters were specified, but none apply to thie asset type {}, so excluding this asset type from search.", igcAssetType);
+                    } else {
+
+                        List<String> properties = Reference.getStringPropertiesFromPOJO(pojo);
+                        // POST'd search to IGC doesn't work on v11.7.0.2 using long_description
+                        // Using "searchText" requires using "searchProperties" (no "where" conditions) -- but does not
+                        // work with 'main_object', must be used with a specific asset type
+                        // Therefore for v11.7.0.2 we will simply drop long_description from the fields we search
+                        if (igcRestClient.getIgcVersion().isEqualTo(IGCVersionEnum.V11702)) {
+                            ArrayList<String> propertiesWithoutLongDescription = new ArrayList<>();
+                            for (String property : properties) {
+                                if (!property.equals("long_description")) {
+                                    propertiesWithoutLongDescription.add(property);
+                                }
+                            }
+                            properties = propertiesWithoutLongDescription;
+                        }
+
+                        IGCSearchSorting igcSearchSorting = null;
+                        if (sequencingProperty == null && sequencingOrder != null) {
+                            igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
+                        }
+
+                        IGCSearchConditionSet outerConditions = new IGCSearchConditionSet();
+                        IGCSearchConditionSet innerConditions = new IGCSearchConditionSet();
+                        innerConditions.setMatchAnyCondition(true);
+                        for (String property : properties) {
+                            innerConditions.addCondition(new IGCSearchCondition(
+                                    property,
+                                    "like %{0}%",
+                                    searchCriteria
+                            ));
+                        }
+                        outerConditions.addNestedConditionSet(innerConditions);
+                        if (classificationLimiters != null) {
+                            outerConditions.addNestedConditionSet(classificationLimiters);
+                            outerConditions.setMatchAnyCondition(false);
+                        }
+
+                        igcSearch.addConditions(outerConditions);
+
+                        setPagingForSearch(igcSearch, fromEntityElement, pageSize);
+
+                        if (igcSearchSorting != null) {
+                            igcSearch.addSortingCriteria(igcSearchSorting);
+                        }
+
+                        processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+
+                    }
+
+                } else {
+                    log.warn("Unable to find POJO to handle IGC asset type '{}' -- skipping search against this asset type.", igcAssetType);
+                }
+
             }
-
-            IGCSearchSorting igcSearchSorting = null;
-            if (sequencingProperty == null && sequencingOrder != null) {
-                igcSearchSorting = IGCSearchSorting.sortFromNonPropertySequencingOrder(sequencingOrder);
-            }
-
-            IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
-            igcSearchConditionSet.setMatchAnyCondition(true);
-            for (String property : properties) {
-                igcSearchConditionSet.addCondition(new IGCSearchCondition(
-                        property,
-                        "like %{0}%",
-                        searchCriteria
-                ));
-            }
-
-            igcSearch.addConditions(igcSearchConditionSet);
-
-            setPagingForSearch(igcSearch, fromEntityElement, pageSize);
-
-            if (igcSearchSorting != null) {
-                igcSearch.addSortingCriteria(igcSearchSorting);
-            }
-
-            processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
 
         }
 
@@ -1158,27 +2047,23 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     }
 
     /**
-     * Return the header, classifications and properties of a specific entity.
+     * Returns a boolean indicating if the relationship is stored in the metadata collection.
      *
      * @param userId unique identifier for requesting user.
-     * @param guid String unique identifier for the entity.
-     * @return EntityDetail structure.
+     * @param guid String unique identifier for the relationship.
+     * @return relationship details if the relationship is found in the metadata collection; otherwise return null.
      * @throws InvalidParameterException the guid is null.
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                 the metadata collection is stored.
-     * @throws EntityNotKnownException the requested entity instance is not known in the metadata collection.
-     * @throws EntityProxyOnlyException the requested entity instance is only a proxy in the metadata collection.
+     *                                  the metadata collection is stored.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     @Override
-    public EntityDetail getEntityDetail(String userId,
-                                        String guid) throws InvalidParameterException,
+    public Relationship  isRelationshipKnown(String     userId,
+                                             String     guid) throws InvalidParameterException,
             RepositoryErrorException,
-            EntityNotKnownException,
-            EntityProxyOnlyException,
             UserNotAuthorizedException
     {
-        final String  methodName        = "getEntityDetail";
+        final String  methodName = "isRelationshipKnown";
         final String  guidParameterName = "guid";
 
         /*
@@ -1191,14 +2076,3028 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
 
         /*
-         * Perform operation
+         * Process operation
+         */
+        Relationship relationship = null;
+        try {
+            relationship = getRelationship(userId, guid);
+        } catch (RelationshipNotKnownException e) {
+            log.info("Could not find relationship {} in repository.", guid, e);
+        }
+        return relationship;
+    }
+
+    /**
+     * Return a requested relationship. Note that currently this will only work for relationships known to
+     * (originated within) IGC.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param guid String unique identifier for the relationship.
+     * @return a relationship structure.
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws RelationshipNotKnownException the metadata collection does not have a relationship with
+     *                                         the requested GUID stored.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Relationship getRelationship(String    userId,
+                                        String    guid) throws InvalidParameterException,
+            RepositoryErrorException,
+            RelationshipNotKnownException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "getRelationship";
+        final String  guidParameterName = "guid";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+
+        /*
+         * Process operation
          */
 
-        // Lookup the basic asset based on the RID (strip off prefix (indicating a generated type), if there)
-        String rid = getRidFromGeneratedId(guid);
-        Reference asset = this.igcRestClient.getAssetRefById(rid);
+        // Translate the key properties of the GUID into IGC-retrievables
+        String proxyOneRid = RelationshipMapping.getProxyOneGUIDFromRelationshipGUID(guid);
+        String proxyTwoRid = RelationshipMapping.getProxyTwoGUIDFromRelationshipGUID(guid);
+        String omrsRelationshipName = RelationshipMapping.getRelationshipTypeFromRelationshipGUID(guid);
 
-        return getEntityDetail(userId, guid, asset);
+        String proxyOneIgcRid = proxyOneRid;
+        String proxyTwoIgcRid = proxyTwoRid;
+
+        if (isGeneratedGUID(proxyOneRid)) {
+            proxyOneIgcRid = getRidFromGeneratedId(proxyOneRid);
+        }
+        if (isGeneratedGUID(proxyTwoRid)) {
+            proxyTwoIgcRid = getRidFromGeneratedId(proxyTwoRid);
+        }
+
+        log.debug("Looking up relationship: {}", guid);
+
+        // Should not need to translate from proxyone / proxytwo to alternative assets, as the RIDs provided
+        // in the relationship GUID should already be pointing to the correct assets
+        String relationshipLevelRid = (proxyOneRid.equals(proxyTwoRid)) ? proxyOneRid : null;
+        Reference proxyOne;
+        Reference proxyTwo;
+        RelationshipMapping relationshipMapping;
+        if (relationshipLevelRid != null) {
+            Reference relationshipAsset = igcRestClient.getAssetRefById(proxyOneIgcRid);
+            String relationshipAssetType = relationshipAsset.getType();
+            relationshipMapping = relationshipMappingStore.getMappingByTypes(
+                    omrsRelationshipName,
+                    relationshipAssetType,
+                    relationshipAssetType
+            );
+            // Only need to translate if the RIDs are relationship-level RIDs
+            proxyOne = relationshipMapping.getProxyOneAssetFromAsset(relationshipAsset, igcRestClient).get(0);
+            proxyTwo = relationshipMapping.getProxyTwoAssetFromAsset(relationshipAsset, igcRestClient).get(0);
+        } else {
+            proxyOne = igcRestClient.getAssetRefById(proxyOneIgcRid);
+            proxyTwo = igcRestClient.getAssetRefById(proxyTwoIgcRid);
+            relationshipMapping = relationshipMappingStore.getMappingByTypes(
+                    omrsRelationshipName,
+                    proxyOne.getType(),
+                    proxyTwo.getType()
+            );
+        }
+
+        Relationship found = null;
+
+        if (relationshipMapping != null) {
+            try {
+
+                RelationshipDef omrsRelationshipDef = (RelationshipDef) getTypeDefByName(userId, omrsRelationshipName);
+                // Since the ordering should be set by the GUID we're lookup up anyway, we'll simply set the property
+                // to one of the proxyOne properties
+                String igcPropertyName = relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties().get(0);
+                log.debug(" ... using property: {}", igcPropertyName);
+                found = RelationshipMapping.getMappedRelationship(
+                        igcomrsRepositoryConnector,
+                        relationshipMapping,
+                        omrsRelationshipDef,
+                        proxyOne,
+                        proxyTwo,
+                        igcPropertyName,
+                        userId,
+                        relationshipLevelRid
+                );
+
+            } catch (TypeDefNotKnownException e) {
+                OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                        omrsRelationshipName,
+                        guid,
+                        guidParameterName,
+                        methodName,
+                        repositoryName);
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+        } else {
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    omrsRelationshipName,
+                    guid,
+                    guidParameterName,
+                    methodName,
+                    repositoryName);
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+        return found;
+
+    }
+
+    /**
+     * Return a list of relationships that match the requested properties by the matching criteria.   The results
+     * can be broken into pages.
+     *
+     * @param userId unique identifier for requesting user
+     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
+     * @param matchProperties list of  properties used to narrow the search.
+     * @param matchCriteria Enum defining how the properties should be matched to the relationships in the repository.
+     * @param fromRelationshipElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of relationships.  Null means no matching relationships.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the properties specified are not valid for any of the requested types of
+     *                                  relationships.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  List<Relationship> findRelationshipsByProperty(String                    userId,
+                                                           String                    relationshipTypeGUID,
+                                                           InstanceProperties        matchProperties,
+                                                           MatchCriteria             matchCriteria,
+                                                           int                       fromRelationshipElement,
+                                                           List<InstanceStatus>      limitResultsByStatus,
+                                                           Date                      asOfTime,
+                                                           String                    sequencingProperty,
+                                                           SequencingOrder           sequencingOrder,
+                                                           int                       pageSize) throws InvalidParameterException,
+            TypeErrorException,
+            RepositoryErrorException,
+            PropertyErrorException,
+            PagingErrorException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "findRelationshipsByProperty";
+        final String  matchCriteriaParameterName = "matchCriteria";
+        final String  matchPropertiesParameterName = "matchProperties";
+        final String  guidParameterName = "relationshipTypeGUID";
+        final String  asOfTimeParameter = "asOfTime";
+        final String  pageSizeParameter = "pageSize";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateOptionalTypeGUID(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
+        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+        repositoryValidator.validateMatchCriteria(repositoryName,
+                matchCriteriaParameterName,
+                matchPropertiesParameterName,
+                matchCriteria,
+                matchProperties,
+                methodName);
+
+        /*
+         * Perform operation
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        if (asOfTime == null)
+        {
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        else
+        {
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+    }
+
+    /**
+     * Return a list of relationships whose string based property values match the search criteria.  The
+     * search criteria may include regex style wild cards.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID GUID of the type of entity to search for. Null means all types will
+     *                       be searched (could be slow so not recommended).
+     * @param searchCriteria String expression contained in any of the property values within the entities
+     *                       of the supplied type.
+     * @param fromRelationshipElement Element number of the results to skip to when building the results list
+     *                                to return.  Zero means begin at the start of the results.  This is used
+     *                                to retrieve the results over a number of pages.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of relationships.  Null means no matching relationships.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws PropertyErrorException there is a problem with one of the other parameters.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  List<Relationship> findRelationshipsByPropertyValue(String                    userId,
+                                                                String                    relationshipTypeGUID,
+                                                                String                    searchCriteria,
+                                                                int                       fromRelationshipElement,
+                                                                List<InstanceStatus>      limitResultsByStatus,
+                                                                Date                      asOfTime,
+                                                                String                    sequencingProperty,
+                                                                SequencingOrder           sequencingOrder,
+                                                                int                       pageSize) throws InvalidParameterException,
+            TypeErrorException,
+            RepositoryErrorException,
+            PropertyErrorException,
+            PagingErrorException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "findRelationshipsByPropertyName";
+        final String  asOfTimeParameter = "asOfTime";
+        final String  typeGUIDParameter = "relationshipTypeGUID";
+        final String  pageSizeParameter = "pageSize";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateOptionalTypeGUID(repositoryName, typeGUIDParameter, relationshipTypeGUID, methodName);
+        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+
+        /*
+         * Perform operation
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        if (asOfTime == null)
+        {
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        else
+        {
+            throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * Return all of the relationships and intermediate entities that connect the startEntity with the endEntity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param startEntityGUID The entity that is used to anchor the query.
+     * @param endEntityGUID the other entity that defines the scope of the query.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @return InstanceGraph the sub-graph that represents the returned linked entities and their relationships.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by either the startEntityGUID or the endEntityGUID
+     *                                   is not found in the metadata collection.
+     * @throws PropertyErrorException there is a problem with one of the other parameters.
+     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  InstanceGraph getLinkingEntities(String                    userId,
+                                             String                    startEntityGUID,
+                                             String                    endEntityGUID,
+                                             List<InstanceStatus>      limitResultsByStatus,
+                                             Date                      asOfTime) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            PropertyErrorException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String methodName                   = "getLinkingEntities";
+        final String startEntityGUIDParameterName = "startEntityGUID";
+        final String endEntityGUIDParameterName   = "entityGUID";
+        final String asOfTimeParameter            = "asOfTime";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, startEntityGUIDParameterName, startEntityGUID, methodName);
+        repositoryValidator.validateGUID(repositoryName, endEntityGUIDParameterName, endEntityGUID, methodName);
+        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
+
+        /*
+         * Perform operation
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Return the entities and relationships that radiate out from the supplied entity GUID.
+     * The results are scoped both the instance type guids and the level.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID the starting point of the query.
+     * @param entityTypeGUIDs list of entity types to include in the query results.  Null means include
+     *                          all entities found, irrespective of their type.
+     * @param relationshipTypeGUIDs list of relationship types to include in the query results.  Null means include
+     *                                all relationships found, irrespective of their type.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param level the number of the relationships out from the starting entity that the query will traverse to
+     *              gather results.
+     * @return InstanceGraph the sub-graph that represents the returned linked entities and their relationships.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the entityGUID is not found in the metadata collection.
+     * @throws PropertyErrorException there is a problem with one of the other parameters.
+     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  InstanceGraph getEntityNeighborhood(String               userId,
+                                                String               entityGUID,
+                                                List<String>         entityTypeGUIDs,
+                                                List<String>         relationshipTypeGUIDs,
+                                                List<InstanceStatus> limitResultsByStatus,
+                                                List<String>         limitResultsByClassification,
+                                                Date                 asOfTime,
+                                                int                  level) throws InvalidParameterException,
+            TypeErrorException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            PropertyErrorException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String methodName                                  = "getEntityNeighborhood";
+        final String entityGUIDParameterName                     = "entityGUID";
+        final String entityTypeGUIDParameterName                 = "entityTypeGUIDs";
+        final String relationshipTypeGUIDParameterName           = "relationshipTypeGUIDs";
+        final String limitedResultsByClassificationParameterName = "limitResultsByClassification";
+        final String asOfTimeParameter                           = "asOfTime";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
+        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
+
+        if (entityTypeGUIDs != null)
+        {
+            for (String guid : entityTypeGUIDs)
+            {
+                repositoryValidator.validateTypeGUID(repositoryName, entityTypeGUIDParameterName, guid, methodName);
+            }
+        }
+
+        if (relationshipTypeGUIDs != null)
+        {
+            for (String guid : relationshipTypeGUIDs)
+            {
+                repositoryValidator.validateTypeGUID(repositoryName, relationshipTypeGUIDParameterName, guid, methodName);
+            }
+        }
+
+        if (limitResultsByClassification != null)
+        {
+            for (String classificationName : limitResultsByClassification)
+            {
+                repositoryValidator.validateClassificationName(repositoryName,
+                        limitedResultsByClassificationParameterName,
+                        classificationName,
+                        methodName);
+            }
+        }
+
+        /*
+         * Perform operation
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Return the list of entities that are of the types listed in entityTypeGUIDs and are connected, either directly or
+     * indirectly to the entity identified by startEntityGUID.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param startEntityGUID unique identifier of the starting entity.
+     * @param entityTypeGUIDs list of types to search for.  Null means any type.
+     * @param fromEntityElement starting element for results list.  Used in paging.  Zero means first element.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return list of entities either directly or indirectly connected to the start entity
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException one of the type guids passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the startEntityGUID
+     *                                   is not found in the metadata collection.
+     * @throws PropertyErrorException the sequencing property specified is not valid for any of the requested types of
+     *                                  entity.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public  List<EntityDetail> getRelatedEntities(String               userId,
+                                                  String               startEntityGUID,
+                                                  List<String>         entityTypeGUIDs,
+                                                  int                  fromEntityElement,
+                                                  List<InstanceStatus> limitResultsByStatus,
+                                                  List<String>         limitResultsByClassification,
+                                                  Date                 asOfTime,
+                                                  String               sequencingProperty,
+                                                  SequencingOrder      sequencingOrder,
+                                                  int                  pageSize) throws InvalidParameterException,
+            TypeErrorException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            PropertyErrorException,
+            PagingErrorException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "getRelatedEntities";
+        final String  entityGUIDParameterName  = "startEntityGUID";
+        final String  instanceTypesParameter = "instanceTypes";
+        final String  asOfTimeParameter = "asOfTime";
+        final String  pageSizeParameter = "pageSize";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, startEntityGUID, methodName);
+        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+
+        if (entityTypeGUIDs != null)
+        {
+            for (String guid : entityTypeGUIDs)
+            {
+                repositoryValidator.validateTypeGUID(repositoryName, instanceTypesParameter, guid, methodName);
+            }
+        }
+
+        /*
+         * Perform operation
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+    /**
+     * Create a new entity and put it in the requested state.  The new entity is returned.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID unique identifier (guid) for the new entity's type.
+     * @param initialProperties initial list of properties for the new entity; null means no properties.
+     * @param initialClassifications initial list of classifications for the new entity; null means no classifications.
+     * @param initialStatus initial status typically set to DRAFT, PREPARED or ACTIVE.
+     * @return EntityDetail showing the new header plus the requested properties and classifications.  The entity will
+     * not have any relationships at this stage.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                              hosting the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type.
+     * @throws ClassificationErrorException one or more of the requested classifications are either not known or
+     *                                           not defined for this entity type.
+     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                       the requested status.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityDetail addEntity(String                     userId,
+                                  String                     entityTypeGUID,
+                                  InstanceProperties         initialProperties,
+                                  List<Classification>       initialClassifications,
+                                  InstanceStatus             initialStatus) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeErrorException,
+            PropertyErrorException,
+            ClassificationErrorException,
+            StatusNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName                    = "addEntity";
+        final String  entityGUIDParameterName       = "entityTypeGUID";
+        final String  propertiesParameterName       = "initialProperties";
+        final String  classificationsParameterName  = "initialClassifications";
+        final String  initialStatusParameterName    = "initialStatus";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeGUID(repositoryName, entityGUIDParameterName, entityTypeGUID, methodName);
+
+        TypeDef  typeDef = repositoryHelper.getTypeDef(repositoryName, entityGUIDParameterName, entityTypeGUID, methodName);
+
+        repositoryValidator.validateTypeDefForInstance(repositoryName, entityGUIDParameterName, typeDef, methodName);
+        repositoryValidator.validateClassificationList(repositoryName,
+                classificationsParameterName,
+                initialClassifications,
+                typeDef.getName(),
+                methodName);
+
+        repositoryValidator.validatePropertiesForType(repositoryName,
+                propertiesParameterName,
+                typeDef,
+                initialProperties,
+                methodName);
+
+        repositoryValidator.validateInstanceStatus(repositoryName,
+                initialStatusParameterName,
+                initialStatus,
+                typeDef,
+                methodName);
+
+        /*
+         * Validation complete; ok to create new instance
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Create an entity proxy in the metadata collection.  This is used to store relationships that span metadata
+     * repositories.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityProxy details of entity to add.
+     * @throws InvalidParameterException the entity proxy is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws FunctionNotSupportedException the repository does not support entity proxies as first class elements.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void addEntityProxy(String       userId,
+                               EntityProxy  entityProxy) throws InvalidParameterException,
+            RepositoryErrorException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName         = "addEntityProxy";
+        final String  proxyParameterName = "entityProxy";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+
+        repositoryValidator.validateEntityProxy(repositoryName,
+                metadataCollectionId,
+                proxyParameterName,
+                entityProxy,
+                methodName);
+
+        /*
+         * Validation complete
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Update the status for a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID unique identifier (guid) for the requested entity.
+     * @param newStatus new InstanceStatus for the entity.
+     * @return EntityDetail showing the current entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
+     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                      the requested status.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityDetail updateEntityStatus(String           userId,
+                                           String           entityGUID,
+                                           InstanceStatus   newStatus) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            StatusNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName               = "updateEntityStatus";
+        final String  entityGUIDParameterName  = "entityGUID";
+        final String  statusParameterName      = "newStatus";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
+
+        /*
+         * Locate entity
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Update selected properties in an entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param properties a list of properties to change.
+     * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this entity's type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityDetail updateEntityProperties(String               userId,
+                                               String               entityGUID,
+                                               InstanceProperties   properties) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            PropertyErrorException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "updateEntityProperties";
+        final String  entityGUIDParameterName  = "entityGUID";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
+
+        /*
+         * Locate entity
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Undo the last update to an entity and return the previous content.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support undo.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityDetail undoEntityUpdate(String  userId,
+                                         String  entityGUID) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "undoEntityUpdate";
+        final String  entityGUIDParameterName  = "entityGUID";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
+
+        /*
+         * Validation complete; ok to restore entity
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Delete an entity.  The entity is soft deleted.  This means it is still in the graph but it is no longer returned
+     * on queries.  All relationships to the entity are also soft-deleted and will no longer be usable.
+     * To completely eliminate the entity from the graph requires a call to the purgeEntity() method after the delete call.
+     * The restoreEntity() method will switch an entity back to Active status to restore the entity to normal use.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param typeDefGUID unique identifier of the type of the entity to delete.
+     * @param typeDefName unique name of the type of the entity to delete.
+     * @param obsoleteEntityGUID String unique identifier (guid) for the entity.
+     * @return deleted entity
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
+     * @throws FunctionNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                       soft-deletes (use purgeEntity() to remove the entity permanently).
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityDetail   deleteEntity(String userId,
+                                       String typeDefGUID,
+                                       String typeDefName,
+                                       String obsoleteEntityGUID) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName               = "deleteEntity";
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Permanently removes a deleted entity from the metadata collection.  This request can not be undone.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param typeDefGUID unique identifier of the type of the entity to purge.
+     * @param typeDefName unique name of the type of the entity to purge.
+     * @param deletedEntityGUID String unique identifier (guid) for the entity.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws EntityNotDeletedException the entity is not in DELETED status and so can not be purged
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void purgeEntity(String    userId,
+                            String    typeDefGUID,
+                            String    typeDefName,
+                            String    deletedEntityGUID) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            EntityNotDeletedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName               = "purgeEntity";
+        final String  typeDefGUIDParameterName = "typeDefGUID";
+        final String  typeDefNameParameterName = "typeDefName";
+        final String  entityGUIDParameterName  = "deletedEntityGUID";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeDefIds(repositoryName,
+                typeDefGUIDParameterName,
+                typeDefNameParameterName,
+                typeDefGUID,
+                typeDefName,
+                methodName);
+        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, deletedEntityGUID, methodName);
+
+        /*
+         * Locate entity
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Restore the requested entity to the state it was before it was deleted.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param deletedEntityGUID String unique identifier (guid) for the entity.
+     * @return EntityDetail showing the restored entity header, properties and classifications.
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws EntityNotDeletedException the entity is currently not in DELETED status and so it can not be restored
+     * @throws FunctionNotSupportedException the repository does not support soft-deletes.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityDetail restoreEntity(String    userId,
+                                      String    deletedEntityGUID) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            EntityNotDeletedException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName              = "restoreEntity";
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Add the requested classification to a specific entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param classificationProperties list of properties to set in the classification.
+     * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is either not known or not valid
+     *                                         for the entity.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityDetail classifyEntity(String               userId,
+                                       String               entityGUID,
+                                       String               classificationName,
+                                       InstanceProperties   classificationProperties) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            ClassificationErrorException,
+            PropertyErrorException,
+            UserNotAuthorizedException
+    {
+        final String  methodName                  = "classifyEntity";
+        final String  entityGUIDParameterName     = "entityGUID";
+        final String  classificationParameterName = "classificationName";
+        final String  propertiesParameterName     = "classificationProperties";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
+
+        /*
+         * Locate entity
+         */
+        EntityDetail entityDetail = null;
+
+        try {
+            TypeDef classificationTypeDef = getTypeDefByName(userId, classificationName);
+            if (classificationTypeDef != null) {
+
+                String rid = getRidFromGeneratedId(entityGUID);
+                Reference igcEntity = this.igcRestClient.getAssetRefById(rid);
+
+                if (igcEntity == null) {
+                    OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                            entityGUID,
+                            methodName,
+                            repositoryName
+                    );
+                    throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction());
+                }
+
+                ClassificationMapping classificationMapping = classificationMappingStore.getMappingByOmrsTypeName(classificationName);
+
+                if (classificationMapping != null) {
+
+                    entityDetail = classificationMapping.addClassificationToIGCAsset(
+                            igcomrsRepositoryConnector,
+                            igcEntity,
+                            entityGUID,
+                            classificationProperties,
+                            userId
+                    );
+
+                } else {
+                    OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NAME_NOT_KNOWN;
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                            classificationName,
+                            methodName,
+                            repositoryName
+                    );
+                    throw new ClassificationErrorException(
+                            errorCode.getHTTPErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction()
+                    );
+                }
+
+            } else {
+                OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                        classificationName,
+                        classificationParameterName,
+                        methodName,
+                        repositoryName
+                );
+                throw new ClassificationErrorException(
+                        errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction()
+                );
+            }
+        } catch (TypeDefNotKnownException e) {
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    classificationName,
+                    classificationParameterName,
+                    methodName,
+                    repositoryName
+            );
+            throw new ClassificationErrorException(
+                    errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction()
+            );
+        }
+
+        return entityDetail;
+
+    }
+
+
+    /**
+     * Remove a specific classification from an entity.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not set on the entity.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityDetail declassifyEntity(String  userId,
+                                         String  entityGUID,
+                                         String  classificationName) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            ClassificationErrorException,
+            UserNotAuthorizedException
+    {
+        final String  methodName                  = "declassifyEntity";
+        final String  entityGUIDParameterName     = "entityGUID";
+        final String  classificationParameterName = "classificationName";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
+        repositoryValidator.validateClassificationName(repositoryName,
+                classificationParameterName,
+                classificationName,
+                methodName);
+
+        /*
+         * Locate entity
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Update one or more properties in one of an entity's classifications.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID String unique identifier (guid) for the entity.
+     * @param classificationName String name for the classification.
+     * @param properties list of properties for the classification.
+     * @return EntityDetail showing the resulting entity header, properties and classifications.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
+     * @throws ClassificationErrorException the requested classification is not attached to the classification.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this classification type
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityDetail updateEntityClassification(String               userId,
+                                                   String               entityGUID,
+                                                   String               classificationName,
+                                                   InstanceProperties   properties) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            ClassificationErrorException,
+            PropertyErrorException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "updateEntityClassification";
+        final String  entityGUIDParameterName     = "entityGUID";
+        final String  classificationParameterName = "classificationName";
+        final String  propertiesParameterName = "properties";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
+        repositoryValidator.validateClassificationName(repositoryName, classificationParameterName, classificationName, methodName);
+
+
+        try
+        {
+            repositoryValidator.validateClassificationProperties(repositoryName,
+                    classificationName,
+                    propertiesParameterName,
+                    properties,
+                    methodName);
+        }
+        catch (PropertyErrorException  error)
+        {
+            throw error;
+        }
+        catch (Throwable   error)
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.UNKNOWN_CLASSIFICATION;
+
+            throw new ClassificationErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    error.getMessage(),
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+
+        /*
+         * Locate entity
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+
+    /**
+     * Add a new relationship between two entities to the metadata collection.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
+     * @param initialProperties initial list of properties for the new entity; null means no properties.
+     * @param entityOneGUID the unique identifier of one of the entities that the relationship is connecting together.
+     * @param entityTwoGUID the unique identifier of the other entity that the relationship is connecting together.
+     * @param initialStatus initial status typically set to DRAFT, PREPARED or ACTIVE.
+     * @return Relationship structure with the new header, requested entities and properties.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                 the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type.
+     * @throws EntityNotKnownException one of the requested entities is not known in the metadata collection.
+     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                     the requested status.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Relationship addRelationship(String               userId,
+                                        String               relationshipTypeGUID,
+                                        InstanceProperties   initialProperties,
+                                        String               entityOneGUID,
+                                        String               entityTwoGUID,
+                                        InstanceStatus       initialStatus) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeErrorException,
+            PropertyErrorException,
+            EntityNotKnownException,
+            StatusNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "addRelationship";
+        final String  guidParameterName = "relationshipTypeGUID";
+        final String  propertiesParameterName       = "initialProperties";
+        final String  initialStatusParameterName    = "initialStatus";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateTypeGUID(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
+
+        TypeDef  typeDef = repositoryHelper.getTypeDef(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
+
+        repositoryValidator.validateTypeDefForInstance(repositoryName, guidParameterName, typeDef, methodName);
+
+
+        repositoryValidator.validatePropertiesForType(repositoryName,
+                propertiesParameterName,
+                typeDef,
+                initialProperties,
+                methodName);
+
+        repositoryValidator.validateInstanceStatus(repositoryName,
+                initialStatusParameterName,
+                initialStatus,
+                typeDef,
+                methodName);
+
+        /*
+         * Validation complete, ok to create new instance
+         */
+        Relationship relationship = null;
+
+        if (initialStatus != null && initialStatus != InstanceStatus.ACTIVE) {
+            OMRSErrorCode errorCode = OMRSErrorCode.BAD_INSTANCE_STATUS;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    initialStatus.getName(),
+                    initialStatusParameterName,
+                    methodName,
+                    repositoryName,
+                    relationshipTypeGUID);
+            throw new StatusNotSupportedException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+        try {
+            TypeDef relationshipTypeDef = getTypeDefByGUID(userId, relationshipTypeGUID);
+            if (relationshipTypeDef != null) {
+
+                String relationshipTypeName = relationshipTypeDef.getName();
+                Reference entityOne = this.igcRestClient.getAssetRefById(entityOneGUID);
+                Reference entityTwo = this.igcRestClient.getAssetRefById(entityTwoGUID);
+
+                if (entityOne == null) {
+                    OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                            entityOneGUID,
+                            methodName,
+                            repositoryName
+                    );
+                    throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction());
+                }
+                if (entityTwo == null) {
+                    OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                            entityTwoGUID,
+                            methodName,
+                            repositoryName
+                    );
+                    throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction());
+                }
+
+                RelationshipMapping relationshipMapping = relationshipMappingStore.getMappingByTypes(
+                        relationshipTypeName,
+                        entityOne.getType(),
+                        entityTwo.getType()
+                );
+
+                if (relationshipMapping != null) {
+
+                    relationship = RelationshipMapping.addIgcRelationship(
+                            igcomrsRepositoryConnector,
+                            relationshipMapping,
+                            initialProperties,
+                            entityOne,
+                            entityTwo,
+                            userId
+                    );
+
+                } else {
+                    OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_NAME_NOT_KNOWN;
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                            relationshipTypeName,
+                            methodName,
+                            repositoryName
+                    );
+                    throw new TypeErrorException(
+                            errorCode.getHTTPErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction()
+                    );
+                }
+
+            } else {
+                OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                        relationshipTypeGUID,
+                        guidParameterName,
+                        methodName,
+                        repositoryName
+                );
+                throw new TypeErrorException(
+                        errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction()
+                );
+            }
+        } catch (TypeDefNotKnownException e) {
+            OMRSErrorCode errorCode = OMRSErrorCode.TYPEDEF_ID_NOT_KNOWN;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                    relationshipTypeGUID,
+                    guidParameterName,
+                    methodName,
+                    repositoryName
+            );
+            throw new TypeErrorException(
+                    errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction()
+            );
+        }
+
+        return relationship;
+
+    }
+
+
+    /**
+     * Update the status of a specific relationship.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipGUID String unique identifier (guid) for the relationship.
+     * @param newStatus new InstanceStatus for the relationship.
+     * @return Resulting relationship structure with the new status set.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
+     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                     the requested status.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Relationship updateRelationshipStatus(String           userId,
+                                                 String           relationshipGUID,
+                                                 InstanceStatus   newStatus) throws InvalidParameterException,
+            RepositoryErrorException,
+            RelationshipNotKnownException,
+            StatusNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName          = "updateRelationshipStatus";
+        final String  guidParameterName   = "relationshipGUID";
+        final String  statusParameterName = "newStatus";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, relationshipGUID, methodName);
+
+        /*
+         * Locate relationship
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Update the properties of a specific relationship.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipGUID String unique identifier (guid) for the relationship.
+     * @param properties list of the properties to update.
+     * @return Resulting relationship structure with the new properties set.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                characteristics in the TypeDef for this relationship's type.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Relationship updateRelationshipProperties(String               userId,
+                                                     String               relationshipGUID,
+                                                     InstanceProperties   properties) throws InvalidParameterException,
+            RepositoryErrorException,
+            RelationshipNotKnownException,
+            PropertyErrorException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "updateRelationshipProperties";
+        final String  guidParameterName = "relationshipGUID";
+        final String  propertiesParameterName = "properties";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, relationshipGUID, methodName);
+
+        /*
+         * Locate relationship
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Undo the latest change to a relationship (either a change of properties or status).
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipGUID String unique identifier (guid) for the relationship.
+     * @return Relationship structure with the new current header, requested entities and properties.
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support undo.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Relationship undoRelationshipUpdate(String  userId,
+                                               String  relationshipGUID) throws InvalidParameterException,
+            RepositoryErrorException,
+            RelationshipNotKnownException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "undoRelationshipUpdate";
+        final String  guidParameterName = "relationshipGUID";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, relationshipGUID, methodName);
+
+        /*
+         * Restore previous version
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Delete a specific relationship.  This is a soft-delete which means the relationship's status is updated to
+     * DELETED and it is no longer available for queries.  To remove the relationship permanently from the
+     * metadata collection, use purgeRelationship().
+     *
+     * @param userId unique identifier for requesting user.
+     * @param typeDefGUID unique identifier of the type of the relationship to delete.
+     * @param typeDefName unique name of the type of the relationship to delete.
+     * @param obsoleteRelationshipGUID String unique identifier (guid) for the relationship.
+     * @return deleted relationship
+     * @throws InvalidParameterException one of the parameters is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * the metadata collection is stored.
+     * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
+     * @throws FunctionNotSupportedException the metadata repository hosting the metadata collection does not support
+     *                                     soft-deletes.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Relationship deleteRelationship(String userId,
+                                           String typeDefGUID,
+                                           String typeDefName,
+                                           String obsoleteRelationshipGUID) throws InvalidParameterException,
+            RepositoryErrorException,
+            RelationshipNotKnownException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "deleteRelationship";
+        final String  guidParameterName = "typeDefGUID";
+        final String  nameParameterName = "typeDefName";
+        final String  relationshipParameterName = "obsoleteRelationshipGUID";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, obsoleteRelationshipGUID, methodName);
+        repositoryValidator.validateTypeDefIds(repositoryName,
+                guidParameterName,
+                nameParameterName,
+                typeDefGUID,
+                typeDefName,
+                methodName);
+
+        /*
+         * Locate relationship
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Permanently delete the relationship from the repository.  There is no means to undo this request.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param typeDefGUID unique identifier of the type of the relationship to purge.
+     * @param typeDefName unique name of the type of the relationship to purge.
+     * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
+     * @throws InvalidParameterException one of the parameters is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
+     * @throws RelationshipNotDeletedException the requested relationship is not in DELETED status.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void purgeRelationship(String    userId,
+                                  String    typeDefGUID,
+                                  String    typeDefName,
+                                  String    deletedRelationshipGUID) throws InvalidParameterException,
+            RepositoryErrorException,
+            RelationshipNotKnownException,
+            RelationshipNotDeletedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "purgeRelationship";
+        final String  guidParameterName = "typeDefGUID";
+        final String  nameParameterName = "typeDefName";
+        final String  relationshipParameterName = "deletedRelationshipGUID";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, deletedRelationshipGUID, methodName);
+        repositoryValidator.validateTypeDefIds(repositoryName,
+                guidParameterName,
+                nameParameterName,
+                typeDefGUID,
+                typeDefName,
+                methodName);
+
+        /*
+         * Locate relationship
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Restore a deleted relationship into the metadata collection.  The new status will be ACTIVE and the
+     * restored details of the relationship are returned to the caller.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param deletedRelationshipGUID String unique identifier (guid) for the relationship.
+     * @return Relationship structure with the restored header, requested entities and properties.
+     * @throws InvalidParameterException the guid is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     * the metadata collection is stored.
+     * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
+     * @throws RelationshipNotDeletedException the requested relationship is not in DELETED status.
+     * @throws FunctionNotSupportedException the repository does not support soft-deletes.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Relationship restoreRelationship(String    userId,
+                                            String    deletedRelationshipGUID) throws InvalidParameterException,
+            RepositoryErrorException,
+            RelationshipNotKnownException,
+            RelationshipNotDeletedException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "restoreRelationship";
+        final String  guidParameterName = "deletedRelationshipGUID";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, guidParameterName, deletedRelationshipGUID, methodName);
+
+        /*
+         * Locate relationship
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+    /**
+     * Change the guid of an existing entity to a new value.  This is used if two different
+     * entities are discovered to have the same guid.  This is extremely unlikely but not impossible so
+     * the open metadata protocol has provision for this.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param typeDefGUID the guid of the TypeDef for the entity used to verify the entity identity.
+     * @param typeDefName the name of the TypeDef for the entity used to verify the entity identity.
+     * @param entityGUID the existing identifier for the entity.
+     * @param newEntityGUID new unique identifier for the entity.
+     * @return entity new values for this entity, including the new guid.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support the re-identification of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityDetail reIdentifyEntity(String     userId,
+                                         String     typeDefGUID,
+                                         String     typeDefName,
+                                         String     entityGUID,
+                                         String     newEntityGUID) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "reIdentifyEntity";
+        final String  guidParameterName = "typeDefGUID";
+        final String  nameParameterName = "typeDefName";
+        final String  instanceParameterName = "deletedRelationshipGUID";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        parentConnector.validateRepositoryIsActive(methodName);
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, instanceParameterName, newEntityGUID, methodName);
+        repositoryValidator.validateTypeDefIds(repositoryName,
+                guidParameterName,
+                nameParameterName,
+                typeDefGUID,
+                typeDefName,
+                methodName);
+
+        /*
+         * Locate entity
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Change the type of an existing entity.  Typically this action is taken to move an entity's
+     * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
+     * added.)  However, the type can be changed to any compatible type and the properties adjusted.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID the unique identifier for the entity to change.
+     * @param currentTypeDefSummary the current details of the TypeDef for the entity used to verify the entity identity
+     * @param newTypeDefSummary details of this entity's new TypeDef.
+     * @return entity new values for this entity, including the new type information.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws PropertyErrorException The properties in the instance are incompatible with the requested type.
+     * @throws ClassificationErrorException the entity's classifications are not valid for the new type.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support the re-typing of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityDetail reTypeEntity(String         userId,
+                                     String         entityGUID,
+                                     TypeDefSummary currentTypeDefSummary,
+                                     TypeDefSummary newTypeDefSummary) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeErrorException,
+            PropertyErrorException,
+            ClassificationErrorException,
+            EntityNotKnownException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "reTypeEntity";
+        final String  entityParameterName = "entityGUID";
+        final String  currentTypeDefParameterName = "currentTypeDefSummary";
+        final String  newTypeDefParameterName = "newTypeDefSummary";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, entityParameterName, entityGUID, methodName);
+
+        /*
+         * Locate entity
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Change the home of an existing entity.  This action is taken for example, if the original home repository
+     * becomes permanently unavailable, or if the user community updating this entity move to working
+     * from a different repository in the open metadata repository cohort.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityGUID the unique identifier for the entity to change.
+     * @param typeDefGUID the guid of the TypeDef for the entity used to verify the entity identity.
+     * @param typeDefName the name of the TypeDef for the entity used to verify the entity identity.
+     * @param homeMetadataCollectionId the existing identifier for this entity's home.
+     * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
+     * @return entity new values for this entity, including the new home information.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support the re-homing of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public EntityDetail reHomeEntity(String         userId,
+                                     String         entityGUID,
+                                     String         typeDefGUID,
+                                     String         typeDefName,
+                                     String         homeMetadataCollectionId,
+                                     String         newHomeMetadataCollectionId,
+                                     String         newHomeMetadataCollectionName) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String methodName                = "reHomeEntity";
+        final String guidParameterName         = "typeDefGUID";
+        final String nameParameterName         = "typeDefName";
+        final String entityParameterName       = "entityGUID";
+        final String homeParameterName         = "homeMetadataCollectionId";
+        final String newHomeParameterName      = "newHomeMetadataCollectionId";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, entityParameterName, entityGUID, methodName);
+        repositoryValidator.validateTypeDefIds(repositoryName,
+                guidParameterName,
+                nameParameterName,
+                typeDefGUID,
+                typeDefName,
+                methodName);
+        repositoryValidator.validateHomeMetadataGUID(repositoryName, homeParameterName, homeMetadataCollectionId, methodName);
+        repositoryValidator.validateHomeMetadataGUID(repositoryName, newHomeParameterName, newHomeMetadataCollectionId, methodName);
+
+        /*
+         * Locate entity
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Change the guid of an existing relationship.  This is used if two different
+     * relationships are discovered to have the same guid.  This is extremely unlikely but not impossible so
+     * the open metadata protocol has provision for this.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
+     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
+     * @param relationshipGUID the existing identifier for the relationship.
+     * @param newRelationshipGUID  the new unique identifier for the relationship.
+     * @return relationship new values for this relationship, including the new guid.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the
+     *                                         metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support the re-identification of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Relationship reIdentifyRelationship(String     userId,
+                                               String     typeDefGUID,
+                                               String     typeDefName,
+                                               String     relationshipGUID,
+                                               String     newRelationshipGUID) throws InvalidParameterException,
+            RepositoryErrorException,
+            RelationshipNotKnownException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String methodName                   = "reIdentifyRelationship";
+        final String guidParameterName            = "typeDefGUID";
+        final String nameParameterName            = "typeDefName";
+        final String relationshipParameterName    = "relationshipGUID";
+        final String newRelationshipParameterName = "newHomeMetadataCollectionId";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, relationshipGUID, methodName);
+        repositoryValidator.validateTypeDefIds(repositoryName,
+                guidParameterName,
+                nameParameterName,
+                typeDefGUID,
+                typeDefName,
+                methodName);
+        repositoryValidator.validateGUID(repositoryName, newRelationshipParameterName, newRelationshipGUID, methodName);
+
+        /*
+         * Locate relationship
+         */
+        Relationship  relationship  = this.getRelationship(userId, relationshipGUID);
+
+        /*
+         * Validation complete, ok to make changes
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Change the type of an existing relationship.  Typically this action is taken to move a relationship's
+     * type to either a super type (so the subtype can be deleted) or a new subtype (so additional properties can be
+     * added.)  However, the type can be changed to any compatible type.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipGUID the unique identifier for the relationship.
+     * @param currentTypeDefSummary the details of the TypeDef for the relationship used to verify the relationship identity.
+     * @param newTypeDefSummary details of this relationship's new TypeDef.
+     * @return relationship new values for this relationship, including the new type information.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws PropertyErrorException The properties in the instance are incompatible with the requested type.
+     * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the
+     *                                         metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support the re-typing of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Relationship reTypeRelationship(String         userId,
+                                           String         relationshipGUID,
+                                           TypeDefSummary currentTypeDefSummary,
+                                           TypeDefSummary newTypeDefSummary) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeErrorException,
+            PropertyErrorException,
+            RelationshipNotKnownException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String methodName = "reTypeRelationship";
+        final String relationshipParameterName = "relationshipGUID";
+        final String currentTypeDefParameterName = "currentTypeDefSummary";
+        final String newTypeDefParameterName = "newTypeDefSummary";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, relationshipGUID, methodName);
+        repositoryValidator.validateType(repositoryName, currentTypeDefParameterName, currentTypeDefSummary, TypeDefCategory.RELATIONSHIP_DEF, methodName);
+        repositoryValidator.validateType(repositoryName, currentTypeDefParameterName, newTypeDefSummary, TypeDefCategory.RELATIONSHIP_DEF, methodName);
+
+        /*
+         * Locate relationship
+         */
+        Relationship  relationship  = this.getRelationship(userId, relationshipGUID);
+
+        repositoryValidator.validateInstanceType(repositoryName,
+                relationship,
+                currentTypeDefParameterName,
+                currentTypeDefParameterName,
+                currentTypeDefSummary.getGUID(),
+                currentTypeDefSummary.getName());
+
+
+        repositoryValidator.validatePropertiesForType(repositoryName,
+                newTypeDefParameterName,
+                newTypeDefSummary,
+                relationship.getProperties(),
+                methodName);
+
+        /*
+         * Validation complete; ok to make changes
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Change the home of an existing relationship.  This action is taken for example, if the original home repository
+     * becomes permanently unavailable, or if the user community updating this relationship move to working
+     * from a different repository in the open metadata repository cohort.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipGUID the unique identifier for the relationship.
+     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
+     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
+     * @param homeMetadataCollectionId the existing identifier for this relationship's home.
+     * @param newHomeMetadataCollectionId unique identifier for the new home metadata collection/repository.
+     * @param newHomeMetadataCollectionName display name for the new home metadata collection/repository.
+     * @return relationship new values for this relationship, including the new home information.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws RelationshipNotKnownException the relationship identified by the guid is not found in the
+     *                                         metadata collection.
+     * @throws FunctionNotSupportedException the repository does not support the re-homing of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public Relationship reHomeRelationship(String   userId,
+                                           String   relationshipGUID,
+                                           String   typeDefGUID,
+                                           String   typeDefName,
+                                           String   homeMetadataCollectionId,
+                                           String   newHomeMetadataCollectionId,
+                                           String   newHomeMetadataCollectionName) throws InvalidParameterException,
+            RepositoryErrorException,
+            RelationshipNotKnownException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName               = "reHomeRelationship";
+        final String guidParameterName         = "typeDefGUID";
+        final String nameParameterName         = "typeDefName";
+        final String relationshipParameterName = "relationshipGUID";
+        final String homeParameterName         = "homeMetadataCollectionId";
+        final String newHomeParameterName      = "newHomeMetadataCollectionId";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateUserId(repositoryName, userId, methodName);
+        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, relationshipGUID, methodName);
+        repositoryValidator.validateTypeDefIds(repositoryName,
+                guidParameterName,
+                nameParameterName,
+                typeDefGUID,
+                typeDefName,
+                methodName);
+        repositoryValidator.validateHomeMetadataGUID(repositoryName, homeParameterName, homeMetadataCollectionId, methodName);
+        repositoryValidator.validateHomeMetadataGUID(repositoryName, newHomeParameterName, newHomeMetadataCollectionId, methodName);
+
+        /*
+         * Locate relationship
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new FunctionNotSupportedException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+    /**
+     * Save the entity as a reference copy.  The id of the home metadata collection is already set up in the
+     * entity.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param entity details of the entity to save.
+     * @throws InvalidParameterException the entity is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this entity's type.
+     * @throws HomeEntityException the entity belongs to the local repository so creating a reference
+     *                               copy would be invalid.
+     * @throws EntityConflictException the new entity conflicts with an existing entity.
+     * @throws InvalidEntityException the new entity has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void saveEntityReferenceCopy(String userId,
+                                        EntityDetail   entity) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeErrorException,
+            PropertyErrorException,
+            HomeEntityException,
+            EntityConflictException,
+            InvalidEntityException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "saveEntityReferenceCopy";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Remove a reference copy of the the entity from the local repository.  This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or entities that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param entityGUID the unique identifier for the entity.
+     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
+     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
+     * @param homeMetadataCollectionId identifier of the metadata collection that is the home to this entity.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
+     * @throws HomeEntityException the entity belongs to the local repository so creating a reference
+     *                               copy would be invalid.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void purgeEntityReferenceCopy(String userId,
+                                         String   entityGUID,
+                                         String   typeDefGUID,
+                                         String   typeDefName,
+                                         String   homeMetadataCollectionId) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            HomeEntityException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName               = "purgeEntityReferenceCopy";
+        final String guidParameterName         = "typeDefGUID";
+        final String nameParameterName         = "typeDefName";
+        final String entityParameterName       = "entityGUID";
+        final String homeParameterName         = "homeMetadataCollectionId";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateGUID(repositoryName, entityParameterName, entityGUID, methodName);
+        repositoryValidator.validateTypeDefIds(repositoryName,
+                guidParameterName,
+                nameParameterName,
+                typeDefGUID,
+                typeDefName,
+                methodName);
+        repositoryValidator.validateHomeMetadataGUID(repositoryName, homeParameterName, homeMetadataCollectionId, methodName);
+
+        /*
+         * Remove entity
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * The local repository has requested that the repository that hosts the home metadata collection for the
+     * specified entity sends out the details of this entity so the local repository can create a reference copy.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param entityGUID unique identifier of requested entity.
+     * @param typeDefGUID unique identifier of requested entity's TypeDef.
+     * @param typeDefName unique name of requested entity's TypeDef.
+     * @param homeMetadataCollectionId identifier of the metadata collection that is the home to this entity.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
+     * @throws HomeEntityException the entity belongs to the local repository so creating a reference
+     *                               copy would be invalid.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void refreshEntityReferenceCopy(String userId,
+                                           String   entityGUID,
+                                           String   typeDefGUID,
+                                           String   typeDefName,
+                                           String   homeMetadataCollectionId) throws InvalidParameterException,
+            RepositoryErrorException,
+            EntityNotKnownException,
+            HomeEntityException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String methodName                = "refreshEntityReferenceCopy";
+        final String guidParameterName         = "typeDefGUID";
+        final String nameParameterName         = "typeDefName";
+        final String entityParameterName       = "entityGUID";
+        final String homeParameterName         = "homeMetadataCollectionId";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateGUID(repositoryName, entityParameterName, entityGUID, methodName);
+        repositoryValidator.validateTypeDefIds(repositoryName,
+                guidParameterName,
+                nameParameterName,
+                typeDefGUID,
+                typeDefName,
+                methodName);
+        repositoryValidator.validateHomeMetadataGUID(repositoryName, homeParameterName, homeMetadataCollectionId, methodName);
+
+        /*
+         * Send refresh message
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Save the relationship as a reference copy.  The id of the home metadata collection is already set up in the
+     * relationship.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param relationship relationship to save.
+     * @throws InvalidParameterException the relationship is null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws TypeErrorException the requested type is not known, or not supported in the metadata repository
+     *                            hosting the metadata collection.
+     * @throws EntityNotKnownException one of the entities identified by the relationship is not found in the
+     *                                   metadata collection.
+     * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
+     *                                  characteristics in the TypeDef for this relationship's type.
+     * @throws HomeRelationshipException the relationship belongs to the local repository so creating a reference
+     *                                     copy would be invalid.
+     * @throws RelationshipConflictException the new relationship conflicts with an existing relationship.
+     * @throws InvalidRelationshipException the new relationship has invalid contents.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void saveRelationshipReferenceCopy(String userId,
+                                              Relationship   relationship) throws InvalidParameterException,
+            RepositoryErrorException,
+            TypeErrorException,
+            EntityNotKnownException,
+            PropertyErrorException,
+            HomeRelationshipException,
+            RelationshipConflictException,
+            InvalidRelationshipException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String  methodName = "saveRelationshipReferenceCopy";
+        final String  instanceParameterName = "relationship";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateReferenceInstanceHeader(repositoryName, metadataCollectionId, instanceParameterName, relationship, methodName);
+
+        /*
+         * Locate relationship
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * Remove the reference copy of the relationship from the local repository. This method can be used to
+     * remove reference copies from the local cohort, repositories that have left the cohort,
+     * or relationships that have come from open metadata archives.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param relationshipGUID the unique identifier for the relationship.
+     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
+     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
+     * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws RelationshipNotKnownException the relationship identifier is not recognized.
+     * @throws HomeRelationshipException the relationship belongs to the local repository so creating a reference
+     *                                     copy would be invalid.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void purgeRelationshipReferenceCopy(String userId,
+                                               String   relationshipGUID,
+                                               String   typeDefGUID,
+                                               String   typeDefName,
+                                               String   homeMetadataCollectionId) throws InvalidParameterException,
+            RepositoryErrorException,
+            RelationshipNotKnownException,
+            HomeRelationshipException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String methodName                = "purgeRelationshipReferenceCopy";
+        final String guidParameterName         = "typeDefGUID";
+        final String nameParameterName         = "typeDefName";
+        final String relationshipParameterName = "relationshipGUID";
+        final String homeParameterName         = "homeMetadataCollectionId";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, relationshipGUID, methodName);
+        repositoryValidator.validateTypeDefIds(repositoryName,
+                guidParameterName,
+                nameParameterName,
+                typeDefGUID,
+                typeDefName,
+                methodName);
+        repositoryValidator.validateHomeMetadataGUID(repositoryName, homeParameterName, homeMetadataCollectionId, methodName);
+
+
+        /*
+         * Purge relationship
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+
+    /**
+     * The local repository has requested that the repository that hosts the home metadata collection for the
+     * specified relationship sends out the details of this relationship so the local repository can create a
+     * reference copy.
+     *
+     * @param userId unique identifier for requesting server.
+     * @param relationshipGUID unique identifier of the relationship.
+     * @param typeDefGUID the guid of the TypeDef for the relationship used to verify the relationship identity.
+     * @param typeDefName the name of the TypeDef for the relationship used to verify the relationship identity.
+     * @param homeMetadataCollectionId unique identifier for the home repository for this relationship.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws RelationshipNotKnownException the relationship identifier is not recognized.
+     * @throws HomeRelationshipException the relationship belongs to the local repository so creating a reference
+     *                                     copy would be invalid.
+     * @throws FunctionNotSupportedException the repository does not support reference copies of instances.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    @Override
+    public void refreshRelationshipReferenceCopy(String userId,
+                                                 String   relationshipGUID,
+                                                 String   typeDefGUID,
+                                                 String   typeDefName,
+                                                 String   homeMetadataCollectionId) throws InvalidParameterException,
+            RepositoryErrorException,
+            RelationshipNotKnownException,
+            HomeRelationshipException,
+            FunctionNotSupportedException,
+            UserNotAuthorizedException
+    {
+        final String methodName                = "refreshRelationshipReferenceCopy";
+        final String guidParameterName         = "typeDefGUID";
+        final String nameParameterName         = "typeDefName";
+        final String relationshipParameterName = "relationshipGUID";
+        final String homeParameterName         = "homeMetadataCollectionId";
+
+        /*
+         * Validate parameters
+         */
+        this.validateRepositoryConnector(methodName);
+        parentConnector.validateRepositoryIsActive(methodName);
+
+        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, relationshipGUID, methodName);
+        repositoryValidator.validateTypeDefIds(repositoryName,
+                guidParameterName,
+                nameParameterName,
+                typeDefGUID,
+                typeDefName,
+                methodName);
+        repositoryValidator.validateHomeMetadataGUID(repositoryName, homeParameterName, homeMetadataCollectionId, methodName);
+
+        /*
+         * Process refresh request
+         */
+        // TODO: implement
+        OMRSErrorCode errorCode = OMRSErrorCode.METHOD_NOT_IMPLEMENTED;
+
+        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                this.getClass().getName(),
+                repositoryName);
+
+        throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                this.getClass().getName(),
+                methodName,
+                errorMessage,
+                errorCode.getSystemAction(),
+                errorCode.getUserAction());
+    }
+
+    /**
+     * Retrieve a mapping from IGC property name to the OMRS relationship type it represents.
+     *
+     * @param assetType the IGC asset type for which to find mappings
+     * @param userId the userId making the request
+     * @return Map<String, RelationshipMapping> - keyed by IGC asset type with values of the RelationshipMappings
+     */
+    public Map<String, List<RelationshipMapping>> getIgcPropertiesToRelationshipMappings(String assetType, String userId) {
+
+        HashMap<String, List<RelationshipMapping>> map = new HashMap<>();
+
+        List<EntityMapping> mappers = getMappers(assetType, userId);
+        for (EntityMapping mapper : mappers) {
+            List<RelationshipMapping> relationshipMappings = mapper.getRelationshipMappers();
+            for (RelationshipMapping relationshipMapping : relationshipMappings) {
+                if (relationshipMapping.getProxyOneMapping().matchesAssetType(assetType)) {
+                    List<String> relationshipNamesOne = relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties();
+                    for (String relationshipName : relationshipNamesOne) {
+                        if (!map.containsKey(relationshipName)) {
+                            map.put(relationshipName, new ArrayList<>());
+                        }
+                        if (!map.get(relationshipName).contains(relationshipMapping)) {
+                            map.get(relationshipName).add(relationshipMapping);
+                        }
+                    }
+                }
+                if (relationshipMapping.getProxyTwoMapping().matchesAssetType(assetType)) {
+                    List<String> relationshipNamesTwo = relationshipMapping.getProxyTwoMapping().getIgcRelationshipProperties();
+                    for (String relationshipName : relationshipNamesTwo) {
+                        if (!map.containsKey(relationshipName)) {
+                            map.put(relationshipName, new ArrayList<>());
+                        }
+                        if (!map.get(relationshipName).contains(relationshipMapping)) {
+                            map.get(relationshipName).add(relationshipMapping);
+                        }
+                    }
+                }
+            }
+        }
+
+        return map;
+
+    }
+
+    /**
+     * Add the type to search based on the provided mapping.
+     *
+     * @param mapping the mapping on which to base the search
+     * @param igcSearch the IGC search object to which to add the criteria
+     * @return String - the IGC asset type that will be used for the search
+     */
+    private String addTypeToSearch(EntityMapping mapping, IGCSearch igcSearch) {
+        String igcType = DEFAULT_IGC_TYPE;
+        if (mapping == null) {
+            // If no TypeDef was provided, run against all types
+            igcSearch.addType(igcType);
+        } else {
+            igcType = mapping.getIgcAssetType();
+            igcSearch.addType(igcType);
+        }
+        return igcType;
+    }
+
+    /**
+     * Retrieve the property mappings from the mapping.
+     *
+     * @param mapping the mapping from which to retrieve property mappings
+     * @param userId the userId making the request
+     * @return PropertyMappingSet
+     */
+    private PropertyMappingSet getEntityPropertiesFromMapping(EntityMapping mapping, String userId) {
+        PropertyMappingSet propertyMappingSet = null;
+        if (mapping != null) {
+            propertyMappingSet = mapping.getPropertyMappings();
+        }
+        return propertyMappingSet;
+    }
+
+    /**
+     * Setup paging properties of the IGC search.
+     *
+     * @param igcSearch the IGC search object to which to add the criteria
+     * @param beginAt the starting index for results
+     * @param pageSize the number of results to include in each page
+     */
+    private void setPagingForSearch(IGCSearch igcSearch, int beginAt, int pageSize) {
+        if (pageSize > 0) {
+            /* Only set pageSize if it has been provided; otherwise we'll end up defaulting to IGC's
+             * minimal pageSize of 10 (so will need to make many calls to get all pages) */
+            igcSearch.setPageSize(pageSize);
+        } else {
+            /* So if none has been specified, we'll set a large pageSize to be able to more efficiently
+             * retrieve all pages of results */
+            igcSearch.setPageSize(igcomrsRepositoryConnector.getMaxPageSize());
+        }
+        igcSearch.setBeginAt(beginAt);
+    }
+
+    /**
+     * Process the search results into the provided list of EntityDetail objects.
+     *
+     * @param results the IGC search results
+     * @param entityDetails the list of EntityDetails to append
+     * @param pageSize the number of results per page (0 for all results)
+     * @param userId the user making the request
+     */
+    private void processResults(ReferenceList results,
+                                List<EntityDetail> entityDetails,
+                                int pageSize,
+                                String userId) throws RepositoryErrorException {
+
+        if (pageSize == 0) {
+            // If the provided pageSize was 0, we need to retrieve ALL pages of results...
+            results.getAllPages(this.igcRestClient);
+        }
+
+        for (Reference reference : results.getItems()) {
+            /* Only proceed with retrieving the EntityDetail if the type from IGC is not explicitly
+             * a 'main_object' (as these are non-API-accessible asset types in IGC like column analysis master,
+             * etc and will simply result in 400-code Bad Request messages from the API) */
+            if (!reference.getType().equals(DEFAULT_IGC_TYPE)) {
+                EntityDetail ed = null;
+
+                List<EntityMapping> mappers = getMappers(reference.getType(), userId);
+                for (EntityMapping mapper : mappers) {
+                    log.debug("processResults with mapper: {}", mapper.getClass().getCanonicalName());
+                    String idToLookup;
+                    if (mapper.igcRidNeedsPrefix()) {
+                        log.debug(" ... prefix required, getEntityDetail with: {}", mapper.getIgcRidPrefix() + reference.getId());
+                        idToLookup = mapper.getIgcRidPrefix() + reference.getId();
+                    } else {
+                        log.debug(" ... no prefix required, getEntityDetail with: {}", reference.getId());
+                        idToLookup = reference.getId();
+                    }
+                    try {
+                        ed = getEntityDetail(userId, idToLookup, reference);
+                    } catch (EntityNotKnownException e) {
+                        log.error("Unable to find entity: {}", idToLookup);
+                    }
+                    if (ed != null) {
+                        entityDetails.add(ed);
+                    }
+                }
+            }
+        }
+
+        // If we haven't filled a page of results (because we needed to skip some above), recurse...
+        if (results.hasMorePages() && entityDetails.size() < pageSize) {
+            results.getNextPage(this.igcRestClient);
+            processResults(results, entityDetails, pageSize, userId);
+        }
+
+    }
+
+    /**
+     * Retrieve the IGC search conditions to limit results by the provided classification. Will return null if the
+     * provided classification cannot be applied to the provided IGC asset type.
+     *
+     * @param igcAssetType name of the IGC asset type for which to limit the search results
+     * @param classificationName name of the classification by which to limit results
+     * @return IGCSearchConditionSet
+     */
+    private IGCSearchConditionSet getSearchCriteriaForClassification(String igcAssetType,
+                                                                     String classificationName) {
+
+        IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+
+        ClassificationMapping classificationMapping = classificationMappingStore.getMappingByOmrsTypeName(classificationName);
+        if (classificationMapping.matchesAssetType(igcAssetType)) {
+            igcSearchConditionSet = classificationMapping.getIGCSearchCriteria(null);
+        } else {
+            log.warn("Classification {} cannot be applied to IGC asset type {} - excluding from search limitations.", classificationName, igcAssetType);
+        }
+
+        return (igcSearchConditionSet.size() > 0 ? igcSearchConditionSet : null);
+
+    }
+
+    /**
+     * Retrieve the IGC search conditions to limit results by the provided list of classifications.
+     *
+     * @param igcAssetType name of the IGC asset type for which to limit the search results
+     * @param classificationNames list of classification names by which to limit results
+     * @return IGCSearchConditionSet
+     */
+    private IGCSearchConditionSet getSearchCriteriaForClassifications(String igcAssetType,
+                                                                      List<String> classificationNames) {
+
+        final String methodName = "getSearchCriteriaForClassifications";
+        IGCSearchConditionSet igcSearchConditionSet = new IGCSearchConditionSet();
+
+        if (classificationNames != null && !classificationNames.isEmpty()) {
+            for (String classificationName : classificationNames) {
+                IGCSearchConditionSet classificationLimiter = getSearchCriteriaForClassification(
+                        igcAssetType,
+                        classificationName
+                );
+                if (classificationLimiter != null) {
+                    igcSearchConditionSet.addNestedConditionSet(classificationLimiter);
+                    igcSearchConditionSet.setMatchAnyCondition(false);
+                }
+            }
+        }
+
+        return (igcSearchConditionSet.size() > 0 ? igcSearchConditionSet : null);
+
+    }
+
+    /**
+     * Retrieve the listing of implemented mappings that should be used for an entity search, including navigating
+     * subtypes when a supertype is the entity type provided.
+     *
+     * @param entityTypeGUID the GUID of the OMRS entity type for which to search
+     * @param userId the userId through which to search
+     * @return List<EntityMapping>
+     */
+    private List<EntityMapping> getMappingsToSearch(String entityTypeGUID, String userId) throws
+            InvalidParameterException,
+            RepositoryErrorException,
+            UserNotAuthorizedException {
+
+        List<EntityMapping> mappingsToSearch = new ArrayList<>();
+
+        // If no entityType was provided, add all implemented types (except Referenceable, as that could itself
+        // include many objects that are not implemented)
+        if (entityTypeGUID == null) {
+            for (EntityMapping candidate : entityMappingStore.getAllMappings()) {
+                if (!candidate.getOmrsTypeDefName().equals("Referenceable")) {
+                    mappingsToSearch.add(candidate);
+                }
+            }
+        } else {
+
+            EntityMapping mappingExact = entityMappingStore.getMappingByOmrsTypeGUID(entityTypeGUID);
+            String requestedTypeName;
+            // If no implemented mapping could be found, at least retrieve the TypeDef for further introspection
+            // (so that if it has any implemented subtypes, we can still search for those)
+            if (mappingExact == null) {
+                TypeDef unimplemented = typeDefStore.getUnimplementedTypeDefByGUID(entityTypeGUID);
+                requestedTypeName = unimplemented.getName();
+            } else {
+                requestedTypeName = mappingExact.getOmrsTypeDefName();
+            }
+
+            // Walk the hierarchy of types to ensure we search across all subtypes of the requested TypeDef as well
+            List<TypeDef> allEntityTypes = findTypeDefsByCategory(userId, TypeDefCategory.ENTITY_DEF);
+
+            for (TypeDef typeDef : allEntityTypes) {
+                EntityMapping implementedMapping = entityMappingStore.getMappingByOmrsTypeGUID(typeDef.getGUID());
+                if (implementedMapping != null) {
+                    if (repositoryHelper.isTypeOf(metadataCollectionId, typeDef.getName(), requestedTypeName)) {
+                        // Add any subtypes of the requested type into the search
+                        mappingsToSearch.add(implementedMapping);
+                    }
+                }
+            }
+
+        }
+
+        return mappingsToSearch;
 
     }
 
@@ -1212,7 +5111,8 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      */
-    public EntityDetail getEntityDetail(String userId, String guid, Reference asset) throws RepositoryErrorException {
+    public EntityDetail getEntityDetail(String userId, String guid, Reference asset)
+            throws RepositoryErrorException, EntityNotKnownException {
 
         final String  methodName        = "getEntityDetail";
 
@@ -1227,7 +5127,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
                     methodName,
                     repositoryName);
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
                     errorMessage,
@@ -1291,28 +5191,14 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
         log.debug("Looking for mapper for type {} with prefix {}", igcAssetType, prefix);
 
-        List<ReferenceableMapper> mappers = getMappers(igcAssetType, userId);
-
-        ReferenceableMapper candidateMapper = null;
-        for (int i = 0; i < mappers.size(); i++) {
-            candidateMapper = mappers.get(i);
-            String mapperPrefix = candidateMapper.getIgcRidPrefix();
-            if ( (prefix == null && mapperPrefix == null)
-                    || (prefix != null && mapperPrefix != null && mapperPrefix.equals(prefix)) ) {
-                // If we didn't receive any prefix and this Mapper doesn't use a prefix, use it
-                // or if we did receive a prefix and it matches this Mapper's prefix, use it
-                break;
-            }
-            // Otherwise keep looping until we find one that meets above criteria (or we run out of options)
-        }
-
+        EntityMapping found = entityMappingStore.getMappingByIgcAssetTypeAndPrefix(igcAssetType, prefix);
         ReferenceableMapper referenceMapper = null;
-        if (candidateMapper != null) {
-            log.debug("Found mapper class: {}", candidateMapper.getClass().getCanonicalName());
+        if (found != null) {
+            log.debug("Found mapper class: {} ({})", found.getClass().getCanonicalName(), found);
             // Translate the provided asset to a base asset type for the mapper, if needed
             // (if not needed the 'getBaseIgcAssetFromAlternative' is effecitively a NOOP and gives back same object)
-            referenceMapper = candidateMapper.initialize(
-                    candidateMapper.getBaseIgcAssetFromAlternative(igcObject),
+            referenceMapper = ((ReferenceableMapper) found).initialize(
+                    found.getBaseIgcAssetFromAlternative(igcObject),
                     igcObject);
         } else {
             log.debug("No mapper class found!");
@@ -1325,114 +5211,32 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * Retrieves the classes to use for mapping the provided IGC asset type to an OMRS entity.
      *
      * @param igcAssetType the name of the IGC asset type
-     * @return List<Class>
+     * @return List<EntityMapping>
      */
-    public List<ReferenceableMapper> getMappers(String igcAssetType, String userId) {
-        ArrayList<ReferenceableMapper> mappers = new ArrayList<>();
-        for (ImplementedMapping mapping : implementedMappings) {
-            String mappingAssetType = mapping.getIgcAssetType();
-            // For now skip over the default Referenceable mapping, if no other candidate is found we will add
-            // this default mapping back in below
-            if (mappingAssetType != null && !mappingAssetType.equals(IGCOMRSMetadataCollection.DEFAULT_IGC_TYPE)) {
-                if (mapping.matchesAssetType(igcAssetType)) {
-                    log.debug(" ... adding candidate: {}", mapping.getEntityMapping().getClass().getCanonicalName());
-                    mappers.add((ReferenceableMapper) mapping.getEntityMapping());
-                } else {
-                    for (String otherType : mapping.getOtherIgcAssetTypes()) {
-                        if (igcAssetType.equals(otherType)) {
-                            log.debug(" ... adding other candidate: {}", mapping.getEntityMapping().getClass().getCanonicalName());
-                            mappers.add((ReferenceableMapper) mapping.getEntityMapping());
-                        }
-                    }
-                }
-            }
-        }
+    public List<EntityMapping> getMappers(String igcAssetType, String userId) {
+
+        List<EntityMapping> mappers = entityMappingStore.getMappingsByIgcAssetType(igcAssetType);
+
         if (mappers.isEmpty()) {
-            try {
-                ReferenceableMapper defaultMapper = (ReferenceableMapper) ImplementedMapping.getEntityMapper(
-                        Class.forName(MAPPING_PKG + "entities.ReferenceableMapper"),
-                        (IGCOMRSRepositoryConnector)parentConnector,
-                        userId
-                );
+            EntityMapping defaultMapper = entityMappingStore.getDefaultEntityMapper(igcomrsRepositoryConnector, userId);
+            if (defaultMapper != null) {
                 mappers.add(defaultMapper);
-            } catch (ClassNotFoundException e) {
-                log.error("Unable to find default ReferenceableMapper class: " + MAPPING_PKG + "entities.ReferenceableMapper", e);
             }
         }
+
         return mappers;
+
     }
 
     /**
-     * Retrieves a RelationshipMapping by OMRS relationship type from those that are listed as implemented.
+     * Retrieves a mapping from attribute name to TypeDefAttribute for all OMRS attributes defined for the provided
+     * OMRS TypeDef name.
      *
-     * @param omrsRelationshipType the name of the OMRS relationship type for which to retrieve a mapping
-     * @return RelationshipMapping
+     * @param omrsTypeName the name of the OMRS TypeDef for which to retrieve the attributes
+     * @return Map<String, TypeDefAttribute>
      */
-    public RelationshipMapping getRelationshipMapper(String omrsRelationshipType,
-                                                     String proxyOneType,
-                                                     String proxyTwoType) {
-        RelationshipMapping found = null;
-        for (ImplementedMapping mapping : implementedMappings) {
-            RelationshipMapping candidate = mapping.getRelationshipMapping();
-            // If the mapping has a relationship mapping, and its type equals the one we're looking for,
-            // set it to found and short-circuit out of the loop
-            if (candidate != null) {
-                if (matchingRelationshipMapper(candidate, omrsRelationshipType, proxyOneType, proxyTwoType)) {
-                    found = candidate;
-                    break;
-                } else if (candidate.hasSubTypes()) {
-                    for (RelationshipMapping subMapping : candidate.getSubTypes()) {
-                        if (matchingRelationshipMapper(subMapping, omrsRelationshipType, proxyOneType, proxyTwoType)) {
-                            found = subMapping;
-                            break;
-                        }
-                    }
-                } else if (candidate.hasRelationshipLevelAsset()) {
-                    String relationshipLevelAssetType = candidate.getRelationshipLevelIgcAsset();
-                    if (proxyOneType.equals(relationshipLevelAssetType) && proxyTwoType.equals(relationshipLevelAssetType)) {
-                        found = candidate;
-                        break;
-                    }
-                }
-
-            }
-        }
-        return found;
-    }
-
-    /**
-     * Indicates whether the provided relationship mapping matches the provided criteria.
-     *
-     * @param candidate the relationship mapping to check
-     * @param omrsRelationshipType the OMRS relationship type to confirm
-     * @param proxyOneType the asset type of endpoint 1 of the relationship to confirm
-     * @param proxyTwoType the asset type of endpoint 2 of the relationship to confirm
-     * @return
-     */
-    private boolean matchingRelationshipMapper(RelationshipMapping candidate,
-                                               String omrsRelationshipType,
-                                               String proxyOneType,
-                                               String proxyTwoType) {
-        return (candidate != null
-                && candidate.getOmrsRelationshipType().equals(omrsRelationshipType)
-                && candidate.getProxyOneMapping().matchesAssetType(proxyOneType)
-                && candidate.getProxyTwoMapping().matchesAssetType(proxyTwoType));
-    }
-
-    /**
-     * Retrieves the OMRS TypeDefs that are mapped to by the provided IGC asset display name.
-     *
-     * @param igcAssetName the display name of the IGC asset type
-     * @return List<TypeDef>
-     */
-    public List<TypeDef> getTypeDefsForAssetName(String igcAssetName) {
-        ArrayList<TypeDef> typeDefs = new ArrayList<>();
-        for (ImplementedMapping mapping : implementedMappings) {
-            if (igcAssetName.equals(mapping.getIgcAssetTypeDisplayName())) {
-                typeDefs.add(mapping.getTypeDef());
-            }
-        }
-        return typeDefs;
+    public Map<String, TypeDefAttribute> getTypeDefAttributesForType(String omrsTypeName) {
+        return typeDefStore.getAllTypeDefAttributesForName(omrsTypeName);
     }
 
     /**
@@ -1443,14 +5247,12 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * @return String
      */
     public String getIgcAssetTypeForAssetName(String igcAssetName) {
-        String assetType = null;
-        for (ImplementedMapping mapping : implementedMappings) {
-            if (igcAssetName.equals(mapping.getIgcAssetTypeDisplayName())) {
-                assetType = mapping.getIgcAssetType();
-                break;
-            }
+        EntityMapping mapping = entityMappingStore.getMappingByIgcAssetDisplayName(igcAssetName);
+        if (mapping != null) {
+            return mapping.getIgcAssetType();
+        } else {
+            return null;
         }
-        return assetType;
     }
 
     /**
@@ -1861,25 +5663,6 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         }
 
         return fullAsset;
-
-    }
-
-    /**
-     * Generates a zip file for the OMRS OpenIGC bundle, needed to enable change tracking for the event mapper.
-     */
-    private void upsertOMRSBundleZip() {
-
-        ClassPathResource bundleResource = new ClassPathResource("/bundleOMRS");
-        try {
-            File bundle = this.igcRestClient.createOpenIgcBundleFile(bundleResource.getFile());
-            if (bundle != null) {
-                this.igcRestClient.upsertOpenIgcBundle("OMRS", bundle.getAbsolutePath());
-            } else {
-                log.error("Unable to generate OMRS bundle.");
-            }
-        } catch (IOException e) {
-            log.error("Unable to open bundle resource for OMRS.", e);
-        }
 
     }
 

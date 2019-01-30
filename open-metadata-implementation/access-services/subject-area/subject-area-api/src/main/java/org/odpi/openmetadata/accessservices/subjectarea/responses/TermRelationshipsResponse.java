@@ -34,8 +34,8 @@ public class TermRelationshipsResponse extends SubjectAreaOMASAPIResponse
     }
     public TermRelationshipsResponse(List<Line> relationships)
     {
+        this();
         this.relationships=relationships;
-        this.setResponseCategory(ResponseCategory.TermRelationships);
     }
 
 

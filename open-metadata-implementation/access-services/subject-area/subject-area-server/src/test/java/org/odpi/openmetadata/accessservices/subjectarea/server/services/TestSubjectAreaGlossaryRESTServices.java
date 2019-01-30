@@ -68,23 +68,6 @@ public class TestSubjectAreaGlossaryRESTServices {
         OMRSMetadataCollection  mockMetadataCollection = getMockOmrsMetadataCollection();
         mockEntityAdd.setGUID(testguid1);
         mockEntityGet.setGUID(testguid1);
-
-        // mock out the get the glossary by name when it looks for a glossary of our name reqturn an empty list .
-        List<EntityDetail> mockGlossaryList = new ArrayList<>();
-        when( oMRSAPIHelper.callFindEntitiesByProperty(
-                any(),
-                any(),
-                any(),
-                any(),
-                anyInt(),
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-                anyInt()
-
-        )).thenReturn(mockGlossaryList);
         // mock out the add entity
         when( oMRSAPIHelper.callOMRSAddEntity(anyString(),any())).thenReturn(mockEntityAdd);
         // mock out the get entity

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager;
 
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
@@ -2359,6 +2360,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
             primitivePropertyValue.setPrimitiveValue(propertyValue);
+            primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+            primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
 
             resultingProperties.setProperty(propertyName, primitivePropertyValue);
 
@@ -2409,6 +2412,140 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
         primitivePropertyValue.setPrimitiveValue(propertyValue);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getGUID());
+
+        resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+        return resultingProperties;
+    }
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    public InstanceProperties addLongPropertyToInstance(String             sourceName,
+                                                        InstanceProperties properties,
+                                                        String             propertyName,
+                                                        long               propertyValue,
+                                                        String             methodName)
+    {
+        InstanceProperties  resultingProperties;
+
+        log.debug("Adding property " + propertyName + " for " + methodName);
+
+        if (properties == null)
+        {
+            log.debug("First property");
+
+            resultingProperties = new InstanceProperties();
+        }
+        else
+        {
+            resultingProperties = properties;
+        }
+
+
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
+        primitivePropertyValue.setPrimitiveValue(propertyValue);
+
+        resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+        return resultingProperties;
+    }
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    public InstanceProperties addFloatPropertyToInstance(String             sourceName,
+                                                         InstanceProperties properties,
+                                                         String             propertyName,
+                                                         float              propertyValue,
+                                                         String             methodName)
+    {
+        InstanceProperties  resultingProperties;
+
+        log.debug("Adding property " + propertyName + " for " + methodName);
+
+        if (properties == null)
+        {
+            log.debug("First property");
+
+            resultingProperties = new InstanceProperties();
+        }
+        else
+        {
+            resultingProperties = properties;
+        }
+
+
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
+        primitivePropertyValue.setPrimitiveValue(propertyValue);
+
+        resultingProperties.setProperty(propertyName, primitivePropertyValue);
+
+        return resultingProperties;
+    }
+
+
+    /**
+     * Add the supplied property to an instance properties object.  If the instance property object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName  name of caller
+     * @param properties  properties object to add property to may be null.
+     * @param propertyName  name of property
+     * @param propertyValue  value of property
+     * @param methodName  calling method name
+     * @return instance properties object.
+     */
+    public InstanceProperties addDatePropertyToInstance(String             sourceName,
+                                                        InstanceProperties properties,
+                                                        String             propertyName,
+                                                        Date               propertyValue,
+                                                        String             methodName)
+    {
+        InstanceProperties  resultingProperties;
+
+        log.debug("Adding property " + propertyName + " for " + methodName);
+
+        if (properties == null)
+        {
+            log.debug("First property");
+
+            resultingProperties = new InstanceProperties();
+        }
+        else
+        {
+            resultingProperties = properties;
+        }
+
+
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+        primitivePropertyValue.setPrimitiveValue(propertyValue);
 
         resultingProperties.setProperty(propertyName, primitivePropertyValue);
 
@@ -2453,6 +2590,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
         primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
         primitivePropertyValue.setPrimitiveValue(propertyValue);
+        primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
+        primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getGUID());
 
         resultingProperties.setProperty(propertyName, primitivePropertyValue);
 
@@ -2620,6 +2759,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
                 }
@@ -2627,6 +2768,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
@@ -2635,6 +2778,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
@@ -2643,6 +2788,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_SHORT.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
@@ -2651,6 +2798,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
@@ -2659,6 +2808,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_CHAR.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
@@ -2667,6 +2818,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BYTE.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
@@ -2675,6 +2828,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
@@ -2683,6 +2838,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_FLOAT.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
@@ -2692,6 +2849,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(
                             PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGDECIMAL.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
@@ -2701,6 +2860,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(
                             PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BIGINTEGER.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
@@ -2709,6 +2870,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DOUBLE.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
@@ -2717,6 +2880,8 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 {
                     PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
                     primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
+                    primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN.getName());
+                    primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN.getGUID());
                     primitivePropertyValue.setPrimitiveValue(mapPropertyValue);
                     resultingProperties.setProperty(mapPropertyName, primitivePropertyValue);
                     propertyCount++;
@@ -2816,6 +2981,128 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
         }
 
         return null;
+    }
+    /**
+     * Use the paging and sequencing parameters to format the results for a repository call that returns a list of
+     * entity instances.
+     *
+     * @param fullResults - the full list of results in an arbitrary order
+     * @param fromElement - the starting element number of the instances to return. This is used when retrieving elements
+     *                    beyond the first page of results. Zero means start from the first element.
+     * @param sequencingProperty - String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder - Enum defining how the results should be ordered.
+     * @param pageSize - the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return results array as requested
+     * @throws PropertyErrorException the sequencing property specified is not valid for any of the requested types of
+     *                                  entity.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     */
+    public List<EntityDetail>  formatEntityResults(List<EntityDetail>   fullResults,
+                                                   int                  fromElement,
+                                                   String               sequencingProperty,
+                                                   SequencingOrder      sequencingOrder,
+                                                   int                  pageSize) throws PagingErrorException,
+                                                                                         PropertyErrorException
+    {
+        if (fullResults == null)
+        {
+            return null;
+        }
+
+        if (fullResults.isEmpty())
+        {
+            return null;
+        }
+
+        int fullResultsSize =fullResults.size();
+
+        List<EntityDetail>  sortedResults = fullResults;
+        // todo sort list according to properties
+
+        if ((pageSize == 0) || (pageSize > sortedResults.size()))
+        {
+            return sortedResults;
+        }
+
+        int toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
+        return new ArrayList<>(fullResults.subList(fromElement, toIndex));
+    }
+
+
+    /**
+     * Use the paging and sequencing parameters to format the results for a repository call that returns a list of
+     * relationship instances.
+     *
+     * @param fullResults - the full list of results in an arbitrary order. This is supplied not empty.
+     * @param fromElement - the starting element number of the instances to return. This is used when retrieving elements
+     *                    beyond the first page of results. Zero means start from the first element.
+     * @param sequencingProperty - String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder - Enum defining how the results should be ordered.
+     * @param pageSize - the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return results array as requested
+     * @throws PropertyErrorException the sequencing property specified is not valid for any of the requested types of
+     *                                  relationship.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     */
+    public List<Relationship>  formatRelationshipResults(List<Relationship>   fullResults,
+                                                         int                  fromElement,
+                                                         String               sequencingProperty,
+                                                         SequencingOrder      sequencingOrder,
+                                                         int                  pageSize) throws PagingErrorException,
+                                                                                               PropertyErrorException
+    {
+        if (fullResults == null)
+        {
+            return null;
+        }
+
+        if (fullResults.isEmpty())
+        {
+            return null;
+        }
+        int fullResultsSize =fullResults.size();
+
+        if (fromElement > fullResultsSize)
+        {
+            return null;
+        }
+
+
+        List<Relationship>  sortedResults = fullResults;
+        // todo sort list according to properties
+
+        if ((pageSize == 0) || (pageSize > sortedResults.size()))
+        {
+            return sortedResults;
+        }
+
+        int toIndex = getToIndex(fromElement, pageSize, fullResultsSize);
+        return new ArrayList<>(fullResults.subList(fromElement, toIndex));
+    }
+
+    /**
+     * When issuing find requests with paging, it can be that we have all the data, but need to only return
+     * a subset of the data based on the page size. This method is given the from index and a pageSize and calculates
+     * the to index.
+     * @param fromIndex the index into the data to start from.
+     * @param pageSize the page size to use. 0 means no paging.
+     * @param totalSize the total size of the data.
+     * @return the to index.
+     */
+    private int getToIndex(int fromIndex, int pageSize, int totalSize) {
+        int toIndex = 0;
+        if (totalSize < fromIndex + pageSize)
+        {
+            toIndex = totalSize;
+        } else
+        {
+            toIndex = fromIndex + pageSize;
+        }
+        return toIndex;
     }
 
 

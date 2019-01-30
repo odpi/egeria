@@ -22,6 +22,8 @@ public class DataFileMapper extends ReferenceableMapper {
         );
 
         // The list of properties that should be mapped, none other than qualifiedName
+        addSimplePropertyMapping("name", "name");
+        addSimplePropertyMapping("short_description", "description");
 
         // The list of relationships that should be mapped
         addRelationshipMapper(AssetSchemaTypeMapper_FileRecord.getInstance());

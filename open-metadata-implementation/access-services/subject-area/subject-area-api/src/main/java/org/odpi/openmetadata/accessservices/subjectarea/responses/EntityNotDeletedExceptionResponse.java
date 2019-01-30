@@ -39,11 +39,11 @@ public class EntityNotDeletedExceptionResponse extends SubjectAreaOMASAPIRespons
     }
     public EntityNotDeletedExceptionResponse(SubjectAreaCheckedExceptionBase e)
     {
+        this();
         this.exceptionClassName = e.getReportingClassName();
         this.exceptionErrorMessage = e.getErrorMessage();
         this.exceptionSystemAction = e.getReportedSystemAction();
         this.exceptionUserAction = e.getReportedUserAction();
-        this.setResponseCategory(ResponseCategory.EntityNotDeletedException);
         this.guid = ((EntityNotDeletedException)e).getGuid();
     }
 

@@ -8,21 +8,28 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.MapSchemaTyp
 public class ConnectedAssetMapSchemaType extends AssetMapSchemaType
 {
     /**
-     * Typical constructor creates an AssetSchemaType object primed with information to retrieve an asset's schema
+     * Typical constructor creates an AssetComplexSchemaType object primed with information to retrieve an asset's schema
      * information.
      *
+     * @param serverName  name of the server.
+     * @param omasServerURL url root of the server to use.
      * @param userId user id to use on server calls.
-     * @param connectedAsset descriptor of parent asset.
-     * @param mapSchemaTypeBean bean describing the map.
+     * @param parentAsset descriptor of parent asset.
+     * @param schemaBean details of the schema object.
+     * @param restClient client to call REST API
      */
-    ConnectedAssetMapSchemaType(ConnectedAsset        connectedAsset,
-                                String                userId,
-                                MapSchemaType         mapSchemaTypeBean)
+    ConnectedAssetMapSchemaType(String                 serverName,
+                                String                 omasServerURL,
+                                String                 userId,
+                                ConnectedAssetUniverse parentAsset,
+                                MapSchemaType          schemaBean,
+                                RESTClient             restClient)
     {
-        super(connectedAsset);
+        super(parentAsset);
 
-        super.setBean(mapSchemaTypeBean);
-        super.mapFromElement = connectedAsset.getAssetSchemaType(userId, mapSchemaTypeBean.getMapFromElement());
-        super.mapToElement = connectedAsset.getAssetSchemaType(userId, mapSchemaTypeBean.getMapToElement());
+        super.setBean(schemaBean);
+
+        super.mapFromElement = parentAsset.getAssetSchemaType(serverName, omasServerURL, userId, schemaBean.getMapFromElement(), restClient);
+        super.mapToElement = parentAsset.getAssetSchemaType(serverName, omasServerURL, userId, schemaBean.getMapToElement(), restClient);
     }
 }

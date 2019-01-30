@@ -174,6 +174,35 @@ request body.  The correct properties to use are defined in the connector type.
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/event-bus
 ```
 
+For example, when using Kafka as your event bus you may want to configure properties such as:
+
+```json
+{
+	"producer": {
+		"bootstrap.servers":"localhost:9092",
+		"acks":"all",
+		"retries":"0",
+		"batch.size":"16384",
+		"linger.ms":"1",
+		"buffer.memory":"33554432",
+		"max.request.size":"10485760",
+		"key.serializer":"org.apache.kafka.common.serialization.StringSerializer",
+		"value.serializer":"org.apache.kafka.common.serialization.StringSerializer",
+		"kafka.omrs.topic.id":"cocoCohort"
+	},
+	"consumer": {
+   		"bootstrap.servers":"localhost:9092",
+   		"zookeeper.session.timeout.ms":"400",
+   		"zookeeper.sync.time.ms":"200",
+   		"fetch.message.max.bytes":"10485760",
+   		"max.partition.fetch.bytes":"10485760",
+   		"key.deserializer":"org.apache.kafka.common.serialization.StringDeserializer",
+   		"value.deserializer":"org.apache.kafka.common.serialization.StringDeserializer",
+   		"kafka.omrs.topic.id":"cocoCohort"
+	}
+}
+```
+
 ### Managing the access services
 
 The open metadata access services provide the domain-specific

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnecto
 
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.attributes.ContactMethodTypeMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.ContactThroughMapper_Person;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.ContactThroughMapper_Team;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
@@ -46,14 +47,20 @@ public class ContactDetailsMapper extends ReferenceableMapper {
     @Override
     protected void complexPropertyMappings(InstanceProperties instanceProperties) {
 
+        final String methodName = "complexPropertyMappings";
+
         // Set the email address as a contact method (only if there is one present)
         String emailAddress = (String) igcEntity.getPropertyByName("email_address");
         if (emailAddress != null && !emailAddress.equals("")) {
-            EnumPropertyValue contactDetail = new EnumPropertyValue();
-            contactDetail.setOrdinal(0);
-            contactDetail.setSymbolicName("Email");
-            instanceProperties.setProperty("contactMethodType", contactDetail);
-            instanceProperties.setProperty("contactMethodValue", getPrimitivePropertyValue(emailAddress));
+            EnumPropertyValue contactMethod = ContactMethodTypeMapper.getInstance().getEnumMappingByIgcValue("email");
+            instanceProperties.setProperty("contactMethodType", contactMethod);
+            instanceProperties = igcomrsRepositoryConnector.getRepositoryHelper().addStringPropertyToInstance(
+                    igcomrsRepositoryConnector.getRepositoryName(),
+                    instanceProperties,
+                    "contactMethodValue",
+                    emailAddress,
+                    methodName
+            );
         }
 
     }

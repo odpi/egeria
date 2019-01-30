@@ -24,11 +24,13 @@ import java.util.List;
  */
 public class ConnectedAssetCertifications extends AssetCertifications
 {
-    private String              serverName;
-    private String              userId;
-    private String              omasServerURL;
-    private String              assetGUID;
-    private ConnectedAsset      connectedAsset;
+    private String                 serverName;
+    private String                 userId;
+    private String                 omasServerURL;
+    private String                 assetGUID;
+    private ConnectedAssetUniverse connectedAsset;
+    private RESTClient             restClient;
+
 
 
     /**
@@ -42,14 +44,16 @@ public class ConnectedAssetCertifications extends AssetCertifications
      * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
+     * @param restClient client to call REST API
      */
-    ConnectedAssetCertifications(String              serverName,
-                                 String              userId,
-                                 String              omasServerURL,
-                                 String              assetGUID,
-                                 ConnectedAsset      parentAsset,
-                                 int                 totalElementCount,
-                                 int                 maxCacheSize)
+    ConnectedAssetCertifications(String                 serverName,
+                                 String                 userId,
+                                 String                 omasServerURL,
+                                 String                 assetGUID,
+                                 ConnectedAssetUniverse parentAsset,
+                                 int                    totalElementCount,
+                                 int                    maxCacheSize,
+                                 RESTClient             restClient)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
@@ -58,6 +62,7 @@ public class ConnectedAssetCertifications extends AssetCertifications
         this.omasServerURL   = omasServerURL;
         this.assetGUID       = assetGUID;
         this.connectedAsset  = parentAsset;
+        this.restClient      = restClient;
     }
 
 
@@ -67,17 +72,18 @@ public class ConnectedAssetCertifications extends AssetCertifications
      * @param parentAsset descriptor of parent asset
      * @param template type-specific iterator to copy; null to create an empty iterator
      */
-    private ConnectedAssetCertifications(ConnectedAsset   parentAsset, ConnectedAssetCertifications template)
+    private ConnectedAssetCertifications(ConnectedAssetUniverse parentAsset, ConnectedAssetCertifications template)
     {
         super(parentAsset, template);
 
         if (template != null)
         {
-            this.serverName = template.serverName;
-            this.userId = template.userId;
-            this.omasServerURL = template.omasServerURL;
-            this.assetGUID = template.assetGUID;
+            this.serverName     = template.serverName;
+            this.userId         = template.userId;
+            this.omasServerURL  = template.omasServerURL;
+            this.assetGUID      = template.assetGUID;
             this.connectedAsset = parentAsset;
+            this.restClient     = template.restClient;
         }
     }
 
@@ -122,23 +128,25 @@ public class ConnectedAssetCertifications extends AssetCertifications
         final String   methodName = "AssetCertifications.getCachedList";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/assets/{2}/certifications?elementStart={3}&maxElements={4}";
 
-        connectedAsset.validateOMASServerURL(methodName);
+        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+        RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
+
+        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
 
         try
         {
-            CertificationsResponse restResult = (CertificationsResponse)connectedAsset.callGetRESTCall(methodName,
-                                                                                                       CertificationsResponse.class,
-                                                                                                       omasServerURL + urlTemplate,
-                                                                                                       serverName,
-                                                                                                       userId,
-                                                                                                       assetGUID,
-                                                                                                       cacheStartPointer,
-                                                                                                       maximumSize);
+            CertificationsResponse restResult = restClient.callCertificationGetRESTCall(methodName,
+                                                                                        omasServerURL + urlTemplate,
+                                                                                        serverName,
+                                                                                        userId,
+                                                                                        assetGUID,
+                                                                                        cacheStartPointer,
+                                                                                        maximumSize);
 
-            connectedAsset.detectAndThrowInvalidParameterException(methodName, restResult);
-            connectedAsset.detectAndThrowUnrecognizedAssetGUIDException(methodName, restResult);
-            connectedAsset.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            connectedAsset.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+            restExceptionHandler.detectAndThrowUnrecognizedAssetGUIDException(methodName, restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
             List<Certification>  beans = restResult.getList();
             if ((beans == null) || (beans.isEmpty()))
