@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.assetlineage.exceptions;
+package org.odpi.openmetadata.accessservices.assetlineage.ffdc.exceptions;
 
 /**
  * The PropertyServerException is thrown by the Asset Lineage OMAS when it is not able to communicate with the

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/access-services/information-view/users/{userId}/")
+@RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-lineage/users/{userId}/")
 public class AssetLineageOMASResource {
 
     private final AssetLineageRestServices restAPI = new AssetLineageRestServices();

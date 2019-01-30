@@ -13,49 +13,49 @@ import java.util.Arrays;
 
 public enum AssetLineageAuditCode {
 
-    SERVICE_INITIALIZING("OMAS-INFORMATION-VIEW-0001",
+    SERVICE_INITIALIZING("OMAS-ASSET-LINEAGE-0001",
             OMRSAuditLogRecordSeverity.INFO,
             "The Asset Lineage Open Metadata Access Service (OMAS) is initializing a new server instance",
             "The local server has started up a new instance of the Asset Lineage OMAS.",
             "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAS-INFORMATION-VIEW-0002",
+    SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAS-ASSET-LINEAGE-0002",
             OMRSAuditLogRecordSeverity.INFO,
             "The Asset Lineage Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server {0}",
             "The Asset Lineage OMAS is registering to receive events from the connected open metadata repositories.",
             "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_REGISTERED_WITH_IV_IN_TOPIC("OMAS-INFORMATION-VIEW-0003",
+    SERVICE_REGISTERED_WITH_IV_IN_TOPIC("OMAS-ASSET-LINEAGE-0003",
             OMRSAuditLogRecordSeverity.INFO,
             "The Asset Lineage Open Metadata Access Service (OMAS) is registering a listener with the Asset Lineage In topic {0}",
             "The Asset Lineage OMAS is registering to receive incoming events from external tools and applications.",
             "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_REGISTERED_WITH_IV_OUT_TOPIC("OMAS-INFORMATION-VIEW-0004",
+    SERVICE_REGISTERED_WITH_IV_OUT_TOPIC("OMAS-ASSET-LINEAGE-0004",
             OMRSAuditLogRecordSeverity.INFO,
             "The Asset Lineage Open Metadata Access Service (OMAS) is registering a publisher with the Asset Lineage Out topic {0}",
             "The Asset Lineage OMAS is registering to publish events to Asset Lineage Out topic.",
             "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_INITIALIZED("OMAS-INFORMATION-VIEW-0005",
+    SERVICE_INITIALIZED("OMAS-ASSET-LINEAGE-0005",
             OMRSAuditLogRecordSeverity.INFO,
             "The Asset Lineage Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",
             "The Asset Lineage OMAS has completed initialization.",
             "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_SHUTDOWN("OMAS-INFORMATION-VIEW-0006",
+    SERVICE_SHUTDOWN("OMAS-ASSET-LINEAGE-0006",
             OMRSAuditLogRecordSeverity.INFO,
             "The Asset Lineage Open Metadata Access Service (OMAS) is shutting down server instance {0}",
             "The local server has requested shut down of an Asset Lineage OMAS server instance.",
             "No action is required.  This is part of the normal operation of the server."),
 
-    ERROR_INITIALIZING_CONNECTION("OMAS-INFORMATION-VIEW-0007",
+    ERROR_INITIALIZING_CONNECTION("OMAS-ASSET-LINEAGE-0007",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the Asset Lineage Open Metadata Access Service (OMAS) topic connection {0} for server instance {1}; error message was: {2}",
             "The connection could not be initialized.",
             "Review the exception and resolve the configuration. "),
 
-    ERROR_INITIALIZING_INFORMATION_VIEW_TOPIC_CONNECTION("OMAS-INFORMATION-VIEW-0008",
+    ERROR_INITIALIZING_INFORMATION_VIEW_TOPIC_CONNECTION("OMAS-ASSET-LINEAGE-0008",
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the connection to topic {0} in the Asset Lineage Open Metadata Access Service (OMAS) instance for server {1} ",
             "The connection to information view topic could not be initialized.",
