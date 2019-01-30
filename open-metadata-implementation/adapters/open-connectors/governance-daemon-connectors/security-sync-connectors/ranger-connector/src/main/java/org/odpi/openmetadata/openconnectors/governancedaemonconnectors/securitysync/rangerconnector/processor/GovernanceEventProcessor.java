@@ -41,12 +41,16 @@ public class GovernanceEventProcessor {
 
         logProcessing("processClassifiedGovernedAssetEvent", RangerConnectorAuditCode.CLASSIFIED_GOVERNED_ASSET_EVENT_REVEICED);
 
+        RangerResource rangerResource = processGovernedAsset(governedAsset);
+        mapResourcesToTagsInRangerServer(rangerResource);
+    }
+
+    private RangerResource processGovernedAsset(GovernedAsset governedAsset) {
         Map<Long, RangerTag> tags = buildTags(governedAsset.getAssignedGovernanceClassifications());
         List<RangerServiceResource> rangerServiceResources = getRangerServiceResources(governedAsset);
         Map<Long, List<Long>> resourceToTagIds = mapResources(tags, rangerServiceResources);
 
-        RangerResource rangerResource = buildRangerResource(rangerServiceResources, tags, resourceToTagIds);
-        mapResourcesToTagsInRangerServer(rangerResource);
+        return buildRangerResource(rangerServiceResources, tags, resourceToTagIds);
     }
 
     public void processReClassifiedGovernedAssetEvent(GovernedAsset governedAsset) {
