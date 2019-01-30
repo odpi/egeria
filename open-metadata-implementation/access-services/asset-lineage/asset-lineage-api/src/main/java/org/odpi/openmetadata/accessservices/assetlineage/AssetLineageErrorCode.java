@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetlineage.ffdc;
+package org.odpi.openmetadata.accessservices.assetlineage;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,6 +81,10 @@ public enum AssetLineageErrorCode
             "The unique identifier (guid) {0} passed in parameter {1} of the {2} operation, is of type {3} when it should be of type {4}",
             "The guid is supposed to identify a specific type object (or subclass) from the property server is actually for a different type of object.",
             "Correct the guid passed in the caller to provide the identifier of an object of the right type (or use a different call."),
+    BAD_OUT_TOPIC_CONNECTION(400, "OMAS-ASSET-LINEAGE-400-015",
+            "The Asset Lineage Open Metadata Access Service (OMAS) has been passed an invalid connection for publishing events.  The connection was {0}.  The resulting exception of {1} included the following message: {2}",
+            "The access service has not been passed valid configuration for its out topic connection.",
+            "Correct the configuration and restart the service."),
     QUALIFIED_NAME_NOT_UNIQUE(404, "OMAS-ASSET-LINEAGE-400-015 ",
             "The qualified name passed in the parameter {1} of the {2} operation is not unique.",
             "The system is unable to create the requested object because the qualified name is not unique.",
@@ -165,7 +169,7 @@ public enum AssetLineageErrorCode
 
     /**
      * The constructor for AssetLineageErrorCode expects to be passed one of the enumeration rows defined in
-     * AssetConsumerErrorCode above.   For example:
+     * AssetLineageErrorCode above.   For example:
      *
      *     AssetLineageErrorCode   errorCode = AssetLineageErrorCode.PROFILE_NOT_FOUND;
      *
@@ -223,12 +227,12 @@ public enum AssetLineageErrorCode
      */
     public String getFormattedErrorMessage(String... params)
     {
-        log.debug(String.format("<== AssetConsumerErrorCode.getMessage(%s)", Arrays.toString(params)));
+        log.debug(String.format("<== AssetLineageErrorCode.getMessage(%s)", Arrays.toString(params)));
 
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
 
-        log.debug(String.format("==> AssetConsumerErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
+        log.debug(String.format("==> AssetLineageErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
 
         return result;
     }
@@ -265,7 +269,7 @@ public enum AssetLineageErrorCode
     @Override
     public String toString()
     {
-        return "AssetConsumerErrorCode{" +
+        return "AssetLineageErrorCode{" +
                 "httpErrorCode=" + httpErrorCode +
                 ", errorMessageId='" + errorMessageId + '\'' +
                 ", errorMessage='" + errorMessage + '\'' +

@@ -73,11 +73,14 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
                         auditCode.getSystemAction(),
                         auditCode.getUserAction());
 
-                omrsTopicListener = new AssetLineageOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
+                omrsTopicListener = new AssetLineageOMRSTopicListener(
+                        accessServiceConfig.getAccessServiceOutTopic(),
                         repositoryConnector,
                         repositoryConnector.getRepositoryHelper(),
                         repositoryConnector.getRepositoryValidator(),
-                        accessServiceConfig.getAccessServiceName());
+                        accessServiceConfig.getAccessServiceName(),
+                        auditLog
+                );
 
                 omrsTopicConnector.registerListener(omrsTopicListener);
             }

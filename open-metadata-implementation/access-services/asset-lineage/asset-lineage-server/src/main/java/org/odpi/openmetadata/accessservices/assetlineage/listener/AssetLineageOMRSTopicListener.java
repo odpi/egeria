@@ -3,7 +3,9 @@
 package org.odpi.openmetadata.accessservices.assetlineage.listener;
 
 import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -23,21 +25,24 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
      * along with classes for testing and manipulating instances.
      *
-     * @param assetConsumerOutTopic connection to the out topic
-     * @param repositoryHelper      provides methods for working with metadata instances
-     * @param repositoryValidator   provides validation of metadata instance
-     * @param componentName         name of component
+     * @param assetLineageOutTopic connection to the out topic
+     * @param repositoryHelper     provides methods for working with metadata instances
+     * @param repositoryValidator  provides validation of metadata instance
+     * @param componentName        name of component
      */
-    public AssetLineageOMRSTopicListener(Connection assetConsumerOutTopic,
+    public AssetLineageOMRSTopicListener(Connection assetLineageOutTopic,
                                          OMRSRepositoryConnector repositoryConnector,
                                          OMRSRepositoryHelper repositoryHelper,
                                          OMRSRepositoryValidator repositoryValidator,
-                                         String componentName) {
-        publisher = new AssetLineagePublisher(assetConsumerOutTopic,
+                                         String componentName,
+                                         OMRSAuditLog auditLog) throws OMAGConfigurationErrorException {
+
+        publisher = new AssetLineagePublisher(assetLineageOutTopic,
                 repositoryConnector,
                 repositoryHelper,
                 repositoryValidator,
-                componentName);
+                componentName,
+                auditLog);
     }
 
 
@@ -67,28 +72,24 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      * @param instanceEvent event to unpack
      */
     public void processInstanceEvent(OMRSInstanceEvent instanceEvent) {
-/*        log.debug("Processing instance event: " + instanceEvent);
+        log.debug("Processing instance event: " + instanceEvent);
+        publisher.processNewRelationship(instanceEvent);
 
-        if (instanceEvent == null)
-        {
+        if (instanceEvent == null) {
             log.debug("Null instance event - ignoring event");
-        }
-        else
-        {
-            OMRSInstanceEventType instanceEventType       = instanceEvent.getInstanceEventType();
-            OMRSEventOriginator   instanceEventOriginator = instanceEvent.getEventOriginator();
+        } else {
+            OMRSInstanceEventType instanceEventType = instanceEvent.getInstanceEventType();
+            OMRSEventOriginator instanceEventOriginator = instanceEvent.getEventOriginator();
 
-            if ((instanceEventType != null) && (instanceEventOriginator != null))
-            {
-                switch (instanceEventType)
-                {
+            if ((instanceEventType != null) && (instanceEventOriginator != null)) {
+                switch (instanceEventType) {
                     case NEW_ENTITY_EVENT:
                         publisher.processNewEntity(instanceEvent.getEntity());
                         break;
 
                     case UPDATED_ENTITY_EVENT:
                         publisher.processUpdatedEntity(instanceEvent.getOriginalEntity(),
-                                                       instanceEvent.getEntity());
+                                instanceEvent.getEntity());
                         break;
 
                     case CLASSIFIED_ENTITY_EVENT:
@@ -108,8 +109,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                         break;
 
                     case PURGED_ENTITY_EVENT:
-                        if (log.isDebugEnabled())
-                        {
+                        if (log.isDebugEnabled()) {
                             log.debug("Ignoring entity purge events");
                         }
                         break;
@@ -127,8 +127,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                     case RE_HOMED_ENTITY_EVENT:
                     case RETYPED_ENTITY_EVENT:
                     case RE_IDENTIFIED_ENTITY_EVENT:
-                        if (log.isDebugEnabled())
-                        {
+                        if (log.isDebugEnabled()) {
                             log.debug("Ignoring entity repository maintenance events");
                         }
                         break;
@@ -138,8 +137,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                         break;
 
                     case UPDATED_RELATIONSHIP_EVENT:
-                        publisher.processUpdatedRelationship(instanceEvent.getOriginalRelationship(),
-                                                             instanceEvent.getRelationship());
+                        publisher.processUpdatedRelationship(instanceEvent.getOriginalRelationship(), instanceEvent.getRelationship());
                         break;
 
                     case UNDONE_RELATIONSHIP_EVENT:
@@ -152,8 +150,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                         break;
 
                     case PURGED_RELATIONSHIP_EVENT:
-                        if (log.isDebugEnabled())
-                        {
+                        if (log.isDebugEnabled()) {
                             log.debug("Ignoring relationship purge events");
                         }
                         break;
@@ -169,25 +166,21 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                     case RE_HOMED_RELATIONSHIP_EVENT:
                     case RETYPED_RELATIONSHIP_EVENT:
 
-                        if (log.isDebugEnabled())
-                        {
+                        if (log.isDebugEnabled()) {
                             log.debug("Ignoring relationship repository maintenance events");
                         }
                         break;
 
                     case INSTANCE_ERROR_EVENT:
 
-                        if (log.isDebugEnabled())
-                        {
+                        if (log.isDebugEnabled()) {
                             log.debug("Ignoring instance error events");
                         }
                         break;
                 }
-            }
-            else
-            {
+            } else {
                 log.debug("Ignored instance event - null type");
             }
-        }*/
+        }
     }
 }

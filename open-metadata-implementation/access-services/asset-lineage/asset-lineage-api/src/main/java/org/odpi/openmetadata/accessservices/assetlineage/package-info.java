@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetlineage.ffdc;
+package org.odpi.openmetadata.accessservices.assetlineage;
 
 /**
  * This package provides the first failure data capture support for the Asset Lineage OMAS module.

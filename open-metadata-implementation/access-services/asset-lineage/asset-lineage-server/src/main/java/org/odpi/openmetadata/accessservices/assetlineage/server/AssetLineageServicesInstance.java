@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.server;
 
-import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
-import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exceptions.PropertyServerException;
+import org.odpi.openmetadata.accessservices.assetlineage.AssetLineageErrorCode;
+import org.odpi.openmetadata.accessservices.assetlineage.exceptions.NewInstanceException;
+import org.odpi.openmetadata.accessservices.assetlineage.exceptions.PropertyServerException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
