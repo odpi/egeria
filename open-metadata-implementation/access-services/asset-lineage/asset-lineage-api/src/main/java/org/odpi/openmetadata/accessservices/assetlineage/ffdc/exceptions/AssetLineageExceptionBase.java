@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetlineage.exceptions;
+package org.odpi.openmetadata.accessservices.assetlineage.ffdc.exceptions;
 
 
 public abstract class AssetLineageExceptionBase extends Exception {

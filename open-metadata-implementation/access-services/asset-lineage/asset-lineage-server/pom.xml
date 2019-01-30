@@ -22,11 +22,34 @@
 
     <artifactId>asset-lineage-server</artifactId>
 
+    <properties>
+        <junit.version>4.12</junit.version>
+    </properties>
+
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-lineage-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-implementation</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
