@@ -27,6 +27,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.update.IGCUpdate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.io.AbstractResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
 import org.springframework.util.Base64Utils;
@@ -213,22 +214,22 @@ public class IGCRestClient {
      *
      * @param endpoint the endpoint to which to upload the file
      * @param method the HTTP method to use in sending the request
-     * @param filePath the location of the file on the local filesystem
+     * @param file the Spring FileSystemResource or ClassPathResource containing the file to be uploaded
      * @param alreadyTriedNewSession indicates whether a new session was already attempted (true) or not (false)
      * @return ResponseEntity<String>
      */
     private ResponseEntity<String> openNewSessionWithUpload(String endpoint,
                                                             HttpMethod method,
-                                                            String filePath,
+                                                            AbstractResource file,
                                                             boolean alreadyTriedNewSession) {
         if (alreadyTriedNewSession) {
-            log.error("Opening a new session already attempted without success -- giving up on {} to {} with {}", method, endpoint, filePath);
+            log.error("Opening a new session already attempted without success -- giving up on {} to {} with {}", method, endpoint, file);
             return null;
         } else {
             log.info("Session appears to have timed out -- starting a new session and re-trying the upload.");
             // By removing cookies, we'll force a login
             this.cookies = null;
-            return uploadFile(endpoint, method, filePath, true);
+            return uploadFile(endpoint, method, file, true);
         }
     }
 
@@ -354,18 +355,18 @@ public class IGCRestClient {
      * to upload a file to a given endpoint.
      *
      * @param endpoint the URL against which to POST the upload
-     * @param filePath the location of the file on the local filesystem
+     * @param file the Spring FileSystemResource or ClassPathResource of the file to be uploaded
      * @param forceLogin a boolean indicating whether login should be forced (true) or session reused (false)
      * @return ResponseEntity<String>
      */
-    private ResponseEntity<String> uploadFile(String endpoint, HttpMethod method, String filePath, boolean forceLogin) {
+    private ResponseEntity<String> uploadFile(String endpoint, HttpMethod method, AbstractResource file, boolean forceLogin) {
 
         HttpHeaders headers = getHttpHeaders(forceLogin);
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
 
         ResponseEntity<String> response = null;
         MultiValueMap<String, Object> body = new LinkedMultiValueMap<>();
-        body.add("file", new FileSystemResource(filePath));
+        body.add("file", file);
 
         HttpEntity<MultiValueMap<String, Object>> toSend = new HttpEntity<>(body, headers);
 
@@ -382,7 +383,7 @@ public class IGCRestClient {
             response = openNewSessionWithUpload(
                     endpoint,
                     method,
-                    filePath,
+                    file,
                     forceLogin
             );
         } catch (RestClientException e) {
@@ -398,11 +399,11 @@ public class IGCRestClient {
      *
      * @param endpoint the URL against which to upload the file
      * @param method HttpMethod (POST, PUT, etc)
-     * @param filePath the location of the file on the local filesystem
+     * @param file the Spring FileSystemResource or ClassPathResource containing the file to be uploaded
      * @return boolean - indicates success (true) or failure (false)
      */
-    public boolean uploadFile(String endpoint, HttpMethod method, String filePath) {
-        ResponseEntity<String> response = uploadFile(endpoint, method, filePath, false);
+    public boolean uploadFile(String endpoint, HttpMethod method, AbstractResource file) {
+        ResponseEntity<String> response = uploadFile(endpoint, method, file, false);
         return (response == null ? false : response.getStatusCode() == HttpStatus.OK);
     }
 
@@ -613,16 +614,16 @@ public class IGCRestClient {
      * Upload the specified bundle, creating it if it does not already exist or updating it if it does.
      *
      * @param name the bundleId of the bundle
-     * @param filePath the location of the zip file containing the bundle
+     * @param file the Spring FileSystemResource or ClassPathResource containing the file to be uploaded
      * @return boolean - indication of success (true) or failure (false)
      */
-    public boolean upsertOpenIgcBundle(String name, String filePath) {
+    public boolean upsertOpenIgcBundle(String name, AbstractResource file) {
         boolean success;
         List<String> existingBundles = getOpenIgcBundles();
         if (existingBundles.contains(name)) {
-            success = uploadFile(baseURL + EP_BUNDLES, HttpMethod.PUT, filePath);
+            success = uploadFile(baseURL + EP_BUNDLES, HttpMethod.PUT, file);
         } else {
-            success = uploadFile(baseURL + EP_BUNDLES, HttpMethod.POST, filePath);
+            success = uploadFile(baseURL + EP_BUNDLES, HttpMethod.POST, file);
         }
         return success;
     }
