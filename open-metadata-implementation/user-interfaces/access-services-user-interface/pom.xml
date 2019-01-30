@@ -26,10 +26,19 @@
     <artifactId>access-services-user-interface</artifactId>
 
     <properties>
+        <node.version>v10.12.0</node.version>
+        <npm.version>6.4.1</npm.version>
+        <frontend.plugin.version>1.6</frontend.plugin.version>
+        <resources.plugin.version>3.1.0</resources.plugin.version>
+        <exec.plugin.version>1.6.0</exec.plugin.version>
+        <jjwt.version>0.6.0</jjwt.version>
+        <h2.version>1.4.196</h2.version>
+        <spring.security.ldap.vesion>5.1.0.RELEASE</spring.security.ldap.vesion>
         <junit.platform.version>1.2.0</junit.platform.version>
         <junit.jupiter.version>5.2.0</junit.jupiter.version>
         <junit.surefire.version>1.2.0</junit.surefire.version>
         <junit.version>4.12</junit.version>
+        <polymer.build>dev</polymer.build>
     </properties>
 
     <dependencies>
@@ -53,19 +62,29 @@
         <dependency>
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-ldap</artifactId>
-            <version>5.0.8.RELEASE</version>
+            <version>${spring.security.ldap.vesion}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-beans</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt</artifactId>
-            <version>0.6.0</version>
+            <version>${jjwt.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
-            <version>1.4.196</version>
+            <version>${h2.version}</version>
         </dependency>
 
         <dependency>
@@ -120,19 +139,150 @@
 
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>prod</id>
+            <properties>
+                <polymer.build>es6-bundled</polymer.build>
+            </properties>
+        </profile>
+        <profile>
+            <id>user-interface</id>
+            <activation>
+                <!--
+                IMPORTANT!!!
+                activation with jdk is used because setting activeByDefault true is ignored if other profile is activated
+                https://issues.apache.org/jira/browse/MNG-3229
+
+                To deactivate this profile, use:
+                mvn clean install -P !user-interface
+                -->
+                <jdk>[1.8,*)</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.github.eirslett</groupId>
+                        <artifactId>frontend-maven-plugin</artifactId>
+                        <version>${frontend.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>install node and npm</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>install-node-and-npm</goal>
+                                </goals>
+                                <configuration>
+                                    <nodeVersion>${node.version}</nodeVersion>
+                                    <npmVersion>${npm.version}</npmVersion>
+                                    <workingDirectory>tools</workingDirectory>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>install polymer-cli</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install polymer-cli</arguments>
+                                    <workingDirectory>tools</workingDirectory>
+                                </configuration>
+                            </execution>
+                            <execution>
+                                <id>npm install</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>npm</goal>
+                                </goals>
+                                <configuration>
+                                    <arguments>install ../src/main/static</arguments>
+                                    <workingDirectory>tools</workingDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <version>${exec.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>Polymer build</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>exec</goal>
+                                </goals>
+                                <configuration>
+                                    <executable>${basedir}/tools/node/node</executable>
+                                    <arguments>
+                                        <argument>${basedir}/tools/node_modules/polymer-cli/bin/polymer.js</argument>
+                                        <argument>build</argument>
+                                    </arguments>
+                                    <workingDirectory>${basedir}/src/main/static</workingDirectory>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>${resources.plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>copy-resources</id>
+                                <phase>generate-resources</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <overwrite>true</overwrite>
+                                    <outputDirectory>${basedir}/src/main/resources/public</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>${basedir}/src/main/static/build/es6-bundled</directory>
+                                            <filtering>true</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <version>${spring-boot.version}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>repackage</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
+
     <build>
         <plugins>
             <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>${spring-boot.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>repackage</goal>
-                        </goals>
-                    </execution>
-                </executions>
+                <groupId>org.apache.rat</groupId>
+                <artifactId>apache-rat-plugin</artifactId>
+                <configuration>
+                    <excludes>
+                        <exclude>**/node/**</exclude>
+                        <exclude>**/resources/public/**</exclude>
+                        <exclude>**/node_modules/**</exclude>
+                        <exclude>**/static/**</exclude>
+                        <exclude>**/build/**</exclude>
+                        <exclude>**/src/*</exclude>
+                        <exclude>**/*.json</exclude>
+                        <exclude>**/banner.txt</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
