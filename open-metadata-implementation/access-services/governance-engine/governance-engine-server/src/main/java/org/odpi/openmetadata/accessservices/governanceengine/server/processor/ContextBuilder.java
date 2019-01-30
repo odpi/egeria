@@ -183,9 +183,6 @@ public class ContextBuilder {
     }
 
     private boolean isRelationalColumnType(EntityDetail entityDetail){
-        if(entityDetail.getType().getTypeDefName().equals(RELATIONAL_COLUMN)){
-            return true;
-        }
-        return false;
+        return entityDetail.getType().getTypeDefName().equals(RELATIONAL_COLUMN);
     }
 }
