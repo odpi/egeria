@@ -257,7 +257,6 @@ public class OMAGServerOperationalServices
                                                                             configuration.getMaxPageSize());
                 instance.setSecuritySyncOperationalServices(operationalSecuritySync);
                 operationalSecuritySync.initialize(securitySyncConfig,
-                                                   operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(securitySyncConfig.getSecuritySyncName()),
                                                    operationalRepositoryServices.getAuditLog(securitySyncConfig.getSecuritySyncId(),
                                                                                             securitySyncConfig.getSecuritySyncName(),
                                                                                             securitySyncConfig.getSecuritySyncDescription(),
