@@ -23,7 +23,7 @@ public class AssetLineageServicesInstanceMap
      * @param serverName name of the server
      * @param instance instance object
      */
-    static synchronized void  setNewInstanceForJVM(String                         serverName,
+    static synchronized void  setNewInstanceForJVM(String                            serverName,
                                                    AssetLineageServicesInstance   instance)
     {
         instanceMap.put(serverName, instance);
