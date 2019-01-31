@@ -88,6 +88,10 @@ open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceutical
 open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/*.retry
 open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/metadata/ibm-igc/generated_*
 
+# Ignore UI-generated / deployment content
+open-metadata-implementation/user-interfaces/access-services-user-interface/tools/**
+open-metadata-implementation/user-interfaces/access-services-user-interface/src/main/resources/public/**
+
 # Ignore private maven repo (jenkins)
 .repository
 
