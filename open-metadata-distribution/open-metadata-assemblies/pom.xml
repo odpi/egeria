@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -36,7 +37,7 @@
                             <descriptors>
                                 <descriptor>src/main/assemblies/src-package.xml</descriptor>
                                 <descriptor>src/main/assemblies/omag-server.xml</descriptor>
-                                <descriptor>src/main/assemblies/igc-repository-proxy-server.xml</descriptor>
+                                <descriptor>src/main/assemblies/egeria-omag.xml</descriptor>
                             </descriptors>
                             <finalName>egeria-${open-metadata.version}</finalName>
                             <tarLongFileMode>gnu</tarLongFileMode>
