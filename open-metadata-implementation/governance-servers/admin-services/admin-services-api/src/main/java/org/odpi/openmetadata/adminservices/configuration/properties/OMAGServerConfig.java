@@ -84,6 +84,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private DiscoveryEngineConfig     discoveryEngineConfig     = null;
     private StewardshipServicesConfig stewardshipServicesConfig = null;
     private SecuritySyncConfig        securitySyncConfig        = null;
+    private List<String>              auditLog                  = null;
 
 
     /**
@@ -119,6 +120,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             discoveryEngineConfig = template.getDiscoveryEngineConfig();
             stewardshipServicesConfig = template.getStewardshipServicesConfig();
             securitySyncConfig = template.getSecuritySyncConfig();
+            auditLog = template.getAuditLog();
         }
     }
 
@@ -411,6 +413,29 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Return the list of audit log entries associated with this config file.
+     * The audit log simply keep track of the changed to the configuration.
+     *
+     * @return list of audit messages
+     */
+    public List<String> getAuditLog()
+    {
+        return auditLog;
+    }
+
+
+    /**
+     * Set up the audit log messages.
+     *
+     * @param auditLog list of audit messages
+     */
+    public void setAuditLog(List<String> auditLog)
+    {
+        this.auditLog = auditLog;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return JSON style description of variables.
@@ -432,6 +457,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 ", discoveryEngineConfig=" + discoveryEngineConfig +
                 ", stewardshipServicesConfig=" + stewardshipServicesConfig +
                 ", securitySyncConfig=" + securitySyncConfig +
+                ", auditLog=" + auditLog +
                 '}';
     }
 
@@ -466,7 +492,8 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
                 Objects.equals(getDiscoveryEngineConfig(), that.getDiscoveryEngineConfig()) &&
                 Objects.equals(getStewardshipServicesConfig(), that.getStewardshipServicesConfig()) &&
-                Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig());
+                Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
+                Objects.equals(getAuditLog(), that.getAuditLog());
     }
 
 
@@ -481,6 +508,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         return Objects.hash(getLocalServerId(), getLocalServerName(), getLocalServerType(), getOrganizationName(),
                             getLocalServerURL(), getLocalServerUserId(), getMaxPageSize(), getEventBusConfig(),
                             getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryEngineConfig(),
-                            getStewardshipServicesConfig(), getSecuritySyncConfig());
+                            getStewardshipServicesConfig(), getSecuritySyncConfig(), getAuditLog());
     }
 }
