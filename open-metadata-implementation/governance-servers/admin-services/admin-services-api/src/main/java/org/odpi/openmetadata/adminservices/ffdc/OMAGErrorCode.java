@@ -64,12 +64,12 @@ public enum OMAGErrorCode
             "Retry the request with server configuration."),
 
     NULL_REPOSITORY_CONFIG(400, "OMAG-ADMIN-400-009 ",
-            "The OMAG server {0} has been passed null open metadata repository services configuration",
+            "The OMAG server {0} has been passed a configuration document with no open metadata repository services configuration",
             "The system is unable to initialize the local server instance.",
-            "Set up the open metadata repository services configuration and then retry the request with server configuration."),
+            "Use the administration services to add the repository services configuration."),
 
     NULL_ACCESS_SERVICE_ADMIN_CLASS(400, "OMAG-ADMIN-400-010 ",
-            "The OMAG server {0} has been passed a null admins ervices class name for access service {1}",
+            "The OMAG server {0} has been passed a null admin services class name for access service {1}",
             "The system is unable to initialize this access service.",
             "if the access service should be initialized then set up the appropriate admin services class name and restart the server instance."),
 
@@ -106,10 +106,15 @@ public enum OMAGErrorCode
             "No change has occurred in this server's configuration document.",
             "Add the event bus configuration using the administration services and retry the request."),
 
-    NULL_METADATA_COLLECTION_NAME(400, "OMAG-ADMIN-400-006 ",
+    NULL_METADATA_COLLECTION_NAME(400, "OMAG-ADMIN-400-017 ",
             "OMAG server {0} has been called with a null metadata collection name",
             "The system is unable to add this metadata collection name to the configuration document for the local server.",
-            "The metadata collection name is optional.  If it is not set up then the local server name is used instead.")
+            "The metadata collection name is optional.  If it is not set up then the local server name is used instead."),
+
+    EMPTY_CONFIGURATION(400, "OMAG-ADMIN-400-018 ",
+            "OMAG server {0} has been called with a configuration document that has no services configured",
+            "The requested server provides no function.",
+            "Use the administration services to add configuration for OMAG services to the server's configuration document.")
 
     ;
 
