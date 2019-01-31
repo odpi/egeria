@@ -41,6 +41,8 @@
                                auditCode.getUserAction());
 
             startTopic(inTopic);
+
+            governanceEventProcessor.processExistingGovernedAssetsFromRepository();
         }
 
 
