@@ -196,7 +196,7 @@
                                     <goal>npm</goal>
                                 </goals>
                                 <configuration>
-                                    <arguments>install polymer-cli</arguments>
+                                    <arguments>install polymer-cli --prefix .</arguments>
                                     <workingDirectory>tools</workingDirectory>
                                 </configuration>
                             </execution>
@@ -207,7 +207,7 @@
                                     <goal>npm</goal>
                                 </goals>
                                 <configuration>
-                                    <arguments>install ../src/main/static</arguments>
+                                    <arguments>install ../src/main/static --prefix .</arguments>
                                     <workingDirectory>tools</workingDirectory>
                                 </configuration>
                             </execution>
