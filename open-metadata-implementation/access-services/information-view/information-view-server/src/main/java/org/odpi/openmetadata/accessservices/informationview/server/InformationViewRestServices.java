@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.DataV
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.DataViewCreationException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.InformationViewExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.ReportCreationException;
@@ -45,9 +46,9 @@ public class InformationViewRestServices {
 
         try {
             DataViewHandler dataViewHandler = instanceHandler.getDataViewHandler(serverName);
-            dataViewHandler.createReportDataView(requestBody);
+            dataViewHandler.createDataView(requestBody);
         }
-        catch ( PropertyServerException e) {
+        catch (DataViewCreationException |  PropertyServerException e) {
             return handleErrorResponse( e);
         }
 

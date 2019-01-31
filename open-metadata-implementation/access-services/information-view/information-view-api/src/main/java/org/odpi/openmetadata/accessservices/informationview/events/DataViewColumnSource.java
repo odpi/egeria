@@ -18,56 +18,41 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
-public class DataViewColumnSource extends DataViewSource {
+public class DataViewColumnSource extends Source {
 
 
-    private String dataViewColumnGuid;
-    private String dataViewColumnId;
-    private String dataViewColumnName;
+    private String id;
+    private String name;
+    private DataViewSource dataViewSource;
 
 
-    public String getDataViewColumnGuid() {
-        return dataViewColumnGuid;
+    public String getId() {
+        return id;
     }
 
-    public void setDataViewColumnGuid(String dataViewColumnGuid) {
-        this.dataViewColumnGuid = dataViewColumnGuid;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getDataViewColumnId() {
-        return dataViewColumnId;
+    public String getName() {
+        return name;
     }
 
-    public void setDataViewColumnId(String dataViewColumnId) {
-        this.dataViewColumnId = dataViewColumnId;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getDataViewColumnName() {
-        return dataViewColumnName;
+    public DataViewSource getDataViewSource() {
+        return dataViewSource;
     }
 
-    public void setDataViewColumnName(String dataViewColumnName) {
-        this.dataViewColumnName = dataViewColumnName;
+    public void setDataViewSource(DataViewSource dataViewSource) {
+        this.dataViewSource = dataViewSource;
     }
-
-
-    @Override
-    public String toString() {
-        return "DataViewColumnSource{" +
-                "dataViewColumnGuid='" + dataViewColumnGuid + '\'' +
-                ", dataViewColumnId='" + dataViewColumnId + '\'' +
-                ", dataViewColumnName='" + dataViewColumnName + '\'' +
-                ", dataViewId='" + dataViewId + '\'' +
-                ", dataViewName='" + dataViewName + '\'' +
-                ", dataViewGuid='" + dataViewGuid + '\'' +
-                '}';
-    }
-
-
 
     @Override
     public String buildQualifiedName() {
-        return this.getNetworkAddress() + "." + this.getDataViewColumnId();
+        return dataViewSource.getNetworkAddress() + "." + this.getId();
     }
 
 }

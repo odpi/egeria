@@ -20,32 +20,32 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 public class DataViewSource extends Source{
 
-    protected String dataViewId;
-    protected String dataViewName;
-    protected String dataViewGuid;
+    protected String id;
+    protected String name;
 
-    public String getDataViewId() {
-        return dataViewId;
+
+    public String getId() {
+        return id;
     }
 
-    public void setDataViewId(String dataViewId) {
-        this.dataViewId = dataViewId;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getDataViewName() {
-        return dataViewName;
+    public String getName() {
+        return name;
     }
 
-    public void setDataViewName(String dataViewName) {
-        this.dataViewName = dataViewName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getDataViewGuid() {
-        return dataViewGuid;
-    }
-
-    public void setDataViewGuid(String dataViewGuid) {
-        this.dataViewGuid = dataViewGuid;
+    @Override
+    public String toString() {
+        return "DataViewSource{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 
     @Override
