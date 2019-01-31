@@ -23,7 +23,7 @@ Change to the `egeria` directory.
 $ cd egeria
 ```
 
-You are now ready to [build the egeria source]
+You are now ready to [build the egeria source](task-building-egeria-source.md)
 
 
 ----
