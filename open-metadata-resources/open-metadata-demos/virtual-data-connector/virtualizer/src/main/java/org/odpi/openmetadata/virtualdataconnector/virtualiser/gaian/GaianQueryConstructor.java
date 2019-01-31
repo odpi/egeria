@@ -281,7 +281,7 @@ public class GaianQueryConstructor {
      * @return the call to Gaian
      */
     private String buildCreateTableDataSourceStatement(String databaseName, String tableName, String gaianNodeName, List<MappedColumn> mappedColumns, String logicalTableName) {
-        String connectionName = gaianNodeName.toUpperCase() + "_" + databaseName.toUpperCase();
+        String connectionName = gaianNodeName.toUpperCase();
         String statementForCreatingDataSource = "call setdsrdbtable('" +
                 tableName +
                 "', '', '" +

@@ -1181,22 +1181,7 @@
         "_name": "EmplSAnl-EmpSalaryAnalysis"
       }
     ],
-    "assigned_to_terms": [
-      {
-        "_type": "term",
-        "_context": [
-          {
-            "_type": "category",
-            "_name": "Coco Pharmaceuticals"
-          },
-          {
-            "_type": "category",
-            "_name": "Terms"
-          }
-        ],
-        "_name": "First Name"
-      }
-    ],
+    "assigned_to_terms": [],
     "_name": "FNAME"
   },
   {
@@ -1266,22 +1251,7 @@
         "_name": "EmplSAnl-EmpSalaryAnalysis"
       }
     ],
-    "assigned_to_terms": [
-      {
-        "_type": "term",
-        "_context": [
-          {
-            "_type": "category",
-            "_name": "Coco Pharmaceuticals"
-          },
-          {
-            "_type": "category",
-            "_name": "Terms"
-          }
-        ],
-        "_name": "Annual Leave Allowance"
-      }
-    ],
+    "assigned_to_terms": [],
     "_name": "HOL"
   },
   {
@@ -1316,22 +1286,7 @@
         "_name": "CompDir-ContactList"
       }
     ],
-    "assigned_to_terms": [
-      {
-        "_type": "term",
-        "_context": [
-          {
-            "_type": "category",
-            "_name": "Coco Pharmaceuticals"
-          },
-          {
-            "_type": "category",
-            "_name": "Terms"
-          }
-        ],
-        "_name": "Job Description"
-      }
-    ],
+    "assigned_to_terms": [],
     "_name": "JobTitle"
   },
   {
@@ -1866,22 +1821,7 @@
         "_name": "Employee-Employee"
       }
     ],
-    "assigned_to_terms": [
-      {
-        "_type": "term",
-        "_context": [
-          {
-            "_type": "category",
-            "_name": "Coco Pharmaceuticals"
-          },
-          {
-            "_type": "category",
-            "_name": "Terms"
-          }
-        ],
-        "_name": "Work Location Code"
-      }
-    ],
+    "assigned_to_terms": [],
     "_name": "LOCCODE"
   },
   {
@@ -2551,22 +2491,7 @@
         "_name": "Employee-Employee"
       }
     ],
-    "assigned_to_terms": [
-      {
-        "_type": "term",
-        "_context": [
-          {
-            "_type": "category",
-            "_name": "Coco Pharmaceuticals"
-          },
-          {
-            "_type": "category",
-            "_name": "Terms"
-          }
-        ],
-        "_name": "Job Description"
-      }
-    ],
+    "assigned_to_terms": [],
     "_name": "ROLE"
   },
   {
