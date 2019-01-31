@@ -283,7 +283,6 @@ public class OMAGServerOperationalServices
             instance.setOperationalAccessServiceAdminList(operationalAccessServiceAdminList);
             instanceMap.setNewInstance(serverName, instance);
 
-
             /*
              * The enterprise topic passes OMRS Events from the cohort to the listening access services.
              * During the access services start up, they registered listeners with the enterprise topic.
@@ -328,7 +327,6 @@ public class OMAGServerOperationalServices
                                                                               configuration.getMaxPageSize());
                 instance.setSecuritySyncOperationalServices(operationalSecuritySync);
                 operationalSecuritySync.initialize(securitySyncConfig,
-                                                   operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(securitySyncConfig.getSecuritySyncName()),
                                                    operationalRepositoryServices.getAuditLog(securitySyncConfig.getSecuritySyncId(),
                                                                                              securitySyncConfig.getSecuritySyncName(),
                                                                                              securitySyncConfig.getSecuritySyncDescription(),
