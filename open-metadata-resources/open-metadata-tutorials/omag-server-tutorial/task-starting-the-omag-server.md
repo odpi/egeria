@@ -6,7 +6,7 @@
 The [OMAG Server's installation directory](../building-egeria-tutorial/task-installing-egeria.md)
 contains a Java Archive (Jar) file for the server and a directory of resources.
 
-```text
+```bash
 $ ls
 resources				server-chassis-spring-0.3-SNAPSHOT.jar
 ```
@@ -23,12 +23,12 @@ You only need the JRE but select the JDK if you expect to also write some Java c
 
 Start the OMAG Server as follows 
 
-```text
+```bash
 $ java -jar server*
 ```
 The server first displays this banner and then initializes itself.
 
-```text
+```bash
 ODPi Egeria
         ____     __  ___    ___    ______          _____
        / __ \   /  |/  /   /   |  / ____/         / ___/  ___    _____ _   __  ___    _____
@@ -42,7 +42,7 @@ ODPi Egeria
 ```
 When the initialization is complete, you will see this message
 
-```text
+```bash
 Thu Jan 31 13:15:26 GMT 2019 OMAG Server ready for configuration
 ```
 

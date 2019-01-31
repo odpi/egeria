@@ -21,6 +21,7 @@ The build can take 5-15 minutes depending on the speed and load on your machine.
 However eventually you will see the message:
 
 ```bash
+
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
@@ -30,6 +31,7 @@ However eventually you will see the message:
 [INFO] ------------------------------------------------------------------------
 
 Process finished with exit code 0
+
 ```
 
 This means you are ready to [install egeria](task-installing-egeria.md).
