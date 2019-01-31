@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.informationview.events;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -23,6 +22,7 @@ public class DataViewColumn extends DataViewElement {
     private String hidden;
     private String columnGuid;
     private String businessTermGuid;
+    private DataViewSource dataViewSource;
 
     public String getRegularAggregate() {
         return regularAggregate;
@@ -80,4 +80,14 @@ public class DataViewColumn extends DataViewElement {
     public void setBusinessTermGuid(String businessTermGuid) {
         this.businessTermGuid = businessTermGuid;
     }
+
+    public DataViewSource getDataViewSource() {
+        return dataViewSource;
+    }
+
+    public void setDataViewSource(DataViewSource dataViewSource) {
+        this.dataViewSource = dataViewSource;
+    }
+
+
 }
