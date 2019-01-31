@@ -10149,7 +10149,7 @@ public class OpenMetadataTypesArchive
         final String description     = "A collection of data items that describe a situation.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "DataViewSchemaAttribute";
+        final String superTypeName = "DerivedSchemaAttribute";
 
         EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
                 name,
@@ -10163,9 +10163,22 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "formula";
-        final String attribute1Description     = "formula of dataview element.";
+
+        final String attribute1Name            = "id";
+        final String attribute1Description     = "Id of dataview element.";
         final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "name";
+        final String attribute2Description     = "Name of dataview element.";
+        final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "comment";
+        final String attribute3Description     = "Comment";
+        final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "nativeClass";
+        final String attribute4Description     = "Native class used by the client to represent this entity.";
+        final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "description";
+        final String attribute5Description     = "Description of the column.";
+        final String attribute5DescriptionGUID = null;
 
 
 
@@ -10173,6 +10186,23 @@ public class OpenMetadataTypesArchive
                 attribute1Description,
                 attribute1DescriptionGUID);
         properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                attribute2Description,
+                attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute3Name,
+                attribute3Description,
+                attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute4Name,
+                attribute4Description,
+                attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                attribute5Description,
+                attribute5DescriptionGUID);
+        properties.add(property);
+
 
 
         entityDef.setPropertiesDefinition(properties);
