@@ -2,12 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 
-import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumnSource;
-import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
-import org.odpi.openmetadata.accessservices.informationview.events.ReportColumnSource;
-import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
-import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
-import org.odpi.openmetadata.accessservices.informationview.events.Source;
+import org.odpi.openmetadata.accessservices.informationview.events.*;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
@@ -206,6 +201,8 @@ public abstract class ReportBasicOperation {
             sourceColumn = lookupHelper.lookupDatabaseColumn((DatabaseColumnSource) source);
         } else if (source instanceof ReportColumnSource) {
             sourceColumn = entitiesCreatorHelper.getEntity(Constants.SCHEMA_ATTRIBUTE, source.buildQualifiedName());
+        }else if (source instanceof DataViewColumnSource) {
+            sourceColumn = entitiesCreatorHelper.getEntity(Constants.DERIVED_DATA_VIEW_SCHEMA_ATTRIBUTE, source.buildQualifiedName());
         }
         if (sourceColumn != null) {
             return sourceColumn.getGUID();
