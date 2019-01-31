@@ -10,6 +10,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
+import org.odpi.openmetadata.accessservices.informationview.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.informationview.events.InformationViewEvent;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewInTopicListener;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
@@ -115,6 +116,8 @@ public class InformationViewOmasListenerTest {
     private EntityDetail businessTerm;
     @Mock
     private OMRSRepositoryHelper helper;
+    @Mock
+    private EventPublisher eventPublisher;
 
     private OMRSAuditLog auditLog;
 
@@ -137,7 +140,7 @@ public class InformationViewOmasListenerTest {
         MockitoAnnotations.initMocks(this);
 
         EntitiesCreatorHelper entitiesCreatorHelper = new EntitiesCreatorHelper(enterpriseConnector, auditLog);
-        listener = new InformationViewInTopicListener(entitiesCreatorHelper, auditLog);
+        listener = new InformationViewInTopicListener(entitiesCreatorHelper, eventPublisher, auditLog);
         when(enterpriseConnector.getMetadataCollection()).thenReturn(omrsMetadataCollection);
         when(enterpriseConnector.getRepositoryHelper()).thenReturn(helper);
 
