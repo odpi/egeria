@@ -13,21 +13,8 @@ import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -95,13 +82,30 @@ public class ReportUpdater extends ReportBasicOperation {
                 EntityDetail entity = entitiesCreatorHelper.getEntityByGuid(entity2Guid);
                 if (isReportElementDeleted(reportElements, entity.getProperties())) {
                     entitiesCreatorHelper.purgeRelationship(relationship);
-                    entitiesCreatorHelper.purgeEntity(relationship.getEntityTwoProxy());//TODO purge also type entity
+                    deleteSection(entity);
                 } else {
                     matchingEntities.add(entity);
                 }
             }
         }
         return matchingEntities;
+    }
+
+    private void deleteSection(EntitySummary entity) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, RelationshipNotDeletedException, RelationshipNotKnownException, FunctionNotSupportedException, EntityNotKnownException, EntityNotDeletedException {
+
+        List<Relationship> typeRelationships = entitiesCreatorHelper.getRelationships(Constants.COMPLEX_SCHEMA_TYPE, entity.getGUID());
+         if(typeRelationships != null && !typeRelationships.isEmpty()){
+             EntityProxy typeProxy = typeRelationships.get(0).getEntityOneProxy();
+                 List<Relationship> childrenRelationships = entitiesCreatorHelper.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, typeProxy.getGUID());
+                 if(childrenRelationships != null && !childrenRelationships.isEmpty()){
+                     for(Relationship relationship : childrenRelationships)
+                     deleteSection(relationship.getEntityTwoProxy());
+                 }
+                 entitiesCreatorHelper.purgeEntity(typeProxy);
+         }
+        entitiesCreatorHelper.purgeEntity(entity);
+
+
     }
 
     private boolean isReportElementDeleted(List<ReportElement> reportElements, InstanceProperties properties) {
