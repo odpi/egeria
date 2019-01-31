@@ -65,7 +65,7 @@ public class OMAGApplication
         @Override
         public void onApplicationEvent(ContextRefreshedEvent event)
         {
-            System.out.println(new Date().toString() + " OMAG Server ready for configuration");
+            System.out.println(new Date().toString() + " OMAG server platform ready for configuration");
         }
 
     }
