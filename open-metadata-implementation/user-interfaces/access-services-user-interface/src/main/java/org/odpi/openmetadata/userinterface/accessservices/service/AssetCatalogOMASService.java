@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.accessservices.service;
 
 import org.odpi.openmetadata.accessservice.assetcatalog.client.AssetCatalog;
@@ -27,6 +28,23 @@ public class AssetCatalogOMASService {
     @Autowired
     public AssetCatalogOMASService(AssetCatalog assetCatalog) {
         this.assetCatalog = assetCatalog;
+    }
+
+    /**
+     * Fetch asset's header, classification and properties
+     *
+     * @param searchCriteria the searchCriteria
+     * @return the assets for the search criteria
+     * @throws PropertyServerException   there is a problem retrieving information from the property server
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     */
+    public List<AssetDescription> searchAssets(String searchCriteria) throws PropertyServerException, InvalidParameterException {
+        try {
+            return assetCatalog.searchAssets(user, searchCriteria).getAssetDescriptionList();
+        } catch (InvalidParameterException | PropertyServerException e) {
+            LOG.error(String.format("Error retrieving asset details for '%s'", searchCriteria), e);
+            throw e;
+        }
     }
 
     /**
@@ -62,6 +80,8 @@ public class AssetCatalogOMASService {
             throw e;
         }
     }
+
+
 
     /**
      * Fetch asset's header, classification, properties and relationships
