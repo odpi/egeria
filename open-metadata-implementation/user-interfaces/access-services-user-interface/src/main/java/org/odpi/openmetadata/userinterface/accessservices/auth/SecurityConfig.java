@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.accessservices.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,11 +57,14 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anonymous().and()
                 .authorizeRequests()
                 .antMatchers("/").permitAll()
-                .antMatchers("/*.html").permitAll()
+                .antMatchers("/api/**").permitAll()
+                .antMatchers("/service-worker.js").permitAll()
+                .antMatchers("/manifest.json").permitAll()
                 .antMatchers("/favicon.ico").permitAll()
-                .antMatchers("/resources/**").permitAll()
+                .antMatchers("/node_modules/**").permitAll()
+                .antMatchers("/src/**").permitAll()
                 .antMatchers("/h2/**").permitAll()
-                .antMatchers("/img/**").permitAll()
+                .antMatchers("/images/**").permitAll()
                 .antMatchers("/css/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
