@@ -6,7 +6,10 @@
 
 The open metadata tutorials provide guided learning on different topics related to using ODPi Egeria.
 
-*They will be listed here when written ...*
+## Getting started
+
+* [Downloading and building Egeria](building-egeria-tutorial)
+* [Configuring and running Egeria's OMAG Server](omag-server-tutorial)
 
 
 
