@@ -91,7 +91,7 @@ public class GaianQueryConstructor {
         Map<String, String> createdTables = new HashMap();
         LogicTable backendTable = getMatchingTableDefinition(gaianNodeName, Collections.singletonList(logicalTableName));
         if (backendTable != null) {
-            if(!backendTable.equals(gaianFrontEndName)) {
+            if(!backendTable.getGaianNode().equals(gaianFrontEndName)) {
                 createMirroringLogicalTable(logicalTableName, gaianNodeName);
             }
             updateColumnDataType(mappedColumns, backendTable);
@@ -106,8 +106,8 @@ public class GaianQueryConstructor {
                 createdTables.put(TECHNICAL_PREFIX, updatedTable);
             }
 
-            if(!backendTable.equals(gaianFrontEndName)) {
-                log.info("Remove mirrored logical table");
+            if(!backendTable.getGaianNode().equals(gaianFrontEndName)) {
+                log.info("Remove mirrored logical table: {}", logicalTableName);
                 executeQueryUtil.executeUpdate(buildRemoveTableStatement(logicalTableName));
             }
             return createdTables;
