@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.informationview.admin;
 
 import org.odpi.openmetadata.accessservices.informationview.auditlog.InformationViewAuditCode;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.ColumnContextEventBuilder;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportHandler;
@@ -84,6 +85,8 @@ public class InformationViewAdmin implements AccessServiceAdmin {
 
         EntitiesCreatorHelper entitiesCreatorHelper = new EntitiesCreatorHelper(enterpriseConnector, auditLog);
 
+
+        EventPublisher eventPublisher = null;
         if (enterpriseOMRSTopicConnector != null) {
             auditCode = InformationViewAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
             auditLog.logRecord(actionDescription,
@@ -94,14 +97,14 @@ public class InformationViewAdmin implements AccessServiceAdmin {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
             ColumnContextEventBuilder columnContextEventBuilder = new ColumnContextEventBuilder(enterpriseConnector);
-            EventPublisher eventPublisher = new EventPublisher(informationViewOutTopicConnector, columnContextEventBuilder, auditLog);
+            eventPublisher = new EventPublisher(informationViewOutTopicConnector, columnContextEventBuilder, auditLog);
             InformationViewEnterpriseOmrsEventListener informationViewEnterpriseOmrsEventListener = new InformationViewEnterpriseOmrsEventListener(eventPublisher, auditLog);
             enterpriseOMRSTopicConnector.registerListener(informationViewEnterpriseOmrsEventListener);
         }
 
 
         if (informationViewInTopicConnector != null) {
-            OpenMetadataTopicListener informationViewInTopicListener = new InformationViewInTopicListener(entitiesCreatorHelper, auditLog);
+            OpenMetadataTopicListener informationViewInTopicListener = new InformationViewInTopicListener(entitiesCreatorHelper, eventPublisher, auditLog);
             this.informationViewInTopicConnector.registerListener(informationViewInTopicListener);
             startConnector(InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_IN_TOPIC, actionDescription, inTopicName, informationViewInTopicConnector);
         }
@@ -111,7 +114,8 @@ public class InformationViewAdmin implements AccessServiceAdmin {
         }
 
         LookupHelper lookupHelper = new LookupHelper(enterpriseConnector, entitiesCreatorHelper, auditLog);
-        instance = new InformationViewServicesInstance(new ReportHandler(entitiesCreatorHelper, lookupHelper, auditLog), serverName);
+        DataViewHandler dataViewHandler = new DataViewHandler(entitiesCreatorHelper, auditLog);
+        instance = new InformationViewServicesInstance(new ReportHandler(entitiesCreatorHelper, lookupHelper, auditLog), dataViewHandler, serverName);
 
         auditCode = InformationViewAuditCode.SERVICE_INITIALIZED;
         auditLog.logRecord(actionDescription,
