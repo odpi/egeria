@@ -855,22 +855,7 @@
         "_name": "EMPSALARYANALYSIS"
       }
     ],
-    "assigned_to_terms": [
-      {
-        "_type": "term",
-        "_context": [
-          {
-            "_type": "category",
-            "_name": "Coco Pharmaceuticals"
-          },
-          {
-            "_type": "category",
-            "_name": "Terms"
-          }
-        ],
-        "_name": "First Name"
-      }
-    ],
+    "assigned_to_terms": [],
     "_name": "FNAME"
   },
   {
@@ -954,22 +939,7 @@
         "_name": "EMPSALARYANALYSIS"
       }
     ],
-    "assigned_to_terms": [
-      {
-        "_type": "term",
-        "_context": [
-          {
-            "_type": "category",
-            "_name": "Coco Pharmaceuticals"
-          },
-          {
-            "_type": "category",
-            "_name": "Terms"
-          }
-        ],
-        "_name": "Annual Leave Allowance"
-      }
-    ],
+    "assigned_to_terms": [],
     "_name": "HOL"
   },
   {
@@ -992,22 +962,7 @@
         "_name": "CONTACTLIST"
       }
     ],
-    "assigned_to_terms": [
-      {
-        "_type": "term",
-        "_context": [
-          {
-            "_type": "category",
-            "_name": "Coco Pharmaceuticals"
-          },
-          {
-            "_type": "category",
-            "_name": "Terms"
-          }
-        ],
-        "_name": "Job Description"
-      }
-    ],
+    "assigned_to_terms": [],
     "_name": "JOBTITLE"
   },
   {
@@ -1372,22 +1327,7 @@
         "_name": "EMPLOYEE"
       }
     ],
-    "assigned_to_terms": [
-      {
-        "_type": "term",
-        "_context": [
-          {
-            "_type": "category",
-            "_name": "Coco Pharmaceuticals"
-          },
-          {
-            "_type": "category",
-            "_name": "Terms"
-          }
-        ],
-        "_name": "Work Location Code"
-      }
-    ],
+    "assigned_to_terms": [],
     "_name": "LOCCODE"
   },
   {
@@ -1927,22 +1867,7 @@
         "_name": "EMPLOYEE"
       }
     ],
-    "assigned_to_terms": [
-      {
-        "_type": "term",
-        "_context": [
-          {
-            "_type": "category",
-            "_name": "Coco Pharmaceuticals"
-          },
-          {
-            "_type": "category",
-            "_name": "Terms"
-          }
-        ],
-        "_name": "Job Description"
-      }
-    ],
+    "assigned_to_terms": [],
     "_name": "ROLE"
   },
   {
@@ -2345,22 +2270,7 @@
         "_name": "CONTACTLIST"
       }
     ],
-    "assigned_to_terms": [
-      {
-        "_type": "term",
-        "_context": [
-          {
-            "_type": "category",
-            "_name": "Coco Pharmaceuticals"
-          },
-          {
-            "_type": "category",
-            "_name": "Terms"
-          }
-        ],
-        "_name": "Work Location Code"
-      }
-    ],
+    "assigned_to_terms": [],
     "_name": "WORKLOCATION"
   }
 ]
