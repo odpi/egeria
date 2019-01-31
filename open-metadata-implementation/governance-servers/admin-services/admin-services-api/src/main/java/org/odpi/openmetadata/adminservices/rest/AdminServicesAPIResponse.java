@@ -33,6 +33,7 @@ public abstract class AdminServicesAPIResponse implements java.io.Serializable
     private static final long    serialVersionUID = 1L;
 
     private int                  relatedHTTPCode = 200;
+    private String               successMessage = null;
     private String               exceptionClassName = null;
     private String               exceptionErrorMessage = null;
     private String               exceptionSystemAction = null;
@@ -85,6 +86,29 @@ public abstract class AdminServicesAPIResponse implements java.io.Serializable
     public void setRelatedHTTPCode(int relatedHTTPCode)
     {
         this.relatedHTTPCode = relatedHTTPCode;
+    }
+
+
+    /**
+     * Return the success message (if any).
+     *
+     * @return string or null
+     */
+    public String getSuccessMessage()
+    {
+        return successMessage;
+    }
+
+
+    /**
+     * Set up the success message.  This provides supplementary information about the services that
+     * have been changed.
+     *
+     * @param successMessage string or null
+     */
+    public void setSuccessMessage(String successMessage)
+    {
+        this.successMessage = successMessage;
     }
 
 
@@ -219,6 +243,7 @@ public abstract class AdminServicesAPIResponse implements java.io.Serializable
     {
         return "AdminServicesAPIResponse{" +
                 "relatedHTTPCode=" + relatedHTTPCode +
+                ", successMessage='" + successMessage + '\'' +
                 ", exceptionClassName='" + exceptionClassName + '\'' +
                 ", exceptionErrorMessage='" + exceptionErrorMessage + '\'' +
                 ", exceptionSystemAction='" + exceptionSystemAction + '\'' +
@@ -247,6 +272,7 @@ public abstract class AdminServicesAPIResponse implements java.io.Serializable
         }
         AdminServicesAPIResponse that = (AdminServicesAPIResponse) objectToCompare;
         return getRelatedHTTPCode() == that.getRelatedHTTPCode() &&
+                Objects.equals(getSuccessMessage(), that.getSuccessMessage()) &&
                 Objects.equals(getExceptionClassName(), that.getExceptionClassName()) &&
                 Objects.equals(getExceptionErrorMessage(), that.getExceptionErrorMessage()) &&
                 Objects.equals(getExceptionSystemAction(), that.getExceptionSystemAction()) &&
