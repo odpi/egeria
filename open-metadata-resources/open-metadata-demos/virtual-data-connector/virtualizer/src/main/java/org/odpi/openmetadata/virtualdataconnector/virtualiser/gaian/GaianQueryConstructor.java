@@ -91,22 +91,25 @@ public class GaianQueryConstructor {
         Map<String, String> createdTables = new HashMap();
         LogicTable backendTable = getMatchingTableDefinition(gaianNodeName, Collections.singletonList(logicalTableName));
         if (backendTable != null) {
-            createMirroringLogicalTable(logicalTableName, gaianNodeName);
+            if(!backendTable.getGaianNode().equals(gaianFrontEndName)) {
+                createMirroringLogicalTable(logicalTableName, gaianNodeName);
+            }
             updateColumnDataType(mappedColumns, backendTable);
 
-            String updatedTable = createTableDefinition(businessTableName, (c -> c.getBusinessName()), mappedColumns, gaianNodeName, logicalTableName);
+            String updatedTable = createTableDefinition(tableContextEvent.getTableSource().getDatabaseName(), businessTableName, (c -> c.getBusinessName()), mappedColumns, gaianNodeName, logicalTableName);
             if (updatedTable != null) {
                 createdTables.put(BUSINESS_PREFIX, updatedTable);
             }
 
-            updatedTable = createTableDefinition(technicalTableName, (c -> c.getTechnicalName()), mappedColumns, gaianNodeName,logicalTableName );
+            updatedTable = createTableDefinition(tableContextEvent.getTableSource().getDatabaseName(), technicalTableName, (c -> c.getTechnicalName()), mappedColumns, gaianNodeName,logicalTableName );
             if (updatedTable != null) {
                 createdTables.put(TECHNICAL_PREFIX, updatedTable);
             }
 
-            log.info("Remove mirrored logical table");
-            executeQueryUtil.executeUpdate(buildRemoveTableStatement(logicalTableName));
-
+            if(!backendTable.getGaianNode().equals(gaianFrontEndName)) {
+                log.info("Remove mirrored logical table: {}", logicalTableName);
+                executeQueryUtil.executeUpdate(buildRemoveTableStatement(logicalTableName));
+            }
             return createdTables;
         } else {
             VirtualiserErrorCode errorCode = VirtualiserErrorCode.NO_lOGICTABLE;
@@ -125,9 +128,9 @@ public class GaianQueryConstructor {
         }
     }
 
-    private String createTableDefinition(String tableName, Function<MappedColumn, String> function, List<MappedColumn> mappedColumns, String gaianNodeName, String logicalTableName) {
+    private String createTableDefinition(String databaseName, String tableName, Function<MappedColumn, String> function, List<MappedColumn> mappedColumns, String gaianNodeName, String logicalTableName) {
         String businessTableCreateStatement = buildTableCreateStatement(tableName, mappedColumns, function);
-        String setBusinessTableDataSource = buildCreateTableDataSourceStatement(tableName, gaianNodeName, mappedColumns, logicalTableName);
+        String setBusinessTableDataSource = buildCreateTableDataSourceStatement(databaseName, tableName, gaianNodeName, mappedColumns, logicalTableName);
 
         if (updateGaian(businessTableCreateStatement, setBusinessTableDataSource)) {
             log.debug("Successfully created table {}", tableName);
@@ -269,17 +272,20 @@ public class GaianQueryConstructor {
     /**
      * connect the data source to the Logical Table
      *
+     *
+     * @param databaseName
      * @param tableName     name of the Logical table
      * @param gaianNodeName
      * @param mappedColumns
      * @param logicalTableName
      * @return the call to Gaian
      */
-    private String buildCreateTableDataSourceStatement(String tableName, String gaianNodeName, List<MappedColumn> mappedColumns, String logicalTableName) {
+    private String buildCreateTableDataSourceStatement(String databaseName, String tableName, String gaianNodeName, List<MappedColumn> mappedColumns, String logicalTableName) {
+        String connectionName = gaianNodeName.toUpperCase();
         String statementForCreatingDataSource = "call setdsrdbtable('" +
                 tableName +
                 "', '', '" +
-                gaianNodeName.toUpperCase() +
+                connectionName +
                 "', '" +
                 logicalTableName +
                 "','', '";
