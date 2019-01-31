@@ -4,10 +4,11 @@
 # Installing ODPi Egeria
 
 The [egeria build process](task-building-egeria-source.md) creates the
-distribution files for Egeria in the open-metadata-distribution module.
+distribution files for Egeria in the `open-metadata-distribution` module.
 The assemblies are located from the egeria build directory as follows:
 
-```text
+```bash
+
 $ cd open-metadata-distribution/open-metadata-assemblies/target
 $ ls
 ls
@@ -25,28 +26,39 @@ the release is `egeria-0.3-SNAPSHOT`.
 
 Create a directory for the OMAG Server and copy the tar file into it.
 The two commands shown below create a directory at the same level in the
-file system as the egeria build library and copies the omag server into it.
-The then changes to the new directory and lists its contents.
+file system as the `egeria` build library and then copies the omag server into it.
 
-```text
+```bash
+
 $ mkdir ../../../../egeria-install
 $ cp egeria*-distribution.tar.gz ../../../../egeria-install
+$
+
+```
+These next commands change to the new directory and lists its contents.
+
+```bash
+
 $ cd ../../../../egeria-install
 $ ls
 egeria-0.3-SNAPSHOT-distribution.tar.gz
+
 ```
 
 It is now possible to unpack the tar file.
 
-```text
+```bash
+
 $ tar -xf egeria-0.3-SNAPSHOT-distribution.tar.gz
 $ ls
 egeria-0.3-SNAPSHOT-distribution.tar.gz	egeria-omag-0.3-SNAPSHOT
+
 ```
 
 A new directory is created called `egeria-omag-0.3-SNAPSHOT`.  
 
-```text
+```bash
+
 $ cd egeria-omag-0.3-SNAPSHOT$ ls
 LICENSE			clients			server
 NOTICE			conformance-suite	user-interface
@@ -59,9 +71,11 @@ This is the Egeria standalone server.
 
 Change to the omag server's directory.
 
-```text
+```bash
+
 $ cd servers/omag-server*
 $ resources				server-chassis-spring-0.3-SNAPSHOT.jar
+
 ```
 
 You are now ready to [learn about the OMAG Server](../omag-server-tutorial).
