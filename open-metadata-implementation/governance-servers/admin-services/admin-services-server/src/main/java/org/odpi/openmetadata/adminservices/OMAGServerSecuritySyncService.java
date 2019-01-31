@@ -9,6 +9,9 @@ import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySync
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class OMAGServerSecuritySyncService {
@@ -27,6 +30,19 @@ public class OMAGServerSecuritySyncService {
         try {
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
+            List<String> configAuditLog = serverConfig.getAuditLog();
+
+            if (configAuditLog == null) {
+                configAuditLog = new ArrayList<>();
+            }
+
+            if (securitySyncConfig == null) {
+                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for security sync services.");
+            } else {
+                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for security sync services.");
+            }
+
+            serverConfig.setAuditLog(configAuditLog);
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();

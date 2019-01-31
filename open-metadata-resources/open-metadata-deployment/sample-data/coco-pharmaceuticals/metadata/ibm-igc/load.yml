@@ -76,7 +76,7 @@
         description: "Import area for CocoPharma {{ db_name }} sample database"
         metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
         dcn:
-          name: CocoPharma_{{ db_name }}
+          name: CocoPharma_{{ db_name }}_{{ egeria_samples_cocopharma_db_type }}
           description: "CocoPharma DB2 connection"
           database: "{{ db_name | upper }}"
           username: "{{ ibm_infosvr_users.db2inst1 }}"
@@ -106,7 +106,7 @@
         description: "Import area for CocoPharma {{ db_name }} sample database"
         metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
         dcn:
-          name: CocoPharma_{{ db_name }}
+          name: CocoPharma_{{ db_name }}_{{ egeria_samples_cocopharma_db_type }}
           description: "CocoPharma PostgreSQL connection"
           data_source: "CocoPharma_{{ db_name | upper }}"
           username: "{{ egeria_samples_credentials.db_owner }}"
@@ -161,7 +161,7 @@
         description: "Import area for CocoPharma {{ db_name }} sample database"
         metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
         dcn:
-          name: CocoPharma_{{ db_name }}
+          name: CocoPharma_{{ db_name }}_{{ egeria_samples_cocopharma_db_type }}
           description: "CocoPharma MariaDB connection"
           data_source: "CocoPharma_{{ db_name | upper }}"
           username: "{{ egeria_samples_credentials.db_owner }}"
@@ -228,7 +228,7 @@
         - number_of: term
           meeting_all_conditions:
             - { property: "parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
-          is: 52
+          is: 49
         - number_of: database_column
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "COMPDIR" }
@@ -258,7 +258,7 @@
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
             - { property: "assigned_to_terms.parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
-          is: 61
+          is: 55
         - number_of: data_file_field
           meeting_all_conditions:
             - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
@@ -269,7 +269,7 @@
             - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
             - { property: "data_file_record.data_file.path", operator: "=", value: "{{ egeria_samples_cocopharma_targets.files }}" }
             - { property: "assigned_to_terms.parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
-          is: 61
+          is: 55
 
 - name: remove cached files
   file:
@@ -415,7 +415,7 @@
     name: IBM.infosvr-metadata-asset-manager
   vars:
     discover_sources:
-      - dcn: CocoPharma_{{ db_name }}
+      - dcn: CocoPharma_{{ db_name }}_{{ egeria_samples_cocopharma_db_type }}
         project: CocoPharma
         target_host: "{{ groups['egeria-samples-db-host'][0] | upper }}"
         steps:
@@ -428,6 +428,6 @@
           rootAssets: schema[{{ db_name | upper }}|{{ egeria_samples_db_schema }}]
           Asset_description_already_exists: Replace_existing_description
   with_items: "{{ egeria_samples_cocopharma_databases }}"
-  when: ('ibm-information-server-engine' in group_names) and (egeria_samples_cocopharma_db_type == 'ibm-db2')
+  when: ('ibm-information-server-engine' in group_names)
   loop_control:
     loop_var: db_name

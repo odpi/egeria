@@ -3,10 +3,7 @@
 package org.odpi.openmetadata.adminservices;
 
 
-import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -18,6 +15,8 @@ import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.securitysyncservices.configuration.registration.SecuritySyncOperationalServices;
 
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -25,6 +24,12 @@ import java.util.List;
  */
 public class OMAGServerOperationalServices
 {
+    private final String   REPOSITORY_SERVICES       = "Repository Services";
+    private final String   SECURITY_SYNC_SERVICES    = "Security Synchronization Services";
+    private final String   DISCOVERY_ENGINE_SERVICES = "Discovery Engine Services";
+    private final String   STEWARDSHIP_SERVICES      = "Stewardship Services";
+
+
     private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
     private OMAGServerInstanceMap          instanceMap = new OMAGServerInstanceMap();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
@@ -56,7 +61,7 @@ public class OMAGServerOperationalServices
             validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            activateWithSuppliedConfig(userId, serverName, configStore.getServerConfig(serverName, methodName));
+            response = activateWithSuppliedConfig(userId, serverName, configStore.getServerConfig(serverName, methodName));
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -88,6 +93,8 @@ public class OMAGServerOperationalServices
                                                    OMAGServerConfig configuration)
     {
         final String methodName = "activateWithSuppliedConfig";
+
+        List<String> activatedServiceList = new ArrayList<>();
 
         VoidResponse response = new VoidResponse();
 
@@ -124,6 +131,7 @@ public class OMAGServerOperationalServices
             OMRSOperationalServices  operationalRepositoryServices     = instance.getOperationalRepositoryServices();
             List<AccessServiceAdmin> operationalAccessServiceAdminList = instance.getOperationalAccessServiceAdminList();
             SecuritySyncOperationalServices operationalSecuritySync    = instance.getSecuritySyncOperationalServices();
+
             /*
              * Shut down any running instances for this server
              */
@@ -134,12 +142,41 @@ public class OMAGServerOperationalServices
 
             /*
              * Ready to start services
-             * Initialize the open metadata repository services first since the access services depend on it/.
+             *
+             * First verify that there are services configured.
              */
-            RepositoryServicesConfig repositoryServicesConfig = configuration.getRepositoryServicesConfig();
+            RepositoryServicesConfig  repositoryServicesConfig  = configuration.getRepositoryServicesConfig();
+            List<AccessServiceConfig> accessServiceConfigList   = configuration.getAccessServicesConfig();
+            DiscoveryEngineConfig     discoveryEngineConfig     = configuration.getDiscoveryEngineConfig();
+            SecuritySyncConfig        securitySyncConfig        = configuration.getSecuritySyncConfig();
+            StewardshipServicesConfig stewardshipServicesConfig = configuration.getStewardshipServicesConfig();
 
+            if ((repositoryServicesConfig == null) &&
+                (accessServiceConfigList == null) &&
+                (discoveryEngineConfig == null) &&
+                (securitySyncConfig == null) &&
+                (stewardshipServicesConfig == null))
+            {
+                OMAGErrorCode errorCode    = OMAGErrorCode.EMPTY_CONFIGURATION;
+                String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+
+                throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                          this.getClass().getName(),
+                                                          methodName,
+                                                          errorMessage,
+                                                          errorCode.getSystemAction(),
+                                                          errorCode.getUserAction());
+            }
+
+            /*
+             * Initialize the open metadata repository services first since other services depend on it.
+             * (Even the governance daemons need the audit log.)
+             */
             if (repositoryServicesConfig == null)
             {
+                /*
+                 * To get here, then another service is configured but not the repository services.
+                 */
                 OMAGErrorCode errorCode    = OMAGErrorCode.NULL_REPOSITORY_CONFIG;
                 String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
 
@@ -157,6 +194,7 @@ public class OMAGServerOperationalServices
                                                                         configuration.getLocalServerUserId(),
                                                                         configuration.getLocalServerURL(),
                                                                         configuration.getMaxPageSize());
+            activatedServiceList.add(REPOSITORY_SERVICES);
 
             /*
              * Save the instance of the OMRS and then initialize it.  The initialization will optionally set up the
@@ -175,7 +213,6 @@ public class OMAGServerOperationalServices
              * document.  The admin object then does the rest.  The admin objects are stored in the instance since
              * they also need to be called for shutdown.
              */
-            List<AccessServiceConfig> accessServiceConfigList  = configuration.getAccessServicesConfig();
             OMRSTopicConnector        enterpriseTopicConnector = operationalRepositoryServices.getEnterpriseOMRSTopicConnector();
 
             if (accessServiceConfigList != null)
@@ -202,6 +239,7 @@ public class OMAGServerOperationalServices
                                                                                                         accessServiceConfig.getAccessServiceWiki()),
                                                               configuration.getLocalServerUserId());
                                 operationalAccessServiceAdminList.add(accessServiceAdmin);
+                                activatedServiceList.add(accessServiceConfig.getAccessServiceName() + " OMAS");
                             }
                             catch (Throwable  error)
                             {
@@ -245,24 +283,6 @@ public class OMAGServerOperationalServices
             instance.setOperationalAccessServiceAdminList(operationalAccessServiceAdminList);
             instanceMap.setNewInstance(serverName, instance);
 
-            /*Initialize the Security Sync component*/
-            SecuritySyncConfig securitySyncConfig = configuration.getSecuritySyncConfig();
-            if(securitySyncConfig != null)
-            {
-                operationalSecuritySync = new SecuritySyncOperationalServices(configuration.getLocalServerName(),
-                                                                            configuration.getLocalServerType(),
-                                                                            configuration.getOrganizationName(),
-                                                                            configuration.getLocalServerUserId(),
-                                                                            configuration.getLocalServerURL(),
-                                                                            configuration.getMaxPageSize());
-                instance.setSecuritySyncOperationalServices(operationalSecuritySync);
-                operationalSecuritySync.initialize(securitySyncConfig,
-                                                   operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(securitySyncConfig.getSecuritySyncName()),
-                                                   operationalRepositoryServices.getAuditLog(securitySyncConfig.getSecuritySyncId(),
-                                                                                            securitySyncConfig.getSecuritySyncName(),
-                                                                                            securitySyncConfig.getSecuritySyncDescription(),
-                                                                                            securitySyncConfig.getSecuritySyncWiki()));
-            }
 
             /*
              * The enterprise topic passes OMRS Events from the cohort to the listening access services.
@@ -289,6 +309,35 @@ public class OMAGServerOperationalServices
                                                               errorCode.getUserAction());
                 }
             }
+
+            /*
+             * Now start the Governance Daemons.
+             */
+
+            /*
+             * Initialize the Security Sync Services.  This is a governance daemon for maintaining the configuration
+             * in security oriented governance engines.
+             */
+            if (securitySyncConfig != null)
+            {
+                operationalSecuritySync = new SecuritySyncOperationalServices(configuration.getLocalServerName(),
+                                                                              configuration.getLocalServerType(),
+                                                                              configuration.getOrganizationName(),
+                                                                              configuration.getLocalServerUserId(),
+                                                                              configuration.getLocalServerURL(),
+                                                                              configuration.getMaxPageSize());
+                instance.setSecuritySyncOperationalServices(operationalSecuritySync);
+                operationalSecuritySync.initialize(securitySyncConfig,
+                                                   operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(securitySyncConfig.getSecuritySyncName()),
+                                                   operationalRepositoryServices.getAuditLog(securitySyncConfig.getSecuritySyncId(),
+                                                                                             securitySyncConfig.getSecuritySyncName(),
+                                                                                             securitySyncConfig.getSecuritySyncDescription(),
+                                                                                             securitySyncConfig.getSecuritySyncWiki()));
+
+                activatedServiceList.add(SECURITY_SYNC_SERVICES);
+            }
+
+            response.setSuccessMessage(new Date().toString() + " " + serverName + " is running the following services: " + activatedServiceList.toString());
         }
         catch (OMAGInvalidParameterException  error)
         {
@@ -442,11 +491,11 @@ public class OMAGServerOperationalServices
 
 
     /*
+     * =============================================================
      * Services on running instances
      */
 
     /*
-     * =============================================================
      * Query current configuration
      */
 
@@ -563,5 +612,4 @@ public class OMAGServerOperationalServices
 
         }
     }
-
 }
