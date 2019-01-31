@@ -24,9 +24,9 @@ The name of the files is determined by the release level of the code that you
 [downloaded from GitHub](task-downloading-egeria-source.md).  In this example,
 the release is `egeria-0.3-SNAPSHOT`.
 
-Create a directory for the OMAG Server and copy the tar file into it.
-The two commands shown below create a directory at the same level in the
-file system as the `egeria` build library and then copies the omag server into it.
+Create a directory for the install and copy the tar file into it.
+The two commands shown below create an install directory at the same level in the
+file system as the `egeria` build library and then copies the egeria distribution file into it.
 
 ```bash
 
@@ -65,11 +65,13 @@ NOTICE			conformance-suite	user-interface
 
 ```
 
+
 Under `server` is a directory for the
 [OMAG Server](../../../open-metadata-publication/website/omag-server).
-This is the Egeria standalone server.
+This is the Egeria OMAG Server Platform used to run
+open metadata and governance services.
 
-Change to the omag server's directory.
+Change to the omag server platform's directory.
 
 ```bash
 
@@ -78,7 +80,7 @@ $ resources				server-chassis-spring-0.3-SNAPSHOT.jar
 
 ```
 
-You are now ready to [learn about the OMAG Server](../omag-server-tutorial).
+You are now ready to [learn about the OMAG Server Platform](../omag-server-tutorial).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
