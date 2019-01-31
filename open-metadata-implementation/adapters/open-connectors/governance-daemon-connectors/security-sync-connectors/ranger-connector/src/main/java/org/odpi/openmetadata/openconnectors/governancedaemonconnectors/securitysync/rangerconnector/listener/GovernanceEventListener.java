@@ -5,7 +5,6 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.security
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.governanceengine.api.events.GovernanceEngineEvent;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.processor.GovernanceEventProcessor;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,12 +12,10 @@ import org.slf4j.LoggerFactory;
 public class GovernanceEventListener implements OpenMetadataTopicListener {
 
     private static final Logger log = LoggerFactory.getLogger(GovernanceEventListener.class);
-    private OMRSAuditLog auditLog;
     private GovernanceEventProcessor securitySyncProcessor;
     private static ObjectMapper objectMapper = new ObjectMapper();
 
-    public GovernanceEventListener(OMRSAuditLog auditLog, GovernanceEventProcessor securitySyncProcessor) {
-        this.auditLog = auditLog;
+    public GovernanceEventListener(GovernanceEventProcessor securitySyncProcessor) {
         this.securitySyncProcessor = securitySyncProcessor;
     }
 
@@ -39,6 +36,7 @@ public class GovernanceEventListener implements OpenMetadataTopicListener {
                     break;
             }
         } catch (Exception e) {
+            log.error(e.getMessage());
         }
     }
 }

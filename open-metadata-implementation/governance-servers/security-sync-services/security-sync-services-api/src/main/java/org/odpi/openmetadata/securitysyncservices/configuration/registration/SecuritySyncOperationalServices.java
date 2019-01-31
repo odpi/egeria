@@ -42,13 +42,12 @@ public class SecuritySyncOperationalServices {
         this.maxPageSize = maxPageSize;
     }
 
-    public void initialize(SecuritySyncConfig securitySyncConfig, OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog)
+    public void initialize(SecuritySyncConfig securitySyncConfig, OMRSAuditLog auditLog)
     {
-
         if (securitySyncConfig != null)
         {
             RangerConnector rangerConnector = new RangerConnector();
-            rangerConnector.initialize(securitySyncConfig, enterpriseConnector, auditLog);
+            rangerConnector.initialize(securitySyncConfig, auditLog);
         }
     }
 
