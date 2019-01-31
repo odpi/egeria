@@ -59,7 +59,7 @@ public abstract class DataViewBasicOperation {
 
     private void addDataViewTable(String qualifiedNameForParent, String parentGuid, DataViewTable dataViewTable) throws InvalidParameterException, PropertyErrorException, TypeDefNotKnownException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
 
-        String qualifiedNameForDataViewTable = qualifiedNameForParent + "." + dataViewTable.getName();
+        String qualifiedNameForDataViewTable = qualifiedNameForParent + "." + dataViewTable.getId();
         InstanceProperties sectionProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataViewTable)
                 .withStringProperty(Constants.ATTRIBUTE_NAME, dataViewTable.getName())
@@ -87,7 +87,7 @@ public abstract class DataViewBasicOperation {
 
     protected EntityDetail addDataViewColumn(String parentQualifiedName, String parentGuid, DataViewColumn dataViewColumn) throws InvalidParameterException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
 
-        String qualifiedNameForColumn = parentQualifiedName + "." + dataViewColumn.getName();
+        String qualifiedNameForColumn = parentQualifiedName + "." + dataViewColumn.getId();
 
         InstanceProperties columnProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
