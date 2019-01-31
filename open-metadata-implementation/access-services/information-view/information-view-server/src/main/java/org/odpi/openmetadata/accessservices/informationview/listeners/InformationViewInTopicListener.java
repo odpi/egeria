@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.informationview.listeners;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
+import org.odpi.openmetadata.accessservices.informationview.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.informationview.events.DerivedColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.InformationViewEvent;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
@@ -28,10 +29,12 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final EntitiesCreatorHelper entitiesCreatorHelper;
     private final OMRSAuditLog auditLog;
+    private EventPublisher eventPublisher;
 
-    public InformationViewInTopicListener(EntitiesCreatorHelper entitiesCreatorHelper, OMRSAuditLog auditLog) {
+    public InformationViewInTopicListener(EntitiesCreatorHelper entitiesCreatorHelper, EventPublisher eventPublisher,  OMRSAuditLog auditLog) {
         this.entitiesCreatorHelper = entitiesCreatorHelper;
         this.auditLog = auditLog;
+        this.eventPublisher =  eventPublisher;
     }
 
     /**
@@ -199,6 +202,7 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                         Constants.INFORMATION_VIEW_OMAS_NAME,
                         new InstanceProperties());
 
+                 event.getTableSource().setTableGuid(tableEntity.getGUID());
 
                 for (DerivedColumn derivedColumn : event.getDerivedColumns()) {
 
@@ -226,6 +230,8 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                             qualifiedNameForColumn,
                             columnProperties);
 
+                    derivedColumn.setGuid(derivedColumnEntity.getGUID());
+
                     InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
                             .withStringProperty(Constants.QUERY, "")
                             .build();
@@ -251,6 +257,8 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                             new InstanceProperties());
 
                 }
+
+                eventPublisher.sendEvent(event);
             } catch (Exception e) {
                 log.error("Exception processing event from in topic", e);
                 InformationViewErrorCode auditCode = InformationViewErrorCode.PROCESS_EVENT_EXCEPTION;
@@ -264,6 +272,7 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                         auditCode.getUserAction(),
                         e);
             }
+
         }
     }
 
