@@ -4,9 +4,13 @@
 package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.DataViewCreationException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.ReportCreationException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +32,7 @@ public class DataViewHandler {
     }
 
 
-    public void createReportDataView(DataViewRequestBody requestBody) {
+    public void createDataView(DataViewRequestBody requestBody) throws DataViewCreationException {
 
         try {
             String qualifiedNameForDataView = requestBody.getEndpointAddress() + "." + requestBody.getId();
@@ -45,10 +49,10 @@ public class DataViewHandler {
 
 
             EntityDetailWrapper dataViewWrapper = entitiesCreatorHelper.createOrUpdateEntity(Constants.DATA_VIEW,
-                    qualifiedNameForDataView,
-                    dataViewProperties,
-                    null,
-                    true);
+                                                                            qualifiedNameForDataView,
+                                                                            dataViewProperties,
+                                                                            null,
+                                                                            true);
 
 
             dataViewCreator.createDataView(requestBody, dataViewWrapper.getEntityDetail());
@@ -61,14 +65,27 @@ public class DataViewHandler {
 
 
         } catch (Exception e) {
-            e.printStackTrace();
+            InformationViewErrorCode auditCode = InformationViewErrorCode.REPORT_CREATION_EXCEPTION;
+
+            auditLog.logException("processEvent",
+                    auditCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    auditCode.getFormattedErrorMessage(requestBody.toString(), e.getMessage()),
+                    "json {" + requestBody + "}",
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction(),
+                    e);
+            throw new DataViewCreationException(404,
+                    "ReportHandler",
+                    "createReport",
+                    "Unable to create data view: " + e.getMessage(),
+                    "The system is unable to process the request.",
+                    "Correct the payload submitted to request.",
+                    e,
+                    requestBody.getId());
         }
 
     }
-
-
-
-
 
 
 }

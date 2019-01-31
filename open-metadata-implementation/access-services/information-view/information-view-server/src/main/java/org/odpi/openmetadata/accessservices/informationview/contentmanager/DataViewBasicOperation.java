@@ -81,7 +81,7 @@ public abstract class DataViewBasicOperation {
 
 
         EntityDetail schemaTypeEntity = addSchemaType(qualifiedNameForDataViewTable, dataViewTableEntity, Constants.COMPLEX_SCHEMA_TYPE, null);
-        addElements(qualifiedNameForDataViewTable, schemaTypeEntity.getGUID(), dataViewTable.getElements());
+        addElements(qualifiedNameForParent, schemaTypeEntity.getGUID(), dataViewTable.getElements());
     }
 
 

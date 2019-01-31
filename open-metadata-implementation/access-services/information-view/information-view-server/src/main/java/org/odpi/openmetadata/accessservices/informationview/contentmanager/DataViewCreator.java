@@ -35,7 +35,7 @@ public class DataViewCreator extends DataViewBasicOperation{
                     complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(),
                     Constants.INFORMATION_VIEW_OMAS_NAME,
                     new InstanceProperties());
-            addElements(EntityPropertiesUtils.getStringValueForProperty(dataViewEntity.getProperties(), Constants.QUALIFIED_NAME), complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), requestBody.getElements());
+            addElements(requestBody.getEndpointAddress(), complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), requestBody.getElements());
 
 
     }
