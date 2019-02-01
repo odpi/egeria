@@ -35,7 +35,7 @@ egeria_samples_metadata_credentials:
 
 # Name of the schema under which to create the sample database
 # Defaults:
-#  - ibm-db2 => "{{ egeria_samples_credentials.db_owner | upper }}"
+#  - ibm-db2 => "{{ egeria_samples_db_credentials.owner | upper }}"
 #  - postgresql => public
 #  - mariadb => not used, can be any value
-egeria_samples_db_schema: "{{ egeria_samples_credentials.db_owner | upper }}"
+egeria_samples_db_schema: "{{ egeria_samples_db_credentials.owner | upper }}"
