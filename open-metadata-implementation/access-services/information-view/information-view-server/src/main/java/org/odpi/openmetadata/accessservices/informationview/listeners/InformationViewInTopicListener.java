@@ -17,10 +17,12 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class InformationViewInTopicListener implements OpenMetadataTopicListener {
@@ -30,11 +32,13 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
     private final EntitiesCreatorHelper entitiesCreatorHelper;
     private final OMRSAuditLog auditLog;
     private EventPublisher eventPublisher;
+    private OMRSRepositoryHelper helper;
 
-    public InformationViewInTopicListener(EntitiesCreatorHelper entitiesCreatorHelper, EventPublisher eventPublisher,  OMRSAuditLog auditLog) {
+    public InformationViewInTopicListener(EntitiesCreatorHelper entitiesCreatorHelper, EventPublisher eventPublisher, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
         this.entitiesCreatorHelper = entitiesCreatorHelper;
         this.auditLog = auditLog;
         this.eventPublisher =  eventPublisher;
+        this.helper = helper;
     }
 
     /**
@@ -187,6 +191,15 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                         .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForTable)
                         .withStringProperty(Constants.ATTRIBUTE_NAME, event.getTableSource().getTableName())
                         .build();
+
+
+
+                HashMap<String, String> prop = new HashMap<>();
+                prop.put("displayName", event.getOriginalTableSource().getTableName());
+                tableProperties = helper.addMapPropertyToInstance("", tableProperties, "additionalProperties", prop, "");
+
+
+
                 EntityDetail tableEntity = entitiesCreatorHelper.addEntity(Constants.RELATIONAL_TABLE,
                         qualifiedNameForTable,
                         tableProperties);

@@ -114,7 +114,7 @@ public class InformationViewAdmin implements AccessServiceAdmin {
         }
 
         LookupHelper lookupHelper = new LookupHelper(enterpriseConnector, entitiesCreatorHelper, auditLog);
-        DataViewHandler dataViewHandler = new DataViewHandler(entitiesCreatorHelper, auditLog);
+        DataViewHandler dataViewHandler = new DataViewHandler(entitiesCreatorHelper, enterpriseConnector.getRepositoryHelper(), auditLog);
         instance = new InformationViewServicesInstance(new ReportHandler(entitiesCreatorHelper, lookupHelper, auditLog), dataViewHandler, serverName);
 
         auditCode = InformationViewAuditCode.SERVICE_INITIALIZED;

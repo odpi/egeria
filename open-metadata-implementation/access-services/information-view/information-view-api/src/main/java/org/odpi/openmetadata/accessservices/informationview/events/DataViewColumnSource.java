@@ -52,7 +52,7 @@ public class DataViewColumnSource extends Source {
 
     @Override
     public String buildQualifiedName() {
-        return dataViewSource.getNetworkAddress() + "." + this.getId();
+        return dataViewSource.getNetworkAddress() + "." + dataViewSource.getId() + "." + this.getId();
     }
 
 }

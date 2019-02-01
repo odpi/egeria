@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.informationview.utils.EntityProperti
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -17,12 +18,15 @@ public class DataViewCreator extends DataViewBasicOperation{
 
     private static final Logger log = LoggerFactory.getLogger(DataViewCreator.class);
 
-    protected DataViewCreator(EntitiesCreatorHelper entitiesCreatorHelper, OMRSAuditLog auditLog) {
-        super(entitiesCreatorHelper, auditLog);
+    protected DataViewCreator(EntitiesCreatorHelper entitiesCreatorHelper, OMRSRepositoryHelper helper,OMRSAuditLog auditLog) {
+        super(entitiesCreatorHelper, helper, auditLog);
     }
 
-        public void createDataView(DataViewRequestBody requestBody, EntityDetail dataViewEntity) throws Exception {
-            String qualifiedNameForComplexSchemaType = EntityPropertiesUtils.getStringValueForProperty(dataViewEntity.getProperties(), Constants.QUALIFIED_NAME) + Constants.TYPE_SUFFIX;
+
+
+    public void createDataView(DataViewRequestBody requestBody, EntityDetail dataViewEntity) throws Exception {
+            String qualifiedNameForDataView = EntityPropertiesUtils.getStringValueForProperty(dataViewEntity.getProperties(), Constants.QUALIFIED_NAME);
+            String qualifiedNameForComplexSchemaType = qualifiedNameForDataView + Constants.TYPE_SUFFIX;
             InstanceProperties complexSchemaTypeProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
                     .build();
@@ -35,7 +39,7 @@ public class DataViewCreator extends DataViewBasicOperation{
                     complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(),
                     Constants.INFORMATION_VIEW_OMAS_NAME,
                     new InstanceProperties());
-            addElements(requestBody.getEndpointAddress(), complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), requestBody.getElements());
+            addElements(qualifiedNameForDataView, complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), requestBody.getElements());
 
 
     }
