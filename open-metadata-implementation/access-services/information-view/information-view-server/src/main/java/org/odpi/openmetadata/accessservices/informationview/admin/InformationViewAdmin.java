@@ -104,7 +104,8 @@ public class InformationViewAdmin implements AccessServiceAdmin {
 
 
         if (informationViewInTopicConnector != null) {
-            OpenMetadataTopicListener informationViewInTopicListener = new InformationViewInTopicListener(entitiesCreatorHelper, eventPublisher, auditLog);
+            OpenMetadataTopicListener informationViewInTopicListener = new InformationViewInTopicListener(entitiesCreatorHelper, eventPublisher, enterpriseConnector.getRepositoryHelper(),
+                    auditLog);
             this.informationViewInTopicConnector.registerListener(informationViewInTopicListener);
             startConnector(InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_IN_TOPIC, actionDescription, inTopicName, informationViewInTopicConnector);
         }
