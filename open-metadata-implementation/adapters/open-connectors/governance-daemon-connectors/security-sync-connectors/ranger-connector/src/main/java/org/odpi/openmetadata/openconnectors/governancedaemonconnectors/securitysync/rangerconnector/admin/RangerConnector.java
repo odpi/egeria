@@ -1,6 +1,6 @@
    /* SPDX-License-Identifier: Apache-2.0 */
    /* Copyright Contributors to the ODPi Egeria project. */
-    package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.admin;
+   package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.admin;
 
     import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
     import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -13,7 +13,6 @@
     import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
     import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
     import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
-    import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
     import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
     import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
     import org.slf4j.Logger;
@@ -23,11 +22,11 @@
 
         private static final Logger log = LoggerFactory.getLogger(RangerConnector.class);
 
-        public void initialize(SecuritySyncConfig securitySyncConfig, OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog){
+        public void initialize(SecuritySyncConfig securitySyncConfig, OMRSAuditLog auditLog){
             GovernanceEventProcessor governanceEventProcessor = new GovernanceEventProcessor(securitySyncConfig, auditLog);
 
             OpenMetadataTopicConnector inTopic = getTopicConnector(securitySyncConfig.getSecuritySyncInTopic(), auditLog);
-            OpenMetadataTopicListener governanceEventListener = new GovernanceEventListener(auditLog, governanceEventProcessor);
+            OpenMetadataTopicListener governanceEventListener = new GovernanceEventListener(governanceEventProcessor);
             inTopic.registerListener(governanceEventListener);
 
             RangerConnectorAuditCode auditCode = RangerConnectorAuditCode.SERVICE_INITIALIZED;
@@ -59,12 +58,9 @@
                 topicConnector.setAuditLog(auditLog);
 
                 return topicConnector;
-            } catch (Throwable error) {
+            } catch (Exception error) {
                 String methodName = "getTopicConnector";
-
-                if (log.isDebugEnabled()) {
-                    log.debug("Unable to create topic connector: " + error.toString());
-                }
+                log.debug("Unable to create topic connector: " + error.toString());
 
                 OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
                 String errorMessage = errorCode.getErrorMessageId()
@@ -82,7 +78,6 @@
         }
 
         private void startTopic(OpenMetadataTopicConnector topic) {
-
             try {
                 topic.start();
             } catch (ConnectorCheckedException e) {
