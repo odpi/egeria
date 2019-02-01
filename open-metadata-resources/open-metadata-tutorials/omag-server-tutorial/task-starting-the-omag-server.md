@@ -1,59 +1,74 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Starting the OMAG Server
+# Starting the OMAG Server Platform
 
-The [OMAG Server's installation directory](../building-egeria-tutorial/task-installing-egeria.md)
-contains a Java Archive (Jar) file for the server and a directory of resources.
+The [OMAG Server Platform's installation directory](../building-egeria-tutorial/task-installing-egeria.md)
+contains a Java Archive (Jar) file for the server platform itself along with a directory of resources.
 
 ```bash
+
 $ ls
 resources				server-chassis-spring-0.3-SNAPSHOT.jar
+
 ```
 The name of the Java Archive (Jar) file will
 depend on the release of ODPi Egeria that you have installed.  
 In this example, the release is `0.3-SNAPSHOT`.
 
-The OMAG server is started with the `java` command.
+The OMAG server platform is started with the `java` command.
 Ensure you have a Java runtime at Version 8 (Update 151) or above installed on your machine.
 Check the version of Java you have with the command `java -version`
 (You can download Java from [AdoptOpenJDK](https://adoptopenjdk.net/) and select `OpenJDK 8 (LTS)`
 and the `HotSpot` version for your operating system.
 You only need the JRE but select the JDK if you expect to also write some Java code.)
 
-Start the OMAG Server as follows 
+Start the OMAG server platform as follows:
 
 ```bash
+
 $ java -jar server*
+
 ```
-The server first displays this banner and then initializes itself.
+The OMAG server platform first displays this banner and then initializes itself.
 
 ```bash
-ODPi Egeria
-        ____     __  ___    ___    ______          _____
-       / __ \   /  |/  /   /   |  / ____/         / ___/  ___    _____ _   __  ___    _____
-      / / / /  / /|_/ /   / /| | / / __           \__ \  / _ \  / ___/| | / / / _ \  / ___/
-     / /_/ /  / /  / /   / ___ |/ /_/ /          ___/ / /  __/ / /    | |/ / /  __/ / /
-     \____/  /_/  /_/   /_/  |_|\____/          /____/  \___/ /_/     |___/  \___/ /_/
 
- :: Powered by Spring Boot (v2.1.2.RELEASE) ::
+ ODPi Egeria
+    ____   __  ___ ___    ______   _____                                 ____   _         _     ___
+   / __ \ /  |/  //   |  / ____/  / ___/ ___   ____ _   __ ___   ____   / _  \ / / __    / /  / _ /__   ____ _  _
+  / / / // /|_/ // /| | / / __    \__ \ / _ \ / __/| | / // _ \ / __/  / /_/ // //   |  / _\ / /_ /  | /  _// || |
+ / /_/ // /  / // ___ |/ /_/ /   ___/ //  __// /   | |/ //  __// /    /  __ // // /  \ / /_ /  _// / // /  / / / /
+ \____//_/  /_//_/  |_|\____/   /____/ \___//_/    |___/ \___//_/    /_/    /_/ \__/\//___//_/   \__//_/  /_/ /_/
 
+ :: Powered by Spring Boot (v2.1.2.RELEASE) :: 
 
 ```
-When the initialization is complete, you will see this message
+When the initialization is complete, you will see this message:
 
 ```bash
-Thu Jan 31 13:15:26 GMT 2019 OMAG Server ready for configuration
+
+Thu Jan 31 13:15:26 GMT 2019 OMAG server platform ready for configuration
+
 ```
 
-The server at this point is an empty shell (we call it the server chassis because it
-provides the platform to run the open metadata and governance services).
+This means your OMAG Server Platform is running.  Try the following command:
 
-Services are initialized by passing it a configuration document.
+```bash
+$ curl -X GET http://localhost:8080/open-metadata/admin-services/users/test/server-origin
+ODPi Egeria OMAG Server Platform
+$
+```
+
+This calls the OMAG server platform using a REST API call.  The response `ODPi Egeria OMAG Server Platform`
+means the command communicated with a running OMAG server platform instance.
+
+The OMAG Server Platform at this point is an empty shell.
+The open metadata and governance services are started on the server platform
+using a `configuration document`.
 
 Understanding how to create a configuration document
 [is the next task in this tutorial](task-creating-configuration-documents.md).
-
 
 
 ----

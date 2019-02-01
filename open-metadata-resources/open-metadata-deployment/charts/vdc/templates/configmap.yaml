@@ -24,3 +24,12 @@ data:
         IGC_PASSWORD: isadmin
         STRICT_SSL: "false"
         LOGGING_LEVEL_ROOT: INFO
+        POSTGRESQL_SERVER: {{ include "myapp.fullname" . }}-postgresql-service.default.svc.cluster.local
+        POSTGRESQL_SERVICE_PORT: "5432"
+        POSTGRESQL_OS_USER: root
+        POSTGRESQL_OS_PASS: passw0rd
+        IGC_SERVER: 158.176.66.119
+        IGC_SERVICE_PORT: "9446"
+        IGC_OS_USER: ibm
+        IGC_OS_PASS: letme1n2
+        POSTGRESQL_PASSWORD: passw0rd
