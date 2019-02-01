@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model;
 
 import java.util.Map;
+import java.util.Objects;
 
 public class RangerTag {
 
@@ -95,6 +96,20 @@ public class RangerTag {
 
     public void setOptions(Map<String, Object> options) {
         this.options = options;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RangerTag rangerTag = (RangerTag) o;
+        return guid.equals(rangerTag.guid) &&
+                type.equals(rangerTag.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(guid, type);
     }
 
     @Override
