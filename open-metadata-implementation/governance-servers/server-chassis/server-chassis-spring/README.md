@@ -3,22 +3,28 @@
 
 # Server Chassis for Spring
 
-The server chassis provides an "empty" server platform to host the open metadata
+The server chassis provides the base server framework to host the open metadata
 services in the [OMAG Server Platform](../../../../open-metadata-publication/website/omag-server).  
 
-The `server-chassis-spring` provides the server chassis called
-`OMAGApplication` that uses Spring Boot.
+The `server-chassis-spring` module provides the implementation of the server chassis.
+Its `main()` method is located in a Java class called
+`OMAGServerPlatform` that uses [Spring Boot](https://spring.io/projects/spring-boot)
+for the server framework.
 
-When the `OMAGApplication` is started, it does a component scan for all spring
-services that are in package `org.odpi.openmetadata/*` and that are visible
-to this module.
+When the `OMAGServerPlatform` is started, Spring Boot does a component scan for all Spring
+services that are in Java packages stemming from `org.odpi.openmetadata/*`
+and that are visible to this module.
 
-To make a new package visible to `OMAGApplication`, add its spring package
-to the `pom.xml` file for this package.  For example, this is the
-snippet that adds the
-[Connected Asset OMAS](../../../access-services/connected-asset) services to `OMAGApplication`:
+To make a new Java package visible to `OMAGServerPlatform`, add its `spring` package
+to the `pom.xml` file for `server-chassis-spring`.
+
+
+For example, this is the snippet on XML in the pom.xml file that adds the
+[Connected Asset OMAS](../../../access-services/connected-asset) services
+to the OMAG server platform.
 
 ```xml
+
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>connected-asset-spring</artifactId>
@@ -27,9 +33,10 @@ snippet that adds the
 
 ```
 
-When the OMAG Server Platform is first started, the 
-None of the services are activated at this point and will each give an
-error response if called.
+When the OMAG server platform is first started, the REST APIs
+are defined for its endpoint.
+However, only the [Administration Services](../../admin-services) are activated at this point.
+The other services will each give an error response if called.
 
 To activate these services, it is necessary to use the
 admin services
@@ -38,7 +45,7 @@ how the services should be configured.
 
 Setting up the configuration document is a one-time activity.
 Once it is in place it is possible to activate and deactivate the
-services in the OMAGApplication many times over multiple server restarts.
+services in the OMAGServerPlatform many times over multiple server restarts.
 
 Details of how to set up the configuration document, and activate/deactivate
 the open metadata services can be found in [admin-services](../../admin-services/README.md).

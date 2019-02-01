@@ -25,14 +25,14 @@ import java.util.Date;
 @ComponentScan({"org.odpi.openmetadata.*"})
 @EnableSwagger2
 @Configuration
-public class OMAGApplication
+public class OMAGServerPlatform
 {
     @Value("${strict.ssl}")
     Boolean strictSSL;
 
     public static void main(String[] args)
     {
-        SpringApplication.run(OMAGApplication.class, args);
+        SpringApplication.run(OMAGServerPlatform.class, args);
     }
 
     @Bean
