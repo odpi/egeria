@@ -36,6 +36,7 @@ public class DataViewHandler {
 
     public void createDataView(DataViewRequestBody requestBody) throws DataViewCreationException {
 
+        log.info("Creating data view based on payload {}", requestBody);
         try {
             String qualifiedNameForDataView = requestBody.getEndpointAddress() + "." + requestBody.getId();
             InstanceProperties dataViewProperties = new EntityPropertiesBuilder()

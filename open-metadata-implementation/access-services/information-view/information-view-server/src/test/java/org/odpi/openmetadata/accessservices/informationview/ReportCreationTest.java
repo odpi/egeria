@@ -9,9 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportHandler;
-import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
-import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
-import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
+import org.odpi.openmetadata.accessservices.informationview.events.*;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
@@ -41,7 +39,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -225,7 +222,7 @@ public class ReportCreationTest {
         ReportRequestBody request = OBJECT_MAPPER.readValue(payload, ReportRequestBody.class);
         ReportColumn column = new ReportColumn();
         column.setName("test_column");
-        column.setSources(Collections.singletonList(request.getSources().get(0)));
+        column.setSources(((ReportColumn)((ReportSection)((ReportSection)request.getReportElements().get(0)).getElements().get(0)).getElements().get(0)).getSources());
         ((ReportSection)request.getReportElements().get(0)).getElements().add(column);
         reportHandler.submitReportModel(request);
         EntityDetail reportEntity = entitiesCreatorHelper.getEntity(Constants.DEPLOYED_REPORT, "powerbi-server.report_number_35");
