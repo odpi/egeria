@@ -5,18 +5,18 @@
 - name: copy data load scripts
   template:
     src: "database/ibm-db2/load{{ item }}.sql"
-    dest: "/home/{{ egeria_samples_credentials.db_owner }}/load{{ item }}.sql"
-  become_user: "{{ egeria_samples_credentials.db_owner }}"
+    dest: "/home/{{ egeria_samples_db_credentials.owner }}/load{{ item }}.sql"
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
   become: yes
   with_items: "{{ egeria_samples_cocopharma_databases }}"
 
 - name: load sample data to database
   shell: >
     source ~/.bashrc &&
-    db2 -td@ -f /home/{{ egeria_samples_credentials.db_owner }}/load{{ item }}.sql
+    db2 -td@ -f /home/{{ egeria_samples_db_credentials.owner }}/load{{ item }}.sql
   args:
     executable: /bin/bash
-  become_user: "{{ egeria_samples_credentials.db_owner }}"
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
   become: yes
   with_items: "{{ egeria_samples_cocopharma_databases }}"
   register: __db2_load_result
