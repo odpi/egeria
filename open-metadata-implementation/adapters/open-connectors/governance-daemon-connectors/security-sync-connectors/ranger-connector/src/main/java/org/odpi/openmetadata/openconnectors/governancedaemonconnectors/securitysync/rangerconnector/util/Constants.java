@@ -20,4 +20,3 @@ public class Constants {
     public static final String SERVICE_TAGS_TAG_RESOURCE_MAPS = "{0}/service/tags/tagresourcemaps";
     public static final String GOVERNED_ASSETS = "{0}/assets?classification={0}";
 }
-
