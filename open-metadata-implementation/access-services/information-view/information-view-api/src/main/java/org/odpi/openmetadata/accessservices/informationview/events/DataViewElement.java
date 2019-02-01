@@ -72,7 +72,7 @@ public class DataViewElement {
 
     @Override
     public String toString() {
-        return "DataViewElement{" +
+        return "{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", nativeClass='" + nativeClass + '\'' +

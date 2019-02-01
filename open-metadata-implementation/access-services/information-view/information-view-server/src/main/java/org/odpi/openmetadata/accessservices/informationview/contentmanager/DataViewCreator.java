@@ -31,7 +31,7 @@ public class DataViewCreator extends DataViewBasicOperation{
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
                     .build();
             EntityDetailWrapper complexSchemaTypeEntityWrapper = entitiesCreatorHelper.createOrUpdateEntity(Constants.COMPLEX_SCHEMA_TYPE,
-                    qualifiedNameForComplexSchemaType, complexSchemaTypeProperties, null, true);
+                    qualifiedNameForComplexSchemaType, complexSchemaTypeProperties, null, false);
 
             log.debug("Created data view schema type {}", complexSchemaTypeEntityWrapper.getEntityDetail().getGUID());
             entitiesCreatorHelper.addRelationship(Constants.ASSET_SCHEMA_TYPE,
