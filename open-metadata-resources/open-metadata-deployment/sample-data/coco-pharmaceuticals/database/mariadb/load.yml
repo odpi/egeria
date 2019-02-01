@@ -6,7 +6,7 @@
   template:
     src: "database/mariadb/load{{ item }}.sql"
     dest: "/tmp/load{{ item }}.sql"
-  become_user: "{{ egeria_samples_credentials.db_owner }}"
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
   become: yes
   with_items: "{{ egeria_samples_cocopharma_databases }}"
 
@@ -14,6 +14,6 @@
   shell: mysql -u root < /tmp/load{{ item }}.sql
   args:
     executable: /bin/bash
-  become_user: "{{ egeria_samples_credentials.db_owner }}"
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
   become: yes
   with_items: "{{ egeria_samples_cocopharma_databases }}"
