@@ -84,6 +84,7 @@ The integration options are described as five patterns
 ([native, caller, adapter, plug-in, special](open-metadata-integration-patterns/README.md)).
 
 
+# Additional contributions by the ODPi Community
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

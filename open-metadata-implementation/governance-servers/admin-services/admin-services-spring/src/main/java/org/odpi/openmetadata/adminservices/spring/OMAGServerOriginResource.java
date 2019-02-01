@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  * discover the type of the server.
  */
 @RestController
-@RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
+@RequestMapping("/open-metadata/admin-services/users/{userId}")
 public class OMAGServerOriginResource
 {
     OMAGServerOriginServices   originAPI = new OMAGServerOriginServices();
@@ -25,11 +25,24 @@ public class OMAGServerOriginResource
      * @param serverName name of the server that the request is for
      * @return String description
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/server-origin")
+    @RequestMapping(method = RequestMethod.GET, path = "/servers/{serverName}/server-origin")
+    @Deprecated
     public String getServerOrigin(@PathVariable String   userId,
                                   @PathVariable String   serverName)
     {
-        return originAPI.getServerOrigin(userId, serverName);
+        return originAPI.getServerOrigin(userId);
+    }
+
+    /**
+     * Return the origin of this server implementation.
+     *
+     * @param userId name of the user making the request
+     * @return String description
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/server-origin")
+    public String getServerOrigin(@PathVariable String   userId)
+    {
+        return originAPI.getServerOrigin(userId);
     }
 
 }

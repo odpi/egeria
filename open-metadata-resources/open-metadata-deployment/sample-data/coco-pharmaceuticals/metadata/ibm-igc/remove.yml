@@ -299,7 +299,7 @@
   args:
     executable: /bin/bash
   become: yes
-  become_user: "{{ egeria_samples_credentials.db_owner }}"
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
   when: >
     ('ibm-information-server-engine' in group_names)
     and (egeria_samples_cocopharma_db_type == 'ibm-db2')

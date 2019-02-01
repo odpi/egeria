@@ -10,5 +10,5 @@
   args:
     executable: /bin/bash
   become: yes
-  become_user: "{{ egeria_samples_credentials.db_owner }}"
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
   with_items: "{{ egeria_samples_cocopharma_databases }}"
