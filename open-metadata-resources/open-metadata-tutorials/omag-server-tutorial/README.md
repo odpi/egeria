@@ -21,17 +21,19 @@ At the end of this tutorial you will be able to perform the following tasks.
 ## Prerequisite tasks
 
 * [Download and build ODPi Egeria](../building-egeria-tutorial)
+* [Familiarize yourself with the Postman test tool](task-working-with-postman.md)
 
 ## Tutorial Tasks
 
-1. [Starting the OMAG Server](task-starting-the-omag-server.md)
+1. [Starting the OMAG Server Platform](task-starting-the-omag-server.md)
 2. [Creating configuration documents](task-creating-configuration-documents.md)
-3. [Configuring the OMAG Server](task-configuring-omag-server.md)
-4. [Calling the OMAG Server's APIs](task-calling-omag-apis.md)
+3. [Configuring the OMAG Server Platform](task-configuring-omag-server.md)
+4. [Calling the OMAG Server Platform's APIs](task-calling-omag-apis.md)
 
 # Digging Deeper
 
-* [Running the samples](../../open-metadata-samples)
+* [Changing the OMAG Server Platform's network address](task-changing-the-omag-server-network-address.md)
+* [Running the ODPi Egeria samples](../../open-metadata-samples)
 to understand more about the different ODPi Egeria APIs.
 * [Calling the clients from Java](../omag-client-tutorial)
 to understand how to call Egeria APIs from your code.
