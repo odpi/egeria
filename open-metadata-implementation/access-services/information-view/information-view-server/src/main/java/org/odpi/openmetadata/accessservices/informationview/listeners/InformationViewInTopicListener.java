@@ -194,11 +194,12 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
 
 
 
-                HashMap<String, String> prop = new HashMap<>();
-                prop.put("displayName", event.getOriginalTableSource().getTableName());
-                tableProperties = helper.addMapPropertyToInstance("", tableProperties, "additionalProperties", prop, "");
+                if(event.getOriginalTableSource() != null) {
+                    HashMap<String, String> prop = new HashMap<>();
+                    prop.put("displayName", event.getOriginalTableSource().getTableName());
+                    tableProperties = helper.addMapPropertyToInstance("", tableProperties, "additionalProperties", prop, "");
 
-
+                }
 
                 EntityDetail tableEntity = entitiesCreatorHelper.addEntity(Constants.RELATIONAL_TABLE,
                         qualifiedNameForTable,
