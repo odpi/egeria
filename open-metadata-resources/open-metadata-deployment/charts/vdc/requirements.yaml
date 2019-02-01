@@ -7,6 +7,3 @@ dependencies:
   - name: openldap
     version: 0.3.0
     repository: https://kubernetes-charts.storage.googleapis.com/
-  - name: postgresql
-    version: 3.9.2
-    repository: https://kubernetes-charts.storage.googleapis.com/
