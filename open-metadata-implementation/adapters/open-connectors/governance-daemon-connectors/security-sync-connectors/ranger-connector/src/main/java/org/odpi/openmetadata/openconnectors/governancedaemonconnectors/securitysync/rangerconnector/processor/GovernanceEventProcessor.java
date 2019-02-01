@@ -40,7 +40,7 @@ public class GovernanceEventProcessor {
     }
 
     public void processExistingGovernedAssetsFromRepository() {
-
+        logProcessing("processExistingGovernedAssetsFromRepository", RangerConnectorAuditCode.CLASSIFIED_GOVERNED_ASSET_INITIAL_LOAD);
         List<GovernedAsset> governedAssets = getGovernedAssets().getGovernedAssetList();
 
         Map<RangerTag, Set<RangerServiceResource>> tagResourcesMap = new HashMap<>();
@@ -56,7 +56,7 @@ public class GovernanceEventProcessor {
                 continue;
             }
 
-            RangerTag rangerTag = getRangerTag(governedAsset, rangerTagMap, tags,tagIndex++);
+            RangerTag rangerTag = getRangerTag(governedAsset, rangerTagMap, tags, tagIndex++);
 
             List<RangerServiceResource> rangerServiceResources = getRangerServiceResources(resourceIndex++, governedAsset);
             if (tagResourcesMap.containsKey(rangerTag)) {
@@ -83,10 +83,10 @@ public class GovernanceEventProcessor {
 
             for (Map.Entry<RangerTag, Set<RangerServiceResource>> rangerTagSetEntry : tagResourcesMap.entrySet()) {
 
-                if(rangerTagSetEntry.getValue().contains((resource))){
+                if (rangerTagSetEntry.getValue().contains((resource))) {
                     RangerTag rangerTagForResource = rangerTagSetEntry.getKey();
                     for (Map.Entry<Long, RangerTag> rangerTagId : tags.entrySet()) {
-                        if(rangerTagId.getValue().equals(rangerTagForResource)){
+                        if (rangerTagId.getValue().equals(rangerTagForResource)) {
                             resourceToTagIds.put(resource.getId(), Collections.singletonList(rangerTagId.getKey()));
                         }
                     }
@@ -99,14 +99,14 @@ public class GovernanceEventProcessor {
     }
 
     public void processClassifiedGovernedAssetEvent(GovernedAsset governedAsset) {
-        logProcessing("processClassifiedGovernedAssetEvent", RangerConnectorAuditCode.CLASSIFIED_GOVERNED_ASSET_EVENT_REVEICED);
+        logProcessing("processClassifiedGovernedAssetEvent", RangerConnectorAuditCode.CLASSIFIED_GOVERNED_ASSET_EVENT_RECEIVED);
 
         RangerResource rangerResource = processGovernedAsset(governedAsset);
         mapResourcesToTagsInRangerServer(rangerResource);
     }
 
     public void processReClassifiedGovernedAssetEvent(GovernedAsset governedAsset) {
-        logProcessing("processReClassifiedGovernedAssetEvent", RangerConnectorAuditCode.RE_CLASSIFIED_GOVERNED_ASSET_EVENT_REVEICED);
+        logProcessing("processReClassifiedGovernedAssetEvent", RangerConnectorAuditCode.RE_CLASSIFIED_GOVERNED_ASSET_EVENT_RECEIVED);
 
         if (governedAsset == null) {
             return;
