@@ -21,7 +21,7 @@ public class DataViewRequestBody extends InformationViewHeader{
     private List<DataViewElement> elements;
     private List<Source> sources;
     private String nativeClass;
-    private String endpointAddress;
+    private String endpointAddress = "";
     private String name;
     private String author;
     private String id;
@@ -113,7 +113,7 @@ public class DataViewRequestBody extends InformationViewHeader{
 
     @Override
     public String toString() {
-        return "DataViewRequestBody{" +
+        return "{" +
                 "elements=" + elements +
                 ", sources=" + sources +
                 ", nativeClass='" + nativeClass + '\'' +

@@ -52,7 +52,7 @@ public class DataViewColumnSource extends Source {
 
     @Override
     public String toString() {
-        return "DataViewColumnSource{" +
+        return "{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", dataViewSource=" + dataViewSource +

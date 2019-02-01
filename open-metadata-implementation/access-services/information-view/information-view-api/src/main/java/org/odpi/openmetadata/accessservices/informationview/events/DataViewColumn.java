@@ -92,7 +92,7 @@ public class DataViewColumn extends DataViewElement {
 
     @Override
     public String toString() {
-        return "DataViewColumn{" +
+        return "{" +
                 "regularAggregate='" + regularAggregate + '\'' +
                 ", usage='" + usage + '\'' +
                 ", expression='" + expression + '\'' +

@@ -27,4 +27,12 @@ public class DataViewTable extends DataViewElement {
     public void setElements(List<DataViewElement> elements) {
         this.elements = elements;
     }
+
+
+    @Override
+    public String toString() {
+        return "DataViewTable{" +
+                "elements=" + elements +
+                '}';
+    }
 }
