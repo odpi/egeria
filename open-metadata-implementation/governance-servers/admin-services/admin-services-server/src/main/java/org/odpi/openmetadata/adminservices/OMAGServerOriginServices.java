@@ -8,7 +8,7 @@ package org.odpi.openmetadata.adminservices;
  */
 public class OMAGServerOriginServices
 {
-    final String   implementationOrigin = "ODPi Egeria OMAG Server Platform";
+    final String   implementationOrigin = "ODPi Egeria OMAG Server Platform\n";
 
 
     /**
