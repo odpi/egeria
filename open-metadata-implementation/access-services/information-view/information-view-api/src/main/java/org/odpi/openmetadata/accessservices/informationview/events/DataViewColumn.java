@@ -90,4 +90,17 @@ public class DataViewColumn extends DataViewElement {
     }
 
 
+    @Override
+    public String toString() {
+        return "DataViewColumn{" +
+                "regularAggregate='" + regularAggregate + '\'' +
+                ", usage='" + usage + '\'' +
+                ", expression='" + expression + '\'' +
+                ", dataType='" + dataType + '\'' +
+                ", hidden='" + hidden + '\'' +
+                ", columnGuid='" + columnGuid + '\'' +
+                ", businessTermGuid='" + businessTermGuid + '\'' +
+                ", dataViewSource=" + dataViewSource +
+                '}';
+    }
 }

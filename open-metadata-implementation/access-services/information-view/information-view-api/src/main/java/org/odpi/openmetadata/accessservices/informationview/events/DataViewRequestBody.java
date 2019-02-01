@@ -110,4 +110,20 @@ public class DataViewRequestBody extends InformationViewHeader{
     public void setId(String id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "DataViewRequestBody{" +
+                "elements=" + elements +
+                ", sources=" + sources +
+                ", nativeClass='" + nativeClass + '\'' +
+                ", endpointAddress='" + endpointAddress + '\'' +
+                ", name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", id='" + id + '\'' +
+                ", createdTime=" + createdTime +
+                ", lastModifier='" + lastModifier + '\'' +
+                ", lastModifiedTime=" + lastModifiedTime +
+                '}';
+    }
 }

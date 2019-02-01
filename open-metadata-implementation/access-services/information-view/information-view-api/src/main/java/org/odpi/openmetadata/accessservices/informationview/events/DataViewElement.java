@@ -68,4 +68,16 @@ public class DataViewElement {
     public void setDescription(String description) {
         this.description = description;
     }
+
+
+    @Override
+    public String toString() {
+        return "DataViewElement{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", nativeClass='" + nativeClass + '\'' +
+                ", comment='" + comment + '\'' +
+                ", description='" + description + '\'' +
+                '}';
+    }
 }

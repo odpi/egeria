@@ -51,6 +51,15 @@ public class DataViewColumnSource extends Source {
     }
 
     @Override
+    public String toString() {
+        return "DataViewColumnSource{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", dataViewSource=" + dataViewSource +
+                '}';
+    }
+
+    @Override
     public String buildQualifiedName() {
         return dataViewSource.getNetworkAddress() + "." + dataViewSource.getId() + "." + this.getId();
     }
