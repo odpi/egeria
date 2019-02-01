@@ -24,13 +24,13 @@ For other operating systems there are [various choices](https://git-scm.com/book
 
 ## Tutorial tasks
 
-* [Downloading the Egeria source from GitHub](task-downloading-egeria-source.md)
-* [Building the Egeria source with Apache Maven](task-building-egeria-source.md)
-* [Installing Egeria ready for use](task-installing-egeria.md)
+1. [Downloading the Egeria source from GitHub](task-downloading-egeria-source.md)
+2. [Building the Egeria source with Apache Maven](task-building-egeria-source.md)
+3. [Installing Egeria ready for use](task-installing-egeria.md)
 
 ## What next
 
-* [Learning about Egeria's OMAG Server](../omag-server-tutorial)
+* [Learning about Egeria's OMAG Server Platform](../omag-server-tutorial)
 
 
 ----
