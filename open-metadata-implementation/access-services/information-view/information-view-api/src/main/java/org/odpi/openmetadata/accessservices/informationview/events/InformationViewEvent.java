@@ -25,6 +25,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class InformationViewEvent extends InformationViewHeader {
 
     private TableSource tableSource;
+    private TableSource originalTableSource;
     private List<DerivedColumn> derivedColumns = new ArrayList<>();
 
 
@@ -54,10 +55,19 @@ public class InformationViewEvent extends InformationViewHeader {
         this.derivedColumns = derivedColumns;
     }
 
+    public TableSource getOriginalTableSource() {
+        return originalTableSource;
+    }
+
+    public void setOriginalTableSource(TableSource originalTableSource) {
+        this.originalTableSource = originalTableSource;
+    }
+
     @Override
     public String toString() {
         return "InformationViewEvent{" +
                 "tableSource=" + tableSource +
+                ", originalTableSource=" + originalTableSource +
                 ", derivedColumns=" + derivedColumns +
                 '}';
     }

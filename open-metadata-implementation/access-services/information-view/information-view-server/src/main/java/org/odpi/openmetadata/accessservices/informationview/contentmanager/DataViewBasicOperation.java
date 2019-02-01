@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 
+import org.apache.tools.ant.taskdefs.condition.HasMethod;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewElement;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewTable;
@@ -13,26 +14,30 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
+import java.text.MessageFormat;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static javax.swing.UIManager.put;
 
 public abstract class DataViewBasicOperation {
 
 
     private static final Logger log = LoggerFactory.getLogger(DataViewBasicOperation.class);
     protected final EntitiesCreatorHelper entitiesCreatorHelper;
+    private OMRSRepositoryHelper helper;
     protected final OMRSAuditLog auditLog;
 
-    protected DataViewBasicOperation(EntitiesCreatorHelper entitiesCreatorHelper, OMRSAuditLog auditLog) {
+    protected DataViewBasicOperation(EntitiesCreatorHelper entitiesCreatorHelper, OMRSRepositoryHelper helper,  OMRSAuditLog auditLog) {
         this.entitiesCreatorHelper = entitiesCreatorHelper;
         this.auditLog = auditLog;
+        this.helper = helper;
     }
 
 
@@ -52,7 +57,8 @@ public abstract class DataViewBasicOperation {
             }
         } catch (Exception e) {
             log.error("Exception creating data view element", e);
-            throw new RuntimeException("Unable to create Data View Element", e);//TODO throw specific exception
+            String message = MessageFormat.format("Unable to create Data View Element: {0} because of {1}", element.getId(), e.getMessage());
+            throw new RuntimeException(message, e);//TODO throw specific exception
         }
     }
 
@@ -89,16 +95,27 @@ public abstract class DataViewBasicOperation {
 
         String qualifiedNameForColumn = parentQualifiedName + "." + dataViewColumn.getId();
 
+
+
+
+
+
         InstanceProperties columnProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
                 .withStringProperty(Constants.ATTRIBUTE_NAME, dataViewColumn.getName())
                 //.withStringProperty(Constants.FORMULA, dataViewColumn.getRegularAggregate())
                 .withStringProperty(Constants.DESCRIPTION, dataViewColumn.getDescription())
                 .withStringProperty(Constants.COMMENT, dataViewColumn.getComment())
-                .withStringProperty(Constants.FORMULA, dataViewColumn.getRegularAggregate())
+                .withStringProperty(Constants.FORMULA, dataViewColumn.getExpression())
                 .withStringProperty(Constants.ID, dataViewColumn.getId())
                 .withStringProperty(Constants.NATIVE_CLASS, dataViewColumn.getNativeClass())
                 .build();
+
+        HashMap<String, String> prop = new HashMap<>();
+        prop.put("regularAggregate", dataViewColumn.getRegularAggregate());
+            columnProperties = helper.addMapPropertyToInstance("", columnProperties, "additionalProperties", prop, "");
+
+
         EntityDetail dataViewColumnEntity = entitiesCreatorHelper.addEntity(Constants.DERIVED_DATA_VIEW_SCHEMA_ATTRIBUTE,
                 qualifiedNameForColumn,
                 columnProperties);
@@ -168,15 +185,13 @@ public abstract class DataViewBasicOperation {
         InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUERY, "")
                 .build();
-        try {
+
             entitiesCreatorHelper.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
                     derivedColumnEntity.getGUID(),
                     sourceColumnGUID,
                     Constants.INFORMATION_VIEW_OMAS_NAME,
                     schemaQueryImplProperties);
-        } catch (Exception e) {
-            log.error("Exception linking source column", e);
-        }
+
 
     }
 

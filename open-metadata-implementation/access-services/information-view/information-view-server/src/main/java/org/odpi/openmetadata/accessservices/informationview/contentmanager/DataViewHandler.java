@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.informationview.utils.EntityProperti
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,10 +26,11 @@ public class DataViewHandler {
     private DataViewUpdater dataViewUpdater;
 
 
-    public DataViewHandler(EntitiesCreatorHelper entitiesCreatorHelper, OMRSAuditLog auditLog) {
+    public DataViewHandler(EntitiesCreatorHelper entitiesCreatorHelper, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
         this.entitiesCreatorHelper = entitiesCreatorHelper;
-        dataViewCreator = new DataViewCreator(entitiesCreatorHelper, auditLog);
-        dataViewUpdater = new DataViewUpdater(entitiesCreatorHelper, auditLog);
+        dataViewCreator = new DataViewCreator(entitiesCreatorHelper, helper, auditLog);
+        dataViewUpdater = new DataViewUpdater(entitiesCreatorHelper, helper, auditLog);
+        this.auditLog = auditLog;
     }
 
 

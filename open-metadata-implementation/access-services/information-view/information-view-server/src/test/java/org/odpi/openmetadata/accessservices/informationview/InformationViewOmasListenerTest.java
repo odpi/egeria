@@ -140,7 +140,7 @@ public class InformationViewOmasListenerTest {
         MockitoAnnotations.initMocks(this);
 
         EntitiesCreatorHelper entitiesCreatorHelper = new EntitiesCreatorHelper(enterpriseConnector, auditLog);
-        listener = new InformationViewInTopicListener(entitiesCreatorHelper, eventPublisher, auditLog);
+        listener = new InformationViewInTopicListener(entitiesCreatorHelper, eventPublisher,enterpriseConnector.getRepositoryHelper(), auditLog);
         when(enterpriseConnector.getMetadataCollection()).thenReturn(omrsMetadataCollection);
         when(enterpriseConnector.getRepositoryHelper()).thenReturn(helper);
 

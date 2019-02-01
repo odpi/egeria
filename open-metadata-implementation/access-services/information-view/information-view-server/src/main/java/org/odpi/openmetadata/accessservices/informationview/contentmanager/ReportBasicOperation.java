@@ -169,7 +169,9 @@ public abstract class ReportBasicOperation {
                                                     schemaQueryImplProperties);
 
             } else {
-                log.error( MessageFormat.format("source column not found, unable to add relationship between column {0} and source {1}", reportColumn.getName(), source.toString()));
+                String message = MessageFormat.format("source column not found, unable to add relationship between column {0} and source {1}", reportColumn.getName(), source.toString());
+                log.error(message);
+                throw new RuntimeException(message);
             }
         }
     }

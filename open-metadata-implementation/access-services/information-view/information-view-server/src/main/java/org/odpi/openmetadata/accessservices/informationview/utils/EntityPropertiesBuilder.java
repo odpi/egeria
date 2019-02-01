@@ -5,6 +5,11 @@ package org.odpi.openmetadata.accessservices.informationview.utils;
 
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.MapPropertyValue;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class EntityPropertiesBuilder {
 
@@ -52,6 +57,47 @@ public class EntityPropertiesBuilder {
         instanceProperties.setProperty(key, EntityPropertiesUtils.createPrimitiveDatePropertyValue(timestamp));
         return this;
     }
+
+
+//
+//    public InstanceProperties withMapPropertyToInstance(String              propertyName,
+//                                                       Map<String, String> mapValues)
+//    {
+//
+//
+//            if ((mapValues != null) && (! mapValues.isEmpty()))
+//            {
+//
+//
+//                /*
+//                 * The values of a map property are stored as an embedded InstanceProperties object.
+//                 */
+//                .addPropertyMapToInstance(sourceName,
+//                        null,
+//                        propertyName,
+//                        mapValues,
+//                        methodName);
+//
+//                /*
+//                 * If there was content in the map then the resulting InstanceProperties are added as
+//                 * a property to the resulting properties.
+//                 */
+//                if (mapInstanceProperties != null)
+//                {
+//                    MapPropertyValue mapPropertyValue = new MapPropertyValue();
+//                    mapPropertyValue.setMapValues(mapInstanceProperties);
+//                    resultingProperties.setProperty(propertyName, mapPropertyValue);
+//
+//                    log.debug("Returning instanceProperty: " + resultingProperties.toString());
+//
+//                    return resultingProperties;
+//                }
+//            }
+//
+//        return properties;
+//    }
+
+
 
     /**
      * Returns the instance properties object
