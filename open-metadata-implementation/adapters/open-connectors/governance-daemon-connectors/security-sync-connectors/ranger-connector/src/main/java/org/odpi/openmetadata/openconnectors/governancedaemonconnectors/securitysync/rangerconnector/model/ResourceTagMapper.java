@@ -40,4 +40,14 @@ public class ResourceTagMapper {
     public void setResourceId(Long resourceId) {
         this.resourceId = resourceId;
     }
+
+    @Override
+    public String toString() {
+        return "ResourceTagMapper{" +
+                "id=" + id +
+                ", guid='" + guid + '\'' +
+                ", tagId=" + tagId +
+                ", resourceId=" + resourceId +
+                '}';
+    }
 }

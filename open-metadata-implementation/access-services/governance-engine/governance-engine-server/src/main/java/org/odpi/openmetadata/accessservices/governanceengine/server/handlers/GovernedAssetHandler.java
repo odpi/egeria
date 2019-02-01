@@ -161,6 +161,7 @@ public class GovernedAssetHandler {
                 List<GovernanceClassification> governanceClassifications =  getGovernanceClassifications(entityDetail.getClassifications());
                 governedAsset.setAssignedGovernanceClassifications(governanceClassifications);
             }
+            return governedAsset;
         } catch (TypeErrorException | EntityProxyOnlyException | TypeDefNotKnownException | EntityNotKnownException | FunctionNotSupportedException | PropertyErrorException | RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | UserNotAuthorizedException | PagingErrorException e) {
             log.error(e.getErrorMessage());
         }
