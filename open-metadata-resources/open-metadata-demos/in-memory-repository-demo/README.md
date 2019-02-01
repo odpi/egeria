@@ -1,6 +1,7 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-  
-## In Memory Metadata Repository Demo
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+## Cohort demonstration using the Egeria In Memory Metadata Repository
   
 In memory metadata repositories can be used with Egeria for demonstrations of Egeria capabilities without needing to install 
 another metadata repository. This is <em>NOT</em> for production.
@@ -11,25 +12,27 @@ another metadata repository. This is <em>NOT</em> for production.
         
     
 #### Docker    
-This demo involves starting 2 omag servers called myservera and myserverb as part of one cohort called cocCohort. Apache Kafka is used to publish and consume events, resulting in the metadata being synchronised
+This demo involves starting 2 [OMAG Server Platforms](../../../open-metadata-publication/website/omag-server)
+called `myservera` and `myserverb` as part of one cohort called `cocoCohort`.
+Apache Kafka is used to publish and consume events, resulting in the metadata being synchronised
 between the 2 metadata repositories.
 
 The demo uses Apache Kafka in a Docker container. See **[Kafka-Docker.md](Kafka-Docker.md)** for details on how to set this up   
   
 #### Egeria setup 
-Start an omagserver 
+Start an OMAG Server Platform either from the
+[Egeria install](../../open-metadata-tutorials/omag-server-tutorial/task-starting-the-omag-server.md) or from IntelliJ.
 
-You can start the omag server in Intellij - here is the configuration for port 8080. 
+You can start the omag server in IntelliJ - here is the configuration for port 8080. 
 
-![Figure 2:](Intellij-OMAGApplication-run-configuration.png)
-> Figure 2: OMAG Application run configuration for port 8080
+![Figure 2:](IntelliJ-OMAGServerPlatform-run-configuration.png)
+> Figure 2: OMAG Server Platform run configuration for port 8080
 
-In a similar way start a second omag server on port 8081 using -Dserver.port=8081
+In a similar way start a second OMAG server platform on port 8081 using `-Dserver.port=8081`.
 
-
-POST localhost:8080/open-metadata/admin-services/users/david/servers/myservera/event-bus
-with body
+Issue the following REST calls
 ```console
+POST localhost:8080/open-metadata/admin-services/users/david/servers/myservera/event-bus
 {
 "producer":
 {
@@ -56,25 +59,23 @@ with body
 "kafka.omrs.topic.id":"cocoCohort"
 }
 }
-```
+
 
 POST localhost:8080/open-metadata/admin-services/users/david/servers/myservera/access-services
 POST localhost:8080/open-metadata/admin-services/users/david/servers/myservera/cohorts/cocoCohort
 POST localhost:8080/open-metadata/admin-services/users/david/servers/myservera/local-repository/mode/in-memory-repository
 POST localhost:8080/open-metadata/admin-services/users/david/servers/myservera/instance
+```
 
-Wait for the last rest call to complete. If you have info logging om Kafka issues logging to the console for each publish of a type.
+Wait for the last REST call to complete. If you have info logging om Kafka issues logging to the console for each publish of a type.
 
-Repeat the above commands wirh POST localhost:8081/open-metadata/admin-services/users/david/servers/myserverb
+Repeat the above commands with POST localhost:8081/open-metadata/admin-services/users/david/servers/myserverb
 
 
 #### Using the Subject Area OMAS to test the synchronization
  
- 
- post localhost:8080/open-metadata/access-services/subject-area/users/david/glossaries
-
-with body 
 ```console
+POST localhost:8080/open-metadata/access-services/subject-area/users/david/glossaries
 {
 "name":"Glossary2",
 "description":"test glossary 1 ",
