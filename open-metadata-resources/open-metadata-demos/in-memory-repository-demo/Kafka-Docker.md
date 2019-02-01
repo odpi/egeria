@@ -2,7 +2,7 @@
   
 # Running Apache Kafka in Docker.  
 
-This demo was created on an iOS machine.    
+This demo was created on an MacOS machine.    
   
 
 ## Get Docker
