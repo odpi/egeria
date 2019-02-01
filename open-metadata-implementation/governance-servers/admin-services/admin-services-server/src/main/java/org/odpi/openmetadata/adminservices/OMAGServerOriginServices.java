@@ -15,11 +15,9 @@ public class OMAGServerOriginServices
      * Return the origin of this server implementation.
      *
      * @param userId name of the user making the request
-     * @param serverName name of the server that the request is for
      * @return String description
      */
-    public String getServerOrigin(String    userId,
-                                  String    serverName)
+    public String getServerOrigin(String    userId)
     {
         return implementationOrigin;
     }
