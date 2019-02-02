@@ -13,13 +13,13 @@ resources				server-chassis-spring-0.3-SNAPSHOT.jar
 
 ```
 The name of the Java Archive (Jar) file will
-depend on the release of ODPi Egeria that you have installed.  In this example, the release is `0.3-SNAPSHOT`.
+depend on the release of ODPi Egeria that you have installed.  In this example, the release is **0.3-SNAPSHOT**.
 
-The OMAG server platform is started with the `java` command.
+The OMAG server platform is started with the **java** command.
 Ensure you have a Java runtime at Version 8 (Update 151) or above installed on your machine.
-Check the version of Java you have with the command `java -version`
-(You can download Java from [AdoptOpenJDK](https://adoptopenjdk.net/) and select `OpenJDK 8 (LTS)`
-and the `HotSpot` version for your operating system.
+Check the version of Java you have with the command **java -version**
+(You can download Java from [AdoptOpenJDK](https://adoptopenjdk.net/) and select **OpenJDK 8 (LTS)**
+and the **HotSpot** version for your operating system.
 You only need the JRE but select the JDK if you expect to also write some Java code.)
 
 Start the OMAG server platform as follows:
@@ -59,14 +59,23 @@ ODPi Egeria OMAG Server Platform
 $
 ```
 
-This calls the OMAG server platform using a REST API call.  The response `ODPi Egeria OMAG Server Platform`
-means the command communicated with a running OMAG server platform instance.
+This calls the OMAG server platform using a REST API call.  The response **ODPi Egeria OMAG Server Platform**
+means the curl command communicated with a running OMAG server platform instance.
 
-The OMAG Server Platform at this point is an empty shell.
+The OMAG server platform has many REST APIs.  Enter **localhost:8080/swagger-ui.html** into your browser to see the list of
+available REST APIs.
+
+Broadly speaking, the OMAG server platform supports
+* Administration services and
+* Open metadata and governance services.
+
+The administration services (the ones beginning **omag-server**)
+are available all of the time the OMAG server platform is running.
 The open metadata and governance services are started on the server platform
-using a `configuration document`.
+using a **configuration document**.  This configuration document is both configured
+and activated in the OMAG server platform using the administration services.
 
-Understanding how to create a configuration document
+Understanding how to create a configuration document using the administration services
 [is the next task in this tutorial](task-creating-configuration-documents.md).
 
 
