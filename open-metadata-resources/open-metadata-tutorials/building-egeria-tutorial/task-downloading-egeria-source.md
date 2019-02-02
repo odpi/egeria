@@ -3,7 +3,7 @@
 
 # Downloading the Egeria Source from GitHub
 
-The Egeria source is extracted from GitHub using the following `git` command:
+The Egeria source is extracted from GitHub using the following **git** command:
 
 ```text
 
@@ -20,7 +20,7 @@ $
 
 ```
 A new directory has been created with the ODPi Egeria source code.
-Change to the `egeria` directory.
+Change to the **egeria** directory.
 ```text
 
 $ cd egeria
