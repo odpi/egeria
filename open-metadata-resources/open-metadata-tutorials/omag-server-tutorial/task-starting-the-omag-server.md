@@ -6,7 +6,7 @@
 The [OMAG Server Platform's installation directory](../building-egeria-tutorial/task-installing-egeria.md)
 contains a Java Archive (Jar) file for the server platform itself along with a directory of resources.
 
-```bash
+```console
 
 $ ls
 resources				server-chassis-spring-0.3-SNAPSHOT.jar
@@ -25,14 +25,14 @@ You only need the JRE but select the JDK if you expect to also write some Java c
 
 Start the OMAG server platform as follows:
 
-```bash
+```console
 
 $ java -jar server*
 
 ```
 The OMAG server platform first displays this banner and then initializes itself.
 
-```bash
+```console
 
  ODPi Egeria
     ____   __  ___ ___    ______   _____                                 ____   _         _     ___
@@ -46,7 +46,7 @@ The OMAG server platform first displays this banner and then initializes itself.
 ```
 When the initialization is complete, you will see this message:
 
-```bash
+```console
 
 Thu Jan 31 13:15:26 GMT 2019 OMAG server platform ready for configuration
 
@@ -54,7 +54,7 @@ Thu Jan 31 13:15:26 GMT 2019 OMAG server platform ready for configuration
 
 This means your OMAG Server Platform is running.  Try the following command:
 
-```bash
+```console
 $ curl -X GET http://localhost:8080/open-metadata/admin-services/users/test/server-origin
 ODPi Egeria OMAG Server Platform
 $
