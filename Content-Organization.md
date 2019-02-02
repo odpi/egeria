@@ -7,6 +7,8 @@
 The Egeria content is organized into the following modules:
 
 * **[developer-resources](developer-resources)** - contains useful files and documentation for an Egeria developer.
+* **[open-metadata-conformance-suite](open-metadata-conformance-suite)** - implementation of the tests that determine if a vendor or open source technology is compliant with the open metadata and governance standards.
+* **[open-metadata-distribution](open-metadata-distribution)** - contains scripts to extract the completed artifacts from the other modules and stores them together to make it easy to find them.
 * **[open-metadata-implementation](open-metadata-implementation)** - implementation of standards, frameworks and connectors.
   * **[access-services](open-metadata-implementation/access-services)** - domain specific APIs known as the Open Metadata Access Services (OMAS).
     * **[asset-catalog](open-metadata-implementation/access-services/asset-catalog)** - search for assets.
@@ -41,7 +43,8 @@ The Egeria content is organized into the following modules:
         * **[open-metadata-collection-store-connectors](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors)** contains connectors that support mappings to different vendors' metadata repositories.
           * **[graph-repository-connector](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector)** - provides a local repository that uses a graph store as its persistence store.
           * **[inmemory-repository-connector](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/inmemory-repository-connector)** - provides a local repository that is entirely in memory.  It is useful for testing/developing OMASs and demos.
-          * **[omrs-rest-repository-connector](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/omrs-rest-repository-connector)** - uses the OMRS REST API to call an open metadata compliant repository.
+          * **[omrs-rest-repository-connector](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/omrs-rest-repository-connector)** - enables IBM Information Governance Catalog to support open metadata.
+          * **[ibm-igc-repository-connector](open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/ibm-igc-repository-connector)** - uses the OMRS REST API to call an open metadata conformant repository.
       * **[configuration-store-connectors](open-metadata-implementation/adapters/open-connectors/configuration-store-connectors)** contains the connectors that manage the open metadata configuration.
       * **[event-bus-connectors](open-metadata-implementation/adapters/open-connectors/event-bus-connectors)** supports different event/messaging infrastructures.  They can be plugged into the topic connectors from the access-service-connectors and repository-service-connectors.
       * **[governance-daemon-connectors](open-metadata-implementation/adapters/open-connectors/governance-daemon-connectors)** contains connectors for the governance daemon servers that monitor activity or synchronize metadata and configuration asynchronously between different tools.
@@ -59,10 +62,10 @@ The Egeria content is organized into the following modules:
   * **[user-interfaces](open-metadata-implementation/user-interfaces)** - browser based user interfaces.
     * **[access-services-user-interface](open-metadata-implementation/user-interfaces/access-services-user-interface)** - provides a user interface that supports the user-facing Open Metadata Access Services (OMASs).
     * **[server-configuration-user-interface](open-metadata-implementation/user-interfaces/server-configuration-user-interface)** - provides the administration user interface for an open metadata server.
-* **[open-metadata-conformance-suite](open-metadata-conformance-suite)** - implementation of the tests that determine if a vendor or open source technology is compliant with the open metadata and governance standards.
-* **[open-metadata-distribution](open-metadata-distribution)** - contains scripts to extract the completed artifacts from the other modules and stores them together to make it easy to find them.
 * **[open-metadata-publication](open-metadata-publication)** - contains scripts that send artifacts collected together by the open-metadata-distribution module to external parties.
 * **[open-metadata-resources](open-metadata-resources)** - contains the open metadata demos and samples.
+  * []
+* **[open-metadata-test](open-metadata-test)** - supports additional test cases beyond unit test.
 
 
 ----
