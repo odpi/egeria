@@ -61,7 +61,11 @@ public class DataViewColumnSource extends Source {
 
     @Override
     public String buildQualifiedName() {
-        return dataViewSource.getNetworkAddress() + "." + dataViewSource.getId() + "." + this.getId();
+        if(dataViewSource == null || dataViewSource.getNetworkAddress() == null || dataViewSource.getNetworkAddress().isEmpty())
+            return dataViewSource.getId() + "." + this.getId();
+        else{
+            return dataViewSource.getNetworkAddress() + "." + dataViewSource.getId() + "." + this.getId();
+        }
     }
 
 }

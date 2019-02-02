@@ -368,11 +368,11 @@ public class EntitiesCreatorHelper {
         if (entityDetail == null) {
             entityDetail = addEntity("", Constants.USER_ID, typeName, properties, classifications, Constants.INFORMATION_VIEW_OMAS_NAME);
             log.info("Entity with qualified name {} added", qualifiedName);
-            log.info("Entity: {}", entityDetail);
+            log.debug("Entity: {}", entityDetail);
             wrapper = new EntityDetailWrapper(entityDetail, EntityDetailWrapper.EntityStatus.NEW);
         } else {
             log.info("Entity with qualified name {} already exists", qualifiedName);
-            log.info("Entity: {}", entityDetail);
+            log.debug("Entity: {}", entityDetail);
             if (update && !EntityPropertiesUtils.matchExactlyInstanceProperties(entityDetail.getProperties(), properties)) {//TODO should add validation
                 log.info("Updating entity with qualified name {} ", qualifiedName);
                 entityDetail = updateEntity(entityDetail, Constants.USER_ID, properties);
@@ -420,10 +420,10 @@ public class EntitiesCreatorHelper {
         if (relationship == null) {
             relationship = addRelationship("", relationshipType, properties, guid1, guid2);
             log.info("Relationship {} added between: {} and {}", relationshipType, guid1, guid2);
-            log.info("Relationship: {}", relationship);
+            log.debug("Relationship: {}", relationship);
         } else {
             log.info("Relationship {} already exists between: {} and {}", relationshipType, guid1, guid2);
-            log.info("Relationship: {}", relationship);
+            log.debug("Relationship: {}", relationship);
         }
 
         return relationship;

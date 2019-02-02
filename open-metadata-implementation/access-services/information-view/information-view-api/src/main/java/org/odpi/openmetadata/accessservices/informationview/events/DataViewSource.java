@@ -50,6 +50,12 @@ public class DataViewSource extends Source{
 
     @Override
     public String buildQualifiedName() {
-        return null;
+        if(getNetworkAddress() == null || getNetworkAddress().isEmpty()){
+            return id;
+        }else{
+            return getNetworkAddress() + "." + id;
+        }
+
+
     }
 }

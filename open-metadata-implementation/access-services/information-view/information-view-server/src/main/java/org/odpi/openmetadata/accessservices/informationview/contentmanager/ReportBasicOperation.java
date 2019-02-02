@@ -48,7 +48,7 @@ public abstract class ReportBasicOperation {
     public void addElements(String qualifiedNameForParent, String parentGuid, List<ReportElement> allElements) {
         if (allElements == null || allElements.isEmpty())
             return;
-        allElements.stream().forEach(e -> addReportElement(qualifiedNameForParent, parentGuid, e));
+        allElements.parallelStream().forEach(e -> addReportElement(qualifiedNameForParent, parentGuid, e));
     }
 
 

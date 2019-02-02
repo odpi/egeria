@@ -6,7 +6,6 @@ package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.DataViewCreationException;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.ReportCreationException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -15,6 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.StringUtils;
 
 public class DataViewHandler {
 
@@ -38,7 +38,12 @@ public class DataViewHandler {
 
         log.info("Creating data view based on payload {}", requestBody);
         try {
-            String qualifiedNameForDataView = requestBody.getEndpointAddress() + "." + requestBody.getId();
+            String qualifiedNameForDataView;
+            if (StringUtils.isEmpty(requestBody.getEndpointAddress())) {
+                qualifiedNameForDataView = requestBody.getId();
+            } else {
+                qualifiedNameForDataView = requestBody.getEndpointAddress() + "." + requestBody.getId();
+            }
             InstanceProperties dataViewProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataView)
                     .withStringProperty(Constants.NAME, requestBody.getName())
@@ -79,8 +84,8 @@ public class DataViewHandler {
                     auditCode.getUserAction(),
                     e);
             throw new DataViewCreationException(404,
-                    "ReportHandler",
-                    "createReport",
+                    "DataViewHandler",
+                    "createDataView",
                     "Unable to create data view: " + e.getMessage(),
                     "The system is unable to process the request.",
                     "Correct the payload submitted to request.",
