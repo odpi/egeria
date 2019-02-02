@@ -4,23 +4,23 @@
 # Server Chassis for Spring
 
 The server chassis provides the base server framework to host the open metadata
-services in the [OMAG Server Platform](../../../../open-metadata-publication/website/omag-server).  
+services in the [OMAG Server Platform](https://egeria.odpi.org/open-metadata-publication/website/omag-server).  
 
-The `server-chassis-spring` module provides the implementation of the server chassis.
-Its `main()` method is located in a Java class called
-`OMAGServerPlatform` that uses [Spring Boot](https://spring.io/projects/spring-boot)
+The **server-chassis-spring** module provides the implementation of the server chassis.
+Its **main()** method is located in a Java class called
+**OMAGServerPlatform** that uses [Spring Boot](https://spring.io/projects/spring-boot)
 for the server framework.
 
-When the `OMAGServerPlatform` is started, Spring Boot does a component scan for all Spring
+When the **OMAGServerPlatform** is started, Spring Boot does a component scan for all Spring
 services that are in Java packages stemming from `org.odpi.openmetadata/*`
 and that are visible to this module.
 
-To make a new Java package visible to `OMAGServerPlatform`, add its `spring` package
-to the `pom.xml` file for `server-chassis-spring`.
+To make a new Java package visible to **OMAGServerPlatform**, add its **spring** package
+to the **pom.xml** file for **server-chassis-spring**.
 
 
-For example, this is the snippet on XML in the pom.xml file that adds the
-[Connected Asset OMAS](../../../access-services/connected-asset) services
+For example, this is the snippet of XML in the pom.xml file that adds the
+[Connected Asset OMAS](https://egeria.odpi.org/open-metadata-implementation/access-services/connected-asset) services
 to the OMAG server platform.
 
 ```xml
@@ -35,7 +35,7 @@ to the OMAG server platform.
 
 When the OMAG server platform is first started, the REST APIs
 are defined for its endpoint.
-However, only the [Administration Services](../../admin-services) are activated at this point.
+However, only the [Administration Services](https://egeria.odpi.org/open-metadata-implementation/governance-servers/admin-services) are activated at this point.
 The other services will each give an error response if called.
 
 To activate these services, it is necessary to use the
@@ -48,9 +48,9 @@ Once it is in place it is possible to activate and deactivate the
 services in the OMAGServerPlatform many times over multiple server restarts.
 
 Details of how to set up the configuration document, and activate/deactivate
-the open metadata services can be found in [admin-services](../../admin-services/README.md).
+the open metadata services can be found in [admin-services](https://egeria.odpi.org/open-metadata-implementation/governance-servers/admin-services/Using-the-Admin-Services.md).
 
-Swagger API documentation is generated with the chassis and is documented in [SwaggerGeneration.md](./SwaggerGeneration.md).
+Swagger API documentation is generated with the chassis and is documented in [Swagger Generation](SwaggerGeneration.md).
 
 
 
