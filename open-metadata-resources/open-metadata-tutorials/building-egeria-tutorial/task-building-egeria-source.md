@@ -12,7 +12,7 @@ a file called `pom.xml`.  This is the file that controls the build.
 
 Issue the following command from the egeria directory.
 
-```bash
+```text
 
 $ mvn clean install
 
@@ -20,7 +20,7 @@ $ mvn clean install
 The build can take 5-15 minutes depending on the speed and load on your machine.
 However eventually you will see the message:
 
-```bash
+```text
 
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
