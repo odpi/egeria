@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# OMAG Server Tutorial
+# OMAG Server Platform Tutorial
 
 The Open Metadata and Governance (OMAG) Server Platform is a flexible server platform that
 can run many different types of open metadata and governance services.
@@ -26,18 +26,18 @@ At the end of this tutorial you will be able to perform the following tasks.
 ## Tutorial Tasks
 
 1. [Starting the OMAG Server Platform](task-starting-the-omag-server.md)
-2. [Creating configuration documents](task-creating-configuration-documents.md)
+2. [Creating Configuration Documents](task-creating-configuration-documents.md)
 3. [Configuring the OMAG Server Platform](task-configuring-omag-server.md)
-4. [Calling the OMAG Server Platform's APIs](task-calling-omag-apis.md)
+4. [Calling the Open Metadata and Governance APIs](task-calling-omag-apis.md)
 
 # Digging Deeper
 
 * [Changing the OMAG Server Platform's network address](task-changing-the-omag-server-network-address.md)
 * [Running the ODPi Egeria samples](../../open-metadata-samples)
 to understand more about the different ODPi Egeria APIs.
-* [Calling the clients from Java](../omag-client-tutorial)
+* [Calling the OMAG Clients from Java](../omag-client-tutorial)
 to understand how to call Egeria APIs from your code.
-* [Running the open metadata conformance suite](../../../open-metadata-conformance-suite)
+* [Running the Open Metadata Conformance Suite](../../../open-metadata-conformance-suite)
 to understand how a technology/software product can demonstrate
 its conformance to the Egeria standards.
 
