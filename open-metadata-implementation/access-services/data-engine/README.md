@@ -5,8 +5,7 @@
 
 The Data Engine OMAS provides APIs and events for a data movement/processing
 engine to record the changes it is making the the data landscape. 
-This information forms a key part of the lineage for the data assets that
-are affected.
+This information forms a key part of asset lineage.
 
 The module structure for the Data Process OMAS is as follows:
 
