@@ -5,7 +5,7 @@
 
 The Egeria source is extracted from GitHub using the following `git` command:
 
-```console
+```text
 
 $ git clone https://github.com/odpi/egeria.git
 Cloning into 'egeria'...
@@ -21,7 +21,7 @@ $
 ```
 A new directory has been created with the ODPi Egeria source code.
 Change to the `egeria` directory.
-```console
+```text
 
 $ cd egeria
 $
