@@ -3,7 +3,6 @@
 
 package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 
-import org.apache.tools.ant.taskdefs.condition.HasMethod;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewElement;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewTable;
@@ -44,7 +43,7 @@ public abstract class DataViewBasicOperation {
     protected void addElements(String parentQualifiedName, String parentGuid, List<DataViewElement> dataViewElements) {
         if (dataViewElements == null || dataViewElements.isEmpty())
             return;
-        dataViewElements.stream().forEach(e -> addDataViewElement(parentQualifiedName, parentGuid, e));
+        dataViewElements.parallelStream().forEach(e -> addDataViewElement(parentQualifiedName, parentGuid, e));
     }
 
 
@@ -94,10 +93,6 @@ public abstract class DataViewBasicOperation {
     protected EntityDetail addDataViewColumn(String parentQualifiedName, String parentGuid, DataViewColumn dataViewColumn) throws InvalidParameterException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
 
         String qualifiedNameForColumn = parentQualifiedName + "." + dataViewColumn.getId();
-
-
-
-
 
 
         InstanceProperties columnProperties = new EntityPropertiesBuilder()

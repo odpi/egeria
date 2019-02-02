@@ -18,6 +18,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -218,59 +219,9 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
 
                  event.getTableSource().setTableGuid(tableEntity.getGUID());
 
-                for (DerivedColumn derivedColumn : event.getDerivedColumns()) {
-
-                    String qualifiedNameColumnType = qualifiedNameForTable + "." + derivedColumn.getName() + Constants.TYPE_SUFFIX;
-                    InstanceProperties columnTypeProperties = new EntityPropertiesBuilder()
-                            .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameColumnType)
-                            .withStringProperty(Constants.DISPLAY_NAME, derivedColumn.getName() + Constants.TYPE_SUFFIX)
-                            .withStringProperty(Constants.AUTHOR, "")
-                            .withStringProperty(Constants.USAGE, "")
-                            .withStringProperty(Constants.ENCODING_STANDARD, "")
-                            .withStringProperty(Constants.DATA_TYPE, derivedColumn.getType())
-                            .build();
-                    EntityDetail columnTypeEntity = entitiesCreatorHelper.addEntity(Constants.RELATIONAL_COLUMN_TYPE,
-                            qualifiedNameColumnType,
-                            columnTypeProperties);
-
-                    String qualifiedNameForColumn = qualifiedNameForTable + "." + derivedColumn.getName();
-                    InstanceProperties columnProperties = new EntityPropertiesBuilder()
-                            .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
-                            .withStringProperty(Constants.ATTRIBUTE_NAME, derivedColumn.getName())
-                            .withStringProperty(Constants.FORMULA, "")
-                            .withIntegerProperty(Constants.ELEMENT_POSITION_NAME, derivedColumn.getPosition())
-                            .build();
-                    EntityDetail derivedColumnEntity = entitiesCreatorHelper.addEntity(Constants.DERIVED_RELATIONAL_COLUMN,
-                            qualifiedNameForColumn,
-                            columnProperties);
-
-                    derivedColumn.setGuid(derivedColumnEntity.getGUID());
-
-                    InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
-                            .withStringProperty(Constants.QUERY, "")
-                            .build();
-                    entitiesCreatorHelper.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
-                            derivedColumnEntity.getGUID(),
-                            derivedColumn.getSourceColumn().getGuid(),
-                            Constants.INFORMATION_VIEW_OMAS_NAME,
-                            schemaQueryImplProperties);
-                    entitiesCreatorHelper.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
-                            derivedColumnEntity.getGUID(),
-                            columnTypeEntity.getGUID(),
-                            Constants.INFORMATION_VIEW_OMAS_NAME,
-                            new InstanceProperties());
-                    entitiesCreatorHelper.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
-                            derivedColumnEntity.getGUID(),
-                            derivedColumn.getSourceColumn().getBusinessTerm().getGuid(),
-                            Constants.INFORMATION_VIEW_OMAS_NAME,
-                            new InstanceProperties());
-                    entitiesCreatorHelper.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
-                            tableTypeEntity.getGUID(),
-                            derivedColumnEntity.getGUID(),
-                            Constants.INFORMATION_VIEW_OMAS_NAME,
-                            new InstanceProperties());
-
-                }
+                 if(event.getDerivedColumns() != null && !event.getDerivedColumns().isEmpty()) {
+                     event.getDerivedColumns().parallelStream().forEach(c -> addDerivedColumn(tableTypeEntity, qualifiedNameForTable, c));
+                 }
 
                 eventPublisher.sendEvent(event);
             } catch (Exception e) {
@@ -288,6 +239,68 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
             }
 
         }
+    }
+
+    private void addDerivedColumn(EntityDetail tableTypeEntity, String qualifiedNameForTable, DerivedColumn derivedColumn)  {
+
+        try {
+            String qualifiedNameColumnType = qualifiedNameForTable + "." + derivedColumn.getName() + Constants.TYPE_SUFFIX;
+            InstanceProperties columnTypeProperties = new EntityPropertiesBuilder()
+                    .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameColumnType)
+                    .withStringProperty(Constants.DISPLAY_NAME, derivedColumn.getName() + Constants.TYPE_SUFFIX)
+                    .withStringProperty(Constants.AUTHOR, "")
+                    .withStringProperty(Constants.USAGE, "")
+                    .withStringProperty(Constants.ENCODING_STANDARD, "")
+                    .withStringProperty(Constants.DATA_TYPE, derivedColumn.getType())
+                    .build();
+            EntityDetail columnTypeEntity = null;
+
+            columnTypeEntity = entitiesCreatorHelper.addEntity(Constants.RELATIONAL_COLUMN_TYPE,
+                    qualifiedNameColumnType,
+                    columnTypeProperties);
+
+            String qualifiedNameForColumn = qualifiedNameForTable + "." + derivedColumn.getName();
+            InstanceProperties columnProperties = new EntityPropertiesBuilder()
+                    .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
+                    .withStringProperty(Constants.ATTRIBUTE_NAME, derivedColumn.getName())
+                    .withStringProperty(Constants.FORMULA, "")
+                    .withIntegerProperty(Constants.ELEMENT_POSITION_NAME, derivedColumn.getPosition())
+                    .build();
+            EntityDetail derivedColumnEntity = entitiesCreatorHelper.addEntity(Constants.DERIVED_RELATIONAL_COLUMN,
+                    qualifiedNameForColumn,
+                    columnProperties);
+
+            derivedColumn.setGuid(derivedColumnEntity.getGUID());
+
+            entitiesCreatorHelper.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
+                    tableTypeEntity.getGUID(),
+                    derivedColumnEntity.getGUID(),
+                    Constants.INFORMATION_VIEW_OMAS_NAME,
+                    new InstanceProperties());
+            InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
+                    .withStringProperty(Constants.QUERY, "")
+                    .build();
+            entitiesCreatorHelper.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
+                    derivedColumnEntity.getGUID(),
+                    derivedColumn.getSourceColumn().getGuid(),
+                    Constants.INFORMATION_VIEW_OMAS_NAME,
+                    schemaQueryImplProperties);
+            entitiesCreatorHelper.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
+                    derivedColumnEntity.getGUID(),
+                    columnTypeEntity.getGUID(),
+                    Constants.INFORMATION_VIEW_OMAS_NAME,
+                    new InstanceProperties());
+            entitiesCreatorHelper.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
+                    derivedColumnEntity.getGUID(),
+                    derivedColumn.getSourceColumn().getBusinessTerm().getGuid(),
+                    Constants.INFORMATION_VIEW_OMAS_NAME,
+                    new InstanceProperties());
+
+        } catch (InvalidParameterException | PropertyErrorException | RepositoryErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | ClassificationErrorException | UserNotAuthorizedException | TypeErrorException | StatusNotSupportedException | TypeDefNotKnownException e) {
+                log.error("Exception", e);
+                throw new RuntimeException("Exception creating derived column", e);
+        }
+
     }
 
 
