@@ -14,7 +14,7 @@ The [OMAG Server Platform's installation directory](../building-egeria-tutorial/
 there is the Java Archive (Jar) file for the OMAG server platform
 and a `resources` directory.
 
-```console
+```text
 
 $ ls
 resources				server-chassis-spring-0.3-SNAPSHOT.jar
@@ -25,7 +25,7 @@ Change to the resources directory and you will see the `banner.txt`
 file that is displayed when the OMAG server platform starts up along
 with the `application.properties` file.
 
-```console
+```text
 
 $ cd resources
 $ ls
@@ -38,7 +38,7 @@ $
 to the [Spring Boot Server Chassis](https://spring.io/projects/spring-boot)
 that acts as a base for the OMAG Server Platform.
 
-```console
+```text
 
 $ cat application.properties
 # SPDX-License-Identifier: Apache-2.0
@@ -58,7 +58,7 @@ $
 Edit the `application.properties` file and add `server.address=http://localhost:8081`
 to the file:
 
-```console
+```text
 $ vi application.properties
 $ cat application.properties
 # SPDX-License-Identifier: Apache-2.0
@@ -80,7 +80,7 @@ $
 [Start the OMAG server platform again](task-starting-the-omag-server.md)
 and issue the following REST call to check the server is running with the new server address.
 
-```console
+```text
 $ curl -X GET http://localhost:8081/open-metadata/admin-services/users/test/server-origin
 ODPi Egeria OMAG Server Platform
 $

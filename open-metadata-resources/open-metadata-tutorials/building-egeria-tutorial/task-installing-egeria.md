@@ -7,7 +7,7 @@ The [egeria build process](task-building-egeria-source.md) creates the
 distribution files for Egeria in the `open-metadata-distribution` module.
 The assemblies are located from the egeria build directory as follows:
 
-```console
+```text
 
 $ cd open-metadata-distribution/open-metadata-assemblies/target
 $ ls
@@ -28,7 +28,7 @@ Create a directory for the install and copy the tar file into it.
 The two commands shown below create an install directory at the same level in the
 file system as the `egeria` build library and then copies the egeria distribution file into it.
 
-```console
+```text
 
 $ mkdir ../../../../egeria-install
 $ cp egeria*-distribution.tar.gz ../../../../egeria-install
@@ -37,7 +37,7 @@ $
 ```
 These next commands change to the new directory and lists its contents.
 
-```console
+```text
 
 $ cd ../../../../egeria-install
 $ ls
@@ -47,7 +47,7 @@ egeria-0.3-SNAPSHOT-distribution.tar.gz
 
 It is now possible to unpack the tar file.
 
-```console
+```text
 
 $ tar -xf egeria-0.3-SNAPSHOT-distribution.tar.gz
 $ ls
@@ -57,7 +57,7 @@ egeria-0.3-SNAPSHOT-distribution.tar.gz	egeria-omag-0.3-SNAPSHOT
 
 A new directory is created called `egeria-omag-0.3-SNAPSHOT`.  
 
-```console
+```text
 
 $ cd egeria-omag-0.3-SNAPSHOT$ ls
 LICENSE			clients			server
@@ -71,9 +71,9 @@ Under `server` is a directory for the
 This is the Egeria OMAG Server Platform used to run
 open metadata and governance services.
 
-Change to the omag server platform's directory.
+Change to the OMAG server platform's directory.
 
-```console
+```text
 
 $ cd servers/omag-server*
 $ resources				server-chassis-spring-0.3-SNAPSHOT.jar
