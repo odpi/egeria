@@ -2,43 +2,58 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
 
-# Open metadata administration services user guide
+# OMAG Server Platform Administration Services User Guide
 
-An Open Metadata and Governance (OMAG) Server hosts a variety of open metadata
+An [Open Metadata and Governance (OMAG) Server Platform](../../../open-metadata-publication/website/omag-server)
+hosts one or more logical **OMAG servers**, each supporting a variety of open metadata
 and governance capabilities.
-The capabilities that are enabled in a specific instance of the OMAG Server
-are defined in a JSON configuration document that is read when the open metadata
-capabilities are activated in the running server.
+
+The capabilities that are enabled in a specific instance of a logical OMAG Server
+are defined in a JSON **configuration document**.
+When the configuration document is loaded to the OMAG Server platform, the logical OMAG server
+is started, and the capabilities defined in the configuration document are activated.
+
 In an open metadata landscape, it is anticipated that there may be multiple
-instances of the OMAG Server running, each performing a different role.
-Each of these instances would therefore use a different configuration document.
-The correct configuration document to use is identified by the server name.
+instances of the logical OMAG Server running, each performing a different role.
+The capabilities of each of these instances would be defined in a different configuration document.
+They could all, however, be loaded into the same OMAG server platform, or distributed across
+different OMAG server platforms.
+
+The configuration document for a specific logical OMAG server is identified by the server's name.
 This is passed on the URL of every admin services API request along with the user
 id of the administrator.  By default, the configuration is stored in a file called:
 
 ```
-omag.server.{servername}.config
+
+omag.server.{serverName}.config
+
 ```
 
 The administration services that set up this file all begin with a URL like this:
 
 ```
-.../open-metadata/admin-services/users/{userid}/servers/{servername}/...
+
+.../open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/...
+
 ```
 
-The OMAG Server starts up without any open metadata capabilities enabled.
+The **serverName** specified on these calls determines which configuration
+document is used, and hence which of the logical OMAG server's configuration it is working with.
+
+The OMAG server platform starts up without any open metadata capabilities enabled.
 Once it is running, it can be used to set up the configuration documents
 that describe the open metadata capabilities needed for each server instance.
 
 Once the configuration document is in place, the open metadata services
 can be activated and deactivated multiple times, across multiple
-restarts of the server.
-The server name specified on these calls determines which configuration
-document is used.
+restarts of the server platform.
+
 
 ## Building a configuration document for a server
 
-The configuration document for the OMAG Server determines:
+The configuration document for the logical OMAG Server determines the types of open
+metadata and governance services that should be activated in the logical OMAG server.
+For example:
 
 * Basic descriptive properties of the server that are used in logging and events
 originating from the server.
@@ -53,18 +68,18 @@ in the OMAG Server.
 
 The example commands that follow assume:
 
-* The OMAG Server is running on the localhost, at port 8080.
+* The OMAG server platform is running on the localhost, at port 8080.
 * The user id of the administrator is `garygeeke`.
-* The name of the open metadata server is `cocoMDS1`.
+* The name of the logical OMAG server is `cocoMDS1`.
 
 ### Overriding the location for storing configuration documents
 
-By default, configuration documents are stored in the admin server's home directory.
+By default, configuration documents are stored as a file in the OMAG server platform's home directory.
 The file name is 
 ```
-omag.server.{servername}.config
+omag.server.{serverName}.config
 ```
-where server name is the name of the server (cocoMDS1 for example)
+where serverName is the name of the logical OMAG server (cocoMDS1 for example)
 passed on the url of the configuration request.
 
 The management of the configuration documents on the disk is implemented by a connector.
@@ -72,8 +87,12 @@ To change the connector used for the configuration
 (and hence where and how configuration documents are stored), use the following URL
 with the connection object of the new connector as the request body.
 
-```
+```url
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/stores/connection
+```
+
+The JSON below is an example of a [Connection](../../frameworks/open-connector-framework/docs/concepts/connection.md) object.
+```json
 {
     "class": "Connection",
     "type": 
@@ -86,9 +105,9 @@ POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/stores/c
         "elementOrigin": "CONFIGURATION"
     },
     "guid": "12137087-2b13-4c4e-b840-97c4282f7416",
-    "qualifiedName": "InTopic",
-    "displayName": "InTopic",
-    "description": "InTopic",
+    "qualifiedName": "My Custom Configuration Document JSON database Connector",
+    "displayName": "My Custom Configuration Document Store Connection",
+    "description": "Connection to custom built connector to store configuration documents in JSON Document database.",
     "connectorType": 
     {
         "class": "ConnectorType",
@@ -101,10 +120,10 @@ POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/stores/c
             "elementTypeDescription": "A set of properties describing a type of connector.",
             "elementOrigin": "LOCAL_COHORT"
         },
-        "guid": "3851e8d0-e343-400c-82cb-3918fed81da6",
-        "qualifiedName": "Kafka Open Metadata Topic Connector",
-        "displayName": "Kafka Open Metadata Topic Connector",
-        "description": "Kafka Open Metadata Topic Connector supports string based events over an Apache Kafka event bus.",
+        "guid": "3853e8d0-e343-400c-83cb-3918fed81da6",
+        "qualifiedName": "Configuration Document JSON database Connector",
+        "displayName": "Configuration Document JSON database Connector",
+        "description": "Custom built connector to store configuration documents in JSON Document database.",
         "connectorProviderClassName": "org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider"
     },
     "endpoint": 
@@ -119,11 +138,11 @@ POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/stores/c
             "elementTypeDescription": "Description of the network address and related information needed to call a software service.",
             "elementOrigin": "CONFIGURATION"
         },
-        "guid": "b4ae2f8c-5f65-4ed7-8762-1ef2aa958db5",
-        "qualifiedName": "open-metadata/ConfigTopic",
-        "displayName": "open-metadata/ConfigTopic",
-        "description": "ConfigTopic",
-        "address": "open-metadata/admin-services/ConfigTopic"
+        "guid": "b4ab2f8c-5f55-4ed7-8762-1ef2ab958db5",
+        "qualifiedName": "open-metadata/ConfigDocStore",
+        "displayName": "open-metadata/ConfigDocStore",
+        "description": "Location of the configuration document store",
+        "address": "common-services/open-metadata/ConfigDocStore/Production"
     }
 }
 ```
@@ -132,21 +151,23 @@ The admin services also support a GET request to inspect the setting of the conn
 and a DELETE request to clear the connection setting back to null (default).
 Both requests use the same URL.
 
-### Setting descriptive properties for a server
+### Setting descriptive properties for a logical OMAG server
 
 The descriptive properties are used in logging and events originating
-from a server. 
+from a logical OMAG server. 
 
 #### Set server type name
 
-The server type name should be set to something that describes the OMAG
+The server type name should be set to something that describes the logical OMAG
 Server's role.
 It may be the name of a specific product that it is enabling, or a role
 in the metadata and governance landscape.
 In the example below, the server type is set to "Repository proxy for IBM IGC"
 
 ```
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName="Repository proxy for IBM IGC"
+
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName="CDO Office Metadata Repository"
+
 ```
 
 #### Set organization name
@@ -156,7 +177,9 @@ team supported by the server.
 Here the organization name is set to "Clinical Trials".
 
 ```
+
 POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/organization-name?name="Clinical Trials"
+
 ```
 
 ### Setting up the event bus
