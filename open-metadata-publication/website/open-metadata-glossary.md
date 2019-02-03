@@ -11,6 +11,7 @@
   * [Asset Owner](../../open-metadata-implementation/access-services/asset-owner)
   * [Community Profile OMAS](../../open-metadata-implementation/access-services/community-profile)
   * [Connected Asset OMAS](../../open-metadata-implementation/access-services/connected-asset)
+  * [Data Engine OMAS](../../open-metadata-implementation/access-services/data-engine)
   * [Data Infrastructure OMAS](../../open-metadata-implementation/access-services/data-infrastructure)
   * [Data Platform OMAS](../../open-metadata-implementation/access-services/data-platform)
   * [Data Privacy OMAS](../../open-metadata-implementation/access-services/data-privacy)
@@ -91,6 +92,7 @@
 
 ## D
 
+* [Data Engine OMAS](../../open-metadata-implementation/access-services/data-engine)
 * [Data Infrastructure OMAS](../../open-metadata-implementation/access-services/data-infrastructure)
 * [Data Platform OMAS](../../open-metadata-implementation/access-services/data-platform)
 * [Data Privacy OMAS](../../open-metadata-implementation/access-services/data-privacy)
@@ -177,10 +179,11 @@
 * [omag.server.servername.config file](../../open-metadata-implementation/repository-services/docs/component-descriptions/connectors/cohort-registry-store-connector.md)
 * [OMAS - Open Metadata Access Services](../../open-metadata-implementation/access-services)
   * [Asset Catalog OMAS](../../open-metadata-implementation/access-services/asset-catalog)
-  * [Asset Consumer](../../open-metadata-implementation/access-services/asset-consumer)
-  * [Asset Owner](../../open-metadata-implementation/access-services/asset-owner)
+  * [Asset Consumer OMAS](../../open-metadata-implementation/access-services/asset-consumer)
+  * [Asset Owner OMAS](../../open-metadata-implementation/access-services/asset-owner)
   * [Community Profile OMAS](../../open-metadata-implementation/access-services/community-profile)
   * [Connected Asset OMAS](../../open-metadata-implementation/access-services/connected-asset)
+  * [Data Engine OMAS](../../open-metadata-implementation/access-services/data-engine)
   * [Data Infrastructure OMAS](../../open-metadata-implementation/access-services/data-infrastructure)
   * [Data Platform OMAS](../../open-metadata-implementation/access-services/data-platform)
   * [Data Privacy OMAS](../../open-metadata-implementation/access-services/data-privacy)
@@ -245,6 +248,7 @@
   * [configuration-store-connectors](../../open-metadata-implementation/adapters/open-connectors/configuration-store-connectors)
   * [connected-asset](../../open-metadata-implementation/access-services/connected-asset)
   * [connector-configuration-factory](../../open-metadata-implementation/adapters/open-connectors/connector-configuration-factory)
+  * [data-engine](../../open-metadata-implementation/access-services/data-engine)
   * [data-infrastructure](../../open-metadata-implementation/access-services/data-infrastructure)
   * [data-platform](../../open-metadata-implementation/access-services/data-platform)
   * [data-privacy](../../open-metadata-implementation/access-services/data-privacy)
@@ -315,7 +319,7 @@
 
 ## S
 
-* [Samples](../../open-metadata-resources)
+* [Samples](../../open-metadata-resources/open-metadata-samples)
 * [Search API](../../open-metadata-implementation/access-services/asset-catalog)
 * [Security Officer OMAS](../../open-metadata-implementation/access-services/security-officer)
 * [Server Capabilities](../../open-metadata-implementation/access-services/docs/concepts/server-capabilities)
@@ -340,6 +344,7 @@
   * [InTopic](../../open-metadata-implementation/access-services/docs/concepts/client-server/in-topic.md)
   * [OMRS Topic](../../open-metadata-implementation/repository-services/docs/omrs-event-topic.md)
   * [OutTopic](../../open-metadata-implementation/access-services/docs/concepts/client-server/out-topic.md)
+* [Tutorials](../../open-metadata-resources/open-metadata-tutorials)  
 * [Type Definitions (TypeDefs)](../../open-metadata-implementation/repository-services/docs/open-metadata-type-definitions.md)
 
 
