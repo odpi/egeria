@@ -38,6 +38,12 @@ involved in reviewing and crowd-sourcing knowledge about the data assets and the
   The Connected Asset OMAS implements the open metadata ConnectedAssetProperties API for an OCF connector.
 An OCF connector is a connector that supports the [Open Connector Framework (OCF)](../frameworks/open-connector-framework).
 
+* **[data-engine](data-engine)** - exchange metadata with a data processing engine.
+                                   
+  The Data Engine OMAS provides APIs and events for a data movement/processing
+engine to record the changes it is making the the data landscape. 
+This information forms a key part of asset lineage.
+
 * **[data-infrastructure](data-infrastructure)** - manage metadata about deployed infrastructure.
 
   The Data Infrastructure OMAS provides support for the design and planning of the information infrastructure
@@ -59,10 +65,10 @@ in their organization.
 This includes managing privacy impact assessments and reviews of software services
 that use personal data as they move through their development, deployment and use.
 
-* **[data-process](data-process)** - exchange metadata with a data processing engine.
+* **[data-process](data-process)** - exchange metadata about processes.
 
-  The Information Process OMAS provides the ability to manage process metadata that is used to provide design metadata.
-It is used by data engineering tools such as ETL design tools.
+  The Process Design OMAS provides the ability to manage process flow metadata.
+It is used by business process modelling tools.
 
 * **[data-science](data-science)** - manage metadata for analytics.
 
