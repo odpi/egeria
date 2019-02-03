@@ -1437,11 +1437,138 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
+    
+    
+    
+    
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/is-a-type-ofs/{guid}")
     public SubjectAreaOMASAPIResponse restoreTermIsaTypeOfRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
         return restAPI.restoreTermISATypeOF(serverName,userId,guid);
     }
+
+
+    /**
+     *  Create a termCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     *
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param termCategorizationRelationship the TermCategorizationRelationship relationship
+     * @return response, when successful contains the created termCategorizationRelationship relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * <li> InvalidParameterException            one of the parameters is null or invalid.
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
+     * <li> ClassificationException              Error processing a classification
+     * <li> StatusNotSupportedException          A status value is not supported
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/term-categorizations")
+    public SubjectAreaOMASAPIResponse createTermCategorization(@PathVariable String serverName,@PathVariable String userId, @RequestBody TermCategorizationRelationship  termCategorizationRelationship)
+    {
+        return  restAPI.createTermCategorization(serverName, userId, termCategorizationRelationship);
+    }
+
+    /**
+     * Get a termCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the termCategorizationRelationship relationship to get
+     * @return response which when successful contains the termCategorizationRelationship relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/term-categorizations/{guid}")
+    public SubjectAreaOMASAPIResponse getTermCategorizationRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+        return restAPI.getTermCategorizationRelationship(serverName, userId,guid);
+    }
+
+    /**
+     * Update a termCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param isatypeof   the is-a-type-of relationship
+     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the created termCategorization Relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * <li> InvalidParameterException            one of the parameters is null or invalid.
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
+     * <li> ClassificationException              Error processing a classification
+     * <li> StatusNotSupportedException          A status value is not supported
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/term-categorizations")
+    public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermCategorizationRelationship isatypeof,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
+        return restAPI.updateTermCategorizationRelationship(serverName, userId,isatypeof,isReplace);
+    }
+
+
+    /**
+     * Delete a TermCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the TermCategorizationRelationship relationship to delete
+     * @param isPurge true indicates a hard delete, false is a soft delete.
+     * @return response which when successful contains the TermCategorizationRelationship relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
+     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/term-categorizations/{guid}")
+    public SubjectAreaOMASAPIResponse deleteTermCategorizationRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+        if (isPurge == null) {
+            // default to soft delete if isPurge is not specified.
+            isPurge = false;
+        }
+        return restAPI.deleteTermCategorizationRelationship(serverName, userId,guid,isPurge);
+    }
+    /**
+     * Restore a TermCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     *
+     * Restore allows the deleted TermCategorization Relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Term Is a Type Of Relationship to delete
+     * @return response which when successful contains the restored TermCategorization
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/term-categorizations/{guid}")
+    public SubjectAreaOMASAPIResponse restoreTermCategorizationRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
+    {
+        return restAPI.restoreTermCategorizationRelationship(serverName,userId,guid);
+    }
+    
+
 
     /**
      * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.

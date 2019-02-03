@@ -20,7 +20,7 @@ describe spine object.
 Note that a term may be a spine object and/or a spine attribute and/or an object identifier at the same time.
 
 * **TermHASARelationship** - is a term relationship between a term representing a SpineObject and a term representing a SpineAttribute.
-* **TermISATYPEOFRelationship** - is a term relationship between two SpineObjects saying that one is the sybtype (specialisation) of the other.
+* **TermISATYPEOFRelationship** - is a term relationship between two SpineObjects saying that one is the subtype (specialisation) of the other.
 * **TermTYPEDBYRelationship** - is a term relationship between a SpineAttribute and a SpineObject to say that the SpineAttribute is implemented using a type represented by the **SpineObject**.
 
 

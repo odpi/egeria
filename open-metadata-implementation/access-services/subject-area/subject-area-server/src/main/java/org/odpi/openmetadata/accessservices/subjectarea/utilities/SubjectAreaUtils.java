@@ -20,6 +20,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Antonym.Antonym;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermAnchor.TermAnchor;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermHASARelationship.TermHASARelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermISATypeOFRelationship.TermISATypeOFRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermTYPEDBYRelationship.TermTYPEDBYRelationship;
@@ -466,18 +467,20 @@ public class SubjectAreaUtils {
                     // TODO
                 break;
                         // term to asset
-                case "SemanticAssignmentRelationship":
+                case "SemanticAssignment":
                     omasLine =SemanticAssignmentMapper.mapOMRSRelationshipBeanToSemanticAssignment((SemanticAssignment) omrsLine);
                 break;
                         // category to term
-                case "TermCategorizationRelationship":
-                    // TODO
+                case "TermCategorization":
+                   omasLine = TermCategorizationMapper.mapOMRSRelationshipBeanToTermCategorization((TermCategorization) omrsLine);
                 break;
+                // Term to glossary
                 case "TermAnchor":
                     omasLine =TermAnchorMapper.mapOMRSRelationshipBeanToTermAnchor((TermAnchor) omrsLine);
                     break;
+                // Category to glossary
                 case "CategoryAnchor":
-                    // TODO
+                    omasLine = CategoryAnchorMapper.mapOMRSRelationshipBeanToCategoryAnchor((CategoryAnchor) omrsLine);
                     break;
             }
             if (omasLine!=null) {

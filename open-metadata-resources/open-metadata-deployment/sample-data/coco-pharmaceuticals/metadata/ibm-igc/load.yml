@@ -109,8 +109,8 @@
           name: CocoPharma_{{ db_name }}_{{ egeria_samples_cocopharma_db_type }}
           description: "CocoPharma PostgreSQL connection"
           data_source: "CocoPharma_{{ db_name | upper }}"
-          username: "{{ egeria_samples_credentials.db_owner }}"
-          password: "{{ egeria_samples_credentials.db_passwd }}"
+          username: "{{ egeria_samples_db_credentials.owner }}"
+          password: "{{ egeria_samples_db_credentials.passwd }}"
         assets_to_import:
           - "schema[{{ db_name | upper }}|public]"
         hostname: "{{ groups['egeria-samples-db-host'][0] | upper }}"
@@ -164,8 +164,8 @@
           name: CocoPharma_{{ db_name }}_{{ egeria_samples_cocopharma_db_type }}
           description: "CocoPharma MariaDB connection"
           data_source: "CocoPharma_{{ db_name | upper }}"
-          username: "{{ egeria_samples_credentials.db_owner }}"
-          password: "{{ egeria_samples_credentials.db_passwd }}"
+          username: "{{ egeria_samples_db_credentials.owner }}"
+          password: "{{ egeria_samples_db_credentials.passwd }}"
         assets_to_import:
           - "schema[{{ db_name | upper }}|{{ db_name | upper }}]"
         hostname: "{{ groups['egeria-samples-db-host'][0] | upper }}"
