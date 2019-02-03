@@ -5,8 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermCategorization;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermCategorization;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermCategorizationRelationship;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -14,14 +13,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * TermCategorizationResponse is the response structure used on the Subject Area OMAS REST API calls that returns a
- * TermCategorization object as a response.
+ * TermCategorizationRelationship object as a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TermCategorizationRelationshipResponse extends SubjectAreaOMASAPIResponse
 {
-    private TermCategorization termCategorization = null;
+    private TermCategorizationRelationship termCategorization = null;
 
     /**
      * Default constructor
@@ -30,23 +29,23 @@ public class TermCategorizationRelationshipResponse extends SubjectAreaOMASAPIRe
     {
         this.setResponseCategory(ResponseCategory.TermCategorizationRelationship);
     }
-    public TermCategorizationRelationshipResponse(TermCategorization termCategorization)
+    public TermCategorizationRelationshipResponse(TermCategorizationRelationship termCategorization)
     {
         this();
         this.termCategorization =termCategorization;
     }
 
     /**
-     * Return the TermCategorization object.
+     * Return the TermCategorizationRelationship object.
      *
      * @return TermCategorizationRelationshipResponse
      */
-    public TermCategorization getTermCategorization()
+    public TermCategorizationRelationship getTermCategorization()
     {
         return termCategorization;
     }
 
-    public void setTermCategorization(TermCategorization termCategorization)
+    public void setTermCategorization(TermCategorizationRelationship termCategorization)
     {
         this.termCategorization = termCategorization;
     }
