@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-## Cohort demonstration using the Egeria In Memory Metadata Repository
+# Cohort demonstration using the Egeria In Memory Metadata Repository
   
 In memory metadata repositories can be used with Egeria for demonstrations of Egeria capabilities without needing to install 
 another metadata repository. This is <em>NOT</em> for production.
@@ -11,19 +11,21 @@ another metadata repository. This is <em>NOT</em> for production.
 > Figure 1: Cohort set up for demo
         
     
-#### Docker    
+## Docker    
 This demo involves starting 2 [OMAG Server Platforms](../../../open-metadata-publication/website/omag-server)
-called `myservera` and `myserverb` as part of one cohort called `cocoCohort`.
+each running logical server instances
+called `myservera` and `myserverb` connected together as part of an
+[open metadata repository cohort](../../../open-metadata-implementation/repository-services/docs/open-metadata-repository-cohort.md) called `cocoCohort`.
 Apache Kafka is used to publish and consume events, resulting in the metadata being synchronised
 between the 2 metadata repositories.
 
-The demo uses Apache Kafka in a Docker container. See **[Kafka-Docker.md](Kafka-Docker.md)** for details on how to set this up   
+The demo uses [Apache Kafka](http://kafka.apache.org/) in a Docker container. See **[Kafka-Docker](Kafka-Docker.md)** for details on how to set this up   
   
-#### Egeria setup 
-Start an OMAG Server Platform either from the
+## Egeria setup 
+Start an OMAG server platform either from the
 [Egeria install](../../open-metadata-tutorials/omag-server-tutorial/task-starting-the-omag-server.md) or from IntelliJ.
 
-You can start the omag server in IntelliJ - here is the configuration for port 8080. 
+Here is the IntelliJ configuration for an OMAG server platform using port 8080. 
 
 ![Figure 2:](IntelliJ-OMAGServerPlatform-run-configuration.png)
 > Figure 2: OMAG Server Platform run configuration for port 8080
@@ -69,10 +71,16 @@ POST localhost:8080/open-metadata/admin-services/users/david/servers/myservera/i
 
 Wait for the last REST call to complete. If you have info logging om Kafka issues logging to the console for each publish of a type.
 
-Repeat the above commands with POST localhost:8081/open-metadata/admin-services/users/david/servers/myserverb
+Repeat the above commands for OMAG server platform running `serverb`. 
+
+```console
+
+POST localhost:8081/open-metadata/admin-services/users/david/servers/myserverb/...
+
+```
 
 
-#### Using the Subject Area OMAS to test the synchronization
+## Using the Subject Area OMAS to test the synchronization
  
 ```console
 POST localhost:8080/open-metadata/access-services/subject-area/users/david/glossaries
@@ -85,7 +93,7 @@ POST localhost:8080/open-metadata/access-services/subject-area/users/david/gloss
 ```
 
  The response should be something like : 
-```console
+```json
 {
               "class": "GlossaryResponse",
               "relatedHTTPCode": 200,
@@ -117,17 +125,28 @@ POST localhost:8080/open-metadata/access-services/subject-area/users/david/gloss
 ```
 Note the guid and issue a get to other server (8081). 
 ```console
+
 localhost:8081/open-metadata/access-services/subject-area/users/david/glossaries/9b08873e-5317-4199-9c5e-a7213947f271
+
 ```          
 You should get the glossary back. 
 
 #### Working with Egeria 
 
 Be aware that files are created for the config and registry store. They will be
+
 ```console
+
 omag.server.myservera.config
 omag.server.myserverb.config
 myservera.cocoCohort.registrystore
 myserverb.cocoCohort.registrystore
+
 ```
-If you want to start a clean system, you should delete these files.
+If you want to start a clean system, you should delete these files and restart the servers.
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.
