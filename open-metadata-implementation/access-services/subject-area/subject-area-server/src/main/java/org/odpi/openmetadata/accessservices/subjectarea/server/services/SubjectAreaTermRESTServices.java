@@ -307,82 +307,28 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         SubjectAreaOMASAPIResponse response =null;
         try
         {
-            // initialise omrs API helper with the right instance based on the server name
-            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
-            if (offset ==null) {
-                offset = new Integer(0);
-            }
-            if (pageSize == null) {
-                pageSize = new Integer(0);
-            }
-            if (sequencingProperty !=null) {
-                try {
-                    sequencingProperty = URLDecoder.decode(sequencingProperty,"UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    // TODO error
-                }
-            }
-            SequencingOrder omrsSequencingOrder =  SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
-            Set<Line> omrsTermRelationships = subjectAreaOmasREST.getGlossaryTermRelationships(
-                    userId,
-                    guid,
-                    null,
-                    offset,
-                    asOfTime,
-                    sequencingProperty,
-                    omrsSequencingOrder,
-                    pageSize);
-            List<Line> termRelationships = SubjectAreaUtils.convertOMRSLinesToOMASLines(omrsTermRelationships);
-            //TODO change the follow to a while loop . refactor to a method so it can be reused for find.
-
-            int sizeToGet = 0;
-            if (omrsTermRelationships.size() > termRelationships.size()) {
-                sizeToGet = omrsTermRelationships.size() - termRelationships.size();
+                // initialise omrs API helper with the right instance based on the server name
+                SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
+                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+                // check that the guid is that of a Glossary Tern by getting it by guid
+                subjectAreaOmasREST.getGlossaryTermById(userId, guid);
+                response = getRelationshipsFromGuid(serverName,userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            } catch (MetadataServerUncontactableException e) {
+                OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+            } catch (UserNotAuthorizedException e) {
+                OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+            } catch (InvalidParameterException e) {
+                response = OMASExceptionToResponse.convertInvalidParameterException(e);
+            } catch (UnrecognizedGUIDException e) {
+                response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
             }
 
-            while (sizeToGet >0) {
-
-                // there are more relationships we need to get
-                omrsTermRelationships = subjectAreaOmasREST.getGlossaryTermRelationships(
-                        userId,
-                        guid,
-                        null,
-                        offset + sizeToGet,
-                        asOfTime,
-                        sequencingProperty,
-                        omrsSequencingOrder,
-                        sizeToGet);
-                if (omrsTermRelationships != null) {
-                    sizeToGet = getSizeToGet(omrsTermRelationships, termRelationships);
-                    offset = +sizeToGet;
-                }
+            if (log.isDebugEnabled())
+            {
+                log.debug("<== successful method : " + methodName + ",userId=" + userId + ", Response=" + response);
             }
-            response =new TermRelationshipsResponse(termRelationships);
-        } catch (InvalidParameterException e)
-        {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        } catch (UserNotAuthorizedException e)
-        {
-            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-        } catch (MetadataServerUncontactableException e)
-        {
-            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-        } catch (UnrecognizedGUIDException e)
-        {
-            response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
-        } catch (FunctionNotSupportedException e)
-        {
-            //should not occur as it is issued when a type guid is supplied - we supply null. TODO appropriate error/log
-        }
+            return response;
 
-
-        if (log.isDebugEnabled())
-        {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", Response=" + response);
-        }
-        return response;
     }
     /**
      * Find Term
@@ -454,22 +400,6 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", Response=" + response);
         }
         return response;
-
-
-    }
-
-
-    private int getSizeToGet(Set<Line> omrsTermRelationships, List<Line> termRelationships) {
-        int sizeToGet =0;
-        List<Line> moreTermRelationships = SubjectAreaUtils.convertOMRSLinesToOMASLines(omrsTermRelationships);
-        if ( moreTermRelationships !=null && moreTermRelationships.size() >0) {
-            for (Line moreTermRelationship : moreTermRelationships) {
-                termRelationships.add(moreTermRelationship);
-            }
-            sizeToGet = omrsTermRelationships.size() - moreTermRelationships.size();
-
-        }
-        return sizeToGet;
     }
 
     /**
