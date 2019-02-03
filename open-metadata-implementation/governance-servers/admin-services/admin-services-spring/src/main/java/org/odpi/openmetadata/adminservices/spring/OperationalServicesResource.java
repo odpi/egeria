@@ -120,4 +120,23 @@ public class OperationalServicesResource
         return operationalServices.getActiveConfiguration(userId, serverName);
     }
 
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param fileName name of the open metadata archive file.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or fileName parameter.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/instance/open-metadata-archives/file")
+
+    public VoidResponse addOpenMetadataArchiveFile(@PathVariable String userId,
+                                                   @PathVariable String serverName,
+                                                   @RequestParam String fileName)
+    {
+        return operationalServices.addOpenMetadataArchiveFile(userId, serverName, fileName);
+    }
 }
