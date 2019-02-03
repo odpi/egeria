@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public class OMAGServerAdminServices
 {
-    private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
+    private OMAGServerAdminStoreServices   configStore  = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
 
     /*

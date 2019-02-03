@@ -46,12 +46,12 @@ public enum OMAGErrorCode
     NULL_USER_NAME(400, "OMAG-ADMIN-400-003 ",
             "OMAG server {0} has been called with a null user name (userId)",
             "The system is unable to configure the local server.",
-            "The user name name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
+            "The user name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
     NULL_COHORT_NAME(400, "OMAG-ADMIN-400-006 ",
             "OMAG server {0} has been configured with a null cohort name",
             "The system is unable to configure the local server.",
-            "The service mode is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
+            "The cohort name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
 
     LOCAL_REPOSITORY_MODE_NOT_SET(400, "OMAG-ADMIN-400-007 ",
             "The local repository mode has not been set for OMAG server {0}",
@@ -114,9 +114,19 @@ public enum OMAGErrorCode
     EMPTY_CONFIGURATION(400, "OMAG-ADMIN-400-018 ",
             "OMAG server {0} has been called with a configuration document that has no services configured",
             "The requested server provides no function.",
-            "Use the administration services to add configuration for OMAG services to the server's configuration document.")
+            "Use the administration services to add configuration for OMAG services to the server's configuration document."),
 
-    ;
+    NULL_ACCESS_SERVICE_ROOT_URL(400, "OMAG-ADMIN-400-006 ",
+            "The {0} service of OMAG server {1} has been configured with a null root URL for the {2} access service",
+            "The system is unable to accept this value in the configuration properties.",
+            "The root URL is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
+
+    NULL_ACCESS_SERVICE_SERVER_NAME(400, "OMAG-ADMIN-400-006 ",
+            "OMAG server {0} has been configured with a null cohort name",
+            "The system is unable to accept this value in the configuration properties.",
+            "The server name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can operate correctly."),
+
+            ;
 
     private int    httpErrorCode;
     private String errorMessageId;

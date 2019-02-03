@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}")
-public class OMAGServerOriginResource
+public class ServerOriginResource
 {
     OMAGServerOriginServices   originAPI = new OMAGServerOriginServices();
 
