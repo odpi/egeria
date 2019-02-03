@@ -17,7 +17,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
-public class OMAGServerAccessServicesAdminResource
+public class ConfigAccessServicesResource
 {
     private OMAGServerAdminForAccessServices adminAPI = new OMAGServerAdminForAccessServices();
 
