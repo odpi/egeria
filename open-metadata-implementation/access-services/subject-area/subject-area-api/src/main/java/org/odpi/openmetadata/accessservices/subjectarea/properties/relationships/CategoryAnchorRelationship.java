@@ -20,7 +20,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
 
 /**
- * CategoryAnchor is a relationship between an entity of type Glossary and an entity of type GlossaryCategory.
+ * CategoryAnchorRelationship is a relationship between an entity of type Glossary and an entity of type GlossaryCategory.
  * The ends of the relationship are stored as entity proxies, where there is a 'proxy' name by which the entity type is known.
  * The first entity proxy has anchor as the proxy name for entity type Glossary.
  * The second entity proxy has categories as the proxy name for entity type GlossaryCategory.
@@ -32,9 +32,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CategoryAnchor extends Line {
-    private static final Logger log = LoggerFactory.getLogger(CategoryAnchor.class);
-    private static final String className = CategoryAnchor.class.getName();
+public class CategoryAnchorRelationship extends Line {
+    private static final Logger log = LoggerFactory.getLogger(CategoryAnchorRelationship.class);
+    private static final String className = CategoryAnchorRelationship.class.getName();
 
    //public java.util.Set<String> propertyNames = new HashSet<>();
       public static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
@@ -61,17 +61,17 @@ public class CategoryAnchor extends Line {
       public static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
       public static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
       public static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
-    protected String entity1Guid;
-    protected String entity2Guid;
+      protected String categoryGuid;
+      protected String glossaryGuid;
 
 
-    public CategoryAnchor() {
+    public CategoryAnchorRelationship() {
         initialise();
     }
 
     private void initialise()
     {
-       name = "CategoryAnchor";
+       name = "CategoryAnchorRelationship";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);
@@ -86,14 +86,14 @@ public class CategoryAnchor extends Line {
         typeDefGuid = "c628938e-815e-47db-8d1c-59bb2e84e028";
     }
 
-    public CategoryAnchor(Line template) {
+    public CategoryAnchorRelationship(Line template) {
         super(template);
         initialise();
     }
 
-    public CategoryAnchor(Relationship omrsRelationship) {
+    public CategoryAnchorRelationship(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "CategoryAnchor";
+        name = "CategoryAnchorRelationship";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);
@@ -118,17 +118,32 @@ public class CategoryAnchor extends Line {
           return instanceProperties;
     }
 
+    public String getCategoryGuid() {
+        return categoryGuid;
+    }
 
-      @Override
+    public void setCategoryGuid(String categoryGuid) {
+        this.categoryGuid = categoryGuid;
+    }
+
+    public String getGlossaryGuid() {
+        return glossaryGuid;
+    }
+
+    public void setGlossaryGuid(String glossaryGuid) {
+        this.glossaryGuid = glossaryGuid;
+    }
+
+    @Override
          public StringBuilder toString(StringBuilder sb)
          {
              if (sb == null)
              {
                  sb = new StringBuilder();
              }
-             sb.append(" CategoryAnchor=");
+             sb.append(" CategoryAnchorRelationship=");
              sb.append(super.toString(sb));
-             sb.append(" CategoryAnchor Attributes{");
+             sb.append(" CategoryAnchorRelationship Attributes{");
              sb.append("}");
              return sb;
          }
