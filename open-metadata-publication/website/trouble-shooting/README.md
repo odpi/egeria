@@ -6,7 +6,7 @@
 This section provides a growing list of hints and tips about
 resolving issues with the ODPi Egeria technology.
 
-* [Errors with the OMAG Server Platform](omag-server)
+* [Errors with the OMAG Server Platform](omag-server-errors)
 
 
 

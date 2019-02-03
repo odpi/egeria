@@ -5,7 +5,7 @@
 
 If you see a series of error messages like this :
 
-```bash
+```text
 
 2019-01-31 20:56:25.800 ERROR 66931 --- [           main] org.apache.catalina.util.LifecycleBase   : Failed to start component [Connector[HTTP/1.1-8080]]
 
@@ -59,7 +59,7 @@ $
 If you get the `ODPi Egeria OMAG Server Platform` response then your OMAG server platform is already running.
 If you get a response like this:
 
-```bash
+```json
 
 {"timestamp":"2019-02-01T15:13:56.749+0000","status":404,"error":"Not Found","message":"No message available","path":"/open-metadata/admin-services/users/fred/server-origin"}
 

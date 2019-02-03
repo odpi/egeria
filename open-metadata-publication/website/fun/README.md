@@ -3,8 +3,7 @@
 
 # Additional contributions by the ODPi Egeria Community
 
-* [Ode to Egeria](ode-to-egeria.md) by David Radley
-  The value of ODPi Egeria in rhyme.
+* [Ode to Egeria](ode-to-egeria.md) by David Radley - The value of ODPi Egeria in rhyme.
 
 
 
