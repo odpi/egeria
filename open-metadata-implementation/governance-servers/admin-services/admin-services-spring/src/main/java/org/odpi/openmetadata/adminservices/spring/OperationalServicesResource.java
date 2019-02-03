@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
-public class OMAGServerOperationalServicesResource
+public class OperationalServicesResource
 {
     private OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
 

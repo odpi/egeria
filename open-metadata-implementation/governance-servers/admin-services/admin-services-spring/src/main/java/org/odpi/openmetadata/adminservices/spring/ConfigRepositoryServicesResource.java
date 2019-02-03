@@ -1,10 +1,10 @@
-/* SPDX-License-Identifier: Apache-2.0 */
+/* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.spring;
 
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
-import org.odpi.openmetadata.adminservices.configuration.properties.*;
-import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
+import org.odpi.openmetadata.adminservices.configuration.properties.CohortConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.LocalRepositoryConfig;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
@@ -12,163 +12,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 /**
- * OMAGServerAdminServices provides part of the server-side implementation of the administrative interface for
- * an Open Metadata and Governance (OMAG) Server.  In particular, this resource supports the configuration
- * of the server name, server type and organization name.  It also supports the setting up of the
- * Open Metadata Repository Services' local repository and cohort.
+ * OMAGServerConfigRepositoryServicesResource provides the configuration services for setting
+ * up the repository services subsystems.
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
-public class OMAGServerAdminResource
+public class ConfigRepositoryServicesResource
 {
     private OMAGServerAdminServices adminAPI = new OMAGServerAdminServices();
 
 
     /*
      * =============================================================
-     * Configure server - basic options using defaults
+     * Configure basic options using defaults
      */
-
-
-    /**
-     * Set up the descriptive type of the server.  This value is added to distributed events to
-     * make it easier to understand the source of events.  The default value is "Open Metadata and Governance Server".
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param typeName  short description for the type of server.
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverType parameter.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/server-type")
-    public VoidResponse setServerType(@PathVariable String userId,
-                                      @PathVariable String serverName,
-                                      @RequestParam String typeName)
-    {
-        return adminAPI.setServerType(userId, serverName, typeName);
-    }
-
-
-    /**
-     * Set up the name of the organization that is running this server.  This value is added to distributed events to
-     * make it easier to understand the source of events.  The default value is null.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param name  String name of the organization.
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or organizationName parameter.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/organization-name")
-    public VoidResponse setOrganizationName(@PathVariable String userId,
-                                            @PathVariable String serverName,
-                                            @RequestParam String name)
-    {
-        return adminAPI.setOrganizationName(userId, serverName, name);
-    }
-
-
-    /**
-     * Set up the user id to use when there is no external user driving the work (for example when processing events
-     * from another server).
-     *
-     * @param userId - user that is issuing the request.
-     * @param serverName - local server name.
-     * @param id - String user is for the server.
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/server-user-id")
-    public VoidResponse setServerUserId(@PathVariable String userId,
-                                        @PathVariable String serverName,
-                                        @RequestParam String id)
-    {
-        return adminAPI.setServerUserId(userId, serverName, id);
-    }
-
-
-    /**
-     * Set an upper limit in the page size that can be requested on a REST call to the server.  The default
-     * value is 1000.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param limit  max number of elements that can be returned on a request.
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or maxPageSize parameter.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/max-page-size")
-    public VoidResponse setMaxPageSize(@PathVariable String  userId,
-                                       @PathVariable String  serverName,
-                                       @RequestParam int     limit)
-    {
-        return adminAPI.setMaxPageSize(userId, serverName, limit);
-    }
-
-
-    /**
-     * Set up the default event bus for embedding in event-driven connector.   The resulting connector will
-     * be used in the OMRS Topic Connector for each cohort, the in and out topics for each Access Service and
-     * the local repositories event mapper.
-     *
-     * When the event bus is configured, it is used only on future configuration.  It does not effect
-     * existing configuration.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName local server name.
-     * @param connectorProvider  connector provider for the event bus (if it is null then Kafka is assumed).
-     * @param topicURLRoot the common root of the topics used by the open metadata server.
-     * @param additionalProperties  property name/value pairs used to configure the connection to the event bus connector
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
-     * OMAGInvalidParameterException invalid serverName or serviceMode parameter.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/event-bus")
-    public VoidResponse setEventBus(@PathVariable                   String              userId,
-                                    @PathVariable                   String              serverName,
-                                    @RequestParam(required = false) String              connectorProvider,
-                                    @RequestParam(required = false) String              topicURLRoot,
-                                    @RequestBody (required = false) Map<String, Object> additionalProperties)
-    {
-        return adminAPI.setEventBus(userId, serverName, connectorProvider, topicURLRoot, additionalProperties);
-    }
-
-
-    /*
-     * =============================================================
-     * Configure local repository
-     */
-
-
-    /**
-     Set up the root URL for this server that is used to construct full URL paths to calls for
-     * this server's REST interfaces that is used by other members of the cohorts that this server
-     * connects to.
-     *
-     * The default value is "localhost:8080".
-     *
-     * ServerURLRoot is used during the configuration of the local repository.  If called
-     * after the local repository is configured, it has no effect.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @param url  String url.
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/server-url-root")
-    public VoidResponse setServerURLRoot(@PathVariable String userId,
-                                         @PathVariable String serverName,
-                                         @RequestParam String url)
-    {
-        return adminAPI.setServerURLRoot(userId, serverName, url);
-    }
 
 
     /**
@@ -203,7 +60,7 @@ public class OMAGServerAdminResource
     @RequestMapping(method = RequestMethod.POST, path = "/local-repository/mode/local-graph-repository")
     public VoidResponse setGraphLocalRepository(@PathVariable                  String userId,
                                                 @PathVariable                  String serverName,
-                                                @RequestBody(required = false) Map<String,Object>  additionalProperties)
+                                                @RequestBody(required = false) Map<String,Object> additionalProperties)
     {
         return adminAPI.setGraphLocalRepository(userId, serverName, additionalProperties);
     }
@@ -241,7 +98,7 @@ public class OMAGServerAdminResource
     @RequestMapping(method = RequestMethod.POST, path = "/local-repository/mode/repository-proxy/connection")
     public VoidResponse setRepositoryProxyConnection(@PathVariable String     userId,
                                                      @PathVariable String     serverName,
-                                                     @RequestBody  Connection connection)
+                                                     @RequestBody Connection connection)
     {
         return adminAPI.setRepositoryProxyConnection(userId, serverName, connection);
     }
@@ -406,7 +263,7 @@ public class OMAGServerAdminResource
 
     /*
      * =============================================================
-     * Configure server - advanced options overriding defaults
+     * Advanced options overriding defaults
      */
 
 
@@ -423,7 +280,7 @@ public class OMAGServerAdminResource
     @RequestMapping(method = RequestMethod.POST, path = "/local-repository/configuration")
     public VoidResponse setLocalRepositoryConfig(@PathVariable String                userId,
                                                  @PathVariable String                serverName,
-                                                 @RequestBody  LocalRepositoryConfig localRepositoryConfig)
+                                                 @RequestBody LocalRepositoryConfig localRepositoryConfig)
     {
         return adminAPI.setLocalRepositoryConfig(userId, serverName, localRepositoryConfig);
     }
@@ -445,32 +302,8 @@ public class OMAGServerAdminResource
     public VoidResponse setCohortConfig(@PathVariable String       userId,
                                         @PathVariable String       serverName,
                                         @PathVariable String       cohortName,
-                                        @RequestBody  CohortConfig cohortConfig)
+                                        @RequestBody CohortConfig cohortConfig)
     {
         return adminAPI.setCohortConfig(userId, serverName, cohortName, cohortConfig);
     }
-
-
-    /*
-     * =============================================================
-     * Query current configuration
-     */
-
-
-    /**
-     * Return the stored configuration document for the server.
-     *
-     * @param userId  user that is issuing the request
-     * @param serverName  local server name
-     * @return OMAGServerConfig properties or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName parameter.
-     */
-    @RequestMapping(method = RequestMethod.GET, path = "/configuration")
-    public OMAGServerConfigResponse getCurrentConfiguration(@PathVariable String userId,
-                                                            @PathVariable String serverName)
-    {
-        return adminAPI.getStoredConfiguration(userId, serverName);
-    }
-
 }
