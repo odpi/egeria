@@ -15,14 +15,14 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-program/users/{userId}/leadership")
 
-public class GovernanceProgramOMASGovernanceLeadershipResource
+public class GovernanceLeadershipResource
 {
     private GovernanceProgramRESTServices  restAPI = new GovernanceProgramRESTServices();
 
     /**
      * Default constructor
      */
-    public GovernanceProgramOMASGovernanceLeadershipResource()
+    public GovernanceLeadershipResource()
     {
     }
 
