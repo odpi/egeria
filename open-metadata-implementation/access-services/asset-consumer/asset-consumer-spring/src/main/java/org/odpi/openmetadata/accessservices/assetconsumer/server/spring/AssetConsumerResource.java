@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/asset-consumer/users/{userId}")
-public class AssetConsumerOMASResource
+public class AssetConsumerResource
 {
     private AssetConsumerRESTServices  restAPI = new AssetConsumerRESTServices();
 
     /**
      * Default constructor
      */
-    public AssetConsumerOMASResource()
+    public AssetConsumerResource()
     {
     }
 
