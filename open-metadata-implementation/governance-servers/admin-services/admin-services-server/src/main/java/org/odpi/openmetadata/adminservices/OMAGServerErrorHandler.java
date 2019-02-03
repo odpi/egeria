@@ -203,6 +203,33 @@ class OMAGServerErrorHandler
 
 
     /**
+     * Validate that the file name is not null.
+     *
+     * @param fileName  fileName passed on the request
+     * @param serverName  server name for this server
+     * @param methodName  method called
+     * @throws OMAGInvalidParameterException the cohort name is null
+     */
+    void validateFileName(String  fileName,
+                          String  serverName,
+                          String  methodName) throws OMAGInvalidParameterException
+    {
+        if (fileName == null)
+        {
+            OMAGErrorCode errorCode    = OMAGErrorCode.NULL_FILE_NAME;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
      * Validate that the metadata collection name is not null.
      *
      * @param name  name passed on the request

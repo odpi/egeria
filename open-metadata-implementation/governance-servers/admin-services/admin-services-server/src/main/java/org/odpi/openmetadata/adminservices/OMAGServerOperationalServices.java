@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adminservices;
 
 
+import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServersDescription;
@@ -12,6 +13,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterEx
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.discoveryengine.admin.DiscoveryEngineOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
@@ -27,8 +29,6 @@ import java.util.List;
  */
 public class OMAGServerOperationalServices
 {
-    private final String   REPOSITORY_SERVICES       = "Repository Services";
-
     private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
     private OMAGServerInstanceMap          instanceMap = new OMAGServerInstanceMap();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
@@ -91,7 +91,9 @@ public class OMAGServerOperationalServices
                                                    String           serverName,
                                                    OMAGServerConfig configuration)
     {
-        final String methodName = "activateWithSuppliedConfig";
+        final String methodName                = "activateWithSuppliedConfig";
+        final String REPOSITORY_SERVICES       = "Repository Services";
+
 
         List<String> activatedServiceList = new ArrayList<>();
 
@@ -563,6 +565,50 @@ public class OMAGServerOperationalServices
             errorHandler.validateUserId(userId, serverName, methodName);
 
             response.setOMAGServerConfig(instance.getOperationalConfiguration());
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            errorHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            errorHandler.captureNotAuthorizedException(response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param fileName name of the open metadata archive file.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or fileName parameter.
+     */
+    public VoidResponse addOpenMetadataArchiveFile(String userId,
+                                                   String serverName,
+                                                   String fileName)
+    {
+        final String methodName = "addOpenMetadataArchiveFile";
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            OMAGOperationalServicesInstance instance = validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateFileName(fileName, serverName, methodName);
+
+            ConnectorConfigurationFactory configurationFactory   = new ConnectorConfigurationFactory();
+            Connection newOpenMetadataArchive = configurationFactory.getOpenMetadataArchiveFileConnection(fileName);
+
+            OMRSOperationalServices  repositoryServicesInstance = instance.getOperationalRepositoryServices();
+
+            repositoryServicesInstance.addOpenMetadataArchive(newOpenMetadataArchive);
         }
         catch (OMAGInvalidParameterException  error)
         {

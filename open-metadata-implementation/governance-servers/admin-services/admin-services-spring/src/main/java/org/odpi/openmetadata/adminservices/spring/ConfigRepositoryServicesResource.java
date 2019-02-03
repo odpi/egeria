@@ -9,6 +9,7 @@ import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -26,6 +27,59 @@ public class ConfigRepositoryServicesResource
      * =============================================================
      * Configure basic options using defaults
      */
+
+    /**
+     * Set up the default audit log for the server.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/audit-log-destinations/default")
+    public VoidResponse setDefaultAuditLog(@PathVariable String userId,
+                                           @PathVariable String serverName)
+    {
+        return adminAPI.setDefaultAuditLog(userId, serverName);
+    }
+
+
+    /**
+     * Add a new open metadata archive to load at startup.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param fileName name of the open metadata archive file.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or fileName parameter.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/open-metadata-archives/file")
+    public VoidResponse addStartUpOpenMetadataArchiveFile(@PathVariable String userId,
+                                                          @PathVariable String serverName,
+                                                          @RequestParam String fileName)
+    {
+        return adminAPI.addStartUpOpenMetadataArchiveFile(userId, serverName, fileName);
+    }
+
+
+    /**
+     * Remove all configuration for a local repository.  The default is no local repository.  This call
+     * can be used to remove subsequent local repository configuration.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    @RequestMapping(method = RequestMethod.DELETE, path = "/local-repository")
+    public VoidResponse setNoRepositoryMode(@PathVariable String userId,
+                                            @PathVariable String serverName)
+    {
+        return adminAPI.setNoRepositoryMode(userId, serverName);
+    }
 
 
     /**
@@ -63,24 +117,6 @@ public class ConfigRepositoryServicesResource
                                                 @RequestBody(required = false) Map<String,Object> additionalProperties)
     {
         return adminAPI.setGraphLocalRepository(userId, serverName, additionalProperties);
-    }
-
-
-    /**
-     * Remove all configuration for a local repository.  The default is no local repository.  This call
-     * can be used to remove subsequent local repository configuration.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName  local server name.
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
-     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
-     */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/local-repository")
-    public VoidResponse setNoRepositoryMode(@PathVariable String userId,
-                                            @PathVariable String serverName)
-    {
-        return adminAPI.setNoRepositoryMode(userId, serverName);
     }
 
 
@@ -265,6 +301,46 @@ public class ConfigRepositoryServicesResource
      * =============================================================
      * Advanced options overriding defaults
      */
+
+
+    /**
+     * Set up the list of audit log destinations.  These destinations are expressed as Connection objects
+     * to the connectors that will handle the audit log records.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param auditLogDestinations list of connection objects
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/audit-log-destinations")
+    public VoidResponse setAuditLogDestinations(@PathVariable String                userId,
+                                                @PathVariable String                serverName,
+                                                @RequestBody  List<Connection>      auditLogDestinations)
+    {
+        return adminAPI.setAuditLogDestinations(userId, serverName, auditLogDestinations);
+    }
+
+
+    /**
+     * Set up the list of open metadata archives.  These are open metadata types and instances that are loaded at
+     * repository start up.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param openMetadataArchives list of connection objects
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/open-metadata-archives")
+    public VoidResponse setOpenMetadataArchives(@PathVariable String           userId,
+                                                @PathVariable String           serverName,
+                                                @RequestBody  List<Connection> openMetadataArchives)
+    {
+        return adminAPI.setOpenMetadataArchives(userId, serverName, openMetadataArchives);
+    }
 
 
     /**
