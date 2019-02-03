@@ -6,7 +6,7 @@
 The OMAG server platform provides a software platform
 for running open metadata and governance services.
 When [the OMAG Server is first started](task-starting-the-omag-server.md),
-it has two sets of APIs active.
+it has two sets of Administration Service APIs active.
 
 * Operations for creating configuration documents.
 * Operations for starting and stopping open metadata and governance services in
@@ -31,9 +31,15 @@ this tutorial uses the [Postman](task-working-with-postman.md) test tool.
 This is a tool that enables you to type in REST API calls and execute them
 against the OMAG server platform.
 
-There is also a [postman collection](./omag-server-platform-tutorial.postman_collection.json)
-that can be downloaded and imported into postman
-(see `Import` button top left of the Postman user interface).
+There is also a postman collection located at:
+
+```text
+
+https://github.com/odpi/egeria/blob/master/open-metadata-resources/open-metadata-tutorials/omag-server-tutorial/resources/omag-server-platform-tutorial.postman_collection.json
+
+```
+that can be downloaded and imported into postman to support this tutorial.
+(see **Import** button top left of the Postman user interface).
 
 Once you have Postman running and have loaded the collection
 you are ready to build configuration documents.
