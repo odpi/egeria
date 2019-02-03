@@ -19,10 +19,10 @@ Figure 1 shows the OMAG server platform when it first starts up.
 ![Figure 1](omag-server-platform-start-up.png)
 > Figure 1: OMAG server platform at start up
 
-The Administration Services are active at this point, while the open metadata and governance services
-will return an error if called since there are no logical OMAG servers running.
+The administration services are active at this point, while the open metadata and governance services
+will return an error if called since there are no [logical OMAG servers](../../../open-metadata-implementation/governance-servers/admin-services/docs/concepts/logical-omag-server.md) running.
 
-The configuration services are used to create configuration documents.  Each configuration document
+The configuration services are used to create [configuration documents](../../../open-metadata-implementation/governance-servers/admin-services/docs/concepts/configuration-document.md).  Each configuration document
 describes the open metadata and governance services that should be activated in a logical OMAG server.
 
 Figure 2 shows the configuration services creating three configuration documents:

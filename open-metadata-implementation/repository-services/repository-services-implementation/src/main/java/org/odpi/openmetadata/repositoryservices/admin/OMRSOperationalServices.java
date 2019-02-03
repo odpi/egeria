@@ -215,7 +215,7 @@ public class OMRSOperationalServices
     public void initialize(RepositoryServicesConfig repositoryServicesConfig)
     {
         final String   actionDescription = "Initialize Open Metadata Repository Operational Services";
-        final String   methodName        = "initialize()";
+        final String   methodName        = "initialize";
         OMRSAuditCode  auditCode;
 
 
@@ -666,6 +666,17 @@ public class OMRSOperationalServices
         metadataHighwayManager.initialize(cohortConfigList);
 
         return metadataHighwayManager;
+    }
+
+
+    /**
+     * Add an open metadata archive to the local repository.
+     *
+     * @param openMetadataArchiveConnection connection to the archive
+     */
+    public void addOpenMetadataArchive(Connection    openMetadataArchiveConnection)
+    {
+        archiveManager.addOpenMetadataArchive(this.getOpenMetadataArchiveStore(openMetadataArchiveConnection));
     }
 
 
