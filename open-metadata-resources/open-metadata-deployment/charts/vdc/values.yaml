@@ -14,20 +14,25 @@ service:
   # Review output from 'kubectl get services' to see the external port used
   type: NodePort
   externalName:  default.svc.cluster.local
+
   loadbalancer:
+    enabled: false
     iptype: public
     publicip: <undefined>
   # Currently IBMCloud is the only supported setting, and enabled additional Ingress rules. Comment out for other platforms
-  cloud: IBMICP
+
   ingress:
     # Update this with your own domain
+    enabled: false
     externaldomain: egeriadev.eu-gb.containers.appdomain.cloud
+    cloudservice: IBMCloud
+
   # If type is NodePort, these are the ports we will request - but if not free, another will be allocated
   # and then things may not work externally. LoadBalancer & Ingress are recommended if possible.
   # Ports are required to be in the range 30000-32767 for IBM Cloud
   nodeport:
     egeria: 30080
-    atlas: 11000
+    atlas: 31000
     igcproxy: 30081
     gaian: 30414
     postgresql: 30432
@@ -35,8 +40,21 @@ service:
     ranger: 32080
     rangersecure: 30182
     # Set this to address of one of the local nodes - public IP
-    externalip: 10.10.1.30
+  externalip: 10.10.1.30
     # KAFKA is not exposed externally (issues in chart, complexity)
+
+# IGC configuration
+igc:
+  host: 158.176.66.119
+  webport: 9446
+  kafkaport: 59092
+  auth:
+    os:
+      user: ibm
+      pass: letme1n2
+    app:
+      user: isadmin
+      pass: isadmin
 
 # The following section defines all of the DOCKER images being used by this
 # chart. Normally they should be left as is, but are exposed here in case the
@@ -51,7 +69,7 @@ service:
 image:
   ranger:
     repository: planetf1/ranger-admin-egeriavdc
-    tag: 0.2.1
+    tag: 0.2.2
     pullPolicy: IfNotPresent
 
   mariadb:
@@ -61,7 +79,7 @@ image:
 
   egeria:
     repository: planetf1/egeria-egeriavdc
-    tag: 0.1.7
+    tag: 0.1.8
     pullPolicy: IfNotPresent
 
   gaian:
@@ -71,7 +89,7 @@ image:
 
   atlas:
     repository: planetf1/atlas-1773-egeria
-    tag: 0.1.9
+    tag: 0.1.10
     pullPolicy: IfNotPresent
 
   atlasinit:
@@ -81,7 +99,7 @@ image:
 
   igcproxy:
     repository: planetf1/egeria-egeriavdc
-    tag: 0.1.6
+    tag: 0.1.8
     pullPolicy: IfNotPresent
 
   kafkamonitor:
@@ -101,7 +119,7 @@ image:
 
   postgresqlinit:
     repository: planetf1/postgresql-init-egeria
-    tag: 0.1.10
+    tag: 0.1.13
     pullPolicy: IfNotPresent
 
   postgresql:
@@ -111,7 +129,7 @@ image:
 
   ui:
     repository: planetf1/egeria-egeriavdc
-    tag: 0.1.7
+    tag: 0.1.8
     pullPolicy: IfNotPresent
 
   nameOverride: ""
