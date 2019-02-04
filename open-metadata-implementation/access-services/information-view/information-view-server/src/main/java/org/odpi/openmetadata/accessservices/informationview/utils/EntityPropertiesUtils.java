@@ -95,9 +95,27 @@ public class EntityPropertiesUtils {
             return true;
         if (value1 == value2)
             return true;
+        if(value1 == null || value2 == null){
+            return false;
+        }
         if (value1 instanceof PrimitivePropertyValue && value2 instanceof PrimitivePropertyValue) {
             if (((PrimitivePropertyValue) value1).getPrimitiveDefCategory() == ((PrimitivePropertyValue) value2).getPrimitiveDefCategory()) {
-                return (((PrimitivePropertyValue) value1).getPrimitiveValue().equals(((PrimitivePropertyValue) value2).getPrimitiveValue()));
+
+
+                Object primitiveValue1 = ((PrimitivePropertyValue) value1).getPrimitiveValue();
+                Object primitiveValue2 = ((PrimitivePropertyValue) value2).getPrimitiveValue();
+
+                if(primitiveValue1 == null && primitiveValue2 == null){
+                    return true;
+                }
+
+                if(primitiveValue1 == null || primitiveValue2 != null){
+                    return false;
+                }
+
+                return primitiveValue1.equals(primitiveValue2);
+
+
             }
         }
         return false;
