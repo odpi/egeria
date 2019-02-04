@@ -17,11 +17,13 @@ spec:
   ports:
   - name: "postgresql"
     port: 5432
-    targetPort: {{ .Values.service.nodeport.egeria }}
+    targetPort: 5421
+    nodePort: {{ .Values.service.nodeport.egeria }}
   - name: "postgresql-ssh"
     port: 22
+    targetPort: 22
+    #nodePort
     # We don't want to expose this with nodeport ( TODO : move to separate service definition )
-    targetPort: 0
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}

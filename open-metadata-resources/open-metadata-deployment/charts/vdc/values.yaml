@@ -24,16 +24,16 @@ service:
     externaldomain: egeriadev.eu-gb.containers.appdomain.cloud
   # If type is NodePort, these are the ports we will request - but if not free, another will be allocated
   # and then things may not work externally. LoadBalancer & Ingress are recommended if possible.
-  # Ports are defaults+20000, and +1 where there is a clash.
+  # Ports are required to be in the range 30000-32767 for IBM Cloud
   nodeport:
-    egeria: 28080
-    atlas: 41000
-    igcproxy: 28081
-    gaian: 26414
-    postgresql: 25432
-    ui: 28443
-    ranger: 26080
-    rangersecure: 26182
+    egeria: 30080
+    atlas: 11000
+    igcproxy: 30081
+    gaian: 30414
+    postgresql: 30432
+    ui: 30443
+    ranger: 32080
+    rangersecure: 30182
     # Set this to address of one of the local nodes - public IP
     externalip: 10.10.1.30
     # KAFKA is not exposed externally (issues in chart, complexity)

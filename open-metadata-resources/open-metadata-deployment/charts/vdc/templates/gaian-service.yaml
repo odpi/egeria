@@ -16,7 +16,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
   - port: 6414
-    targetPort: {{ .Values.service.nodeport.gaian }}
+    targetPort: 6414
+    nodePort: {{ .Values.service.nodeport.gaian }}
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
