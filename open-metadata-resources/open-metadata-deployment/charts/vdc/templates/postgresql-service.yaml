@@ -17,8 +17,8 @@ spec:
   ports:
   - name: "postgresql"
     port: 5432
-    targetPort: 5421
-    nodePort: {{ .Values.service.nodeport.egeria }}
+    targetPort: 5432
+    nodePort: {{ .Values.service.nodeport.postgresql }}
   - name: "postgresql-ssh"
     port: 22
     targetPort: 22

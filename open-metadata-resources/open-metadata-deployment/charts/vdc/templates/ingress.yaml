@@ -1,7 +1,7 @@
 # <!-- SPDX-License-Identifier: Apache-2.0 -->
 # Copyright Contributors to the Egeria project
 
-        {{ if eq .Values.service.cloud "IBMCloud" }}
+        {{ if .Values.service.ingress.enabled  }}
 
 apiVersion: extensions/v1beta1
 kind: Ingress
