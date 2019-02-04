@@ -10,18 +10,16 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: gaian-service
 
-  name: gaian
+  name: {{ include "myapp.fullname" . }}-gaian-service
 
 spec:
-  type: "{{ .Values.service.type }}"
+  type: {{ .Values.service.type }}
   ports:
-  - name: "gaian"
-    port: 6414
+  - port: 6414
     targetPort: 6414
+    nodePort: {{ .Values.service.nodeport.gaian }}
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: gaian-service
-
-
