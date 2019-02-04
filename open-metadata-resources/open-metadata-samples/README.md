@@ -3,7 +3,7 @@
   
 # Open Metadata Samples
   
-The open metadata samples provides samples and associated tutorials.
+The open metadata samples illustrate how to use ODPI Egeria.
 
 * [Open Metadata Access Services (OMASs) samples](access-services-samples) - illustrations of how to run each of
 the access services.

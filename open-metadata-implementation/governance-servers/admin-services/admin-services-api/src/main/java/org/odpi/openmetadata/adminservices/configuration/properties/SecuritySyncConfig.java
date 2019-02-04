@@ -27,6 +27,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
     private String securitySyncWiki;
 
     private String securityServerURL;
+    private String governanceEngineServerURL;
     private String securityServerType;
     private String securityServerAuthorization;
     private String tagServiceName;
@@ -60,6 +61,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
             securitySyncWiki = template.securitySyncWiki;
 
             securityServerURL = template.securityServerURL;
+            governanceEngineServerURL =  template.governanceEngineServerURL;
             securityServerAuthorization = template.securityServerAuthorization;
             tagServiceName = template.tagServiceName;
 
@@ -157,6 +159,24 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
      */
     public void setSecurityServerURL(String securityServerURL) {
         this.securityServerURL = securityServerURL;
+    }
+
+    /**
+     * Return the URL for the Governance Engine Server used in the Governance Server Connector
+     *
+     * @return String URL
+     */
+    public String getGovernanceEngineServerURL() {
+        return governanceEngineServerURL;
+    }
+
+    /**
+     * Set up the URL for the Governance Engine  Server used in the Governance Server Connector.
+     *
+     * @param governanceEngineServerURL String for Governance Server URL
+     */
+    public void setGovernanceEngineServerURL(String governanceEngineServerURL) {
+        this.governanceEngineServerURL = governanceEngineServerURL;
     }
 
     /**
@@ -296,6 +316,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
                 ", securitySyncDescription='" + securitySyncDescription + '\'' +
                 ", securitySyncWiki ='" + securitySyncWiki + '\'' +
                 ", securityServerURL='" + securityServerURL + '\'' +
+                ", governanceEngineServerURL='" + governanceEngineServerURL + '\'' +
                 ", securityServerType='" + securityServerType + '\'' +
                 ", securityServerAuthorization='" + securityServerAuthorization + '\'' +
                 ", tagServiceName='" + tagServiceName + '\'' +
@@ -326,6 +347,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
                 Objects.equals(getSecuritySyncDescription(), that.getSecuritySyncDescription()) &&
                 Objects.equals(getSecuritySyncWiki(), that.getSecuritySyncWiki()) &&
                 Objects.equals(getSecurityServerURL(), that.getSecurityServerURL()) &&
+                Objects.equals(getGovernanceEngineServerURL(), that.getGovernanceEngineServerURL()) &&
                 getSecurityServerAuthorization() == that.getSecurityServerAuthorization() &&
                 Objects.equals(getTagServiceName(), that.getTagServiceName()) &&
                 Objects.equals(getSecuritySyncInTopic(), that.getSecuritySyncInTopic()) &&
@@ -342,7 +364,8 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
     @Override
     public int hashCode() {
         return Objects.hash(getSecuritySyncId(), getSecuritySyncName(),
-                getSecuritySyncDescription(), getSecuritySyncWiki(), getSecurityServerURL(), getSecurityServerAuthorization(), getTagServiceName(),
-                getSecuritySyncInTopic(), getSecuritySyncOutTopic(), getSecuritySyncInTopicName(), getSecuritySyncOutTopicName());
+                getSecuritySyncDescription(), getSecuritySyncWiki(), getSecurityServerURL(), getGovernanceEngineServerURL(),
+                getSecurityServerAuthorization(), getTagServiceName(), getSecuritySyncInTopic(),
+                getSecuritySyncOutTopic(), getSecuritySyncInTopicName(), getSecuritySyncOutTopicName());
     }
 }

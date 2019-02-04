@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public class OMAGServerAdminServices
 {
-    private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
+    private OMAGServerAdminStoreServices   configStore  = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
 
     /*
@@ -435,6 +435,107 @@ public class OMAGServerAdminServices
             serverConfig.setLocalServerURL(url);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            errorHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            errorHandler.captureNotAuthorizedException(response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Set up the default audit log for the server.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
+     */
+    public VoidResponse setDefaultAuditLog(String userId,
+                                           String serverName)
+    {
+        final String methodName = "setDefaultAuditLog";
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            ConnectorConfigurationFactory configurationFactory     = new ConnectorConfigurationFactory();
+
+            List<Connection>  auditLogConnections = new ArrayList<>();
+
+            auditLogConnections.add(configurationFactory.getDefaultAuditLogConnection(serverName));
+
+            this.setAuditLogDestinations(userId, serverName, auditLogConnections);
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            errorHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            errorHandler.captureNotAuthorizedException(response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Add a new open metadata archive to load at startup.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param fileName name of the open metadata archive file.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or fileName parameter.
+     */
+    public VoidResponse addStartUpOpenMetadataArchiveFile(String userId,
+                                                          String serverName,
+                                                          String fileName)
+    {
+        final String methodName = "addStartUpOpenMetadataArchiveFile";
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateFileName(fileName, serverName, methodName);
+
+            ConnectorConfigurationFactory configurationFactory   = new ConnectorConfigurationFactory();
+            Connection                    newOpenMetadataArchive = configurationFactory.getOpenMetadataArchiveFileConnection(fileName);
+
+            List<Connection>              openMetadataArchiveConnections = null;
+
+            OMAGServerConfig          serverConfig = configStore.getServerConfig(serverName, methodName);
+            RepositoryServicesConfig  repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+            if (repositoryServicesConfig != null)
+            {
+                openMetadataArchiveConnections = repositoryServicesConfig.getOpenMetadataArchiveConnections();
+            }
+
+            if (openMetadataArchiveConnections == null)
+            {
+                openMetadataArchiveConnections = new ArrayList<>();
+            }
+
+            openMetadataArchiveConnections.add(newOpenMetadataArchive);
+
+            this.setOpenMetadataArchives(userId, serverName, openMetadataArchiveConnections);
         }
         catch (OMAGInvalidParameterException  error)
         {
@@ -1112,6 +1213,164 @@ public class OMAGServerAdminServices
      * =============================================================
      * Configure server - advanced options overriding defaults
      */
+
+
+    /**
+     * Set up the list of audit log destinations.  These destinations are expressed as Connection objects
+     * to the connectors that will handle the audit log records.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param auditLogDestinations list of connection objects
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    public VoidResponse setAuditLogDestinations(String                userId,
+                                                String                serverName,
+                                                List<Connection>      auditLogDestinations)
+    {
+        final String methodName = "setAuditLogDestinations";
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            List<String>  configAuditLog  = serverConfig.getAuditLog();
+
+            if (configAuditLog == null)
+            {
+                configAuditLog = new ArrayList<>();
+            }
+
+            if (auditLogDestinations == null)
+            {
+                configAuditLog.add(new Date().toString() + " " + userId + " setting up no audit log destinations.");
+            }
+            else
+            {
+                configAuditLog.add(new Date().toString() + " " + userId + " updated list of audit log destinations.");
+            }
+
+            serverConfig.setAuditLog(configAuditLog);
+
+            RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+            /*
+             * Set up the local repository config in the open metadata repository services config.
+             */
+            if (repositoryServicesConfig != null)
+            {
+                repositoryServicesConfig.setAuditLogConnections(auditLogDestinations);
+            }
+            else if (auditLogDestinations != null)
+            {
+                OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
+
+                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                repositoryServicesConfig.setAuditLogConnections(auditLogDestinations);
+            }
+
+            /*
+             * Save the open metadata repository services config in the server's config
+             */
+            serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            errorHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            errorHandler.captureNotAuthorizedException(response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Set up the list of open metadata archives.  These are open metadata types and instances that are loaded at
+     * repository start up.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param openMetadataArchives list of connection objects
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName.
+     */
+    public VoidResponse setOpenMetadataArchives(String                userId,
+                                                String                serverName,
+                                                List<Connection>      openMetadataArchives)
+    {
+        final String methodName = "setOpenMetadataArchives";
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+            List<String>  configAuditLog  = serverConfig.getAuditLog();
+
+            if (configAuditLog == null)
+            {
+                configAuditLog = new ArrayList<>();
+            }
+
+            if (openMetadataArchives == null)
+            {
+                configAuditLog.add(new Date().toString() + " " + userId + " clearing open metadata archives.");
+            }
+            else
+            {
+                configAuditLog.add(new Date().toString() + " " + userId + " updated list of open metadata archives loaded at server start up.");
+            }
+
+            serverConfig.setAuditLog(configAuditLog);
+
+            RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
+
+            /*
+             * Set up the local repository config in the open metadata repository services config.
+             */
+            if (repositoryServicesConfig != null)
+            {
+                repositoryServicesConfig.setOpenMetadataArchiveConnections(openMetadataArchives);
+            }
+            else if (openMetadataArchives != null)
+            {
+                OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
+
+                repositoryServicesConfig = configurationFactory.getDefaultRepositoryServicesConfig(serverConfig.getLocalServerName());
+                repositoryServicesConfig.setOpenMetadataArchiveConnections(openMetadataArchives);
+            }
+
+            /*
+             * Save the open metadata repository services config in the server's config
+             */
+            serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            errorHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            errorHandler.captureNotAuthorizedException(response, error);
+        }
+
+        return response;
+    }
 
 
     /**

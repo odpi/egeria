@@ -16,10 +16,10 @@ REST APIs for services such as the open metadata and
 governance services of ODPi Egeria use the full range of
 HTTP requests as follows:
 
-* `GET` - retrieving simple structures.
-* `PUT` - creating simple structures.
-* `POST` - creating, updating, deleting complex structures and retrieving long lists of information with paging.
-* `DELETE` - deleting simple structures.
+* **GET** - retrieving simple structures.
+* **PUT** - creating simple structures.
+* **POST** - creating, updating, deleting complex structures and retrieving long lists of information with paging.
+* **DELETE** - deleting simple structures.
 
 With Postman it is possible issue these HTTP requests and experiment
 with what they do.  It also supports **collections** of requests.
