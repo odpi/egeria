@@ -16,7 +16,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = AssetLineageEvent.class, name = "AssetLineageEvent"),
-        @JsonSubTypes.Type(value = TableContextEvent.class, name = "TableContextEvent")
 })
 public abstract class AssetLineageHeader {
 
