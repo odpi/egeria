@@ -13,11 +13,11 @@ metadata:
   name: {{ include "myapp.fullname" . }}-ui-service
 
 spec:
-  type: ClusterIP
+  type: {{ .Values.service.type }}
   ports:
   - name: "ui"
     port: 8443
-    targetPort: 8443
+    targetPort: {{ .Values.service.nodeport.ui }}
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}

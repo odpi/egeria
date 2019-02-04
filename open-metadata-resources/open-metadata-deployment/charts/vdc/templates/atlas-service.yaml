@@ -13,10 +13,10 @@ metadata:
   name: {{ include "myapp.fullname" . }}-atlas-service
 
 spec:
-  type: ClusterIP
+  type: {{ .Values.service.type }}
   ports:
     - port: 21000
-      targetPort: 21000
+      targetPort: {{ .Values.service.nodeport.atlas }}
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}

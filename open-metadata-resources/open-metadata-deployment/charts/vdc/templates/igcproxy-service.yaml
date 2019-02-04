@@ -13,10 +13,10 @@ metadata:
   name: {{ include "myapp.fullname" . }}-igcproxy-service
 
 spec:
-  type: ClusterIP
+  type: {{ .Values.service.type }}
   ports:
   - port: 8080
-    targetPort: 8080
+    targetPort: {{ .Values.service.nodeport.igcproxy }}
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
