@@ -5,11 +5,8 @@ package org.odpi.openmetadata.accessservices.assetlineage.eventprocessor;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.assetlineage.contentmanager.ColumnContextEventBuilder;
-import org.odpi.openmetadata.accessservices.assetlineage.events.*;
+import org.odpi.openmetadata.accessservices.assetlineage.events.AssetLineageHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
-import org.odpi.openmetadata.accessservices.assetlineage.utils.Constants;
-import org.odpi.openmetadata.accessservices.assetlineage.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
@@ -23,11 +20,6 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcesso
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.odpi.openmetadata.accessservices.assetlineage.utils.Constants.RELATIONAL_COLUMN;
-import static org.odpi.openmetadata.accessservices.assetlineage.utils.Constants.SEMANTIC_ASSIGNMENT;
 
 
 public class EventPublisher implements OMRSInstanceEventProcessor {
@@ -35,14 +27,10 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
     private static final Logger log = LoggerFactory.getLogger(EventPublisher.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private OpenMetadataTopic assetLineageTopicConnector;
-    private ColumnContextEventBuilder columnContextEventBuilder;
     private OMRSAuditLog auditLog;
 
-    public EventPublisher(OpenMetadataTopic assetLineageTopicConnector,
-                          ColumnContextEventBuilder columnContextEventBuilder,
-                          OMRSAuditLog auditLog) {
+    public EventPublisher(OpenMetadataTopic assetLineageTopicConnector, OMRSAuditLog auditLog) {
         this.assetLineageTopicConnector = assetLineageTopicConnector;
-        this.columnContextEventBuilder = columnContextEventBuilder;
         this.auditLog = auditLog;
     }
 
@@ -69,14 +57,6 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
                                           EntityDetail oldEntity,
                                           EntityDetail entity) {
 
-        UpdatedEntityEvent updatedEntityEvent = new UpdatedEntityEvent();
-        updatedEntityEvent.setNewProperties(entity.getProperties());
-        if(oldEntity != null) {
-            updatedEntityEvent.setOldProperties(oldEntity.getProperties());
-        }
-        updatedEntityEvent.setType(entity.getType());
-        updatedEntityEvent.setGuid(entity.getGUID());
-        sendEvent(updatedEntityEvent);
     }
 
     public void processUndoneEntityEvent(String sourceName,
@@ -213,89 +193,8 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
                                             String originatorOrganizationName,
                                             Relationship relationship) {
 
-       //It should handle only semantic assignments for relational columns
-       if( !(relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT) && relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN))){
-           log.info("Event is ignored as the relationship is not a semantic assignment for a column");
-           return;
-       }
-
-       try{
-           publishSemanticAssignment(relationship);
-       }
-       catch (Exception e) {
-
-           log.error("Exception building events", e);
-           AssetLineageErrorCode auditCode = AssetLineageErrorCode.PUBLISH_EVENT_EXCEPTION;
-
-           auditLog.logException("processNewRelationshipEvent",
-                   auditCode.getErrorMessageId(),
-                   OMRSAuditLogRecordSeverity.EXCEPTION,
-                   auditCode.getFormattedErrorMessage(SemanticAssignment.class.getName(), e.getMessage()),
-                   e.getMessage(),
-                   auditCode.getSystemAction(),
-                   auditCode.getUserAction(),
-                   e);
-       }
-
-        String guid = relationship.getEntityOneProxy().getGUID();
-
-        List<TableContextEvent> events = new ArrayList<>();
-        try {
-            events = columnContextEventBuilder.buildEvents(guid);
-        } catch (Exception e) {
-
-            log.error("Exception building events", e);
-            AssetLineageErrorCode auditCode = AssetLineageErrorCode.BUILD_COLUMN_CONTEXT_EXCEPTION;
-
-            auditLog.logException("processNewRelationshipEvent",
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(guid, e.getMessage()),
-                    e.getMessage(),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e);
-        }
-
-        sendColumnContextEvents(events);
     }
 
-    private void publishSemanticAssignment(Relationship relationship) throws Exception {
-        SemanticAssignment semanticAssignment = new SemanticAssignment();
-        EntityDetail businessTerm = retrieveReferencedEntity(relationship.getEntityTwoProxy().getGUID());
-        semanticAssignment.setBusinessTerm(columnContextEventBuilder.buildBusinessTerm(businessTerm));
-        DatabaseColumn databaseColumn = new DatabaseColumn();
-        EntityDetail columnEntity = retrieveReferencedEntity(relationship.getEntityOneProxy().getGUID());
-        databaseColumn.setGuid(columnEntity.getGUID());
-        databaseColumn.setName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.NAME));
-        databaseColumn.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.QUALIFIED_NAME));
-        semanticAssignment.setDatabaseColumn(databaseColumn);
-        sendEvent(semanticAssignment);
-    }
-
-    public EntityDetail retrieveReferencedEntity(String guid) throws Exception {
-        try {
-            EntityDetail entity = columnContextEventBuilder.getEntity(guid);
-            if (entity != null) {
-               return entity;
-            } else {
-                log.error("Entity with guid {} not found", guid);
-                throw new Exception(String.format("Entity with guid %s not found", guid));
-            }
-        } catch (Exception e) {
-            AssetLineageErrorCode auditCode = AssetLineageErrorCode.GET_ENTITY_EXCEPTION;
-            auditLog.logException("retrieveReferencedEntity",
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage("guid: " + guid),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    "",
-                    e);
-
-            throw new Exception(e);
-        }
-    }
 
 
     public void processUpdatedRelationshipEvent(String sourceName,
@@ -429,18 +328,6 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
 
 
     /**
-     * @param eventList - list of column context events
-     * @return true if all events were published, false otherwise
-     */
-    private boolean sendColumnContextEvents(List<TableContextEvent> eventList) {
-        boolean allSuccessful = true;
-        for (TableContextEvent event : eventList) {
-            if (!sendEvent(event)) allSuccessful = false;
-        }
-        return allSuccessful;
-    }
-
-    /**
      * Returns true if the event was published successfully, false otherwise
      *
      * @param event to be published
@@ -480,22 +367,21 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
      * An open metadata repository is passing information about a collection of entities and relationships
      * with the other repositories in the cohort.
      *
-     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
-     *                   local repository, or event mapper name.
+     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
+     *                                       local repository, or event mapper name.
      * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
      *                                       sent the event.
-     * @param originatorServerName name of the server that the event came from.
-     * @param originatorServerType type of server that the event came from.
-     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
-     * @param instances multiple entities and relationships for sharing.
+     * @param originatorServerName           name of the server that the event came from.
+     * @param originatorServerType           type of server that the event came from.
+     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
+     * @param instances                      multiple entities and relationships for sharing.
      */
-    public void processInstanceBatchEvent(String         sourceName,
-                                          String         originatorMetadataCollectionId,
-                                          String         originatorServerName,
-                                          String         originatorServerType,
-                                          String         originatorOrganizationName,
-                                          InstanceGraph  instances)
-    {
+    public void processInstanceBatchEvent(String sourceName,
+                                          String originatorMetadataCollectionId,
+                                          String originatorServerName,
+                                          String originatorServerType,
+                                          String originatorOrganizationName,
+                                          InstanceGraph instances) {
 
     }
 }
