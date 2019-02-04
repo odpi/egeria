@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
@@ -67,22 +68,24 @@ public class CategoryFVT
         System.out.println("Create a glossary");
         Glossary glossary = glossaryFVT.createGlossary(serverName+" "+DEFAULT_TEST_GLOSSARY_NAME);
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
-        System.out.println("Create a category1 using glossary name");
+        System.out.println("Create a category1");
         Category category1 = createCategoryWithGlossaryGuid(serverName+" "+DEFAULT_TEST_CATEGORY_NAME,glossary.getSystemAttributes().getGUID());
-        System.out.println("Create a category2 using glossary guid");
+        System.out.println("Create a category2");
         Category category2 = createCategoryWithGlossaryGuid(serverName+" "+DEFAULT_TEST_CATEGORY_NAME2, glossary.getSystemAttributes().getGUID());
 
         FVTUtils.validateNode(category1);
         FVTUtils.validateNode(category2);
-        FVTUtils.validateNode(category2);
+
 
         Category categoryForUpdate = new Category();
         categoryForUpdate.setName(serverName+" "+DEFAULT_TEST_CATEGORY_NAME_UPDATED);
         System.out.println("Get the category1");
         String guid = category1.getSystemAttributes().getGUID();
         Category gotCategory = getCategoryByGUID(guid);
+        FVTUtils.validateNode(gotCategory);
         System.out.println("Update the category1");
         Category updatedCategory = updateCategory(guid, categoryForUpdate);
+        FVTUtils.validateNode(updatedCategory);
         System.out.println("Get the category1 again");
         gotCategory = getCategoryByGUID(guid);
         FVTUtils.validateNode(gotCategory);
@@ -96,12 +99,11 @@ public class CategoryFVT
         gotCategory = deleteCategory(guid);
         FVTUtils.validateNode(gotCategory);
         System.out.println("Purge a category1");
-
+        purgeCategory(gotCategory.getSystemAttributes().getGUID());
         // create category DEFAULT_TEST_CATEGORY_NAME3 with parent
         System.out.println("Create a category with a parent category");
         Category category3 = createCategoryWithParentGlossaryGuid(serverName, serverName + " " + DEFAULT_TEST_CATEGORY_NAME3,category2.getSystemAttributes().getGUID(), glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(category3);
-
 
         System.out.println("create categories to find");
         Category categoryForFind1 = getCategoryForInput("abc",glossaryGuid);
@@ -238,5 +240,14 @@ public class CategoryFVT
     {
         subjectAreaCategory.purgeCategory(serverName,FVTConstants.USERID, guid);
         System.out.println("Purge succeeded");
+    }
+    public List<Line> getCategoryRelationships(Category category) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
+        return subjectAreaCategory.getCategoryRelationships(serverName,FVTConstants.USERID,
+                category.getSystemAttributes().getGUID(),
+                null,
+                0,
+                0,
+                null,
+                null);
     }
 }

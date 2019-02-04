@@ -118,6 +118,64 @@ class OMAGServerErrorHandler
 
 
     /**
+     * Validate that the root URL of the server where an access service resides is not null.
+     *
+     * @param accessServiceRootURL  remote server name passed on the request
+     * @param accessServiceName  name of access service that needs to be contacted
+     * @param serverName  server name for this server
+     * @param serverService name of the service being configured
+     * @throws OMAGInvalidParameterException the root URL is null
+     */
+    void validateAccessServiceRootURL(String  accessServiceRootURL,
+                                      String  accessServiceName,
+                                      String  serverName,
+                                      String  serverService) throws OMAGInvalidParameterException
+    {
+        if (accessServiceRootURL == null)
+        {
+            OMAGErrorCode errorCode    = OMAGErrorCode.NULL_ACCESS_SERVICE_ROOT_URL;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverService, serverName, accessServiceName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    serverService,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * Validate that the server name of the server where an access service resides is not null.
+     *
+     * @param accessServiceServerName  remote server name passed on the request
+     * @param accessServiceName  name of access service that needs to be contacted
+     * @param serverName  server name for this server
+     * @param serverService name of the service being configured
+     * @throws OMAGInvalidParameterException the name is null
+     */
+    void validateAccessServiceServerName(String  accessServiceServerName,
+                                         String  accessServiceName,
+                                         String  serverName,
+                                         String  serverService) throws OMAGInvalidParameterException
+    {
+        if (accessServiceServerName == null)
+        {
+            OMAGErrorCode errorCode    = OMAGErrorCode.NULL_ACCESS_SERVICE_SERVER_NAME;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverService, serverName, accessServiceName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    serverService,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
      * Validate that the cohort name is not null.
      *
      * @param cohortName  cohortName passed on the request
@@ -132,6 +190,33 @@ class OMAGServerErrorHandler
         if (cohortName == null)
         {
             OMAGErrorCode errorCode    = OMAGErrorCode.NULL_COHORT_NAME;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
+
+            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    errorMessage,
+                                                    errorCode.getSystemAction(),
+                                                    errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * Validate that the file name is not null.
+     *
+     * @param fileName  fileName passed on the request
+     * @param serverName  server name for this server
+     * @param methodName  method called
+     * @throws OMAGInvalidParameterException the cohort name is null
+     */
+    void validateFileName(String  fileName,
+                          String  serverName,
+                          String  methodName) throws OMAGInvalidParameterException
+    {
+        if (fileName == null)
+        {
+            OMAGErrorCode errorCode    = OMAGErrorCode.NULL_FILE_NAME;
             String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
 
             throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),

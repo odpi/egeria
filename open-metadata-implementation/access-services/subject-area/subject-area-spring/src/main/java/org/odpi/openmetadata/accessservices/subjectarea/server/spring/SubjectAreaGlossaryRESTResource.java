@@ -111,6 +111,41 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
     )  {
         return restAPI.findGlossary(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
     }
+    /*
+     * Get Glossary relationships
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the glossary to get
+     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
+     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     *                 beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize the maximum number of elements that can be returned on this request.
+     *                 0 means there is not limit to the page size
+     * @param sequencingOrder the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @return a response which when successful contains the glossary relationships
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * </ul>
+     */
+
+
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries/{guid}/relationships")
+    public  SubjectAreaOMASAPIResponse getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
+                                                            @PathVariable String guid,
+                                                            @RequestParam(value = "asOfTime", required=false) Date asOfTime,
+                                                            @RequestParam(value = "offset", required=false) Integer offset,
+                                                            @RequestParam(value = "pageSize", required=false) Integer pageSize,
+                                                            @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
+                                                            @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty
+    ) {
+        return restAPI.getGlossaryRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+    }
 
     /**
      * Update a Glossary
