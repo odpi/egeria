@@ -205,11 +205,30 @@ echo "egeria_samples_metadata_backend: ibm-igc" >> $CONFIG
 echo "egeria_samples_db_credentials:" >> $CONFIG
 echo "  owner: postgres" >> $CONFIG
 echo "  group: postgres" >> $CONFIG
-echo "  passwd: null" >> $CONFIG
+echo "  passwd: ${POSTGRESQL_PASSWORD}" >> $CONFIG
 echo "egeria_samples_metadata_credentials:" >> $CONFIG
 echo "  owner: dsadm" >> $CONFIG
 echo "  group: dstage" >> $CONFIG
 echo "egeria_samples_db_schema: public" >> $CONFIG
+
+# Ref PR 690 -- currently this script needs to go outbound from k8s to connect to IGC,
+# which then itself needs to connect into the cluster. 
+# In this environment additional variables will be set which we parse here, and override two additional parameters
+# otherwise we leave as defined in the original source file
+
+if [ -z "${POSTGRESQL_SERVER_EXT}" ]
+then
+	export POSTGRESQL_SERVER_EXT=${POSTGRESQL_SERVER}
+fi
+
+if [ -z "${POSTGRESQL_SERVICE_PORT_EXT}" ]
+then
+	export POSTGRESQL_SERVICE_PORT_EXT=${POSTGRESQL_SERVICE_PORT}
+fi
+		
+
+echo "egeria_samples_db_host_remote: ${POSTGRESQL_SERVER_EXT}" >> $CONFIG
+echo "egeria_samples_db_port_remote: ${POSTGRESQL_SERVICE_PORT_EXT}" >> $CONFIG
 
 ansible-playbook -i hosts deploy.yml
 
