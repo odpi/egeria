@@ -25,7 +25,7 @@ import java.util.Objects;
  *         null, the server will generate a unique Id.
  *     </li>
  *     <li>
- *         metadataCollectionName- display name of local repository's metadata collection.  If this value is set to
+ *         metadataCollectionName - display name of local repository's metadata collection.  If this value is set to
  *         null, the server will use the local server name.
  *     </li>
  *     <li>
@@ -65,7 +65,7 @@ import java.util.Objects;
 public class LocalRepositoryConfig extends AdminServicesConfigHeader
 {
     private String                   metadataCollectionId            = null;
-    private String                   metadataCollectionName         = null;
+    private String                   metadataCollectionName          = null;
     private Connection               localRepositoryLocalConnection  = null;
     private Connection               localRepositoryRemoteConnection = null;
     private OpenMetadataExchangeRule eventsToSaveRule                = null;
@@ -73,47 +73,6 @@ public class LocalRepositoryConfig extends AdminServicesConfigHeader
     private OpenMetadataExchangeRule eventsToSendRule                = null;
     private List<TypeDefSummary>     selectedTypesToSend             = null;
     private Connection               eventMapperConnection           = null;
-
-
-    /**
-     * Constructor
-     *
-     * @param metadataCollectionId unique id of local repository's metadata collection
-     * @param metadataCollectionName display name of local repository's metadata collection
-     * @param localRepositoryLocalConnection the connection properties used to create a locally optimized connector
-     *         to the local repository for use by this local server's components.
-     * @param localRepositoryRemoteConnection the connection properties used to create a connector
-     *         to the local repository for use by remote servers.
-     * @param eventsToSaveRule enumeration describing which open metadata repository events should be saved to
-     *                         the local repository.
-     * @param selectedTypesToSave list of TypeDefs in supported of the eventsToSave.SELECTED_TYPES option.
-     * @param eventsToSendRule enumeration describing which open metadata repository events should be sent from
-     *                         the local repository.
-     * @param selectedTypesToSend list of TypeDefs in supported of the eventsToSend.SELECTED_TYPES option.
-     * @param eventMapperConnection Connection for the local repository's event mapper.  This is optional.
-     */
-    public LocalRepositoryConfig(String                    metadataCollectionId,
-                                 String                    metadataCollectionName,
-                                 Connection                localRepositoryLocalConnection,
-                                 Connection                localRepositoryRemoteConnection,
-                                 OpenMetadataExchangeRule  eventsToSaveRule,
-                                 List<TypeDefSummary>      selectedTypesToSave,
-                                 OpenMetadataExchangeRule  eventsToSendRule,
-                                 List<TypeDefSummary>      selectedTypesToSend,
-                                 Connection                eventMapperConnection)
-    {
-        super();
-
-        this.metadataCollectionId = metadataCollectionId;
-        this.metadataCollectionName = metadataCollectionName;
-        this.localRepositoryLocalConnection = localRepositoryLocalConnection;
-        this.localRepositoryRemoteConnection = localRepositoryRemoteConnection;
-        this.eventsToSaveRule = eventsToSaveRule;
-        this.setSelectedTypesToSave(selectedTypesToSave);
-        this.eventsToSendRule = eventsToSendRule;
-        this.setSelectedTypesToSend(selectedTypesToSend);
-        this.eventMapperConnection = eventMapperConnection;
-    }
 
 
     /**
