@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/connected-asset/users/{userId}")
-public class ConnectedAssetOMASResource
+public class ConnectedAssetResource
 {
     private ConnectedAssetRESTServices restAPI = new ConnectedAssetRESTServices();
 
     /**
      * Default constructor
      */
-    public ConnectedAssetOMASResource()
+    public ConnectedAssetResource()
     {
     }
 

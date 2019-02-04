@@ -42,6 +42,17 @@
             <version>${open-metadata.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>discovery-engine-services-server</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>stewardship-services-server</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
