@@ -16,7 +16,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
     - port: 8080
-      targetPort: {{ .Values.service.nodeport.egeria }}
+      targetPort: 8080
+      nodePort: {{ .Values.service.nodeport.egeria }}
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}

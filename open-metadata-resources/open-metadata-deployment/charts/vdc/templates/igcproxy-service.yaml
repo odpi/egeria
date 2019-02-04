@@ -16,7 +16,8 @@ spec:
   type: {{ .Values.service.type }}
   ports:
   - port: 8080
-    targetPort: {{ .Values.service.nodeport.igcproxy }}
+    targetPort: 8080
+    nodePort: {{ .Values.service.nodeport.igcproxy }}
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}

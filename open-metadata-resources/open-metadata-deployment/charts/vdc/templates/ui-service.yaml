@@ -17,7 +17,8 @@ spec:
   ports:
   - name: "ui"
     port: 8443
-    targetPort: {{ .Values.service.nodeport.ui }}
+    nodePort: {{ .Values.service.nodeport.ui }}
+    targetPort: 8443
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
