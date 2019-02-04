@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermTYPEDBYRelationship.TermTYPEDBYRelationshipMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.server.SubjectAreaBeansToAccessOMRS;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
@@ -724,8 +725,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     userId under which the request is performed
-     * @param synonymRelationship    the Synonym relationship
-     * @return response, when successful contains the created synonymRelationship relationship
+     * @param synonym    the Synonym relationship
+     * @return response, when successful contains the created synonym relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -736,7 +737,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse createSynonym(String serverName, String userId, Synonym synonymRelationship)
+    public SubjectAreaOMASAPIResponse createSynonym(String serverName, String userId, Synonym synonym)
     {
         final String methodName = "createSynonym";
         if (log.isDebugEnabled())
@@ -744,13 +745,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
         SubjectAreaOMASAPIResponse response = null;
-        Synonym createdSynonym = null;
         try
         {
             // initialise omrs API helper with the right instance based on the server name
-            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId,synonymRelationship.getEffectiveFromTime(),synonymRelationship.getEffectiveToTime(), methodName);
-            // tolerate more than one synonymRelationship between the same terms. They may have different expressions and other attributes.
-            org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym gennedRelationship = SynonymMapper.mapSynonymToOMRSRelationshipBean(synonymRelationship);
+            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId,synonym.getEffectiveFromTime(),synonym.getEffectiveToTime(), methodName);
+            // tolerate more than one synonym between the same terms. They may have different expressions and other attributes.
+            org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym gennedRelationship = SynonymMapper.mapSynonymToOMRSRelationshipBean(synonym);
 
             org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym createdGennedRelationship = subjectAreaOmasREST.createSynonymRelationship(userId, gennedRelationship);
             Synonym createdRelationship = SynonymMapper.mapOMRSRelationshipBeanToSynonym(createdGennedRelationship);
@@ -780,12 +780,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
     }
 
     /**
-     * Get a synonym relationship, which is a link between glossary terms that have the same meaning.
+     * Get a termCategorization relationship, which is a link between glossary terms that have the same meaning.
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the synonym relationship to get
-     * @return response which when successful contains the synonym relationship with the requested guid
+     * @param guid       guid of the termCategorization relationship to get
+     * @return response which when successful contains the termCategorization relationship with the requested guid
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -809,8 +809,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
             SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
             org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym relationshipBean = subjectAreaOmasREST.getSynonymRelationshipByGuid(userId, guid);
-            Synonym synonym = SynonymMapper.mapOMRSRelationshipBeanToSynonym(relationshipBean);
-            response = new SynonymRelationshipResponse(synonym);
+            Synonym termCategorization = SynonymMapper.mapOMRSRelationshipBeanToSynonym(relationshipBean);
+            response = new SynonymRelationshipResponse(termCategorization);
         } catch (InvalidParameterException e)
         {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
@@ -837,7 +837,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      *
      * @param serverName          serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId              userId under which the request is performed
-     * @param synonymRelationship the Synonym relationship
+     * @param termCategorizationRelationship the Synonym relationship
      * @param isReplace           flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return response, when successful contains the created SynonymRelationship
      * when not successful the following Exception responses can occur
@@ -850,7 +850,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> StatusNotSupportedException          A status value is not supported
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateSynonymRelationship(String serverName, String userId, Synonym synonymRelationship, boolean isReplace)
+    public SubjectAreaOMASAPIResponse updateSynonymRelationship(String serverName, String userId, Synonym termCategorizationRelationship, boolean isReplace)
     {
         final String methodName = "updateSynonymRelationship";
         if (log.isDebugEnabled())
@@ -858,11 +858,11 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
             log.debug("==> Method: " + methodName + ",userId=" + userId);
         }
         SubjectAreaOMASAPIResponse response = null;
-        String relationshipGuid = synonymRelationship.getGuid();
+        String relationshipGuid = termCategorizationRelationship.getGuid();
         try
         {
             // initialise omrs API helper with the right instance based on the server name
-            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId,synonymRelationship.getEffectiveFromTime(),synonymRelationship.getEffectiveToTime(), methodName);
+            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId,termCategorizationRelationship.getEffectiveFromTime(),termCategorizationRelationship.getEffectiveToTime(), methodName);
             InputValidator.validateGUIDNotNull(className, methodName, relationshipGuid, "relationshipGuid");
             org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym existingRelationship = subjectAreaOmasREST.getSynonymRelationshipByGuid(userId, relationshipGuid);
 
@@ -872,28 +872,28 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
             } else
             {
                 // copy over existing relationships attributes if they were not supplied
-                if (synonymRelationship.getDescription() == null)
+                if (termCategorizationRelationship.getDescription() == null)
                 {
-                    synonymRelationship.setDescription(existingRelationship.getDescription());
+                    termCategorizationRelationship.setDescription(existingRelationship.getDescription());
                 }
-                if (synonymRelationship.getSource() == null)
+                if (termCategorizationRelationship.getSource() == null)
                 {
-                    synonymRelationship.setSource(existingRelationship.getSource());
+                    termCategorizationRelationship.setSource(existingRelationship.getSource());
                 }
-                if (synonymRelationship.getStatus() == null)
+                if (termCategorizationRelationship.getStatus() == null)
                 {
-                    synonymRelationship.setStatus(existingRelationship.getStatus());
+                    termCategorizationRelationship.setStatus(existingRelationship.getStatus());
                 }
-                if (synonymRelationship.getSteward() == null)
+                if (termCategorizationRelationship.getSteward() == null)
                 {
-                    synonymRelationship.setSteward(existingRelationship.getSteward());
+                    termCategorizationRelationship.setSteward(existingRelationship.getSteward());
                 }
-                if (synonymRelationship.getExpression() == null)
+                if (termCategorizationRelationship.getExpression() == null)
                 {
-                    synonymRelationship.setExpression(existingRelationship.getExpression());
+                    termCategorizationRelationship.setExpression(existingRelationship.getExpression());
                 }
             }
-            org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym gennedRelationship = SynonymMapper.mapSynonymToOMRSRelationshipBean(synonymRelationship);
+            org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym gennedRelationship = SynonymMapper.mapSynonymToOMRSRelationshipBean(termCategorizationRelationship);
             org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym updatedGennedRelationship = subjectAreaOmasREST.updateSynonymRelationship(userId, gennedRelationship);
             Synonym updatedRelationship = SynonymMapper.mapOMRSRelationshipBeanToSynonym(updatedGennedRelationship);
             response = new SynonymRelationshipResponse(updatedRelationship);
@@ -4063,6 +4063,314 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
             org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermISATypeOFRelationship.TermISATypeOFRelationship deletedRelationshipBean = org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermISATypeOFRelationship.TermISATypeOFRelationshipMapper.mapOmrsRelationshipToTermISATypeOFRelationship(omrsRelationship);
             TermISATypeOFRelationship deletedRelationship = IsaTypeOfMapper.mapOMRSRelationshipBeanToTermISATypeOFRelationship(deletedRelationshipBean);
             response = new TermISATYPEOFRelationshipResponse(deletedRelationship);
+        } catch (InvalidParameterException e)
+        {
+            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (UserNotAuthorizedException e)
+        {
+            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+        } catch (MetadataServerUncontactableException e)
+        {
+            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+        } catch (UnrecognizedGUIDException e)
+        {
+            response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
+        } catch (GUIDNotDeletedException e)
+        {
+            response = OMASExceptionToResponse.convertGUIDNotDeletedException(e);
+        }
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+        }
+        return response;
+    }
+    /**
+     *  Create a termCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     *
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param termCategorizationRelationship the TermCategorizationRelationship relationship
+     * @return response, when successful contains the created termCategorizationRelationship relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * <li> InvalidParameterException            one of the parameters is null or invalid.
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
+     * <li> ClassificationException              Error processing a classification
+     * <li> StatusNotSupportedException          A status value is not supported
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse createTermCategorization(String serverName, String userId, TermCategorizationRelationship  termCategorizationRelationship)
+    {
+        final String methodName = "createTermCategorization";
+        if (log.isDebugEnabled())
+        {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        SubjectAreaOMASAPIResponse response = null;
+        try
+        {
+            // initialise omrs API helper with the right instance based on the server name
+            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId,termCategorizationRelationship.getEffectiveFromTime(),termCategorizationRelationship.getEffectiveToTime(), methodName);
+            // tolerate more than one termCategorizationRelationship between the same terms. They may have different expressions and other attributes.
+            org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization gennedRelationship = TermCategorizationMapper.mapTermCategorizationToOMRSRelationshipBean(termCategorizationRelationship);
+
+            org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization createdGennedRelationship = subjectAreaOmasREST.createTermCategorizationRelationship(userId, gennedRelationship);
+            TermCategorizationRelationship createdRelationship = TermCategorizationMapper.mapOMRSRelationshipBeanToTermCategorization(createdGennedRelationship);
+            response = new TermCategorizationRelationshipResponse(createdRelationship);
+
+        } catch (InvalidParameterException e)
+        {
+            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (UserNotAuthorizedException e)
+        {
+            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+        } catch (MetadataServerUncontactableException e)
+        {
+            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+        } catch (UnrecognizedGUIDException e)
+        {
+            response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+        } catch (StatusNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        }
+        if (log.isDebugEnabled())
+        {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+        }
+        return response;
+    }
+
+    /**
+     * Get a termCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the termCategorizationRelationship relationship to get
+     * @return response which when successful contains the termCategorizationRelationship relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * </ul>
+     */
+     public SubjectAreaOMASAPIResponse getTermCategorizationRelationship(String serverName,String userId,String guid)  {
+         final String methodName = "getTermCategorizationRelationship";
+         if (log.isDebugEnabled())
+         {
+             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+         }
+         SubjectAreaOMASAPIResponse response = null;
+         try
+         {
+             // initialise omrs API helper with the right instance based on the server name
+             SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
+             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+             org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization relationshipBean = subjectAreaOmasREST.getTermCategorizationRelationshipByGuid(userId, guid);
+             TermCategorizationRelationship termCategorization = TermCategorizationMapper.mapOMRSRelationshipBeanToTermCategorization(relationshipBean);
+             response = new TermCategorizationRelationshipResponse(termCategorization);
+         } catch (InvalidParameterException e)
+         {
+             response = OMASExceptionToResponse.convertInvalidParameterException(e);
+         } catch (UserNotAuthorizedException e)
+         {
+             response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+         } catch (MetadataServerUncontactableException e)
+         {
+             response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+         } catch (UnrecognizedGUIDException e)
+         {
+             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+         }
+         if (log.isDebugEnabled())
+         {
+             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+         }
+         return response;
+     }
+
+    /**
+     * Update a termCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param termCategorizationRelationship   the is-a-type-of relationship
+     * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @return response, when successful contains the created ISARelationshipRelationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * <li> InvalidParameterException            one of the parameters is null or invalid.
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
+     * <li> ClassificationException              Error processing a classification
+     * <li> StatusNotSupportedException          A status value is not supported
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(String serverName,String userId,TermCategorizationRelationship termCategorizationRelationship, Boolean isReplace) {
+        final String methodName = "updateTermCategorizationRelationship";
+        if (log.isDebugEnabled())
+        {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        SubjectAreaOMASAPIResponse response = null;
+        String relationshipGuid = termCategorizationRelationship.getGuid();
+        try
+        {
+            // initialise omrs API helper with the right instance based on the server name
+            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId,termCategorizationRelationship.getEffectiveFromTime(),termCategorizationRelationship.getEffectiveToTime(), methodName);
+            InputValidator.validateGUIDNotNull(className, methodName, relationshipGuid, "relationshipGuid");
+            org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization existingRelationship = subjectAreaOmasREST.getTermCategorizationRelationshipByGuid(userId, relationshipGuid);
+
+            if (isReplace)
+            {
+                // use the relationship as supplied
+            } else
+            {
+                // copy over existing relationships attributes if they were not supplied
+                if (termCategorizationRelationship.getDescription() == null)
+                {
+                    termCategorizationRelationship.setDescription(existingRelationship.getDescription());
+                }
+                if (termCategorizationRelationship.getStatus() == null)
+                {
+                    termCategorizationRelationship.setStatus(existingRelationship.getStatus());
+                }
+            }
+            org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization gennedRelationship = TermCategorizationMapper.mapTermCategorizationToOMRSRelationshipBean(termCategorizationRelationship);
+            org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization updatedGennedRelationship = subjectAreaOmasREST.updateTermCategorizationRelationship(userId, gennedRelationship);
+            TermCategorizationRelationship updatedRelationship = TermCategorizationMapper.mapOMRSRelationshipBeanToTermCategorization(updatedGennedRelationship);
+            response = new TermCategorizationRelationshipResponse(updatedRelationship);
+        } catch (InvalidParameterException e)
+        {
+            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (UserNotAuthorizedException e)
+        {
+            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+        } catch (MetadataServerUncontactableException e)
+        {
+            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+        } catch (UnrecognizedGUIDException e)
+        {
+            response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+        } catch (StatusNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        }
+        if (log.isDebugEnabled())
+        {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+        }
+        return response;
+    }
+
+
+    /**
+     * Delete a TermCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the TermCategorizationRelationship relationship to delete
+     * @param isPurge true indicates a hard delete, false is a soft delete.
+     * @return response which when successful contains the TermCategorizationRelationship relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
+     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * </ul>
+     */
+     public SubjectAreaOMASAPIResponse deleteTermCategorizationRelationship(String serverName,String userId, String guid, Boolean isPurge) {
+         final String methodName = "deleteTermCategorizationRelationship";
+         if (log.isDebugEnabled()) {
+             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+         }
+         SubjectAreaOMASAPIResponse response = null;
+         try {
+             // initialise omrs API helper with the right instance based on the server name
+             SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
+             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+             if (isPurge) {
+
+                 subjectAreaOmasREST.purgeRelationshipById(userId, guid, "TermCategorization");
+                 response = new VoidResponse();
+
+             } else {
+                 Relationship omrsRelationship = subjectAreaOmasREST.deleteRelationshipById(userId, guid, "TermCategorization");
+                 org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization deletedRelationshipBean = org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorizationMapper.mapOmrsRelationshipToTermCategorization(omrsRelationship);
+                 TermCategorizationRelationship deletedRelationship = TermCategorizationMapper.mapOMRSRelationshipBeanToTermCategorization(deletedRelationshipBean);
+                 response = new TermCategorizationRelationshipResponse(deletedRelationship);
+             }
+         } catch (InvalidParameterException e) {
+             response = OMASExceptionToResponse.convertInvalidParameterException(e);
+         } catch (UserNotAuthorizedException e) {
+             response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+         } catch (MetadataServerUncontactableException e) {
+             response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+         } catch (UnrecognizedGUIDException e) {
+             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+         } catch (RelationshipNotDeletedException e) {
+             response = OMASExceptionToResponse.convertRelationshipNotDeletedException(e);
+         } catch (FunctionNotSupportedException e) {
+             response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
+         } catch (GUIDNotPurgedException e) {
+             response = OMASExceptionToResponse.convertGUIDNotPurgedException(e);
+         }
+         if (log.isDebugEnabled()) {
+             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+         }
+         return response;
+     }
+    /**
+     * Restore a TermCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     *
+     * Restore allows the deleted TermCategorization Relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Term Is a Type Of Relationship to delete
+     * @return response which when successful contains the restored TermCategorization
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    public SubjectAreaOMASAPIResponse restoreTermCategorizationRelationship( String serverName,  String userId, String guid)
+    {
+        final String methodName = "restoreTermCategorization";
+        if (log.isDebugEnabled())
+        {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+        }
+        SubjectAreaOMASAPIResponse response = null;
+        try
+        {
+            // initialise omrs API helper with the right instance based on the server name
+            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            Relationship omrsRelationship = this.oMRSAPIHelper.callOMRSRestoreRelationship(userId, guid);
+            org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization restoredRelationshipBean = org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorizationMapper.mapOmrsRelationshipToTermCategorization(omrsRelationship);
+            TermCategorizationRelationship restoredRelationship = TermCategorizationMapper.mapOMRSRelationshipBeanToTermCategorization(restoredRelationshipBean);
+            response = new TermCategorizationRelationshipResponse(restoredRelationship);
         } catch (InvalidParameterException e)
         {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
