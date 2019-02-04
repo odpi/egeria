@@ -13,15 +13,12 @@ metadata:
   name: {{ include "myapp.fullname" . }}-egeria-service
 
 spec:
-  type: "{{ .Values.service.type }}"
+  type: ClusterIP
   ports:
-  - name: "egeria"
-    port: 8080
-    targetPort: 8080
+    - port: 8080
+      targetPort: 8080
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: egeria-service
-
-
