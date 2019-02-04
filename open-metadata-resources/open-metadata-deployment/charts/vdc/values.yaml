@@ -8,14 +8,35 @@
 
 service:
   #LoadBalancer is another option (not for IBM Cloud free cluster)
-  type: LoadBalancer
+  # ClusterIP is recommended for IBMCloud - and enable ingress below
+  # NodePort will work ok in other environments, including IBM ICP, but note that the ports may
+  # well be non standard and services will be at http://<external address of a workernode>:<randomport>
+  # Review output from 'kubectl get services' to see the external port used
+  type: NodePort
   externalName:  default.svc.cluster.local
   loadbalancer:
     iptype: public
-    publicip: 158.176.107.220
-  cloud: IBMCloud
+    publicip: <undefined>
+  # Currently IBMCloud is the only supported setting, and enabled additional Ingress rules. Comment out for other platforms
+  cloud: IBMICP
   ingress:
+    # Update this with your own domain
     externaldomain: egeriadev.eu-gb.containers.appdomain.cloud
+  # If type is NodePort, these are the ports we will request - but if not free, another will be allocated
+  # and then things may not work externally. LoadBalancer & Ingress are recommended if possible.
+  # Ports are defaults+20000, and +1 where there is a clash.
+  nodeport:
+    egeria: 28080
+    atlas: 41000
+    igcproxy: 28081
+    gaian: 26414
+    postgresql: 25432
+    ui: 28443
+    ranger: 26080
+    rangersecure: 26182
+    # Set this to address of one of the local nodes - public IP
+    externalip: 10.10.1.30
+    # KAFKA is not exposed externally (issues in chart, complexity)
 
 # The following section defines all of the DOCKER images being used by this
 # chart. Normally they should be left as is, but are exposed here in case the
