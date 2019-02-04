@@ -42,7 +42,7 @@ public class DataViewHandler {
             if (StringUtils.isEmpty(requestBody.getEndpointAddress())) {
                 qualifiedNameForDataView = requestBody.getId();
             } else {
-                qualifiedNameForDataView = requestBody.getEndpointAddress() + "." + requestBody.getId();
+                qualifiedNameForDataView = requestBody.getEndpointAddress() + ":" + requestBody.getId();
             }
             InstanceProperties dataViewProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataView)
