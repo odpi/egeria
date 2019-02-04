@@ -165,20 +165,20 @@ public class ConnectorConfigurationFactory
 
 
     /**
-     * Return the connection for the default open metadata types archive file.
-     * By default, the open metadata is stored in a file called OpenMetadataTypes.json.
+     * Return the connection for a open metadata archive file.
      *
+     * @param fileName name of the archive file
      * @return OCF Connection used to create the file-based open metadata archive
      */
-    public Connection getOpenMetadataTypesConnection()
+    public Connection getOpenMetadataArchiveFileConnection(String fileName)
     {
         final String endpointGUID      = "45877b9c-9192-44ba-a2b7-6817bc753969";
         final String connectionGUID    = "447bbb33-84f9-4a56-a712-addeebdcd764";
 
-        final String endpointDescription = "Open metadata types archive endpoint.";
+        final String endpointDescription = "Open metadata archive for " + fileName;
 
-        String endpointAddress = defaultOpenMetadataArchiveFileName;
-        String endpointName    = "OpenMetadataTypes.Endpoint" + endpointAddress;
+        String endpointAddress = fileName;
+        String endpointName    = "OpenMetadataArchiveFile.Endpoint" + endpointAddress;
 
         Endpoint endpoint = new Endpoint();
 
@@ -189,9 +189,9 @@ public class ConnectorConfigurationFactory
         endpoint.setDescription(endpointDescription);
         endpoint.setAddress(endpointAddress);
 
-        final String connectionDescription = "Open metadata types archive connection.";
+        final String connectionDescription = "Open metadata archive connection.";
 
-        String connectionName = "OpenMetadataTypes.Connection";
+        String connectionName = "OpenMetadataArchive.Connection." + fileName;
 
         Connection connection = new Connection();
 
@@ -204,6 +204,18 @@ public class ConnectorConfigurationFactory
         connection.setEndpoint(endpoint);
 
         return connection;
+    }
+
+
+    /**
+     * Return the connection for the default open metadata types archive file.
+     * By default, the open metadata is stored in a file called OpenMetadataTypes.json.
+     *
+     * @return OCF Connection used to create the file-based open metadata archive
+     */
+    public Connection getOpenMetadataTypesConnection()
+    {
+        return this.getOpenMetadataArchiveFileConnection(defaultOpenMetadataArchiveFileName);
     }
 
 

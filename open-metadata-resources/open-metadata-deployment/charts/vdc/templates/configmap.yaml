@@ -10,6 +10,7 @@ metadata:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
+        # General cluster configuration
         ATLAS_ENDPOINT: http://{{ include "myapp.fullname" . }}-atlas-service.default.svc.cluster.local:21000
         EGERIA_ENDPOINT: http://{{ include "myapp.fullname" . }}-egeria-service.default.svc.cluster.local:8080
         IGCPROXY_ENDPOINT: http://{{ include "myapp.fullname" . }}-igcproxy-service.default.svc.cluster.local:8080
@@ -20,6 +21,7 @@ data:
         EGERIA_COHORT: coco
         EGERIA_SERVER: myserver
         KAFKA_TOPIC: open-metadata.repository-services.cohort.coco.OMRSTopic
+        # Used by IGC/Postgres & initialization
         IGC_USER: isadmin
         IGC_PASSWORD: isadmin
         STRICT_SSL: "false"
@@ -33,3 +35,7 @@ data:
         IGC_OS_USER: ibm
         IGC_OS_PASS: letme1n2
         POSTGRESQL_PASSWORD: passw0rd
+        # Used by User Interface
+        OMAS_SERVER_URL: http://{{ include "myapp.fullname" . }}-egeria-service.default.svc.cluster.local:8080
+        OMAS_SERVER_NAME: myserver
+        GAIAN_HOST: {{ include "myapp.fullname" . }}-gaian-service.default.svc.cluster.local

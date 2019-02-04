@@ -91,6 +91,8 @@ open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceutical
 # Ignore UI downloaded components
 open-metadata-implementation/user-interfaces/access-services-user-interface/src/main/resources/public/**
 open-metadata-implementation/user-interfaces/access-services-user-interface/tools/**
+open-metadata-implementation/user-interfaces/access-services-user-interface/src/main/static/node_modules/**
+open-metadata-implementation/user-interfaces/access-services-user-interface/src/main/static/package-lock.json
 
 # Ignore private maven repo (jenkins)
 .repository
