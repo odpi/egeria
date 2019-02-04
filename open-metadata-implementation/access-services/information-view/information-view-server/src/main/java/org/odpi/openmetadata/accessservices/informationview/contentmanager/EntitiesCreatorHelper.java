@@ -44,7 +44,7 @@ import java.util.List;
 public class EntitiesCreatorHelper {
 
     private static final Logger log = LoggerFactory.getLogger(EntitiesCreatorHelper.class);
-    private static final Integer PAGE_SIZE = 0;
+    private static final Integer PAGE_SIZE = 100;
     private OMRSRepositoryConnector enterpriseConnector;
     private OMRSAuditLog auditLog;
 
