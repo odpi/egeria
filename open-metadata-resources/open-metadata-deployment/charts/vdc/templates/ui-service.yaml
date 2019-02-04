@@ -1,0 +1,27 @@
+# <!-- SPDX-License-Identifier: Apache-2.0 -->
+# Copyright Contributors to the Egeria project.
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: ui-service
+
+  name: {{ include "myapp.fullname" . }}-ui-service
+
+spec:
+  type: NodePort
+  ports:
+  - name: "ui"
+    port: 8443
+    targetPort: 38443
+
+  selector:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: ui-service
+
+

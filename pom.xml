@@ -307,6 +307,7 @@
                     <useEclipseDefaultExcludes>true</useEclipseDefaultExcludes>
                     <excludeSubProjects>true</excludeSubProjects>
                     <excludes>
+                        <exclude>/CNAME</exclude>
                         <exclude>**/banner.txt</exclude>
                         <exclude>**/*.json</exclude>
                         <exclude>**/*.patch</exclude>
