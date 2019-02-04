@@ -39,3 +39,8 @@ egeria_samples_metadata_credentials:
 #  - postgresql => public
 #  - mariadb => not used, can be any value
 egeria_samples_db_schema: "{{ egeria_samples_db_credentials.owner | upper }}"
+
+# Hostname and port for remote access to the samples database (by default same as what's used in inventory, but may need
+# to be changed if eg. deploying into k8s and exposing via an external service)
+egeria_samples_db_host_remote: "{{ groups['egeria-samples-db-host'][0] }}"
+egeria_samples_db_port_remote: 50000
