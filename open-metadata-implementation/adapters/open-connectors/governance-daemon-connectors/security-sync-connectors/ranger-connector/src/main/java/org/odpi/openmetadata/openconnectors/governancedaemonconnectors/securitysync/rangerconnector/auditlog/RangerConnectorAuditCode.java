@@ -15,18 +15,21 @@ public enum RangerConnectorAuditCode {
             "The Ranger Connector has initialized a new instance for server {0}",
             "The Ranger Connector has completed initialization of a new instance.",
             "No action is required.  This is part of the normal operation of the service."),
-
     SERVICE_SHUTDOWN("RANGER-CONNECTOR-0003",
             "The Ranger Connector is shutting down its instance for server {0}",
             "The local server has requested shut down of a Ranger Connector instance.",
             "No action is required.  This is part of the normal operation of the service."),
-    CLASSIFIED_GOVERNED_ASSET_EVENT_REVEICED("RANGER-CONNECTOR-0004",
+    CLASSIFIED_GOVERNED_ASSET_INITIAL_LOAD("RANGER-CONNECTOR-0004",
+            "The Ranger Connector exchange the classified governed asset from Open Metadata Repository with configured Security Sync Server",
+            "The Ranger Connector instance synchronize the Ranger Server with the repository for initial loading of existing governed assets",
+            "No action is required.  This is part of the normal flow of the initial load."),
+    CLASSIFIED_GOVERNED_ASSET_EVENT_RECEIVED("RANGER-CONNECTOR-0005",
             "The Ranger Connector received a new event for classified governed asset",
-            "The Ranger Connector instance should sinchronize the Ranger Server instance with the repository.",
+            "The Ranger Connector instance should synchronize the Ranger Server instance with the repository.",
             "No action is required.  This is part of the normal flow."),
-    RE_CLASSIFIED_GOVERNED_ASSET_EVENT_REVEICED("RANGER-CONNECTOR-0004",
+    RE_CLASSIFIED_GOVERNED_ASSET_EVENT_RECEIVED("RANGER-CONNECTOR-0006",
             "The Ranger Connector received a new event for re-classified governed asset",
-            "The Ranger Connector instance should sinchronize the Ranger Server instance with the repository.",
+            "The Ranger Connector instance should synchronize the Ranger Server instance with the repository.",
             "No action is required.  This is part of the normal flow.");
 
     private String logMessageId;
@@ -49,7 +52,7 @@ public enum RangerConnectorAuditCode {
      * @param userAction   - instructions for resolving the situation, if any
      */
     RangerConnectorAuditCode(String messageId, String message,
-                          String systemAction, String userAction) {
+                             String systemAction, String userAction) {
         this.logMessageId = messageId;
         this.logMessage = message;
         this.systemAction = systemAction;

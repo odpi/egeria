@@ -63,14 +63,14 @@ import java.util.Date;
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/repository-services")
-public class OMRSRepositoryResource
+public class RepositoryServicesResource
 {
     private OMRSRepositoryRESTServices  restAPI = new OMRSRepositoryRESTServices();
 
     /**
      * Default constructor
      */
-    public OMRSRepositoryResource()
+    public RepositoryServicesResource()
     {
     }
 

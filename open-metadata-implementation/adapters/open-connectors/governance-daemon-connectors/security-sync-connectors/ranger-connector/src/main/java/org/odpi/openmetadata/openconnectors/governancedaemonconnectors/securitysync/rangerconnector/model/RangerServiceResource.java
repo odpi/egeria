@@ -4,6 +4,7 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.security
 
 import java.util.Date;
 import java.util.Map;
+import java.util.Objects;
 
 public class RangerServiceResource {
 
@@ -103,5 +104,19 @@ public class RangerServiceResource {
                 ", serviceName='" + serviceName + '\'' +
                 ", resourceElements=" + resourceElements +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RangerServiceResource resource = (RangerServiceResource) o;
+        return Objects.equals(serviceName, resource.serviceName) &&
+                Objects.equals(resourceElements, resource.resourceElements);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(serviceName, resourceElements);
     }
 }
