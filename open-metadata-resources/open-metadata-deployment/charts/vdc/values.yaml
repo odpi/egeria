@@ -1,8 +1,31 @@
 # SPDX-License-Identifier: Apache-2.0 
 # Copyright Contributors to the Egeria project.
-# Default values for ranger.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+
+# Network configuration
+# note that load balancer configuration tends to be cloud-specific
+# So review the templates/loadbalancer* files for any
+# required updates
+
+service:
+  #LoadBalancer is another option (not for IBM Cloud free cluster)
+  type: LoadBalancer
+  externalName:  default.svc.cluster.local
+  loadbalancer:
+    iptype: public
+    publicip: 158.176.107.220
+  cloud: IBMCloud
+  ingress:
+    externaldomain: egeriadev.eu-gb.containers.appdomain.cloud
+
+# The following section defines all of the DOCKER images being used by this
+# chart. Normally they should be left as is, but are exposed here in case the
+# user wishes to extend.
+
+# Images ending -init are typically containers that perform configuration,
+# often in the same container as the component they are configuring
+
+# Note that sometimes the same docker image is used for multiple purposes - for example
+# Both the Egeria UI, and Egeria core use the same docker image -- for now
 
 image:
   ranger:
@@ -35,10 +58,6 @@ image:
     tag: 0.1.6
     pullPolicy: IfNotPresent
 
-    #igcproxy:
-    #repository: planetf1/igcproxy-egeriavdc
-    #tag: 0.1.2
-    #pullPolicy: IfNotPresent
   igcproxy:
     repository: planetf1/egeria-egeriavdc
     tag: 0.1.6
@@ -80,22 +99,17 @@ image:
 postgres:
   password: passw0rd
 
+# Egeria depends on kafka, but it is not exposed externally
+# The sample also requires auto topic creation
 kafka:
-  #replicas: 1
   external:
     enabled: false
     type: NodePort
   configurationOverrides:
-    "auto.create.topics.enable": true
+    auto.create.topics.enable: true
 
-
-# Network configuration
-service:
-  #LoadBalancer is another option (not for IBM Cloud free cluster)
-  type: NodePort
-  externalName:  default.svc.cluster.local
-
-# Confluent kafka chart configuration
+# For the Confluent kafka chart there are many additional components
+# that we don't need -- so they are removed here
 cp-schema-registry:
   enabled: false
 cp-kafka-rest:

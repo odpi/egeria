@@ -11,3 +11,13 @@ However no testing has yet been done on the function of each component
 
 helm repo add confluent https://confluentinc.github.io/cp-helm-charts/
 helm repo update
+
+*** Load Balancing & Ingress ***
+
+IBM Cloud
+
+See https://cloud.ibm.com/docs/containers/cs_ingress.html#ingress
+
+
+
+

@@ -26,5 +26,3 @@ spec:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: postgresql-service
-
-

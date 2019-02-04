@@ -13,7 +13,7 @@ metadata:
 
   name: {{ include "myapp.fullname" . }}-ranger-service
 spec:
-  type: "{{ .Values.service.type }}"
+  type: ClusterIP
   ports:
   - name: "ranger-admin"
     port: 6080
@@ -34,4 +34,3 @@ spec:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: ranger-admin-service
-
