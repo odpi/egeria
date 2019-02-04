@@ -80,20 +80,26 @@ public class TermFVT
 
         Term termForUpdate = new Term();
         termForUpdate.setName(DEFAULT_TEST_TERM_NAME_UPDATED);
-        System.out.println("Get the term1");
+        System.out.println("Get term1");
         String guid = term1.getSystemAttributes().getGUID();
         Term gotTerm = getTermByGUID(guid);
         FVTUtils.validateNode(gotTerm);
-        System.out.println("Update the term1");
+        System.out.println("Update term1");
         Term updatedTerm = updateTerm(guid, termForUpdate);
         FVTUtils.validateNode(updatedTerm);
-        System.out.println("Get the term1 again");
+        System.out.println("Get term1 again");
         gotTerm = getTermByGUID(guid);
         FVTUtils.validateNode(gotTerm);
-        System.out.println("Delete the term1");
+        System.out.println("Delete term1");
+        gotTerm = deleteTerm(guid);
+        System.out.println("Restore term1");
+        FVTUtils.validateNode(gotTerm);
+        gotTerm = restoreTerm(guid);
+        FVTUtils.validateNode(gotTerm);
+        System.out.println("Delete term1 again");
         gotTerm = deleteTerm(guid);
         FVTUtils.validateNode(gotTerm);
-        System.out.println("Purge a term1");
+        System.out.println("Purge term1");
         purgeTerm(guid);
         System.out.println("Create term3 with governance actions");
         GovernanceActions governanceActions = createGovernanceActions();
@@ -269,6 +275,15 @@ public class TermFVT
         }
         return updatedTerm;
     }
+    public Term restoreTerm(String guid) throws SubjectAreaCheckedExceptionBase
+    {
+        Term restoredTerm = subjectAreaTerm.restoreTerm(serverName,FVTConstants.USERID, guid);
+        if (restoredTerm != null)
+        {
+            System.out.println("Restored Term " + restoredTerm.getName());
+        }
+        return restoredTerm;
+    }
     public Term updateTermToFuture(String guid, Term term) throws SubjectAreaCheckedExceptionBase
     {
         long now = new Date().getTime();
@@ -309,13 +324,14 @@ public class TermFVT
                 null,
                 null);
     }
-    public List<Line> getTermRelationships(Term term, Date asOfTime, int offset, int pageSize, SequencingOrder sequenceOrder,String sequencingProperty) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
+
+    public List<Line> getTermRelationships(Term term, Date asOfTime, int offset, int pageSize, SequencingOrder sequenceOrder, String sequenceProperty) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
         return subjectAreaTerm.getTermRelationships(serverName,FVTConstants.USERID,
                 term.getSystemAttributes().getGUID(),
                 asOfTime,
                 offset,
                 pageSize,
                 sequenceOrder,
-                sequencingProperty);
+                sequenceProperty);
     }
 }

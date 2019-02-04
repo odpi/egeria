@@ -12,11 +12,11 @@ import org.slf4j.LoggerFactory;
 public class GovernanceEventListener implements OpenMetadataTopicListener {
 
     private static final Logger log = LoggerFactory.getLogger(GovernanceEventListener.class);
-    private GovernanceEventProcessor securitySyncProcessor;
+    private GovernanceEventProcessor governanceEventProcessor;
     private static ObjectMapper objectMapper = new ObjectMapper();
 
-    public GovernanceEventListener(GovernanceEventProcessor securitySyncProcessor) {
-        this.securitySyncProcessor = securitySyncProcessor;
+    public GovernanceEventListener(GovernanceEventProcessor governanceEventProcessor) {
+        this.governanceEventProcessor = governanceEventProcessor;
     }
 
     @Override
@@ -27,10 +27,10 @@ public class GovernanceEventListener implements OpenMetadataTopicListener {
             GovernanceEngineEvent event = objectMapper.readValue(receivedEvent, GovernanceEngineEvent.class);
             switch (event.getEventType()) {
                 case NEW_CLASSIFIED_ASSET:
-                    securitySyncProcessor.processClassifiedGovernedAssetEvent(event.getGovernedAsset());
+                    governanceEventProcessor.processClassifiedGovernedAssetEvent(event.getGovernedAsset());
                     break;
                 case RE_CLASSIFIED_ASSET:
-                    securitySyncProcessor.processReClassifiedGovernedAssetEvent(event.getGovernedAsset());
+                    governanceEventProcessor.processReClassifiedGovernedAssetEvent(event.getGovernedAsset());
                     break;
                 default:
                     break;
