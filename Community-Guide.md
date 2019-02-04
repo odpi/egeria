@@ -12,7 +12,7 @@ willing to follow the simple processes outlined below, as well as adhere to the
 1. Review the [developer guidelines](developer-resources/Developer-Guidelines.md).
 1. Open an issue on [GitHub](https://github.com/) to cover the proposed change (you may need to create an account on GitHub first).
 1. Clone the repository and prepare your contribution in a new git branch (see [Using git to prepare a contribution](#using-git-to-prepare-a-contribution)).
-1. As you commit your changes, make sure they are signed (see [Why the DCO?](#why-the-dco?)).
+1. As you commit your changes, make sure they are signed (see [Why the DCO?](#why-the-dco)).
 1. Issue a [git pull request](#creating-a-pull-request) from [GitHub](https://github.com/odpi/egeria) to initiate the review.
 1. Wait for a maintainer to review and approve the commit.
 
@@ -59,7 +59,7 @@ This needs doing only once.
 
 ### Creating a local copy of the code
 
-To create a copy of the code on your machine enter the following in a new directory. Replace `USER` with your GitHub userid.
+To create a copy of the code on your machine enter the following in a new directory. Replace `USER` with your GitHub userId.
 
 ```bash
 $ git clone https://github.com/USER/egeria.git
@@ -68,7 +68,8 @@ $ cd egeria
 
 The git clone command creates a new directory called `egeria` containing the Egeria content.
 
-It is recommended not to make any changes to master, other than pulling from upstream (the master Egeria project) but just to use for reference and as a basis for branching.
+It is recommended not to make any changes to master, other than pulling from upstream (the master Egeria project)
+but just to use for reference and as a basis for branching.
 
 You should also set the upstream repository to connect your fork to the main Egeria repository:
 
@@ -78,7 +79,10 @@ $ git remote add upstream https://github.com/odpi/egeria.git
 
 ### Creating a branch for your work
 
-Always create a branch for each distinct set of changes. This keeps the commit history pushed to Egeria clean, and makes reviews of the code much easier. Since GitHub manages pull requests on a branch basis it is also a way to be able to easily rework, by updating a change later before it has been incorporated back into the main Egeria code.
+Always create a branch for each distinct set of changes. This keeps the commit history pushed
+to Egeria clean, and makes reviews of the code much easier. Since GitHub manages pull
+requests on a branch basis it is also a way to be able to easily rework, by updating a
+change later before it has been incorporated back into the main Egeria code.
 
 First update your copy of master and push to your github fork
 
@@ -88,14 +92,18 @@ $ git pull upstream master
 $ git push
 ```
 
-Once you have the latest code on your machine, create a branch for your changes. The commands below set up a branch called "example-branch" based off of master, and also push it back to your personal fork:
+Once you have the latest code on your machine, create a branch for your changes. The
+commands below set up a branch called "example-branch" based off of master, and also push
+it back to your personal fork:
 
 ```bash
 $ git checkout -b example-branch master
 $ git push origin example-branch
+
 ```
 
-When you create your own branch, use a name that describes that the branch is for as you will use it for all changes you are collecting together to push as one group to Egeria.
+When you create your own branch, use a name that describes that the branch is for as you will
+use it for all changes you are collecting together to push as one group to Egeria.
 
 You can also see that 'origin' will point to your GitHub fork, whilst 'upstream' points to the Egeria master branch:
 
@@ -106,6 +114,7 @@ origin https://github.com/USER/egeria (fetch)
 origin https://github.com/USER/egeria (push)
 upstream https://github.com/odpi/egeria.git (fetch)
 upstream https://github.com/odpi/egeria.git (push)
+
 ```
 
 ### Working with the Egeria code in your personal environment
@@ -138,9 +147,15 @@ Changes to be committed:
 	new file:   new-file.java
 ```
 
-You can now commit changes to your local repository, making sure to use the `-s` option to sign your changes (see [Why the DCO?](#why-the-dco)) and the `-m` option to provide a useful commit message. In the message you can make use of [special strings](https://blog.github.com/2011-10-12-introducing-issue-mentions/) to directly link to GitHub issues. By doing this others following the issue will see the commits to your fork easily so can track the work going on even before you submit to the Egeria repository.
+You can now commit changes to your local repository, making sure 
+to use the `-s` option to sign your changes (see [Why the DCO?](#why-the-dco))
+and the `-m` option to provide a useful commit message. In the message you can
+make use of [special strings](https://blog.github.com/2011-10-12-introducing-issue-mentions/) to
+directly link to GitHub
+issues. By doing this others following the issue will see the commits to your fork
+easily so can track the work going on even before you submit to the **egeria** repository.
 
-It is also essential to push the changes from your local machine up to GitHub ready for the next step - note this references GitHub issues, also read [the section on JIRA](#getting-a-jira-account-and-creating-an-issue):
+It is also essential to push the changes from your local machine up to GitHub ready for the next step - note this references GitHub issues, also read [the section on JIRA](#creating-a-linux-foundation-account-and-creating-an-issue):
 
 ```bash
 $ git commit -s -m 'Best code change ever as per Issue #1433'

@@ -66,4 +66,29 @@
 			RangerRestClient read Timeout in Milli Seconds
 		</description>
 	</property>
+
+	<property>
+		<name>ranger.plugin.gaian.masking.pattern</name>
+		<value>CUSTOM</value>
+		<description>Masking Pattern</description>
+	</property>
+
+	<property>
+		<name>ranger.plugin.gaian.char.masking</name>
+		<value>*****</value>
+		<description>Masking Value for Characters Fields</description>
+	</property>
+
+	<property>
+		<name>ranger.plugin.gaian.int.masking</name>
+		<value>1000</value>
+		<description>Masking Value for Number type format Fields</description>
+	</property>
+
+	<property>
+		<name>ranger.plugin.gaian.date.masking</name>
+		<value>0001-01-01</value>
+		<description>Masking Value for Date Fields; The Pattern for data is yyyy-MM-dd</description>
+	</property>
+
 </configuration>

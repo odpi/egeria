@@ -3,7 +3,7 @@
   
 # What is ODPi Egeria?
 
-Egeria creates a set of open APIs, [types](open-metadata-types/README.md)
+ODPi Egeria creates a set of open APIs, [types](open-metadata-types/README.md)
 and interchange protocols to allow all metadata repositories
 to share and exchange metadata.
 
@@ -74,6 +74,13 @@ At this current time, there is a huge investment into Egeria
 to add the open metadata and governance features plus also work on
 adoption of this technology across the data industry.
 
+# Help
+
+* [Tutorials](../../open-metadata-resources/open-metadata-tutorials)
+* [Samples](../../open-metadata-resources/open-metadata-samples)
+* [Trouble shooting](trouble-shooting)
+* [Glossary of Terms](open-metadata-glossary.md)
+
 
 # Integrating into the Open Metadata and Governance Ecosystem
 
@@ -84,6 +91,9 @@ The integration options are described as five patterns
 ([native, caller, adapter, plug-in, special](open-metadata-integration-patterns/README.md)).
 
 
+# Additional contributions by the ODPi Community
+
+* [Ode to Egeria](fun/ode-to-egeria.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

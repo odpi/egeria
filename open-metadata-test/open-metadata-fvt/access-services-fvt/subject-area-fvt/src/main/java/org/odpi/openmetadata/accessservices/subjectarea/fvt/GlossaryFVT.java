@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
 
 import java.io.IOException;
 import java.util.Date;
@@ -78,10 +79,9 @@ public class GlossaryFVT
         System.out.println("Delete the glossary again");
         gotGlossary = deleteGlossary(guid);
         FVTUtils.validateNode(gotGlossary);
+        //TODO - delete a deletedGlossary should fail
         System.out.println("Purge a glossary");
-        FVTUtils.validateNode(glossary2);
-        String guid2 = glossary2.getSystemAttributes().getGUID();
-        purgeGlossary(guid2);
+        purgeGlossary(guid);
         System.out.println("Create glossary with the same name as a deleted one");
         glossary = createGlossary(serverName + " " + DEFAULT_TEST_GLOSSARY_NAME);
         FVTUtils.validateNode(glossary);
@@ -236,5 +236,14 @@ public class GlossaryFVT
     {
         subjectAreaGlossary.purgeGlossary(serverName,FVTConstants.USERID, guid);
         System.out.println("Purge succeeded");
+    }
+    public List<Line> getGlossaryRelationships(Glossary glossary) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
+        return subjectAreaGlossary.getGlossaryRelationships(serverName,FVTConstants.USERID,
+                glossary.getSystemAttributes().getGUID(),
+                null,
+                0,
+                0,
+                null,
+                null);
     }
 }

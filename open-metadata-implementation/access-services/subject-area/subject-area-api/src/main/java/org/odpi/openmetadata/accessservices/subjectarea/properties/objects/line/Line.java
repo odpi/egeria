@@ -44,6 +44,8 @@ import java.util.Map;
                 @JsonSubTypes.Type(value = TermISATypeOFRelationship.class, name = "TermISATYPEOFRelationship"),
                 @JsonSubTypes.Type(value = TermTYPEDBYRelationship.class, name = "TermTYPEDBYRelationship"),
                 @JsonSubTypes.Type(value = TermAnchorRelationship.class, name = "TermAnchorRelationship"),
+                @JsonSubTypes.Type(value = CategoryAnchorRelationship.class, name = "CategoryAnchorRelationship"),
+                @JsonSubTypes.Type(value = TermCategorizationRelationship.class, name = "TermCategorizationRelationship"),
 
         })
             

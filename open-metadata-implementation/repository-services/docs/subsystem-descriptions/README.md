@@ -27,6 +27,9 @@ server's membership in one or more open metadata repository cohorts.
 * **[Local Repository Services](local-repository-services.md)** manage the local
 server's open metadata repository.
 
+* **[Event Management Services](event-management-services.md)** manage the flow of OMRS Events
+between the other OMRS subsystems.
+
 
 
 ----
