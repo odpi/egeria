@@ -37,6 +37,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
     private static final String TYPED_BY = "/typed-bys";
     private static final String IS_A = "/is-as";
     private static final String IS_A_TYPE_OF = "/is-a-type-ofs";
+    private static final String TERM_CATEGORIZATION = "/term-categorizations";
     private static final String SEMANTIC_ASSIGNMENT = "/semantic-assignments";
 
     // urls to use when creating types of relationships
@@ -52,6 +53,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
     private static final String BASE_RELATIONSHIPS_TYPED_BY_URL = BASE_RELATIONSHIPS_URL +TYPED_BY;
     private static final String BASE_RELATIONSHIPS_IS_A_URL = BASE_RELATIONSHIPS_URL +IS_A;
     private static final String BASE_RELATIONSHIPS_IS_A_TYPE_OF_URL = BASE_RELATIONSHIPS_URL +IS_A_TYPE_OF;
+    private static final String BASE_RELATIONSHIPS_TERM_CATEGORIZATION_URL = BASE_RELATIONSHIPS_URL +TERM_CATEGORIZATION;
     private static final String BASE_RELATIONSHIPS_SEMANTIC_ASSIGNMENT_URL = BASE_RELATIONSHIPS_URL +SEMANTIC_ASSIGNMENT;
 
     /*
@@ -359,7 +361,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
 
     public RelatedTerm createRelatedTerm(String serverName, String userId, RelatedTerm relatedTermRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     {
-        final String methodName = "createTermHASARelationship";
+        final String methodName = "createTermRelatedARelationship";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId );
         }
@@ -2476,9 +2478,9 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermTYPEDBYRelationship createTermTYPEDBYRelationshipRelationship(String serverName, String userId, TermTYPEDBYRelationship termTYPEDBYRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    public TermTYPEDBYRelationship createTermTYPEDBYRelationship(String serverName, String userId, TermTYPEDBYRelationship termTYPEDBYRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     {
-        final String methodName = "createTermTYPEDBYRelationshipRelationship";
+        final String methodName = "createTermTYPEDBYRelationship";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId );
         }
@@ -2521,13 +2523,13 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    public TermTYPEDBYRelationship getTermTYPEDBYRelationshipRelationship(String serverName, String userId,String guid) throws InvalidParameterException,
+    public TermTYPEDBYRelationship getTermTYPEDBYRelationship(String serverName, String userId,String guid) throws InvalidParameterException,
                                                                                                              MetadataServerUncontactableException,
                                                                                                              UserNotAuthorizedException,
                                                                                                              UnexpectedResponseException,
                                                                                                              UnrecognizedGUIDException
     {
-        final String methodName = "getTermTYPEDBYRelationshipRelationship";
+        final String methodName = "getTermTYPEDBYRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_TYPED_BY_URL;
         SubjectAreaOMASAPIResponse restResponse = getRelationship(serverName, userId, guid, methodName,url);
         TermTYPEDBYRelationship gotTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName,restResponse);
@@ -2542,7 +2544,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param termTYPEDBYRelationshipRelationship the TermTYPEDBYRelationship relationship
+     * @param termTYPEDBYRelationship the TermTYPEDBYRelationship relationship
      * @return  TermTYPEDBYRelationship updated termTYPEDBYRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -2554,25 +2556,25 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
 
      */
-    public TermTYPEDBYRelationship updateTermTYPEDBYRelationshipRelationship(String serverName, String userId, TermTYPEDBYRelationship termTYPEDBYRelationshipRelationship)  throws InvalidParameterException,
+    public TermTYPEDBYRelationship updateTermTYPEDBYRelationship(String serverName, String userId, TermTYPEDBYRelationship termTYPEDBYRelationship)  throws InvalidParameterException,
                                                                                                                                                                                     MetadataServerUncontactableException,
                                                                                                                                                                                     UserNotAuthorizedException,
                                                                                                                                                                                     UnexpectedResponseException,
                                                                                                                                                                                     UnrecognizedGUIDException {
-        final String methodName = "updateTermTYPEDBYRelationshipRelationship";
+        final String methodName = "updateTermTYPEDBYRelationship";
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
         try {
-            requestBody = mapper.writeValueAsString(termTYPEDBYRelationshipRelationship);
+            requestBody = mapper.writeValueAsString(termTYPEDBYRelationship);
         } catch (JsonProcessingException error) {
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(serverName, userId,this.omasServerURL +BASE_RELATIONSHIPS_TYPED_BY_URL,requestBody,false);
-        TermTYPEDBYRelationship updatedTermTYPEDBYRelationshipRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName,restResponse);
+        TermTYPEDBYRelationship updatedTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
-        return updatedTermTYPEDBYRelationshipRelationship;
+        return updatedTermTYPEDBYRelationship;
     }
     /**
      * Replace an TermTYPEDBYRelationship relationship, which is defines the relationship between a spine attribute and its type.
@@ -2580,7 +2582,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param termTYPEDBYRelationshipRelationship the termTYPEDBYRelationship relationship
+     * @param termTYPEDBYRelationship the termTYPEDBYRelationship relationship
      * @return  TermTYPEDBYRelationship replaced termTYPEDBYRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -2591,25 +2593,25 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermTYPEDBYRelationship replaceTermTYPEDBYRelationshipRelationship(String serverName, String userId, TermTYPEDBYRelationship termTYPEDBYRelationshipRelationship)  throws InvalidParameterException,
+    public TermTYPEDBYRelationship replaceTermTYPEDBYRelationship(String serverName, String userId, TermTYPEDBYRelationship termTYPEDBYRelationship)  throws InvalidParameterException,
                                                                                                                                                                                      MetadataServerUncontactableException,
                                                                                                                                                                                      UserNotAuthorizedException,
                                                                                                                                                                                      UnexpectedResponseException,
                                                                                                                                                                                      UnrecognizedGUIDException{
-        final String methodName = "updateTermTYPEDBYRelationshipRelationship";
+        final String methodName = "updateTermTYPEDBYRelationship";
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
         try {
-            requestBody = mapper.writeValueAsString(termTYPEDBYRelationshipRelationship);
+            requestBody = mapper.writeValueAsString(termTYPEDBYRelationship);
         } catch (JsonProcessingException error) {
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(serverName, userId,this.omasServerURL +BASE_RELATIONSHIPS_TYPED_BY_URL,requestBody,true);
-        TermTYPEDBYRelationship updatedTermTYPEDBYRelationshipRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName,restResponse);
+        TermTYPEDBYRelationship updatedTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
-        return updatedTermTYPEDBYRelationshipRelationship;
+        return updatedTermTYPEDBYRelationship;
     }
 
     /**
@@ -2619,7 +2621,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to delete
+     * @param guid   guid of the is a type of relationship to delete
      * @return deleted TermTYPEDBYRelationship
      *
      * Exceptions returned by the server
@@ -2633,7 +2635,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermTYPEDBYRelationship deleteTermTYPEDBYRelationshipRelationship(String serverName, String userId,String guid) throws
+    public TermTYPEDBYRelationship deleteTermTYPEDBYRelationship(String serverName, String userId,String guid) throws
                                                                                                          InvalidParameterException,
                                                                                                          MetadataServerUncontactableException,
                                                                                                          UserNotAuthorizedException,
@@ -2642,7 +2644,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
                                                                                                          RelationshipNotDeletedException,
                                                                                                          UnexpectedResponseException
     {
-        final String methodName = "deleteTermTYPEDBYRelationshipRelationship";
+        final String methodName = "deleteTermTYPEDBYRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_TYPED_BY_URL;
         SubjectAreaOMASAPIResponse restResponse = deleteRelationship(serverName, userId, guid, methodName,url);
         TermTYPEDBYRelationship gotTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName,restResponse);
@@ -2670,14 +2672,14 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public void purgeTermTYPEDBYRelationshipRelationship(String serverName, String userId,String guid) throws InvalidParameterException,
+    public void purgeTermTYPEDBYRelationship(String serverName, String userId,String guid) throws InvalidParameterException,
                                                                                             UserNotAuthorizedException,
                                                                                             GUIDNotPurgedException,
                                                                                             UnrecognizedGUIDException,
                                                                                             MetadataServerUncontactableException,
                                                                                             UnexpectedResponseException
     {
-        final String methodName = "purgeTermTYPEDBYRelationshipRelationship";
+        final String methodName = "purgeTermTYPEDBYRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_TYPED_BY_URL;
         purgeRelationship(serverName, userId, guid, methodName,url);
         if (log.isDebugEnabled()) {
@@ -2709,7 +2711,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
             UnexpectedResponseException,
             UnrecognizedGUIDException
     {
-        final String methodName = "restoreeTermTYPEDBYRelationshipRelationship";
+        final String methodName = "restoreeTermTYPEDBYRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_TYPED_BY_URL;
         SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
         TermTYPEDBYRelationship gotTermTYPEDBYRelationship = DetectUtils.detectAndReturnTermTYPEDBYRelationship(methodName,restResponse);
@@ -2769,7 +2771,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to get
+     * @param guid   guid of the isa relationship to get
      * @return Isa
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -2879,7 +2881,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to delete
+     * @param guid   guid of the isa relationship to delete
      * @return deleted Isa
      *
      * Exceptions returned by the server
@@ -2997,9 +2999,9 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermISATypeOFRelationship createTermISATypeOFRelationshipRelationship(String serverName, String userId, TermISATypeOFRelationship TermISATypeOFRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    public TermISATypeOFRelationship createTermISATypeOFRelationship(String serverName, String userId, TermISATypeOFRelationship TermISATypeOFRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
     {
-        final String methodName = "createTermISATypeOFRelationshipRelationship";
+        final String methodName = "createTermISATypeOFRelationship";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId );
         }
@@ -3030,7 +3032,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to get
+     * @param guid   guid of the TermISATypeOFRelationship relationship to get
      * @return TermISATypeOFRelationship
      * Exceptions returned by the server
      * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
@@ -3042,9 +3044,9 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      *
      */
-    public TermISATypeOFRelationship getTermISATypeOFRelationshipRelationship(String serverName, String userId,String guid) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, UnexpectedResponseException, UnrecognizedGUIDException
+    public TermISATypeOFRelationship getTermISATypeOFRelationship(String serverName, String userId,String guid) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, UnexpectedResponseException, UnrecognizedGUIDException
     {
-        final String methodName = "getTermISATypeOFRelationshipRelationship";
+        final String methodName = "getTermISATypeOFRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_IS_A_TYPE_OF_URL;
         SubjectAreaOMASAPIResponse restResponse = getRelationship(serverName, userId, guid, methodName,url);
         TermISATypeOFRelationship gotTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName,restResponse);
@@ -3059,7 +3061,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param TermISATypeOFRelationshipRelationship the TermISATypeOFRelationship relationship
+     * @param TermISATypeOFRelationship the TermISATypeOFRelationship relationship
      * @return  TermISATypeOFRelationship updated TermISATypeOFRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -3071,25 +3073,25 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      * @throws UnexpectedResponseException an unexpected response was returned from the server
 
      */
-    public TermISATypeOFRelationship updateTermISATypeOFRelationshipRelationship(String serverName, String userId, TermISATypeOFRelationship TermISATypeOFRelationshipRelationship)  throws InvalidParameterException,
+    public TermISATypeOFRelationship updateTermISATypeOFRelationship(String serverName, String userId, TermISATypeOFRelationship TermISATypeOFRelationship)  throws InvalidParameterException,
                                                                                                                                                                                             MetadataServerUncontactableException,
                                                                                                                                                                                             UserNotAuthorizedException,
                                                                                                                                                                                             UnexpectedResponseException,
                                                                                                                                                                                             UnrecognizedGUIDException {
-        final String methodName = "updateTermISATypeOFRelationshipRelationship";
+        final String methodName = "updateTermISATypeOFRelationship";
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
         try {
-            requestBody = mapper.writeValueAsString(TermISATypeOFRelationshipRelationship);
+            requestBody = mapper.writeValueAsString(TermISATypeOFRelationship);
         } catch (JsonProcessingException error) {
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(serverName, userId,this.omasServerURL +BASE_RELATIONSHIPS_IS_A_TYPE_OF_URL,requestBody,false);
-        TermISATypeOFRelationship updatedTermISATypeOFRelationshipRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName,restResponse);
+        TermISATypeOFRelationship updatedTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
-        return updatedTermISATypeOFRelationshipRelationship;
+        return updatedTermISATypeOFRelationship;
     }
     /**
      * Replace an TermISATypeOFRelationship relationship, which is defines an inheritance relationship between two spine objects.
@@ -3097,7 +3099,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId               userId under which the request is performed
-     * @param TermISATypeOFRelationshipRelationship the TermISATypeOFRelationship relationship
+     * @param TermISATypeOFRelationship the TermISATypeOFRelationship relationship
      * @return  TermISATypeOFRelationship replaced TermISATypeOFRelationship
      *  Exceptions returned by the server
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -3108,25 +3110,25 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermISATypeOFRelationship replaceTermISATypeOFRelationshipRelationship(String serverName, String userId, TermISATypeOFRelationship TermISATypeOFRelationshipRelationship)  throws InvalidParameterException,
+    public TermISATypeOFRelationship replaceTermISATypeOFRelationship(String serverName, String userId, TermISATypeOFRelationship TermISATypeOFRelationship)  throws InvalidParameterException,
                                                                                                                                                                                              MetadataServerUncontactableException,
                                                                                                                                                                                              UserNotAuthorizedException,
                                                                                                                                                                                              UnexpectedResponseException,
                                                                                                                                                                                              UnrecognizedGUIDException{
-        final String methodName = "updateTermISATypeOFRelationshipRelationship";
+        final String methodName = "updateTermISATypeOFRelationship";
         String requestBody = null;
         ObjectMapper mapper = new ObjectMapper();
         try {
-            requestBody = mapper.writeValueAsString(TermISATypeOFRelationshipRelationship);
+            requestBody = mapper.writeValueAsString(TermISATypeOFRelationship);
         } catch (JsonProcessingException error) {
             RestCaller.throwJsonParseError(className,methodName,error);
         }
         SubjectAreaOMASAPIResponse restResponse = updateRelationship(serverName, userId,this.omasServerURL +BASE_RELATIONSHIPS_IS_A_TYPE_OF_URL,requestBody,true);
-        TermISATypeOFRelationship updatedTermISATypeOFRelationshipRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName,restResponse);
+        TermISATypeOFRelationship updatedTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
-        return updatedTermISATypeOFRelationshipRelationship;
+        return updatedTermISATypeOFRelationship;
     }
 
     /**
@@ -3136,7 +3138,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param guid   guid of the RelatedTerm relationship to delete
+     * @param guid   guid of the is a type of relationship to delete
      * @return deleted TermISATypeOFRelationship
      *
      * Exceptions returned by the server
@@ -3150,7 +3152,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public TermISATypeOFRelationship deleteTermISATypeOFRelationshipRelationship(String serverName, String userId,String guid) throws
+    public TermISATypeOFRelationship deleteTermISATypeOFRelationship(String serverName, String userId,String guid) throws
                                                                                                              InvalidParameterException,
                                                                                                              MetadataServerUncontactableException,
                                                                                                              UserNotAuthorizedException,
@@ -3159,7 +3161,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
                                                                                                              RelationshipNotDeletedException,
                                                                                                              UnexpectedResponseException
     {
-        final String methodName = "deleteTermISATypeOFRelationshipRelationship";
+        final String methodName = "deleteTermISATypeOFRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_IS_A_TYPE_OF_URL;
         SubjectAreaOMASAPIResponse restResponse = deleteRelationship(serverName, userId, guid, methodName,url);
         TermISATypeOFRelationship gotTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName,restResponse);
@@ -3186,14 +3188,14 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public void purgeTermISATypeOFRelationshipRelationship(String serverName, String userId,String guid) throws InvalidParameterException,
+    public void purgeTermISATypeOFRelationship(String serverName, String userId,String guid) throws InvalidParameterException,
                                                                                               UserNotAuthorizedException,
                                                                                               GUIDNotPurgedException,
                                                                                               UnrecognizedGUIDException,
                                                                                               MetadataServerUncontactableException,
                                                                                               UnexpectedResponseException
     {
-        final String methodName = "purgeTermISATypeOFRelationshipRelationship";
+        final String methodName = "purgeTermISATypeOFRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_IS_A_TYPE_OF_URL;
         purgeRelationship(serverName, userId, guid, methodName,url);
         if (log.isDebugEnabled()) {
@@ -3225,7 +3227,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
             UnexpectedResponseException,
             UnrecognizedGUIDException
     {
-        final String methodName = "restoreTermISATypeOFRelationshipRelationship";
+        final String methodName = "restoreTermISATypeOFRelationship";
         final String url = this.omasServerURL +BASE_RELATIONSHIPS_IS_A_TYPE_OF_URL;
         SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
         TermISATypeOFRelationship gotTermISATypeOFRelationship = DetectUtils.detectAndReturnTermISATypeOFRelationship(methodName,restResponse);
@@ -3308,6 +3310,287 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
     }
+    /**
+     * Create a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     * Note that this method does not error if the relationship ends are not spine objects or spine attributes.
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param termCategorizationRelationship the term categorization relationship
+     * @return the created term categorization relationship
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public TermCategorizationRelationship createTermCategorizationRelationship(String serverName, String userId, TermCategorizationRelationship termCategorizationRelationship) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException {
+
+        final String methodName = "createTermCategorizationRelationship";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        InputValidator.validateUserIdNotNull(className, methodName, userId);
+
+        String urlTemplate = this.omasServerURL + BASE_RELATIONSHIPS_TERM_CATEGORIZATION_URL;
+        String url = String.format(urlTemplate, serverName, userId);
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = null;
+        try {
+            requestBody = mapper.writeValueAsString(termCategorizationRelationship);
+        } catch (JsonProcessingException error) {
+            RestCaller.throwJsonParseError(className, methodName, error);
+        }
+        SubjectAreaOMASAPIResponse restResponse = RestCaller.issuePost(className, methodName, requestBody, url);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName, restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(methodName, restResponse);
+        DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName, restResponse);
+
+        TermCategorizationRelationship createdTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName, restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId);
+        }
+        return createdTermCategorizationRelationship;
+
+    }
+    /**
+     * Get a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the TermCategorizationRelationship relationship to get
+     * @return TermCategorizationRelationship
+     * Exceptions returned by the server
+     * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     *
+     */
+    public TermCategorizationRelationship getTermCategorizationRelationship(String serverName, String userId,String guid) throws InvalidParameterException,
+            MetadataServerUncontactableException,
+            UserNotAuthorizedException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+            {
+                final String methodName = "getTermCategorizationRelationship";
+                final String url = this.omasServerURL +BASE_RELATIONSHIPS_TERM_CATEGORIZATION_URL;
+                SubjectAreaOMASAPIResponse restResponse = getRelationship(serverName, userId, guid, methodName,url);
+                TermCategorizationRelationship gotTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName,restResponse);
+                if (log.isDebugEnabled()) {
+                    log.debug("<== successful method : " + methodName + ",userId="+userId );
+                }
+                return gotTermCategorizationRelationship;
+            }
+    /**
+     * Update a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param termCategorizationRelationship the term categorization relationship
+     * @return the created term categorization relationship
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public TermCategorizationRelationship updateTermCategorizationRelationship(String serverName, String userId, TermCategorizationRelationship termCategorizationRelationship) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException
+    {
+        final String methodName = "updateTermCategorizationRelationship";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        InputValidator.validateUserIdNotNull(className, methodName, userId);
+
+        String urlTemplate = this.omasServerURL + BASE_RELATIONSHIPS_TERM_CATEGORIZATION_URL;
+        String url = String.format(urlTemplate, serverName, userId);
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = null;
+        try {
+            requestBody = mapper.writeValueAsString(termCategorizationRelationship);
+        } catch (JsonProcessingException error) {
+            RestCaller.throwJsonParseError(className, methodName, error);
+        }
+        SubjectAreaOMASAPIResponse restResponse = updateRelationship(serverName, userId,this.omasServerURL +BASE_RELATIONSHIPS_TERM_CATEGORIZATION_URL,requestBody,false);
+        TermCategorizationRelationship updatedTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return  updatedTermCategorizationRelationship;
+    }
+    /**
+     * Replace aa Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param termCategorizationRelationship the term categorization relationship
+     * @return the created term categorization relationship
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public TermCategorizationRelationship replaceTermCategorizationRelationship(String serverName, String userId, TermCategorizationRelationship termCategorizationRelationship) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    {
+        final String methodName = "replaceTermCategorizationRelationship";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        InputValidator.validateUserIdNotNull(className, methodName, userId);
+
+        String urlTemplate = this.omasServerURL + BASE_RELATIONSHIPS_TERM_CATEGORIZATION_URL;
+        ObjectMapper mapper = new ObjectMapper();
+        String requestBody = null;
+        try {
+            requestBody = mapper.writeValueAsString(termCategorizationRelationship);
+        } catch (JsonProcessingException error) {
+            RestCaller.throwJsonParseError(className, methodName, error);
+        }
+        SubjectAreaOMASAPIResponse restResponse = updateRelationship(serverName, userId,this.omasServerURL +BASE_RELATIONSHIPS_TERM_CATEGORIZATION_URL,requestBody,true);
+        TermCategorizationRelationship updatedTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return  updatedTermCategorizationRelationship;
+    }
+
+    /**
+     * Delete a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.      * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
+     * that it is possible to undo the delete.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the TermCategorizationRelationship relationship to delete
+     * @return Deleted TermCategorizationRelationship
+     *
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
+     * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public TermCategorizationRelationship deleteTermCategorizationRelationship(String serverName, String userId,String guid) throws
+            InvalidParameterException,
+            MetadataServerUncontactableException,
+            UserNotAuthorizedException,
+            UnrecognizedGUIDException,
+            FunctionNotSupportedException,
+            RelationshipNotDeletedException,
+            UnexpectedResponseException {
+        final String methodName = "deleteTermCategorizationRelationship";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        final String url = this.omasServerURL + BASE_RELATIONSHIPS_TERM_CATEGORIZATION_URL;
+        SubjectAreaOMASAPIResponse restResponse = deleteRelationship(serverName, userId, guid, methodName, url);
+        TermCategorizationRelationship gotTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName, restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId);
+        }
+        return gotTermCategorizationRelationship;
+    }
+    /**
+     * Purge a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     * A purge means that the relationship will not exist after the operation.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the TermCategorizationRelationship relationship to delete
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
+     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public void purgeTermCategorizationRelationship(String serverName, String userId,String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            GUIDNotPurgedException,
+            UnrecognizedGUIDException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException
+    {
+        final String methodName = "purgeTermCategorizationRelationship";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        final String url = this.omasServerURL + BASE_RELATIONSHIPS_TERM_CATEGORIZATION_URL;
+        purgeRelationship(serverName, userId, guid, methodName, url);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId);
+        }
+    }
+    /**
+     * Restore a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
+     *
+     * Restore allows the deleted has a relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the has a relationship to delete
+     * @return response which when successful contains the restored has a relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public TermCategorizationRelationship restoreTermCategorizationRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException {
+        final String methodName = "restoreTermCategorizationRelationship";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        final String url = this.omasServerURL +BASE_RELATIONSHIPS_TERM_CATEGORIZATION_URL;
+        SubjectAreaOMASAPIResponse restResponse = restoreRelationship(serverName, userId, guid, methodName,url);
+        TermCategorizationRelationship gotTermCategorizationRelationship = DetectUtils.detectAndReturnTermCategorizationRelationship(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return gotTermCategorizationRelationship;
+    }
+
     /**
      * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.
      *
