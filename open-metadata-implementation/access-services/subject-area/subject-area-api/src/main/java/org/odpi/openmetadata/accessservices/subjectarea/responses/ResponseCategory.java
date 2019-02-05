@@ -35,8 +35,8 @@ public enum ResponseCategory {
     ValidValueRelationship,
     // term to glossary relationships
     TermAnchorRelationship,
-    // term relationships
-    TermRelationships,
+    // relationships
+    Relationships,
     // external glossary relationships
     LibraryCategoryReferenceRelationshipRelationship,
     LibraryTermReferenceRelationshipRelationship,

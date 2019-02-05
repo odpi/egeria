@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 
 import java.util.List;
 
@@ -15,24 +14,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 
 /**
- * TermRelationshipsResponse is the response structure used on the Subject Area OMAS REST API calls that returns a list of
+ * RelationshipsResponse is the response structure used on the Subject Area OMAS REST API calls that returns a list of
  * relationships associated with a Term in a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TermRelationshipsResponse extends SubjectAreaOMASAPIResponse
+public class RelationshipsResponse extends SubjectAreaOMASAPIResponse
 {
     private List<Line> relationships = null;
 
     /**
      * Default constructor
      */
-    public TermRelationshipsResponse()
+    public RelationshipsResponse()
     {
-        this.setResponseCategory(ResponseCategory.TermRelationships);
+        this.setResponseCategory(ResponseCategory.Relationships);
     }
-    public TermRelationshipsResponse(List<Line> relationships)
+    public RelationshipsResponse(List<Line> relationships)
     {
         this();
         this.relationships=relationships;

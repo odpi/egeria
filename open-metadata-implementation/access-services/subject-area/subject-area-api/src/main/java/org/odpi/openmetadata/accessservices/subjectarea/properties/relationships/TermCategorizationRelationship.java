@@ -21,7 +21,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
 
 /**
- * TermCategorization is a relationship between an entity of type GlossaryCategory and an entity of type GlossaryTerm.
+ * TermCategorizationRelationship is a relationship between an entity of type GlossaryCategory and an entity of type GlossaryTerm.
  * The ends of the relationship are stored as entity proxies, where there is a 'proxy' name by which the entity type is known.
  * The first entity proxy has categories as the proxy name for entity type GlossaryCategory.
  * The second entity proxy has terms as the proxy name for entity type GlossaryTerm.
@@ -33,9 +33,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class TermCategorization extends Line {
-    private static final Logger log = LoggerFactory.getLogger(TermCategorization.class);
-    private static final String className = TermCategorization.class.getName();
+public class TermCategorizationRelationship extends Line {
+    private static final Logger log = LoggerFactory.getLogger(TermCategorizationRelationship.class);
+    private static final String className = TermCategorizationRelationship.class.getName();
 
    //public java.util.Set<String> propertyNames = new HashSet<>();
       public static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
@@ -66,17 +66,17 @@ public class TermCategorization extends Line {
       public static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
       public static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
       public static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
-    protected String entity1Guid;
-    protected String entity2Guid;
+      protected String categoryGuid;
+      protected String termGuid;
 
 
-    public TermCategorization() {
+    public TermCategorizationRelationship() {
         initialise();
     }
 
     private void initialise()
     {
-       name = "TermCategorization";
+       name = "TermCategorizationRelationship";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);
@@ -91,14 +91,14 @@ public class TermCategorization extends Line {
         typeDefGuid = "696a81f5-ac60-46c7-b9fd-6979a1e7ad27";
     }
 
-    public TermCategorization(Line template) {
+    public TermCategorizationRelationship(Line template) {
         super(template);
         initialise();
     }
 
-    public TermCategorization(Relationship omrsRelationship) {
+    public TermCategorizationRelationship(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "TermCategorization";
+        name = "TermCategorizationRelationship";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);
@@ -136,7 +136,23 @@ public class TermCategorization extends Line {
           return instanceProperties;
     }
 
-         private String description;
+    public String getCategoryGuid() {
+        return categoryGuid;
+    }
+
+    public void setCategoryGuid(String categoryGuid) {
+        this.categoryGuid = categoryGuid;
+    }
+
+    public String getTermGuid() {
+        return termGuid;
+    }
+
+    public void setTermGuid(String termGuid) {
+        this.termGuid = termGuid;
+    }
+
+    private String description;
         /**
             * {@literal Explanation of why this term is in this categorization. }
             * @return {@code String }
@@ -166,9 +182,9 @@ public class TermCategorization extends Line {
              {
                  sb = new StringBuilder();
              }
-             sb.append(" TermCategorization=");
+             sb.append(" TermCategorizationRelationship=");
              sb.append(super.toString(sb));
-             sb.append(" TermCategorization Attributes{");
+             sb.append(" TermCategorizationRelationship Attributes{");
              sb.append("description=" + this.description +",");
              if ( status!=null) {
                  sb.append("status=" + status.name());

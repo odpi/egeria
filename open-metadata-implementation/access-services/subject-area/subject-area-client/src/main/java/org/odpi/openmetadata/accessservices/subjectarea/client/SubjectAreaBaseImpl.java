@@ -67,5 +67,49 @@ public class SubjectAreaBaseImpl
             throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
         }
     }
+    protected List<Line> getRelationships(String base_url,String serverName, String userId, String guid, Date asOfTime, int offset, int pageSize, SequencingOrder sequencingOrder, String sequencingProperty) throws InvalidParameterException, MetadataServerUncontactableException, UserNotAuthorizedException, FunctionNotSupportedException, UnexpectedResponseException {
+        final String methodName = "getRelationships";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+        }
+        InputValidator.validateUserIdNotNull(className, methodName, userId);
+        InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+        final String urlTemplate = this.omasServerURL +base_url + "/%s/relationships";
+        String url = String.format(urlTemplate, serverName, userId, guid);
+        if (sequencingOrder==null) {
+            sequencingOrder = SequencingOrder.ANY;
+        }
+        StringBuffer queryStringSB = new StringBuffer();
+        QueryUtils. addCharacterToQuery(queryStringSB);
+        queryStringSB.append("sequencingOrder="+ sequencingOrder);
+        if (asOfTime != null) {
+            QueryUtils.addCharacterToQuery(queryStringSB);
+            queryStringSB.append("asOfTime="+ asOfTime);
+        }
+        if (offset != 0) {
+            QueryUtils.addCharacterToQuery(queryStringSB);
+            queryStringSB.append("offset="+ offset);
+        }
+        if (pageSize != 0) {
+            QueryUtils.addCharacterToQuery(queryStringSB);
+            queryStringSB.append("pageSize="+ pageSize);
+        }
 
+        if (sequencingProperty !=null) {
+            // encode the string
+            encodeQueryProperty("sequencingProperty",sequencingProperty, methodName, queryStringSB);
+        }
+        if (queryStringSB.length() >0) {
+            url = url + queryStringSB.toString();
+        }
+        SubjectAreaOMASAPIResponse restResponse = RestCaller.issueGet(className,methodName,url);
+        DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
+        DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
+        List<Line> relationships = DetectUtils.detectAndReturnRelationships(methodName,restResponse);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return relationships;
+    }
 }
