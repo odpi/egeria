@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
+import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtil;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -204,7 +205,7 @@ public abstract class ReportBasicOperation {
         } else if (source instanceof ReportColumnSource) {
             sourceColumn = entitiesCreatorHelper.getEntity(Constants.SCHEMA_ATTRIBUTE, source.buildQualifiedName());
         }else if (source instanceof DataViewColumnSource) {
-            sourceColumn = entitiesCreatorHelper.getEntity(Constants.DERIVED_DATA_VIEW_SCHEMA_ATTRIBUTE, source.buildQualifiedName());
+            sourceColumn = entitiesCreatorHelper.getEntity(Constants.DERIVED_DATA_VIEW_SCHEMA_ATTRIBUTE, QualifiedNameUtil.getQualifiedName((DataViewColumnSource) source));
         }
         if (sourceColumn != null) {
             return sourceColumn.getGUID();

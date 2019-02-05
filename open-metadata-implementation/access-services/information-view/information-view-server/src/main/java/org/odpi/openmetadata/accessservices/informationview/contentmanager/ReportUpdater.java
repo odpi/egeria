@@ -122,7 +122,6 @@ public class ReportUpdater extends ReportBasicOperation {
                 createOrUpdateReportColumn(qualifiedNameForParent, parentGuid, (ReportColumn) element, existingElements);
             }
         } catch (Exception e) {
-            log.error("Exception creating report element:", e);
             throw new RuntimeException(e);//TODO throw specific exception
         }
     }
