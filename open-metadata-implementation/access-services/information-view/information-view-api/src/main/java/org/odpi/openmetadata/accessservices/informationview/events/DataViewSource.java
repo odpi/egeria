@@ -23,7 +23,6 @@ public class DataViewSource extends Source{
     protected String id;
     protected String name;
 
-
     public String getId() {
         return id;
     }
@@ -50,12 +49,7 @@ public class DataViewSource extends Source{
 
     @Override
     public String buildQualifiedName() {
-        if(getNetworkAddress() == null || getNetworkAddress().isEmpty()){
-            return id;
-        }else{
-            return getNetworkAddress() + "." + id;
-        }
-
+        return "";
 
     }
 }

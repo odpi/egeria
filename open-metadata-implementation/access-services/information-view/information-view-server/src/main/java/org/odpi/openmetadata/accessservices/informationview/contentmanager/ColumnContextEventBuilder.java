@@ -145,7 +145,15 @@ public class ColumnContextEventBuilder {
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
 
         List<DatabaseColumn> allColumns = new ArrayList<>();
-        for (Relationship relationship : enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, tableTypeGuid, relationshipTypeGuid, 0, null, null, null, null, 0)) {
+        List<Relationship> relationshipsForEntity = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, tableTypeGuid, relationshipTypeGuid, 0, null, null, null, null, 0);
+        if(relationshipsForEntity != null && !relationshipsForEntity.isEmpty()){
+            allColumns.addAll(relationshipsForEntity.parallelStream().map(r -> getDatabaseColumn(tableTypeGuid, r)).collect(Collectors.toList()));
+        }
+        return allColumns;
+    }
+
+    private DatabaseColumn getDatabaseColumn(String tableTypeGuid, Relationship relationship) {
+        try {
             EntityDetail columnEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, getOtherEntityGuid(tableTypeGuid, relationship));
             DatabaseColumn databaseColumn = new DatabaseColumn();
             databaseColumn.setName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.ATTRIBUTE_NAME));
@@ -162,10 +170,11 @@ public class ColumnContextEventBuilder {
             EntityDetail columnTypeUniverse = getColumnType(columnEntity);
             databaseColumn.setType(EntityPropertiesUtils.getStringValueForProperty(columnTypeUniverse.getProperties(), Constants.DATA_TYPE));
             databaseColumn.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.QUALIFIED_NAME));
-            allColumns.add(databaseColumn);
+            return databaseColumn;
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw new RuntimeException("Unable to load column details", e);
         }
-
-        return allColumns;
     }
 
     private ForeignKey getReferencedColumn(EntityDetail columnEntity) throws RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException, UserNotAuthorizedException, TypeErrorException, FunctionNotSupportedException, EntityNotKnownException, PagingErrorException, PropertyErrorException, EntityProxyOnlyException, RelationshipNotKnownException {

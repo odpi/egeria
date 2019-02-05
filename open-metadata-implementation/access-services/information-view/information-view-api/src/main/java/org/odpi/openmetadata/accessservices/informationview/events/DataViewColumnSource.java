@@ -20,7 +20,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 public class DataViewColumnSource extends Source {
 
-
     private String id;
     private String name;
     private DataViewSource dataViewSource;
@@ -61,11 +60,8 @@ public class DataViewColumnSource extends Source {
 
     @Override
     public String buildQualifiedName() {
-        if(dataViewSource == null || dataViewSource.getNetworkAddress() == null || dataViewSource.getNetworkAddress().isEmpty())
-            return dataViewSource.getId() + "." + this.getId();
-        else{
-            return dataViewSource.getNetworkAddress() + "." + dataViewSource.getId() + "." + this.getId();
-        }
+        return "";
     }
+
 
 }
