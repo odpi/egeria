@@ -1,3 +1,4 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the ODPi Egeria project.
 theme: jekyll-theme-cayman
+exclude: [open-metadata-resources/open-metadata-deployment/sample-data/**.yml]
