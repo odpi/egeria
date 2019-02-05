@@ -9,7 +9,7 @@ import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * OMAGServerOperationalServicesResource provides the REST API for controlling the start up, management and
+ * OperationalServicesResource provides the REST API for controlling the start up, management and
  * shutdown of services in the OMAG Server.
  */
 @RestController

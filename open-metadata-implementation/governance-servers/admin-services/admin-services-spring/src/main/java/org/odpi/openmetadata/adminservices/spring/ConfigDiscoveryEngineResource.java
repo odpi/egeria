@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * OMAGServerConfigDiscoveryEngine provides the API for configuring a discovery engine in an OMAG
+ * ConfigDiscoveryEngineResource provides the API for configuring a discovery engine in an OMAG
  * server.
  */
 @RestController
