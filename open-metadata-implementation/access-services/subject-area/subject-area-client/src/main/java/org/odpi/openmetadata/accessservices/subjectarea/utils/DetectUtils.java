@@ -320,16 +320,16 @@ public class DetectUtils {
     }
 
     /*
-     * Detect and return a List of term relationships from the supplied response. If we do not find the expected response then throw an Exception
+     * Detect and return a List of relationships from the supplied response. If we do not find the expected response then throw an Exception
      * @param methodName - name of the method called
      * @param restResponse - response from the rest call.  This generated in the remote handlers.
-     * @return List<Line> list of Term relationships is the supplied response is TermRelationships response
+     * @return List<Line> list of Term relationships is the supplied response is Relationships response
      * @throws UnexpectedResponseException - if the response is not a Term then throw this exception
      */
-    public static List<Line> detectAndReturnTermRelationships(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+    public static List<Line> detectAndReturnRelationships(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
         List<Line> relationships = null;
-        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TermRelationships)) {
-            TermRelationshipsResponse termRelationshipResponse = (TermRelationshipsResponse)restResponse;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.Relationships)) {
+            RelationshipsResponse termRelationshipResponse = (RelationshipsResponse)restResponse;
             relationships = termRelationshipResponse.getTermRelationships();
         } else {
             CategoryErrorResponse(methodName, restResponse);
@@ -542,5 +542,16 @@ public class DetectUtils {
             CategoryErrorResponse(methodName, restResponse);
         }
         return semanticAssignment;
+    }
+
+    public static TermCategorizationRelationship detectAndReturnTermCategorizationRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        TermCategorizationRelationship termCategorizationRelationship = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TermCategorizationRelationship)) {
+            TermCategorizationRelationshipResponse relationshipResponse = (TermCategorizationRelationshipResponse) restResponse;
+            termCategorizationRelationship= relationshipResponse.getTermCategorization();
+        } else {
+            CategoryErrorResponse(methodName, restResponse);
+        }
+        return termCategorizationRelationship;
     }
 }

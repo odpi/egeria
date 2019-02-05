@@ -3,6 +3,8 @@
 
 # Open Metadata Access Services (OMAS) Samples
 
+The following samples show how to use the Open Metadata Access Services (OMASs) clients.
+
 * **[Governance Program OMAS Client Samples](governance-program-client-samples)** illustrates how to create an maintain
 definitions related to a governance program.
 

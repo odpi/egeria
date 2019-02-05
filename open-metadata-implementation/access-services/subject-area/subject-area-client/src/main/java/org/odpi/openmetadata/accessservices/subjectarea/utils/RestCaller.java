@@ -159,6 +159,7 @@ public class RestCaller {
         String resultBody =null;
         ResponseEntity<String> result =null;
         try {
+
             result = restTemplate.exchange(url, httpMethod, entity, String.class);
             resultBody = result.getBody();
         } catch (Throwable error) {
