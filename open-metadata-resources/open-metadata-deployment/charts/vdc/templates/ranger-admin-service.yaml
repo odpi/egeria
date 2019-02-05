@@ -13,14 +13,16 @@ metadata:
 
   name: {{ include "myapp.fullname" . }}-ranger-service
 spec:
-  type: "{{ .Values.service.type }}"
+  type: {{ .Values.service.type }}
   ports:
   - name: "ranger-admin"
     port: 6080
     targetPort: 6080
+    nodePort: {{ .Values.service.nodeport.ranger }}
   - name: "ranger-admin-ssl"
     port: 6182
     targetPort: 6182
+    nodePort: {{ .Values.service.nodeport.rangersecure }}
   - name: "ranger-solr"
     port: 6083
     targetPort: 6083
@@ -34,4 +36,3 @@ spec:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: ranger-admin-service
-

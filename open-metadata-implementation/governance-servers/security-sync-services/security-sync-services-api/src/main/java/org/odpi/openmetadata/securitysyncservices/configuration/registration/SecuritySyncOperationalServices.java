@@ -5,7 +5,6 @@ package org.odpi.openmetadata.securitysyncservices.configuration.registration;
 import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.admin.RangerConnector;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 public class SecuritySyncOperationalServices {
 
@@ -16,7 +15,7 @@ public class SecuritySyncOperationalServices {
     private String                         localServerUserId;             /* Initialized in constructor */
     private String                         localServerURL;                /* Initialized in constructor */
     private int                            maxPageSize;                   /* Initialized in constructor */
-
+    private RangerConnector                rangerConnector;
 
     /**
      * Constructor used at server startup.
@@ -46,7 +45,7 @@ public class SecuritySyncOperationalServices {
     {
         if (securitySyncConfig != null)
         {
-            RangerConnector rangerConnector = new RangerConnector();
+            rangerConnector = new RangerConnector();
             rangerConnector.initialize(securitySyncConfig, auditLog);
         }
     }
@@ -58,6 +57,7 @@ public class SecuritySyncOperationalServices {
      * @return boolean indicated whether the disconnect was successful.
      */
     public boolean disconnect(boolean permanent) {
+        rangerConnector.shutdown();
         return false;
     }
 }

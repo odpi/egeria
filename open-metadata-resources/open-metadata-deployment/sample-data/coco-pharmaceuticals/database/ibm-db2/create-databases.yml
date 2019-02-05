@@ -8,7 +8,7 @@
     db2 list database directory
   args:
     executable: /bin/bash
-  become_user: "{{ egeria_samples_credentials.db_owner }}"
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
   become: yes
   ignore_errors: yes
   register: __cocopharma_db2catalog_completion
@@ -19,8 +19,8 @@
     path: "{{ egeria_samples_cocopharma_targets.db_location }}"
     state: directory
     mode: 0755
-    owner: "{{ egeria_samples_credentials.db_owner }}"
-    group: "{{ egeria_samples_credentials.db_group }}"
+    owner: "{{ egeria_samples_db_credentials.owner }}"
+    group: "{{ egeria_samples_db_credentials.group }}"
   become: yes
 
 - name: create databases
@@ -30,6 +30,6 @@
   args:
     executable: /bin/bash
   become: yes
-  become_user: "{{ egeria_samples_credentials.db_owner }}"
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
   when: __cocopharma_db2catalog_completion.stdout.find(item) == -1
   with_items: "{{ egeria_samples_cocopharma_databases }}"
