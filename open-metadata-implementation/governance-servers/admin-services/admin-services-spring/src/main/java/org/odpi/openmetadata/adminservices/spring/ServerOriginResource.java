@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * OMAGServerOriginResource provides the Spring wrapper for the origin service that helps the client
+ * ServerOriginResource provides the Spring wrapper for the origin service that helps the client
  * discover the type of the server.
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}")
-public class OMAGServerOriginResource
+public class ServerOriginResource
 {
     OMAGServerOriginServices   originAPI = new OMAGServerOriginServices();
 

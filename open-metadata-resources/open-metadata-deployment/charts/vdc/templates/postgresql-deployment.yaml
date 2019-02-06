@@ -31,7 +31,7 @@ spec:
 
     spec:
       hostAliases:
-        - ip: "158.176.66.119"
+        - ip: "{{ .Values.igc.host }}"
           hostnames:
           - "igc.openmetadata.ibmcloud.com"
       containers:

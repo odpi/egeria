@@ -9,12 +9,12 @@ import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * OMAGServerOperationalServicesResource provides the REST API for controlling the start up, management and
+ * OperationalServicesResource provides the REST API for controlling the start up, management and
  * shutdown of services in the OMAG Server.
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
-public class OMAGServerOperationalServicesResource
+public class OperationalServicesResource
 {
     private OMAGServerOperationalServices operationalServices = new OMAGServerOperationalServices();
 
@@ -120,4 +120,23 @@ public class OMAGServerOperationalServicesResource
         return operationalServices.getActiveConfiguration(userId, serverName);
     }
 
+
+    /**
+     * Add a new open metadata archive to running repository.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param fileName name of the open metadata archive file.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or fileName parameter.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/instance/open-metadata-archives/file")
+
+    public VoidResponse addOpenMetadataArchiveFile(@PathVariable String userId,
+                                                   @PathVariable String serverName,
+                                                   @RequestParam String fileName)
+    {
+        return operationalServices.addOpenMetadataArchiveFile(userId, serverName, fileName);
+    }
 }

@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model;
 
 import java.util.List;
+import java.util.Objects;
 
 public class RangerPolicyResource {
 
@@ -32,5 +33,20 @@ public class RangerPolicyResource {
 
     public void setRecursive(Boolean recursive) {
         isRecursive = recursive;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RangerPolicyResource that = (RangerPolicyResource) o;
+        return values.equals(that.values) &&
+                isExcludes.equals(that.isExcludes) &&
+                isRecursive.equals(that.isRecursive);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(values, isExcludes, isRecursive);
     }
 }
