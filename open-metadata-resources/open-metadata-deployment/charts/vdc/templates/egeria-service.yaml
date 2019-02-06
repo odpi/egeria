@@ -13,15 +13,13 @@ metadata:
   name: {{ include "myapp.fullname" . }}-egeria-service
 
 spec:
-  type: "{{ .Values.service.type }}"
+  type: {{ .Values.service.type }}
   ports:
-  - name: "egeria"
-    port: 8080
-    targetPort: 8080
+    - port: 8080
+      targetPort: 8080
+      nodePort: {{ .Values.service.nodeport.egeria }}
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: egeria-service
-
-
