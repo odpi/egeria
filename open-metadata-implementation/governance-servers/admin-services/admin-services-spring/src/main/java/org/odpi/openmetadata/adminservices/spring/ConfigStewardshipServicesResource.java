@@ -8,7 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * OMAGServerConfigStewardshipServices provides the API for configuring the stewardship services in an OMAG
+ * ConfigStewardshipServicesResource provides the API for configuring the stewardship services in an OMAG
  * server.
  */
 @RestController
