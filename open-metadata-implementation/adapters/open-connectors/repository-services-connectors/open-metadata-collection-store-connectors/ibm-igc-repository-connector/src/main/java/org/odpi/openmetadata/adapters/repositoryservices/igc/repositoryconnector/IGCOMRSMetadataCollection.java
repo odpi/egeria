@@ -1689,7 +1689,13 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                         igcSearch.addSortingCriteria(igcSearchSorting);
                     }
 
-                    processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+                    processResults(
+                            mapping,
+                            this.igcRestClient.search(igcSearch),
+                            entityDetails,
+                            pageSize,
+                            userId
+                    );
 
                 }
 
@@ -1889,7 +1895,13 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                         igcSearch.addSortingCriteria(igcSearchSorting);
                     }
 
-                    processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+                    processResults(
+                            mapping,
+                            this.igcRestClient.search(igcSearch),
+                            entityDetails,
+                            pageSize,
+                            userId
+                    );
 
                 } else {
                     log.info("No classification mapping has been implemented for {} on entity {} -- skipping from search.", classificationName, mapping.getOmrsTypeDefName());
@@ -2064,7 +2076,13 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                             igcSearch.addSortingCriteria(igcSearchSorting);
                         }
 
-                        processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+                        processResults(
+                                mapping,
+                                this.igcRestClient.search(igcSearch),
+                                entityDetails,
+                                pageSize,
+                                userId
+                        );
 
                     }
 
@@ -4973,12 +4991,14 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     /**
      * Process the search results into the provided list of EntityDetail objects.
      *
+     * @param mapper the EntityMapping that should be used to translate the results
      * @param results the IGC search results
      * @param entityDetails the list of EntityDetails to append
      * @param pageSize the number of results per page (0 for all results)
      * @param userId the user making the request
      */
-    private void processResults(ReferenceList results,
+    private void processResults(EntityMapping mapper,
+                                ReferenceList results,
                                 List<EntityDetail> entityDetails,
                                 int pageSize,
                                 String userId) throws RepositoryErrorException {
@@ -4995,25 +5015,22 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             if (!reference.getType().equals(DEFAULT_IGC_TYPE)) {
                 EntityDetail ed = null;
 
-                List<EntityMapping> mappers = getMappers(reference.getType(), userId);
-                for (EntityMapping mapper : mappers) {
-                    log.debug("processResults with mapper: {}", mapper.getClass().getCanonicalName());
-                    String idToLookup;
-                    if (mapper.igcRidNeedsPrefix()) {
-                        log.debug(" ... prefix required, getEntityDetail with: {}", mapper.getIgcRidPrefix() + reference.getId());
-                        idToLookup = mapper.getIgcRidPrefix() + reference.getId();
-                    } else {
-                        log.debug(" ... no prefix required, getEntityDetail with: {}", reference.getId());
-                        idToLookup = reference.getId();
-                    }
-                    try {
-                        ed = getEntityDetail(userId, idToLookup, reference);
-                    } catch (EntityNotKnownException e) {
-                        log.error("Unable to find entity: {}", idToLookup);
-                    }
-                    if (ed != null) {
-                        entityDetails.add(ed);
-                    }
+                log.debug("processResults with mapper: {}", mapper.getClass().getCanonicalName());
+                String idToLookup;
+                if (mapper.igcRidNeedsPrefix()) {
+                    log.debug(" ... prefix required, getEntityDetail with: {}", mapper.getIgcRidPrefix() + reference.getId());
+                    idToLookup = mapper.getIgcRidPrefix() + reference.getId();
+                } else {
+                    log.debug(" ... no prefix required, getEntityDetail with: {}", reference.getId());
+                    idToLookup = reference.getId();
+                }
+                try {
+                    ed = getEntityDetail(userId, idToLookup, reference);
+                } catch (EntityNotKnownException e) {
+                    log.error("Unable to find entity: {}", idToLookup);
+                }
+                if (ed != null) {
+                    entityDetails.add(ed);
                 }
             }
         }
@@ -5021,7 +5038,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         // If we haven't filled a page of results (because we needed to skip some above), recurse...
         if (results.hasMorePages() && entityDetails.size() < pageSize) {
             results.getNextPage(this.igcRestClient);
-            processResults(results, entityDetails, pageSize, userId);
+            processResults(mapper, results, entityDetails, pageSize, userId);
         }
 
     }
