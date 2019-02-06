@@ -3,7 +3,7 @@
 
 # Changing the OMAG Server Platform's Network Address
 
-By default the OMAG Server Platform registers with the network
+By default the [OMAG Server Platform](../../../open-metadata-publication/website/omag-server) registers with the network
 using **http://localhost:8080**.  This is ok for testing, or
 where you only want to run one instance of the OMAG Server Platform
 on a single machine, but for many situations it is not sufficient.

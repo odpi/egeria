@@ -214,7 +214,7 @@ public class OMAGServerAdminForAccessServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String>  configAuditLog          = serverConfig.getAuditLog();
+            List<String>  configAuditLog          = serverConfig.getAuditTrail();
 
             if (configAuditLog == null)
             {
@@ -230,7 +230,7 @@ public class OMAGServerAdminForAccessServices
                 configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for access services.");
             }
 
-            serverConfig.setAuditLog(configAuditLog);
+            serverConfig.setAuditTrail(configAuditLog);
 
             serverConfig.setAccessServicesConfig(accessServicesConfig);
 
@@ -277,7 +277,7 @@ public class OMAGServerAdminForAccessServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String>  configAuditLog          = serverConfig.getAuditLog();
+            List<String>  configAuditLog          = serverConfig.getAuditTrail();
 
             if (configAuditLog == null)
             {
@@ -293,7 +293,7 @@ public class OMAGServerAdminForAccessServices
                 configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for enterprise repository services (used by access services).");
             }
 
-            serverConfig.setAuditLog(configAuditLog);
+            serverConfig.setAuditTrail(configAuditLog);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
 
