@@ -12,12 +12,12 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * OMAGServerAccessServicesAdminResource provides the configuration for setting up the Open Metadata Access
+ * ConfigAccessServicesResource provides the configuration for setting up the Open Metadata Access
  * Services (OMASs).
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
-public class OMAGServerAccessServicesAdminResource
+public class ConfigAccessServicesResource
 {
     private OMAGServerAdminForAccessServices adminAPI = new OMAGServerAdminForAccessServices();
 
