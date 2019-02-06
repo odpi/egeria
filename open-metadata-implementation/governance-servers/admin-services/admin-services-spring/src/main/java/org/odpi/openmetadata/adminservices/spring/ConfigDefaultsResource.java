@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 /**
- * OMAGServerConfigDefaultsResource sets properties in the configuration document that are used as
+ * ConfigDefaultsResource sets properties in the configuration document that are used as
  * default values when configuring the subsystems in an OMAG Server.  If these values
  * are updated after a subsystem is configured, they do not impact that subsystem's configuration.
  */

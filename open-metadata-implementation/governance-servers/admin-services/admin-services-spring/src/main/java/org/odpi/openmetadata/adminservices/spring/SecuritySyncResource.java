@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
-public class OMAGServerSecuritySyncResource {
+public class SecuritySyncResource
+{
 
     private OMAGServerSecuritySyncService adminAPI = new OMAGServerSecuritySyncService();
 
@@ -25,7 +26,7 @@ public class OMAGServerSecuritySyncResource {
      * OMAGNotAuthorizedException     the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or accessServicesConfig parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/configuration")
+    @RequestMapping(method = RequestMethod.POST, path = "/security-sync-service/configuration")
     public VoidResponse setAccessServicesConfig(@PathVariable String userId,
                                                 @PathVariable String serverName,
                                                 @RequestBody SecuritySyncConfig securitySyncConfig) {
