@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.Node;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 
 /**
  * FVT utilities

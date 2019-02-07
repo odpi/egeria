@@ -3,11 +3,10 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.OMRSRelationshipToLines;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.server.SubjectAreaBeansToAccessOMRS;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.RelationshipsResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
@@ -15,9 +14,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -44,7 +40,6 @@ public class SubjectAreaRESTServicesInstance
 
     // The OMRSAPIHelper allows the junits to mock out the omrs layer.
     protected OMRSAPIHelper oMRSAPIHelper = null;
-    static private String accessServiceName = null;
     protected static SubjectAreaInstanceHandler instanceHandler = new SubjectAreaInstanceHandler();
 
     /**
@@ -54,22 +49,6 @@ public class SubjectAreaRESTServicesInstance
     {
     }
 
-//    /**
-//     * Setup the OMRSAPIHelper with the right instance based on the serverName
-//     *
-//     * @param serverName serverName, used to identify a server in a multitenant environment.
-//     * @return SubjectAreaOMASAPIResponse null if successful
-//     */
-//    protected void initialiseOMRSAPIHelperForInstance(String serverName) throws MetadataServerUncontactableException
-//    {
-//        // this is set as a mock object for junits.
-//        if (oMRSAPIHelper ==null)
-//        {
-//            oMRSAPIHelper = new OMRSAPIHelper();
-//        }
-//
-//        OMRSRepositoryConnector omrsConnector = instanceHandler.getRepositoryConnector(serverName);
-//        oMRSAPIHelper.setOMRSRepositoryConnector(omrsConnector);
     /**
      * Each API call needs to run in the requested tenant - indicated by the serverName and validate the userid.
      * @param serverName server name used to create the instance
