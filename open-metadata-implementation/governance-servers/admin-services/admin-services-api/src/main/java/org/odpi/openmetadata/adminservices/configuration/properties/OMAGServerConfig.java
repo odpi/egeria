@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -96,7 +94,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private DiscoveryEngineConfig     discoveryEngineConfig     = null;
     private StewardshipServicesConfig stewardshipServicesConfig = null;
     private SecuritySyncConfig        securitySyncConfig        = null;
-    private List<String>              auditLog                  = null;
+    private List<String>              auditTrail                = null;
 
 
     /**
@@ -130,7 +128,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             discoveryEngineConfig = template.getDiscoveryEngineConfig();
             stewardshipServicesConfig = template.getStewardshipServicesConfig();
             securitySyncConfig = template.getSecuritySyncConfig();
-            auditLog = template.getAuditLog();
+            auditTrail = template.getAuditTrail();
         }
     }
 
@@ -428,20 +426,20 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      *
      * @return list of audit messages
      */
-    public List<String> getAuditLog()
+    public List<String> getAuditTrail()
     {
-        return auditLog;
+        return auditTrail;
     }
 
 
     /**
      * Set up the audit log messages.
      *
-     * @param auditLog list of audit messages
+     * @param auditTrail list of audit messages
      */
-    public void setAuditLog(List<String> auditLog)
+    public void setAuditTrail(List<String> auditTrail)
     {
-        this.auditLog = auditLog;
+        this.auditTrail = auditTrail;
     }
 
 
@@ -467,7 +465,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 ", discoveryEngineConfig=" + discoveryEngineConfig +
                 ", stewardshipServicesConfig=" + stewardshipServicesConfig +
                 ", securitySyncConfig=" + securitySyncConfig +
-                ", auditLog=" + auditLog +
+                ", auditTrail=" + auditTrail +
                 '}';
     }
 
@@ -503,7 +501,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 Objects.equals(getDiscoveryEngineConfig(), that.getDiscoveryEngineConfig()) &&
                 Objects.equals(getStewardshipServicesConfig(), that.getStewardshipServicesConfig()) &&
                 Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
-                Objects.equals(getAuditLog(), that.getAuditLog());
+                Objects.equals(getAuditTrail(), that.getAuditTrail());
     }
 
 
@@ -518,6 +516,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         return Objects.hash(getLocalServerId(), getLocalServerName(), getLocalServerType(), getOrganizationName(),
                             getLocalServerURL(), getLocalServerUserId(), getMaxPageSize(), getEventBusConfig(),
                             getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryEngineConfig(),
-                            getStewardshipServicesConfig(), getSecuritySyncConfig(), getAuditLog());
+                            getStewardshipServicesConfig(), getSecuritySyncConfig(), getAuditTrail());
     }
 }

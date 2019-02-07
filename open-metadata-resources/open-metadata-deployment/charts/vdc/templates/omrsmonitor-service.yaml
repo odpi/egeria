@@ -8,18 +8,18 @@ metadata:
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: igcproxy-service
+    app.kubernetes.io/component: omrsmonitor-service
 
-  name: {{ include "myapp.fullname" . }}-igcproxy-service
+  name: {{ include "myapp.fullname" . }}-omrsmonitor-service
 
 spec:
   type: {{ .Values.service.type }}
   ports:
-  - port: 8080
-    targetPort: 8080
-    nodePort: {{ .Values.service.nodeport.igcproxy }}
+    - port: 58080
+      targetPort: 58080
+      nodePort: {{ .Values.service.nodeport.omrsmonitor }}
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/component: igcproxy-service
+    app.kubernetes.io/component: omrsmonitor-service
