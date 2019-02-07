@@ -18,5 +18,5 @@ public class Constants {
     public static final String SERVICE_TAGS_RESOURCE_BY_GUID = "{0}/service/tags/resource/guid/{1}";
     public static final String SERVICE_ALL_TAGS = "{0}/service/tags/tags";
     public static final String SERVICE_TAGS_TAG_RESOURCE_MAPS = "{0}/service/tags/tagresourcemaps";
+    public static final String GOVERNED_ASSETS = "{0}/assets?classification={0}";
 }
-
