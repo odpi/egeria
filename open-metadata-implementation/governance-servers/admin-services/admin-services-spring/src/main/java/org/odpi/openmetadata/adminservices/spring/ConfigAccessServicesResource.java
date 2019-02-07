@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * OMAGServerAccessServicesAdminResource provides the configuration for setting up the Open Metadata Access
+ * ConfigAccessServicesResource provides the configuration for setting up the Open Metadata Access
  * Services (OMASs).
  */
 @RestController
