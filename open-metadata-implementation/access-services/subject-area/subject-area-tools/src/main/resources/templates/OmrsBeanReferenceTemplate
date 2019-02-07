@@ -19,7 +19,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.Reference;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.<$$urelatedendtype$$>.<$$urelatedendtype$$>;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSLine;
 <$Relationship$$

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node
 
 import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

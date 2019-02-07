@@ -46,6 +46,8 @@ public enum ResponseCategory {
     TermCategorizationRelationship,
     // category relationships
     CategoryRelationships,
+    // graph
+    Graph,
 
     // errors
     ClassificationException,
