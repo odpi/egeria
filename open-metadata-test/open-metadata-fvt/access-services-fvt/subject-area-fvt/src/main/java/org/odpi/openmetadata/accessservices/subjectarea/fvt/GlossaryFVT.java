@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 
 import java.io.IOException;
 import java.util.Date;
@@ -119,7 +119,6 @@ public class GlossaryFVT
         if (results.size() !=1 ) {
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
         }
-
     }
 
     public  Glossary createGlossary(String glossaryName) throws SubjectAreaCheckedExceptionBase
@@ -128,7 +127,7 @@ public class GlossaryFVT
         return issueCreateGlossary(glossary);
     }
 
-    private Glossary issueCreateGlossary(Glossary glossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, UnrecognizedGUIDException {
+    public Glossary issueCreateGlossary(Glossary glossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, UnrecognizedGUIDException {
         Glossary newGlossary = subjectAreaGlossary.createGlossary(serverName,FVTConstants.USERID, glossary);
         if (newGlossary != null)
         {
@@ -137,7 +136,7 @@ public class GlossaryFVT
         return newGlossary;
     }
 
-    private Glossary getGlossaryForInput(String glossaryName) {
+    public Glossary getGlossaryForInput(String glossaryName) {
         Glossary glossary = new Glossary();
         glossary.setName(glossaryName);
         return glossary;
