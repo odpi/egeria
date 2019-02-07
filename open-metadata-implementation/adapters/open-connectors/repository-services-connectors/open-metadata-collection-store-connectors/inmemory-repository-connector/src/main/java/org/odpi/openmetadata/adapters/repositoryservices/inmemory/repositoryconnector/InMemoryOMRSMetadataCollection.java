@@ -2429,8 +2429,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         Map<String, EntityDetail>   entityStore = repositoryStore.timeWarpEntityStore(asOfTime);
         Map<String, Relationship>   relationshipStore = repositoryStore.timeWarpRelationshipStore(asOfTime);
-
         InMemoryEntityNeighbourhood inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(
+                repositoryHelper,
+                repositoryName,
                 repositoryValidator,
                 entityStore,
                 relationshipStore,
