@@ -8,7 +8,7 @@
     db2 list database directory
   args:
     executable: /bin/bash
-  become_user: "{{ egeria_samples_credentials.db_owner }}"
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
   become: yes
   ignore_errors: yes
   register: __cocopharma_db2catalog_completion
@@ -21,6 +21,6 @@
   args:
     executable: /bin/bash
   become: yes
-  become_user: "{{ egeria_samples_credentials.db_owner }}"
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
   when: __cocopharma_db2catalog_completion.stdout.find(item) > 0
   with_items: "{{ egeria_samples_cocopharma_databases }}"

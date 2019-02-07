@@ -16,22 +16,31 @@ egeria_samples_cocopharma_db_type: ibm-db2
 # directory of these coco-pharmaceuticals samples)
 egeria_samples_metadata_backend: ibm-igc
 
-# Name of OS-level users and groups who should own the samples that are being loaded
+# Name of OS-level users and groups who should own the samples that are being loaded to a database
 # Defaults:
-#  - ibm-igc => file => dsadm / dstage
 #  - ibm-db2 => db => db2inst1 / db2iadm1
 #  - postgresql => db => postgres / postgres
 #  - mariadb => db => root / root
-egeria_samples_credentials:
-  file_owner: dsadm
-  file_group: dstage
-  db_owner: db2inst1
-  db_group: db2iadm1
-  db_passwd: db2inst1
+egeria_samples_db_credentials:
+  owner: db2inst1
+  group: db2iadm1
+  passwd: db2inst1
+
+# Name of OS-level users and groups who should own the samples that are being loaded as files
+# Defaults:
+#  - ibm-igc => file => dsadm / dstage
+egeria_samples_metadata_credentials:
+  owner: dsadm
+  group: dstage
 
 # Name of the schema under which to create the sample database
 # Defaults:
-#  - ibm-db2 => "{{ egeria_samples_credentials.db_owner | upper }}"
+#  - ibm-db2 => "{{ egeria_samples_db_credentials.owner | upper }}"
 #  - postgresql => public
 #  - mariadb => not used, can be any value
-egeria_samples_db_schema: "{{ egeria_samples_credentials.db_owner | upper }}"
+egeria_samples_db_schema: "{{ egeria_samples_db_credentials.owner | upper }}"
+
+# Hostname and port for remote access to the samples database (by default same as what's used in inventory, but may need
+# to be changed if eg. deploying into k8s and exposing via an external service)
+egeria_samples_db_host_remote: "{{ groups['egeria-samples-db-host'][0] }}"
+egeria_samples_db_port_remote: 50000

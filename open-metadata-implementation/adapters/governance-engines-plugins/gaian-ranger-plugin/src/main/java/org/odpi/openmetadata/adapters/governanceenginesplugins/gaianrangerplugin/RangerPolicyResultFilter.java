@@ -9,11 +9,8 @@ import com.ibm.gaiandb.Util;
 import com.ibm.gaiandb.policyframework.SQLResultFilterX;
 import org.apache.derby.iapi.error.StandardException;
 import org.apache.derby.iapi.types.DataValueDescriptor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.apache.ranger.authorization.hadoop.config.RangerConfiguration;
+import org.springframework.http.*;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
@@ -21,17 +18,10 @@ import java.io.IOException;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.text.ParseException;
+import java.util.*;
 
-import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.COLUMN_RESOURCE;
-import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.DEFAULT_SCHEMA;
-import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.SELECT_ACTION;
-import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.UNKNOWN_USER;
+import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin.Constants.*;
 
 /**
  * Initial policy plugin for GaianDB
@@ -207,6 +197,12 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
             return rows;
         }
 
+        Boolean isNullMasking = queryContext.getNullMasking();
+        Properties properties = null;
+        if (!isNullMasking) {
+            properties = loadProperties();
+        }
+
         int resultSetColumnIndexOffset = 0;
         int querySetColumnIndex = 0;
         while (querySetColumnIndex < queryContext.getColumns().size()
@@ -226,9 +222,9 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
                         continue;
                     }
                     try {
-                        ApplyMasking.redact(row[querySetColumnIndex + resultSetColumnIndexOffset]);
-                    } catch (StandardException e) {
-                        logger.logException(String.valueOf(e.getErrorCode()), e.getMessage(), e);
+                        ApplyMasking.redact(row[querySetColumnIndex + resultSetColumnIndexOffset], isNullMasking, properties);
+                    } catch (StandardException | ParseException e) {
+                        logger.logException("GAIAN_RANGER-Exeption-1",e.getMessage(),e);
                     }
                 }
 
@@ -263,6 +259,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
             queryContext.setColumnTransformers(new ArrayList<>());
 
             Set<String> users = getDefaultUserGroups();
+            queryContext.setNullMasking(isNullMasking());
             queryContext.setUserGroups(users);
         } catch (SQLException e) {
             logger.logException(String.valueOf(e.getErrorCode()), e.getMessage(), e);
@@ -282,6 +279,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
         try {
             List<String> columns = getQueryColumns(queriedColumns);
             queryContext.setColumns(columns);
+            queryContext.setNullMasking(isNullMasking());
             queryContext.setResourceType(COLUMN_RESOURCE);
             logger.logDetail("This is the setQueriedColumns " + queryContext.toString());
 
@@ -323,6 +321,22 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
             }
         }
         return null;
+    }
+
+    private Boolean isNullMasking() {
+        if (RangerConfiguration.getInstance() != null
+                && RangerConfiguration.getInstance().getProperties() != null
+                && RangerConfiguration.getInstance().getProperties().getProperty("ranger.plugin.gaian.masking.pattern") != null) {
+            String maskingPattern = RangerConfiguration.getInstance().getProperties().getProperty("ranger.plugin.gaian.masking.pattern");
+            if (maskingPattern != null) {
+                return maskingPattern.equalsIgnoreCase("NULL");
+            }
+        }
+        return Boolean.FALSE;
+    }
+
+    private Properties loadProperties() {
+        return RangerConfiguration.getInstance().getProperties();
     }
 
     private void setUserDetailsForQueryContext(Object arg) {
@@ -402,7 +416,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
             return getUserGroupsByUserId(rangerURL, userDetails);
         }
 
-        return null;
+        return Collections.emptySet();
     }
 
     private Set<String> getUserGroupsByUserId(String rangerURL, RangerUser userDetails) {
@@ -414,7 +428,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
             return userGroups.getGroupNameList();
         }
 
-        return null;
+        return Collections.emptySet();
     }
 
     private String getUserGroupURL(String rangerURL, String userId) {

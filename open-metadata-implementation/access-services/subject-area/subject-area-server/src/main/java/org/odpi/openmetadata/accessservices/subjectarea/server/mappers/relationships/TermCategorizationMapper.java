@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermCategorization;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermCategorizationRelationship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,14 +20,16 @@ public class TermCategorizationMapper
     private static final String className = TermCategorizationMapper.class.getName();
 
     /**
-     * map TermCategorization to the omrs relationship bean equivalent
-     * @param termCategorization supplied TermCategorization
+     * map TermCategorizationRelationship to the omrs relationship bean equivalent
+     * @param termCategorization supplied TermCategorizationRelationship
      * @return omrs relationship bean equivalent
      * @throws InvalidParameterException  one of the parameters is null or invalid.
      */
-    static public org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization mapTermCategorizationToOMRSRelationshipBean(TermCategorization termCategorization) throws InvalidParameterException {
+    static public org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization mapTermCategorizationToOMRSRelationshipBean(TermCategorizationRelationship termCategorization) throws InvalidParameterException {
         // copy over the Line attributes
         org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization omrsRelationshipBean = new  org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization(termCategorization);
+        omrsRelationshipBean.setEntity2Guid(termCategorization.getTermGuid());
+        omrsRelationshipBean.setEntity1Guid(termCategorization.getCategoryGuid());
         //Set properties
         omrsRelationshipBean.setDescription(termCategorization.getDescription());
         omrsRelationshipBean.setStatus(termCategorization.getStatus());
@@ -51,16 +53,18 @@ public class TermCategorizationMapper
     }
 
     /**
-     * Map omrs relationship bean equivalent to TermCategorization
+     * Map omrs relationship bean equivalent to TermCategorizationRelationship
      * @param omrsRelationshipBean omrs relationship bean equivalent
-     * @return TermCategorization termCategorization
+     * @return TermCategorizationRelationship termCategorization
      */
-    public static TermCategorization mapOMRSRelationshipBeanToTermCategorization(org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization omrsRelationshipBean) {
+    public static TermCategorizationRelationship mapOMRSRelationshipBeanToTermCategorization(org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization omrsRelationshipBean) {
         // copy over the Line attributes
-        TermCategorization termCategorization = new TermCategorization(omrsRelationshipBean);
+        TermCategorizationRelationship termCategorization = new TermCategorizationRelationship(omrsRelationshipBean);
         termCategorization.setDescription(omrsRelationshipBean.getDescription());
         termCategorization.setStatus(omrsRelationshipBean.getStatus());
         termCategorization.setGuid(omrsRelationshipBean.getGuid());
+        termCategorization.setTermGuid(omrsRelationshipBean.getEntity2Guid());
+        termCategorization.setCategoryGuid(omrsRelationshipBean.getEntity1Guid());
         String[] properties=org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization.PROPERTY_NAMES_SET_VALUES;
         Map<String, Object> extraAttributes =termCategorization.getExtraAttributes();
         if (properties!=null && properties.length >0) {
