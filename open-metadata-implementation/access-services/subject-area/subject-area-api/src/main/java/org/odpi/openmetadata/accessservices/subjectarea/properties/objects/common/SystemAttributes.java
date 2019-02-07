@@ -118,7 +118,7 @@ public class SystemAttributes implements Serializable {
         sb.append("GUID="+GUID+",");
         sb.append("status="+this.status+",");
         sb.append("createdBy="+createdBy+",");
-        sb.append("updatedBy ="+updatedBy+",");
+        sb.append("updatedBy="+updatedBy+",");
         sb.append("createTime="+createTime+",");
         sb.append("updateTime="+ updateTime  +",");
         sb.append("version="+version   +",");

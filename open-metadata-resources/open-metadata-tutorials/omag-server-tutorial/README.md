@@ -1,40 +1,46 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# OMAG Server Tutorial
+# OMAG Server Platform Tutorial
 
-The Open Metadata and Governance (OMAG) Server is a flexible server that
-can run many different types of governance services.
+The [Open Metadata and Governance (OMAG) Server Platform](../../../open-metadata-publication/website/omag-server)
+is a flexible server platform that
+can run many different types of open metadata and governance services.
 
 ## Objectives
 
 At the end of this tutorial you will be able to perform the following tasks.
 
-* Starting an OMAG Server
+* Starting the OMAG Server Platform
 * Using the Administration Services to:
-  * Configure open metadata and governance services
-  * Start up the configured services
-  * Shutdown running services
-  * Remove the configuration for governance services
+  * Configure open metadata and governance services in "logical servers".
+  * Start up the configured services.
+  * Make calls to the running services.
+  * Shutdown running services.
+  * Remove the configuration for open metadata and governance services.
   
-## Prerequisite tasks
+## Prerequisite Tasks
 
 * [Download and build ODPi Egeria](../building-egeria-tutorial)
-* [Read the overview of the OMAG Server](../../../open-metadata-publication/website/omag-server)
-
+* [Familiarize yourself with the Postman test tool](task-working-with-postman.md)
 
 ## Tutorial Tasks
 
-* [Starting the OMAG Server](task-starting-the-omag-server.md)
-* [Creating configuration documents](task-creating-configuration-documents.md)
-* [Configuring the OMAG Server](task-configuring-omag-server.md)
-* [Calling the OMAG Server's APIs](task-calling-omag-apis.md)
+1. [Starting the OMAG Server Platform](task-starting-the-omag-server-platform.md)
+2. [Creating Configuration Documents](task-creating-configuration-documents.md)
+3. [Activating Logical OMAG Servers in the OMAG Server Platform](task-starting-omag-server.md)
+4. [Calling the Open Metadata and Governance APIs](task-calling-omag-apis.md)
 
 # Digging Deeper
 
-* [Running the samples](../../open-metadata-samples)
-* [Calling the clients from Java](../omag-client-tutorial)
-* [Running the open metadata conformance suite](../../../open-metadata-conformance-suite)
+* [Changing the OMAG Server Platform's network address](task-changing-the-omag-server-network-address.md)
+* [Running the ODPi Egeria samples](../../open-metadata-samples)
+to understand more about the different ODPi Egeria APIs.
+* [Calling the OMAG Clients from Java](../omag-client-tutorial)
+to understand how to call Egeria APIs from your code.
+* [Running the Open Metadata Conformance Suite](../../../open-metadata-conformance-suite)
+to understand how a technology/software product can demonstrate
+its conformance to the Egeria standards.
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

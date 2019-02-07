@@ -3,8 +3,8 @@
 
 # Swagger API Documentation
 
-This describes the generation of swagger documentation for the governance server chassis in the `OMAGApplication`.  This
-work is done under [EGERIA-18](https://jira.odpi.org/projects/EGERIA/issues/EGERIA-18). 
+The [OMAG Server Platform](../../../../open-metadata-publication/website/omag-server)
+supports the Swagger API for all of its REST 
 
 ## SpringFox Usage
 
@@ -47,7 +47,7 @@ The following dependency allows for the Swagger UI to display the default genera
 
 The following code was added to parse/enable the scanning for REST APIs in spring controllers. 
 
-```java
+```text
     @Bean
     public Docket egeriaAPI()
     {

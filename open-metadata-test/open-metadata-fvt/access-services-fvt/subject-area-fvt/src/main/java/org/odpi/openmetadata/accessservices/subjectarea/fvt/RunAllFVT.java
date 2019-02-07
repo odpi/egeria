@@ -17,7 +17,6 @@ public class RunAllFVT
 
     public static void main(String args[])
     {
-        SubjectArea subjectArea = null;
         try
         {
             String url = RunAllFVT.getUrl(args);
@@ -29,7 +28,7 @@ public class RunAllFVT
             RelationshipsFVT.runit(url);
             SubjectAreaDefinitionCategoryFVT.runit(url);
             EffectiveDatesFVT.runit(url);
-            System.out.println("Samples all run");
+            System.out.println("FVT run successfully");
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
