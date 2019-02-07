@@ -50,7 +50,7 @@ public class AssetLineageEnterpriseOmrsEventListener implements OMRSTopicListene
                     break;
 
                 default:
-                    log.debug("This event should not be handled by iv omas: " + event.getEventCategory());
+                    log.debug("This event should not be handled by the Asset Lineage OMAS: " + event.getEventCategory());
             }
         } else {
             /*
