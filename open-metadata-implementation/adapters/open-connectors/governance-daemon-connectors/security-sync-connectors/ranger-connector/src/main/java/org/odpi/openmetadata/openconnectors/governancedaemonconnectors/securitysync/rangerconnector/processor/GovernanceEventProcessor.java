@@ -41,7 +41,11 @@ public class GovernanceEventProcessor {
 
     public void processExistingGovernedAssetsFromRepository() {
         logProcessing("processExistingGovernedAssetsFromRepository", RangerConnectorAuditCode.CLASSIFIED_GOVERNED_ASSET_INITIAL_LOAD);
-        List<GovernedAsset> governedAssets = getGovernedAssets().getGovernedAssetList();
+        GovernedAssetListAPIResponse governedAssetResponse = getGovernedAssets();
+        if(governedAssetResponse == null || governedAssetResponse.getRelatedHTTPCode() != 200){
+            return;
+        }
+        List<GovernedAsset> governedAssets = governedAssetResponse.getGovernedAssetList();
 
         Map<RangerTag, Set<RangerServiceResource>> tagResourcesMap = new HashMap<>();
         Map<String, RangerTag> rangerTagMap = new HashMap<>();
@@ -439,7 +443,9 @@ public class GovernanceEventProcessor {
         String governanceEngineURL = getGovernanceEngineURL(GOVERNED_ASSETS);
 
         RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> entity = new HttpEntity<>(getBasicHTTPHeaders());
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
 
         try {
 
