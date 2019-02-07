@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-<parent>
-    <artifactId>open-metadata-resources</artifactId>
-    <groupId>org.odpi.egeria</groupId>
-    <version>0.3-SNAPSHOT</version>
-</parent>
+    <parent>
+        <artifactId>open-metadata-resources</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>0.3-SNAPSHOT</version>
+    </parent>
 
-<modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-<name>Open Metadata Deployment</name>
-<description>
-Helm charts to deploy Egeria and associated components such as docker image build scripts
-</description>
+    <name>Open Metadata Deployment</name>
+    <description>
+        Helm charts to deploy Egeria and associated components such as docker image build scripts
+    </description>
 
-<artifactId>open-metadata-deployment</artifactId>
+    <artifactId>open-metadata-deployment</artifactId>
 
-<packaging>pom</packaging>
+    <packaging>pom</packaging>
 
 </project>

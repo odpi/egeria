@@ -6,18 +6,54 @@
 
 # Top level
 
+developer-resources @mandy-chessell
+
+open-metadata-conformance-suite @mandy-chessell
+
+open-metadata-distribution @mandy-chessell
+
 # Implementation
 
-open-metadata-implementation/access-services/governance-engine @planetf1 
-open-metadata-implementation/adapters/governance-engines-plugins @planetf1 
-open-metadata-implementation/adapters/authentication-plugins/gaian-impersonation @planetf1 
+open-metadata-implementation/adapters @mandy-chessell
 open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/igc-rest-client-library @cmgrote
 open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/ibm-igc-repository-connector @cmgrote
+open-metadata-implementation/adapters/governance-engines-plugins @planetf1
+open-metadata-implementation/adapters/authentication-plugins/gaian-impersonation @planetf1
+
+open-metadata-implementation/frameworks @mandy-chessell
+
+open-metadata-implementation/governance-servers @mandy-chessell
+
+open-metadata-implementation/access-services @mandy-chessell
+open-metadata-implementation/access-services/asset-consumer @mandy-chessell
+open-metadata-implementation/access-services/asset-owner @mandy-chessell
+open-metadata-implementation/access-services/connected-asset @mandy-chessell
+open-metadata-implementation/access-services/community-profile @mandy-chessell
+open-metadata-implementation/access-services/digital-architecture @mandy-chessell
+open-metadata-implementation/access-services/enterprise-architecture @mandy-chessell
+open-metadata-implementation/access-services/stewardship-action @mandy-chessell
+open-metadata-implementation/access-services/security-officer @mandy-chessell
+open-metadata-implementation/access-services/governance-program @mandy-chessell
+open-metadata-implementation/access-services/governance-engine @planetf1
+
+open-metadata-implementation/repository-services @mandy-chessell
+
+
+# Publication
+
+open-metadata-publication @mandy-chessell
 
 # Resources
 
+open-metadata-resources @mandy-chessell
 open-metadata-resources/open-metadata-deployment @planetf1 
+open-metadata-resources/open-metadata-tutorials @mandy-chessell
 
+open-metadata-resources/open-metadata-samples @mandy-chessell
 open-metadata-resources/open-metadata-samples/postman-rest-samples @planetf1
+
+# Test
+
+open-metadata-test @mandy-chessell
 
 

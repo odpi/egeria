@@ -5,6 +5,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -22,9 +24,13 @@ public class RelationshipsFVT
     private static final String DEFAULT_TEST_TERM_NAME = "Test term A1";
     private static final String DEFAULT_TEST_TERM_NAME2 = "Test term B1";
     private static final String DEFAULT_TEST_TERM_NAME3 = "Test term C1";
+    private static final String DEFAULT_TEST_CAT_NAME1 = "Test cat A1";
+    private static final String DEFAULT_TEST_CAT_NAME2 = "Test cat B1";
+    private static final String DEFAULT_TEST_CAT_NAME3 = "Test cat C1";
     private SubjectAreaRelationship subjectAreaRelationship = null;
     private GlossaryFVT glossaryFVT =null;
     private TermFVT termFVT =null;
+    private CategoryFVT catFVT = null;
     private String url = null;
 
     public RelationshipsFVT(String url) throws SubjectAreaCheckedExceptionBase
@@ -32,6 +38,7 @@ public class RelationshipsFVT
         this.url=url;
         subjectAreaRelationship = new SubjectAreaImpl(FVTConstants.SERVER_NAME1,url).getSubjectAreaRelationship();
         termFVT = new TermFVT(url,FVTConstants.SERVER_NAME1);
+        catFVT = new CategoryFVT(url,FVTConstants.SERVER_NAME1);
         glossaryFVT = new GlossaryFVT(url,FVTConstants.SERVER_NAME1);
     }
 
@@ -60,17 +67,46 @@ public class RelationshipsFVT
     {
         System.out.println("Create a glossary");
 
-        Glossary glossary = glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
-        System.out.println("Create a term1 using glossary guid");
-        Term term1 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME, glossary.getSystemAttributes().getGUID());
-        FVTUtils.validateNode(term1);
-        System.out.println("Create a term2 using glossary guid");
-        Term term2 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME2, glossary.getSystemAttributes().getGUID());
-        FVTUtils.validateNode(term2);
-        System.out.println("Create a term3 using glossary guid");
-        Term term3 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME3, glossary.getSystemAttributes().getGUID());
-        FVTUtils.validateNode(term3);
+        int term1relationshipcount = 0;
+        int term2relationshipcount = 0;
+        int term3relationshipcount = 0;
+        int glossaryRelationshipCount = 0;
+        int cat1RelationshipCount = 0;
+        int cat2RelationshipCount = 0;
 
+        Glossary glossary = glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
+        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME+ " using glossary guid");
+        String glossaryGuid = glossary.getSystemAttributes().getGUID();
+        Term term1 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
+        term1relationshipcount++;
+        glossaryRelationshipCount++;
+        checkRelationshipNumberforGlossary(glossaryRelationshipCount, glossary);
+        checkRelationshipNumberforTerm(term1relationshipcount, term1);
+        FVTUtils.validateNode(term1);
+        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME2+ " using glossary guid");
+        Term term2 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME2, glossaryGuid);
+        term2relationshipcount++;
+        glossaryRelationshipCount++;
+        checkRelationshipNumberforGlossary(glossaryRelationshipCount, glossary);
+        checkRelationshipNumberforTerm(term2relationshipcount, term2);
+        FVTUtils.validateNode(term2);
+        System.out.println("Create a term called " + DEFAULT_TEST_TERM_NAME3+ " using glossary guid");
+        Term term3 = termFVT.createTerm(DEFAULT_TEST_TERM_NAME3, glossaryGuid);
+        FVTUtils.validateNode(term3);
+        term3relationshipcount++;
+        glossaryRelationshipCount++;
+        checkRelationshipNumberforGlossary(glossaryRelationshipCount, glossary);
+        checkRelationshipNumberforTerm(term3relationshipcount, term3);
+        Category cat1 = catFVT.createCategory(DEFAULT_TEST_CAT_NAME1, glossaryGuid);
+        glossaryRelationshipCount++;
+        checkRelationshipNumberforGlossary(glossaryRelationshipCount, glossary);
+        cat1RelationshipCount++;
+        checkRelationshipNumberforCategory(cat1RelationshipCount,cat1);
+        Category cat2 = catFVT.createCategory(DEFAULT_TEST_CAT_NAME2, glossaryGuid);
+        glossaryRelationshipCount++;
+        checkRelationshipNumberforGlossary(glossaryRelationshipCount, glossary);
+        cat2RelationshipCount++;
+        checkRelationshipNumberforCategory(cat2RelationshipCount,cat1);
         synonymFVT(term1, term2);
         antonymFVT(term1, term3);
         relatedtermFVT(term1, term3);
@@ -83,36 +119,68 @@ public class RelationshipsFVT
         typedByFVT(term1, term2);
         isaFVT(term1, term2);
         isatypeofFVT(term1, term2);
+        termCategorizationFVT(term1,cat1);
         createSomeTermRelationships(term1, term2, term3);
+        term1relationshipcount = term1relationshipcount + 12;
+        term2relationshipcount = term2relationshipcount + 11;
+        term3relationshipcount = term3relationshipcount + 1;
+        checkRelationshipNumberforTerm(term1relationshipcount, term1);
+        checkRelationshipNumberforTerm(term2relationshipcount, term2);
+        checkRelationshipNumberforTerm(term3relationshipcount, term3);
+        FVTUtils.validateLine(createTermCategorization(term1,cat1));
+        term1relationshipcount++;
+        cat1RelationshipCount++;
+        checkRelationshipNumberforCategory(cat1RelationshipCount,cat1);
+        FVTUtils.validateLine(createTermCategorization(term1,cat2));
+        term1relationshipcount++;
+        cat2RelationshipCount++;
+        checkRelationshipNumberforCategory(cat2RelationshipCount,cat1);
+        FVTUtils.validateLine(createTermCategorization(term2,cat1));
+        cat1RelationshipCount++;
+        checkRelationshipNumberforCategory(cat1RelationshipCount,cat1);
+        term2relationshipcount++;
+        FVTUtils.validateLine(createTermCategorization(term3,cat1));
+        term3relationshipcount++;
+        cat1RelationshipCount++;
+        checkRelationshipNumberforCategory(cat1RelationshipCount,cat1);
+        checkRelationshipNumberforTerm(term1relationshipcount, term1);
+        checkRelationshipNumberforTerm(term2relationshipcount, term2);
+        checkRelationshipNumberforTerm(term3relationshipcount, term3);
         System.out.println("get term relationships");
         List<Line> term1Relationships = termFVT.getTermRelationships(term1);
-        if (term1Relationships.size() !=13) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: expected 13 relationships associated with term1 got "+ term1Relationships.size(), "", "");
-        }
-        List<Line> term2Relationships = termFVT.getTermRelationships(term2);
-        if (term2Relationships.size() !=12) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: expected 12 relationships associated with term2 got "+ term2Relationships.size(), "", "");
-        }
-        List<Line> term3Relationships = termFVT.getTermRelationships(term3);
-        if (term3Relationships.size() !=2) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: expected 2 relationship associated with term3 got "+ term3Relationships.size(), "", "");
-        }
-        // uncomment the below tests when in memory repository supports paging
 
-//        System.out.println("Get paged term relationships");
-//        int offset = 0;
-//
-//        int numberofrelationships =0;
-//        while (offset<term1Relationships.size()) {
-//            System.out.println("Get paged term relationships offset = " + offset + ",pageSize=3");
-//            List<Line> term1PagedRelationships = termFVT.getTermRelationships(term1, null, offset, 3, SequencingOrder.GUID, null);
-//            numberofrelationships =+ term1Relationships.size();
-//            offset+=3;
-//        }
-//        if (term1Relationships.size() !=numberofrelationships) {
-//            throw new SubjectAreaFVTCheckedException(0, "", "", "Expected " + term1Relationships.size() + " got "+ term3Relationships.size(), "", "");
-//        }
+        System.out.println("Get paged term relationships");
+        int offset = 0;
 
+        int numberofrelationships =0;
+        while (offset<term1relationshipcount) {
+            System.out.println("Get paged term relationships offset = " + offset + ",pageSize=3");
+            List<Line> term1PagedRelationships = termFVT.getTermRelationships(term1, null, offset, 3, SequencingOrder.GUID, null);
+            numberofrelationships = numberofrelationships + term1PagedRelationships.size();
+            offset+=3;
+        }
+        if (term1relationshipcount !=numberofrelationships) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "Expected " + term1Relationships.size() + " got "+ numberofrelationships, "", "");
+        }
+    }
+
+    private void checkRelationshipNumberforTerm(int expectedrelationshipcount, Term term) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException, SubjectAreaFVTCheckedException {
+        int actualCount = termFVT.getTermRelationships(term).size();
+        if (expectedrelationshipcount != actualCount) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: expected " +expectedrelationshipcount+ " for " +term.getName() + " got "  +actualCount, "", "");
+        }
+    }
+    private void checkRelationshipNumberforGlossary(int expectedrelationshipcount, Glossary glossary) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException, SubjectAreaFVTCheckedException {
+        int actualCount = glossaryFVT.getGlossaryRelationships(glossary).size();
+        if (expectedrelationshipcount != actualCount) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: expected " +expectedrelationshipcount+ " for " +glossary.getName() + " got "  +actualCount, "", "");
+        }
+    }
+    private void checkRelationshipNumberforCategory(int expectedrelationshipcount, Category category) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException, SubjectAreaFVTCheckedException {
+        int actualCount = catFVT.getCategoryRelationships(category).size();
+        if (expectedrelationshipcount != actualCount) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: expected " +expectedrelationshipcount+ " for " +category.getName() + " got "  +actualCount, "", "");
+        }
     }
 
     private void createSomeTermRelationships(Term term1, Term term2, Term term3) throws SubjectAreaFVTCheckedException, InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException {
@@ -130,19 +198,18 @@ public class RelationshipsFVT
         FVTUtils.validateLine(createTermISATypeOFRelationship(term1,term2));
     }
 
-
     private void isatypeofFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, GUIDNotPurgedException {
         TermISATypeOFRelationship createdTermISATypeOFRelationship = createTermISATypeOFRelationship(term1, term2);
         String guid = createdTermISATypeOFRelationship.getGuid();
 
-        TermISATypeOFRelationship gotTermISATypeOFRelationship=subjectAreaRelationship.getTermISATypeOFRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        TermISATypeOFRelationship gotTermISATypeOFRelationship=subjectAreaRelationship.getTermISATypeOFRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
         FVTUtils.validateLine(gotTermISATypeOFRelationship);
         System.out.println("Got TermISATypeOFRelationship " + createdTermISATypeOFRelationship);
 
         TermISATypeOFRelationship updateTermISATypeOFRelationship = new TermISATypeOFRelationship();
         updateTermISATypeOFRelationship.setDescription("ddd2");
         updateTermISATypeOFRelationship.setGuid(createdTermISATypeOFRelationship.getGuid());
-        TermISATypeOFRelationship updatedTermISATypeOFRelationship = subjectAreaRelationship.updateTermISATypeOFRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, updateTermISATypeOFRelationship);
+        TermISATypeOFRelationship updatedTermISATypeOFRelationship = subjectAreaRelationship.updateTermISATypeOFRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, updateTermISATypeOFRelationship);
         FVTUtils.validateLine(updatedTermISATypeOFRelationship);
         if (!updatedTermISATypeOFRelationship.getDescription().equals(updateTermISATypeOFRelationship.getDescription()))
         {
@@ -168,7 +235,7 @@ public class RelationshipsFVT
         TermISATypeOFRelationship replaceTermISATypeOFRelationship = new TermISATypeOFRelationship();
         replaceTermISATypeOFRelationship.setDescription("ddd3");
         replaceTermISATypeOFRelationship.setGuid(createdTermISATypeOFRelationship.getGuid());
-        TermISATypeOFRelationship replacedTermISATypeOFRelationship = subjectAreaRelationship.replaceTermISATypeOFRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, replaceTermISATypeOFRelationship);
+        TermISATypeOFRelationship replacedTermISATypeOFRelationship = subjectAreaRelationship.replaceTermISATypeOFRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, replaceTermISATypeOFRelationship);
         FVTUtils.validateLine(replacedTermISATypeOFRelationship);
         if (!replacedTermISATypeOFRelationship.getDescription().equals(replaceTermISATypeOFRelationship.getDescription()))
         {
@@ -191,16 +258,16 @@ public class RelationshipsFVT
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: TermISATypeOFRelationship replace end 2 not as expected", "", "");
         }
         System.out.println("Replaced TermISATypeOFRelationship " + createdTermISATypeOFRelationship);
-        gotTermISATypeOFRelationship=subjectAreaRelationship.deleteTermISATypeOFRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        gotTermISATypeOFRelationship=subjectAreaRelationship.deleteTermISATypeOFRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
         FVTUtils.validateLine(gotTermISATypeOFRelationship);
         System.out.println("Soft deleted TermISATypeOFRelationship with guid=" + guid);
         gotTermISATypeOFRelationship=subjectAreaRelationship.restoreIsaTypeOfRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
         FVTUtils.validateLine(gotTermISATypeOFRelationship);
         System.out.println("Restored TermISATypeOFRelationship with guid=" + guid);
-        gotTermISATypeOFRelationship=subjectAreaRelationship.deleteTermISATypeOFRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        gotTermISATypeOFRelationship=subjectAreaRelationship.deleteTermISATypeOFRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
         FVTUtils.validateLine(gotTermISATypeOFRelationship);
         System.out.println("Soft deleted TermISATypeOFRelationship with guid=" + guid);
-        subjectAreaRelationship.purgeTermISATypeOFRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        subjectAreaRelationship.purgeTermISATypeOFRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
         System.out.println("Hard deleted TermISATypeOFRelationship with guid=" + guid);
     }
 
@@ -303,14 +370,14 @@ public class RelationshipsFVT
         System.out.println("Created TermTYPEDBYRelationship " + createdTermTYPEDBYRelationship);
         String guid = createdTermTYPEDBYRelationship.getGuid();
 
-        TermTYPEDBYRelationship gotTermTYPEDBYRelationship=subjectAreaRelationship.getTermTYPEDBYRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        TermTYPEDBYRelationship gotTermTYPEDBYRelationship=subjectAreaRelationship.getTermTYPEDBYRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
         FVTUtils.validateLine(gotTermTYPEDBYRelationship);
         System.out.println("Got TermTYPEDBYRelationship " + createdTermTYPEDBYRelationship);
 
         TermTYPEDBYRelationship updateTermTYPEDBYRelationship = new TermTYPEDBYRelationship();
         updateTermTYPEDBYRelationship.setDescription("ddd2");
         updateTermTYPEDBYRelationship.setGuid(createdTermTYPEDBYRelationship.getGuid());
-        TermTYPEDBYRelationship updatedTermTYPEDBYRelationship = subjectAreaRelationship.updateTermTYPEDBYRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, updateTermTYPEDBYRelationship);
+        TermTYPEDBYRelationship updatedTermTYPEDBYRelationship = subjectAreaRelationship.updateTermTYPEDBYRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, updateTermTYPEDBYRelationship);
         FVTUtils.validateLine(updatedTermTYPEDBYRelationship);
         if (!updatedTermTYPEDBYRelationship.getDescription().equals(updateTermTYPEDBYRelationship.getDescription()))
         {
@@ -336,7 +403,7 @@ public class RelationshipsFVT
         TermTYPEDBYRelationship replaceTermTYPEDBYRelationship = new TermTYPEDBYRelationship();
         replaceTermTYPEDBYRelationship.setDescription("ddd3");
         replaceTermTYPEDBYRelationship.setGuid(createdTermTYPEDBYRelationship.getGuid());
-        TermTYPEDBYRelationship replacedTermTYPEDBYRelationship = subjectAreaRelationship.replaceTermTYPEDBYRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, replaceTermTYPEDBYRelationship);
+        TermTYPEDBYRelationship replacedTermTYPEDBYRelationship = subjectAreaRelationship.replaceTermTYPEDBYRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, replaceTermTYPEDBYRelationship);
         FVTUtils.validateLine(replacedTermTYPEDBYRelationship);
         if (!replacedTermTYPEDBYRelationship.getDescription().equals(replaceTermTYPEDBYRelationship.getDescription()))
         {
@@ -359,16 +426,16 @@ public class RelationshipsFVT
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: termTYPEDBYRelationship replace end 2 not as expected", "", "");
         }
         System.out.println("Replaced TermTYPEDBYRelationship " + createdTermTYPEDBYRelationship);
-        gotTermTYPEDBYRelationship=subjectAreaRelationship.deleteTermTYPEDBYRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        gotTermTYPEDBYRelationship=subjectAreaRelationship.deleteTermTYPEDBYRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
         FVTUtils.validateLine(gotTermTYPEDBYRelationship);
         System.out.println("Soft deleted TermTYPEDBYRelationship with guid=" + guid);
         gotTermTYPEDBYRelationship=subjectAreaRelationship.restoreTypedByRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
         FVTUtils.validateLine(gotTermTYPEDBYRelationship);
         System.out.println("Restored TermTYPEDBYRelationship with guid=" + guid);
-        gotTermTYPEDBYRelationship=subjectAreaRelationship.deleteTermTYPEDBYRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        gotTermTYPEDBYRelationship=subjectAreaRelationship.deleteTermTYPEDBYRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
         FVTUtils.validateLine(gotTermTYPEDBYRelationship);
         System.out.println("Soft deleted TermTYPEDBYRelationship with guid=" + guid);
-        subjectAreaRelationship.purgeTermTYPEDBYRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        subjectAreaRelationship.purgeTermTYPEDBYRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
         System.out.println("Hard deleted TermTYPEDBYRelationship with guid=" + guid);
     }
 
@@ -379,7 +446,7 @@ public class RelationshipsFVT
         termTYPEDBYRelationship.setSteward("Stew");
         termTYPEDBYRelationship.setAttributeGuid(term1.getSystemAttributes().getGUID());
         termTYPEDBYRelationship.setTypeGuid(term2.getSystemAttributes().getGUID());
-        return subjectAreaRelationship.createTermTYPEDBYRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, termTYPEDBYRelationship);
+        return subjectAreaRelationship.createTermTYPEDBYRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, termTYPEDBYRelationship);
     }
 
     private void replacementTermFVT(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, GUIDNotPurgedException {
@@ -1220,15 +1287,80 @@ public class RelationshipsFVT
     }
 
     private TermISATypeOFRelationship createTermISATypeOFRelationship(Term term1, Term term2) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
-        TermISATypeOFRelationship TermISATypeOFRelationship = new TermISATypeOFRelationship();
-        TermISATypeOFRelationship.setDescription("ddd");
-        TermISATypeOFRelationship.setSource("source");
-        TermISATypeOFRelationship.setSteward("Stew");
-        TermISATypeOFRelationship.setSubTypeGuid(term1.getSystemAttributes().getGUID());
-        TermISATypeOFRelationship.setSuperTypeGuid(term2.getSystemAttributes().getGUID());
-        TermISATypeOFRelationship createdTermISATypeOFRelationship = subjectAreaRelationship.createTermISATypeOFRelationshipRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, TermISATypeOFRelationship);
+        TermISATypeOFRelationship termISATypeOFRelationship = new TermISATypeOFRelationship();
+        termISATypeOFRelationship.setDescription("ddd");
+        termISATypeOFRelationship.setSource("source");
+        termISATypeOFRelationship.setSteward("Stew");
+        termISATypeOFRelationship.setSubTypeGuid(term1.getSystemAttributes().getGUID());
+        termISATypeOFRelationship.setSuperTypeGuid(term2.getSystemAttributes().getGUID());
+        TermISATypeOFRelationship createdTermISATypeOFRelationship = subjectAreaRelationship.createTermISATypeOFRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, termISATypeOFRelationship);
         FVTUtils.validateLine(createdTermISATypeOFRelationship);
-        System.out.println("Created TermISATypeOFRelationship " + createdTermISATypeOFRelationship);
+        System.out.println("Created termISATypeOFRelationship " + createdTermISATypeOFRelationship);
         return createdTermISATypeOFRelationship;
+    }
+    private void termCategorizationFVT(Term term, Category category) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, GUIDNotPurgedException {
+        TermCategorizationRelationship createdTermCategorizationRelationship = createTermCategorization(term, category);
+        FVTUtils.validateLine(createdTermCategorizationRelationship);
+        System.out.println("Created TermCategorizationRelationship " + createdTermCategorizationRelationship);
+        String guid = createdTermCategorizationRelationship.getGuid();
+
+        TermCategorizationRelationship gotTermCategorizationRelationship =subjectAreaRelationship.getTermCategorizationRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        FVTUtils.validateLine(gotTermCategorizationRelationship);
+        System.out.println("Got TermCategorizationRelationship " + createdTermCategorizationRelationship);
+
+        TermCategorizationRelationship updateTermCategorizationRelationship = new TermCategorizationRelationship();
+        updateTermCategorizationRelationship.setDescription("ddd2");
+        updateTermCategorizationRelationship.setGuid(createdTermCategorizationRelationship.getGuid());
+        TermCategorizationRelationship updatedTermCategorizationRelationship = subjectAreaRelationship.updateTermCategorizationRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, updateTermCategorizationRelationship);
+        FVTUtils.validateLine(updatedTermCategorizationRelationship);
+        if (!updatedTermCategorizationRelationship.getDescription().equals(updateTermCategorizationRelationship.getDescription()))
+        {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: TermCategorization update description not as expected", "", "");
+        }
+        if (updatedTermCategorizationRelationship.getStatus()!=null)
+        {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: TermCategorization update status not as expected", "", "");
+        }
+      
+        System.out.println("Updated TermCategorizationRelationship " + createdTermCategorizationRelationship);
+        TermCategorizationRelationship replaceTermCategorizationRelationship = new TermCategorizationRelationship();
+        replaceTermCategorizationRelationship.setDescription("ddd3");
+        replaceTermCategorizationRelationship.setGuid(createdTermCategorizationRelationship.getGuid());
+        TermCategorizationRelationship replacedTermCategorizationRelationship = subjectAreaRelationship.replaceTermCategorizationRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, replaceTermCategorizationRelationship);
+        FVTUtils.validateLine(replacedTermCategorizationRelationship);
+        if (!replacedTermCategorizationRelationship.getDescription().equals(replaceTermCategorizationRelationship.getDescription()))
+        {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: TermCategorization replace description not as expected", "", "");
+        }
+        if (replacedTermCategorizationRelationship.getStatus() != null)
+        {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: TermCategorization replace source not as expected", "", "");
+        }
+      
+        if (!replacedTermCategorizationRelationship.getTermGuid().equals(createdTermCategorizationRelationship.getTermGuid()))
+        {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: TermCategorization replace end 2 not as expected", "", "");
+        }
+        System.out.println("Replaced TermCategorizationRelationship " + createdTermCategorizationRelationship);
+        gotTermCategorizationRelationship = subjectAreaRelationship.deleteTermCategorizationRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        FVTUtils.validateLine(gotTermCategorizationRelationship);
+        System.out.println("Soft deleted TermCategorizationRelationship with guid=" + guid);
+        gotTermCategorizationRelationship = subjectAreaRelationship.restoreTermCategorizationRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        FVTUtils.validateLine(gotTermCategorizationRelationship);
+        System.out.println("Restored TermCategorizationRelationship with guid=" + guid);
+        gotTermCategorizationRelationship = subjectAreaRelationship.deleteTermCategorizationRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        FVTUtils.validateLine(gotTermCategorizationRelationship);
+        System.out.println("Soft deleted TermCategorization with guid=" + guid);
+        subjectAreaRelationship.purgeTermCategorizationRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        System.out.println("Hard deleted TermCategorization with guid=" + guid);
+    }
+    private TermCategorizationRelationship createTermCategorization(Term term, Category category) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
+        TermCategorizationRelationship termCategorization = new TermCategorizationRelationship();
+        termCategorization.setTermGuid(term.getSystemAttributes().getGUID());
+        termCategorization.setCategoryGuid(category.getSystemAttributes().getGUID());
+        TermCategorizationRelationship createdTermCategorization = subjectAreaRelationship.createTermCategorizationRelationship(FVTConstants.SERVER_NAME1,FVTConstants.USERID, termCategorization);
+        FVTUtils.validateLine(createdTermCategorization);
+        System.out.println("Created TermCategorizationRelationship " + createdTermCategorization);
+        return createdTermCategorization;
     }
 }
