@@ -30,7 +30,7 @@ public class OMAGServerSecuritySyncService {
         try {
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String> configAuditLog = serverConfig.getAuditLog();
+            List<String> configAuditLog = serverConfig.getAuditTrail();
 
             if (configAuditLog == null) {
                 configAuditLog = new ArrayList<>();
@@ -42,7 +42,7 @@ public class OMAGServerSecuritySyncService {
                 configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for security sync services.");
             }
 
-            serverConfig.setAuditLog(configAuditLog);
+            serverConfig.setAuditTrail(configAuditLog);
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();

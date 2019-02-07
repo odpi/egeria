@@ -1,10 +1,9 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Calling Open Metadata and Governance Services
+# IT Infrastructure
 
-
-
+IT infrastructure describes the hardware and software used to run digital services.
 
 
 
