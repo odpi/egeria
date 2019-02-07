@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.admin;
 
 
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
-import org.odpi.openmetadata.accessservices.assetlineage.eventprocessor.EventPublisher;
+import org.odpi.openmetadata.accessservices.assetlineage.outtopic.EventPublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.listeners.AssetLineageEnterpriseOmrsEventListener;
 import org.odpi.openmetadata.accessservices.assetlineage.listeners.AssetLineageInTopicListener;
 import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageServicesInstance;
