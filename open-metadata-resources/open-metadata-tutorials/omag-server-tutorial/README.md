@@ -3,7 +3,8 @@
 
 # OMAG Server Platform Tutorial
 
-The Open Metadata and Governance (OMAG) Server Platform is a flexible server platform that
+The [Open Metadata and Governance (OMAG) Server Platform](../../../open-metadata-publication/website/omag-server)
+is a flexible server platform that
 can run many different types of open metadata and governance services.
 
 ## Objectives
@@ -18,16 +19,16 @@ At the end of this tutorial you will be able to perform the following tasks.
   * Shutdown running services.
   * Remove the configuration for open metadata and governance services.
   
-## Prerequisite tasks
+## Prerequisite Tasks
 
 * [Download and build ODPi Egeria](../building-egeria-tutorial)
 * [Familiarize yourself with the Postman test tool](task-working-with-postman.md)
 
 ## Tutorial Tasks
 
-1. [Starting the OMAG Server Platform](task-starting-the-omag-server.md)
+1. [Starting the OMAG Server Platform](task-starting-the-omag-server-platform.md)
 2. [Creating Configuration Documents](task-creating-configuration-documents.md)
-3. [Configuring the OMAG Server Platform](task-configuring-omag-server.md)
+3. [Activating Logical OMAG Servers in the OMAG Server Platform](task-starting-omag-server.md)
 4. [Calling the Open Metadata and Governance APIs](task-calling-omag-apis.md)
 
 # Digging Deeper

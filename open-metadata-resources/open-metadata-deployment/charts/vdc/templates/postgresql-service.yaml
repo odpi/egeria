@@ -13,18 +13,19 @@ metadata:
   name: {{ include "myapp.fullname" . }}-postgresql-service
 
 spec:
-  type: ClusterIP
+  type: {{ .Values.service.type }}
   ports:
   - name: "postgresql"
     port: 5432
     targetPort: 5432
+    nodePort: {{ .Values.service.nodeport.postgresql }}
   - name: "postgresql-ssh"
     port: 22
     targetPort: 22
+    #nodePort
+    # We don't want to expose this with nodeport ( TODO : move to separate service definition )
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: postgresql-service
-
-

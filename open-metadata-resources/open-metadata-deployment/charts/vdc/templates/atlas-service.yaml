@@ -13,15 +13,13 @@ metadata:
   name: {{ include "myapp.fullname" . }}-atlas-service
 
 spec:
-  type: "{{ .Values.service.type }}"
+  type: {{ .Values.service.type }}
   ports:
-  - name: "atlas"
-    port: 21000
-    targetPort: 21000
+    - port: 21000
+      targetPort: 21000
+      nodePort: {{ .Values.service.nodeport.atlas }}
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/component: atlas-service
-
-

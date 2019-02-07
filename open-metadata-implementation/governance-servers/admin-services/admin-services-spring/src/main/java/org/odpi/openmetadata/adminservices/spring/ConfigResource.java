@@ -3,7 +3,9 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
+import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -33,4 +35,22 @@ public class ConfigResource
         return adminAPI.getStoredConfiguration(userId, serverName);
     }
 
+
+    /**
+     * Set up the configuration properties for an OMAG Server in a single command.
+     *
+     * @param userId  user that is issuing the request
+     * @param serverName  local server name
+     * @param omagServerConfig  configuration for the server
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or OMAGServerConfig parameter.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/configuration")
+    public VoidResponse setOMAGServerConfig(@PathVariable String userId,
+                                            @PathVariable String           serverName,
+                                            @RequestBody  OMAGServerConfig omagServerConfig)
+    {
+        return adminAPI.setOMAGServerConfig(userId, serverName, omagServerConfig);
+    }
 }
