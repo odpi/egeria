@@ -191,7 +191,7 @@ public class <$$uEntityName$$>Mapper {
                    if (systemAttributes.getGUID()!=null)
                         omrsEntityDetail.setGUID(systemAttributes.getGUID());
                    if (systemAttributes.getStatus()!=null) {
-                        InstanceStatus instanceStatus = SubjectAreaUtils.convertStatusToStatusInstance(systemAttributes.getStatus());
+                        InstanceStatus instanceStatus = SubjectAreaUtils.convertStatusToInstanceStatus(systemAttributes.getStatus());
                         omrsEntityDetail.setStatus(instanceStatus);
                    }
             }

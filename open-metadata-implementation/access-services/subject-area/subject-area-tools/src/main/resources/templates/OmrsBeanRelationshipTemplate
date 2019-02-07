@@ -21,8 +21,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSLine;
 //omrs
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 //omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * <$$uname$$> is a relationship between an entity of type <$$entityProxy1Type$$> and an entity of type <$$entityProxy2Type$$>.
@@ -92,7 +92,7 @@ public class <$$uname$$> extends OMRSLine {
            lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-           lineType = LineType.Other;
+           lineType = LineType.Unknown;
         }
         entity1Name = "<$$entityProxy1Name$$>";
         entity1Type = "<$$entityProxy1Type$$>";
@@ -118,7 +118,7 @@ public class <$$uname$$> extends OMRSLine {
            lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-           lineType = LineType.Other;
+           lineType = LineType.Unknown;
         }
     }
 

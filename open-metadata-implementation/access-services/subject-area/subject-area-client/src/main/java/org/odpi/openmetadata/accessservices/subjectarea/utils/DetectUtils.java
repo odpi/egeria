@@ -7,7 +7,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
@@ -317,6 +318,16 @@ public class DetectUtils {
             CategoryErrorResponse(methodName, restResponse);
         }
         return terms;
+    }
+    public static Graph detectAndReturnGraph(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        Graph graph = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.Graph)) {
+            GraphResponse GraphResponse = (GraphResponse)restResponse;
+            graph = GraphResponse.getGraph();
+        } else {
+            CategoryErrorResponse(methodName, restResponse);
+        }
+        return graph;
     }
 
     /*

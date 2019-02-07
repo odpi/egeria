@@ -17,8 +17,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 //omrs
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 //omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * Link between glossary terms that have the opposite meaning.
@@ -80,7 +80,7 @@ public class Antonym extends Line {
             lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-            lineType = LineType.Other;
+            lineType = LineType.Unknown;
         }
         // save the below information to help map to OMRS.
          entity1Name = "antonyms";
@@ -103,7 +103,7 @@ public class Antonym extends Line {
             lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-            lineType = LineType.Other;
+            lineType = LineType.Unknown;
         }
         this.antonym1Guid = omrsRelationship.getEntityOneProxy().getGUID();
         this.antonym2Guid = omrsRelationship.getEntityTwoProxy().getGUID();
