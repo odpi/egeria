@@ -7,16 +7,16 @@
     path: "{{ egeria_samples_cocopharma_targets.files }}"
     state: directory
     mode: 0755
-    owner: "{{ egeria_samples_credentials.file_owner }}"
-    group: "{{ egeria_samples_credentials.file_group }}"
+    owner: "{% if 'egeria-samples-db-host' in group_names %}{{ egeria_samples_db_credentials.owner }}{% else %}{{ egeria_samples_metadata_credentials.owner }}{% endif %}"
+    group: "{% if 'egeria-samples-db-host' in group_names %}{{ egeria_samples_db_credentials.group }}{% else %}{{ egeria_samples_metadata_credentials.group }}{% endif %}"
   become: yes
 
 - name: transfer sample data files
   copy:
     src: "data-files/"
     dest: "{{ egeria_samples_cocopharma_targets.files }}/"
-    owner: "{{ egeria_samples_credentials.file_owner }}"
-    group: "{{ egeria_samples_credentials.file_group }}"
+    owner: "{% if 'egeria-samples-db-host' in group_names %}{{ egeria_samples_db_credentials.owner }}{% else %}{{ egeria_samples_metadata_credentials.owner }}{% endif %}"
+    group: "{% if 'egeria-samples-db-host' in group_names %}{{ egeria_samples_db_credentials.group }}{% else %}{{ egeria_samples_metadata_credentials.group }}{% endif %}"
     mode: 0644
   become: yes
 

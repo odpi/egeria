@@ -823,52 +823,86 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         repositoryValidator.validateUserId(repositoryName, userId, methodName);
         repositoryValidator.validateTypeDef(repositoryName, typeDefParameterName, typeDef, methodName);
 
-        // Validate that we support all of the valid InstanceStatus settings before deciding whether we
-        // fully-support the TypeDef or not
-        HashSet<InstanceStatus> validStatuses = new HashSet<>(typeDef.getValidInstanceStatusList());
-        boolean bVerified = false;
-
-        Set<String> mappedProperties = new HashSet<>();
-        HashSet<InstanceStatus> implementedStatuses = new HashSet<>();
         String guid = typeDef.getGUID();
-        switch (typeDef.getCategory()) {
-            case ENTITY_DEF:
-                EntityMapping entityMapping = entityMappingStore.getMappingByOmrsTypeGUID(guid);
-                if (entityMapping != null) {
-                    mappedProperties = entityMapping.getPropertyMappings().getAllMappedOmrsProperties();
-                    implementedStatuses = new HashSet<>(entityMapping.getSupportedStatuses());
-                }
-                break;
-            case RELATIONSHIP_DEF:
-                RelationshipMapping relationshipMapping = relationshipMappingStore.getMappingByOmrsTypeGUID(guid);
-                if (relationshipMapping != null) {
-                    mappedProperties = relationshipMapping.getMappedOmrsPropertyNames();
-                    implementedStatuses = new HashSet<>(relationshipMapping.getSupportedStatuses());
-                }
-                break;
-            case CLASSIFICATION_DEF:
-                ClassificationMapping classificationMapping = classificationMappingStore.getMappingByOmrsTypeGUID(guid);
-                if (classificationMapping != null) {
-                    mappedProperties = classificationMapping.getMappedOmrsPropertyNames();
-                    implementedStatuses = new HashSet<>(classificationMapping.getSupportedStatuses());
-                }
-                break;
-        }
-        bVerified = validStatuses.equals(implementedStatuses);
 
-        // Validate that we support all of the possible properties before deciding whether we
-        // fully-support the TypeDef or not
-        if (bVerified) {
-            List<TypeDefAttribute> properties = typeDef.getPropertiesDefinition();
-            for (TypeDefAttribute typeDefAttribute : properties) {
-                String omrsPropertyName = typeDefAttribute.getAttributeName();
-                if (!mappedProperties.contains(omrsPropertyName)) {
-                    bVerified = false;
-                }
+        // If we know the TypeDef is unimplemented, immediately throw an exception stating as much
+        if (typeDefStore.getUnimplementedTypeDefByGUID(guid) != null) {
+            throw new TypeDefNotSupportedException(
+                    404,
+                    IGCOMRSMetadataCollection.class.getName(),
+                    methodName,
+                    typeDef.getName() + " is not supported.",
+                    "",
+                    "Request support through Egeria GitHub issue.");
+        } else if (typeDefStore.getTypeDefByGUID(guid) != null) {
+
+            // Otherwise, validate that we support all of the valid InstanceStatus settings before deciding whether we
+            // fully-support the TypeDef or not
+            HashSet<InstanceStatus> validStatuses = new HashSet<>(typeDef.getValidInstanceStatusList());
+            boolean bVerified = false;
+
+            List<String> issues = new ArrayList<>();
+
+            Set<String> mappedProperties = new HashSet<>();
+            HashSet<InstanceStatus> implementedStatuses = new HashSet<>();
+            switch (typeDef.getCategory()) {
+                case ENTITY_DEF:
+                    EntityMapping entityMapping = entityMappingStore.getMappingByOmrsTypeGUID(guid);
+                    if (entityMapping != null) {
+                        mappedProperties = entityMapping.getPropertyMappings().getAllMappedOmrsProperties();
+                        implementedStatuses = new HashSet<>(entityMapping.getSupportedStatuses());
+                    }
+                    break;
+                case RELATIONSHIP_DEF:
+                    RelationshipMapping relationshipMapping = relationshipMappingStore.getMappingByOmrsTypeGUID(guid);
+                    if (relationshipMapping != null) {
+                        mappedProperties = relationshipMapping.getMappedOmrsPropertyNames();
+                        implementedStatuses = new HashSet<>(relationshipMapping.getSupportedStatuses());
+                    }
+                    break;
+                case CLASSIFICATION_DEF:
+                    ClassificationMapping classificationMapping = classificationMappingStore.getMappingByOmrsTypeGUID(guid);
+                    if (classificationMapping != null) {
+                        mappedProperties = classificationMapping.getMappedOmrsPropertyNames();
+                        implementedStatuses = new HashSet<>(classificationMapping.getSupportedStatuses());
+                    }
+                    break;
             }
-        }
+            bVerified = validStatuses.equals(implementedStatuses);
 
-        return bVerified;
+            // Validate that we support all of the possible properties before deciding whether we
+            // fully-support the TypeDef or not
+            if (bVerified) {
+                List<TypeDefAttribute> properties = typeDef.getPropertiesDefinition();
+                for (TypeDefAttribute typeDefAttribute : properties) {
+                    String omrsPropertyName = typeDefAttribute.getAttributeName();
+                    if (!mappedProperties.contains(omrsPropertyName)) {
+                        bVerified = false;
+                        issues.add("list of mapped properties does not match");
+                    }
+                }
+            } else {
+                issues.add("list of valid statuses does not match");
+            }
+
+            // If we were unable to verify everything, throw exception indicating it is not a supported TypeDef
+            if (!bVerified) {
+                throw new TypeDefNotSupportedException(
+                        404,
+                        IGCOMRSMetadataCollection.class.getName(),
+                        methodName,
+                        typeDef.getName() + " is not supported: " + String.join(",", issues),
+                        "",
+                        "Request support through Egeria GitHub issue.");
+            } else {
+                // Everything checked out, so return true
+                return true;
+            }
+
+        } else {
+            // It is completely unknown to us, so go ahead and try to addTypeDef
+            return false;
+        }
 
     }
 
@@ -1655,7 +1689,13 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                         igcSearch.addSortingCriteria(igcSearchSorting);
                     }
 
-                    processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+                    processResults(
+                            mapping,
+                            this.igcRestClient.search(igcSearch),
+                            entityDetails,
+                            pageSize,
+                            userId
+                    );
 
                 }
 
@@ -1855,7 +1895,13 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                         igcSearch.addSortingCriteria(igcSearchSorting);
                     }
 
-                    processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+                    processResults(
+                            mapping,
+                            this.igcRestClient.search(igcSearch),
+                            entityDetails,
+                            pageSize,
+                            userId
+                    );
 
                 } else {
                     log.info("No classification mapping has been implemented for {} on entity {} -- skipping from search.", classificationName, mapping.getOmrsTypeDefName());
@@ -2030,7 +2076,13 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                             igcSearch.addSortingCriteria(igcSearchSorting);
                         }
 
-                        processResults(this.igcRestClient.search(igcSearch), entityDetails, pageSize, userId);
+                        processResults(
+                                mapping,
+                                this.igcRestClient.search(igcSearch),
+                                entityDetails,
+                                pageSize,
+                                userId
+                        );
 
                     }
 
@@ -4939,12 +4991,14 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     /**
      * Process the search results into the provided list of EntityDetail objects.
      *
+     * @param mapper the EntityMapping that should be used to translate the results
      * @param results the IGC search results
      * @param entityDetails the list of EntityDetails to append
      * @param pageSize the number of results per page (0 for all results)
      * @param userId the user making the request
      */
-    private void processResults(ReferenceList results,
+    private void processResults(EntityMapping mapper,
+                                ReferenceList results,
                                 List<EntityDetail> entityDetails,
                                 int pageSize,
                                 String userId) throws RepositoryErrorException {
@@ -4961,25 +5015,22 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             if (!reference.getType().equals(DEFAULT_IGC_TYPE)) {
                 EntityDetail ed = null;
 
-                List<EntityMapping> mappers = getMappers(reference.getType(), userId);
-                for (EntityMapping mapper : mappers) {
-                    log.debug("processResults with mapper: {}", mapper.getClass().getCanonicalName());
-                    String idToLookup;
-                    if (mapper.igcRidNeedsPrefix()) {
-                        log.debug(" ... prefix required, getEntityDetail with: {}", mapper.getIgcRidPrefix() + reference.getId());
-                        idToLookup = mapper.getIgcRidPrefix() + reference.getId();
-                    } else {
-                        log.debug(" ... no prefix required, getEntityDetail with: {}", reference.getId());
-                        idToLookup = reference.getId();
-                    }
-                    try {
-                        ed = getEntityDetail(userId, idToLookup, reference);
-                    } catch (EntityNotKnownException e) {
-                        log.error("Unable to find entity: {}", idToLookup);
-                    }
-                    if (ed != null) {
-                        entityDetails.add(ed);
-                    }
+                log.debug("processResults with mapper: {}", mapper.getClass().getCanonicalName());
+                String idToLookup;
+                if (mapper.igcRidNeedsPrefix()) {
+                    log.debug(" ... prefix required, getEntityDetail with: {}", mapper.getIgcRidPrefix() + reference.getId());
+                    idToLookup = mapper.getIgcRidPrefix() + reference.getId();
+                } else {
+                    log.debug(" ... no prefix required, getEntityDetail with: {}", reference.getId());
+                    idToLookup = reference.getId();
+                }
+                try {
+                    ed = getEntityDetail(userId, idToLookup, reference);
+                } catch (EntityNotKnownException e) {
+                    log.error("Unable to find entity: {}", idToLookup);
+                }
+                if (ed != null) {
+                    entityDetails.add(ed);
                 }
             }
         }
@@ -4987,7 +5038,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         // If we haven't filled a page of results (because we needed to skip some above), recurse...
         if (results.hasMorePages() && entityDetails.size() < pageSize) {
             results.getNextPage(this.igcRestClient);
-            processResults(results, entityDetails, pageSize, userId);
+            processResults(mapper, results, entityDetails, pageSize, userId);
         }
 
     }

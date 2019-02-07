@@ -3,9 +3,9 @@
 
 # Downloading the Egeria Source from GitHub
 
-The Egeria source is extracted from GitHub using the following `git` command:
+The Egeria source is extracted from GitHub using the following **git** command:
 
-```bash
+```text
 
 $ git clone https://github.com/odpi/egeria.git
 Cloning into 'egeria'...
@@ -20,8 +20,8 @@ $
 
 ```
 A new directory has been created with the ODPi Egeria source code.
-Change to the `egeria` directory.
-```bash
+Change to the **egeria** directory.
+```text
 
 $ cd egeria
 $
