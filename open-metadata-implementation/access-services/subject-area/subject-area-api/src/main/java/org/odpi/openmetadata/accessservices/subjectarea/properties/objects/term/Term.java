@@ -4,23 +4,20 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.ObjectIdentifier;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.SpineAttribute;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.SpineObject;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.governednode.GovernedNode;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.Node;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
