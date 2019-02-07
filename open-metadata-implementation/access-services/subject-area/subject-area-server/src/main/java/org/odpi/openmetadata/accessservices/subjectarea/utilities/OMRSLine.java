@@ -2,8 +2,8 @@
 package org.odpi.openmetadata.accessservices.subjectarea.utilities;
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -50,7 +50,7 @@ public class OMRSLine extends Line implements Serializable {
     }
     public OMRSLine(String name) {
         this.name=name;
-        this.lineType=LineType.Other;
+        this.lineType=LineType.Unknown;
     }
 
     public OMRSLine(String name, LineType lineType) {

@@ -17,8 +17,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 //omrs
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 //omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * TermCategorizationRelationship is a relationship between an entity of type GlossaryCategory and an entity of type GlossaryTerm.
@@ -82,7 +82,7 @@ public class TermCategorizationRelationship extends Line {
            lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-           lineType = LineType.Other;
+           lineType = LineType.Unknown;
         }
         entity1Name = "categories";
         entity1Type = "GlossaryCategory";
@@ -104,7 +104,7 @@ public class TermCategorizationRelationship extends Line {
            lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-           lineType = LineType.Other;
+           lineType = LineType.Unknown;
         }
     }
 

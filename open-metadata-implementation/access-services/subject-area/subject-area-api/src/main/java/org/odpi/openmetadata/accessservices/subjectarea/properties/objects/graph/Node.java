@@ -1,15 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node;
+package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.ProjectSummary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,8 +32,6 @@ public class Node implements Serializable {
     private static final Logger log = LoggerFactory.getLogger(Node.class);
     private static final String className = Node.class.getName();
     protected NodeType nodeType = NodeType.Unknown;
-
-    private Set<ProjectSummary> projects = null;
     private String name =null;
     private String qualifiedName =null;
     private SystemAttributes systemAttributes=null;
@@ -80,18 +75,6 @@ public class Node implements Serializable {
 
     public void setQualifiedName(String qualifiedName) {
         this.qualifiedName = qualifiedName;
-    }
-
-    /**
-     * get the projects
-     * @return associated projects
-     */
-    public Set<ProjectSummary> getProjects() {
-        return projects;
-    }
-
-    public void setProjects(Set<ProjectSummary> projects) {
-        this.projects = projects;
     }
 
     public SystemAttributes getSystemAttributes() {
@@ -192,7 +175,7 @@ public class Node implements Serializable {
         }
 
         if (description!=null) {
-            sb.append(", descripion=").append(description);
+            sb.append(", description=").append(description);
         }
 
         if (icons != null) {

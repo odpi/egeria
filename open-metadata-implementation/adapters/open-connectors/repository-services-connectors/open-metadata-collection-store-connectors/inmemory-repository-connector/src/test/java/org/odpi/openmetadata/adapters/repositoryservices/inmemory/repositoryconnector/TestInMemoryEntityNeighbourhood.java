@@ -5,9 +5,11 @@ package org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositorycon
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -27,6 +29,8 @@ public class TestInMemoryEntityNeighbourhood
 {
     @Mock
     private OMRSRepositoryValidator repositoryValidator;
+    @Mock
+    private OMRSRepositoryHelper repositoryHelper;
 
     @BeforeMethod
 
@@ -36,8 +40,7 @@ public class TestInMemoryEntityNeighbourhood
     }
 
     @Test
-    void testGetGraph() throws RepositoryErrorException, InvalidParameterException
-    {
+    void testGetGraph() throws RepositoryErrorException, InvalidParameterException, TypeErrorException {
         Map<String, EntityDetail> entityStore = new HashMap<>();
         Map<String, Relationship> relationshipStore = new HashMap();
         String rootEntityGUID = "1111";
@@ -52,8 +55,9 @@ public class TestInMemoryEntityNeighbourhood
         when(repositoryValidator.verifyInstanceType(anyString(), any())).thenReturn(true);
         when(repositoryValidator.verifyInstanceHasRightStatus(any(), any())).thenReturn(true);
         when(repositoryValidator.verifyEntityIsClassified(any(), any())).thenReturn(true);
+        when(repositoryHelper.isTypeOf(anyString(),anyString(),anyString())).thenReturn(true);
         // test with 1 entity
-        InMemoryEntityNeighbourhood inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(repositoryValidator, entityStore, relationshipStore, rootEntityGUID, entityTypeGUIDs, relationshipTypeGUIDs, limitResultsByStatus, limitResultsByClassification, 0);
+        InMemoryEntityNeighbourhood inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(repositoryHelper,"", repositoryValidator, entityStore, relationshipStore, rootEntityGUID, entityTypeGUIDs, relationshipTypeGUIDs, limitResultsByStatus, limitResultsByClassification, 0);
         InstanceGraph graph = inMemoryEntityNeighbourhood.createInstanceGraph();
         assertTrue(graphContainsEntityWithGuid(graph, "1111"));
         assertTrue(graph.getRelationships() == null);
@@ -75,7 +79,7 @@ public class TestInMemoryEntityNeighbourhood
 
         entityStore.put(entity2.getGUID(), entity2);
         relationshipStore.put(relationship1.getGUID(), relationship1);
-        inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(repositoryValidator, entityStore, relationshipStore, rootEntityGUID, entityTypeGUIDs, relationshipTypeGUIDs, limitResultsByStatus, limitResultsByClassification, 0);
+        inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(repositoryHelper, "", repositoryValidator, entityStore, relationshipStore, rootEntityGUID, entityTypeGUIDs, relationshipTypeGUIDs, limitResultsByStatus, limitResultsByClassification, 0);
         graph = inMemoryEntityNeighbourhood.createInstanceGraph();
 
         assertTrue(graph.getEntities().size() == 2);
@@ -96,7 +100,7 @@ public class TestInMemoryEntityNeighbourhood
         relationship2.setEntityTwoProxy(entityProxy3);
         relationshipStore.put(relationship2.getGUID(), relationship2);
 
-        inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(repositoryValidator, entityStore, relationshipStore, rootEntityGUID, entityTypeGUIDs, relationshipTypeGUIDs, limitResultsByStatus, limitResultsByClassification, 1);
+        inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(repositoryHelper, "",repositoryValidator, entityStore, relationshipStore, rootEntityGUID, entityTypeGUIDs, relationshipTypeGUIDs, limitResultsByStatus, limitResultsByClassification, 1);
         graph = inMemoryEntityNeighbourhood.createInstanceGraph();
 
         assertTrue(graph.getEntities().size() == 2);
@@ -105,7 +109,7 @@ public class TestInMemoryEntityNeighbourhood
         assertTrue(graphContainsRelationshipWithGuid(graph, "3333"));
 
         // test with 3 entities 2 relationship, level 2
-        inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(repositoryValidator, entityStore, relationshipStore, rootEntityGUID, entityTypeGUIDs, relationshipTypeGUIDs, limitResultsByStatus, limitResultsByClassification, 2);
+        inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(repositoryHelper,"", repositoryValidator, entityStore, relationshipStore, rootEntityGUID, entityTypeGUIDs, relationshipTypeGUIDs, limitResultsByStatus, limitResultsByClassification, 2);
         graph = inMemoryEntityNeighbourhood.createInstanceGraph();
 
         assertTrue(graph.getEntities().size() == 3);
