@@ -387,9 +387,7 @@ In the example above, everything is started and running (as indicated by the `1/
 To remove the chart when no longer needed, use helm's delete command:
 
 ```bash
-$ helm delete local
-release "local" deleted
-$ helm del --purge local
+$ helm delete --purge local
 release "local" deleted
 ```
 
