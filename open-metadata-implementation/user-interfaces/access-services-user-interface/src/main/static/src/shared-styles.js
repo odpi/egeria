@@ -6,6 +6,7 @@ import '@polymer/polymer/polymer-element.js';
 const $_documentContainer = document.createElement('template');
 $_documentContainer.innerHTML = `<dom-module id="shared-styles">
   <template>
+    
     <style>
       .card {
         margin: 24px;
@@ -15,7 +16,7 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
         background-color: #fff;
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
         max-width: 600px;
-        min-width: 600px;
+        width: 100%;
       }
 
       .circle {
@@ -29,6 +30,8 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
         font-size: 30px;
         line-height: 64px;
       }
+      
+      
 
       h1 {
         margin: 16px 0;
@@ -47,6 +50,10 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
            width: 200px;
            height: 200px;              
       }
+      
+      vaadin-grid {
+          height: calc(100vh - 130px);
+       }
 
     </style>
   </template>

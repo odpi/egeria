@@ -3,8 +3,10 @@
 package org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 
 import java.util.*;
 
@@ -15,6 +17,8 @@ import java.util.*;
 public class InMemoryEntityNeighbourhood
 {
     private OMRSRepositoryValidator repositoryValidator = null;
+    private OMRSRepositoryHelper repositoryHelper = null;
+    private String repositoryName = null;
     private Map<String, EntityDetail> entityStore = null;
     private Map<String, Relationship> relationshipStore = null;
     private String rootEntityGUID = null;
@@ -31,6 +35,7 @@ public class InMemoryEntityNeighbourhood
     /**
      * Constructor
      *
+     * @param repositoryHelper
      * @param repositoryValidator          repository validator
      * @param entityStore                  entity store
      * @param relationshipStore            relationship store
@@ -44,10 +49,11 @@ public class InMemoryEntityNeighbourhood
      *                                     status values.
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param level                        the number of the relationships out from the starting entity that the query will traverse to
-     *                                     gather results.
      */
-    public InMemoryEntityNeighbourhood(OMRSRepositoryValidator repositoryValidator, Map<String, EntityDetail> entityStore, Map<String, Relationship> relationshipStore, String rootEntityGUID, List<String> entityTypeGUIDs, List<String> relationshipTypeGUIDs, List<InstanceStatus> limitResultsByStatus, List<String> limitResultsByClassification, int level)
+    public InMemoryEntityNeighbourhood(OMRSRepositoryHelper repositoryHelper, String repositoryName, OMRSRepositoryValidator repositoryValidator, Map<String, EntityDetail> entityStore, Map<String, Relationship> relationshipStore, String rootEntityGUID, List<String> entityTypeGUIDs, List<String> relationshipTypeGUIDs, List<InstanceStatus> limitResultsByStatus, List<String> limitResultsByClassification, int level)
     {
+        this.repositoryHelper = repositoryHelper;
+        this.repositoryName = repositoryName;
         this.repositoryValidator = repositoryValidator;
         this.entityStore = entityStore;
         this.relationshipStore = relationshipStore;
@@ -56,7 +62,9 @@ public class InMemoryEntityNeighbourhood
         this.relationshipTypeGUIDs = relationshipTypeGUIDs;
         this.limitResultsByStatus = limitResultsByStatus;
         this.limitResultsByClassification = limitResultsByClassification;
-        // limit the level to 100 in case the algorithm gets into a circularity - hoefully this is sufficiently high for in memory demo use cases.
+        /*
+         * limit the level to 100 in case the algorithm gets into a circularity - hoefully this is sufficiently high for in memory demo use cases.
+         */
         if (level < 1 || level > 100)
         {
             level = 100;
@@ -80,7 +88,10 @@ public class InMemoryEntityNeighbourhood
             endsGuids.add(relationshipEnd2Guid);
             relationshipToEntities.put(relationshipGuid, endsGuids);
             Set<String> relationshipGuids = null;
-            // process end1
+
+            /*
+             * process end1
+             */
             if (entityToRelationships.containsKey(relationshipEnd1Guid))
             {
                 relationshipGuids = entityToRelationships.get(relationshipEnd1Guid);
@@ -94,7 +105,9 @@ public class InMemoryEntityNeighbourhood
             }
             relationshipGuids.add(relationshipGuid);
             entityToRelationships.put(relationshipEnd1Guid, relationshipGuids);
-            // process end2
+            /*
+             * process end2
+             */
             if (entityToRelationships.containsKey(relationshipEnd2Guid))
             {
                 relationshipGuids = entityToRelationships.get(relationshipEnd2Guid);
@@ -112,17 +125,20 @@ public class InMemoryEntityNeighbourhood
     }
 
     /**
-     * Verify that the supplied relationship and the 2 entities that enclose it are valid , by checking the scoping conditions
+     * Verify that the supplied relationship and the 2 entities that enclose it are valid, by checking the scoping conditions
      *
      * @param relationship relationship to verify
      * @return true if valid otherwise false
      */
-    private boolean verifyRelationshipForEntityNeighbourhood(Relationship relationship)
-    {
+    private boolean verifyRelationshipForEntityNeighbourhood(Relationship relationship) throws TypeErrorException {
         boolean valid = false;
         boolean validEntity1 = false;
         boolean validEntity2 = false;
         boolean validRelationship = false;
+        if (!validateRelationshipAgainstEntityTypes(relationship))
+        {
+           return false;
+        }
         if (relationship != null)
         {
             String relationshipEnd1Guid = getEnd1EntityGUID(relationship);
@@ -152,7 +168,9 @@ public class InMemoryEntityNeighbourhood
                         {
                             if (repositoryValidator.verifyInstanceType(typeGUID1, entity1))
                             {
-                                // valid type
+                                /*
+                                 * Valid type
+                                 */
 
                                 if (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity1))
                                 {
@@ -163,7 +181,9 @@ public class InMemoryEntityNeighbourhood
                             {
                                 if (repositoryValidator.verifyInstanceType(typeGUID2, entity1))
                                 {
-                                    // valid type
+                                    /*
+                                     * Valid type
+                                     */
 
                                     if (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity2))
                                     {
@@ -190,19 +210,73 @@ public class InMemoryEntityNeighbourhood
     }
 
     /**
+     * Validate the relationship proxy types against the entity types that are scoping the graph
+     * @param relationship to validate
+     * @return flag indicating whether the relationships proxy types are includes
+     * @throws TypeErrorException Type error.
+     */
+    private boolean validateRelationshipAgainstEntityTypes(Relationship relationship) throws TypeErrorException
+    {
+        String methodName  ="validatetypes";
+        boolean valid = false;
+        /*
+         * If we have entityType Guids specified then they will scope this relationship. So we need to check that the relationship
+         * entity types of the ends are in scope
+         */
+
+        boolean found1 = false;
+        boolean found2 = false;
+
+        if (entityTypeGUIDs !=null && !entityTypeGUIDs.isEmpty()) {
+            String actualTypeName1 = relationship.getEntityOneProxy().getType().getTypeDefName();
+            String actualTypeName2 = relationship.getEntityTwoProxy().getType().getTypeDefName();
+            /*
+             * Need to go through each guid in entityTypeGUIDs and check whether the entity types of each proxy are a subtype of them or not
+             */
+            for (String entityTypeGUID:entityTypeGUIDs)
+            {
+                TypeDef entityTypeDef = repositoryHelper.getTypeDef(repositoryName,
+                        "guid",
+                        entityTypeGUID,
+                        methodName);
+                if (repositoryHelper.isTypeOf(methodName, actualTypeName1, entityTypeDef.getName()))
+                {
+                    found1 = true;
+                }
+                if (repositoryHelper.isTypeOf(methodName, actualTypeName2, entityTypeDef.getName()))
+                {
+                    found2 = true;
+                }
+            }
+
+            if (found1 && found2)
+            {
+                valid = true;
+            }
+        } else {
+            /*
+             * No restrictions on relationship
+             */
+            valid = true;
+        }
+        return valid;
+    }
+
+    /**
      * Create the instance graph
      *
      * @return InstanceGraph  the instance graph that contains the entities and relationships that radiate out from the supplied entity GUID.
      */
-    public InstanceGraph createInstanceGraph()
-    {
+    public InstanceGraph createInstanceGraph() throws TypeErrorException {
         Set<String> entities = new HashSet<>();
         Set<String> visitedEntities = new HashSet<>();
         Set<String> visitedRelationships = new HashSet<>();
         entities.add(rootEntityGUID);
         this.createGraph(entities, visitedEntities, visitedRelationships, 0);
         List entityList = new ArrayList();
-        // add the root entity so the returned graph is consistent.
+        /*
+         * add the root entity so the returned graph is consistent.
+         */
         List relationshipList = new ArrayList();
         EntityDetail rootEntity = (entityStore.get(rootEntityGUID));
         entityList.add(rootEntity);
@@ -228,8 +302,7 @@ public class InMemoryEntityNeighbourhood
      * @param visitedRelationships the relationship that have already been visited (seen)
      * @param currentLevel         the current level
      */
-    private void createGraph(Set<String> entities, Set visitedEntities, Set visitedRelationships, int currentLevel)
-    {
+    private void createGraph(Set<String> entities, Set visitedEntities, Set visitedRelationships, int currentLevel) throws TypeErrorException {
         Set<String> nextEntitySet = new HashSet<>();
         for (String entityGuid : entities)
         {
@@ -239,20 +312,28 @@ public class InMemoryEntityNeighbourhood
                 for (String relationshipGuid : relationships)
                 {
                     Relationship relationship = this.relationshipStore.get(relationshipGuid);
-                    // check to see if we have already visited this relationship
+                    /*
+                     * Check to see if we have already visited this relationship
+                     */
                     if (!visitedRelationships.contains(relationshipGuid))
                     {
                         if (verifyRelationshipForEntityNeighbourhood(relationship))
                         {
-                            // valid relationship and entities
+                            /*
+                             * valid relationship and entities
+                             */
                             graphEntities.add(entityGuid);
                             final String end1Guid = getEnd1EntityGUID(relationship);
                             final String end2Guid = getEnd2EntityGUID(relationship);
                             graphRelationships.add(relationshipGuid);
-                            // add the entities - one end will already be there so will be replaced.
+                            /*
+                             * add the entities - one end will already be there so will be replaced.
+                             */
                             graphEntities.add(end1Guid);
                             graphEntities.add(end2Guid);
-                            // if we have not see the other end then we need to traverse to it.
+                            /*
+                             * if we have not see the other end then we need to traverse to it.
+                             */
                             if (end1Guid.equals(entityGuid) && !visitedEntities.contains(end2Guid))
                             {
                                 nextEntitySet.add(end2Guid);
@@ -272,7 +353,9 @@ public class InMemoryEntityNeighbourhood
         int nextLevel = currentLevel + 1;
         if (nextLevel < this.level && nextEntitySet.size() > 0)
         {
-            // recurse
+            /*
+             * recurse
+             */
             createGraph(nextEntitySet, visitedEntities, visitedRelationships, nextLevel);
         }
     }

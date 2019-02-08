@@ -590,7 +590,13 @@ public enum OMRSAuditCode
                        OMRSAuditLogRecordSeverity.EXCEPTION,
                        "Disconnecting from the enterprise topic connector generated an exception with message {0}",
                        "The server may not have disconnected from the topic cleanly.",
-                       "Review the exception and resolve the issue it documents.")
+                       "Review the exception and resolve the issue it documents."),
+    ENTERPRISE_CONNECTOR_DISCONNECT_ERROR("OMRS-AUDIT-9013",
+                        OMRSAuditLogRecordSeverity.EXCEPTION,
+                        "Disconnecting of the enterprise connector manager generated an exception with message {0}",
+                        "The server may not have disconnected from all repositories cleanly.",
+                        "Review the exception and resolve the issue it documents.")
+
 
     ;
 

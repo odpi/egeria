@@ -5,7 +5,7 @@
 package org.odpi.openmetadata.accessservices.subjectarea.generated.relationships;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
    <$$RELATIONSHIP$
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.<$$uRelationshipName$$>.<$$uRelationshipName$$>;
