@@ -14,8 +14,9 @@ class SpinnerOverlay extends mixinBehaviors(IronOverlayBehavior, PolymerElement)
             :host {
               background: white;
             }
+            
             paper-spinner-lite {
-                --paper-spinner-color: #71ccdc;;
+                --paper-spinner-color: #71ccdc;
                 --paper-spinner-stroke-width: 5px;
                 width: 80pt;
                 height: 80pt;              
