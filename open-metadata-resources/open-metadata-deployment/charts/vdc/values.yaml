@@ -43,7 +43,7 @@ service:
     rangersecure: 30182
     # Set this to address of one of the local nodes - public IP
     omrsmonitor: 31080
-  externalip: 10.10.1.30
+    externalip: 10.10.1.30
     # KAFKA is not exposed externally (issues in chart, complexity)
 
 # IGC configuration
@@ -83,7 +83,7 @@ image:
 
   egeria:
     repository: planetf1/egeria-egeriavdc
-    tag: 0.1.8
+    tag: 0.1.9
     pullPolicy: IfNotPresent
 
   gaian:
@@ -93,7 +93,7 @@ image:
 
   atlas:
     repository: planetf1/atlas-1773-egeria
-    tag: 0.1.10
+    tag: 0.1.12
     pullPolicy: IfNotPresent
 
   atlasinit:
@@ -103,7 +103,7 @@ image:
 
   igcproxy:
     repository: planetf1/egeria-egeriavdc
-    tag: 0.1.8
+    tag: 0.1.9
     pullPolicy: IfNotPresent
 
   kafkamonitor:
@@ -123,7 +123,7 @@ image:
 
   postgresqlinit:
     repository: planetf1/postgresql-init-egeria
-    tag: 0.1.13
+    tag: 0.1.14
     pullPolicy: IfNotPresent
 
   postgresql:
@@ -133,13 +133,19 @@ image:
 
   ui:
     repository: planetf1/egeria-egeriavdc
-    tag: 0.1.8
+    tag: 0.1.9
     pullPolicy: IfNotPresent
 
   omrsmonitor:
     repository: planetf1/omrsmonitor-egeriavdc
     tag: 0.0.2
     pullPolicy: IfNotPresent
+
+  ldapinit:
+    repository: planetf1/ldap-init-egeriavdc
+    tag: 0.1.2
+    pullPolicy: IfNotPresent
+
   nameOverride: ""
   fullnameOverride: ""
 
@@ -166,3 +172,8 @@ cp-kafka-connect:
 cp-ksql-server:
   enabled: false
 
+# Open LDAP configuration
+openldap:
+  adminPassword: passw0rd
+  configPassword: passw0rd
+  servicePort: 389
