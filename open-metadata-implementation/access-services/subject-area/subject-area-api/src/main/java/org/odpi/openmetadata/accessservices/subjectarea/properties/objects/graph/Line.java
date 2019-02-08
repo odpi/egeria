@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line;
+package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -76,7 +76,7 @@ public class Line implements Serializable {
     }
     public Line(String name) {
         this.name=name;
-        this.lineType=LineType.Other;
+        this.lineType=LineType.Unknown;
     }
 
     public Line(String name,LineType lineType) {

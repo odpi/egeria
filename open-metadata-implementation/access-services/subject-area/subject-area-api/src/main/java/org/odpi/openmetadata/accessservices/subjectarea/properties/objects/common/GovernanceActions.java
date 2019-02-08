@@ -21,7 +21,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.classificatio
 
 /**
  * Governance actions are classifications that are important for goverance programs. These classifications are
- * refered to by governance rules, so that governance action classified entities can be governed consistently.
+ * referred to by governance rules, so that governance action classified entities can be governed consistently.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
