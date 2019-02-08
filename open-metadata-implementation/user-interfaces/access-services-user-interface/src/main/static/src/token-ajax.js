@@ -12,7 +12,8 @@ class TokenAjax extends PolymerElement {
       <style>
         :host {
             /*display: none;*/
-        }        
+        }
+       
       </style>
 
       <app-localstorage-document key="token" data="{{token}}"></app-localstorage-document>
@@ -26,9 +27,9 @@ class TokenAjax extends PolymerElement {
                    >
         </iron-ajax>
         <spinner-overlay id="backdrop" with-backdrop scroll-action="lock" 
-        always-on-top 
-        no-cancel-on-outside-click
-        no-cancel-on-esc-key>       
+            always-on-top 
+            no-cancel-on-outside-click
+            no-cancel-on-esc-key>       
         </spinner-overlay>
     `;
     }
