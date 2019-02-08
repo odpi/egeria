@@ -13,11 +13,15 @@ fail=0
 
 if [ "null" = "$IGC_SERVER" ] || [ -z $IGC_SERVER ]
 then
-	echo "IGC_SERVER must be supplied. This is the hostname of the IGC server that will be configured. An example is 'igc.openmetadata.ibmcloud.com"
-
+	echo "IGC_SERVER must be supplied. This is the IP or hostname of the IGC server that will be configured. An example is 'igc.openmetadata.ibmcloud.com'"
 	fail=1
 fi
 
+if [ "null" = "$IGC_HOSTNAME" ] || [ -z $IGC_HOSTNAME ]
+then
+    echo "IGC_HOSTNAME must be supplied. This is the hostname of the IGC server that will be configured. An example is 'igc.openmetadata.ibmcloud.com'"
+    fail=1
+fi
 
 if [ "null" = "$IGC_OS_USER" ] || [ -z $IGC_OS_USER ]
 then
@@ -69,6 +73,7 @@ fi
 
 echo "IGC server URL    : ${IGC_SERVER}"
 echo "IGC server Port   : ${IGC_SERVICE_PORT}"
+echo "IGC hostname      : ${IGC_HOSTNAME}"
 echo "PostgreSQL URL    : ${POSTGRESQL_SERVER}"
 echo "PostgreSQL Port   : ${POSTGRESQL_SERVICE_PORT}"
 echo "IGC User          : ${IGC_OS_USER}"
@@ -182,14 +187,14 @@ fi
 
 # Now launch ansible to perform the deployment of the database -- and configure IGC
 echo "[targets]" > hosts
-echo "igc.openmetadata.ibmcloud.com ansible_user='${IGC_OS_USER}' ansible_password='${IGC_OS_PASS}'" >> hosts
+echo "${IGC_HOSTNAME} ansible_user='${IGC_OS_USER}' ansible_password='${IGC_OS_PASS}'" >> hosts
 echo "${POSTGRESQL_SERVER} ansible_user='${POSTGRESQL_OS_USER}' ansible_password='${POSTGRESQL_OS_PASS}'" >> hosts
 echo "[egeria-samples-db-host]" >> hosts
 echo "${POSTGRESQL_SERVER}" >> hosts
 for label in egeria-samples-files-host ibm-information-server-repo ibm-information-server-domain ibm-information-server-engine
 do
   echo "[${label}]" >> hosts
-  echo "igc.openmetadata.ibmcloud.com" >> hosts
+  echo "${IGC_HOSTNAME}" >> hosts
 done
 
 # disable host key checking for SSH
