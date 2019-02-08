@@ -25,9 +25,6 @@ class AssetSearchView extends PolymerElement {
           display: block;
           padding: 10px 20px;
         }
-        vaadin-grid {
-          height: calc(100vh - 130px);
-        }
       </style>
       <token-ajax id="tokenAjax" last-response="{{searchResp}}"></token-ajax>
       <iron-form id="searchForm">
@@ -36,9 +33,11 @@ class AssetSearchView extends PolymerElement {
             <paper-input label="Search" value="{{q}}" no-label-float required autofocus>
                 <iron-icon icon="search" slot="prefix"></iron-icon>
             </paper-input>
+            
+             <!--<paper-icon-button on-tap="_test" icon="icons:visibility" title="View"></paper-icon-button>-->
         </form>
        </iron-form>
-        <vaadin-grid id="grid" items="{{searchResp}}"
+        <vaadin-grid id="grid" items="{{searchResp}}" theme="row-stripes"
                      column-reordering-allowed multi-sort>
             <vaadin-grid-selection-column auto-select frozen></vaadin-grid-selection-column>
         
@@ -67,14 +66,23 @@ class AssetSearchView extends PolymerElement {
                 <template class="header">
                     <vaadin-grid-sorter path="item.contexts[0].database.name">Database</vaadin-grid-sorter>
                 </template>
-                <template>[[item.contexts[database].name]]</template>
+                <template></template>
             </vaadin-grid-column>
             
              <vaadin-grid-column width="5em" resizable>
                 <template class="header">
                     <vaadin-grid-sorter path="item.contexts[0].table.name">Table</vaadin-grid-sorter>
                 </template>
-                <template>[[item.contexts[table].name]]</template>
+                <template></template>
+            </vaadin-grid-column>
+            
+            <vaadin-grid-column width="5em" >
+                <template class="header">
+                    <vaadin-grid-sorter >Options</vaadin-grid-sorter>
+                </template>
+                <template>
+                    <paper-icon-button on-tap="_itemClick" icon="icons:visibility" title="View"></paper-icon-button>
+                </template>
             </vaadin-grid-column>
   
         </vaadin-grid>
@@ -102,6 +110,21 @@ class AssetSearchView extends PolymerElement {
         this.$.tokenAjax._go();
     }
 
+    _test(){
+        console.log("clicked on page changes");
+        var customEvent = new CustomEvent('open-page', {
+            page: "view1"
+        });
+        this.dispatchEvent(customEvent);
+    }
+
+    _itemClick(e){
+        console.log("clicked on:" + e.model.item);
+        var customEvent = new CustomEvent('open-page', {
+            page: "view1"
+        });
+        this.dispatchEvent(customEvent);
+    }
 
 }
 

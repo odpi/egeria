@@ -168,7 +168,7 @@ public class <$$uClassificationName$$>Mapper {
                    if (systemAttributes.getVersion()!=null)
                         omrsClassification.setVersion(systemAttributes.getVersion());
                    if (systemAttributes.getStatus()!=null) {
-                        InstanceStatus instanceStatus = SubjectAreaUtils.convertStatusToStatusInstance(systemAttributes.getStatus());
+                        InstanceStatus instanceStatus = SubjectAreaUtils.convertStatusToInstanceStatus(systemAttributes.getStatus());
                         omrsClassification.setStatus(instanceStatus);
                    }
             }
