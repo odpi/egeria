@@ -17,6 +17,8 @@ import java.util.UUID;
 public class OMAGServerSecuritySyncService {
 
     private OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
+    private OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
+
     private static final String defaultOutTopicName = "OutTopic";
     private static final String defaultInTopicName = "open-metadata.access-services.GovernanceEngine.outTopic";
 
@@ -46,28 +48,32 @@ public class OMAGServerSecuritySyncService {
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
-            securitySyncConfig.setSecuritySyncInTopic(
-                    connectorConfigurationFactory.getDefaultEventBusConnection(
-                            defaultInTopicName,
-                            eventBusConfig.getConnectorProvider(),
-                            eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                            securitySyncConfig.getSecuritySyncInTopicName(),
-                            UUID.randomUUID().toString(),
-                            eventBusConfig.getAdditionalProperties()));
-            securitySyncConfig.setSecuritySyncOutTopic(
-                    connectorConfigurationFactory.getDefaultEventBusConnection(defaultOutTopicName,
-                            eventBusConfig.getConnectorProvider(),
-                            eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                            getOutputTopicName(securitySyncConfig.getSecurityServerType()),
-                            serverConfig.getLocalServerId(),
-                            eventBusConfig.getAdditionalProperties()));
+            if(securitySyncConfig != null && securitySyncConfig.getSecuritySyncOutTopicName() != null) {
+                securitySyncConfig.setSecuritySyncInTopic(
+                        connectorConfigurationFactory.getDefaultEventBusConnection(
+                                defaultInTopicName,
+                                eventBusConfig.getConnectorProvider(),
+                                eventBusConfig.getTopicURLRoot() + ".server." + serverName,
+                                securitySyncConfig.getSecuritySyncInTopicName(),
+                                UUID.randomUUID().toString(),
+                                eventBusConfig.getAdditionalProperties()));
+            }
 
+            if(securitySyncConfig != null && securitySyncConfig.getSecurityServerType() != null) {
+                securitySyncConfig.setSecuritySyncOutTopic(
+                        connectorConfigurationFactory.getDefaultEventBusConnection(defaultOutTopicName,
+                                eventBusConfig.getConnectorProvider(),
+                                eventBusConfig.getTopicURLRoot() + ".server." + serverName,
+                                getOutputTopicName(securitySyncConfig.getSecurityServerType()),
+                                serverConfig.getLocalServerId(),
+                                eventBusConfig.getAdditionalProperties()));
+            }
 
             serverConfig.setSecuritySyncConfig(securitySyncConfig);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         } catch (OMAGInvalidParameterException e) {
-
+            errorHandler.captureInvalidParameterException(response, e);
         }
         return response;
     }
@@ -86,7 +92,7 @@ public class OMAGServerSecuritySyncService {
             SecuritySyncConfig securitySyncConfig = serverConfig.getSecuritySyncConfig();
             this.setSecuritySyncConfig(userId, serverName, securitySyncConfig);
         } catch (OMAGInvalidParameterException e) {
-            e.printStackTrace();
+            errorHandler.captureInvalidParameterException(response, e);
         }
         return response;
     }
