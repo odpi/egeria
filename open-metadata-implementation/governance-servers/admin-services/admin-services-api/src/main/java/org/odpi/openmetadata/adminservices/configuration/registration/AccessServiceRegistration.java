@@ -198,7 +198,7 @@ public class AccessServiceRegistration implements Serializable
      */
     public String getAccessServiceInTopic()
     {
-        return defaultTopicRoot + accessServiceName + defaultInTopicLeaf;
+        return defaultTopicRoot + accessServiceName.replaceAll("\\s", "") + defaultInTopicLeaf;
     }
 
 
@@ -209,7 +209,7 @@ public class AccessServiceRegistration implements Serializable
      */
     public String getAccessServiceOutTopic()
     {
-        return defaultTopicRoot + accessServiceName + defaultOutTopicLeaf;
+        return defaultTopicRoot + accessServiceName.replaceAll("\\s", "") + defaultOutTopicLeaf;
     }
 
 }

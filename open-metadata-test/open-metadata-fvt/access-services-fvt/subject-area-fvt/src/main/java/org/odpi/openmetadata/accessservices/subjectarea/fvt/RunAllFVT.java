@@ -28,7 +28,8 @@ public class RunAllFVT
             RelationshipsFVT.runit(url);
             SubjectAreaDefinitionCategoryFVT.runit(url);
             EffectiveDatesFVT.runit(url);
-            System.out.println("FVT run successfully");
+            GraphFVT.runit(url);
+            System.out.println("FVT ran successfully");
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
