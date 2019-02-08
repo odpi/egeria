@@ -7,12 +7,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.CanonicalVocabulary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.governednode.GovernedNode;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.Node;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.ProjectSummary;
 
 
 import java.util.List;
@@ -101,14 +98,7 @@ public class Glossary extends Node{
     public String getQualifiedName() {
         return super.getQualifiedName();
     }
-    @Override
-    /**
-     * The projects associated with this glossary.
-     * @return
-     */
-    public Set<ProjectSummary> getProjects() {
-        return super.getProjects();
-    }
+
     /**
      * The Governance level associated with this glossary
      */

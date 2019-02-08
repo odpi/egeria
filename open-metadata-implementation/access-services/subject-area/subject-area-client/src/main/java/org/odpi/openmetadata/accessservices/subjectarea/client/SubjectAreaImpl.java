@@ -24,6 +24,7 @@ public class SubjectAreaImpl implements SubjectArea
     private final SubjectAreaCategoryImpl categoryAPI;
     private final SubjectAreaGlossaryImpl glossaryAPI;
     public final  SubjectAreaRelationshipImpl relationshipAPI;
+    public final  SubjectAreaGraphImpl graphAPI;
 
     /**
      * Default Constructor used once a connector is created.
@@ -39,6 +40,7 @@ public class SubjectAreaImpl implements SubjectArea
         this.termAPI = new SubjectAreaTermImpl(omasServerURL, serverName);
         this.categoryAPI = new SubjectAreaCategoryImpl(omasServerURL, serverName);
         this.relationshipAPI = new SubjectAreaRelationshipImpl(omasServerURL, serverName);
+        this.graphAPI = new SubjectAreaGraphImpl(omasServerURL, serverName);
     }
 
     /**
@@ -77,6 +79,15 @@ public class SubjectAreaImpl implements SubjectArea
     @Override
     public SubjectAreaRelationship getSubjectAreaRelationship() {
         return this.relationshipAPI;
+    }
+
+    /**
+     * Get the subject area graph API class - use this class to issue graph calls.
+     * @return subject area graph API class
+     */
+    @Override
+    public SubjectAreaGraph getSubjectAreaGraph() {
+        return this.graphAPI;
     }
 
 }

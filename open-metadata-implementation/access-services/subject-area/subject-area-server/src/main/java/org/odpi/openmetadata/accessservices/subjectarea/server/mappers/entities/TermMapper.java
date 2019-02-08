@@ -13,7 +13,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.classificatio
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.SpineAttribute;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.SpineObject;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeUtils;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

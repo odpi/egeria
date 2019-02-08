@@ -108,4 +108,8 @@ open-metadata-implementation/user-interfaces/access-services-user-interface/src/
 log
 # m2 repo used by linux foundation build
 **/m2repo*/**
+# ignore github pages file and site.
+_site/**
+_layouts/**
+Gemfile
 
