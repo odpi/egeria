@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import com.fasterxml.jackson.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -39,6 +40,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     <li>
  *         UpdatedBy contains the userId of the person/engine that last updated the instance.  This field is
  *         set automatically by the open metadata repository when the update happens.
+ *     </li>
+ *     <li>
+ *         MaintainedBy contains the list of userIds of the person/engine that are responsible for maintained this
+ *         instance.  Null means that the maintainer is the creator.
  *     </li>
  *     <li>
  *         CreateTime contains the Date/Time when the instance was created.  It is set automatically by the
@@ -97,6 +102,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
      */
     private String         createdBy         = null;
     private String         updatedBy         = null;
+    private List<String>   maintainedBy      = null;
     private Date           createTime        = null;
     private Date           updateTime        = null;
     private long           version           = 0L;
@@ -133,6 +139,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
             this.instanceProvenanceType = template.getInstanceProvenanceType();
             this.createdBy = template.getCreatedBy();
             this.updatedBy = template.getUpdatedBy();
+            this.maintainedBy = template.getMaintainedBy();
             this.createTime = template.getCreateTime();
             this.updateTime = template.getUpdateTime();
             this.version = template.getVersion();
@@ -307,6 +314,28 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
 
 
     /**
+     * Return the list of users responsible for maintaining this instance.
+     *
+     * @return list of user identifiers
+     */
+    public List<String> getMaintainedBy()
+    {
+        return maintainedBy;
+    }
+
+
+    /**
+     * Set up the list of users responsible for maintaining this instance.
+     *
+     * @param maintainedBy list of user identifiers
+     */
+    public void setMaintainedBy(List<String> maintainedBy)
+    {
+        this.maintainedBy = maintainedBy;
+    }
+
+
+    /**
      * Return the date/time that this instance was created.
      *
      * @return Date/Time of creation
@@ -374,6 +403,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     public void setVersion(long version) { this.version = version; }
 
 
+
     /**
      * Return the status to use when a deleted instance is restored.  UNKNOWN is used whenever the instance is
      * not in DELETED status.
@@ -408,10 +438,10 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
                 ", instanceLicense='" + instanceLicense + '\'' +
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
+                ", maintainedBy='" + maintainedBy + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", version=" + version +
-                ", currentStatus=" + currentStatus +
                 ", statusOnDelete=" + statusOnDelete +
                 ", status=" + getStatus() +
                 '}';
@@ -444,6 +474,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
                 Objects.equals(getInstanceLicense(), that.getInstanceLicense()) &&
                 Objects.equals(getCreatedBy(), that.getCreatedBy()) &&
                 Objects.equals(getUpdatedBy(), that.getUpdatedBy()) &&
+                Objects.equals(getMaintainedBy(), that.getMaintainedBy()) &&
                 Objects.equals(getCreateTime(), that.getCreateTime()) &&
                 Objects.equals(getUpdateTime(), that.getUpdateTime()) &&
                 currentStatus == that.currentStatus &&
@@ -462,7 +493,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     {
         return Objects.hash(getType(), getInstanceProvenanceType(), getMetadataCollectionId(),
                             getMetadataCollectionName(),
-                            getInstanceLicense(), getCreatedBy(), getUpdatedBy(), getCreateTime(), getUpdateTime(),
-                            getVersion(), currentStatus, getStatusOnDelete());
+                            getInstanceLicense(), getCreatedBy(), getUpdatedBy(), getCreateTime(), getMaintainedBy(), getUpdateTime(),
+                            getVersion(), getStatus(), getStatusOnDelete());
     }
 }
