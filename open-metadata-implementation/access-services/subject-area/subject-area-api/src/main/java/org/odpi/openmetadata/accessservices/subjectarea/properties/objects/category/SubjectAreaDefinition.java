@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category;
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 
 /**
  * A type of Category called a Subject Area Definition is one that describes a subject area or a domain.
@@ -19,7 +19,6 @@ public class SubjectAreaDefinition extends Category{
         this.setGlossary(category.getGlossary());
         this.setClassifications(category.getClassifications());
         this.setAdditionalProperties(category.getAdditionalProperties());
-        this.setProjects(category.getProjects());
         this.setIcons(category.getIcons());
         this.setDescription(category.getDescription());
         this.setQualifiedName(category.getQualifiedName());

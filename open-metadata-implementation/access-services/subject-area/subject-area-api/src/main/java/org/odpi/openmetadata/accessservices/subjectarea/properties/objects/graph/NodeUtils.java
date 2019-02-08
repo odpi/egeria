@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node;
+package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;

@@ -77,7 +77,7 @@
 
     <!-- Load webcomponents-loader.js to check and load any polyfills your browser needs -->
     <script src="node_modules/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
-
+    <script src="node_modules/web-animations-js/web-animations-next-lite.min.js"></script>
     <!-- Load your application shell -->
     <script type="module" src="src/my-app.js"></script>
 
@@ -90,6 +90,12 @@
         min-height: 100vh;
         background-color: #eeeeee;
       }
+
+      iron-overlay-backdrop {
+        --iron-overlay-backdrop-background-color: #24272a;
+        --iron-overlay-backdrop-opacity: 0.2;
+      }
+
     </style>
   </head>
   <body>
