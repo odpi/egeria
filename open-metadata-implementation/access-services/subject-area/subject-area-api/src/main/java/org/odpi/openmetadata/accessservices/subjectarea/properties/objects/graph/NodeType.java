@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node;
+package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -60,11 +60,11 @@ public enum NodeType implements Serializable {
      */
     Category
     ,
-    /**
-     * Project
+    /*
+     * TODO add support for Project
      */
-    Project
-    ,
+//    Project
+//    ,
     /**
      * Asset
      */

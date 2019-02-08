@@ -17,8 +17,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 //omrs
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 //omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * Links a glossary term to another element such as an asset or schema element to define its meaning.
@@ -83,7 +83,7 @@ public class SemanticAssignment extends Line {
            lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-           lineType = LineType.Other;
+           lineType = LineType.Unknown;
         }
         entity1Name = "assignedElements";
         entity1Type = "Referenceable";
@@ -105,7 +105,7 @@ public class SemanticAssignment extends Line {
            lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-           lineType = LineType.Other;
+           lineType = LineType.Unknown;
         }
     }
     /**

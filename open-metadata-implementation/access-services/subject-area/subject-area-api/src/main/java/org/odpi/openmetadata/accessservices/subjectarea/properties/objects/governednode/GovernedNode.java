@@ -4,10 +4,9 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.gove
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.Node;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
