@@ -14,6 +14,8 @@ import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnec
 import org.odpi.openmetadata.repositoryservices.rest.properties.*;
 import org.odpi.openmetadata.repositoryservices.rest.services.OMRSRepositoryServicesInstance;
 import org.odpi.openmetadata.repositoryservices.rest.services.OMRSRepositoryServicesInstanceMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 import java.text.MessageFormat;
@@ -79,7 +81,8 @@ import java.util.List;
  */
 public class OMRSRepositoryRESTServices
 {
-    private   static  OMRSRepositoryServicesInstanceMap servicesInstanceMap = new OMRSRepositoryServicesInstanceMap();
+    private static final Logger                            log                 = LoggerFactory.getLogger(OMRSRepositoryRESTServices.class);
+    private static       OMRSRepositoryServicesInstanceMap servicesInstanceMap = new OMRSRepositoryServicesInstanceMap();
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -186,6 +189,8 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getMetadataCollectionId";
 
+        log.debug("Calling method: " + methodName);
+
         MetadataCollectionIdResponse response = new MetadataCollectionIdResponse();
 
         try
@@ -198,6 +203,8 @@ public class OMRSRepositoryRESTServices
         {
             captureRepositoryErrorException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -226,6 +233,8 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getAllTypes";
 
+        log.debug("Calling method: " + methodName);
+
         TypeDefGalleryResponse  response = new TypeDefGalleryResponse();
 
         try
@@ -247,6 +256,8 @@ public class OMRSRepositoryRESTServices
         {
             captureUserNotAuthorizedException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -271,6 +282,8 @@ public class OMRSRepositoryRESTServices
                                                   String   name)
     {
         final  String   methodName = "findTypesByName";
+
+        log.debug("Calling method: " + methodName);
 
         TypeDefGalleryResponse  response = new TypeDefGalleryResponse();
 
@@ -299,6 +312,8 @@ public class OMRSRepositoryRESTServices
             captureInvalidParameterException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -321,6 +336,8 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findTypeDefsByCategory";
 
+        log.debug("Calling method: " + methodName);
+
         TypeDefListResponse response = new TypeDefListResponse();
 
         try
@@ -341,6 +358,8 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -364,6 +383,8 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findAttributeTypeDefsByCategory";
 
+        log.debug("Calling method: " + methodName);
+
         AttributeTypeDefListResponse response = new AttributeTypeDefListResponse();
 
         try
@@ -384,6 +405,8 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -407,6 +430,8 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findTypeDefsByProperty";
 
+        log.debug("Calling method: " + methodName);
+
         TypeDefListResponse response = new TypeDefListResponse();
 
         try
@@ -427,6 +452,8 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -454,6 +481,8 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findTypesByExternalID";
 
+        log.debug("Calling method: " + methodName);
+
         TypeDefListResponse  response = new TypeDefListResponse();
 
         try
@@ -479,6 +508,8 @@ public class OMRSRepositoryRESTServices
             captureInvalidParameterException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -501,6 +532,8 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "searchForTypeDefs";
 
+        log.debug("Calling method: " + methodName);
+
         TypeDefListResponse response = new TypeDefListResponse();
 
         try
@@ -521,6 +554,8 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -545,6 +580,8 @@ public class OMRSRepositoryRESTServices
                                             String    guid)
     {
         final  String   methodName = "getTypeDefByGUID";
+
+        log.debug("Calling method: " + methodName);
 
         TypeDefResponse response = new TypeDefResponse();
 
@@ -571,6 +608,8 @@ public class OMRSRepositoryRESTServices
             captureTypeDefNotKnownException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -594,6 +633,8 @@ public class OMRSRepositoryRESTServices
                                                               String    guid)
     {
         final  String   methodName = "getAttributeTypeDefByGUID";
+
+        log.debug("Calling method: " + methodName);
 
         AttributeTypeDefResponse response = new AttributeTypeDefResponse();
 
@@ -620,6 +661,8 @@ public class OMRSRepositoryRESTServices
             captureTypeDefNotKnown(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -644,6 +687,8 @@ public class OMRSRepositoryRESTServices
                                             String    name)
     {
         final  String   methodName = "getTypeDefByName";
+
+        log.debug("Calling method: " + methodName);
 
         TypeDefResponse response = new TypeDefResponse();
 
@@ -670,6 +715,8 @@ public class OMRSRepositoryRESTServices
             captureTypeDefNotKnownException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -693,6 +740,8 @@ public class OMRSRepositoryRESTServices
                                                                String    name)
     {
         final  String   methodName = "getAttributeTypeDefByName";
+
+        log.debug("Calling method: " + methodName);
 
         AttributeTypeDefResponse response = new AttributeTypeDefResponse();
 
@@ -718,6 +767,8 @@ public class OMRSRepositoryRESTServices
         {
             captureTypeDefNotKnown(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -746,6 +797,8 @@ public class OMRSRepositoryRESTServices
                                            TypeDefGallery  newTypes)
     {
         final  String   methodName = "addTypeDefGallery";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -788,6 +841,8 @@ public class OMRSRepositoryRESTServices
             captureInvalidTypeDefException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -815,6 +870,8 @@ public class OMRSRepositoryRESTServices
                                    TypeDef   newTypeDef)
     {
         final  String   methodName = "addTypeDef";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -857,6 +914,8 @@ public class OMRSRepositoryRESTServices
             captureInvalidTypeDefException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -884,6 +943,8 @@ public class OMRSRepositoryRESTServices
                                              AttributeTypeDef   newAttributeTypeDef)
     {
         final  String   methodName = "addAttributeTypeDef";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -926,6 +987,8 @@ public class OMRSRepositoryRESTServices
             captureInvalidTypeDefException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -953,6 +1016,8 @@ public class OMRSRepositoryRESTServices
                                          TypeDef      typeDef)
     {
         final  String   methodName = "verifyTypeDef";
+
+        log.debug("Calling method: " + methodName);
 
         BooleanResponse response = new BooleanResponse();
 
@@ -987,6 +1052,8 @@ public class OMRSRepositoryRESTServices
             captureInvalidTypeDefException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1013,6 +1080,8 @@ public class OMRSRepositoryRESTServices
                                                    AttributeTypeDef  attributeTypeDef)
     {
         final  String   methodName = "verifyAttributeTypeDef";
+
+        log.debug("Calling method: " + methodName);
 
         BooleanResponse response = new BooleanResponse();
 
@@ -1047,6 +1116,8 @@ public class OMRSRepositoryRESTServices
             captureInvalidTypeDefException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1074,6 +1145,8 @@ public class OMRSRepositoryRESTServices
                                          TypeDefPatch typeDefPatch)
     {
         final  String   methodName = "updateTypeDef";
+
+        log.debug("Calling method: " + methodName);
 
         TypeDefResponse response = new TypeDefResponse();
 
@@ -1112,6 +1185,8 @@ public class OMRSRepositoryRESTServices
             response.setExceptionUserAction(error.getReportedUserAction());
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1142,6 +1217,8 @@ public class OMRSRepositoryRESTServices
                                       String    obsoleteTypeDefName)
     {
         final  String   methodName = "deleteTypeDef";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1176,6 +1253,8 @@ public class OMRSRepositoryRESTServices
             captureTypeDefInUseException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1206,6 +1285,8 @@ public class OMRSRepositoryRESTServices
                                                String    obsoleteTypeDefName)
     {
         final  String   methodName = "deleteAttributeTypeDef";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -1240,6 +1321,8 @@ public class OMRSRepositoryRESTServices
             captureTypeDefInUseException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1270,6 +1353,8 @@ public class OMRSRepositoryRESTServices
                                               TypeDefReIdentifyRequest  requestParameters)
     {
         final  String   methodName = "reIdentifyTypeDef";
+
+        log.debug("Calling method: " + methodName);
 
         String originalTypeDefName = null;
         String newTypeDefGUID = null;
@@ -1315,6 +1400,8 @@ public class OMRSRepositoryRESTServices
             captureTypeDefNotKnownException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1345,6 +1432,8 @@ public class OMRSRepositoryRESTServices
                                                                 TypeDefReIdentifyRequest requestParameters)
     {
         final  String   methodName = "reIdentifyAttributeTypeDef";
+
+        log.debug("Calling method: " + methodName);
 
         String originalAttributeTypeDefName = null;
         String newAttributeTypeDefGUID = null;
@@ -1390,6 +1479,8 @@ public class OMRSRepositoryRESTServices
             captureTypeDefNotKnown(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1418,6 +1509,8 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "isEntityKnown";
 
+        log.debug("Calling method: " + methodName);
+
         EntityDetailResponse response = new EntityDetailResponse();
 
         try
@@ -1438,6 +1531,8 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -1463,6 +1558,8 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getEntitySummary";
 
+        log.debug("Calling method: " + methodName);
+
         EntitySummaryResponse response = new EntitySummaryResponse();
 
         try
@@ -1487,6 +1584,8 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotKnownException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -1535,6 +1634,8 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getEntityDetail";
 
+        log.debug("Calling method: " + methodName);
+
         EntityDetailResponse response = new EntityDetailResponse();
 
         try
@@ -1564,6 +1665,8 @@ public class OMRSRepositoryRESTServices
             captureEntityProxyOnlyException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1592,6 +1695,8 @@ public class OMRSRepositoryRESTServices
                                                  Date       asOfTime)
     {
         final  String   methodName = "getEntityDetail";
+
+        log.debug("Calling method: " + methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
 
@@ -1626,6 +1731,8 @@ public class OMRSRepositoryRESTServices
             captureEntityProxyOnlyException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1655,6 +1762,8 @@ public class OMRSRepositoryRESTServices
                                                               TypeLimitedFindRequest     findRequestParameters)
     {
         final  String   methodName = "getRelationshipsForEntity";
+
+        log.debug("Calling method: " + methodName);
 
         String               relationshipTypeGUID    = null;
         int                  fromRelationshipElement = 0;
@@ -1742,6 +1851,8 @@ public class OMRSRepositoryRESTServices
             capturePagingErrorException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1771,6 +1882,8 @@ public class OMRSRepositoryRESTServices
                                                                      TypeLimitedHistoricalFindRequest     findRequestParameters)
     {
         final  String   methodName = "getRelationshipsForEntityHistory";
+
+        log.debug("Calling method: " + methodName);
 
         String               relationshipTypeGUID    = null;
         int                  fromRelationshipElement = 0;
@@ -1860,6 +1973,8 @@ public class OMRSRepositoryRESTServices
             capturePagingErrorException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -1890,9 +2005,13 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findEntitiesByProperty";
 
+        log.debug("Calling method: " + methodName);
+
         String                    entityTypeGUID                    = null;
-        InstanceProperties        matchProperties                   = null;
-        MatchCriteria             matchCriteria                     = null;
+        InstanceProperties        exactMatchProperties              = null;
+        MatchCriteria             exactMatchCriteria                = null;
+        InstanceProperties        fuzzyMatchProperties              = null;
+        MatchCriteria             fuzzyMatchCriteria                = null;
         int                       fromEntityElement                 = 0;
         List<InstanceStatus>      limitResultsByStatus              = null;
         List<String>              limitResultsByClassification      = null;
@@ -1905,8 +2024,10 @@ public class OMRSRepositoryRESTServices
         if (findRequestParameters != null)
         {
             entityTypeGUID                    = findRequestParameters.getTypeGUID();
-            matchProperties                   = findRequestParameters.getMatchProperties();
-            matchCriteria                     = findRequestParameters.getMatchCriteria();
+            exactMatchProperties              = findRequestParameters.getExactMatchProperties();
+            exactMatchCriteria                = findRequestParameters.getExactMatchCriteria();
+            fuzzyMatchProperties              = findRequestParameters.getFuzzyMatchProperties();
+            fuzzyMatchCriteria                = findRequestParameters.getFuzzyMatchCriteria();
             fromEntityElement                 = findRequestParameters.getOffset();
             limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
             limitResultsByClassification      = findRequestParameters.getLimitResultsByClassification();
@@ -1921,8 +2042,10 @@ public class OMRSRepositoryRESTServices
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByProperty(userId,
                                                                                           entityTypeGUID,
-                                                                                          matchProperties,
-                                                                                          matchCriteria,
+                                                                                          exactMatchProperties,
+                                                                                          exactMatchCriteria,
+                                                                                          fuzzyMatchProperties,
+                                                                                          fuzzyMatchCriteria,
                                                                                           fromEntityElement,
                                                                                           limitResultsByStatus,
                                                                                           limitResultsByClassification,
@@ -1979,6 +2102,8 @@ public class OMRSRepositoryRESTServices
             capturePagingErrorException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -2009,9 +2134,13 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findEntitiesByPropertyHistory";
 
+        log.debug("Calling method: " + methodName);
+
         String                    entityTypeGUID                    = null;
-        InstanceProperties        matchProperties                   = null;
-        MatchCriteria             matchCriteria                     = null;
+        InstanceProperties        exactMatchProperties              = null;
+        MatchCriteria             exactMatchCriteria                = null;
+        InstanceProperties        fuzzyMatchProperties              = null;
+        MatchCriteria             fuzzyMatchCriteria                = null;
         int                       fromEntityElement                 = 0;
         List<InstanceStatus>      limitResultsByStatus              = null;
         List<String>              limitResultsByClassification      = null;
@@ -2025,8 +2154,10 @@ public class OMRSRepositoryRESTServices
         if (findRequestParameters != null)
         {
             entityTypeGUID                    = findRequestParameters.getTypeGUID();
-            matchProperties                   = findRequestParameters.getMatchProperties();
-            matchCriteria                     = findRequestParameters.getMatchCriteria();
+            exactMatchProperties              = findRequestParameters.getExactMatchProperties();
+            exactMatchCriteria                = findRequestParameters.getExactMatchCriteria();
+            fuzzyMatchProperties              = findRequestParameters.getFuzzyMatchProperties();
+            fuzzyMatchCriteria                = findRequestParameters.getFuzzyMatchCriteria();
             fromEntityElement                 = findRequestParameters.getOffset();
             limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
             limitResultsByClassification      = findRequestParameters.getLimitResultsByClassification();
@@ -2042,8 +2173,10 @@ public class OMRSRepositoryRESTServices
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByProperty(userId,
                                                                                           entityTypeGUID,
-                                                                                          matchProperties,
-                                                                                          matchCriteria,
+                                                                                          exactMatchProperties,
+                                                                                          exactMatchCriteria,
+                                                                                          fuzzyMatchProperties,
+                                                                                          fuzzyMatchCriteria,
                                                                                           fromEntityElement,
                                                                                           limitResultsByStatus,
                                                                                           limitResultsByClassification,
@@ -2058,7 +2191,7 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
                 if (entities.size() == pageSize)
                 {
-                    final String urlTemplate = "{0}/instances/entities/by-property";
+                    final String urlTemplate = "{0}/instances/entities/by-property/history";
 
                     EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
@@ -2100,6 +2233,8 @@ public class OMRSRepositoryRESTServices
             capturePagingErrorException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -2132,27 +2267,33 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findEntitiesByClassification";
 
-        String                    entityTypeGUID                  = null;
-        InstanceProperties        matchClassificationProperties   = null;
-        MatchCriteria             matchCriteria                   = null;
-        int                       fromEntityElement               = 0;
-        List<InstanceStatus>      limitResultsByStatus            = null;
-        String                    sequencingProperty              = null;
-        SequencingOrder           sequencingOrder                 = null;
-        int                       pageSize                        = 0;
+        log.debug("Calling method: " + methodName);
+
+        String               entityTypeGUID                     = null;
+        InstanceProperties   exactMatchClassificationProperties = null;
+        MatchCriteria        exactMatchCriteria                 = null;
+        InstanceProperties   fuzzyMatchClassificationProperties = null;
+        MatchCriteria        fuzzyMatchCriteria                 = null;
+        int                  fromEntityElement                  = 0;
+        List<InstanceStatus> limitResultsByStatus               = null;
+        String               sequencingProperty                 = null;
+        SequencingOrder      sequencingOrder                    = null;
+        int                  pageSize                           = 0;
 
         EntityListResponse response = new EntityListResponse();
 
         if (findRequestParameters != null)
         {
-            entityTypeGUID                    = findRequestParameters.getTypeGUID();
-            matchClassificationProperties     = findRequestParameters.getMatchProperties();
-            matchCriteria                     = findRequestParameters.getMatchCriteria();
-            fromEntityElement                 = findRequestParameters.getOffset();
-            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
-            sequencingProperty                = findRequestParameters.getSequencingProperty();
-            sequencingOrder                   = findRequestParameters.getSequencingOrder();
-            pageSize                          = findRequestParameters.getPageSize();
+            entityTypeGUID                     = findRequestParameters.getTypeGUID();
+            exactMatchClassificationProperties = findRequestParameters.getExactMatchProperties();
+            exactMatchCriteria                 = findRequestParameters.getExactMatchCriteria();
+            fuzzyMatchClassificationProperties = findRequestParameters.getFuzzyMatchProperties();
+            fuzzyMatchCriteria                 = findRequestParameters.getFuzzyMatchCriteria();
+            fromEntityElement                  = findRequestParameters.getOffset();
+            limitResultsByStatus               = findRequestParameters.getLimitResultsByStatus();
+            sequencingProperty                 = findRequestParameters.getSequencingProperty();
+            sequencingOrder                    = findRequestParameters.getSequencingOrder();
+            pageSize                           = findRequestParameters.getPageSize();
         }
 
         try
@@ -2162,8 +2303,10 @@ public class OMRSRepositoryRESTServices
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByClassification(userId,
                                                                                                 entityTypeGUID,
                                                                                                 classificationName,
-                                                                                                matchClassificationProperties,
-                                                                                                matchCriteria,
+                                                                                                exactMatchClassificationProperties,
+                                                                                                exactMatchCriteria,
+                                                                                                fuzzyMatchClassificationProperties,
+                                                                                                fuzzyMatchCriteria,
                                                                                                 fromEntityElement,
                                                                                                 limitResultsByStatus,
                                                                                                 null,
@@ -2222,6 +2365,8 @@ public class OMRSRepositoryRESTServices
             captureClassificationErrorException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -2254,29 +2399,36 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findEntitiesByClassificationHistory";
 
-        String                    entityTypeGUID                  = null;
-        InstanceProperties        matchClassificationProperties   = null;
-        MatchCriteria             matchCriteria                   = null;
-        int                       fromEntityElement               = 0;
-        List<InstanceStatus>      limitResultsByStatus            = null;
-        Date                      asOfTime                        = null;
-        String                    sequencingProperty              = null;
-        SequencingOrder           sequencingOrder                 = null;
-        int                       pageSize                        = 0;
+        log.debug("Calling method: " + methodName);
+
+        String               entityTypeGUID                     = null;
+        InstanceProperties   exactMatchClassificationProperties = null;
+        MatchCriteria        exactMatchCriteria                 = null;
+        InstanceProperties   fuzzyMatchClassificationProperties = null;
+        MatchCriteria        fuzzyMatchCriteria                 = null;
+        int                  fromEntityElement                  = 0;
+        List<InstanceStatus> limitResultsByStatus               = null;
+        Date                 asOfTime                           = null;
+        String               sequencingProperty                 = null;
+        SequencingOrder      sequencingOrder                    = null;
+        int                  pageSize                           = 0;
 
         EntityListResponse response = new EntityListResponse();
 
         if (findRequestParameters != null)
         {
-            entityTypeGUID                    = findRequestParameters.getTypeGUID();
-            matchClassificationProperties     = findRequestParameters.getMatchProperties();
-            matchCriteria                     = findRequestParameters.getMatchCriteria();
-            fromEntityElement                 = findRequestParameters.getOffset();
-            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
-            asOfTime                          = findRequestParameters.getAsOfTime();
-            sequencingProperty                = findRequestParameters.getSequencingProperty();
-            sequencingOrder                   = findRequestParameters.getSequencingOrder();
-            pageSize                          = findRequestParameters.getPageSize();
+            entityTypeGUID                     = findRequestParameters.getTypeGUID();
+            exactMatchClassificationProperties = findRequestParameters.getExactMatchProperties();
+            exactMatchCriteria                 = findRequestParameters.getExactMatchCriteria();
+            fuzzyMatchClassificationProperties = findRequestParameters.getFuzzyMatchProperties();
+            fuzzyMatchCriteria                 = findRequestParameters.getFuzzyMatchCriteria();
+            fromEntityElement                  = findRequestParameters.getOffset();
+            limitResultsByStatus               = findRequestParameters.getLimitResultsByStatus();
+            sequencingProperty                 = findRequestParameters.getSequencingProperty();
+            sequencingOrder                    = findRequestParameters.getSequencingOrder();
+            pageSize                           = findRequestParameters.getPageSize();
+            asOfTime                           = findRequestParameters.getAsOfTime();
+
         }
 
         try
@@ -2286,8 +2438,10 @@ public class OMRSRepositoryRESTServices
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByClassification(userId,
                                                                                                 entityTypeGUID,
                                                                                                 classificationName,
-                                                                                                matchClassificationProperties,
-                                                                                                matchCriteria,
+                                                                                                exactMatchClassificationProperties,
+                                                                                                exactMatchCriteria,
+                                                                                                fuzzyMatchClassificationProperties,
+                                                                                                fuzzyMatchCriteria,
                                                                                                 fromEntityElement,
                                                                                                 limitResultsByStatus,
                                                                                                 asOfTime,
@@ -2346,8 +2500,11 @@ public class OMRSRepositoryRESTServices
             captureClassificationErrorException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
+
 
     /**
      * Return a list of entities whose string based property values match the search criteria.  The
@@ -2376,6 +2533,8 @@ public class OMRSRepositoryRESTServices
                                                            EntityPropertyFindRequest findRequestParameters)
     {
         final  String   methodName = "findEntitiesByPropertyValue";
+
+        log.debug("Calling method: " + methodName);
 
         String                  entityTypeGUID                    = null;
         int                     fromEntityElement                 = 0;
@@ -2419,7 +2578,7 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
                 if (entities.size() == pageSize)
                 {
-                    final String urlTemplate = "{0}/instances/entities/by-property-value?&searchCriteria={1}";
+                    final String urlTemplate = "{0}/instances/entities/by-property-value?searchCriteria={1}";
                     EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
@@ -2461,6 +2620,8 @@ public class OMRSRepositoryRESTServices
             capturePagingErrorException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -2492,6 +2653,8 @@ public class OMRSRepositoryRESTServices
                                                                   EntityPropertyHistoricalFindRequest findRequestParameters)
     {
         final  String   methodName = "findEntitiesByPropertyValueHistory";
+
+        log.debug("Calling method: " + methodName);
 
         String                  entityTypeGUID                    = null;
         int                     fromEntityElement                 = 0;
@@ -2537,7 +2700,7 @@ public class OMRSRepositoryRESTServices
                 response.setPageSize(pageSize);
                 if (entities.size() == pageSize)
                 {
-                    final String urlTemplate = "{0}/instances/entities/by-property-value?&searchCriteria={1}/history";
+                    final String urlTemplate = "{0}/instances/entities/by-property-value/history?searchCriteria={1}";
                     EntityPropertyHistoricalFindRequest nextFindRequestParameters = new EntityPropertyHistoricalFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
@@ -2578,6 +2741,249 @@ public class OMRSRepositoryRESTServices
             capturePagingErrorException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     *  Return a list of entities whose string based property values match the supplied property value exactly.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param propertyValue String expression contained in any of the property values within the entities
+     *                       of the supplied type.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * a list of entities matching the supplied criteria where null means no matching entities in the metadata
+     * collection or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  EntityListResponse findEntitiesByExactPropertyValue(String                    serverName,
+                                                                String                    userId,
+                                                                String                    propertyValue,
+                                                                EntityPropertyFindRequest findRequestParameters)
+    {
+        final  String   methodName = "findEntitiesByExactPropertyValue";
+
+        log.debug("Calling method: " + methodName);
+
+        String                  entityTypeGUID                    = null;
+        int                     fromEntityElement                 = 0;
+        List<InstanceStatus>    limitResultsByStatus              = null;
+        List<String>            limitResultsByClassification      = null;
+        String                  sequencingProperty                = null;
+        SequencingOrder         sequencingOrder                   = null;
+        int                     pageSize                          = 0;
+
+        EntityListResponse response = new EntityListResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUID                    = findRequestParameters.getTypeGUID();
+            fromEntityElement                 = findRequestParameters.getOffset();
+            limitResultsByClassification      = findRequestParameters.getLimitResultsByClassification();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
+
+            List<EntityDetail>  entities = localMetadataCollection.findEntitiesByExactPropertyValue(userId,
+                                                                                                    entityTypeGUID,
+                                                                                                    propertyValue,
+                                                                                                    fromEntityElement,
+                                                                                                    limitResultsByStatus,
+                                                                                                    limitResultsByClassification,
+                                                                                                    null,
+                                                                                                    sequencingProperty,
+                                                                                                    sequencingOrder,
+                                                                                                    pageSize);
+            response.setEntities(entities);
+            if (entities != null)
+            {
+                response.setOffset(fromEntityElement);
+                response.setPageSize(pageSize);
+                if (entities.size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/entities/by-exact-property-value?propertyValue={1}";
+                    EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
+                                                              nextFindRequestParameters,
+                                                              userId,
+                                                              propertyValue));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     *  Return a list of entities whose string based property values match the supplied property value exactly.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param propertyValue String expression contained in any of the property values within the entities
+     *                       of the supplied type.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return EntityListResponse:
+     * a list of entities matching the supplied criteria where null means no matching entities in the metadata
+     * collection or
+     * InvalidParameterException a parameter is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored or
+     * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
+     *                                  entity or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  EntityListResponse findEntitiesByExactPropertyValueHistory(String                              serverName,
+                                                                       String                              userId,
+                                                                       String                              propertyValue,
+                                                                       EntityPropertyHistoricalFindRequest findRequestParameters)
+    {
+        final  String   methodName = "findEntitiesByExactPropertyValueHistory";
+
+        log.debug("Calling method: " + methodName);
+
+        String                  entityTypeGUID                    = null;
+        int                     fromEntityElement                 = 0;
+        List<InstanceStatus>    limitResultsByStatus              = null;
+        List<String>            limitResultsByClassification      = null;
+        Date                    asOfTime                          = null;
+        String                  sequencingProperty                = null;
+        SequencingOrder         sequencingOrder                   = null;
+        int                     pageSize                          = 0;
+
+        EntityListResponse response = new EntityListResponse();
+
+        if (findRequestParameters != null)
+        {
+            entityTypeGUID                    = findRequestParameters.getTypeGUID();
+            fromEntityElement                 = findRequestParameters.getOffset();
+            limitResultsByClassification      = findRequestParameters.getLimitResultsByClassification();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            asOfTime                          = findRequestParameters.getAsOfTime();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
+
+            List<EntityDetail>  entities = localMetadataCollection.findEntitiesByPropertyValue(userId,
+                                                                                               entityTypeGUID,
+                                                                                               propertyValue,
+                                                                                               fromEntityElement,
+                                                                                               limitResultsByStatus,
+                                                                                               limitResultsByClassification,
+                                                                                               asOfTime,
+                                                                                               sequencingProperty,
+                                                                                               sequencingOrder,
+                                                                                               pageSize);
+            response.setEntities(entities);
+            if (entities != null)
+            {
+                response.setOffset(fromEntityElement);
+                response.setPageSize(pageSize);
+                if (entities.size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/entities/by-exact-property-value/history?propertyValue={1}";
+                    EntityPropertyHistoricalFindRequest nextFindRequestParameters = new EntityPropertyHistoricalFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
+                                                              nextFindRequestParameters,
+                                                              userId,
+                                                              propertyValue));
+                }
+            }
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -2601,6 +3007,8 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "isRelationshipKnown";
 
+        log.debug("Calling method: " + methodName);
+
         RelationshipResponse response = new RelationshipResponse();
 
         try
@@ -2621,6 +3029,8 @@ public class OMRSRepositoryRESTServices
         {
             captureInvalidParameterException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -2668,6 +3078,8 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "getRelationship";
 
+        log.debug("Calling method: " + methodName);
+
         RelationshipResponse response = new RelationshipResponse();
 
         try
@@ -2692,6 +3104,8 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipNotKnownException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -2720,6 +3134,8 @@ public class OMRSRepositoryRESTServices
                                                  Date      asOfTime)
     {
         final  String   methodName = "getRelationship";
+
+        log.debug("Calling method: " + methodName);
 
         RelationshipResponse response = new RelationshipResponse();
 
@@ -2750,6 +3166,8 @@ public class OMRSRepositoryRESTServices
             captureRelationshipNotKnownException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -2779,9 +3197,13 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findRelationshipsByProperty";
 
+        log.debug("Calling method: " + methodName);
+
         String                    relationshipTypeGUID     = null;
-        InstanceProperties        matchProperties          = null;
-        MatchCriteria             matchCriteria            = null;
+        InstanceProperties        exactMatchProperties     = null;
+        MatchCriteria             exactMatchCriteria       = null;
+        InstanceProperties        fuzzyMatchProperties     = null;
+        MatchCriteria             fuzzyMatchCriteria       = null;
         int                       fromRelationshipElement  = 0;
         List<InstanceStatus>      limitResultsByStatus     = null;
         String                    sequencingProperty       = null;
@@ -2793,8 +3215,10 @@ public class OMRSRepositoryRESTServices
         if (findRequestParameters != null)
         {
             relationshipTypeGUID              = findRequestParameters.getTypeGUID();
-            matchProperties                   = findRequestParameters.getMatchProperties();
-            matchCriteria                     = findRequestParameters.getMatchCriteria();
+            exactMatchProperties              = findRequestParameters.getExactMatchProperties();
+            exactMatchCriteria                = findRequestParameters.getExactMatchCriteria();
+            fuzzyMatchProperties              = findRequestParameters.getFuzzyMatchProperties();
+            fuzzyMatchCriteria                = findRequestParameters.getFuzzyMatchCriteria();
             fromRelationshipElement           = findRequestParameters.getOffset();
             limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
             sequencingProperty                = findRequestParameters.getSequencingProperty();
@@ -2808,8 +3232,10 @@ public class OMRSRepositoryRESTServices
 
             List<Relationship>  relationships = localMetadataCollection.findRelationshipsByProperty(userId,
                                                                                                     relationshipTypeGUID,
-                                                                                                    matchProperties,
-                                                                                                    matchCriteria,
+                                                                                                    exactMatchProperties,
+                                                                                                    exactMatchCriteria,
+                                                                                                    fuzzyMatchProperties,
+                                                                                                    fuzzyMatchCriteria,
                                                                                                     fromRelationshipElement,
                                                                                                     limitResultsByStatus,
                                                                                                     null,
@@ -2865,6 +3291,8 @@ public class OMRSRepositoryRESTServices
             capturePagingErrorException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -2894,9 +3322,13 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "findRelationshipsByPropertyHistory";
 
+        log.debug("Calling method: " + methodName);
+
         String                    relationshipTypeGUID     = null;
-        InstanceProperties        matchProperties          = null;
-        MatchCriteria             matchCriteria            = null;
+        InstanceProperties        exactMatchProperties     = null;
+        MatchCriteria             exactMatchCriteria       = null;
+        InstanceProperties        fuzzyMatchProperties     = null;
+        MatchCriteria             fuzzyMatchCriteria       = null;
         int                       fromRelationshipElement  = 0;
         List<InstanceStatus>      limitResultsByStatus     = null;
         Date                      asOfTime                 = null;
@@ -2909,8 +3341,10 @@ public class OMRSRepositoryRESTServices
         if (findRequestParameters != null)
         {
             relationshipTypeGUID              = findRequestParameters.getTypeGUID();
-            matchProperties                   = findRequestParameters.getMatchProperties();
-            matchCriteria                     = findRequestParameters.getMatchCriteria();
+            exactMatchProperties              = findRequestParameters.getExactMatchProperties();
+            exactMatchCriteria                = findRequestParameters.getExactMatchCriteria();
+            fuzzyMatchProperties              = findRequestParameters.getFuzzyMatchProperties();
+            fuzzyMatchCriteria                = findRequestParameters.getFuzzyMatchCriteria();
             fromRelationshipElement           = findRequestParameters.getOffset();
             limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
             asOfTime                          = findRequestParameters.getAsOfTime();
@@ -2925,8 +3359,10 @@ public class OMRSRepositoryRESTServices
 
             List<Relationship>  relationships = localMetadataCollection.findRelationshipsByProperty(userId,
                                                                                                     relationshipTypeGUID,
-                                                                                                    matchProperties,
-                                                                                                    matchCriteria,
+                                                                                                    exactMatchProperties,
+                                                                                                    exactMatchCriteria,
+                                                                                                    fuzzyMatchProperties,
+                                                                                                    fuzzyMatchCriteria,
                                                                                                     fromRelationshipElement,
                                                                                                     limitResultsByStatus,
                                                                                                     asOfTime,
@@ -2982,6 +3418,8 @@ public class OMRSRepositoryRESTServices
             capturePagingErrorException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -3010,6 +3448,8 @@ public class OMRSRepositoryRESTServices
                                                                       TypeLimitedFindRequest    findRequestParameters)
     {
         final  String   methodName = "findRelationshipsByPropertyValue";
+
+        log.debug("Calling method: " + methodName);
 
         String                    relationshipTypeGUID     = null;
         int                       fromRelationshipElement  = 0;
@@ -3093,6 +3533,8 @@ public class OMRSRepositoryRESTServices
             capturePagingErrorException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -3121,6 +3563,8 @@ public class OMRSRepositoryRESTServices
                                                                              TypeLimitedHistoricalFindRequest    findRequestParameters)
     {
         final  String   methodName = "findRelationshipsByPropertyValueHistory";
+
+        log.debug("Calling method: " + methodName);
 
         String                    relationshipTypeGUID     = null;
         int                       fromRelationshipElement  = 0;
@@ -3206,6 +3650,241 @@ public class OMRSRepositoryRESTServices
             capturePagingErrorException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+
+    /**
+     * Return a list of relationships that match the search criteria.  The results can be paged.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param propertyValue String value for the property.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return RelationshipListResponse:
+     * a list of relationships.  Null means no matching relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * PropertyErrorException there is a problem with one of the other parameters  or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  RelationshipListResponse findRelationshipsByExactPropertyValue(String                    serverName,
+                                                                           String                    userId,
+                                                                           String                    propertyValue,
+                                                                           TypeLimitedFindRequest    findRequestParameters)
+    {
+        final  String   methodName = "findRelationshipsByExactPropertyValue";
+
+        log.debug("Calling method: " + methodName);
+
+        String                    relationshipTypeGUID     = null;
+        int                       fromRelationshipElement  = 0;
+        List<InstanceStatus>      limitResultsByStatus     = null;
+        String                    sequencingProperty       = null;
+        SequencingOrder           sequencingOrder          = null;
+        int                       pageSize                 = 0;
+
+        RelationshipListResponse response = new RelationshipListResponse();
+
+        if (findRequestParameters != null)
+        {
+            relationshipTypeGUID              = findRequestParameters.getTypeGUID();
+            fromRelationshipElement           = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
+
+            List<Relationship>  relationships = localMetadataCollection.findRelationshipsByPropertyValue(userId,
+                                                                                                         relationshipTypeGUID,
+                                                                                                         propertyValue,
+                                                                                                         fromRelationshipElement,
+                                                                                                         limitResultsByStatus,
+                                                                                                         null,
+                                                                                                         sequencingProperty,
+                                                                                                         sequencingOrder,
+                                                                                                         pageSize);
+            response.setRelationships(relationships);
+            if (relationships != null)
+            {
+                response.setOffset(fromRelationshipElement);
+                response.setPageSize(pageSize);
+                if (response.getRelationships().size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/relationships/by-exact-property-value?searchCriteria={1}";
+
+                    TypeLimitedFindRequest nextFindRequestParameters = new TypeLimitedFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
+                                                              nextFindRequestParameters,
+                                                              userId,
+                                                              propertyValue));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
+     * Return a list of relationships that match the search criteria.  The results can be paged.
+     *
+     * @param serverName unique identifier for requested server.
+     * @param userId unique identifier for requesting user.
+     * @param propertyValue String value for the property.
+     * @param findRequestParameters find parameters used to limit the returned results.
+     * @return RelationshipListResponse:
+     * a list of relationships.  Null means no matching relationships or
+     * InvalidParameterException one of the parameters is invalid or null or
+     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
+     * RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored or
+     * PropertyErrorException there is a problem with one of the other parameters  or
+     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
+     * FunctionNotSupportedException the repository does not support asOfTime parameter or
+     * UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  RelationshipListResponse findRelationshipsByExactPropertyValueHistory(String                              serverName,
+                                                                                  String                              userId,
+                                                                                  String                              propertyValue,
+                                                                                  TypeLimitedHistoricalFindRequest    findRequestParameters)
+    {
+        final  String   methodName = "findRelationshipsByExactPropertyValueHistory";
+
+        log.debug("Calling method: " + methodName);
+
+        String                    relationshipTypeGUID     = null;
+        int                       fromRelationshipElement  = 0;
+        List<InstanceStatus>      limitResultsByStatus     = null;
+        Date                      asOfTime                 = null;
+        String                    sequencingProperty       = null;
+        SequencingOrder           sequencingOrder          = null;
+        int                       pageSize                 = 0;
+
+        RelationshipListResponse response = new RelationshipListResponse();
+
+        if (findRequestParameters != null)
+        {
+            relationshipTypeGUID              = findRequestParameters.getTypeGUID();
+            fromRelationshipElement           = findRequestParameters.getOffset();
+            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
+            asOfTime                          = findRequestParameters.getAsOfTime();
+            sequencingProperty                = findRequestParameters.getSequencingProperty();
+            sequencingOrder                   = findRequestParameters.getSequencingOrder();
+            pageSize                          = findRequestParameters.getPageSize();
+        }
+
+        try
+        {
+            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
+
+            List<Relationship>  relationships = localMetadataCollection.findRelationshipsByPropertyValue(userId,
+                                                                                                         relationshipTypeGUID,
+                                                                                                         propertyValue,
+                                                                                                         fromRelationshipElement,
+                                                                                                         limitResultsByStatus,
+                                                                                                         asOfTime,
+                                                                                                         sequencingProperty,
+                                                                                                         sequencingOrder,
+                                                                                                         pageSize);
+            response.setRelationships(relationships);
+            if (relationships != null)
+            {
+                response.setOffset(fromRelationshipElement);
+                response.setPageSize(pageSize);
+                if (response.getRelationships().size() == pageSize)
+                {
+                    final String urlTemplate = "{0}/instances/relationships/by-exact-property-value/history?searchCriteria={1}";
+
+                    TypeLimitedHistoricalFindRequest nextFindRequestParameters = new TypeLimitedHistoricalFindRequest(findRequestParameters);
+                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
+
+                    response.setNextPageURL(formatNextPageURL(serverName,
+                                                              urlTemplate,
+                                                              nextFindRequestParameters,
+                                                              userId,
+                                                              propertyValue));
+                }
+            }
+
+        }
+        catch (RepositoryErrorException  error)
+        {
+            captureRepositoryErrorException(response, error);
+        }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyErrorException error)
+        {
+            capturePropertyErrorException(response, error);
+        }
+        catch (TypeErrorException error)
+        {
+            captureTypeErrorException(response, error);
+        }
+        catch (PagingErrorException error)
+        {
+            capturePagingErrorException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -3236,6 +3915,8 @@ public class OMRSRepositoryRESTServices
                                                      OMRSAPIFindRequest        findRequestParameters)
     {
         final  String   methodName = "getLinkingEntities";
+
+        log.debug("Calling method: " + methodName);
 
         List<InstanceStatus>      limitResultsByStatus = null;
 
@@ -3286,6 +3967,8 @@ public class OMRSRepositoryRESTServices
             captureEntityNotKnownException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -3316,6 +3999,8 @@ public class OMRSRepositoryRESTServices
                                                             OMRSAPIHistoricalFindRequest   findRequestParameters)
     {
         final  String   methodName = "getLinkingEntitiesHistory";
+
+        log.debug("Calling method: " + methodName);
 
         List<InstanceStatus>      limitResultsByStatus = null;
         Date                      asOfTime = null;
@@ -3368,6 +4053,8 @@ public class OMRSRepositoryRESTServices
             captureEntityNotKnownException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -3400,6 +4087,8 @@ public class OMRSRepositoryRESTServices
                                                         EntityNeighborhoodFindRequest  findRequestParameters)
     {
         final  String   methodName = "getEntityNeighborhood";
+
+        log.debug("Calling method: " + methodName);
 
         List<String>         entityTypeGUIDs                = null;
         List<String>         relationshipTypeGUIDs          = null;
@@ -3463,6 +4152,8 @@ public class OMRSRepositoryRESTServices
             captureTypeErrorException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -3495,6 +4186,8 @@ public class OMRSRepositoryRESTServices
                                                                EntityNeighborhoodHistoricalFindRequest  findRequestParameters)
     {
         final  String   methodName = "getEntityNeighborhoodHistory";
+
+        log.debug("Calling method: " + methodName);
 
         List<String>         entityTypeGUIDs                = null;
         List<String>         relationshipTypeGUIDs          = null;
@@ -3560,6 +4253,8 @@ public class OMRSRepositoryRESTServices
             captureTypeErrorException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -3594,6 +4289,8 @@ public class OMRSRepositoryRESTServices
                                                   RelatedEntitiesFindRequest findRequestParameters)
     {
         final  String   methodName = "getRelatedEntities";
+
+        log.debug("Calling method: " + methodName);
 
         List<String>         entityTypeGUIDs               = null;
         int                  fromEntityElement             = 0;
@@ -3684,6 +4381,8 @@ public class OMRSRepositoryRESTServices
             captureEntityNotKnownException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -3718,6 +4417,8 @@ public class OMRSRepositoryRESTServices
                                                          RelatedEntitiesHistoricalFindRequest findRequestParameters)
     {
         final  String   methodName = "getRelatedEntitiesHistory";
+
+        log.debug("Calling method: " + methodName);
 
         List<String>         entityTypeGUIDs               = null;
         int                  fromEntityElement             = 0;
@@ -3810,6 +4511,8 @@ public class OMRSRepositoryRESTServices
             captureEntityNotKnownException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -3838,6 +4541,7 @@ public class OMRSRepositoryRESTServices
      *                                           not defined for this entity type or
      * StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                       the requested status or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetailResponse addEntity(String                serverName,
@@ -3845,6 +4549,8 @@ public class OMRSRepositoryRESTServices
                                           EntityCreateRequest   requestBody)
     {
         final  String   methodName = "addEntity";
+
+        log.debug("Calling method: " + methodName);
 
         String                     entityTypeGUID = null;
         InstanceProperties         initialProperties = null;
@@ -3895,10 +4601,16 @@ public class OMRSRepositoryRESTServices
         {
             capturePropertyErrorException(response, error);
         }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
         catch (ClassificationErrorException error)
         {
             captureClassificationErrorException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -3934,6 +4646,8 @@ public class OMRSRepositoryRESTServices
     {
         final  String   methodName = "addEntityProxy";
 
+        log.debug("Calling method: " + methodName);
+
         VoidResponse response = new VoidResponse();
 
         try
@@ -3959,6 +4673,8 @@ public class OMRSRepositoryRESTServices
             captureInvalidParameterException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -3978,6 +4694,7 @@ public class OMRSRepositoryRESTServices
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
      * StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                      the requested status or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetailResponse updateEntityStatus(String           serverName,
@@ -3986,6 +4703,8 @@ public class OMRSRepositoryRESTServices
                                                    InstanceStatus   newStatus)
     {
         final  String   methodName = "updateEntityStatus";
+
+        log.debug("Calling method: " + methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
 
@@ -4011,10 +4730,16 @@ public class OMRSRepositoryRESTServices
         {
             captureStatusNotSupportedException(response, error);
         }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
         catch (EntityNotKnownException error)
         {
             captureEntityNotKnownException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -4035,6 +4760,7 @@ public class OMRSRepositoryRESTServices
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this entity's type or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetailResponse updateEntityProperties(String                      serverName,
@@ -4043,6 +4769,8 @@ public class OMRSRepositoryRESTServices
                                                        InstancePropertiesRequest   propertiesRequestBody)
     {
         final  String   methodName = "updateEntityProperties";
+
+        log.debug("Calling method: " + methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
 
@@ -4068,10 +4796,16 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotKnownException(response, error);
         }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
         catch (PropertyErrorException error)
         {
             capturePropertyErrorException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -4097,6 +4831,8 @@ public class OMRSRepositoryRESTServices
                                                  String    entityGUID)
     {
         final  String   methodName = "undoEntityUpdate";
+
+        log.debug("Calling method: " + methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
 
@@ -4126,6 +4862,8 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotKnownException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -4157,6 +4895,8 @@ public class OMRSRepositoryRESTServices
                                               TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "deleteEntity";
+
+        log.debug("Calling method: " + methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -4196,6 +4936,8 @@ public class OMRSRepositoryRESTServices
             captureFunctionNotSupportedException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -4214,6 +4956,7 @@ public class OMRSRepositoryRESTServices
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection or
      * EntityNotDeletedException the entity is not in DELETED status and so can not be purged or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public VoidResponse purgeEntity(String                        serverName,
@@ -4222,6 +4965,8 @@ public class OMRSRepositoryRESTServices
                                     TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "purgeEntity";
+
+        log.debug("Calling method: " + methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -4256,10 +5001,16 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotDeletedException(response, error);
         }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
         catch (EntityNotKnownException error)
         {
             captureEntityNotKnownException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -4286,6 +5037,8 @@ public class OMRSRepositoryRESTServices
                                               String    deletedEntityGUID)
     {
         final  String   methodName = "restoreEntity";
+
+        log.debug("Calling method: " + methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
 
@@ -4320,6 +5073,8 @@ public class OMRSRepositoryRESTServices
             captureEntityNotDeletedException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -4342,6 +5097,7 @@ public class OMRSRepositoryRESTServices
      *                                         for the entity or
      * PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this classification type or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetailResponse classifyEntity(String                      serverName,
@@ -4351,6 +5107,8 @@ public class OMRSRepositoryRESTServices
                                                InstancePropertiesRequest   propertiesRequestBody)
     {
         final  String   methodName = "classifyEntity";
+
+        log.debug("Calling method: " + methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
 
@@ -4383,10 +5141,16 @@ public class OMRSRepositoryRESTServices
         {
             captureClassificationErrorException(response, error);
         }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
         catch (PropertyErrorException error)
         {
             capturePropertyErrorException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -4406,6 +5170,7 @@ public class OMRSRepositoryRESTServices
      *                                  the metadata collection is stored or
      * EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * ClassificationErrorException the requested classification is not set on the entity or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetailResponse declassifyEntity(String    serverName,
@@ -4414,6 +5179,8 @@ public class OMRSRepositoryRESTServices
                                                  String    classificationName)
     {
         final  String   methodName = "declassifyEntity";
+
+        log.debug("Calling method: " + methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
 
@@ -4441,10 +5208,16 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotKnownException(response, error);
         }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
         catch (ClassificationErrorException error)
         {
             captureClassificationErrorException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -4467,6 +5240,7 @@ public class OMRSRepositoryRESTServices
      * ClassificationErrorException the requested classification is not attached to the classification or
      * PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this classification type or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetailResponse updateEntityClassification(String                      serverName,
@@ -4476,6 +5250,8 @@ public class OMRSRepositoryRESTServices
                                                            InstancePropertiesRequest   propertiesRequestBody)
     {
         final  String   methodName = "updateEntityClassification";
+
+        log.debug("Calling method: " + methodName);
 
         EntityDetailResponse response = new EntityDetailResponse();
 
@@ -4508,10 +5284,16 @@ public class OMRSRepositoryRESTServices
         {
             captureClassificationErrorException(response, error);
         }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
         catch (PropertyErrorException error)
         {
             capturePropertyErrorException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -4535,6 +5317,7 @@ public class OMRSRepositoryRESTServices
      * EntityNotKnownException one of the requested entities is not known in the metadata collection or
      * StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                     the requested status or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public RelationshipResponse addRelationship(String                     serverName,
@@ -4542,6 +5325,8 @@ public class OMRSRepositoryRESTServices
                                                 RelationshipCreateRequest  createRequestParameters)
     {
         final  String   methodName = "addRelationship";
+
+        log.debug("Calling method: " + methodName);
 
         String             relationshipTypeGUID = null;
         InstanceProperties initialProperties = null;
@@ -4595,10 +5380,16 @@ public class OMRSRepositoryRESTServices
         {
             captureEntityNotKnownException(response, error);
         }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
         catch (StatusNotSupportedException error)
         {
             captureStatusNotSupportedException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -4619,6 +5410,7 @@ public class OMRSRepositoryRESTServices
      * RelationshipNotKnownException the requested relationship is not known in the metadata collection or
      * StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                     the requested status or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public RelationshipResponse updateRelationshipStatus(String           serverName,
@@ -4627,6 +5419,8 @@ public class OMRSRepositoryRESTServices
                                                          InstanceStatus   newStatus)
     {
         final  String   methodName = "updateRelationshipStatus";
+
+        log.debug("Calling method: " + methodName);
 
         RelationshipResponse response = new RelationshipResponse();
 
@@ -4654,10 +5448,16 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipNotKnownException(response, error);
         }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
         catch (StatusNotSupportedException error)
         {
             captureStatusNotSupportedException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -4678,6 +5478,7 @@ public class OMRSRepositoryRESTServices
      * RelationshipNotKnownException the requested relationship is not known in the metadata collection or
      * PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this relationship's type or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public RelationshipResponse updateRelationshipProperties(String                      serverName,
@@ -4686,6 +5487,8 @@ public class OMRSRepositoryRESTServices
                                                              InstancePropertiesRequest   propertiesRequestBody)
     {
         final  String   methodName = "updateRelationshipProperties";
+
+        log.debug("Calling method: " + methodName);
 
         RelationshipResponse response = new RelationshipResponse();
 
@@ -4713,10 +5516,16 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipNotKnownException(response, error);
         }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
         catch (PropertyErrorException error)
         {
             capturePropertyErrorException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -4742,6 +5551,8 @@ public class OMRSRepositoryRESTServices
                                                        String    relationshipGUID)
     {
         final  String   methodName = "undoRelationshipUpdate";
+
+        log.debug("Calling method: " + methodName);
 
         RelationshipResponse response = new RelationshipResponse();
 
@@ -4772,6 +5583,8 @@ public class OMRSRepositoryRESTServices
             captureRelationshipNotKnownException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -4801,6 +5614,8 @@ public class OMRSRepositoryRESTServices
                                                    TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "deleteRelationship";
+
+        log.debug("Calling method: " + methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -4843,6 +5658,8 @@ public class OMRSRepositoryRESTServices
             captureRelationshipNotKnownException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -4861,6 +5678,7 @@ public class OMRSRepositoryRESTServices
      *                                    the metadata collection is stored or
      * RelationshipNotKnownException the requested relationship is not known in the metadata collection or
      * RelationshipNotDeletedException the requested relationship is not in DELETED status or
+     * FunctionNotSupportedException the repository does not support maintenance of metadata.
      * UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public VoidResponse purgeRelationship(String                        serverName,
@@ -4869,6 +5687,8 @@ public class OMRSRepositoryRESTServices
                                           TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "purgeRelationship";
+
+        log.debug("Calling method: " + methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -4903,10 +5723,16 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipNotDeletedException(response, error);
         }
+        catch (FunctionNotSupportedException  error)
+        {
+            captureFunctionNotSupportedException(response, error);
+        }
         catch (RelationshipNotKnownException error)
         {
             captureRelationshipNotKnownException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -4934,6 +5760,8 @@ public class OMRSRepositoryRESTServices
                                                     String    deletedRelationshipGUID)
     {
         final  String   methodName = "restoreRelationship";
+
+        log.debug("Calling method: " + methodName);
 
         RelationshipResponse response = new RelationshipResponse();
 
@@ -4967,6 +5795,8 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipNotDeletedException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -5003,6 +5833,8 @@ public class OMRSRepositoryRESTServices
                                                  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "reIdentifyEntity";
+
+        log.debug("Calling method: " + methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -5046,6 +5878,8 @@ public class OMRSRepositoryRESTServices
             captureEntityNotKnownException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -5078,6 +5912,8 @@ public class OMRSRepositoryRESTServices
                                              TypeDefChangeRequest typeDefChangeRequest)
     {
         final  String   methodName = "reTypeEntity";
+
+        log.debug("Calling method: " + methodName);
 
         TypeDefSummary currentTypeDefSummary = null;
         TypeDefSummary newTypeDefSummary = null;
@@ -5132,6 +5968,8 @@ public class OMRSRepositoryRESTServices
             captureClassificationErrorException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -5166,6 +6004,8 @@ public class OMRSRepositoryRESTServices
                                              TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "reHomeEntity";
+
+        log.debug("Calling method: " + methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -5211,6 +6051,8 @@ public class OMRSRepositoryRESTServices
             captureEntityNotKnownException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -5242,6 +6084,8 @@ public class OMRSRepositoryRESTServices
                                                        TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "reIdentifyRelationship";
+
+        log.debug("Calling method: " + methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -5285,6 +6129,8 @@ public class OMRSRepositoryRESTServices
             captureRelationshipNotKnownException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -5317,6 +6163,8 @@ public class OMRSRepositoryRESTServices
                                                    TypeDefChangeRequest typeDefChangeRequest)
     {
         final  String   methodName = "reTypeRelationship";
+
+        log.debug("Calling method: " + methodName);
 
         TypeDefSummary currentTypeDefSummary = null;
         TypeDefSummary newTypeDefSummary = null;
@@ -5367,6 +6215,8 @@ public class OMRSRepositoryRESTServices
             captureRelationshipNotKnownException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -5402,6 +6252,8 @@ public class OMRSRepositoryRESTServices
                                                    TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "reHomeRelationship";
+
+        log.debug("Calling method: " + methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -5447,6 +6299,7 @@ public class OMRSRepositoryRESTServices
             captureRelationshipNotKnownException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
@@ -5486,6 +6339,8 @@ public class OMRSRepositoryRESTServices
                                                 EntityDetail   entity)
     {
         final  String   methodName = "saveEntityReferenceCopy";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -5532,6 +6387,8 @@ public class OMRSRepositoryRESTServices
             captureInvalidEntityException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -5564,6 +6421,8 @@ public class OMRSRepositoryRESTServices
                                                  TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "purgeEntityReferenceCopy";
+
+        log.debug("Calling method: " + methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -5611,6 +6470,8 @@ public class OMRSRepositoryRESTServices
             captureHomeEntityException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -5642,6 +6503,8 @@ public class OMRSRepositoryRESTServices
                                                    TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "refreshEntityReferenceCopy";
+
+        log.debug("Calling method: " + methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -5689,6 +6552,8 @@ public class OMRSRepositoryRESTServices
             captureHomeEntityException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -5723,6 +6588,8 @@ public class OMRSRepositoryRESTServices
                                                       Relationship   relationship)
     {
         final  String   methodName = "saveRelationshipReferenceCopy";
+
+        log.debug("Calling method: " + methodName);
 
         VoidResponse response = new VoidResponse();
 
@@ -5773,6 +6640,8 @@ public class OMRSRepositoryRESTServices
             captureRelationshipConflictException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -5807,6 +6676,8 @@ public class OMRSRepositoryRESTServices
                                                        TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "purgeRelationshipReferenceCopy";
+
+        log.debug("Calling method: " + methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -5854,6 +6725,8 @@ public class OMRSRepositoryRESTServices
             captureHomeRelationshipException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -5886,6 +6759,8 @@ public class OMRSRepositoryRESTServices
                                                          TypeDefValidationForRequest   typeDefValidationForRequest)
     {
         final  String   methodName = "refreshRelationshipReferenceCopy";
+
+        log.debug("Calling method: " + methodName);
 
         String    typeDefGUID = null;
         String    typeDefName = null;
@@ -5933,6 +6808,8 @@ public class OMRSRepositoryRESTServices
             captureHomeRelationshipException(response, error);
         }
 
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
         return response;
     }
 
@@ -5966,6 +6843,8 @@ public class OMRSRepositoryRESTServices
                                                      InstanceGraphRequest   instances)
     {
         final  String   methodName = "saveInstanceReferenceCopies";
+
+        log.debug("Calling method: " + methodName);
 
         InstanceGraph instanceGraph = new InstanceGraph();
 
@@ -6027,6 +6906,8 @@ public class OMRSRepositoryRESTServices
         {
             captureRelationshipConflictException(response, error);
         }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
     }
