@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollectionBase;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
@@ -22,7 +23,7 @@ import java.util.Date;
  * LocalOMRSMetadataCollection provides a wrapper around the metadata collection for the real local repository.
  * Its role is to manage outbound repository events and audit logging/debug for the real local repository.
  */
-public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
+public class LocalOMRSMetadataCollection extends OMRSMetadataCollectionBase
 {
     private OMRSMetadataCollection       realMetadataCollection;
     private String                       localServerName;
@@ -65,7 +66,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
         /*
          * The super class manages the local metadata collection id.  This is a locally managed value.
          */
-        super(parentConnector, repositoryName, metadataCollectionId, repositoryHelper, repositoryValidator);
+        super(parentConnector, repositoryName, repositoryHelper, repositoryValidator, metadataCollectionId);
 
         /*
          * Save the metadata collection object for the real repository.  This is the metadata collection that
@@ -1291,16 +1292,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                               UserNotAuthorizedException
     {
         final String  methodName = "isEntityKnown";
-        final String  guidParameterName = "guid";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+        super.getInstanceParameterValidation(userId, guid, methodName);
 
         /*
          * Perform operation
@@ -1334,16 +1330,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                  UserNotAuthorizedException
     {
         final String  methodName        = "getEntitySummary";
-        final String  guidParameterName = "guid";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+        super.getInstanceParameterValidation(userId, guid, methodName);
 
         /*
          * Perform operation
@@ -1378,16 +1369,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                UserNotAuthorizedException
     {
         final String  methodName        = "getEntityDetail";
-        final String  guidParameterName = "guid";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+        super.getInstanceParameterValidation(userId, guid, methodName);
 
         /*
          * Perform operation
@@ -1427,18 +1413,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                     UserNotAuthorizedException
     {
         final String  methodName        = "getEntityDetail";
-        final String  guidParameterName = "guid";
-        final String  asOfTimeParameter = "asOfTime";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
-        repositoryValidator.validateAsOfTimeNotNull(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        super.getInstanceParameterValidation(userId, guid, asOfTime, methodName);
 
         /*
          * Perform operation
@@ -1500,23 +1479,18 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                                     FunctionNotSupportedException,
                                                                                                     UserNotAuthorizedException
     {
-        final String  methodName = "getRelationshipsForEntity";
-        final String  guidParameterName = "entityGUID";
-        final String  asOfTimeParameter = "asOfTime";
-        final String  typeGUIDParameter = "relationshipTypeGUID";
-        final String  pageSizeParameter = "pageSize";
-
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, entityGUID, methodName);
-        repositoryValidator.validateOptionalTypeGUID(repositoryName, typeGUIDParameter, relationshipTypeGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+        super.getRelationshipsForEntityParameterValidation(userId,
+                                                           entityGUID,
+                                                           relationshipTypeGUID,
+                                                           fromRelationshipElement,
+                                                           limitResultsByStatus,
+                                                           asOfTime,
+                                                           sequencingProperty,
+                                                           sequencingOrder,
+                                                           pageSize);
 
         /*
          * Perform operation
@@ -1541,8 +1515,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
-     * @param matchProperties List of entity properties to match to (null means match on entityTypeGUID only).
-     * @param matchCriteria Enum defining how the properties should be matched to the entities in the repository.
+     * @param exactMatchProperties Optional list of entity properties that must match exactly.
+     * @param exactMatchCriteria Enum defining how the exact match properties should be matched to the entities in the repository.
+     * @param fuzzyMatchProperties Optional list of entity properties to match (contains wildcards).
+     * @param fuzzyMatchCriteria Enum defining how the fuzzy match properties should be matched to the entities in the repository.
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -1556,7 +1532,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of entities matching the supplied criteria null means no matching entities in the metadata
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
      * collection.
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
@@ -1569,76 +1545,104 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  List<EntityDetail> findEntitiesByProperty(String                    userId,
-                                                      String                    entityTypeGUID,
-                                                      InstanceProperties        matchProperties,
-                                                      MatchCriteria             matchCriteria,
-                                                      int                       fromEntityElement,
-                                                      List<InstanceStatus>      limitResultsByStatus,
-                                                      List<String>              limitResultsByClassification,
-                                                      Date                      asOfTime,
-                                                      String                    sequencingProperty,
-                                                      SequencingOrder           sequencingOrder,
-                                                      int                       pageSize) throws InvalidParameterException,
-                                                                                                 TypeErrorException,
-                                                                                                 RepositoryErrorException,
-                                                                                                 PropertyErrorException,
-                                                                                                 PagingErrorException,
-                                                                                                 FunctionNotSupportedException,
-                                                                                                 UserNotAuthorizedException
+    public List<EntityDetail> findEntitiesByProperty(String                    userId,
+                                                     String                    entityTypeGUID,
+                                                     InstanceProperties        exactMatchProperties,
+                                                     MatchCriteria             exactMatchCriteria,
+                                                     InstanceProperties        fuzzyMatchProperties,
+                                                     MatchCriteria             fuzzyMatchCriteria,
+                                                     int                       fromEntityElement,
+                                                     List<InstanceStatus>      limitResultsByStatus,
+                                                     List<String>              limitResultsByClassification,
+                                                     Date                      asOfTime,
+                                                     String                    sequencingProperty,
+                                                     SequencingOrder           sequencingOrder,
+                                                     int                       pageSize) throws InvalidParameterException,
+                                                                                                RepositoryErrorException,
+                                                                                                TypeErrorException,
+                                                                                                PropertyErrorException,
+                                                                                                PagingErrorException,
+                                                                                                FunctionNotSupportedException,
+                                                                                                UserNotAuthorizedException
     {
-        final String  methodName                   = "findEntitiesByProperty";
-        final String  matchCriteriaParameterName   = "matchCriteria";
-        final String  matchPropertiesParameterName = "matchProperties";
-        final String  guidParameterName            = "entityTypeGUID";
-        final String  asOfTimeParameter            = "asOfTime";
-        final String  pageSizeParameter            = "pageSize";
-
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
+        super.findEntitiesByPropertyParameterValidation(userId,
+                                                        entityTypeGUID,
+                                                        exactMatchProperties,
+                                                        exactMatchCriteria,
+                                                        fuzzyMatchProperties,
+                                                        fuzzyMatchCriteria,
+                                                        fromEntityElement,
+                                                        limitResultsByStatus,
+                                                        limitResultsByClassification,
+                                                        asOfTime,
+                                                        sequencingProperty,
+                                                        sequencingOrder,
+                                                        pageSize);
 
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateOptionalTypeGUID(repositoryName, guidParameterName, entityTypeGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
-        repositoryValidator.validateMatchCriteria(repositoryName,
-                                                  matchCriteriaParameterName,
-                                                  matchPropertiesParameterName,
-                                                  matchCriteria,
-                                                  matchProperties,
-                                                  methodName);
+
+        List<EntityDetail> resultList;
 
         /*
-         * Perform operation
+         * Perform operation - try the new form of the call and only use the deprecated
+         * version if necessary.
          */
+        try
+        {
+           resultList = realMetadataCollection.findEntitiesByProperty(userId,
+                                                                      entityTypeGUID,
+                                                                      exactMatchProperties,
+                                                                      exactMatchCriteria,
+                                                                      fuzzyMatchProperties,
+                                                                      fuzzyMatchCriteria,
+                                                                      fromEntityElement,
+                                                                      limitResultsByStatus,
+                                                                      limitResultsByClassification,
+                                                                      asOfTime,
+                                                                      sequencingProperty,
+                                                                      sequencingOrder,
+                                                                      pageSize);
+        }
+        catch (FunctionNotSupportedException  notSupportedResponse)
+        {
+            if (exactMatchProperties == null)
+            {
+                resultList = realMetadataCollection.findEntitiesByProperty(userId,
+                                                                           entityTypeGUID,
+                                                                           fuzzyMatchProperties,
+                                                                           fuzzyMatchCriteria,
+                                                                           fromEntityElement,
+                                                                           limitResultsByStatus,
+                                                                           limitResultsByClassification,
+                                                                           asOfTime,
+                                                                           sequencingProperty,
+                                                                           sequencingOrder,
+                                                                           pageSize);
 
-        List<EntityDetail> resultList = realMetadataCollection.findEntitiesByProperty(userId,
-                                                                                      entityTypeGUID,
-                                                                                      matchProperties,
-                                                                                      matchCriteria,
-                                                                                      fromEntityElement,
-                                                                                      limitResultsByStatus,
-                                                                                      limitResultsByClassification,
-                                                                                      asOfTime,
-                                                                                      sequencingProperty,
-                                                                                      sequencingOrder,
-                                                                                      pageSize);
+            }
+            else
+            {
+                throw notSupportedResponse;
+            }
+        }
 
         return setLocalProvenanceInEntityList(resultList);
     }
 
 
     /**
-     * Return a list of entities that have the requested type of classification attached.
+     * Return a list of entities that have the requested type of classifications attached.
      *
      * @param userId unique identifier for requesting user.
-     * @param entityTypeGUID unique identifier for the type of entity requested.  Null mans any type of entity.
-     * @param classificationName name of the classification a null is not valid.
-     * @param matchClassificationProperties list of classification properties used to narrow the search.
-     * @param matchCriteria Enum defining how the properties should be matched to the classifications in the repository.
+     * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
+     *                       (but could be slow so not recommended.
+     * @param classificationName name of the classification, note a null is not valid.
+     * @param exactMatchClassificationProperties optional list of entity properties that must match exactly.
+     * @param exactMatchCriteria Enum defining how the exact match properties should be matched to the classifications in the repository.
+     * @param fuzzyMatchClassificationProperties Optional list of entity properties to match (contains wildcards).
+     * @param fuzzyMatchCriteria Enum defining how the fuzzy match properties should be matched to the classifications in the repository.
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -1651,7 +1655,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of entities matching the supplied criteria null means no matching entities in the metadata
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
      * collection.
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
@@ -1668,8 +1672,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
     public  List<EntityDetail> findEntitiesByClassification(String                    userId,
                                                             String                    entityTypeGUID,
                                                             String                    classificationName,
-                                                            InstanceProperties        matchClassificationProperties,
-                                                            MatchCriteria             matchCriteria,
+                                                            InstanceProperties        exactMatchClassificationProperties,
+                                                            MatchCriteria             exactMatchCriteria,
+                                                            InstanceProperties        fuzzyMatchClassificationProperties,
+                                                            MatchCriteria             fuzzyMatchCriteria,
                                                             int                       fromEntityElement,
                                                             List<InstanceStatus>      limitResultsByStatus,
                                                             Date                      asOfTime,
@@ -1684,71 +1690,66 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                                        FunctionNotSupportedException,
                                                                                                        UserNotAuthorizedException
     {
-        final String  methodName                   = "findEntitiesByClassification";
-        final String  classificationParameterName  = "classificationName";
-        final String  entityTypeGUIDParameterName  = "entityTypeGUID";
-
-        final String  matchCriteriaParameterName   = "matchCriteria";
-        final String  matchPropertiesParameterName = "matchClassificationProperties";
-        final String  asOfTimeParameter            = "asOfTime";
-        final String  pageSizeParameter            = "pageSize";
-
-
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateOptionalTypeGUID(repositoryName, entityTypeGUIDParameterName, entityTypeGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+        super.findEntitiesByClassificationParameterValidation(userId,
+                                                              entityTypeGUID,
+                                                              classificationName,
+                                                              exactMatchClassificationProperties,
+                                                              exactMatchCriteria,
+                                                              fuzzyMatchClassificationProperties,
+                                                              fuzzyMatchCriteria,
+                                                              fromEntityElement,
+                                                              limitResultsByStatus,
+                                                              asOfTime,
+                                                              sequencingProperty,
+                                                              sequencingOrder,
+                                                              pageSize);
 
         /*
-         * Validate TypeDef
+         * Perform operation - try the new form of the call and only use the deprecated
+         * version if necessary.
          */
-        if (entityTypeGUID != null)
+        List<EntityDetail> resultList;
+
+        try
         {
-            TypeDef entityTypeDef = repositoryHelper.getTypeDef(repositoryName,
-                                                                entityTypeGUIDParameterName,
-                                                                entityTypeGUID,
-                                                                methodName);
-
-            repositoryValidator.validateTypeDefForInstance(repositoryName,
-                                                           entityTypeGUIDParameterName,
-                                                           entityTypeDef,
-                                                           methodName);
-
-            repositoryValidator.validateClassification(repositoryName,
-                                                       classificationParameterName,
-                                                       classificationName,
-                                                       entityTypeDef.getName(),
-                                                       methodName);
+            resultList = realMetadataCollection.findEntitiesByClassification(userId,
+                                                                             entityTypeGUID,
+                                                                             classificationName,
+                                                                             exactMatchClassificationProperties,
+                                                                             exactMatchCriteria,
+                                                                             fuzzyMatchClassificationProperties,
+                                                                             fuzzyMatchCriteria,
+                                                                             fromEntityElement,
+                                                                             limitResultsByStatus,
+                                                                             asOfTime,
+                                                                             sequencingProperty,
+                                                                             sequencingOrder,
+                                                                             pageSize);
         }
-
-        repositoryValidator.validateMatchCriteria(repositoryName,
-                                                  matchCriteriaParameterName,
-                                                  matchPropertiesParameterName,
-                                                  matchCriteria,
-                                                  matchClassificationProperties,
-                                                  methodName);
-
-        /*
-         * Perform operation
-         */
-
-        List<EntityDetail> resultList = realMetadataCollection.findEntitiesByClassification(userId,
-                                                                                            entityTypeGUID,
-                                                                                            classificationName,
-                                                                                            matchClassificationProperties,
-                                                                                            matchCriteria,
-                                                                                            fromEntityElement,
-                                                                                            limitResultsByStatus,
-                                                                                            asOfTime,
-                                                                                            sequencingProperty,
-                                                                                            sequencingOrder,
-                                                                                            pageSize);
+        catch (FunctionNotSupportedException  notSupportedResponse)
+        {
+            if (exactMatchClassificationProperties == null)
+            {
+                resultList = realMetadataCollection.findEntitiesByClassification(userId,
+                                                                                 entityTypeGUID,
+                                                                                 classificationName,
+                                                                                 fuzzyMatchClassificationProperties,
+                                                                                 fuzzyMatchCriteria,
+                                                                                 fromEntityElement,
+                                                                                 limitResultsByStatus,
+                                                                                 asOfTime,
+                                                                                 sequencingProperty,
+                                                                                 sequencingOrder,
+                                                                                 pageSize);
+            }
+            else
+            {
+                throw notSupportedResponse;
+            }
+        }
 
         return setLocalProvenanceInEntityList(resultList);
     }
@@ -1806,28 +1807,23 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                                   FunctionNotSupportedException,
                                                                                                   UserNotAuthorizedException
     {
-        final String  methodName = "findEntitiesByPropertyValue";
-        final String  searchCriteriaParameterName = "searchCriteria";
-        final String  asOfTimeParameter = "asOfTime";
-        final String  guidParameterName = "entityTypeGUID";
-        final String  pageSizeParameter = "pageSize";
-
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateSearchCriteria(repositoryName, searchCriteriaParameterName, searchCriteria, methodName);
-        repositoryValidator.validateOptionalTypeGUID(repositoryName, guidParameterName, entityTypeGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+        super.findEntitiesByPropertyValueParameterValidation(userId,
+                                                             entityTypeGUID,
+                                                             searchCriteria,
+                                                             fromEntityElement,
+                                                             limitResultsByStatus,
+                                                             limitResultsByClassification,
+                                                             asOfTime,
+                                                             sequencingProperty,
+                                                             sequencingOrder,
+                                                             pageSize);
 
         /*
          * Process operation
          */
-
         List<EntityDetail> resultList = realMetadataCollection.findEntitiesByPropertyValue(userId,
                                                                                            entityTypeGUID,
                                                                                            searchCriteria,
@@ -1838,6 +1834,89 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                            sequencingProperty,
                                                                                            sequencingOrder,
                                                                                            pageSize);
+
+        return setLocalProvenanceInEntityList(resultList);
+    }
+
+
+    /**
+     * Return a list of entities whose string based property values match the supplied property value exactly.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param entityTypeGUID GUID of the type of entity to search for. Null means all types will
+     *                       be searched (could be slow so not recommended).
+     * @param propertyValue String expression contained in any of the property values within the entities
+     *                       of the supplied type.
+     * @param fromEntityElement the starting element number of the entities to return.
+     *                                This is used when retrieving elements
+     *                                beyond the first page of results. Zero means start from the first element.
+     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
+     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
+     * collection.
+     * @throws InvalidParameterException a parameter is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                    the metadata collection is stored.
+     * @throws PropertyErrorException the sequencing property specified is not valid for any of the requested types of
+     *                                  entity.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  List<EntityDetail> findEntitiesByExactPropertyValue(String                userId,
+                                                                String                entityTypeGUID,
+                                                                String                propertyValue,
+                                                                int                   fromEntityElement,
+                                                                List<InstanceStatus>  limitResultsByStatus,
+                                                                List<String>          limitResultsByClassification,
+                                                                Date                  asOfTime,
+                                                                String                sequencingProperty,
+                                                                SequencingOrder       sequencingOrder,
+                                                                int                   pageSize) throws InvalidParameterException,
+                                                                                                       TypeErrorException,
+                                                                                                       RepositoryErrorException,
+                                                                                                       PropertyErrorException,
+                                                                                                       PagingErrorException,
+                                                                                                       FunctionNotSupportedException,
+                                                                                                       UserNotAuthorizedException
+    {
+        /*
+         * Validate parameters
+         */
+        super.findEntitiesByExactPropertyValueParameterValidation(userId,
+                                                                  entityTypeGUID,
+                                                                  propertyValue,
+                                                                  fromEntityElement,
+                                                                  limitResultsByStatus,
+                                                                  limitResultsByClassification,
+                                                                  asOfTime,
+                                                                  sequencingProperty,
+                                                                  sequencingOrder,
+                                                                  pageSize);
+
+        /*
+         * Process operation
+         */
+        List<EntityDetail> resultList = realMetadataCollection.findEntitiesByExactPropertyValue(userId,
+                                                                                                entityTypeGUID,
+                                                                                                propertyValue,
+                                                                                                fromEntityElement,
+                                                                                                limitResultsByStatus,
+                                                                                                limitResultsByClassification,
+                                                                                                asOfTime,
+                                                                                                sequencingProperty,
+                                                                                                sequencingOrder,
+                                                                                                pageSize);
 
         return setLocalProvenanceInEntityList(resultList);
     }
@@ -1860,16 +1939,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                     UserNotAuthorizedException
     {
         final String  methodName = "isRelationshipKnown";
-        final String  guidParameterName = "guid";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+        super.getInstanceParameterValidation(userId, guid, methodName);
 
         /*
          * Process operation
@@ -1903,16 +1977,11 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                UserNotAuthorizedException
     {
         final String  methodName = "getRelationship";
-        final String  guidParameterName = "guid";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+        super.getInstanceParameterValidation(userId, guid, methodName);
 
         /*
          * Process operation
@@ -1950,23 +2019,15 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                     UserNotAuthorizedException
     {
         final String  methodName = "getRelationship";
-        final String  guidParameterName = "guid";
-        final String  asOfTimeParameter = "asOfTime";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
-        repositoryValidator.validateAsOfTimeNotNull(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        super.getInstanceParameterValidation(userId, guid, asOfTime, methodName);
 
         /*
          * Perform operation
          */
-
         Relationship relationship = realMetadataCollection.getRelationship(userId, guid, asOfTime);
 
         setLocalProvenance(relationship);
@@ -1976,13 +2037,17 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
 
 
     /**
-     * Return a list of relationships that match the requested properties by hte matching criteria.   The results
-     * can be broken into pages.
+     * Return a list of relationships that match the requested properties by the matching criteria.   The results
+     * can be received as a series of pages.
      *
      * @param userId unique identifier for requesting user.
-     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
-     * @param matchProperties list of  properties used to narrow the search.
-     * @param matchCriteria Enum defining how the properties should be matched to the relationships in the repository.
+     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param exactMatchProperties Optional list of entity properties that must match exactly.
+     * @param exactMatchCriteria Enum defining how the exact match properties should be matched to the entities in the repository.
+     * @param fuzzyMatchProperties list of properties used to narrow the search.  The property values may include
+     *                        regex style wild cards.
+     * @param fuzzyMatchCriteria Enum defining how the properties should be matched to the relationships in the repository.
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -2010,8 +2075,10 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      */
     public  List<Relationship> findRelationshipsByProperty(String                    userId,
                                                            String                    relationshipTypeGUID,
-                                                           InstanceProperties        matchProperties,
-                                                           MatchCriteria             matchCriteria,
+                                                           InstanceProperties        exactMatchProperties,
+                                                           MatchCriteria             exactMatchCriteria,
+                                                           InstanceProperties        fuzzyMatchProperties,
+                                                           MatchCriteria             fuzzyMatchCriteria,
                                                            int                       fromRelationshipElement,
                                                            List<InstanceStatus>      limitResultsByStatus,
                                                            Date                      asOfTime,
@@ -2025,44 +2092,63 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                                       FunctionNotSupportedException,
                                                                                                       UserNotAuthorizedException
     {
-        final String  methodName = "findRelationshipsByProperty";
-        final String  matchCriteriaParameterName = "matchCriteria";
-        final String  matchPropertiesParameterName = "matchProperties";
-        final String  guidParameterName = "relationshipTypeGUID";
-        final String  asOfTimeParameter = "asOfTime";
-        final String  pageSizeParameter = "pageSize";
-
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
+        super.findRelationshipsByPropertyParameterValidation(userId,
+                                                             relationshipTypeGUID,
+                                                             exactMatchProperties,
+                                                             exactMatchCriteria,
+                                                             fuzzyMatchProperties,
+                                                             fuzzyMatchCriteria,
+                                                             fromRelationshipElement,
+                                                             limitResultsByStatus,
+                                                             asOfTime,
+                                                             sequencingProperty,
+                                                             sequencingOrder,
+                                                             pageSize);
 
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateOptionalTypeGUID(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
-        repositoryValidator.validateMatchCriteria(repositoryName,
-                                                  matchCriteriaParameterName,
-                                                  matchPropertiesParameterName,
-                                                  matchCriteria,
-                                                  matchProperties,
-                                                  methodName);
 
         /*
          * Perform operation
          */
+        List<Relationship> resultList;
 
-        List<Relationship> resultList = realMetadataCollection.findRelationshipsByProperty(userId,
-                                                                                           relationshipTypeGUID,
-                                                                                           matchProperties,
-                                                                                           matchCriteria,
-                                                                                           fromRelationshipElement,
-                                                                                           limitResultsByStatus,
-                                                                                           asOfTime,
-                                                                                           sequencingProperty,
-                                                                                           sequencingOrder,
-                                                                                           pageSize);
+        try
+        {
+            resultList = realMetadataCollection.findRelationshipsByProperty(userId,
+                                                                            relationshipTypeGUID,
+                                                                            exactMatchProperties,
+                                                                            exactMatchCriteria,
+                                                                            fuzzyMatchProperties,
+                                                                            fuzzyMatchCriteria,
+                                                                            fromRelationshipElement,
+                                                                            limitResultsByStatus,
+                                                                            asOfTime,
+                                                                            sequencingProperty,
+                                                                            sequencingOrder,
+                                                                            pageSize);
+        }
+        catch (FunctionNotSupportedException  notSupportedResponse)
+        {
+            if (exactMatchProperties == null)
+            {
+                resultList = realMetadataCollection.findRelationshipsByProperty(userId,
+                                                                                relationshipTypeGUID,
+                                                                                fuzzyMatchProperties,
+                                                                                fuzzyMatchCriteria,
+                                                                                fromRelationshipElement,
+                                                                                limitResultsByStatus,
+                                                                                asOfTime,
+                                                                                sequencingProperty,
+                                                                                sequencingOrder,
+                                                                                pageSize);
+            }
+            else
+            {
+                throw notSupportedResponse;
+            }
+        }
 
         return setLocalProvenanceInRelationshipList(resultList);
     }
@@ -2117,26 +2203,22 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                                            FunctionNotSupportedException,
                                                                                                            UserNotAuthorizedException
     {
-        final String  methodName = "findRelationshipsByPropertyValue";
-        final String  asOfTimeParameter = "asOfTime";
-        final String  guidParameter = "relationshipTypeGUID";
-        final String  pageSizeParameter = "pageSize";
-
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateOptionalTypeGUID(repositoryName, guidParameter, relationshipTypeGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+        super.findRelationshipsByPropertyValueParameterValidation(userId,
+                                                                  relationshipTypeGUID,
+                                                                  searchCriteria,
+                                                                  fromRelationshipElement,
+                                                                  limitResultsByStatus,
+                                                                  asOfTime,
+                                                                  sequencingProperty,
+                                                                  sequencingOrder,
+                                                                  pageSize);
 
         /*
          * Perform operation
          */
-
         List<Relationship> resultList = realMetadataCollection.findRelationshipsByPropertyValue(userId,
                                                                                                 relationshipTypeGUID,
                                                                                                 searchCriteria,
@@ -2146,6 +2228,83 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                                 sequencingProperty,
                                                                                                 sequencingOrder,
                                                                                                 pageSize);
+
+        return setLocalProvenanceInRelationshipList(resultList);
+    }
+
+
+    /**
+     * Return a list of relationships whose string based property values exactly match the supplied property value.
+     *
+     * @param userId unique identifier for requesting user.
+     * @param relationshipTypeGUID GUID of the type of entity to search for. Null means all types will
+     *                       be searched (could be slow so not recommended).
+     * @param propertyValue String value for the property.
+     * @param fromRelationshipElement Element number of the results to skip to when building the results list
+     *                                to return.  Zero means begin at the start of the results.  This is used
+     *                                to retrieve the results over a number of pages.
+     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
+     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
+     *                             status values.
+     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
+     *                 present values.
+     * @param sequencingProperty String name of the property that is to be used to sequence the results.
+     *                           Null means do not sequence on a property name (see SequencingOrder).
+     * @param sequencingOrder Enum defining how the results should be ordered.
+     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
+     *                 unrestricted return results size.
+     * @return a list of relationships.  Null means no matching relationships.
+     * @throws InvalidParameterException one of the parameters is invalid or null.
+     * @throws TypeErrorException the type guid passed on the request is not known by the
+     *                              metadata collection.
+     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
+     *                                  the metadata collection is stored.
+     * @throws PropertyErrorException there is a problem with one of the other parameters.
+     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
+     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
+     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     */
+    public  List<Relationship> findRelationshipsByExactPropertyValue(String                    userId,
+                                                                     String                    relationshipTypeGUID,
+                                                                     String                    propertyValue,
+                                                                     int                       fromRelationshipElement,
+                                                                     List<InstanceStatus>      limitResultsByStatus,
+                                                                     Date                      asOfTime,
+                                                                     String                    sequencingProperty,
+                                                                     SequencingOrder           sequencingOrder,
+                                                                     int                       pageSize) throws InvalidParameterException,
+                                                                                                                TypeErrorException,
+                                                                                                                RepositoryErrorException,
+                                                                                                                PropertyErrorException,
+                                                                                                                PagingErrorException,
+                                                                                                                FunctionNotSupportedException,
+                                                                                                                UserNotAuthorizedException
+    {
+        /*
+         * Validate parameters
+         */
+        super.findRelationshipsByExactPropertyValueParameterValidation(userId,
+                                                                       relationshipTypeGUID,
+                                                                       propertyValue,
+                                                                       fromRelationshipElement,
+                                                                       limitResultsByStatus,
+                                                                       asOfTime,
+                                                                       sequencingProperty,
+                                                                       sequencingOrder,
+                                                                       pageSize);
+
+        /*
+         * Perform operation
+         */
+        List<Relationship> resultList = realMetadataCollection.findRelationshipsByExactPropertyValue(userId,
+                                                                                                     relationshipTypeGUID,
+                                                                                                     propertyValue,
+                                                                                                     fromRelationshipElement,
+                                                                                                     limitResultsByStatus,
+                                                                                                     asOfTime,
+                                                                                                     sequencingProperty,
+                                                                                                     sequencingOrder,
+                                                                                                     pageSize);
 
         return setLocalProvenanceInRelationshipList(resultList);
     }
@@ -2183,26 +2342,18 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                        FunctionNotSupportedException,
                                                                                        UserNotAuthorizedException
     {
-        final String methodName                   = "getLinkingEntities";
-        final String startEntityGUIDParameterName = "startEntityGUID";
-        final String endEntityGUIDParameterName   = "entityGUID";
-        final String asOfTimeParameter            = "asOfTime";
-
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, startEntityGUIDParameterName, startEntityGUID, methodName);
-        repositoryValidator.validateGUID(repositoryName, endEntityGUIDParameterName, endEntityGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        super.getLinkingEntitiesParameterValidation(userId,
+                                                    startEntityGUID,
+                                                    endEntityGUID,
+                                                    limitResultsByStatus,
+                                                    asOfTime);
 
         /*
          * Perform operation
          */
-
         InstanceGraph resultGraph = realMetadataCollection.getLinkingEntities(userId,
                                                                               startEntityGUID,
                                                                               endEntityGUID,
@@ -2257,54 +2408,24 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                    FunctionNotSupportedException,
                                                                                    UserNotAuthorizedException
     {
-        final String methodName                                  = "getEntityNeighborhood";
-        final String entityGUIDParameterName                     = "entityGUID";
-        final String entityTypeGUIDParameterName                 = "entityTypeGUIDs";
-        final String relationshipTypeGUIDParameterName           = "relationshipTypeGUIDs";
-        final String limitedResultsByClassificationParameterName = "limitResultsByClassification";
-        final String asOfTimeParameter                           = "asOfTime";
+        final String methodName = "getEntityNeighborhood";
 
         /*
          * Validate parameters
          */
+        super.getEntityNeighborhoodParameterValidation(userId,
+                                                       entityGUID,
+                                                       entityTypeGUIDs,
+                                                       relationshipTypeGUIDs,
+                                                       limitResultsByStatus,
+                                                       limitResultsByClassification,
+                                                       asOfTime,
+                                                       level);
         this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-
-        if (entityTypeGUIDs != null)
-        {
-            for (String guid : entityTypeGUIDs)
-            {
-                repositoryValidator.validateTypeGUID(repositoryName, entityTypeGUIDParameterName, guid, methodName);
-            }
-        }
-
-        if (relationshipTypeGUIDs != null)
-        {
-            for (String guid : relationshipTypeGUIDs)
-            {
-                repositoryValidator.validateTypeGUID(repositoryName, relationshipTypeGUIDParameterName, guid, methodName);
-            }
-        }
-
-        if (limitResultsByClassification != null)
-        {
-            for (String classificationName : limitResultsByClassification)
-            {
-                repositoryValidator.validateClassificationName(repositoryName,
-                                                               limitedResultsByClassificationParameterName,
-                                                               classificationName,
-                                                               methodName);
-            }
-        }
 
         /*
          * Perform operation
          */
-
         InstanceGraph resultGraph = realMetadataCollection.getEntityNeighborhood(userId,
                                                                                  entityGUID,
                                                                                  entityTypeGUIDs,
@@ -2370,29 +2491,21 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                         UserNotAuthorizedException
     {
         final String  methodName = "getRelatedEntities";
-        final String  entityGUIDParameterName  = "startEntityGUID";
-        final String  instanceTypeParameter = "InstanceTypes";
-        final String  asOfTimeParameter = "asOfTime";
-        final String  pageSizeParameter = "pageSize";
 
         /*
          * Validate parameters
          */
+        super.getRelatedEntitiesParameterValidation(userId,
+                                                    startEntityGUID,
+                                                    entityTypeGUIDs,
+                                                    fromEntityElement,
+                                                    limitResultsByStatus,
+                                                    limitResultsByClassification,
+                                                    asOfTime,
+                                                    sequencingProperty,
+                                                    sequencingOrder,
+                                                    pageSize);
         this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, startEntityGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
-
-        if (entityTypeGUIDs != null)
-        {
-            for (String guid : entityTypeGUIDs)
-            {
-                repositoryValidator.validateTypeGUID(repositoryName, instanceTypeParameter, guid, methodName);
-            }
-        }
 
         /*
          * Perform operation
@@ -2438,6 +2551,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      *                                           not defined for this entity type.
      * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                       the requested status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail addEntity(String                     userId,
@@ -2450,6 +2564,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                    PropertyErrorException,
                                                                                    ClassificationErrorException,
                                                                                    StatusNotSupportedException,
+                                                                                   FunctionNotSupportedException,
                                                                                    UserNotAuthorizedException
     {
         final String  methodName                    = "addEntity";
@@ -2576,8 +2691,8 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
-     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
-     *                                      the requested status.
+     * @throws StatusNotSupportedException invalid status for instance.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail updateEntityStatus(String           userId,
@@ -2586,6 +2701,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                               RepositoryErrorException,
                                                                               EntityNotKnownException,
                                                                               StatusNotSupportedException,
+                                                                              FunctionNotSupportedException,
                                                                               UserNotAuthorizedException
     {
         final String  methodName               = "updateEntityStatus";
@@ -2649,6 +2765,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this entity's type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail updateEntityProperties(String               userId,
@@ -2657,6 +2774,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                        RepositoryErrorException,
                                                                                        EntityNotKnownException,
                                                                                        PropertyErrorException,
+                                                                                       FunctionNotSupportedException,
                                                                                        UserNotAuthorizedException
     {
         final String  methodName = "updateEntityProperties";
@@ -2877,6 +2995,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws EntityNotDeletedException the entity is not in DELETED status and so can not be purged
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public void purgeEntity(String    userId,
@@ -2886,6 +3005,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                 RepositoryErrorException,
                                                                 EntityNotKnownException,
                                                                 EntityNotDeletedException,
+                                                                FunctionNotSupportedException,
                                                                 UserNotAuthorizedException
     {
         final String  methodName               = "purgeEntity";
@@ -3009,6 +3129,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      *                                         for the entity.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this classification type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail classifyEntity(String               userId,
@@ -3019,6 +3140,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                              EntityNotKnownException,
                                                                                              ClassificationErrorException,
                                                                                              PropertyErrorException,
+                                                                                             FunctionNotSupportedException,
                                                                                              UserNotAuthorizedException
     {
         final String  methodName                  = "classifyEntity";
@@ -3076,6 +3198,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws ClassificationErrorException the requested classification is not set on the entity.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail declassifyEntity(String    userId,
@@ -3084,6 +3207,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                               RepositoryErrorException,
                                                                               EntityNotKnownException,
                                                                               ClassificationErrorException,
+                                                                              FunctionNotSupportedException,
                                                                               UserNotAuthorizedException
     {
         final String  methodName                  = "declassifyEntity";
@@ -3148,6 +3272,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws ClassificationErrorException the requested classification is not attached to the classification.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this classification type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail updateEntityClassification(String               userId,
@@ -3158,23 +3283,16 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                            EntityNotKnownException,
                                                                                            ClassificationErrorException,
                                                                                            PropertyErrorException,
+                                                                                           FunctionNotSupportedException,
                                                                                            UserNotAuthorizedException
     {
         final String  methodName = "updateEntityClassification";
-        final String  entityGUIDParameterName     = "entityGUID";
-        final String  classificationParameterName = "classificationName";
         final String  propertiesParameterName = "properties";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
-        repositoryValidator.validateClassificationName(repositoryName, classificationParameterName, classificationName, methodName);
-
+        this.updateEntityClassificationParameterValidation(userId, entityGUID, classificationName, properties);
 
         try
         {
@@ -3253,6 +3371,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws EntityNotKnownException one of the requested entities is not known in the metadata collection.
      * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                     the requested status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public Relationship addRelationship(String               userId,
@@ -3266,6 +3385,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                    PropertyErrorException,
                                                                                    EntityNotKnownException,
                                                                                    StatusNotSupportedException,
+                                                                                   FunctionNotSupportedException,
                                                                                    UserNotAuthorizedException
     {
         final String  methodName = "addRelationship";
@@ -3343,8 +3463,8 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
-     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
-     *                                     the requested status.
+     * @throws StatusNotSupportedException invalid status for instance.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public Relationship updateRelationshipStatus(String           userId,
@@ -3353,6 +3473,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                     RepositoryErrorException,
                                                                                     RelationshipNotKnownException,
                                                                                     StatusNotSupportedException,
+                                                                                    FunctionNotSupportedException,
                                                                                     UserNotAuthorizedException
     {
         final String  methodName          = "updateRelationshipStatus";
@@ -3394,6 +3515,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this relationship's type.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public Relationship updateRelationshipProperties(String               userId,
@@ -3402,6 +3524,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                                              RepositoryErrorException,
                                                                                              RelationshipNotKnownException,
                                                                                              PropertyErrorException,
+                                                                                             FunctionNotSupportedException,
                                                                                              UserNotAuthorizedException
     {
         final String  methodName = "updateRelationshipProperties";
@@ -3600,6 +3723,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
      *                                    the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws RelationshipNotDeletedException the requested relationship is not in DELETED status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public void purgeRelationship(String    userId,
@@ -3609,6 +3733,7 @@ public class LocalOMRSMetadataCollection extends OMRSMetadataCollection
                                                                             RepositoryErrorException,
                                                                             RelationshipNotKnownException,
                                                                             RelationshipNotDeletedException,
+                                                                            FunctionNotSupportedException,
                                                                             UserNotAuthorizedException
     {
         final String  methodName = "purgeRelationship";
