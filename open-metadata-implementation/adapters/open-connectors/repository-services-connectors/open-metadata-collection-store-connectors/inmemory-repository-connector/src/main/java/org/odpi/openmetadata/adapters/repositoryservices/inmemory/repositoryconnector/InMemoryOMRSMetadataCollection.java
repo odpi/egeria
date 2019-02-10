@@ -2445,7 +2445,9 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
         Map<String, EntityDetail>   entityStore = repositoryStore.timeWarpEntityStore(asOfTime);
         Map<String, Relationship>   relationshipStore = repositoryStore.timeWarpRelationshipStore(asOfTime);
 
-        InMemoryEntityNeighbourhood inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(repositoryValidator,
+        InMemoryEntityNeighbourhood inMemoryEntityNeighbourhood = new InMemoryEntityNeighbourhood(repositoryHelper,
+                                                                                                  repositoryName,
+                                                                                                  repositoryValidator,
                                                                                                   entityStore,
                                                                                                   relationshipStore,
                                                                                                   entityGUID,
@@ -2454,6 +2456,8 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                                   limitResultsByStatus,
                                                                                                   limitResultsByClassification,
                                                                                                   level);
+
+
         return inMemoryEntityNeighbourhood.createInstanceGraph();
     }
 

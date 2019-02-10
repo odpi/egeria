@@ -16,8 +16,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 //omrs
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 //omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * NetworkGatewayLink is a relationship between an entity of type NetworkGateway and an entity of type Network.
@@ -77,7 +77,7 @@ public class NetworkGatewayLink extends Line {
            lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-           lineType = LineType.Other;
+           lineType = LineType.Unknown;
         }
         entity1Name = "gateways";
         entity1Type = "NetworkGateway";
@@ -99,7 +99,7 @@ public class NetworkGatewayLink extends Line {
            lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-           lineType = LineType.Other;
+           lineType = LineType.Unknown;
         }
     }
 

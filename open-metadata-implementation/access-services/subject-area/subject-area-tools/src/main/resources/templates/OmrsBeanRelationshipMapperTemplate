@@ -16,7 +16,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 
 import java.util.*;
@@ -164,7 +164,7 @@ public class <$$uRelationshipName$$>Mapper {
                 if (systemAttributes.getGUID()!=null)
                    omrsRelationship.setGUID(systemAttributes.getGUID());
                if (systemAttributes.getStatus()!=null) {
-                   InstanceStatus instanceStatus = SubjectAreaUtils.convertStatusToStatusInstance(systemAttributes.getStatus());
+                   InstanceStatus instanceStatus = SubjectAreaUtils.convertStatusToInstanceStatus(systemAttributes.getStatus());
                    omrsRelationship.setStatus(instanceStatus);
                }
            }

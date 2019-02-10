@@ -242,28 +242,4 @@ public class  Reference implements Serializable {
         return toString(new StringBuilder()).toString();
     }
 
-    /**
-     * TODO REST serialization friendly list?
-     */
-//    @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
-//    @JsonInclude(JsonInclude.Include.NON_NULL)
-//    @JsonIgnoreProperties(ignoreUnknown=true)
-//
-//    public static class ObjectIds extends PList<Reference> {
-//        private static final long serialVersionUID = 1L;
-//
-//        public ObjectIds() {
-//            super();
-//        }
-//
-//        public ObjectIds(List<Reference> list) {
-//            super(list);
-//        }
-//
-//        public ObjectIds(List list, long startIndex, int pageSize, long totalCount,
-//                         SearchFilter.SortType sortType, String sortBy) {
-//            super(list, startIndex, pageSize, totalCount, sortType, sortBy);
-//        }
-//    }
-
 }
