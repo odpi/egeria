@@ -4,16 +4,9 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeUtils;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.classifications.CanonicalVocabulary.CanonicalVocabulary;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.classifications.Confidence.Confidence;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.classifications.Confidentiality.Confidentiality;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.classifications.Criticality.Criticality;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.classifications.Retention.Retention;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 
 import org.slf4j.Logger;
