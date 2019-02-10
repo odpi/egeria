@@ -9,6 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
+import org.odpi.openmetadata.repositoryservices.enterprise.repositoryconnector.EnterpriseOMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
@@ -17,6 +18,8 @@ import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnec
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -69,6 +72,9 @@ import java.util.UUID;
  */
 public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, OMRSConnectorManager
 {
+
+    private static final Logger log = LoggerFactory.getLogger(OMRSEnterpriseConnectorManager.class);
+
     private boolean                           enterpriseAccessEnabled;
     private int                               maxPageSize;
 
@@ -104,13 +110,30 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
 
 
     /**
-     * The disconnect processing involved unregistering all repositories with each of the connector consumers.
-     * Each connector consumer will pass the disconnect() request to each of their repository connector instances.
+     * The disconnect processing involves disconnecting the local connector then unregistering all remote repositories with
+     * each of the connector consumers. Each connector consumer will pass the disconnect() request to each of their repository
+     * connector instances.
+     *
+     * If there is an error during disconnect of the local connector, it is logged here and re-thrown to generate an audit log entry.
      */
-    public void disconnect()
+    public void disconnect() throws ConnectorCheckedException
     {
         /*
-         * Pass the disconnect request to each registered connector consumer.
+         * Disconnect the local connector
+         */
+        if (localRepositoryConnector != null) {
+
+            try {
+                localRepositoryConnector.disconnect();
+            }
+            catch (Throwable error) {
+                log.error("Exception from disconnect of connector to metadata collection:" + localMetadataCollectionId + "  Error message was: " + error.getMessage());
+                throw error;
+            }
+        }
+
+        /*
+         * Pass the disconnect request to each registered connector consumer. They will disconnect their (federated) remote connectors
          */
         for (RegisteredConnectorConsumer registeredConnectorConsumer : registeredConnectorConsumers)
         {
