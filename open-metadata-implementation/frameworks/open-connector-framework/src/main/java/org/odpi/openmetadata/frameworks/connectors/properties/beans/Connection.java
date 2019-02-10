@@ -55,6 +55,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *          are protected properties that can only be retrieved by privileged connector code.
  *      </li>
  *      <li>
+ *          securedProperties - Protected properties for secure log on by connector to back end server.  These
+ *          are protected properties that can only be retrieved by privileged connector code.
+ *      </li>
+ *      <li>
+ *          userId - name or URI or connecting user.
+ *      </li>
+ *      <li>
+ *          encryptedPassword - password for the userId - needs decrypting by connector before use.
+ *      </li>
+ *      <li>
+ *          clearPassword - password for userId - ready to use.
+ *      </li>
+ *      <li>
  *          connectorType - Properties that describe the connector type for the connector.
  *      </li>
  *      <li>
@@ -80,11 +93,14 @@ public class Connection extends Referenceable
     /*
      * Attributes of a connector
      */
-    protected String              displayName       = null;
-    protected String              description       = null;
-    protected ConnectorType       connectorType     = null;
-    protected Endpoint            endpoint          = null;
-    protected Map<String, Object> securedProperties = null;
+    protected String              displayName         = null;
+    protected String              description         = null;
+    protected ConnectorType       connectorType       = null;
+    protected Endpoint            endpoint            = null;
+    protected String              userId              = null;
+    protected String              encryptedPassword   = null;
+    protected String              clearPassword       = null;
+    protected Map<String, Object> securedProperties   = null;
 
 
     /**
@@ -138,6 +154,9 @@ public class Connection extends Referenceable
         {
             displayName = templateConnection.getDisplayName();
             description = templateConnection.getDescription();
+            userId = templateConnection.getUserId();
+            clearPassword = templateConnection.getClearPassword();
+            encryptedPassword = templateConnection.getEncryptedPassword();
             connectorType = templateConnection.getConnectorType();
             endpoint = templateConnection.getEndpoint();
             securedProperties = templateConnection.getSecuredProperties();
@@ -219,6 +238,72 @@ public class Connection extends Referenceable
 
 
     /**
+     * Return id of the calling user.
+     *
+     * @return string
+     */
+    public String getUserId()
+    {
+        return userId;
+    }
+
+
+    /**
+     * Set up the id of the calling user.
+     *
+     * @param userId string
+     */
+    public void setUserId(String userId)
+    {
+        this.userId = userId;
+    }
+
+
+    /**
+     * Return an encrypted password.  The caller is responsible for decrypting it.
+     *
+     * @return string
+     */
+    public String getEncryptedPassword()
+    {
+        return encryptedPassword;
+    }
+
+
+    /**
+     * Set up an encrypted password.
+     *
+     * @param encryptedPassword string
+     */
+    public void setEncryptedPassword(String encryptedPassword)
+    {
+        this.encryptedPassword = encryptedPassword;
+    }
+
+
+    /**
+     * Return an unencrypted password.
+     *
+     * @return string
+     */
+    public String getClearPassword()
+    {
+        return clearPassword;
+    }
+
+
+    /**
+     * Set up an unencrypted password.
+     *
+     * @param clearPassword string
+     */
+    public void setClearPassword(String clearPassword)
+    {
+        this.clearPassword = clearPassword;
+    }
+
+
+    /**
      * Set up the endpoint properties for this Connection.
      *
      * @param endpoint Endpoint properties object
@@ -295,12 +380,18 @@ public class Connection extends Referenceable
                 ", description='" + description + '\'' +
                 ", connectorType=" + connectorType +
                 ", endpoint=" + endpoint +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", additionalProperties=" + additionalProperties +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
+                ", userId='" + userId + '\'' +
+                ", encryptedPassword='" + encryptedPassword + '\'' +
+                ", clearPassword='" + clearPassword + '\'' +
+                ", securedProperties=" + securedProperties +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
+                ", meanings=" + getMeanings() +
+                ", type=" + getType() +
+                ", GUID='" + getGUID() + '\'' +
+                ", URL='" + getURL() + '\'' +
+                ", classifications=" + getClassifications() +
                 '}';
     }
 
@@ -318,7 +409,7 @@ public class Connection extends Referenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof Connection))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -331,6 +422,22 @@ public class Connection extends Referenceable
                 Objects.equals(getDescription(), that.getDescription()) &&
                 Objects.equals(getConnectorType(), that.getConnectorType()) &&
                 Objects.equals(getEndpoint(), that.getEndpoint()) &&
+                Objects.equals(getUserId(), that.getUserId()) &&
+                Objects.equals(getEncryptedPassword(), that.getEncryptedPassword()) &&
+                Objects.equals(getClearPassword(), that.getClearPassword()) &&
                 Objects.equals(getSecuredProperties(), that.getSecuredProperties());
+    }
+
+
+    /**
+     * Return has code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getConnectorType(), getEndpoint(),
+                            getUserId(), getEncryptedPassword(), getClearPassword(), getSecuredProperties());
     }
 }
