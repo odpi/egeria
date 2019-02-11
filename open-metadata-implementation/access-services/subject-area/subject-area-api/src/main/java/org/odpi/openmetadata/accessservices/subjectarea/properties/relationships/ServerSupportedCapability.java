@@ -17,8 +17,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 //omrs
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 //omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * ServerSupportedCapability is a relationship between an entity of type SoftwareServer and an entity of type SoftwareServerCapability.
@@ -84,7 +84,7 @@ public class ServerSupportedCapability extends Line {
            lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-           lineType = LineType.Other;
+           lineType = LineType.Unknown;
         }
         entity1Name = "servers";
         entity1Type = "SoftwareServer";
@@ -106,7 +106,7 @@ public class ServerSupportedCapability extends Line {
            lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-           lineType = LineType.Other;
+           lineType = LineType.Unknown;
         }
     }
 

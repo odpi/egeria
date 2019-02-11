@@ -4,11 +4,13 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.classifications.CanonicalVocabulary.CanonicalVocabulary;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.classifications.Taxonomy.Taxonomy;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.server.SubjectAreaBeansToAccessOMRS;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.GlossaryMapper;
@@ -16,13 +18,10 @@ import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.TypeGuids;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -115,7 +114,28 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             } else {
                 org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary newGeneratedGlossary =  subjectAreaOmasREST.createGlossary(userId, generatedGlossary);
                 org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary newGlossary = GlossaryMapper.mapOMRSBeantoGlossary(newGeneratedGlossary);
-                response = new GlossaryResponse(newGlossary);
+                String glossaryGuid  = newGlossary.getSystemAttributes().getGUID();
+                if (suppliedGlossary.getNodeType() == NodeType.Taxonomy || suppliedGlossary.getNodeType() == NodeType.TaxonomyAndCanonicalGlossary)
+                {
+                    List< org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> classifications = new ArrayList<>();
+                    classifications.add(new Taxonomy());
+                    subjectAreaOmasREST.addGlossaryCategoryClassifications(userId, glossaryGuid, classifications);
+                }
+                if (suppliedGlossary.getNodeType() == NodeType.CanonicalGlossary || suppliedGlossary.getNodeType() == NodeType.TaxonomyAndCanonicalGlossary)
+                {
+                    List< org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification> classifications = new ArrayList<>();
+                    classifications.add(new CanonicalVocabulary());
+                    subjectAreaOmasREST.addGlossaryCategoryClassifications(userId, glossaryGuid, classifications);
+                }
+               if (suppliedGlossary.getNodeType()== NodeType.CanonicalGlossary) {
+                   newGlossary.setNodeType(NodeType.CanonicalGlossary);
+               } else if (suppliedGlossary.getNodeType()== NodeType.Taxonomy) {
+                   newGlossary.setNodeType(NodeType.Taxonomy);
+               } else if (suppliedGlossary.getNodeType()== NodeType.TaxonomyAndCanonicalGlossary) {
+                   newGlossary.setNodeType(NodeType.TaxonomyAndCanonicalGlossary);
+               }
+
+                   response = new GlossaryResponse(newGlossary);
             }
         } catch (MetadataServerUncontactableException e) {
             response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
@@ -127,6 +147,8 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             response = OMASExceptionToResponse.convertClassificationException(e);
         } catch (StatusNotSupportedException e) {
             response = OMASExceptionToResponse.convertStatusNotsupportedException(e);
+        } catch (UnrecognizedGUIDException e) {
+            response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -477,10 +499,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             // look for all glossary content that is not deleted.
             List<InstanceStatus> statusList = new ArrayList<>();
             statusList.add(InstanceStatus.ACTIVE);
-            statusList.add(InstanceStatus.DRAFT);
-            statusList.add(InstanceStatus.PROPOSED);
-            statusList.add(InstanceStatus.PREPARED);
-            statusList.add(InstanceStatus.UNKNOWN);
+
             if (isPurge) {
                 // go ahead with the purge, this will only work if the guid is soft deleted.
                 subjectAreaOmasREST.purgeGlossaryByGuid(userId, guid);

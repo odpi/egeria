@@ -8,7 +8,7 @@ import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * OMAGServerConfigPropertiesResource provides part of the server-side implementation of the administrative interface for
+ * ConfigPropertiesResource provides part of the server-side implementation of the administrative interface for
  * an Open Metadata and Governance (OMAG) Server.  In particular, this resource supports the configuration
  * of the server name, server type and organization name.
  */
