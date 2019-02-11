@@ -24,7 +24,6 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.*;
 
@@ -47,12 +46,13 @@ public class GovernanceEventProcessor {
         }
         List<GovernedAsset> governedAssets = governedAssetResponse.getGovernedAssetList();
 
-        Map<RangerTag, Set<RangerServiceResource>> tagResourcesMap = new HashMap<>();
         Map<String, RangerTag> rangerTagMap = new HashMap<>();
         Map<Long, RangerTag> tags = new HashMap<>();
         Long resourceIndex = 0L;
         Long tagIndex = 0L;
 
+        List<RangerServiceResource> resources = new ArrayList<>();
+        Map<Long, List<Long>> resourceToTagIds = new HashMap<>();
 
         for (GovernedAsset governedAsset : governedAssets) {
 
@@ -60,46 +60,53 @@ public class GovernanceEventProcessor {
                 continue;
             }
 
-            RangerTag rangerTag = getRangerTag(governedAsset, rangerTagMap, tags, tagIndex++);
-
-            List<RangerServiceResource> rangerServiceResources = getRangerServiceResources(resourceIndex++, governedAsset);
-            if (tagResourcesMap.containsKey(rangerTag)) {
-                for (Map.Entry<RangerTag, Set<RangerServiceResource>> rangerTagListEntry : tagResourcesMap.entrySet()) {
-                    if (rangerTagListEntry.getKey().equals(rangerTag)) {
-                        rangerTagListEntry.getValue().addAll(rangerServiceResources);
-                        break;
+            GovernanceClassification classification = governedAsset.getAssignedGovernanceClassifications().get(0);
+            String tagName = classification.getAttributes().get(LEVEL);
+            RangerTag rangerTag;
+            Long tagNo = tagIndex;
+            if (rangerTagMap.containsKey(tagName)) {
+                rangerTag = rangerTagMap.get(tagName);
+                for (Map.Entry<Long, RangerTag> rangerTagEntry : tags.entrySet()) {
+                    if(rangerTagEntry.getValue().equals(rangerTag)){
+                        tagNo = rangerTagEntry.getKey();
                     }
                 }
             } else {
-                tagResourcesMap.put(rangerTag, rangerServiceResources.stream().collect(Collectors.toSet()));
+                rangerTag = buildTag(classification);
+                rangerTagMap.put(tagName, rangerTag);
+                tags.put(tagIndex++, rangerTag);
             }
 
-            List<Long> rangerTagId = getRangerTagId(rangerTag, tags);
-            if (rangerTagId.isEmpty()) {
-                return;
+            List<RangerServiceResource> rangerServiceResources = new ArrayList<>(governedAsset.getContexts().size());
+            for (Context context : governedAsset.getContexts()) {
+                Map<String, RangerPolicyResource> resourceMap = getRangerPolicyResourceMap(context);
+                RangerServiceResource serviceResource = getRangerServiceResource(resourceMap, governedAsset.getGuid(), resourceIndex++);
+                rangerServiceResources.add(serviceResource);
             }
-        }
 
+            resources.addAll(rangerServiceResources);
 
-        Map<Long, List<Long>> resourceToTagIds = new HashMap<>();
-        List<RangerServiceResource> resources = mapRangerServicesResources(tagResourcesMap);
-        for (RangerServiceResource resource : resources) {
-
-            for (Map.Entry<RangerTag, Set<RangerServiceResource>> rangerTagSetEntry : tagResourcesMap.entrySet()) {
-
-                if (rangerTagSetEntry.getValue().contains((resource))) {
-                    RangerTag rangerTagForResource = rangerTagSetEntry.getKey();
-                    for (Map.Entry<Long, RangerTag> rangerTagId : tags.entrySet()) {
-                        if (rangerTagId.getValue().equals(rangerTagForResource)) {
-                            resourceToTagIds.put(resource.getId(), Collections.singletonList(rangerTagId.getKey()));
-                        }
-                    }
-                }
+            for(RangerServiceResource resource :  rangerServiceResources){
+                Map<Long, List<Long>> map = new HashMap<>(1);
+                map.put(resource.getId(), Collections.singletonList(tagNo));
+                resourceToTagIds.putAll(map);
             }
         }
 
         RangerResource rangerResource = buildRangerResource(resources, tags, resourceToTagIds);
         mapResourcesToTagsInRangerServer(rangerResource);
+    }
+
+    private Map<Long, RangerTagDef> createRangerTagDef() {
+        Map<Long, RangerTagDef>     tagDefinitions = new HashMap<>();
+        RangerTagDef rangerTagDef = new RangerTagDef();
+        rangerTagDef.setId(1L);
+        rangerTagDef.setCreatedBy(RANGER_CONNECTOR);
+        rangerTagDef.setCreateTime(new Date());
+        rangerTagDef.setName(CONFIDENTIALITY);
+
+        tagDefinitions.put(1L, rangerTagDef);
+        return tagDefinitions;
     }
 
     public void processClassifiedGovernedAssetEvent(GovernedAsset governedAsset) {
@@ -147,20 +154,6 @@ public class GovernanceEventProcessor {
 
         createMappingBetweenTagAndResource(newTagGuid, resource.getGuid());
     }
-
-    private RangerTag getRangerTag(GovernedAsset governedAsset, Map<String, RangerTag> rangerTagMap, Map<Long, RangerTag> tags, Long tagIndex) {
-        GovernanceClassification classification = governedAsset.getAssignedGovernanceClassifications().get(0);
-        String tagName = classification.getAttributes().get(LEVEL);
-
-        if (rangerTagMap.containsKey(tagName)) {
-            return rangerTagMap.get(tagName);
-        }
-        RangerTag tag = buildTag(classification);
-        rangerTagMap.put(tagName, tag);
-        tags.put(tagIndex, tag);
-        return tag;
-    }
-
 
     private RangerResource processGovernedAsset(GovernedAsset governedAsset) {
         Map<Long, RangerTag> tags = buildTags(governedAsset.getAssignedGovernanceClassifications());
@@ -277,6 +270,10 @@ public class GovernanceEventProcessor {
         RangerResource rangerResource = new RangerResource();
 
         rangerResource.setTags(tags);
+
+        Map<Long, RangerTagDef> rangerTagDef = createRangerTagDef();
+        rangerResource.setTagDefinitions(rangerTagDef);
+
         rangerResource.setServiceResources(rangerServiceResource);
         rangerResource.setResourceToTagIds(resourceToTagIds);
         rangerResource.setOp(ADD_OR_UPDATE);
@@ -460,29 +457,5 @@ public class GovernanceEventProcessor {
     private String getGovernanceEngineURL(String endpoint) {
         String geBaseURL = securitySyncConfig.getGovernanceEngineServerURL();
         return MessageFormat.format(endpoint, geBaseURL, CONFIDENTIALITY);
-    }
-
-    private List<RangerServiceResource> mapRangerServicesResources(Map<RangerTag, Set<RangerServiceResource>> tagResourcesMap) {
-        List<RangerServiceResource> resources = new ArrayList<>();
-
-        for (RangerTag key : tagResourcesMap.keySet()) {
-            resources.addAll(tagResourcesMap.get(key));
-        }
-
-        return resources;
-    }
-
-    private List<Long> getRangerTagId(RangerTag rangerTag, Map<Long, RangerTag> tags) {
-        if (!tags.containsValue(rangerTag)) {
-            return Collections.emptyList();
-        }
-        for (Map.Entry<Long, RangerTag> longRangerTagEntry : tags.entrySet()) {
-
-            if (longRangerTagEntry.getValue().equals(rangerTag)) {
-                return Collections.singletonList(longRangerTagEntry.getKey());
-            }
-        }
-
-        return Collections.emptyList();
     }
 }

@@ -48,7 +48,7 @@ public class OMAGServerSecuritySyncService {
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
-            if(securitySyncConfig != null && securitySyncConfig.getSecuritySyncOutTopicName() != null) {
+            if(securitySyncConfig != null && securitySyncConfig.getSecuritySyncInTopicName() != null) {
                 securitySyncConfig.setSecuritySyncInTopic(
                         connectorConfigurationFactory.getDefaultEventBusConnection(
                                 defaultInTopicName,
