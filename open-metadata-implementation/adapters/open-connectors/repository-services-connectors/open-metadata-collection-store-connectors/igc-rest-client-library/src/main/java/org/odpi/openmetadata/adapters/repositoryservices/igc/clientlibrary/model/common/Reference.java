@@ -28,7 +28,7 @@ import java.util.List;
  *     <li>_type</li>
  *     <li>_id</li>
  *     <li>_url</li>
- *     <li><i>_context</i></li> -- present for <i>almost</i> all assets
+ *     <li><i>_context</i> -- present for <i>almost</i> all assets</li>
  * </ul><br>
  *  POJOs to represent user-defined objects (OpenIGC) should not extend this class directly, but the MainObject class.
  */
@@ -542,7 +542,7 @@ public class Reference extends ObjectPrinter {
      * Retrieves the list of property names for the asset that are not relationships to other assets.
      *
      * @param pojoClass the POJO for which to retrieve non-relationship property names
-     * @return List<String>
+     * @return {@code List<String>}
      */
     public static List<String> getNonRelationshipPropertiesFromPOJO(Class pojoClass) {
         List<String> list = null;
@@ -559,7 +559,7 @@ public class Reference extends ObjectPrinter {
      * Retrieves the list of property names for the asset that are string-valued.
      *
      * @param pojoClass the POJO for which to retrieve string-valued property names
-     * @return List<String>
+     * @return {@code List<String>}
      */
     public static List<String> getStringPropertiesFromPOJO(Class pojoClass) {
         List<String> list = null;
@@ -576,7 +576,7 @@ public class Reference extends ObjectPrinter {
      * Retrieves the list of all property names for the asset.
      *
      * @param pojoClass the POJO for which to retrieve all property names
-     * @return List<String>
+     * @return {@code List<String>}
      */
     public static List<String> getAllPropertiesFromPOJO(Class pojoClass) {
         List<String> list = null;
@@ -593,7 +593,7 @@ public class Reference extends ObjectPrinter {
      * Retrieves the list of all paged relationship property names for the asset.
      *
      * @param pojoClass the POJO for which to retrieve the paged relationship property names
-     * @return List<String>
+     * @return {@code List<String>}
      */
     public static List<String> getPagedRelationalPropertiesFromPOJO(Class pojoClass) {
         List<String> list = null;

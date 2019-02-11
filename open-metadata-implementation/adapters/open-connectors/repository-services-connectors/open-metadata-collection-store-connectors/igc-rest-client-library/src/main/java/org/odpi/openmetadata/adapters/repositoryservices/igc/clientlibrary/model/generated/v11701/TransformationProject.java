@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'transformation_project' asset type in IGC, displayed as 'Transformation Project' in the IGC UI.
+ * POJO for the {@code transformation_project} asset type in IGC, displayed as '{@literal Transformation Project}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,33 +24,33 @@ public class TransformationProject extends Reference {
     public static String getIgcTypeDisplayName() { return "Transformation Project"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'host_(engine)' property, displayed as 'Host (Engine)' in the IGC UI.
+     * The {@code host_(engine)} property, displayed as '{@literal Host (Engine)}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link HostEngine} object.
      */
     @JsonProperty("host_(engine)") protected Reference host__engine_;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'include_for_lineage' property, displayed as 'Include for Lineage' in the IGC UI.
+     * The {@code include_for_lineage} property, displayed as '{@literal Include for Lineage}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -61,104 +61,104 @@ public class TransformationProject extends Reference {
     protected String include_for_lineage;
 
     /**
-     * The 'include_for_lineage_desc' property, displayed as 'Include for Lineage' in the IGC UI.
+     * The {@code include_for_lineage_desc} property, displayed as '{@literal Include for Lineage}' in the IGC UI.
      */
     protected Boolean include_for_lineage_desc;
 
     /**
-     * The 'folders' property, displayed as 'Folders' in the IGC UI.
+     * The {@code folders} property, displayed as '{@literal Folders}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Dsfolder} objects.
      */
     protected ReferenceList folders;
 
     /**
-     * The 'jobs' property, displayed as 'Jobs' in the IGC UI.
+     * The {@code jobs} property, displayed as '{@literal Jobs}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Dsjob} objects.
      */
     protected ReferenceList jobs;
 
     /**
-     * The 'containers' property, displayed as 'Containers' in the IGC UI.
+     * The {@code containers} property, displayed as '{@literal Containers}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link SharedContainer} objects.
      */
     protected ReferenceList containers;
 
     /**
-     * The 'stage_types' property, displayed as 'Stage Types' in the IGC UI.
+     * The {@code stage_types} property, displayed as '{@literal Stage Types}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DsstageType} objects.
      */
     protected ReferenceList stage_types;
 
     /**
-     * The 'table_definitions' property, displayed as 'Table Definitions' in the IGC UI.
+     * The {@code table_definitions} property, displayed as '{@literal Table Definitions}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link TableDefinition} objects.
      */
     protected ReferenceList table_definitions;
 
     /**
-     * The 'standardization_rule_sets' property, displayed as 'Standardization Rule Sets' in the IGC UI.
+     * The {@code standardization_rule_sets} property, displayed as '{@literal Standardization Rule Sets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link StandardizationRuleSet} objects.
      */
     protected ReferenceList standardization_rule_sets;
 
     /**
-     * The 'match_specifications' property, displayed as 'Match Specifications' in the IGC UI.
+     * The {@code match_specifications} property, displayed as '{@literal Match Specifications}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MatchSpecification} objects.
      */
     protected ReferenceList match_specifications;
 
     /**
-     * The 'parameter_sets' property, displayed as 'Parameter Sets' in the IGC UI.
+     * The {@code parameter_sets} property, displayed as '{@literal Parameter Sets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link ParameterSet} objects.
      */
     protected ReferenceList parameter_sets;
 
     /**
-     * The 'transforms' property, displayed as 'Transforms' in the IGC UI.
+     * The {@code transforms} property, displayed as '{@literal Transforms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link TransformsFunction} objects.
      */
     protected ReferenceList transforms;
 
     /**
-     * The 'routines' property, displayed as 'Routines' in the IGC UI.
+     * The {@code routines} property, displayed as '{@literal Routines}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Routine} objects.
      */
     protected ReferenceList routines;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

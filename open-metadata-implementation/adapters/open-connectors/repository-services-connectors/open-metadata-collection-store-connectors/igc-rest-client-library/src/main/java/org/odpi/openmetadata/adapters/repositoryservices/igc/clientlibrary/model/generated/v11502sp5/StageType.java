@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'stage_type' asset type in IGC, displayed as 'Stage Type' in the IGC UI.
+ * POJO for the {@code stage_type} asset type in IGC, displayed as '{@literal Stage Type}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,39 +24,39 @@ public class StageType extends Reference {
     public static String getIgcTypeDisplayName() { return "Stage Type"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'long_description' property, displayed as 'Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'steward' property, displayed as 'Steward' in the IGC UI.
+     * The {@code steward} property, displayed as '{@literal Steward}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Steward} objects.
      */
     protected ReferenceList steward;
 
     /**
-     * The 'vendor' property, displayed as 'Vendor' in the IGC UI.
+     * The {@code vendor} property, displayed as '{@literal Vendor}' in the IGC UI.
      */
     protected String vendor;
 
     /**
-     * The 'version' property, displayed as 'Version' in the IGC UI.
+     * The {@code version} property, displayed as '{@literal Version}' in the IGC UI.
      */
     protected String version;
 
     /**
-     * The 'author' property, displayed as 'Author' in the IGC UI.
+     * The {@code author} property, displayed as '{@literal Author}' in the IGC UI.
      */
     protected String author;
 
     /**
-     * The 'copyright' property, displayed as 'Copyright' in the IGC UI.
+     * The {@code copyright} property, displayed as '{@literal Copyright}' in the IGC UI.
      */
     protected String copyright;
 

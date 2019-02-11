@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'dsdesign_view' asset type in IGC, displayed as 'Design View' in the IGC UI.
+ * POJO for the {@code dsdesign_view} asset type in IGC, displayed as '{@literal Design View}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,146 +24,146 @@ public class DsdesignView extends Reference {
     public static String getIgcTypeDisplayName() { return "Design View"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'has_canvas_annotation' property, displayed as 'Has Canvas Annotation' in the IGC UI.
+     * The {@code has_canvas_annotation} property, displayed as '{@literal Has Canvas Annotation}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MainObject} objects.
      */
     protected ReferenceList has_canvas_annotation;
 
     /**
-     * The 'output_pins' property, displayed as 'Output Pins' in the IGC UI.
+     * The {@code output_pins} property, displayed as '{@literal Output Pins}' in the IGC UI.
      */
     protected String output_pins;
 
     /**
-     * The 'input_pins' property, displayed as 'Input Pins' in the IGC UI.
+     * The {@code input_pins} property, displayed as '{@literal Input Pins}' in the IGC UI.
      */
     protected String input_pins;
 
     /**
-     * The 'stage_types' property, displayed as 'Stage Types' in the IGC UI.
+     * The {@code stage_types} property, displayed as '{@literal Stage Types}' in the IGC UI.
      */
     protected String stage_types;
 
     /**
-     * The 'of_job' property, displayed as 'Of Job' in the IGC UI.
+     * The {@code of_job} property, displayed as '{@literal Of Job}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Dsjob} object.
      */
     protected Reference of_job;
 
     /**
-     * The 'next_id' property, displayed as 'Next ID' in the IGC UI.
+     * The {@code next_id} property, displayed as '{@literal Next ID}' in the IGC UI.
      */
     protected Number next_id;
 
     /**
-     * The 'next_stage_id' property, displayed as 'Next Stage ID' in the IGC UI.
+     * The {@code next_stage_id} property, displayed as '{@literal Next Stage ID}' in the IGC UI.
      */
     protected Number next_stage_id;
 
     /**
-     * The 'is_top_level' property, displayed as 'Is Top Level' in the IGC UI.
+     * The {@code is_top_level} property, displayed as '{@literal Is Top Level}' in the IGC UI.
      */
     protected Boolean is_top_level;
 
     /**
-     * The 'snap_to_grid' property, displayed as 'Snap To Grid' in the IGC UI.
+     * The {@code snap_to_grid} property, displayed as '{@literal Snap To Grid}' in the IGC UI.
      */
     protected Number snap_to_grid;
 
     /**
-     * The 'stage_x_pos' property, displayed as 'Stage X Pos' in the IGC UI.
+     * The {@code stage_x_pos} property, displayed as '{@literal Stage X Pos}' in the IGC UI.
      */
     protected String stage_x_pos;
 
     /**
-     * The 'grid_lines' property, displayed as 'Grid Lines' in the IGC UI.
+     * The {@code grid_lines} property, displayed as '{@literal Grid Lines}' in the IGC UI.
      */
     protected Number grid_lines;
 
     /**
-     * The 'zoom_value' property, displayed as 'Zoom Value' in the IGC UI.
+     * The {@code zoom_value} property, displayed as '{@literal Zoom Value}' in the IGC UI.
      */
     protected Number zoom_value;
 
     /**
-     * The 'container_view_sizing' property, displayed as 'Container View Sizing' in the IGC UI.
+     * The {@code container_view_sizing} property, displayed as '{@literal Container View Sizing}' in the IGC UI.
      */
     protected String container_view_sizing;
 
     /**
-     * The 'stage_list' property, displayed as 'Stage List' in the IGC UI.
+     * The {@code stage_list} property, displayed as '{@literal Stage List}' in the IGC UI.
      */
     protected String stage_list;
 
     /**
-     * The 'stage_y_pos' property, displayed as 'Stage Y Pos' in the IGC UI.
+     * The {@code stage_y_pos} property, displayed as '{@literal Stage Y Pos}' in the IGC UI.
      */
     protected String stage_y_pos;
 
     /**
-     * The 'stage_y_size' property, displayed as 'Stage Y Size' in the IGC UI.
+     * The {@code stage_y_size} property, displayed as '{@literal Stage Y Size}' in the IGC UI.
      */
     protected String stage_y_size;
 
     /**
-     * The 'stage_x_size' property, displayed as 'Stage X Size' in the IGC UI.
+     * The {@code stage_x_size} property, displayed as '{@literal Stage X Size}' in the IGC UI.
      */
     protected String stage_x_size;
 
     /**
-     * The 'internal_id' property, displayed as 'Internal ID' in the IGC UI.
+     * The {@code internal_id} property, displayed as '{@literal Internal ID}' in the IGC UI.
      */
     protected String internal_id;
 

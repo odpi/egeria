@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'data_rule_results' asset type in IGC, displayed as 'Data Rule Results' in the IGC UI.
+ * POJO for the {@code data_rule_results} asset type in IGC, displayed as '{@literal Data Rule Results}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,59 +24,59 @@ public class DataRuleResults extends Reference {
     public static String getIgcTypeDisplayName() { return "Data Rule Results"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'start_time' property, displayed as 'Start Time' in the IGC UI.
+     * The {@code start_time} property, displayed as '{@literal Start Time}' in the IGC UI.
      */
     protected Date start_time;
 
     /**
-     * The 'end_time' property, displayed as 'End Time' in the IGC UI.
+     * The {@code end_time} property, displayed as '{@literal End Time}' in the IGC UI.
      */
     protected Date end_time;
 
     /**
-     * The 'number_of_records_tested' property, displayed as 'Number of Records Tested' in the IGC UI.
+     * The {@code number_of_records_tested} property, displayed as '{@literal Number of Records Tested}' in the IGC UI.
      */
     protected Number number_of_records_tested;
 
     /**
-     * The 'number_of_records_met' property, displayed as 'Number of Records Met' in the IGC UI.
+     * The {@code number_of_records_met} property, displayed as '{@literal Number of Records Met}' in the IGC UI.
      */
     protected Number number_of_records_met;
 
     /**
-     * The 'number_of_records_not_met' property, displayed as 'Number of Records Not Met' in the IGC UI.
+     * The {@code number_of_records_not_met} property, displayed as '{@literal Number of Records Not Met}' in the IGC UI.
      */
     protected Number number_of_records_not_met;
 
     /**
-     * The 'rule_results' property, displayed as 'Rule Results' in the IGC UI.
+     * The {@code rule_results} property, displayed as '{@literal Rule Results}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     protected ReferenceList rule_results;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 
