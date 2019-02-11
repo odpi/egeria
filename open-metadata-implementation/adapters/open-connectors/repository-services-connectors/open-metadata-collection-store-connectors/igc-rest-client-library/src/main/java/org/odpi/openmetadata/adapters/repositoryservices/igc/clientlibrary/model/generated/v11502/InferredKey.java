@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'inferred_key' asset type in IGC, displayed as 'Inferred Key' in the IGC UI.
+ * POJO for the {@code inferred_key} asset type in IGC, displayed as '{@literal Inferred Key}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,68 +24,68 @@ public class InferredKey extends Reference {
     public static String getIgcTypeDisplayName() { return "Inferred Key"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'table_analysis' property, displayed as 'Table Analysis' in the IGC UI.
+     * The {@code table_analysis} property, displayed as '{@literal Table Analysis}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MainObject} object.
      */
     protected Reference table_analysis;
 
     /**
-     * The 'total_records' property, displayed as 'Total Records' in the IGC UI.
+     * The {@code total_records} property, displayed as '{@literal Total Records}' in the IGC UI.
      */
     protected Number total_records;
 
     /**
-     * The 'primary_key' property, displayed as 'Primary Key' in the IGC UI.
+     * The {@code primary_key} property, displayed as '{@literal Primary Key}' in the IGC UI.
      */
     protected Boolean primary_key;
 
     /**
-     * The 'inferred_database_fields' property, displayed as 'Inferred Database Fields' in the IGC UI.
+     * The {@code inferred_database_fields} property, displayed as '{@literal Inferred Database Fields}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList inferred_database_fields;
 
     /**
-     * The 'referenced_by_inferred_foreign_keys' property, displayed as 'Referenced by Inferred Foreign Keys' in the IGC UI.
+     * The {@code referenced_by_inferred_foreign_keys} property, displayed as '{@literal Referenced by Inferred Foreign Keys}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InferredForeignKey} objects.
      */
     protected ReferenceList referenced_by_inferred_foreign_keys;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

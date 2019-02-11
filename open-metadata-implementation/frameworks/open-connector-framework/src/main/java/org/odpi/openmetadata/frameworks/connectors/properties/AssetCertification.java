@@ -14,7 +14,7 @@ import java.util.Objects;
  * </p>
  * <p>
  *     Many regulations and industry bodies define certifications that can confirm a level of support,
- *     capability or competence in an aspect of a digital organization’s operation.
+ *     capability or competence in an aspect of a digital organization's operation.
  *     Having certifications may be necessary to operating legally or may be a business advantage.
  * </p>
  * <p>

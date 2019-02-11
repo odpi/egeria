@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'set_operation' asset type in IGC, displayed as 'Set Operation' in the IGC UI.
+ * POJO for the {@code set_operation} asset type in IGC, displayed as '{@literal Set Operation}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,14 +24,14 @@ public class SetOperation extends Reference {
     public static String getIgcTypeDisplayName() { return "Set Operation"; }
 
     /**
-     * The 'infoset' property, displayed as 'InfoSet' in the IGC UI.
+     * The {@code infoset} property, displayed as '{@literal InfoSet}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Infoset} object.
      */
     protected Reference infoset;
 
     /**
-     * The 'type' property, displayed as 'Set Operation' in the IGC UI.
+     * The {@code type} property, displayed as '{@literal Set Operation}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -44,43 +44,43 @@ public class SetOperation extends Reference {
     protected String type;
 
     /**
-     * The 'primary_input' property, displayed as 'Primary Input' in the IGC UI.
+     * The {@code primary_input} property, displayed as '{@literal Primary Input}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Infoset} object.
      */
     protected Reference primary_input;
 
     /**
-     * The 'secondary_input' property, displayed as 'Secondary Input' in the IGC UI.
+     * The {@code secondary_input} property, displayed as '{@literal Secondary Input}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Infoset} object.
      */
     protected Reference secondary_input;
 
     /**
-     * The 'additional_inputs' property, displayed as 'Additional Inputs' in the IGC UI.
+     * The {@code additional_inputs} property, displayed as '{@literal Additional Inputs}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Infoset} objects.
      */
     protected ReferenceList additional_inputs;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

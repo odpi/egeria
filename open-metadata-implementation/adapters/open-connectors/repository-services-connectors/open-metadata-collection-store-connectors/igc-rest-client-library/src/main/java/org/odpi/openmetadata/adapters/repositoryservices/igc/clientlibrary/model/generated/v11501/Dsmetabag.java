@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'dsmetabag' asset type in IGC, displayed as 'DSMetaBag' in the IGC UI.
+ * POJO for the {@code dsmetabag} asset type in IGC, displayed as '{@literal DSMetaBag}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,131 +24,131 @@ public class Dsmetabag extends Reference {
     public static String getIgcTypeDisplayName() { return "DSMetaBag"; }
 
     /**
-     * The 'of_ds_table_definition' property, displayed as 'Of DS Table Definition' in the IGC UI.
+     * The {@code of_ds_table_definition} property, displayed as '{@literal Of DS Table Definition}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link TableDefinition} object.
      */
     protected Reference of_ds_table_definition;
 
     /**
-     * The 'of_ds_job_def' property, displayed as 'Of DS Job Def' in the IGC UI.
+     * The {@code of_ds_job_def} property, displayed as '{@literal Of DS Job Def}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Dsjob} object.
      */
     protected Reference of_ds_job_def;
 
     /**
-     * The 'of_ds_routine' property, displayed as 'Of DS Routine' in the IGC UI.
+     * The {@code of_ds_routine} property, displayed as '{@literal Of DS Routine}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Routine} object.
      */
     protected Reference of_ds_routine;
 
     /**
-     * The 'of_ds_stage' property, displayed as 'Of DS Stage' in the IGC UI.
+     * The {@code of_ds_stage} property, displayed as '{@literal Of DS Stage}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Stage} object.
      */
     protected Reference of_ds_stage;
 
     /**
-     * The 'of_ds_input_pin' property, displayed as 'Of DS Input Pin' in the IGC UI.
+     * The {@code of_ds_input_pin} property, displayed as '{@literal Of DS Input Pin}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link JobInputPin} object.
      */
     protected Reference of_ds_input_pin;
 
     /**
-     * The 'values' property, displayed as 'Values' in the IGC UI.
+     * The {@code values} property, displayed as '{@literal Values}' in the IGC UI.
      */
     protected String values;
 
     /**
-     * The 'of_ds_data_connection' property, displayed as 'Of DS Data Connection' in the IGC UI.
+     * The {@code of_ds_data_connection} property, displayed as '{@literal Of DS Data Connection}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DsdataConnection} object.
      */
     protected Reference of_ds_data_connection;
 
     /**
-     * The 'of_ds_data_quality_spec' property, displayed as 'Of DS Data Quality Spec' in the IGC UI.
+     * The {@code of_ds_data_quality_spec} property, displayed as '{@literal Of DS Data Quality Spec}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link StandardizationObject} object.
      */
     protected Reference of_ds_data_quality_spec;
 
     /**
-     * The 'of_ds_data_element' property, displayed as 'Of DS Data Element' in the IGC UI.
+     * The {@code of_ds_data_element} property, displayed as '{@literal Of DS Data Element}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataElement} object.
      */
     protected Reference of_ds_data_element;
 
     /**
-     * The 'a_xmeta_locking_root' property, displayed as 'A XMeta Locking Root' in the IGC UI.
+     * The {@code a_xmeta_locking_root} property, displayed as '{@literal A XMeta Locking Root}' in the IGC UI.
      */
     protected String a_xmeta_locking_root;
 
     /**
-     * The 'of_ds_design_view' property, displayed as 'Of DS Design View' in the IGC UI.
+     * The {@code of_ds_design_view} property, displayed as '{@literal Of DS Design View}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DsdesignView} object.
      */
     protected Reference of_ds_design_view;
 
     /**
-     * The 'of_ds_stage_type' property, displayed as 'Of DS Stage Type' in the IGC UI.
+     * The {@code of_ds_stage_type} property, displayed as '{@literal Of DS Stage Type}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DsstageType} object.
      */
     protected Reference of_ds_stage_type;
 
     /**
-     * The 'owners' property, displayed as 'Owners' in the IGC UI.
+     * The {@code owners} property, displayed as '{@literal Owners}' in the IGC UI.
      */
     protected String owners;
 
     /**
-     * The 'names' property, displayed as 'Names' in the IGC UI.
+     * The {@code names} property, displayed as '{@literal Names}' in the IGC UI.
      */
     protected String names;
 
     /**
-     * The 'of_ds_transform' property, displayed as 'Of DS Transform' in the IGC UI.
+     * The {@code of_ds_transform} property, displayed as '{@literal Of DS Transform}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link TransformsFunction} object.
      */
     protected Reference of_ds_transform;
 
     /**
-     * The 'of_ds_output_pin' property, displayed as 'Of DS Output Pin' in the IGC UI.
+     * The {@code of_ds_output_pin} property, displayed as '{@literal Of DS Output Pin}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link JobOutputPin} object.
      */
     protected Reference of_ds_output_pin;
 
     /**
-     * The 'conditions' property, displayed as 'Conditions' in the IGC UI.
+     * The {@code conditions} property, displayed as '{@literal Conditions}' in the IGC UI.
      */
     protected String conditions;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

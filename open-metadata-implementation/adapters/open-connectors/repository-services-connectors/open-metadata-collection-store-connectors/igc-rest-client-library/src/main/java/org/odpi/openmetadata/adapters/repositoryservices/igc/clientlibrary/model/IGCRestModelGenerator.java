@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.web.util.HtmlUtils;
 
 import java.io.*;
 import java.util.*;
@@ -124,7 +125,7 @@ public class IGCRestModelGenerator {
         StringBuilder sb = new StringBuilder();
         sb.append("    /**");
         sb.append(System.lineSeparator());
-        sb.append("     * The '" + propertyId + "' property, displayed as '" + propertyDisplayName + "' in the IGC UI.");
+        sb.append("     * The {@code " + propertyId + "} property, displayed as '{@literal " + propertyDisplayName + "}' in the IGC UI.");
         sb.append(System.lineSeparator());
         String typeName = typeObj.path("name").asText();
         if (typeObj.hasNonNull("url")) {
@@ -148,7 +149,7 @@ public class IGCRestModelGenerator {
                 sb.append(System.lineSeparator());
                 for (int i = 0; i < validValues.size(); i++) {
                     JsonNode validValue = validValues.get(i);
-                    sb.append("     *     <li>" + validValue.path("id").asText() + " (displayed in the UI as '" + validValue.path("displayName").asText() + "')</li>");
+                    sb.append("     *     <li>" + HtmlUtils.htmlEscape(validValue.path("id").asText()) + " (displayed in the UI as '" + HtmlUtils.htmlEscape(validValue.path("displayName").asText()) + "')</li>");
                     sb.append(System.lineSeparator());
                 }
                 sb.append("     * </ul>");
@@ -442,11 +443,11 @@ public class IGCRestModelGenerator {
         StringBuilder sb = new StringBuilder();
         sb.append("/**");
         sb.append(System.lineSeparator());
-        sb.append(" * POJO for the '");
+        sb.append(" * POJO for the {@code ");
         sb.append(typeName);
-        sb.append("' asset type in IGC, displayed as '");
+        sb.append("} asset type in IGC, displayed as '{@literal ");
         sb.append(displayName);
-        sb.append("' in the IGC UI.");
+        sb.append("}' in the IGC UI.");
         sb.append(System.lineSeparator());
         sb.append(" * <br><br>");
         sb.append(System.lineSeparator());

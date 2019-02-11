@@ -50,7 +50,7 @@ public class IGCRestConstants {
     /**
      * Retrieve a list of the modification detail properties used by the IGC REST API.
      *
-     * @return List<String>
+     * @return {@code List<String>}
      */
     public static final List<String> getModificationProperties() { return MODIFICATION_DETAILS; }
 

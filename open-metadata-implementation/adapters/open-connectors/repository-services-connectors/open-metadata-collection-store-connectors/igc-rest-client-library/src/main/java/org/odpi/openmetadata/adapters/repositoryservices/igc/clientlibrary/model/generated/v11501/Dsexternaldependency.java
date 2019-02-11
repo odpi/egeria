@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'dsexternaldependency' asset type in IGC, displayed as 'DSExternalDependency' in the IGC UI.
+ * POJO for the {@code dsexternaldependency} asset type in IGC, displayed as '{@literal DSExternalDependency}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,33 +24,33 @@ public class Dsexternaldependency extends Reference {
     public static String getIgcTypeDisplayName() { return "DSExternalDependency"; }
 
     /**
-     * The 'of_ds_job_def' property, displayed as 'Of DS Job Def' in the IGC UI.
+     * The {@code of_ds_job_def} property, displayed as '{@literal Of DS Job Def}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Dsjob} object.
      */
     protected Reference of_ds_job_def;
 
     /**
-     * The 'of_ds_routine' property, displayed as 'Of DS Routine' in the IGC UI.
+     * The {@code of_ds_routine} property, displayed as '{@literal Of DS Routine}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Routine} object.
      */
     protected Reference of_ds_routine;
 
     /**
-     * The 'a_xmeta_locking_root' property, displayed as 'A XMeta Locking Root' in the IGC UI.
+     * The {@code a_xmeta_locking_root} property, displayed as '{@literal A XMeta Locking Root}' in the IGC UI.
      */
     protected String a_xmeta_locking_root;
 
     /**
-     * The 'calls_ds_routine' property, displayed as 'Calls DS Routine' in the IGC UI.
+     * The {@code calls_ds_routine} property, displayed as '{@literal Calls DS Routine}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Routine} object.
      */
     protected Reference calls_ds_routine;
 
     /**
-     * The 'type' property, displayed as 'Type' in the IGC UI.
+     * The {@code type} property, displayed as '{@literal Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -66,39 +66,39 @@ public class Dsexternaldependency extends Reference {
     protected String type;
 
     /**
-     * The 'location' property, displayed as 'Location' in the IGC UI.
+     * The {@code location} property, displayed as '{@literal Location}' in the IGC UI.
      */
     protected String location;
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'runs_ds_job' property, displayed as 'Runs DS Job' in the IGC UI.
+     * The {@code runs_ds_job} property, displayed as '{@literal Runs DS Job}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Dsjob} object.
      */
     protected Reference runs_ds_job;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

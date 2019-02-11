@@ -106,7 +106,7 @@ public abstract class EntityMapping {
     /**
      * Retrieve the list of statuses that are supported by the entity mapping.
      *
-     * @return List<InstanceStatus>
+     * @return {@code List<InstanceStatus>}
      */
     public List<InstanceStatus> getSupportedStatuses() { return this.omrsSupportedStatuses; }
 
@@ -198,14 +198,14 @@ public abstract class EntityMapping {
     /**
      * Retrieve listing of any additional IGC asset types needed by this mapping.
      *
-     * @return List<String>
+     * @return {@code List<String>}
      */
     public List<String> getOtherIGCAssetTypes() { return this.otherIgcTypes; }
 
     /**
      * Retrieve listing of any additional IGC POJOs needed by this mapping.
      *
-     * @return List<Class>
+     * @return {@code List<Class>}
      */
     public List<Class> getOtherIGCPOJOs() { return this.otherPOJOs; }
 
@@ -268,7 +268,7 @@ public abstract class EntityMapping {
     /**
      * Retrieve the relationship mappings for this entity.
      *
-     * @return List<RelationshipMapping>
+     * @return {@code List<RelationshipMapping>}
      */
     public List<RelationshipMapping> getRelationshipMappers() { return this.relationshipMappers; }
 
@@ -284,7 +284,7 @@ public abstract class EntityMapping {
     /**
      * Retrieve the classification mappings for this entity.
      *
-     * @return List<ClassificationMapping>
+     * @return {@code List<ClassificationMapping>}
      */
     public List<ClassificationMapping> getClassificationMappers() { return this.classificationMappers; }
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'olap_join' asset type in IGC, displayed as 'OLAP Join' in the IGC UI.
+ * POJO for the {@code olap_join} asset type in IGC, displayed as '{@literal OLAP Join}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,22 +24,22 @@ public class OlapJoin extends Reference {
     public static String getIgcTypeDisplayName() { return "OLAP Join"; }
 
     /**
-     * The 'name' property, displayed as 'Join Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Join Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'business_name' property, displayed as 'Business Name' in the IGC UI.
+     * The {@code business_name} property, displayed as '{@literal Business Name}' in the IGC UI.
      */
     protected String business_name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'type' property, displayed as 'Type' in the IGC UI.
+     * The {@code type} property, displayed as '{@literal Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -52,26 +52,26 @@ public class OlapJoin extends Reference {
     protected String type;
 
     /**
-     * The 'condition' property, displayed as 'Condition' in the IGC UI.
+     * The {@code condition} property, displayed as '{@literal Condition}' in the IGC UI.
      */
     protected String condition;
 
     /**
-     * The 'bi_model' property, displayed as 'OLAP Model' in the IGC UI.
+     * The {@code bi_model} property, displayed as '{@literal OLAP Model}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link BiModel} object.
      */
     protected Reference bi_model;
 
     /**
-     * The 'contains_references' property, displayed as 'Contains References' in the IGC UI.
+     * The {@code contains_references} property, displayed as '{@literal Contains References}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Olapjoinref} objects.
      */
     protected ReferenceList contains_references;
 
     /**
-     * The 'referenced_by_an_olap_cube' property, displayed as 'Referenced by an OLAP Cube' in the IGC UI.
+     * The {@code referenced_by_an_olap_cube} property, displayed as '{@literal Referenced by an OLAP Cube}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link BiCube} objects.
      */

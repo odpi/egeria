@@ -44,35 +44,35 @@ public class MainObject extends Reference {
     /**
      * The 'labels' property, displayed as 'Labels' in the IGC UI.
      * <br><br>
-     * Will be a ReferenceList of {@see Label} objects.
+     * Will be a ReferenceList of {@code Label} objects.
      */
     protected ReferenceList labels = null;
 
     /**
      * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
      * <br><br>
-     * Will be a ReferenceList of {@see Steward} objects.
+     * Will be a ReferenceList of {@code Steward} objects.
      */
     protected ReferenceList stewards = null;
 
     /**
      * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
      * <br><br>
-     * Will be a ReferenceList of {@see Term} objects.
+     * Will be a ReferenceList of {@code Term} objects.
      */
     protected ReferenceList assigned_to_terms = null;
 
     /**
      * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
      * <br><br>
-     * Will be a ReferenceList of {@see InformationGovernanceRule} objects.
+     * Will be a ReferenceList of {@code InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules = null;
 
     /**
      * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
      * <br><br>
-     * Will be a ReferenceList of {@see InformationGovernanceRule} objects.
+     * Will be a ReferenceList of {@code InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules = null;
 

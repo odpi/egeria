@@ -26,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         EXPORT_ARCHIVE: the element was created from an export archive.
  *         The metadata collection id for the element is the metadata collection id of the originating server.
  *         If the originating server later joins the cohort with the same metadata collection Id then these
- *         elements will be refreshed from the originating server’s current repository.
+ *         elements will be refreshed from the originating server's current repository.
  *     </li>
  *     <li>
  *         CONTENT_PACK: the element comes from an open metadata content pack.
@@ -69,7 +69,7 @@ public enum InstanceProvenanceType implements Serializable
     EXPORT_ARCHIVE          (2, "Export Archive",          "The instance was created from an export archive. " +
                                                                           "The metadata collection id for the element is the metadata collection id of the originating server. " +
                                                                           "If the originating server later joins the cohort with the same metadata collection Id " +
-                                                                          "then these elements will be refreshed from the originating server’s current repository."),
+                                                                          "then these elements will be refreshed from the originating server's current repository."),
     CONTENT_PACK            (3, "Content Pack",            "The instance comes from an open metadata content pack. " +
                                                                           "The metadata collection id of the elements is set to the GUID of the pack."),
     DEREGISTERED_REPOSITORY (4, "Deregistered Repository", "The instance comes from a metadata repository that " +
