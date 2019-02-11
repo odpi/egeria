@@ -17,8 +17,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 //omrs
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 //omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * AssetServerUse is a relationship between an entity of type SoftwareServerCapability and an entity of type Asset.
@@ -82,7 +82,7 @@ public class AssetServerUse extends Line {
            lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-           lineType = LineType.Other;
+           lineType = LineType.Unknown;
         }
         entity1Name = "consumedBy";
         entity1Type = "SoftwareServerCapability";
@@ -104,7 +104,7 @@ public class AssetServerUse extends Line {
            lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-           lineType = LineType.Other;
+           lineType = LineType.Unknown;
         }
     }
 

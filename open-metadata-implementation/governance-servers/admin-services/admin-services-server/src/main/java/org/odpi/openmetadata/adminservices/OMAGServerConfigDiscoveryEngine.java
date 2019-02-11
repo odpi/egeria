@@ -51,7 +51,7 @@ public class OMAGServerConfigDiscoveryEngine
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String> configAuditLog = serverConfig.getAuditLog();
+            List<String> configAuditLog = serverConfig.getAuditTrail();
 
             if (configAuditLog == null)
             {
@@ -72,7 +72,7 @@ public class OMAGServerConfigDiscoveryEngine
                 configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " access service root url to " + accessServiceRootURL + ".");
             }
 
-            serverConfig.setAuditLog(configAuditLog);
+            serverConfig.setAuditTrail(configAuditLog);
 
             DiscoveryEngineConfig discoveryEngineConfig = serverConfig.getDiscoveryEngineConfig();
 
@@ -126,7 +126,7 @@ public class OMAGServerConfigDiscoveryEngine
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String> configAuditLog = serverConfig.getAuditLog();
+            List<String> configAuditLog = serverConfig.getAuditTrail();
 
             if (configAuditLog == null)
             {
@@ -147,7 +147,7 @@ public class OMAGServerConfigDiscoveryEngine
                 configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " access service server name " + accessServiceServerName + ".");
             }
 
-            serverConfig.setAuditLog(configAuditLog);
+            serverConfig.setAuditTrail(configAuditLog);
 
             DiscoveryEngineConfig discoveryEngineConfig = serverConfig.getDiscoveryEngineConfig();
 
@@ -199,7 +199,7 @@ public class OMAGServerConfigDiscoveryEngine
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String> configAuditLog = serverConfig.getAuditLog();
+            List<String> configAuditLog = serverConfig.getAuditTrail();
 
             if (configAuditLog == null)
             {
@@ -215,7 +215,7 @@ public class OMAGServerConfigDiscoveryEngine
                 configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " inbound request connection.");
             }
 
-            serverConfig.setAuditLog(configAuditLog);
+            serverConfig.setAuditTrail(configAuditLog);
 
             DiscoveryEngineConfig discoveryEngineConfig = serverConfig.getDiscoveryEngineConfig();
 
@@ -263,7 +263,7 @@ public class OMAGServerConfigDiscoveryEngine
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String> configAuditLog = serverConfig.getAuditLog();
+            List<String> configAuditLog = serverConfig.getAuditTrail();
 
             if (configAuditLog == null)
             {
@@ -272,7 +272,7 @@ public class OMAGServerConfigDiscoveryEngine
 
             configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + ".");
 
-            serverConfig.setAuditLog(configAuditLog);
+            serverConfig.setAuditTrail(configAuditLog);
             serverConfig.setDiscoveryEngineConfig(null);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
