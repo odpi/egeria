@@ -96,6 +96,8 @@ public class RelationshipMappingStore {
      * Retrieves a RelationshipMapping by OMRS relationship type from those that are listed as implemented.
      *
      * @param omrsRelationshipType the name of the OMRS relationship type for which to retrieve a mapping
+     * @param proxyOneType the IGC asset type of the first end of the relationship
+     * @param proxyTwoType the IGC asset type of the second end of the relationship
      * @return RelationshipMapping
      */
     public RelationshipMapping getMappingByTypes(String omrsRelationshipType,
