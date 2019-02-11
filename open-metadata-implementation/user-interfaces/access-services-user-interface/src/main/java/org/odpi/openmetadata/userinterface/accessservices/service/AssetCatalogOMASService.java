@@ -42,7 +42,7 @@ public class AssetCatalogOMASService {
         try {
             return assetCatalog.searchAssets(user, searchCriteria).getAssetDescriptionList();
         } catch (InvalidParameterException | PropertyServerException e) {
-            LOG.error(String.format("Error retrieving asset details for '%s'", searchCriteria), e);
+            LOG.error(String.format("Error retrieving asset details for '%s'", searchCriteria));
             throw e;
         }
     }
@@ -59,7 +59,7 @@ public class AssetCatalogOMASService {
         try {
             return assetCatalog.getAssetSummary(user, assetId).getAssetDescriptionList();
         } catch (InvalidParameterException | PropertyServerException e) {
-            LOG.error(String.format("Error retrieving asset description for %s", assetId), e);
+            LOG.error(String.format("Error retrieving asset description for %s", assetId));
             throw e;
         }
     }
@@ -76,7 +76,7 @@ public class AssetCatalogOMASService {
         try {
             return assetCatalog.getAssetDetails(user, assetId).getAssetDescriptionList();
         } catch (InvalidParameterException | PropertyServerException e) {
-            LOG.error(String.format("Error retrieving asset details for %s", assetId), e);
+            LOG.error(String.format("Error retrieving asset details for %s", assetId));
             throw e;
         }
     }
@@ -95,7 +95,7 @@ public class AssetCatalogOMASService {
         try {
             return assetCatalog.getAssetUniverse(user, assetId).getAssetDescriptionList();
         } catch (InvalidParameterException | PropertyServerException e) {
-            LOG.error(String.format("Error retrieving asset universe for %s", assetId), e);
+            LOG.error(String.format("Error retrieving asset universe for %s", assetId));
             throw e;
         }
     }
@@ -112,7 +112,7 @@ public class AssetCatalogOMASService {
         try {
             return assetCatalog.getAssetRelationships(user, assetId).getRelationships();
         } catch (InvalidParameterException | PropertyServerException e) {
-            LOG.error(String.format("Error retrieving asset relationships for %s", assetId), e);
+            LOG.error(String.format("Error retrieving asset relationships for %s", assetId));
             throw e;
         }
     }
@@ -132,7 +132,7 @@ public class AssetCatalogOMASService {
             return assetCatalog.getAssetRelationshipsForType(user, assetId, relationshipType).getRelationships();
         } catch (InvalidParameterException | PropertyServerException e) {
             LOG.error(String.format("Error retrieving asset relationships for %s and relationship type %s", assetId,
-                    relationshipType), e);
+                    relationshipType));
             throw e;
         }
     }
@@ -149,7 +149,7 @@ public class AssetCatalogOMASService {
         try {
             return assetCatalog.getClassificationForAsset(user, assetId).getClassifications();
         } catch (InvalidParameterException | PropertyServerException e) {
-            LOG.error(String.format("Error retrieving asset classifications for %s", assetId), e);
+            LOG.error(String.format("Error retrieving asset classifications for %s", assetId));
             throw e;
         }
     }

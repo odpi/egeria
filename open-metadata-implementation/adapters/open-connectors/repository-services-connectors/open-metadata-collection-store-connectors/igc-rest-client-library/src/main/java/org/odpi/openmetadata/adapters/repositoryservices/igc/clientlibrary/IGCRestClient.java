@@ -765,7 +765,7 @@ public class IGCRestClient {
             JsonNode nextURL = paging.path("next");
             if (!nextURL.isMissingNode()) {
                 String sNextURL = nextURL.asText();
-                if (sNextURL != "null") {
+                if (sNextURL != null && !sNextURL.equals("null")) {
                     if (this.workflowEnabled && !sNextURL.contains("workflowMode=draft")) {
                         sNextURL += "&workflowMode=draft";
                     }

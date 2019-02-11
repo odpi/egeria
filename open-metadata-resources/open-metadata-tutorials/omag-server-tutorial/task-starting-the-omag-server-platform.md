@@ -15,7 +15,7 @@ resources				server-chassis-spring-0.3-SNAPSHOT.jar
 The name of the Java Archive (Jar) file will
 depend on the release of ODPi Egeria that you have installed.  In this example, the release is **0.3-SNAPSHOT**.
 
-The OMAG server platform is started with the **java** command.
+The [OMAG Server Platform](../../../open-metadata-publication/website/omag-server) is started with the **java** command.
 Ensure you have a Java runtime at Version 8 (Update 151) or above installed on your machine.
 Check the version of Java you have with the command **java -version**
 (You can download Java from [AdoptOpenJDK](https://adoptopenjdk.net/) and select **OpenJDK 8 (LTS)**
@@ -51,7 +51,7 @@ Thu Jan 31 13:15:26 GMT 2019 OMAG server platform ready for configuration
 
 ```
 
-This means your OMAG Server Platform is running.  Try the following command:
+This means your OMAG server platform is running.  Try the following command:
 
 ```text
 $ curl -X GET http://localhost:8080/open-metadata/admin-services/users/test/server-origin
@@ -69,9 +69,13 @@ Broadly speaking, the OMAG server platform supports
 * Administration services and
 * Open metadata and governance services.
 
-The administration services (the ones beginning **omag-server**)
+The administration services (the ones beginning **config** and **operational**)
 are available all of the time the OMAG server platform is running.
-The open metadata and governance services are started on the server platform
+
+The open metadata and governance services are routed to the logical OMAG Servers running
+on the OMAG server platform.
+
+OMAG servers are started on the server platform
 using a **configuration document**.  This configuration document is both configured
 and activated in the OMAG server platform using the administration services.
 

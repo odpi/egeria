@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * OMAGServerConfigRepositoryServicesResource provides the configuration services for setting
+ * ConfigRepositoryServicesResource provides the configuration services for setting
  * up the repository services subsystems.
  */
 @RestController

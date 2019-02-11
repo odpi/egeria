@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * OMAGServerOriginResource provides the Spring wrapper for the origin service that helps the client
+ * ServerOriginResource provides the Spring wrapper for the origin service that helps the client
  * discover the type of the server.
  */
 @RestController

@@ -23,4 +23,5 @@ public class QueryUtils {
         queryStringSB.append(prependCharacter);
     }
 
+
 }

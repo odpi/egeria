@@ -15,9 +15,11 @@ import java.util.*;
  */
 public class OMRSArchiveAccessor
 {
-    private final Map<String, EntityDef>         entityDefs         = new HashMap<>();
+    private final Map<String, EntityDef> entityDefsByName = new HashMap<>();
+    private final Map<String, EntityDef> entityDefsByGuid = new HashMap<>();
     private final Map<String, ClassificationDef> classificationDefs = new HashMap<>();
-    private final Map<String, RelationshipDef>   relationshipDefs   = new HashMap<>();
+    private final Map<String, RelationshipDef> relationshipDefsByName = new HashMap<>();
+    private final Map<String, RelationshipDef> relationshipDefsByGuid = new HashMap<>();
     private final Map<String, EnumDef>           enumDefs           = new HashMap<>();
 
     private OpenMetadataArchive          openMetadataArchive;
@@ -59,13 +61,15 @@ public class OMRSArchiveAccessor
             switch (typeDef.getCategory())
             {
                 case ENTITY_DEF:
-                    this.entityDefs.put(typeDef.getName(), ((EntityDef) typeDef));
+                    this.entityDefsByName.put(typeDef.getName(), ((EntityDef) typeDef));
+                    this.entityDefsByGuid.put(typeDef.getGUID(), ((EntityDef) typeDef));
                     break;
                 case CLASSIFICATION_DEF:
                     this.classificationDefs.put(typeDef.getName(), ((ClassificationDef) typeDef));
                     break;
                 case RELATIONSHIP_DEF:
-                    this.relationshipDefs.put(typeDef.getName(), (RelationshipDef) typeDef);
+                    this.relationshipDefsByName.put(typeDef.getName(), (RelationshipDef) typeDef);
+                    this.relationshipDefsByGuid.put(typeDef.getGUID(), (RelationshipDef) typeDef);
                     break;
             }
         }
@@ -98,7 +102,17 @@ public class OMRSArchiveAccessor
      */
     public EntityDef getEntityDefByName(String typeName)
     {
-        return entityDefs.get(typeName);
+        return entityDefsByName.get(typeName);
+    }
+    /**
+     * Return the entity type definition for the supplied type guid.
+     *
+     * @param typeGuid guid of the type
+     * @return EntityDef object from the archive
+     */
+    public EntityDef getEntityDefByGuid(String typeGuid)
+    {
+        return entityDefsByGuid.get(typeGuid);
     }
 
 
@@ -110,7 +124,17 @@ public class OMRSArchiveAccessor
      */
     public RelationshipDef getRelationshipDefByName(String typeName)
     {
-        return relationshipDefs.get(typeName);
+        return relationshipDefsByName.get(typeName);
+    }
+    /**
+     * Return the relationship type definition for the supplied type guid.
+     *
+     * @param typeGuid guid of type
+     * @return RelationshipDef object from the archive
+     */
+    public RelationshipDef getRelationshipDefByGuid(String typeGuid)
+    {
+        return relationshipDefsByGuid.get(typeGuid);
     }
 
 
