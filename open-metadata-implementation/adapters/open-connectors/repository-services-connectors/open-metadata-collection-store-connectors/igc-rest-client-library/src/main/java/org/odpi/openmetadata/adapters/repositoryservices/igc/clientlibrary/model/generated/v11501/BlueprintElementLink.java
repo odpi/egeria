@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'blueprint_element_link' asset type in IGC, displayed as 'Blueprint Element Link' in the IGC UI.
+ * POJO for the {@code blueprint_element_link} asset type in IGC, displayed as '{@literal Blueprint Element Link}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,7 +24,7 @@ public class BlueprintElementLink extends Reference {
     public static String getIgcTypeDisplayName() { return "Blueprint Element Link"; }
 
     /**
-     * The 'element_name' property, displayed as 'Element Name' in the IGC UI.
+     * The {@code element_name} property, displayed as '{@literal Element Name}' in the IGC UI.
      */
     protected String element_name;
 

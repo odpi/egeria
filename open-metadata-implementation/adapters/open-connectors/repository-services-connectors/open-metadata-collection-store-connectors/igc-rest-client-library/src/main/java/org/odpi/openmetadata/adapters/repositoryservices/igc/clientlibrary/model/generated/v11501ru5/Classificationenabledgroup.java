@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'classificationenabledgroup' asset type in IGC, displayed as 'ClassificationEnabledGroup' in the IGC UI.
+ * POJO for the {@code classificationenabledgroup} asset type in IGC, displayed as '{@literal ClassificationEnabledGroup}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,

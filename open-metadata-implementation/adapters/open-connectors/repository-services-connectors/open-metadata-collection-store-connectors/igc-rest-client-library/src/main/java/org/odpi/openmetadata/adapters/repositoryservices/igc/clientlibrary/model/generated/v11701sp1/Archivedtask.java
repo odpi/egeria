@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'archivedtask' asset type in IGC, displayed as 'ArchivedTask' in the IGC UI.
+ * POJO for the {@code archivedtask} asset type in IGC, displayed as '{@literal ArchivedTask}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,27 +24,27 @@ public class Archivedtask extends Reference {
     public static String getIgcTypeDisplayName() { return "ArchivedTask"; }
 
     /**
-     * The 'status' property, displayed as 'Status' in the IGC UI.
+     * The {@code status} property, displayed as '{@literal Status}' in the IGC UI.
      */
     protected String status;
 
     /**
-     * The 'message' property, displayed as 'Status Message' in the IGC UI.
+     * The {@code message} property, displayed as '{@literal Status Message}' in the IGC UI.
      */
     protected String message;
 
     /**
-     * The 'requested_on' property, displayed as 'Date Requested' in the IGC UI.
+     * The {@code requested_on} property, displayed as '{@literal Date Requested}' in the IGC UI.
      */
     protected Date requested_on;
 
     /**
-     * The 'completion_date' property, displayed as 'Date Completed' in the IGC UI.
+     * The {@code completion_date} property, displayed as '{@literal Date Completed}' in the IGC UI.
      */
     protected Date completion_date;
 
     /**
-     * The 'name' property, displayed as 'Asset Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Asset Name}' in the IGC UI.
      */
     protected String name;
 

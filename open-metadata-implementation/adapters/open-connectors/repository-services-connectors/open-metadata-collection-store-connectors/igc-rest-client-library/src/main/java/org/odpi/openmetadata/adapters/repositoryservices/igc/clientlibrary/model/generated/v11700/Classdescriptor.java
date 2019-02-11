@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'classdescriptor' asset type in IGC, displayed as 'ClassDescriptor' in the IGC UI.
+ * POJO for the {@code classdescriptor} asset type in IGC, displayed as '{@literal ClassDescriptor}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,87 +24,87 @@ public class Classdescriptor extends Reference {
     public static String getIgcTypeDisplayName() { return "ClassDescriptor"; }
 
     /**
-     * The 'identifier_attribute' property, displayed as 'Identifier Attribute' in the IGC UI.
+     * The {@code identifier_attribute} property, displayed as '{@literal Identifier Attribute}' in the IGC UI.
      */
     protected String identifier_attribute;
 
     /**
-     * The 'class_name' property, displayed as 'Class Name' in the IGC UI.
+     * The {@code class_name} property, displayed as '{@literal Class Name}' in the IGC UI.
      */
     protected String class_name;
 
     /**
-     * The 'used_in_application_function' property, displayed as 'Used In Application Function' in the IGC UI.
+     * The {@code used_in_application_function} property, displayed as '{@literal Used In Application Function}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Applicationfunction} objects.
      */
     protected ReferenceList used_in_application_function;
 
     /**
-     * The 'long_description_attribute' property, displayed as 'Long Description Attribute' in the IGC UI.
+     * The {@code long_description_attribute} property, displayed as '{@literal Long Description Attribute}' in the IGC UI.
      */
     protected String long_description_attribute;
 
     /**
-     * The 'has_navigation_descriptor' property, displayed as 'Has Navigation Descriptor' in the IGC UI.
+     * The {@code has_navigation_descriptor} property, displayed as '{@literal Has Navigation Descriptor}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Navigationdescriptor} objects.
      */
     protected ReferenceList has_navigation_descriptor;
 
     /**
-     * The 'has_prop_descriptor' property, displayed as 'Has Prop Descriptor' in the IGC UI.
+     * The {@code has_prop_descriptor} property, displayed as '{@literal Has Prop Descriptor}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Propdescriptor} objects.
      */
     protected ReferenceList has_prop_descriptor;
 
     /**
-     * The 'model_name' property, displayed as 'Model Name' in the IGC UI.
+     * The {@code model_name} property, displayed as '{@literal Model Name}' in the IGC UI.
      */
     protected String model_name;
 
     /**
-     * The 'has_custom_attribute_def' property, displayed as 'Has Custom Attribute Def' in the IGC UI.
+     * The {@code has_custom_attribute_def} property, displayed as '{@literal Has Custom Attribute Def}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     protected ReferenceList has_custom_attribute_def;
 
     /**
-     * The 'model_uri' property, displayed as 'Model URI' in the IGC UI.
+     * The {@code model_uri} property, displayed as '{@literal Model URI}' in the IGC UI.
      */
     protected String model_uri;
 
     /**
-     * The 'short_description_attribute' property, displayed as 'Short Description Attribute' in the IGC UI.
+     * The {@code short_description_attribute} property, displayed as '{@literal Short Description Attribute}' in the IGC UI.
      */
     protected String short_description_attribute;
 
     /**
-     * The 'has_action_descriptor' property, displayed as 'Has Action Descriptor' in the IGC UI.
+     * The {@code has_action_descriptor} property, displayed as '{@literal Has Action Descriptor}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Actiondescriptor} objects.
      */
     protected ReferenceList has_action_descriptor;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

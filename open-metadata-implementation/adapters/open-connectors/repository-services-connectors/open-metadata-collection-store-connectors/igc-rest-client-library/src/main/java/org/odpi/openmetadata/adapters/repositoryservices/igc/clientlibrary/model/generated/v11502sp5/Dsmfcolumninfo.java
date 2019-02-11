@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'dsmfcolumninfo' asset type in IGC, displayed as 'DSMFColumnInfo' in the IGC UI.
+ * POJO for the {@code dsmfcolumninfo} asset type in IGC, displayed as '{@literal DSMFColumnInfo}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,64 +24,64 @@ public class Dsmfcolumninfo extends Reference {
     public static String getIgcTypeDisplayName() { return "DSMFColumnInfo"; }
 
     /**
-     * The 'column_value' property, displayed as 'Column Value' in the IGC UI.
+     * The {@code column_value} property, displayed as '{@literal Column Value}' in the IGC UI.
      */
     protected String column_value;
 
     /**
-     * The 'a_xmeta_locking_root' property, displayed as 'A XMeta Locking Root' in the IGC UI.
+     * The {@code a_xmeta_locking_root} property, displayed as '{@literal A XMeta Locking Root}' in the IGC UI.
      */
     protected String a_xmeta_locking_root;
 
     /**
-     * The 'of_ds_stage' property, displayed as 'Of DS Stage' in the IGC UI.
+     * The {@code of_ds_stage} property, displayed as '{@literal Of DS Stage}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Stage} object.
      */
     protected Reference of_ds_stage;
 
     /**
-     * The 'sort_order' property, displayed as 'Sort Order' in the IGC UI.
+     * The {@code sort_order} property, displayed as '{@literal Sort Order}' in the IGC UI.
      */
     protected Number sort_order;
 
     /**
-     * The 'usage_class' property, displayed as 'Usage Class' in the IGC UI.
+     * The {@code usage_class} property, displayed as '{@literal Usage Class}' in the IGC UI.
      */
     protected String usage_class;
 
     /**
-     * The 'sort_link' property, displayed as 'Sort Link' in the IGC UI.
+     * The {@code sort_link} property, displayed as '{@literal Sort Link}' in the IGC UI.
      */
     protected String sort_link;
 
     /**
-     * The 'aggregation' property, displayed as 'Aggregation' in the IGC UI.
+     * The {@code aggregation} property, displayed as '{@literal Aggregation}' in the IGC UI.
      */
     protected String aggregation;
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 
