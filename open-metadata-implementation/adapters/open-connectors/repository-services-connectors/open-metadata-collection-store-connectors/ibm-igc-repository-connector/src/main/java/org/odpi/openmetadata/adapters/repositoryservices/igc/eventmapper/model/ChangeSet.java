@@ -85,7 +85,7 @@ public class ChangeSet {
     /**
      * Retrieve the set of IGC property names that have some change.
      *
-     * @return Set<String>
+     * @return {@code Set<String>}
      */
     public Set<String> getChangedProperties() { return this.changesByProperty.keySet(); }
 
@@ -93,7 +93,7 @@ public class ChangeSet {
      * Retrieve the list of changes for the provided IGC property name.
      *
      * @param property name of the IGC property for which to retrieve changes
-     * @return List<Change>
+     * @return {@code List<Change>}
      */
     public List<Change> getChangesForProperty(String property) { return this.changesByProperty.get(property); }
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'composite_view' asset type in IGC, displayed as 'Composite View' in the IGC UI.
+ * POJO for the {@code composite_view} asset type in IGC, displayed as '{@literal Composite View}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,76 +24,76 @@ public class CompositeView extends Reference {
     public static String getIgcTypeDisplayName() { return "Composite View"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'member_type' property, displayed as 'Member Type' in the IGC UI.
+     * The {@code member_type} property, displayed as '{@literal Member Type}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MemberType} object.
      */
     protected Reference member_type;
 
     /**
-     * The 'composite_view' property, displayed as 'Composite View' in the IGC UI.
+     * The {@code composite_view} property, displayed as '{@literal Composite View}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MemberType} object.
      */
     protected Reference composite_view;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'alias_(business_name)' property, displayed as 'Alias (Business Name)' in the IGC UI.
+     * The {@code alias_(business_name)} property, displayed as '{@literal Alias (Business Name)}' in the IGC UI.
      */
     @JsonProperty("alias_(business_name)") protected String alias__business_name_;
 
     /**
-     * The 'type' property, displayed as 'Type' in the IGC UI.
+     * The {@code type} property, displayed as '{@literal Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -104,36 +104,36 @@ public class CompositeView extends Reference {
     protected String type;
 
     /**
-     * The 'blueprint_elements' property, displayed as 'Blueprint Elements' in the IGC UI.
+     * The {@code blueprint_elements} property, displayed as '{@literal Blueprint Elements}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link BlueprintElementLink} objects.
      */
     protected ReferenceList blueprint_elements;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

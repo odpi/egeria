@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'field_analysis' asset type in IGC, displayed as 'Field Analysis' in the IGC UI.
+ * POJO for the {@code field_analysis} asset type in IGC, displayed as '{@literal Field Analysis}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,86 +24,86 @@ public class FieldAnalysis extends Reference {
     public static String getIgcTypeDisplayName() { return "Field Analysis"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'table_analysis' property, displayed as 'Table Analysis' in the IGC UI.
+     * The {@code table_analysis} property, displayed as '{@literal Table Analysis}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MainObject} object.
      */
     protected Reference table_analysis;
 
     /**
-     * The 'project' property, displayed as 'Project' in the IGC UI.
+     * The {@code project} property, displayed as '{@literal Project}' in the IGC UI.
      */
     protected String project;
 
     /**
-     * The 'data_file_field' property, displayed as 'Data File Field' in the IGC UI.
+     * The {@code data_file_field} property, displayed as '{@literal Data File Field}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataFileField} object.
      */
     protected Reference data_file_field;
 
     /**
-     * The 'require_unique_values' property, displayed as 'Require Unique Values' in the IGC UI.
+     * The {@code require_unique_values} property, displayed as '{@literal Require Unique Values}' in the IGC UI.
      */
     protected Boolean require_unique_values;
 
     /**
-     * The 'include_null_values' property, displayed as 'Include Null Values' in the IGC UI.
+     * The {@code include_null_values} property, displayed as '{@literal Include Null Values}' in the IGC UI.
      */
     protected Boolean include_null_values;
 
     /**
-     * The 'include_constant_values' property, displayed as 'Include Constant Values' in the IGC UI.
+     * The {@code include_constant_values} property, displayed as '{@literal Include Constant Values}' in the IGC UI.
      */
     protected Boolean include_constant_values;
 
     /**
-     * The 'domain' property, displayed as 'Domain' in the IGC UI.
+     * The {@code domain} property, displayed as '{@literal Domain}' in the IGC UI.
      */
     protected String domain;
 
     /**
-     * The 'number_of_complete_values' property, displayed as 'Number of Complete Values' in the IGC UI.
+     * The {@code number_of_complete_values} property, displayed as '{@literal Number of Complete Values}' in the IGC UI.
      */
     protected Number number_of_complete_values;
 
     /**
-     * The 'number_of_valid_values' property, displayed as 'Number of Valid Values' in the IGC UI.
+     * The {@code number_of_valid_values} property, displayed as '{@literal Number of Valid Values}' in the IGC UI.
      */
     protected Number number_of_valid_values;
 
     /**
-     * The 'number_of_empty_values' property, displayed as 'Number of Empty Values' in the IGC UI.
+     * The {@code number_of_empty_values} property, displayed as '{@literal Number of Empty Values}' in the IGC UI.
      */
     protected Number number_of_empty_values;
 
     /**
-     * The 'number_of_null_values' property, displayed as 'Number of Null Values' in the IGC UI.
+     * The {@code number_of_null_values} property, displayed as '{@literal Number of Null Values}' in the IGC UI.
      */
     protected Number number_of_null_values;
 
     /**
-     * The 'number_of_distinct_values' property, displayed as 'Number of Distinct Values' in the IGC UI.
+     * The {@code number_of_distinct_values} property, displayed as '{@literal Number of Distinct Values}' in the IGC UI.
      */
     protected Number number_of_distinct_values;
 
     /**
-     * The 'number_of_distinct_formats' property, displayed as 'Number of Distinct Formats' in the IGC UI.
+     * The {@code number_of_distinct_formats} property, displayed as '{@literal Number of Distinct Formats}' in the IGC UI.
      */
     protected Number number_of_distinct_formats;
 
     /**
-     * The 'number_of_zero_values' property, displayed as 'Number of Zero Values' in the IGC UI.
+     * The {@code number_of_zero_values} property, displayed as '{@literal Number of Zero Values}' in the IGC UI.
      */
     protected Number number_of_zero_values;
 
     /**
-     * The 'inferred_data_type' property, displayed as 'Inferred Data Type' in the IGC UI.
+     * The {@code inferred_data_type} property, displayed as '{@literal Inferred Data Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -134,120 +134,120 @@ public class FieldAnalysis extends Reference {
     protected String inferred_data_type;
 
     /**
-     * The 'inferred_length' property, displayed as 'Inferred Length' in the IGC UI.
+     * The {@code inferred_length} property, displayed as '{@literal Inferred Length}' in the IGC UI.
      */
     protected Number inferred_length;
 
     /**
-     * The 'inferred_format' property, displayed as 'Inferred Format' in the IGC UI.
+     * The {@code inferred_format} property, displayed as '{@literal Inferred Format}' in the IGC UI.
      */
     protected String inferred_format;
 
     /**
-     * The 'inferred_scale' property, displayed as 'Inferred Scale' in the IGC UI.
+     * The {@code inferred_scale} property, displayed as '{@literal Inferred Scale}' in the IGC UI.
      */
     protected Number inferred_scale;
 
     /**
-     * The 'inferred_precision' property, displayed as 'Inferred Precision' in the IGC UI.
+     * The {@code inferred_precision} property, displayed as '{@literal Inferred Precision}' in the IGC UI.
      */
     protected Number inferred_precision;
 
     /**
-     * The 'average_value' property, displayed as 'Average Value' in the IGC UI.
+     * The {@code average_value} property, displayed as '{@literal Average Value}' in the IGC UI.
      */
     protected String average_value;
 
     /**
-     * The 'inferred_foreign_key' property, displayed as 'Inferred Foreign Key' in the IGC UI.
+     * The {@code inferred_foreign_key} property, displayed as '{@literal Inferred Foreign Key}' in the IGC UI.
      */
     protected Boolean inferred_foreign_key;
 
     /**
-     * The 'inferred_primary_key' property, displayed as 'Inferred Primary Key' in the IGC UI.
+     * The {@code inferred_primary_key} property, displayed as '{@literal Inferred Primary Key}' in the IGC UI.
      */
     protected Boolean inferred_primary_key;
 
     /**
-     * The 'classification' property, displayed as 'Detected Data Classifications' in the IGC UI.
+     * The {@code classification} property, displayed as '{@literal Detected Data Classifications}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Classification} objects.
      */
     protected ReferenceList classification;
 
     /**
-     * The 'selected_primary_key' property, displayed as 'User Selected Primary Key' in the IGC UI.
+     * The {@code selected_primary_key} property, displayed as '{@literal User Selected Primary Key}' in the IGC UI.
      */
     protected Boolean selected_primary_key;
 
     /**
-     * The 'selected_natural_key' property, displayed as 'User Selected Natural Key' in the IGC UI.
+     * The {@code selected_natural_key} property, displayed as '{@literal User Selected Natural Key}' in the IGC UI.
      */
     protected Boolean selected_natural_key;
 
     /**
-     * The 'selected_foreign_key' property, displayed as 'User Selected Foreign Key' in the IGC UI.
+     * The {@code selected_foreign_key} property, displayed as '{@literal User Selected Foreign Key}' in the IGC UI.
      */
     protected Boolean selected_foreign_key;
 
     /**
-     * The 'selected_foreign_key_references' property, displayed as 'User Selected Foreign Key References' in the IGC UI.
+     * The {@code selected_foreign_key_references} property, displayed as '{@literal User Selected Foreign Key References}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList selected_foreign_key_references;
 
     /**
-     * The 'selected_foreign_key_referenced' property, displayed as 'User Selected Foreign Key Referenced' in the IGC UI.
+     * The {@code selected_foreign_key_referenced} property, displayed as '{@literal User Selected Foreign Key Referenced}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList selected_foreign_key_referenced;
 
     /**
-     * The 'validation_type' property, displayed as 'Validation Type' in the IGC UI.
+     * The {@code validation_type} property, displayed as '{@literal Validation Type}' in the IGC UI.
      */
     protected ArrayList<String> validation_type;
 
     /**
-     * The 'validation_properties' property, displayed as 'Validation Properties' in the IGC UI.
+     * The {@code validation_properties} property, displayed as '{@literal Validation Properties}' in the IGC UI.
      */
     protected ArrayList<String> validation_properties;
 
     /**
-     * The 'quality_score_percent' property, displayed as 'Quality Score' in the IGC UI.
+     * The {@code quality_score_percent} property, displayed as '{@literal Quality Score}' in the IGC UI.
      */
     protected String quality_score_percent;
 
     /**
-     * The 'nb_records_tested' property, displayed as 'Number of Records Tested' in the IGC UI.
+     * The {@code nb_records_tested} property, displayed as '{@literal Number of Records Tested}' in the IGC UI.
      */
     protected Number nb_records_tested;
 
     /**
-     * The 'quality_score_problems' property, displayed as 'Quality Score Problems' in the IGC UI.
+     * The {@code quality_score_problems} property, displayed as '{@literal Quality Score Problems}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link QualityProblem} objects.
      */
     protected ReferenceList quality_score_problems;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

@@ -35,7 +35,7 @@ public class RelationshipMappingStore {
     /**
      * Retrieves the listing of all TypeDefs for which relationship mappings are implemented.
      *
-     * @return List<TypeDef>
+     * @return {@code List<TypeDef>}
      */
     public List<TypeDef> getTypeDefs() { return this.typeDefs; }
 
@@ -136,7 +136,7 @@ public class RelationshipMappingStore {
      * @param omrsRelationshipType the OMRS relationship type to confirm
      * @param proxyOneType the asset type of endpoint 1 of the relationship to confirm
      * @param proxyTwoType the asset type of endpoint 2 of the relationship to confirm
-     * @return
+     * @return boolean
      */
     private boolean matchingRelationshipMapper(RelationshipMapping candidate,
                                                String omrsRelationshipType,

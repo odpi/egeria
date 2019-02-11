@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'xsd_element_reference' asset type in IGC, displayed as 'XSD Element Reference' in the IGC UI.
+ * POJO for the {@code xsd_element_reference} asset type in IGC, displayed as '{@literal XSD Element Reference}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,38 +24,38 @@ public class XsdElementReference extends Reference {
     public static String getIgcTypeDisplayName() { return "XSD Element Reference"; }
 
     /**
-     * The 'min_occurs' property, displayed as 'Minimum Occurrence' in the IGC UI.
+     * The {@code min_occurs} property, displayed as '{@literal Minimum Occurrence}' in the IGC UI.
      */
     protected Number min_occurs;
 
     /**
-     * The 'max_occurs' property, displayed as 'Maximum Occurrence' in the IGC UI.
+     * The {@code max_occurs} property, displayed as '{@literal Maximum Occurrence}' in the IGC UI.
      */
     protected Number max_occurs;
 
     /**
-     * The 'xsd_element' property, displayed as 'XSD Element' in the IGC UI.
+     * The {@code xsd_element} property, displayed as '{@literal XSD Element}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MainObject} object.
      */
     protected Reference xsd_element;
 
     /**
-     * The 'xsd_complex_type' property, displayed as 'XSD Complex Type' in the IGC UI.
+     * The {@code xsd_complex_type} property, displayed as '{@literal XSD Complex Type}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link XsdComplexType} object.
      */
     protected Reference xsd_complex_type;
 
     /**
-     * The 'xsd_element_group' property, displayed as 'XSD Element Group' in the IGC UI.
+     * The {@code xsd_element_group} property, displayed as '{@literal XSD Element Group}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link XsdElementGroup} object.
      */
     protected Reference xsd_element_group;
 
     /**
-     * The 'referenced_xsd_element' property, displayed as 'XSD Element' in the IGC UI.
+     * The {@code referenced_xsd_element} property, displayed as '{@literal XSD Element}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MainObject} object.
      */

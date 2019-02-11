@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'actiondescriptor' asset type in IGC, displayed as 'ActionDescriptor' in the IGC UI.
+ * POJO for the {@code actiondescriptor} asset type in IGC, displayed as '{@literal ActionDescriptor}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,73 +24,73 @@ public class Actiondescriptor extends Reference {
     public static String getIgcTypeDisplayName() { return "ActionDescriptor"; }
 
     /**
-     * The 'instance_constraint_expression' property, displayed as 'Instance Constraint Expression' in the IGC UI.
+     * The {@code instance_constraint_expression} property, displayed as '{@literal Instance Constraint Expression}' in the IGC UI.
      */
     protected String instance_constraint_expression;
 
     /**
-     * The 'parameters' property, displayed as 'Parameters' in the IGC UI.
+     * The {@code parameters} property, displayed as '{@literal Parameters}' in the IGC UI.
      */
     protected String parameters;
 
     /**
-     * The 'has_privilege_system_role' property, displayed as 'Has Privilege System Role' in the IGC UI.
+     * The {@code has_privilege_system_role} property, displayed as '{@literal Has Privilege System Role}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link SystemRole} objects.
      */
     protected ReferenceList has_privilege_system_role;
 
     /**
-     * The 'has_privilege_contact_role' property, displayed as 'Has Privilege Contact Role' in the IGC UI.
+     * The {@code has_privilege_contact_role} property, displayed as '{@literal Has Privilege Contact Role}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link UserRole} objects.
      */
     protected ReferenceList has_privilege_contact_role;
 
     /**
-     * The 'of_class_descriptor' property, displayed as 'Of Class Descriptor' in the IGC UI.
+     * The {@code of_class_descriptor} property, displayed as '{@literal Of Class Descriptor}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Classdescriptor} object.
      */
     protected Reference of_class_descriptor;
 
     /**
-     * The 'description' property, displayed as 'Description' in the IGC UI.
+     * The {@code description} property, displayed as '{@literal Description}' in the IGC UI.
      */
     protected String description;
 
     /**
-     * The 'display_name' property, displayed as 'Display Name' in the IGC UI.
+     * The {@code display_name} property, displayed as '{@literal Display Name}' in the IGC UI.
      */
     protected String display_name;
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'operation' property, displayed as 'Operation' in the IGC UI.
+     * The {@code operation} property, displayed as '{@literal Operation}' in the IGC UI.
      */
     protected String operation;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

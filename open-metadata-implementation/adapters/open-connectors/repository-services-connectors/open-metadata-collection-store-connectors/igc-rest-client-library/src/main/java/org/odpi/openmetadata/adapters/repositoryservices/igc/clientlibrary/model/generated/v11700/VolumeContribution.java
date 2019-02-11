@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'volume_contribution' asset type in IGC, displayed as 'Volume Contribution' in the IGC UI.
+ * POJO for the {@code volume_contribution} asset type in IGC, displayed as '{@literal Volume Contribution}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,26 +24,26 @@ public class VolumeContribution extends Reference {
     public static String getIgcTypeDisplayName() { return "Volume Contribution"; }
 
     /**
-     * The 'infoset' property, displayed as 'Infoset' in the IGC UI.
+     * The {@code infoset} property, displayed as '{@literal Infoset}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Infoset} object.
      */
     protected Reference infoset;
 
     /**
-     * The 'volume' property, displayed as 'Volume' in the IGC UI.
+     * The {@code volume} property, displayed as '{@literal Volume}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Volume} object.
      */
     protected Reference volume;
 
     /**
-     * The 'object_count' property, displayed as 'Number of Objects' in the IGC UI.
+     * The {@code object_count} property, displayed as '{@literal Number of Objects}' in the IGC UI.
      */
     protected Number object_count;
 
     /**
-     * The 'size' property, displayed as 'Size (Bytes)' in the IGC UI.
+     * The {@code size} property, displayed as '{@literal Size (Bytes)}' in the IGC UI.
      */
     protected Number size;
 

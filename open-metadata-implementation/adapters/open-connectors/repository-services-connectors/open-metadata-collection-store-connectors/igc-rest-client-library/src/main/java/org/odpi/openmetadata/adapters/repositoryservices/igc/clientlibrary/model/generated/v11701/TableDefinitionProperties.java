@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'table_definition_properties' asset type in IGC, displayed as 'Table Definition Properties' in the IGC UI.
+ * POJO for the {@code table_definition_properties} asset type in IGC, displayed as '{@literal Table Definition Properties}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,129 +24,129 @@ public class TableDefinitionProperties extends Reference {
     public static String getIgcTypeDisplayName() { return "Table Definition Properties"; }
 
     /**
-     * The 'of_ds_table_definition' property, displayed as 'Of DS Table Definition' in the IGC UI.
+     * The {@code of_ds_table_definition} property, displayed as '{@literal Of DS Table Definition}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link TableDefinition} object.
      */
     protected Reference of_ds_table_definition;
 
     /**
-     * The 'seq_col_space' property, displayed as 'SEQ Col Space' in the IGC UI.
+     * The {@code seq_col_space} property, displayed as '{@literal SEQ Col Space}' in the IGC UI.
      */
     protected Number seq_col_space;
 
     /**
-     * The 'seq_fixed_width' property, displayed as 'SEQ Fixed Width' in the IGC UI.
+     * The {@code seq_fixed_width} property, displayed as '{@literal SEQ Fixed Width}' in the IGC UI.
      */
     protected Boolean seq_fixed_width;
 
     /**
-     * The 'seq_delimiter' property, displayed as 'SEQ Delimiter' in the IGC UI.
+     * The {@code seq_delimiter} property, displayed as '{@literal SEQ Delimiter}' in the IGC UI.
      */
     protected String seq_delimiter;
 
     /**
-     * The 'seq_quote_char' property, displayed as 'SEQ Quote Char' in the IGC UI.
+     * The {@code seq_quote_char} property, displayed as '{@literal SEQ Quote Char}' in the IGC UI.
      */
     protected String seq_quote_char;
 
     /**
-     * The 'locator' property, displayed as 'Locator' in the IGC UI.
+     * The {@code locator} property, displayed as '{@literal Locator}' in the IGC UI.
      */
     protected String locator;
 
     /**
-     * The 'access_type' property, displayed as 'Access Type' in the IGC UI.
+     * The {@code access_type} property, displayed as '{@literal Access Type}' in the IGC UI.
      */
     protected String access_type;
 
     /**
-     * The 'apt_record_prop' property, displayed as 'APT Record Prop' in the IGC UI.
+     * The {@code apt_record_prop} property, displayed as '{@literal APT Record Prop}' in the IGC UI.
      */
     protected String apt_record_prop;
 
     /**
-     * The 'seq_col_headers' property, displayed as 'SEQ Col Headers' in the IGC UI.
+     * The {@code seq_col_headers} property, displayed as '{@literal SEQ Col Headers}' in the IGC UI.
      */
     protected Boolean seq_col_headers;
 
     /**
-     * The 'import_location' property, displayed as 'Import Location' in the IGC UI.
+     * The {@code import_location} property, displayed as '{@literal Import Location}' in the IGC UI.
      */
     protected String import_location;
 
     /**
-     * The 'nls_map_name' property, displayed as 'NLS Map Name' in the IGC UI.
+     * The {@code nls_map_name} property, displayed as '{@literal NLS Map Name}' in the IGC UI.
      */
     protected String nls_map_name;
 
     /**
-     * The 'seq_omit_new_line' property, displayed as 'SEQ Omit New Line' in the IGC UI.
+     * The {@code seq_omit_new_line} property, displayed as '{@literal SEQ Omit New Line}' in the IGC UI.
      */
     protected Boolean seq_omit_new_line;
 
     /**
-     * The 'platform_type' property, displayed as 'Platform Type' in the IGC UI.
+     * The {@code platform_type} property, displayed as '{@literal Platform Type}' in the IGC UI.
      */
     protected String platform_type;
 
     /**
-     * The 'version' property, displayed as 'Version' in the IGC UI.
+     * The {@code version} property, displayed as '{@literal Version}' in the IGC UI.
      */
     protected String version;
 
     /**
-     * The 'a_xmeta_locking_root' property, displayed as 'A XMeta Locking Root' in the IGC UI.
+     * The {@code a_xmeta_locking_root} property, displayed as '{@literal A XMeta Locking Root}' in the IGC UI.
      */
     protected String a_xmeta_locking_root;
 
     /**
-     * The 'registration_timestamp' property, displayed as 'Registration Timestamp' in the IGC UI.
+     * The {@code registration_timestamp} property, displayed as '{@literal Registration Timestamp}' in the IGC UI.
      */
     protected String registration_timestamp;
 
     /**
-     * The 'allow_column_mapping' property, displayed as 'Allow Column Mapping' in the IGC UI.
+     * The {@code allow_column_mapping} property, displayed as '{@literal Allow Column Mapping}' in the IGC UI.
      */
     protected Boolean allow_column_mapping;
 
     /**
-     * The 'sp_error_codes' property, displayed as 'SP Error Codes' in the IGC UI.
+     * The {@code sp_error_codes} property, displayed as '{@literal SP Error Codes}' in the IGC UI.
      */
     protected String sp_error_codes;
 
     /**
-     * The 'seq_null_string' property, displayed as 'SEQ Null String' in the IGC UI.
+     * The {@code seq_null_string} property, displayed as '{@literal SEQ Null String}' in the IGC UI.
      */
     protected String seq_null_string;
 
     /**
-     * The 'multivalued' property, displayed as 'Multivalued' in the IGC UI.
+     * The {@code multivalued} property, displayed as '{@literal Multivalued}' in the IGC UI.
      */
     protected Boolean multivalued;
 
     /**
-     * The 'pad_char' property, displayed as 'Pad Char' in the IGC UI.
+     * The {@code pad_char} property, displayed as '{@literal Pad Char}' in the IGC UI.
      */
     protected String pad_char;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'foreign_key_definition' asset type in IGC, displayed as 'Foreign Key Definition' in the IGC UI.
+ * POJO for the {@code foreign_key_definition} asset type in IGC, displayed as '{@literal Foreign Key Definition}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,44 +24,44 @@ public class ForeignKeyDefinition extends Reference {
     public static String getIgcTypeDisplayName() { return "Foreign Key Definition"; }
 
     /**
-     * The 'column' property, displayed as 'Column' in the IGC UI.
+     * The {@code column} property, displayed as '{@literal Column}' in the IGC UI.
      */
     protected String column;
 
     /**
-     * The 'table_definition' property, displayed as 'Table Definition' in the IGC UI.
+     * The {@code table_definition} property, displayed as '{@literal Table Definition}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link TableDefinition} object.
      */
     protected Reference table_definition;
 
     /**
-     * The 'references_tables' property, displayed as 'References Tables' in the IGC UI.
+     * The {@code references_tables} property, displayed as '{@literal References Tables}' in the IGC UI.
      */
     protected String references_tables;
 
     /**
-     * The 'references_columns' property, displayed as 'References Columns' in the IGC UI.
+     * The {@code references_columns} property, displayed as '{@literal References Columns}' in the IGC UI.
      */
     protected String references_columns;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

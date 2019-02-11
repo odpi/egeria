@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'steward_group' asset type in IGC, displayed as 'Steward Group' in the IGC UI.
+ * POJO for the {@code steward_group} asset type in IGC, displayed as '{@literal Steward Group}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,71 +24,71 @@ public class StewardGroup extends Reference {
     public static String getIgcTypeDisplayName() { return "Steward Group"; }
 
     /**
-     * The 'group_name' property, displayed as 'Group Name' in the IGC UI.
+     * The {@code group_name} property, displayed as '{@literal Group Name}' in the IGC UI.
      */
     protected String group_name;
 
     /**
-     * The 'type' property, displayed as 'Type' in the IGC UI.
+     * The {@code type} property, displayed as '{@literal Type}' in the IGC UI.
      */
     protected String type;
 
     /**
-     * The 'email_address' property, displayed as 'Email Address' in the IGC UI.
+     * The {@code email_address} property, displayed as '{@literal Email Address}' in the IGC UI.
      */
     protected String email_address;
 
     /**
-     * The 'web_address' property, displayed as 'Web Address' in the IGC UI.
+     * The {@code web_address} property, displayed as '{@literal Web Address}' in the IGC UI.
      */
     protected String web_address;
 
     /**
-     * The 'organization' property, displayed as 'Organization' in the IGC UI.
+     * The {@code organization} property, displayed as '{@literal Organization}' in the IGC UI.
      */
     protected String organization;
 
     /**
-     * The 'location' property, displayed as 'Location' in the IGC UI.
+     * The {@code location} property, displayed as '{@literal Location}' in the IGC UI.
      */
     protected String location;
 
     /**
-     * The 'principal_id' property, displayed as 'Principal ID' in the IGC UI.
+     * The {@code principal_id} property, displayed as '{@literal Principal ID}' in the IGC UI.
      */
     protected String principal_id;
 
     /**
-     * The 'managed_assets' property, displayed as 'Managed Assets' in the IGC UI.
+     * The {@code managed_assets} property, displayed as '{@literal Managed Assets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     protected ReferenceList managed_assets;
 
     /**
-     * The 'managed_assets_basic' property, displayed as 'Managed Assets' in the IGC UI.
+     * The {@code managed_assets_basic} property, displayed as '{@literal Managed Assets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MainObject} objects.
      */
     protected ReferenceList managed_assets_basic;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

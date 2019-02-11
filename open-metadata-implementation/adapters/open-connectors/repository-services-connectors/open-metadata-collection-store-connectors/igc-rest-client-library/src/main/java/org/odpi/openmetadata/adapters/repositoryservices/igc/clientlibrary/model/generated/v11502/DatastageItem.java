@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'datastage_item' asset type in IGC, displayed as 'DataStage Item' in the IGC UI.
+ * POJO for the {@code datastage_item} asset type in IGC, displayed as '{@literal DataStage Item}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,42 +24,42 @@ public class DatastageItem extends Reference {
     public static String getIgcTypeDisplayName() { return "DataStage Item"; }
 
     /**
-     * The 'repository_id' property, displayed as 'Repository ID' in the IGC UI.
+     * The {@code repository_id} property, displayed as '{@literal Repository ID}' in the IGC UI.
      */
     protected String repository_id;
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'class_name' property, displayed as 'Class Name' in the IGC UI.
+     * The {@code class_name} property, displayed as '{@literal Class Name}' in the IGC UI.
      */
     protected String class_name;
 
     /**
-     * The 'reference_item' property, displayed as 'Reference Item' in the IGC UI.
+     * The {@code reference_item} property, displayed as '{@literal Reference Item}' in the IGC UI.
      */
     protected Boolean reference_item;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created on' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created on}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Last Modified on' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Last Modified on}' in the IGC UI.
      */
     protected Date modified_on;
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'physical_domain' asset type in IGC, displayed as 'Physical Domain' in the IGC UI.
+ * POJO for the {@code physical_domain} asset type in IGC, displayed as '{@literal Physical Domain}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,41 +24,41 @@ public class PhysicalDomain extends Reference {
     public static String getIgcTypeDisplayName() { return "Physical Domain"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_&_long_description' property, displayed as 'Short & Long Description' in the IGC UI.
+     * The {@code short_&_long_description} property, displayed as '{@literal Short & Long Description}' in the IGC UI.
      */
     @JsonProperty("short_&_long_description") protected String short___long_description;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'physical_data_model' property, displayed as 'Physical Data Model' in the IGC UI.
+     * The {@code physical_data_model} property, displayed as '{@literal Physical Data Model}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link PhysicalDataModel} object.
      */
     protected Reference physical_data_model;
 
     /**
-     * The 'used_by_data_items' property, displayed as 'Used by Data Items' in the IGC UI.
+     * The {@code used_by_data_items} property, displayed as '{@literal Used by Data Items}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DesignColumn} objects.
      */
     protected ReferenceList used_by_data_items;
 
     /**
-     * The 'data_type' property, displayed as 'Data Type' in the IGC UI.
+     * The {@code data_type} property, displayed as '{@literal Data Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -89,7 +89,7 @@ public class PhysicalDomain extends Reference {
     protected String data_type;
 
     /**
-     * The 'odbc_type' property, displayed as 'ODBC Type' in the IGC UI.
+     * The {@code odbc_type} property, displayed as '{@literal ODBC Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -122,32 +122,32 @@ public class PhysicalDomain extends Reference {
     protected String odbc_type;
 
     /**
-     * The 'length' property, displayed as 'Length' in the IGC UI.
+     * The {@code length} property, displayed as '{@literal Length}' in the IGC UI.
      */
     protected Number length;
 
     /**
-     * The 'fraction' property, displayed as 'Fraction' in the IGC UI.
+     * The {@code fraction} property, displayed as '{@literal Fraction}' in the IGC UI.
      */
     protected Number fraction;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

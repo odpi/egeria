@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'collection' asset type in IGC, displayed as 'Collection' in the IGC UI.
+ * POJO for the {@code collection} asset type in IGC, displayed as '{@literal Collection}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,84 +24,84 @@ public class Collection extends Reference {
     public static String getIgcTypeDisplayName() { return "Collection"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'owners' property, displayed as 'Owners' in the IGC UI.
+     * The {@code owners} property, displayed as '{@literal Owners}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Steward} objects.
      */
     protected ReferenceList owners;
 
     /**
-     * The 'visibility' property, displayed as 'Visibility' in the IGC UI.
+     * The {@code visibility} property, displayed as '{@literal Visibility}' in the IGC UI.
      */
     protected Boolean visibility;
 
     /**
-     * The 'viewers' property, displayed as 'Viewers' in the IGC UI.
+     * The {@code viewers} property, displayed as '{@literal Viewers}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Steward} objects.
      */
     protected ReferenceList viewers;
 
     /**
-     * The 'assets' property, displayed as 'Assets' in the IGC UI.
+     * The {@code assets} property, displayed as '{@literal Assets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     protected ReferenceList assets;
 
     /**
-     * The 'references_assets' property, displayed as 'Assets' in the IGC UI.
+     * The {@code references_assets} property, displayed as '{@literal Assets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MainObject} objects.
      */
     protected ReferenceList references_assets;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 
