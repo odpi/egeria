@@ -40,6 +40,7 @@ service:
     ranger: 32080
     rangersecure: 30182
     # Set this to address of one of the local nodes - public IP
+    omrsmonitor: 31080
   externalip: 10.10.1.30
     # KAFKA is not exposed externally (issues in chart, complexity)
 
@@ -132,6 +133,10 @@ image:
     tag: 0.1.8
     pullPolicy: IfNotPresent
 
+  omrsmonitor:
+    repository: planetf1/omrsmonitor-egeriavdc
+    tag: 0.0.2
+    pullPolicy: IfNotPresent
   nameOverride: ""
   fullnameOverride: ""
 
