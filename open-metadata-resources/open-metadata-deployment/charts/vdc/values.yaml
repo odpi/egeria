@@ -1,4 +1,6 @@
-# SPDX-License-Identifier: Apache-2.0 
+---
+
+# SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 
 # Network configuration
@@ -47,6 +49,7 @@ service:
 # IGC configuration
 igc:
   host: 158.176.66.119
+  hostname: igc.openmetadata.ibmcloud.com
   webport: 9446
   kafkaport: 59092
   auth:
