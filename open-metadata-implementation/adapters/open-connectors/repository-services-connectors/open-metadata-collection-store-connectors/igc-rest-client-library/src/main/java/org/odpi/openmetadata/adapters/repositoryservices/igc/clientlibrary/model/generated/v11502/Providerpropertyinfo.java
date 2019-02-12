@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'providerpropertyinfo' asset type in IGC, displayed as 'ProviderPropertyInfo' in the IGC UI.
+ * POJO for the {@code providerpropertyinfo} asset type in IGC, displayed as '{@literal ProviderPropertyInfo}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,86 +24,86 @@ public class Providerpropertyinfo extends Reference {
     public static String getIgcTypeDisplayName() { return "ProviderPropertyInfo"; }
 
     /**
-     * The 'property_data_type' property, displayed as 'Property Data Type' in the IGC UI.
+     * The {@code property_data_type} property, displayed as '{@literal Property Data Type}' in the IGC UI.
      */
     protected String property_data_type;
 
     /**
-     * The 'has_provider_property_info_extended' property, displayed as 'Has Provider Property Info Extended' in the IGC UI.
+     * The {@code has_provider_property_info_extended} property, displayed as '{@literal Has Provider Property Info Extended}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Providerpropertyinfoextended} objects.
      */
     protected ReferenceList has_provider_property_info_extended;
 
     /**
-     * The 'is_searchable' property, displayed as 'Is Searchable' in the IGC UI.
+     * The {@code is_searchable} property, displayed as '{@literal Is Searchable}' in the IGC UI.
      */
     protected Boolean is_searchable;
 
     /**
-     * The 'complex_attribute_source' property, displayed as 'Complex Attribute Source' in the IGC UI.
+     * The {@code complex_attribute_source} property, displayed as '{@literal Complex Attribute Source}' in the IGC UI.
      */
     protected Boolean complex_attribute_source;
 
     /**
-     * The 'description' property, displayed as 'Description' in the IGC UI.
+     * The {@code description} property, displayed as '{@literal Description}' in the IGC UI.
      */
     protected String description;
 
     /**
-     * The 'is_complex_attribute' property, displayed as 'Is Complex Attribute' in the IGC UI.
+     * The {@code is_complex_attribute} property, displayed as '{@literal Is Complex Attribute}' in the IGC UI.
      */
     protected Boolean is_complex_attribute;
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'is_required' property, displayed as 'Is Required' in the IGC UI.
+     * The {@code is_required} property, displayed as '{@literal Is Required}' in the IGC UI.
      */
     protected Boolean is_required;
 
     /**
-     * The 'display_name' property, displayed as 'Display Name' in the IGC UI.
+     * The {@code display_name} property, displayed as '{@literal Display Name}' in the IGC UI.
      */
     protected String display_name;
 
     /**
-     * The 'has_directory_provider_property' property, displayed as 'Has Directory Provider Property' in the IGC UI.
+     * The {@code has_directory_provider_property} property, displayed as '{@literal Has Directory Provider Property}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Directoryproviderproperty} objects.
      */
     protected ReferenceList has_directory_provider_property;
 
     /**
-     * The 'is_editable' property, displayed as 'Is Editable' in the IGC UI.
+     * The {@code is_editable} property, displayed as '{@literal Is Editable}' in the IGC UI.
      */
     protected Boolean is_editable;
 
     /**
-     * The 'default_value' property, displayed as 'Default Value' in the IGC UI.
+     * The {@code default_value} property, displayed as '{@literal Default Value}' in the IGC UI.
      */
     protected String default_value;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

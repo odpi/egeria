@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'lineage_report_template' asset type in IGC, displayed as 'Lineage Report Template' in the IGC UI.
+ * POJO for the {@code lineage_report_template} asset type in IGC, displayed as '{@literal Lineage Report Template}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,24 +24,24 @@ public class LineageReportTemplate extends Reference {
     public static String getIgcTypeDisplayName() { return "Lineage Report Template"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'long_description' property, displayed as 'Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'uses_lineage_filter' property, displayed as 'Uses Lineage Filter' in the IGC UI.
+     * The {@code uses_lineage_filter} property, displayed as '{@literal Uses Lineage Filter}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Lineagefilter} objects.
      */
     protected ReferenceList uses_lineage_filter;
 
     /**
-     * The 'asset_display_properties' property, displayed as 'Asset Type Properties' in the IGC UI.
+     * The {@code asset_display_properties} property, displayed as '{@literal Asset Type Properties}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link InformationAsset} object.
      */

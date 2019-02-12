@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
- * POJO for the 'host_(engine)' asset type in IGC, displayed as 'Host (Engine)' in the IGC UI.
+ * POJO for the {@code host_(engine)} asset type in IGC, displayed as '{@literal Host (Engine)}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,

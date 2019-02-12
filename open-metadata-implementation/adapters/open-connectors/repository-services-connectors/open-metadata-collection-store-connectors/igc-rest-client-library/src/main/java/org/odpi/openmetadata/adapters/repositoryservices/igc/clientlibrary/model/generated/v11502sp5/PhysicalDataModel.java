@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'physical_data_model' asset type in IGC, displayed as 'Physical Data Model' in the IGC UI.
+ * POJO for the {@code physical_data_model} asset type in IGC, displayed as '{@literal Physical Data Model}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,189 +24,189 @@ public class PhysicalDataModel extends Reference {
     public static String getIgcTypeDisplayName() { return "Physical Data Model"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'physical_model' property, displayed as 'Physical Model' in the IGC UI.
+     * The {@code physical_model} property, displayed as '{@literal Physical Model}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link PhysicalDataModel} object.
      */
     protected Reference physical_model;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'contains_physical_models' property, displayed as 'Contains Physical Models' in the IGC UI.
+     * The {@code contains_physical_models} property, displayed as '{@literal Contains Physical Models}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link PhysicalDataModel} objects.
      */
     protected ReferenceList contains_physical_models;
 
     /**
-     * The 'implements_logical_data_models' property, displayed as 'Implements Logical Data Models' in the IGC UI.
+     * The {@code implements_logical_data_models} property, displayed as '{@literal Implements Logical Data Models}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link LogicalDataModel} objects.
      */
     protected ReferenceList implements_logical_data_models;
 
     /**
-     * The 'implemented_by_data_files' property, displayed as 'Implemented By Data Files' in the IGC UI.
+     * The {@code implemented_by_data_files} property, displayed as '{@literal Implemented By Data Files}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MainObject} objects.
      */
     protected ReferenceList implemented_by_data_files;
 
     /**
-     * The 'implemented_by_database_schemas' property, displayed as 'Implemented by Database Schemas' in the IGC UI.
+     * The {@code implemented_by_database_schemas} property, displayed as '{@literal Implemented by Database Schemas}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseSchema} objects.
      */
     protected ReferenceList implemented_by_database_schemas;
 
     /**
-     * The 'contains_design_tables' property, displayed as 'Contains Design Tables' in the IGC UI.
+     * The {@code contains_design_tables} property, displayed as '{@literal Contains Design Tables}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DesignTable} objects.
      */
     protected ReferenceList contains_design_tables;
 
     /**
-     * The 'contains_design_views' property, displayed as 'Contains Design Views' in the IGC UI.
+     * The {@code contains_design_views} property, displayed as '{@literal Contains Design Views}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DesignView} objects.
      */
     protected ReferenceList contains_design_views;
 
     /**
-     * The 'contains_design_stored_procedures' property, displayed as 'Contains Design Stored Procedures' in the IGC UI.
+     * The {@code contains_design_stored_procedures} property, displayed as '{@literal Contains Design Stored Procedures}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DesignStoredProcedure} objects.
      */
     protected ReferenceList contains_design_stored_procedures;
 
     /**
-     * The 'alias_(business_name)' property, displayed as 'Alias (Business Name)' in the IGC UI.
+     * The {@code alias_(business_name)} property, displayed as '{@literal Alias (Business Name)}' in the IGC UI.
      */
     @JsonProperty("alias_(business_name)") protected String alias__business_name_;
 
     /**
-     * The 'author' property, displayed as 'Author' in the IGC UI.
+     * The {@code author} property, displayed as '{@literal Author}' in the IGC UI.
      */
     protected String author;
 
     /**
-     * The 'target_database' property, displayed as 'Target Database' in the IGC UI.
+     * The {@code target_database} property, displayed as '{@literal Target Database}' in the IGC UI.
      */
     protected String target_database;
 
     /**
-     * The 'target_dbms' property, displayed as 'Target DBMS' in the IGC UI.
+     * The {@code target_dbms} property, displayed as '{@literal Target DBMS}' in the IGC UI.
      */
     protected String target_dbms;
 
     /**
-     * The 'native_id' property, displayed as 'Native ID' in the IGC UI.
+     * The {@code native_id} property, displayed as '{@literal Native ID}' in the IGC UI.
      */
     protected String native_id;
 
     /**
-     * The 'package' property, displayed as 'Package' in the IGC UI.
+     * The {@code package} property, displayed as '{@literal Package}' in the IGC UI.
      */
     @JsonProperty("package") protected String __package;
 
     /**
-     * The 'namespace' property, displayed as 'Namespace' in the IGC UI.
+     * The {@code namespace} property, displayed as '{@literal Namespace}' in the IGC UI.
      */
     protected String namespace;
 
     /**
-     * The 'imported_from' property, displayed as 'Imported From' in the IGC UI.
+     * The {@code imported_from} property, displayed as '{@literal Imported From}' in the IGC UI.
      */
     protected String imported_from;
 
     /**
-     * The 'physical_domains' property, displayed as 'Physical Domains' in the IGC UI.
+     * The {@code physical_domains} property, displayed as '{@literal Physical Domains}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link PhysicalDomain} objects.
      */
     protected ReferenceList physical_domains;
 
     /**
-     * The 'blueprint_elements' property, displayed as 'Blueprint Elements' in the IGC UI.
+     * The {@code blueprint_elements} property, displayed as '{@literal Blueprint Elements}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link BlueprintElementLink} objects.
      */
     protected ReferenceList blueprint_elements;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

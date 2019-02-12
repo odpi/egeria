@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'datasourcealiasgroup' asset type in IGC, displayed as 'DataSourceAliasGroup' in the IGC UI.
+ * POJO for the {@code datasourcealiasgroup} asset type in IGC, displayed as '{@literal DataSourceAliasGroup}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,21 +24,21 @@ public class Datasourcealiasgroup extends Reference {
     public static String getIgcTypeDisplayName() { return "DataSourceAliasGroup"; }
 
     /**
-     * The 'same_as_data_connections' property, displayed as 'Same as Data Connections' in the IGC UI.
+     * The {@code same_as_data_connections} property, displayed as '{@literal Same as Data Connections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataConnectionMapping} objects.
      */
     protected ReferenceList same_as_data_connections;
 
     /**
-     * The 'preferred_data_connection' property, displayed as 'Preferred Data Connection' in the IGC UI.
+     * The {@code preferred_data_connection} property, displayed as '{@literal Preferred Data Connection}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataConnectionMapping} object.
      */
     protected Reference preferred_data_connection;
 
     /**
-     * The 'bound_to_database' property, displayed as 'Bound To Database' in the IGC UI.
+     * The {@code bound_to_database} property, displayed as '{@literal Bound To Database}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Database} object.
      */

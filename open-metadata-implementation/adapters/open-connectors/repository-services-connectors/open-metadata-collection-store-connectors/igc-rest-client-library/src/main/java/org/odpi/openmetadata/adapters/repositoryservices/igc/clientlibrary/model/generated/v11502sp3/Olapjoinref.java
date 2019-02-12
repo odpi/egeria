@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'olapjoinref' asset type in IGC, displayed as 'OLAPJoinRef' in the IGC UI.
+ * POJO for the {@code olapjoinref} asset type in IGC, displayed as '{@literal OLAPJoinRef}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,28 +24,28 @@ public class Olapjoinref extends Reference {
     public static String getIgcTypeDisplayName() { return "OLAPJoinRef"; }
 
     /**
-     * The 'joins_olap_collection' property, displayed as 'Joins OLAP Collection' in the IGC UI.
+     * The {@code joins_olap_collection} property, displayed as '{@literal Joins OLAP Collection}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link BiCollection} objects.
      */
     protected ReferenceList joins_olap_collection;
 
     /**
-     * The 'joins_database_table' property, displayed as 'Joins Database Table' in the IGC UI.
+     * The {@code joins_database_table} property, displayed as '{@literal Joins Database Table}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Datagroup} object.
      */
     protected Reference joins_database_table;
 
     /**
-     * The 'alias' property, displayed as 'Alias' in the IGC UI.
+     * The {@code alias} property, displayed as '{@literal Alias}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MainObject} object.
      */
     protected Reference alias;
 
     /**
-     * The 'cardinality' property, displayed as 'Cardinality' in the IGC UI.
+     * The {@code cardinality} property, displayed as '{@literal Cardinality}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -58,7 +58,7 @@ public class Olapjoinref extends Reference {
     protected String cardinality;
 
     /**
-     * The 'sequence' property, displayed as 'Sequence' in the IGC UI.
+     * The {@code sequence} property, displayed as '{@literal Sequence}' in the IGC UI.
      */
     protected Number sequence;
 
