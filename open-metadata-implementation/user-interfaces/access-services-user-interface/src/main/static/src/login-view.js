@@ -26,21 +26,44 @@ class LoginView extends PolymerElement {
         div.container6 {
           display: flex;
           align-items: center;
-          justify-content: center 
+          justify-content: center;
         }
+        
+        .login {
+            padding: 16px;
+            color: #757575;
+            border-radius: 5px;
+            background-color: #fff;
+            box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+            max-width: 600px;
+            width: 100%;
+        }
+        
         img.logo {
           display: block;
           margin-left: auto;
           margin-right: auto;
           margin-top: 1em;
+          width: 600px;
+        }
+        
+        @media (max-width: 600px){
+          :host {
+            justify-content: flex-end;
+          }
+          
+          img.logo {
+              width: 70vw;
+          }
+    
         }
       </style>
       <iron-localstorage name="my-app-storage" value="{{token}}"></iron-localstorage>
       <p>
-          <img class="logo" src="images/Logo_transparent.png" width="600"/>
+          <img class="logo" src="images/Logo_transparent.png"/>
       </p>
        <div class="container6">
-              <paper-material  class="card">
+              <paper-material  class="login">
                  <iron-form id="form">
                     <form method="post" action="/auth/login">
                         <paper-input value={{username}} label="Username" name="username" required
