@@ -380,7 +380,7 @@ public class ReferenceableMapper extends EntityMapping {
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result classifications that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return List<Relationship>
+     * @return {@code List<Relationship>}
      */
     public List<Relationship> getOMRSRelationships(String          relationshipTypeGUID,
                                                    int             fromRelationshipElement,

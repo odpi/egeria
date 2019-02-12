@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'directoryproviderproperty' asset type in IGC, displayed as 'DirectoryProviderProperty' in the IGC UI.
+ * POJO for the {@code directoryproviderproperty} asset type in IGC, displayed as '{@literal DirectoryProviderProperty}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,48 +24,48 @@ public class Directoryproviderproperty extends Reference {
     public static String getIgcTypeDisplayName() { return "DirectoryProviderProperty"; }
 
     /**
-     * The 'value' property, displayed as 'Value' in the IGC UI.
+     * The {@code value} property, displayed as '{@literal Value}' in the IGC UI.
      */
     protected String value;
 
     /**
-     * The 'of_provider_property_type' property, displayed as 'Of Provider Property Type' in the IGC UI.
+     * The {@code of_provider_property_type} property, displayed as '{@literal Of Provider Property Type}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Providerpropertytype} object.
      */
     protected Reference of_provider_property_type;
 
     /**
-     * The 'of_provider_property_info' property, displayed as 'Of Provider Property Info' in the IGC UI.
+     * The {@code of_provider_property_info} property, displayed as '{@literal Of Provider Property Info}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Providerpropertyinfo} object.
      */
     protected Reference of_provider_property_info;
 
     /**
-     * The 'of_directory_provider_configuration' property, displayed as 'Of Directory Provider Configuration' in the IGC UI.
+     * The {@code of_directory_provider_configuration} property, displayed as '{@literal Of Directory Provider Configuration}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Directoryproviderconfiguration} object.
      */
     protected Reference of_directory_provider_configuration;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

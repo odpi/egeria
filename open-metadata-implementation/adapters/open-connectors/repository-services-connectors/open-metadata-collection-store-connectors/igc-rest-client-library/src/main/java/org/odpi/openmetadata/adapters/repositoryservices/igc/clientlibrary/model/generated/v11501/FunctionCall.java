@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'function_call' asset type in IGC, displayed as 'Function Call' in the IGC UI.
+ * POJO for the {@code function_call} asset type in IGC, displayed as '{@literal Function Call}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,22 +24,22 @@ public class FunctionCall extends Reference {
     public static String getIgcTypeDisplayName() { return "Function Call"; }
 
     /**
-     * The 'function_name' property, displayed as 'Function Name' in the IGC UI.
+     * The {@code function_name} property, displayed as '{@literal Function Name}' in the IGC UI.
      */
     protected String function_name;
 
     /**
-     * The 'for_transforms' property, displayed as 'For Transforms' in the IGC UI.
+     * The {@code for_transforms} property, displayed as '{@literal For Transforms}' in the IGC UI.
      */
     protected Boolean for_transforms;
 
     /**
-     * The 'stage_trigger' property, displayed as 'Stage Trigger' in the IGC UI.
+     * The {@code stage_trigger} property, displayed as '{@literal Stage Trigger}' in the IGC UI.
      */
     protected Boolean stage_trigger;
 
     /**
-     * The 'call_context' property, displayed as 'Call Context' in the IGC UI.
+     * The {@code call_context} property, displayed as '{@literal Call Context}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -51,21 +51,21 @@ public class FunctionCall extends Reference {
     protected String call_context;
 
     /**
-     * The 'executes_function' property, displayed as 'Executes Function' in the IGC UI.
+     * The {@code executes_function} property, displayed as '{@literal Executes Function}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Function} object.
      */
     protected Reference executes_function;
 
     /**
-     * The 'used_in_function' property, displayed as 'Used In Function' in the IGC UI.
+     * The {@code used_in_function} property, displayed as '{@literal Used In Function}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Function} object.
      */
     protected Reference used_in_function;
 
     /**
-     * The 'used_in_filter_constraint' property, displayed as 'Used In Filter Constraint' in the IGC UI.
+     * The {@code used_in_filter_constraint} property, displayed as '{@literal Used In Filter Constraint}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Filterconstraint} object.
      */

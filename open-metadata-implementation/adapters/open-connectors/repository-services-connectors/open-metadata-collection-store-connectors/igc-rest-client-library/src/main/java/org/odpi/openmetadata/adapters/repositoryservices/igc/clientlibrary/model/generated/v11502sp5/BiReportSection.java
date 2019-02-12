@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'bi_report_section' asset type in IGC, displayed as 'BI Report Section' in the IGC UI.
+ * POJO for the {@code bi_report_section} asset type in IGC, displayed as '{@literal BI Report Section}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,17 +24,17 @@ public class BiReportSection extends Reference {
     public static String getIgcTypeDisplayName() { return "BI Report Section"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'alias_(business_name)' property, displayed as 'Alias (Business Name)' in the IGC UI.
+     * The {@code alias_(business_name)} property, displayed as '{@literal Alias (Business Name)}' in the IGC UI.
      */
     @JsonProperty("alias_(business_name)") protected String alias__business_name_;
 
     /**
-     * The 'type' property, displayed as 'Type' in the IGC UI.
+     * The {@code type} property, displayed as '{@literal Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -53,43 +53,43 @@ public class BiReportSection extends Reference {
     protected String type;
 
     /**
-     * The 'label' property, displayed as 'Label' in the IGC UI.
+     * The {@code label} property, displayed as '{@literal Label}' in the IGC UI.
      */
     protected String label;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'sequence' property, displayed as 'Sequence' in the IGC UI.
+     * The {@code sequence} property, displayed as '{@literal Sequence}' in the IGC UI.
      */
     protected Number sequence;
 
     /**
-     * The 'bi_report' property, displayed as 'BI Report' in the IGC UI.
+     * The {@code bi_report} property, displayed as '{@literal BI Report}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link BiReport} object.
      */
     protected Reference bi_report;
 
     /**
-     * The 'bi_report_fields' property, displayed as 'BI Report Fields' in the IGC UI.
+     * The {@code bi_report_fields} property, displayed as '{@literal BI Report Fields}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Reportobject} objects.
      */
     protected ReferenceList bi_report_fields;
 
     /**
-     * The 'contains_sub_section' property, displayed as 'Contains Sub Section' in the IGC UI.
+     * The {@code contains_sub_section} property, displayed as '{@literal Contains Sub Section}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link BiReportSection} objects.
      */
     protected ReferenceList contains_sub_section;
 
     /**
-     * The 'contained_in_report_section' property, displayed as 'Contained in Report Section' in the IGC UI.
+     * The {@code contained_in_report_section} property, displayed as '{@literal Contained in Report Section}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link BiReportSection} object.
      */

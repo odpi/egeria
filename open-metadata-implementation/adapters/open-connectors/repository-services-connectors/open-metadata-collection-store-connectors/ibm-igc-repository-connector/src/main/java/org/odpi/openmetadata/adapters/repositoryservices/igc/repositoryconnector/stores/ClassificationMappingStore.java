@@ -57,7 +57,7 @@ public class ClassificationMappingStore {
     /**
      * Retrieves the listing of all TypeDefs for which classification mappings are implemented.
      *
-     * @return List<TypeDef>
+     * @return {@code List<TypeDef>}
      */
     public List<TypeDef> getTypeDefs() { return this.typeDefs; }
 

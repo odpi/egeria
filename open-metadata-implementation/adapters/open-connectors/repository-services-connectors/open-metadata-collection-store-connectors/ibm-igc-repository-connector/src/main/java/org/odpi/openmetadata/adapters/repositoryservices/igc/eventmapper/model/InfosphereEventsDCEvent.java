@@ -22,7 +22,7 @@ public class InfosphereEventsDCEvent extends InfosphereEvents {
 
     /**
      * The 'mergedRIDs' property lists (comma-separated) the RIDs of any objects that were merged.
-     * Each comma-separated entry takes the form '<type>:RID'.
+     * Each comma-separated entry takes the form {@code <type>:RID}.
      */
     protected String mergedRID;
 
