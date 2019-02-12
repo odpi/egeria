@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'bi_root_folder' asset type in IGC, displayed as 'BI Folder' in the IGC UI.
+ * POJO for the {@code bi_root_folder} asset type in IGC, displayed as '{@literal BI Folder}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,65 +24,65 @@ public class BiRootFolder extends Reference {
     public static String getIgcTypeDisplayName() { return "BI Folder"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'bi_server' property, displayed as 'BI Server' in the IGC UI.
+     * The {@code bi_server} property, displayed as '{@literal BI Server}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link BiServer} object.
      */
     protected Reference bi_server;
 
     /**
-     * The 'contains_bi_folders' property, displayed as 'Contains BI Folders' in the IGC UI.
+     * The {@code contains_bi_folders} property, displayed as '{@literal Contains BI Folders}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link BiFolder} objects.
      */
     protected ReferenceList contains_bi_folders;
 
     /**
-     * The 'bi_reports' property, displayed as 'BI Reports' in the IGC UI.
+     * The {@code bi_reports} property, displayed as '{@literal BI Reports}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link BiReport} objects.
      */
     protected ReferenceList bi_reports;
 
     /**
-     * The 'bi_models' property, displayed as 'BI Models' in the IGC UI.
+     * The {@code bi_models} property, displayed as '{@literal BI Models}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link BiModel} objects.
      */
     protected ReferenceList bi_models;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

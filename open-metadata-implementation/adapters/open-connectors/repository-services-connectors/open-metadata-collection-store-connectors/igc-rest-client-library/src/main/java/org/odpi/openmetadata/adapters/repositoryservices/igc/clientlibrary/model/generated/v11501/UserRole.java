@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'user_role' asset type in IGC, displayed as 'User Role' in the IGC UI.
+ * POJO for the {@code user_role} asset type in IGC, displayed as '{@literal User Role}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,17 +24,17 @@ public class UserRole extends Reference {
     public static String getIgcTypeDisplayName() { return "User Role"; }
 
     /**
-     * The 'name' property, displayed as 'Role' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Role}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'system_role' property, displayed as 'System Role' in the IGC UI.
+     * The {@code system_role} property, displayed as '{@literal System Role}' in the IGC UI.
      */
     protected Boolean system_role;
 
     /**
-     * The 'users' property, displayed as 'Users' in the IGC UI.
+     * The {@code users} property, displayed as '{@literal Users}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Steward} objects.
      */

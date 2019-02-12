@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'role_context' asset type in IGC, displayed as 'Role Context' in the IGC UI.
+ * POJO for the {@code role_context} asset type in IGC, displayed as '{@literal Role Context}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,34 +24,34 @@ public class RoleContext extends Reference {
     public static String getIgcTypeDisplayName() { return "Role Context"; }
 
     /**
-     * The 'context_id' property, displayed as 'Context Id' in the IGC UI.
+     * The {@code context_id} property, displayed as '{@literal Context Id}' in the IGC UI.
      */
     protected String context_id;
 
     /**
-     * The 'defines_role_assignment' property, displayed as 'Defines Role Assignment' in the IGC UI.
+     * The {@code defines_role_assignment} property, displayed as '{@literal Defines Role Assignment}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link RoleAssignment} objects.
      */
     protected ReferenceList defines_role_assignment;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

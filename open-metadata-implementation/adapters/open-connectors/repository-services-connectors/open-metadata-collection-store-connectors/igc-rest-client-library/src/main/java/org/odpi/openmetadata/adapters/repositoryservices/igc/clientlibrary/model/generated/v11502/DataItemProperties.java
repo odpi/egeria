@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'data_item_properties' asset type in IGC, displayed as 'Data Item Properties' in the IGC UI.
+ * POJO for the {@code data_item_properties} asset type in IGC, displayed as '{@literal Data Item Properties}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,103 +24,103 @@ public class DataItemProperties extends Reference {
     public static String getIgcTypeDisplayName() { return "Data Item Properties"; }
 
     /**
-     * The 'belonging_to_parameter_definition' property, displayed as 'Belonging to Parameter Definition' in the IGC UI.
+     * The {@code belonging_to_parameter_definition} property, displayed as '{@literal Belonging to Parameter Definition}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Parameter} object.
      */
     protected Reference belonging_to_parameter_definition;
 
     /**
-     * The 'flow_variable' property, displayed as 'Flow Variable' in the IGC UI.
+     * The {@code flow_variable} property, displayed as '{@literal Flow Variable}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataItem} object.
      */
     protected Reference flow_variable;
 
     /**
-     * The 'column_definition' property, displayed as 'Column Definition' in the IGC UI.
+     * The {@code column_definition} property, displayed as '{@literal Column Definition}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link ColumnDefinition} object.
      */
     protected Reference column_definition;
 
     /**
-     * The 'filler_parents' property, displayed as 'Filler Parents' in the IGC UI.
+     * The {@code filler_parents} property, displayed as '{@literal Filler Parents}' in the IGC UI.
      */
     protected String filler_parents;
 
     /**
-     * The 'nls_map' property, displayed as 'NLS Map' in the IGC UI.
+     * The {@code nls_map} property, displayed as '{@literal NLS Map}' in the IGC UI.
      */
     protected String nls_map;
 
     /**
-     * The 'sync_indicator' property, displayed as 'Sync Indicator' in the IGC UI.
+     * The {@code sync_indicator} property, displayed as '{@literal Sync Indicator}' in the IGC UI.
      */
     protected Boolean sync_indicator;
 
     /**
-     * The 'redefined_field' property, displayed as 'Redefined Field' in the IGC UI.
+     * The {@code redefined_field} property, displayed as '{@literal Redefined Field}' in the IGC UI.
      */
     protected String redefined_field;
 
     /**
-     * The 'association' property, displayed as 'Association' in the IGC UI.
+     * The {@code association} property, displayed as '{@literal Association}' in the IGC UI.
      */
     protected String association;
 
     /**
-     * The 'depend_field' property, displayed as 'Depend Field' in the IGC UI.
+     * The {@code depend_field} property, displayed as '{@literal Depend Field}' in the IGC UI.
      */
     protected String depend_field;
 
     /**
-     * The 'scd_purpose' property, displayed as 'SCD Purpose' in the IGC UI.
+     * The {@code scd_purpose} property, displayed as '{@literal SCD Purpose}' in the IGC UI.
      */
     protected Number scd_purpose;
 
     /**
-     * The 'field_type' property, displayed as 'Field Type' in the IGC UI.
+     * The {@code field_type} property, displayed as '{@literal Field Type}' in the IGC UI.
      */
     protected String field_type;
 
     /**
-     * The 'date_mask' property, displayed as 'Date Mask' in the IGC UI.
+     * The {@code date_mask} property, displayed as '{@literal Date Mask}' in the IGC UI.
      */
     protected String date_mask;
 
     /**
-     * The 'apt_field_prop' property, displayed as 'APT Field Prop' in the IGC UI.
+     * The {@code apt_field_prop} property, displayed as '{@literal APT Field Prop}' in the IGC UI.
      */
     protected String apt_field_prop;
 
     /**
-     * The 'has_sign_indicator' property, displayed as 'Has Sign Indicator' in the IGC UI.
+     * The {@code has_sign_indicator} property, displayed as '{@literal Has Sign Indicator}' in the IGC UI.
      */
     protected Boolean has_sign_indicator;
 
     /**
-     * The 'usage' property, displayed as 'Usage' in the IGC UI.
+     * The {@code usage} property, displayed as '{@literal Usage}' in the IGC UI.
      */
     protected String usage;
 
     /**
-     * The 'scale' property, displayed as 'Scale' in the IGC UI.
+     * The {@code scale} property, displayed as '{@literal Scale}' in the IGC UI.
      */
     protected Number scale;
 
     /**
-     * The 'is_u_string' property, displayed as 'Is U String' in the IGC UI.
+     * The {@code is_u_string} property, displayed as '{@literal Is U String}' in the IGC UI.
      */
     protected Boolean is_u_string;
 
     /**
-     * The 'sign_option' property, displayed as 'Sign Option' in the IGC UI.
+     * The {@code sign_option} property, displayed as '{@literal Sign Option}' in the IGC UI.
      */
     protected Number sign_option;
 
     /**
-     * The 'pad_char' property, displayed as 'Pad Char' in the IGC UI.
+     * The {@code pad_char} property, displayed as '{@literal Pad Char}' in the IGC UI.
      */
     protected String pad_char;
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'transform_argument' asset type in IGC, displayed as 'Transform Argument' in the IGC UI.
+ * POJO for the {@code transform_argument} asset type in IGC, displayed as '{@literal Transform Argument}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,51 +24,51 @@ public class TransformArgument extends Reference {
     public static String getIgcTypeDisplayName() { return "Transform Argument"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'transform' property, displayed as 'Transform' in the IGC UI.
+     * The {@code transform} property, displayed as '{@literal Transform}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link TransformsFunction} object.
      */
     protected Reference transform;
 
     /**
-     * The 'data_elements' property, displayed as 'Data Elements' in the IGC UI.
+     * The {@code data_elements} property, displayed as '{@literal Data Elements}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataElement} object.
      */
     protected Reference data_elements;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

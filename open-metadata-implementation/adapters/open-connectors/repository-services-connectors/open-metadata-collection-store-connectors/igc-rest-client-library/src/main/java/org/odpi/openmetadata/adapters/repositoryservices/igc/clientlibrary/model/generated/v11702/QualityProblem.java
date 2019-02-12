@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'quality_problem' asset type in IGC, displayed as 'Quality Score Problem' in the IGC UI.
+ * POJO for the {@code quality_problem} asset type in IGC, displayed as '{@literal Quality Score Problem}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,62 +24,62 @@ public class QualityProblem extends Reference {
     public static String getIgcTypeDisplayName() { return "Quality Score Problem"; }
 
     /**
-     * The 'qualityScore' property, displayed as 'Quality Score' in the IGC UI.
+     * The {@code qualityScore} property, displayed as '{@literal Quality Score}' in the IGC UI.
      */
     protected Number qualityScore;
 
     /**
-     * The 'QualityProblemTypeName' property, displayed as 'Quality Problem Type Name' in the IGC UI.
+     * The {@code QualityProblemTypeName} property, displayed as '{@literal Quality Problem Type Name}' in the IGC UI.
      */
     protected String QualityProblemTypeName;
 
     /**
-     * The 'details' property, displayed as 'Details' in the IGC UI.
+     * The {@code details} property, displayed as '{@literal Details}' in the IGC UI.
      */
     protected String details;
 
     /**
-     * The 'confidence' property, displayed as 'Confidence' in the IGC UI.
+     * The {@code confidence} property, displayed as '{@literal Confidence}' in the IGC UI.
      */
     protected Number confidence;
 
     /**
-     * The 'occurrences' property, displayed as 'Occurrences' in the IGC UI.
+     * The {@code occurrences} property, displayed as '{@literal Occurrences}' in the IGC UI.
      */
     protected Number occurrences;
 
     /**
-     * The 'percent_occurrences' property, displayed as 'Percent Occurrences' in the IGC UI.
+     * The {@code percent_occurrences} property, displayed as '{@literal Percent Occurrences}' in the IGC UI.
      */
     protected Number percent_occurrences;
 
     /**
-     * The 'QualityProblemTypeDescription' property, displayed as 'Quality Problem Type Description' in the IGC UI.
+     * The {@code QualityProblemTypeDescription} property, displayed as '{@literal Quality Problem Type Description}' in the IGC UI.
      */
     protected String QualityProblemTypeDescription;
 
     /**
-     * The 'Column' property, displayed as 'Column' in the IGC UI.
+     * The {@code Column} property, displayed as '{@literal Column}' in the IGC UI.
      */
     protected String Column;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 
