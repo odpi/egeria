@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'quality_Problem_Type' asset type in IGC, displayed as 'QualityProblemType' in the IGC UI.
+ * POJO for the {@code quality_Problem_Type} asset type in IGC, displayed as '{@literal QualityProblemType}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,17 +24,17 @@ public class QualityProblemType extends Reference {
     public static String getIgcTypeDisplayName() { return "QualityProblemType"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'description' property, displayed as 'Description' in the IGC UI.
+     * The {@code description} property, displayed as '{@literal Description}' in the IGC UI.
      */
     protected String description;
 
     /**
-     * The 'code' property, displayed as 'Code' in the IGC UI.
+     * The {@code code} property, displayed as '{@literal Code}' in the IGC UI.
      */
     protected String code;
 

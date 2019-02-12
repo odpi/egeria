@@ -25,7 +25,7 @@ import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrange
 
 /**
  * Initial policy plugin for GaianDB
- * Refer to the top level README.md in this project for further information on how to build, deploy & use
+ * Refer to the top level README.md in this project for further information on how to build, deploy and use
  */
 public class RangerPolicyResultFilter extends SQLResultFilterX {
 
@@ -357,10 +357,10 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 
     /**
      * Overwritten in setQueriedColumns, which provides a more precise list
-     * accounting for what columns are used in select & predicate.
+     * accounting for what columns are used in select and predicate.
      *
      * @param logicalTableResultSetMetaData logical table structure
-     * @return the list of the columns are used in select & predicate
+     * @return the list of the columns are used in select and predicate
      * @throws SQLException provides information on a database access error or other errors
      */
     private List<String> getColumnNamesForLogicalTableResultSet(ResultSetMetaData logicalTableResultSetMetaData) throws SQLException {

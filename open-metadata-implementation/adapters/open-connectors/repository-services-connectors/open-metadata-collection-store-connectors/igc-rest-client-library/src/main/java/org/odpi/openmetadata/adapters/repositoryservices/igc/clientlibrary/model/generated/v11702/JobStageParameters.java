@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'job_stage_parameters' asset type in IGC, displayed as 'Job Stage Parameters' in the IGC UI.
+ * POJO for the {@code job_stage_parameters} asset type in IGC, displayed as '{@literal Job Stage Parameters}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,84 +24,84 @@ public class JobStageParameters extends Reference {
     public static String getIgcTypeDisplayName() { return "Job Stage Parameters"; }
 
     /**
-     * The 'transaction_groupable' property, displayed as 'Transaction Groupable' in the IGC UI.
+     * The {@code transaction_groupable} property, displayed as '{@literal Transaction Groupable}' in the IGC UI.
      */
     protected Number transaction_groupable;
 
     /**
-     * The 'of_ds_parameter_def' property, displayed as 'Of DS Parameter Def' in the IGC UI.
+     * The {@code of_ds_parameter_def} property, displayed as '{@literal Of DS Parameter Def}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Parameter} object.
      */
     protected Reference of_ds_parameter_def;
 
     /**
-     * The 'a_xmeta_locking_root' property, displayed as 'A XMeta Locking Root' in the IGC UI.
+     * The {@code a_xmeta_locking_root} property, displayed as '{@literal A XMeta Locking Root}' in the IGC UI.
      */
     protected String a_xmeta_locking_root;
 
     /**
-     * The 'locked' property, displayed as 'Locked' in the IGC UI.
+     * The {@code locked} property, displayed as '{@literal Locked}' in the IGC UI.
      */
     protected Boolean locked;
 
     /**
-     * The 'hidden' property, displayed as 'Hidden' in the IGC UI.
+     * The {@code hidden} property, displayed as '{@literal Hidden}' in the IGC UI.
      */
     protected Boolean hidden;
 
     /**
-     * The 'for_output' property, displayed as 'For Output' in the IGC UI.
+     * The {@code for_output} property, displayed as '{@literal For Output}' in the IGC UI.
      */
     protected Number for_output;
 
     /**
-     * The 'for_stage' property, displayed as 'For Stage' in the IGC UI.
+     * The {@code for_stage} property, displayed as '{@literal For Stage}' in the IGC UI.
      */
     protected Number for_stage;
 
     /**
-     * The 'quote_string' property, displayed as 'Quote String' in the IGC UI.
+     * The {@code quote_string} property, displayed as '{@literal Quote String}' in the IGC UI.
      */
     protected Number quote_string;
 
     /**
-     * The 'conv_type' property, displayed as 'Conv Type' in the IGC UI.
+     * The {@code conv_type} property, displayed as '{@literal Conv Type}' in the IGC UI.
      */
     protected Number conv_type;
 
     /**
-     * The 'for_input' property, displayed as 'For Input' in the IGC UI.
+     * The {@code for_input} property, displayed as '{@literal For Input}' in the IGC UI.
      */
     protected Number for_input;
 
     /**
-     * The 'display_style' property, displayed as 'Display Style' in the IGC UI.
+     * The {@code display_style} property, displayed as '{@literal Display Style}' in the IGC UI.
      */
     protected Number display_style;
 
     /**
-     * The 'view_data' property, displayed as 'View Data' in the IGC UI.
+     * The {@code view_data} property, displayed as '{@literal View Data}' in the IGC UI.
      */
     protected Number view_data;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

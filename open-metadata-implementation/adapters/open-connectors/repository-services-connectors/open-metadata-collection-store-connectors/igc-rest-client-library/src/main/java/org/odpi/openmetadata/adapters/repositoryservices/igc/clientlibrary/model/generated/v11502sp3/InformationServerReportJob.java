@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'information_server_report_(job)' asset type in IGC, displayed as 'Information Server Report (Job)' in the IGC UI.
+ * POJO for the {@code information_server_report_(job)} asset type in IGC, displayed as '{@literal Information Server Report (Job)}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,57 +24,57 @@ public class InformationServerReportJob extends Reference {
     public static String getIgcTypeDisplayName() { return "Information Server Report (Job)"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'description' property, displayed as 'Description' in the IGC UI.
+     * The {@code description} property, displayed as '{@literal Description}' in the IGC UI.
      */
     protected String description;
 
     /**
-     * The 'creator' property, displayed as 'Creator' in the IGC UI.
+     * The {@code creator} property, displayed as '{@literal Creator}' in the IGC UI.
      */
     protected String creator;
 
     /**
-     * The 'product' property, displayed as 'Product' in the IGC UI.
+     * The {@code product} property, displayed as '{@literal Product}' in the IGC UI.
      */
     protected String product;
 
     /**
-     * The 'host_(engine)' property, displayed as 'Host (Engine)' in the IGC UI.
+     * The {@code host_(engine)} property, displayed as '{@literal Host (Engine)}' in the IGC UI.
      */
     @JsonProperty("host_(engine)") protected String host__engine_;
 
     /**
-     * The 'transformation_project' property, displayed as 'Transformation Project' in the IGC UI.
+     * The {@code transformation_project} property, displayed as '{@literal Transformation Project}' in the IGC UI.
      */
     protected String transformation_project;
 
     /**
-     * The 'job' property, displayed as 'Job' in the IGC UI.
+     * The {@code job} property, displayed as '{@literal Job}' in the IGC UI.
      */
     protected ArrayList<String> job;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'term_history' asset type in IGC, displayed as 'Term History' in the IGC UI.
+ * POJO for the {@code term_history} asset type in IGC, displayed as '{@literal Term History}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,29 +24,29 @@ public class TermHistory extends Reference {
     public static String getIgcTypeDisplayName() { return "Term History"; }
 
     /**
-     * The 'term' property, displayed as 'Term' in the IGC UI.
+     * The {@code term} property, displayed as '{@literal Term}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link InformationAsset} object.
      */
     protected Reference term;
 
     /**
-     * The 'date' property, displayed as 'Date' in the IGC UI.
+     * The {@code date} property, displayed as '{@literal Date}' in the IGC UI.
      */
     protected Date date;
 
     /**
-     * The 'comment' property, displayed as 'Comment' in the IGC UI.
+     * The {@code comment} property, displayed as '{@literal Comment}' in the IGC UI.
      */
     protected ArrayList<String> comment;
 
     /**
-     * The 'edited_by' property, displayed as 'Edited By' in the IGC UI.
+     * The {@code edited_by} property, displayed as '{@literal Edited By}' in the IGC UI.
      */
     protected String edited_by;
 
     /**
-     * The 'changed_properties' property, displayed as 'Changed Properties' in the IGC UI.
+     * The {@code changed_properties} property, displayed as '{@literal Changed Properties}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link ChangedProperties} objects.
      */

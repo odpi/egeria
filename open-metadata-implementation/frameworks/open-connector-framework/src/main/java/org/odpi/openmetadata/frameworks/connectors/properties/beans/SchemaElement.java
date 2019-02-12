@@ -21,7 +21,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         <li>SchemaAttribute describes the use of another schema as part of the structure within a bigger schema.</li>
  *     </ul>
  *     Assets are linked to a SchemaType.
- * </p>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

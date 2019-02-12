@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'foreign_key' asset type in IGC, displayed as 'Foreign Key' in the IGC UI.
+ * POJO for the {@code foreign_key} asset type in IGC, displayed as '{@literal Foreign Key}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,21 +24,21 @@ public class ForeignKey extends Reference {
     public static String getIgcTypeDisplayName() { return "Foreign Key"; }
 
     /**
-     * The 'included_database_columns' property, displayed as 'Included Database Columns' in the IGC UI.
+     * The {@code included_database_columns} property, displayed as '{@literal Included Database Columns}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataItem} objects.
      */
     protected ReferenceList included_database_columns;
 
     /**
-     * The 'database_table' property, displayed as 'Database Table' in the IGC UI.
+     * The {@code database_table} property, displayed as '{@literal Database Table}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Datagroup} objects.
      */
     protected ReferenceList database_table;
 
     /**
-     * The 'sorting' property, displayed as 'Sorting' in the IGC UI.
+     * The {@code sorting} property, displayed as '{@literal Sorting}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'job_constraint' asset type in IGC, displayed as 'Job Constraint' in the IGC UI.
+ * POJO for the {@code job_constraint} asset type in IGC, displayed as '{@literal Job Constraint}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,46 +24,46 @@ public class JobConstraint extends Reference {
     public static String getIgcTypeDisplayName() { return "Job Constraint"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'of_link' property, displayed as 'Link' in the IGC UI.
+     * The {@code of_link} property, displayed as '{@literal Link}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MainObject} object.
      */
     protected Reference of_link;
 
     /**
-     * The 'expression' property, displayed as 'Expression' in the IGC UI.
+     * The {@code expression} property, displayed as '{@literal Expression}' in the IGC UI.
      */
     protected String expression;
 
     /**
-     * The 'uses_flow_variable' property, displayed as 'Stage Columns' in the IGC UI.
+     * The {@code uses_flow_variable} property, displayed as '{@literal Stage Columns}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataItem} objects.
      */
     protected ReferenceList uses_flow_variable;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 
