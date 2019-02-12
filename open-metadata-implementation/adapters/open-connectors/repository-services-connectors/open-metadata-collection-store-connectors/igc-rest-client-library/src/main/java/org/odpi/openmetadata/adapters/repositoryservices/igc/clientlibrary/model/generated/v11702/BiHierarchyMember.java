@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'bi_hierarchy_member' asset type in IGC, displayed as 'BI Hierarchy Member' in the IGC UI.
+ * POJO for the {@code bi_hierarchy_member} asset type in IGC, displayed as '{@literal BI Hierarchy Member}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,21 +24,21 @@ public class BiHierarchyMember extends Reference {
     public static String getIgcTypeDisplayName() { return "BI Hierarchy Member"; }
 
     /**
-     * The 'bi_level' property, displayed as 'BI Level' in the IGC UI.
+     * The {@code bi_level} property, displayed as '{@literal BI Level}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link BiLevel} object.
      */
     protected Reference bi_level;
 
     /**
-     * The 'child_level' property, displayed as 'Child Level' in the IGC UI.
+     * The {@code child_level} property, displayed as '{@literal Child Level}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link BiLevel} objects.
      */
     protected ReferenceList child_level;
 
     /**
-     * The 'sorting_order' property, displayed as 'Sorting Order' in the IGC UI.
+     * The {@code sorting_order} property, displayed as '{@literal Sorting Order}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -50,7 +50,7 @@ public class BiHierarchyMember extends Reference {
     protected String sorting_order;
 
     /**
-     * The 'sequence' property, displayed as 'Sequence' in the IGC UI.
+     * The {@code sequence} property, displayed as '{@literal Sequence}' in the IGC UI.
      */
     protected Number sequence;
 

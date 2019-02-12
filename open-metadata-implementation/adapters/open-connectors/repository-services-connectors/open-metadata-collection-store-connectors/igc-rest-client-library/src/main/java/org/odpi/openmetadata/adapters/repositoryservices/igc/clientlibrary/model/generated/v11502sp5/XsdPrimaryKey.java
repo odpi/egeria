@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'xsd_primary_key' asset type in IGC, displayed as 'XSD Primary Key' in the IGC UI.
+ * POJO for the {@code xsd_primary_key} asset type in IGC, displayed as '{@literal XSD Primary Key}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,58 +24,58 @@ public class XsdPrimaryKey extends Reference {
     public static String getIgcTypeDisplayName() { return "XSD Primary Key"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'xsd_element' property, displayed as 'XSD Element' in the IGC UI.
+     * The {@code xsd_element} property, displayed as '{@literal XSD Element}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MainObject} object.
      */
     protected Reference xsd_element;
 
     /**
-     * The 'namespace' property, displayed as 'Namespace' in the IGC UI.
+     * The {@code namespace} property, displayed as '{@literal Namespace}' in the IGC UI.
      */
     protected String namespace;
 
     /**
-     * The 'selector' property, displayed as 'Selector' in the IGC UI.
+     * The {@code selector} property, displayed as '{@literal Selector}' in the IGC UI.
      */
     protected String selector;
 
     /**
-     * The 'xsd_elements_or_attributes' property, displayed as 'XSD Elements or Attributes' in the IGC UI.
+     * The {@code xsd_elements_or_attributes} property, displayed as '{@literal XSD Elements or Attributes}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MainObject} objects.
      */
     protected ReferenceList xsd_elements_or_attributes;
 
     /**
-     * The 'referenced_by_xsd_keys' property, displayed as 'Referenced by XSD Keys' in the IGC UI.
+     * The {@code referenced_by_xsd_keys} property, displayed as '{@literal Referenced by XSD Keys}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link XsdForeignKey} objects.
      */
     protected ReferenceList referenced_by_xsd_keys;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

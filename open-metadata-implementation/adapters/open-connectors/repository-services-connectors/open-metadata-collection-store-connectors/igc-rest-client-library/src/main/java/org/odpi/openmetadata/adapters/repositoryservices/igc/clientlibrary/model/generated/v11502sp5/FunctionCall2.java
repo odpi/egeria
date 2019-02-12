@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'functioncall' asset type in IGC, displayed as 'FunctionCall' in the IGC UI.
+ * POJO for the {@code functioncall} asset type in IGC, displayed as '{@literal FunctionCall}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,7 +24,7 @@ public class FunctionCall2 extends Reference {
     public static String getIgcTypeDisplayName() { return "FunctionCall"; }
 
     /**
-     * The 'call_context' property, displayed as 'Call Context' in the IGC UI.
+     * The {@code call_context} property, displayed as '{@literal Call Context}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -36,21 +36,21 @@ public class FunctionCall2 extends Reference {
     protected String call_context;
 
     /**
-     * The 'executes_function' property, displayed as 'Executes Function' in the IGC UI.
+     * The {@code executes_function} property, displayed as '{@literal Executes Function}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Function} object.
      */
     protected Reference executes_function;
 
     /**
-     * The 'used_in_function' property, displayed as 'Used In Function' in the IGC UI.
+     * The {@code used_in_function} property, displayed as '{@literal Used In Function}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Function} object.
      */
     protected Reference used_in_function;
 
     /**
-     * The 'used_in_filter_constraint' property, displayed as 'Used In Filter Constraint' in the IGC UI.
+     * The {@code used_in_filter_constraint} property, displayed as '{@literal Used In Filter Constraint}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Filterconstraint} object.
      */

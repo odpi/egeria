@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'custom_attribute' asset type in IGC, displayed as 'Custom Attribute' in the IGC UI.
+ * POJO for the {@code custom_attribute} asset type in IGC, displayed as '{@literal Custom Attribute}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,7 +24,7 @@ public class CustomAttribute extends Reference {
     public static String getIgcTypeDisplayName() { return "Custom Attribute"; }
 
     /**
-     * The 'custom_attribute_type' property, displayed as 'Custom Attribute Type' in the IGC UI.
+     * The {@code custom_attribute_type} property, displayed as '{@literal Custom Attribute Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -39,7 +39,7 @@ public class CustomAttribute extends Reference {
     protected String custom_attribute_type;
 
     /**
-     * The 'applies_to' property, displayed as 'Applies To' in the IGC UI.
+     * The {@code applies_to} property, displayed as '{@literal Applies To}' in the IGC UI.
      */
     protected String applies_to;
 

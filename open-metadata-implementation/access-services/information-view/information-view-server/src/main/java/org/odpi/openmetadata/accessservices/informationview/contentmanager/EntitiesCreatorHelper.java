@@ -62,7 +62,13 @@ public class EntitiesCreatorHelper {
      * @param typeName             of the entity type def
      * @param instanceProperties   specific to the entity
      * @return the new entity added to the metadata collection
-     * @throws Exception
+     * @throws ClassificationErrorException
+     * @throws StatusNotSupportedException
+     * @throws UserNotAuthorizedException
+     * @throws InvalidParameterException
+     * @throws RepositoryErrorException
+     * @throws PropertyErrorException
+     * @throws TypeErrorException
      */
     private EntityDetail addEntity(String metadataCollectionId,
                                    String userName,
@@ -109,7 +115,13 @@ public class EntitiesCreatorHelper {
      * @param entityOneGUID        giud of the first end of the relationship
      * @param entityTwoGUID        giud of the second end of the relationship
      * @return the created relationship
-     * @throws Exception
+     * @throws StatusNotSupportedException
+     * @throws UserNotAuthorizedException
+     * @throws EntityNotKnownException
+     * @throws InvalidParameterException
+     * @throws RepositoryErrorException
+     * @throws PropertyErrorException
+     * @throws TypeErrorException
      */
     private Relationship addRelationship(String metadataCollectionId,
                                          String typeName,
@@ -281,7 +293,7 @@ public class EntitiesCreatorHelper {
      * @param relationship - the relationship instance to be checked
      * @param guid1        is the guid of one end
      * @param guid2        is the guid of the second end
-     * @return
+     * @return boolean
      */
     private boolean checkRelationshipEnds(Relationship relationship, String guid1, String guid2) {
         String end1Guid = relationship.getEntityOneProxy().getGUID();
@@ -296,7 +308,16 @@ public class EntitiesCreatorHelper {
      * @param qualifiedName - qualified name property of the entity, unique for the same entity type
      * @param properties    specific to the entity type
      * @return the existing entity with the given qualified name or the newly created entity with the given qualified name
-     * @throws Exception
+     * @throws InvalidParameterException
+     * @throws PropertyErrorException
+     * @throws RepositoryErrorException
+     * @throws EntityNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws PagingErrorException
+     * @throws ClassificationErrorException
+     * @throws UserNotAuthorizedException
+     * @throws TypeErrorException
+     * @throws StatusNotSupportedException
      */
     public EntityDetail addEntity(String typeName,
                                   String qualifiedName,
@@ -312,7 +333,16 @@ public class EntitiesCreatorHelper {
      * @param properties      specific to the entity type
      * @param classifications classifications to be added to entity
      * @return the existing entity with the given qualified name or the newly created entity with the given qualified name
-     * @throws Exception
+     * @throws InvalidParameterException
+     * @throws StatusNotSupportedException
+     * @throws PropertyErrorException
+     * @throws EntityNotKnownException
+     * @throws TypeErrorException
+     * @throws FunctionNotSupportedException
+     * @throws PagingErrorException
+     * @throws ClassificationErrorException
+     * @throws UserNotAuthorizedException
+     * @throws RepositoryErrorException
      */
     public EntityDetail addEntity(String typeName,
                                   String qualifiedName,
@@ -368,7 +398,16 @@ public class EntitiesCreatorHelper {
      * @param source           name of the relationship creator
      * @param properties       specific to the relationship type
      * @return the existing relationship with the given qualified name or the newly created relationship with the given qualified name
-     * @throws Exception
+     * @throws InvalidParameterException
+     * @throws TypeErrorException
+     * @throws TypeDefNotKnownException
+     * @throws PropertyErrorException
+     * @throws EntityNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws PagingErrorException
+     * @throws UserNotAuthorizedException
+     * @throws RepositoryErrorException
+     * @throws StatusNotSupportedException
      */
     public Relationship addRelationship(String relationshipType,
                                         String guid1,

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'job_run_activity' asset type in IGC, displayed as 'Job Run Activity' in the IGC UI.
+ * POJO for the {@code job_run_activity} asset type in IGC, displayed as '{@literal Job Run Activity}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,49 +24,49 @@ public class JobRunActivity extends Reference {
     public static String getIgcTypeDisplayName() { return "Job Run Activity"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'job_run' property, displayed as 'Job Run' in the IGC UI.
+     * The {@code job_run} property, displayed as '{@literal Job Run}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link JobRun} object.
      */
     protected Reference job_run;
 
     /**
-     * The 'x_emits_read_event_display_name' property, displayed as 'X Emits Read Event Display Name' in the IGC UI.
+     * The {@code x_emits_read_event_display_name} property, displayed as '{@literal X Emits Read Event Display Name}' in the IGC UI.
      */
     protected ArrayList<String> x_emits_read_event_display_name;
 
     /**
-     * The 'x_emits_write_event_display_name' property, displayed as 'X Emits Write Event Display Name' in the IGC UI.
+     * The {@code x_emits_write_event_display_name} property, displayed as '{@literal X Emits Write Event Display Name}' in the IGC UI.
      */
     protected ArrayList<String> x_emits_write_event_display_name;
 
     /**
-     * The 'x_emits_fail_events_display_name' property, displayed as 'X Emits Fail Events Display Name' in the IGC UI.
+     * The {@code x_emits_fail_events_display_name} property, displayed as '{@literal X Emits Fail Events Display Name}' in the IGC UI.
      */
     protected ArrayList<String> x_emits_fail_events_display_name;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'classification' asset type in IGC, displayed as 'Classification' in the IGC UI.
+ * POJO for the {@code classification} asset type in IGC, displayed as '{@literal Classification}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,31 +24,31 @@ public class Classification extends Reference {
     public static String getIgcTypeDisplayName() { return "Classification"; }
 
     /**
-     * The 'data_class' property, displayed as 'Data Class' in the IGC UI.
+     * The {@code data_class} property, displayed as '{@literal Data Class}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataClass} object.
      */
     protected Reference data_class;
 
     /**
-     * The 'classifies_asset' property, displayed as 'Asset' in the IGC UI.
+     * The {@code classifies_asset} property, displayed as '{@literal Asset}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MainObject} object.
      */
     protected Reference classifies_asset;
 
     /**
-     * The 'selected' property, displayed as 'Selected' in the IGC UI.
+     * The {@code selected} property, displayed as '{@literal Selected}' in the IGC UI.
      */
     protected Boolean selected;
 
     /**
-     * The 'detected' property, displayed as 'Detected' in the IGC UI.
+     * The {@code detected} property, displayed as '{@literal Detected}' in the IGC UI.
      */
     protected Boolean detected;
 
     /**
-     * The 'detectedState' property, displayed as 'Type' in the IGC UI.
+     * The {@code detectedState} property, displayed as '{@literal Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -59,27 +59,27 @@ public class Classification extends Reference {
     protected String detectedState;
 
     /**
-     * The 'confidencePercent' property, displayed as 'Confidence (Percent)' in the IGC UI.
+     * The {@code confidencePercent} property, displayed as '{@literal Confidence (Percent)}' in the IGC UI.
      */
     protected Number confidencePercent;
 
     /**
-     * The 'threshold' property, displayed as 'Threshold' in the IGC UI.
+     * The {@code threshold} property, displayed as '{@literal Threshold}' in the IGC UI.
      */
     protected Number threshold;
 
     /**
-     * The 'value_frequency' property, displayed as 'Value Frequency' in the IGC UI.
+     * The {@code value_frequency} property, displayed as '{@literal Value Frequency}' in the IGC UI.
      */
     protected Number value_frequency;
 
     /**
-     * The 'date' property, displayed as 'Date' in the IGC UI.
+     * The {@code date} property, displayed as '{@literal Date}' in the IGC UI.
      */
     protected Date date;
 
     /**
-     * The 'column_analysis' property, displayed as 'Detected from Column Analysis' in the IGC UI.
+     * The {@code column_analysis} property, displayed as '{@literal Detected from Column Analysis}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MainObject} objects.
      */

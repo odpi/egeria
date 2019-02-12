@@ -506,7 +506,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
      * Parses the RIDs out of the provided payload string.
      *
      * @param payload a string of RIDs from an IMAM share event
-     * @return List<String> of just the RIDs
+     * @return {@code List<String>} of just the RIDs
      */
     private List<String> getRIDsFromEventString(String payload) {
 
@@ -1171,7 +1171,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
      * (Note that this assumes a given classification type will only have one instance in the list!)
      *
      * @param classifications
-     * @return
+     * @return {@code Map<String, Classification>}
      */
     private Map<String, Classification> getClassificationMapFromList(List<Classification> classifications) {
         HashMap<String, Classification> map = new HashMap<>();
