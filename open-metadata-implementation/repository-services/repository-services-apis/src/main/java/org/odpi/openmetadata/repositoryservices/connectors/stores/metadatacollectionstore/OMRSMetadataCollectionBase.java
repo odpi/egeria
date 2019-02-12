@@ -15,7 +15,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.List;
 import java.util.Date;
-import java.util.function.Function;
 
 /**
  * <p>
