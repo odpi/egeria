@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'file_record_analysis' asset type in IGC, displayed as 'Record Analysis' in the IGC UI.
+ * POJO for the {@code file_record_analysis} asset type in IGC, displayed as '{@literal Record Analysis}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,102 +24,102 @@ public class FileRecordAnalysis extends Reference {
     public static String getIgcTypeDisplayName() { return "Record Analysis"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'project' property, displayed as 'Project' in the IGC UI.
+     * The {@code project} property, displayed as '{@literal Project}' in the IGC UI.
      */
     protected String project;
 
     /**
-     * The 'data_file_record' property, displayed as 'Data File Record' in the IGC UI.
+     * The {@code data_file_record} property, displayed as '{@literal Data File Record}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataFileRecord} object.
      */
     protected Reference data_file_record;
 
     /**
-     * The 'review_date' property, displayed as 'Review Date' in the IGC UI.
+     * The {@code review_date} property, displayed as '{@literal Review Date}' in the IGC UI.
      */
     protected Date review_date;
 
     /**
-     * The 'number_of_fields' property, displayed as 'Number of Fields' in the IGC UI.
+     * The {@code number_of_fields} property, displayed as '{@literal Number of Fields}' in the IGC UI.
      */
     protected Number number_of_fields;
 
     /**
-     * The 'number_of_rows' property, displayed as 'Number of Rows' in the IGC UI.
+     * The {@code number_of_rows} property, displayed as '{@literal Number of Rows}' in the IGC UI.
      */
     protected Number number_of_rows;
 
     /**
-     * The 'primary_key_duplicates' property, displayed as 'Primary Key Duplicates' in the IGC UI.
+     * The {@code primary_key_duplicates} property, displayed as '{@literal Primary Key Duplicates}' in the IGC UI.
      */
     protected Number primary_key_duplicates;
 
     /**
-     * The 'foreign_key_violations' property, displayed as 'Foreign Key Violations' in the IGC UI.
+     * The {@code foreign_key_violations} property, displayed as '{@literal Foreign Key Violations}' in the IGC UI.
      */
     protected Number foreign_key_violations;
 
     /**
-     * The 'selected_primary_key' property, displayed as 'User Selected Primary Key' in the IGC UI.
+     * The {@code selected_primary_key} property, displayed as '{@literal User Selected Primary Key}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList selected_primary_key;
 
     /**
-     * The 'selected_foreign_key' property, displayed as 'User Selected Foreign Key' in the IGC UI.
+     * The {@code selected_foreign_key} property, displayed as '{@literal User Selected Foreign Key}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList selected_foreign_key;
 
     /**
-     * The 'selected_natural_key' property, displayed as 'User Selected Natural Key' in the IGC UI.
+     * The {@code selected_natural_key} property, displayed as '{@literal User Selected Natural Key}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList selected_natural_key;
 
     /**
-     * The 'quality_score_percent' property, displayed as 'Quality Score' in the IGC UI.
+     * The {@code quality_score_percent} property, displayed as '{@literal Quality Score}' in the IGC UI.
      */
     protected String quality_score_percent;
 
     /**
-     * The 'nb_record_tested' property, displayed as 'Number of Records Tested' in the IGC UI.
+     * The {@code nb_record_tested} property, displayed as '{@literal Number of Records Tested}' in the IGC UI.
      */
     protected Number nb_record_tested;
 
     /**
-     * The 'quality_score_problems' property, displayed as 'Quality Score Problems' in the IGC UI.
+     * The {@code quality_score_problems} property, displayed as '{@literal Quality Score Problems}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link QualityProblem} objects.
      */
     protected ReferenceList quality_score_problems;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

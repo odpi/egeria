@@ -40,7 +40,6 @@ public class ConnectorBroker
      *
      * @param connection connection properties
      * @param methodName calling method
-     * @return ConnectorType object
      * @throws ConnectionCheckedException null connection detected
      */
     private void  validateConnectionNotNull(ConnectionProperties  connection,

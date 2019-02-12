@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'job_run' asset type in IGC, displayed as 'Job Run' in the IGC UI.
+ * POJO for the {@code job_run} asset type in IGC, displayed as '{@literal Job Run}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,71 +24,71 @@ public class JobRun extends Reference {
     public static String getIgcTypeDisplayName() { return "Job Run"; }
 
     /**
-     * The 'translated_summary' property, displayed as 'Name' in the IGC UI.
+     * The {@code translated_summary} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String translated_summary;
 
     /**
-     * The 'job' property, displayed as 'Job' in the IGC UI.
+     * The {@code job} property, displayed as '{@literal Job}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Dsjob} object.
      */
     protected Reference job;
 
     /**
-     * The 'invocation_id' property, displayed as 'Invocation ID' in the IGC UI.
+     * The {@code invocation_id} property, displayed as '{@literal Invocation ID}' in the IGC UI.
      */
     protected String invocation_id;
 
     /**
-     * The 'wave_number' property, displayed as 'Wave Number' in the IGC UI.
+     * The {@code wave_number} property, displayed as '{@literal Wave Number}' in the IGC UI.
      */
     protected String wave_number;
 
     /**
-     * The 'omd_file_name' property, displayed as 'OMD File Name' in the IGC UI.
+     * The {@code omd_file_name} property, displayed as '{@literal OMD File Name}' in the IGC UI.
      */
     protected String omd_file_name;
 
     /**
-     * The 'starting_date' property, displayed as 'Starting Date' in the IGC UI.
+     * The {@code starting_date} property, displayed as '{@literal Starting Date}' in the IGC UI.
      */
     protected Date starting_date;
 
     /**
-     * The 'ending_date' property, displayed as 'Ending Date' in the IGC UI.
+     * The {@code ending_date} property, displayed as '{@literal Ending Date}' in the IGC UI.
      */
     protected Date ending_date;
 
     /**
-     * The 'translated_status_code' property, displayed as 'Status' in the IGC UI.
+     * The {@code translated_status_code} property, displayed as '{@literal Status}' in the IGC UI.
      */
     protected String translated_status_code;
 
     /**
-     * The 'parameters' property, displayed as 'Parameters' in the IGC UI.
+     * The {@code parameters} property, displayed as '{@literal Parameters}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link JobParameter} objects.
      */
     protected ReferenceList parameters;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

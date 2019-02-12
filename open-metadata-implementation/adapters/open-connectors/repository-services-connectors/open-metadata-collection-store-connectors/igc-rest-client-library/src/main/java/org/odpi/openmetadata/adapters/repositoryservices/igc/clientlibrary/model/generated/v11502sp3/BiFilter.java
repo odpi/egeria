@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'bi_filter' asset type in IGC, displayed as 'BI Filter' in the IGC UI.
+ * POJO for the {@code bi_filter} asset type in IGC, displayed as '{@literal BI Filter}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,63 +24,63 @@ public class BiFilter extends Reference {
     public static String getIgcTypeDisplayName() { return "BI Filter"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'context' property, displayed as 'Context' in the IGC UI.
+     * The {@code context} property, displayed as '{@literal Context}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Olapobject} objects.
      */
     protected ReferenceList context;
 
     /**
-     * The 'bi_model' property, displayed as 'BI Model' in the IGC UI.
+     * The {@code bi_model} property, displayed as '{@literal BI Model}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link BiModel} object.
      */
     protected Reference bi_model;
 
     /**
-     * The 'bi_collection' property, displayed as 'BI Collection' in the IGC UI.
+     * The {@code bi_collection} property, displayed as '{@literal BI Collection}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link BiCollection} object.
      */
     protected Reference bi_collection;
 
     /**
-     * The 'filter_expression' property, displayed as 'Filter Expression' in the IGC UI.
+     * The {@code filter_expression} property, displayed as '{@literal Filter Expression}' in the IGC UI.
      */
     protected String filter_expression;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

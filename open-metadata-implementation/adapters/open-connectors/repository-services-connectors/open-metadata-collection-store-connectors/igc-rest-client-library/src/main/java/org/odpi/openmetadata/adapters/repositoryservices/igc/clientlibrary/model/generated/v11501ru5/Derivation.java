@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'derivation' asset type in IGC, displayed as 'Derivation' in the IGC UI.
+ * POJO for the {@code derivation} asset type in IGC, displayed as '{@literal Derivation}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,7 +24,7 @@ public class Derivation extends Reference {
     public static String getIgcTypeDisplayName() { return "Derivation"; }
 
     /**
-     * The 'expression' property, displayed as 'Expression' in the IGC UI.
+     * The {@code expression} property, displayed as '{@literal Expression}' in the IGC UI.
      */
     protected String expression;
 
