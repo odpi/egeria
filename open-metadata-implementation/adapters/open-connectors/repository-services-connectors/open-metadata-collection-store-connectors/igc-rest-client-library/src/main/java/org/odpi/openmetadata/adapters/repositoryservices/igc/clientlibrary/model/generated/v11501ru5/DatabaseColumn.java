@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'database_column' asset type in IGC, displayed as 'Database Column' in the IGC UI.
+ * POJO for the {@code database_column} asset type in IGC, displayed as '{@literal Database Column}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,83 +24,83 @@ public class DatabaseColumn extends Reference {
     public static String getIgcTypeDisplayName() { return "Database Column"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'database_table_or_view' property, displayed as 'Database Table or View' in the IGC UI.
+     * The {@code database_table_or_view} property, displayed as '{@literal Database Table or View}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Datagroup} object.
      */
     protected Reference database_table_or_view;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'implements_entity_attributes' property, displayed as 'Implements Entity Attributes' in the IGC UI.
+     * The {@code implements_entity_attributes} property, displayed as '{@literal Implements Entity Attributes}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link EntityAttribute} objects.
      */
     protected ReferenceList implements_entity_attributes;
 
     /**
-     * The 'implements_design_columns' property, displayed as 'Implements Design Columns' in the IGC UI.
+     * The {@code implements_design_columns} property, displayed as '{@literal Implements Design Columns}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DesignColumn} objects.
      */
     protected ReferenceList implements_design_columns;
 
     /**
-     * The 'type' property, displayed as 'Native Type' in the IGC UI.
+     * The {@code type} property, displayed as '{@literal Native Type}' in the IGC UI.
      */
     protected String type;
 
     /**
-     * The 'odbc_type' property, displayed as 'ODBC Type' in the IGC UI.
+     * The {@code odbc_type} property, displayed as '{@literal ODBC Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -133,7 +133,7 @@ public class DatabaseColumn extends Reference {
     protected String odbc_type;
 
     /**
-     * The 'data_type' property, displayed as 'Data Type' in the IGC UI.
+     * The {@code data_type} property, displayed as '{@literal Data Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -164,332 +164,332 @@ public class DatabaseColumn extends Reference {
     protected String data_type;
 
     /**
-     * The 'database_domains' property, displayed as 'Database Domains' in the IGC UI.
+     * The {@code database_domains} property, displayed as '{@literal Database Domains}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DatabaseDomain} object.
      */
     protected Reference database_domains;
 
     /**
-     * The 'referenced_by_database_columns' property, displayed as 'Referenced by Database Columns' in the IGC UI.
+     * The {@code referenced_by_database_columns} property, displayed as '{@literal Referenced by Database Columns}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList referenced_by_database_columns;
 
     /**
-     * The 'selected_classification' property, displayed as 'Selected Data Classification' in the IGC UI.
+     * The {@code selected_classification} property, displayed as '{@literal Selected Data Classification}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataClass} object.
      */
     protected Reference selected_classification;
 
     /**
-     * The 'detected_classifications' property, displayed as 'Detected Data Classifications' in the IGC UI.
+     * The {@code detected_classifications} property, displayed as '{@literal Detected Data Classifications}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Classification} objects.
      */
     protected ReferenceList detected_classifications;
 
     /**
-     * The 'length' property, displayed as 'Length' in the IGC UI.
+     * The {@code length} property, displayed as '{@literal Length}' in the IGC UI.
      */
     protected String length;
 
     /**
-     * The 'minimum_length' property, displayed as 'Minimum Length' in the IGC UI.
+     * The {@code minimum_length} property, displayed as '{@literal Minimum Length}' in the IGC UI.
      */
     protected Number minimum_length;
 
     /**
-     * The 'fraction' property, displayed as 'Fraction' in the IGC UI.
+     * The {@code fraction} property, displayed as '{@literal Fraction}' in the IGC UI.
      */
     protected Number fraction;
 
     /**
-     * The 'position' property, displayed as 'Position' in the IGC UI.
+     * The {@code position} property, displayed as '{@literal Position}' in the IGC UI.
      */
     protected Number position;
 
     /**
-     * The 'level' property, displayed as 'Level' in the IGC UI.
+     * The {@code level} property, displayed as '{@literal Level}' in the IGC UI.
      */
     protected Number level;
 
     /**
-     * The 'occurs' property, displayed as 'Occurs' in the IGC UI.
+     * The {@code occurs} property, displayed as '{@literal Occurs}' in the IGC UI.
      */
     protected ArrayList<String> occurs;
 
     /**
-     * The 'start_end_columns' property, displayed as 'Starting .. Ending Columns' in the IGC UI.
+     * The {@code start_end_columns} property, displayed as '{@literal Starting .. Ending Columns}' in the IGC UI.
      */
     protected String start_end_columns;
 
     /**
-     * The 'allows_null_values' property, displayed as 'Allow Null Values' in the IGC UI.
+     * The {@code allows_null_values} property, displayed as '{@literal Allow Null Values}' in the IGC UI.
      */
     protected Boolean allows_null_values;
 
     /**
-     * The 'unique' property, displayed as 'Unique Constraint' in the IGC UI.
+     * The {@code unique} property, displayed as '{@literal Unique Constraint}' in the IGC UI.
      */
     protected Boolean unique;
 
     /**
-     * The 'same_as_data_sources' property, displayed as 'Same as Data Sources' in the IGC UI.
+     * The {@code same_as_data_sources} property, displayed as '{@literal Same as Data Sources}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataItem} objects.
      */
     protected ReferenceList same_as_data_sources;
 
     /**
-     * The 'references_database_columns' property, displayed as 'References Database Columns' in the IGC UI.
+     * The {@code references_database_columns} property, displayed as '{@literal References Database Columns}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList references_database_columns;
 
     /**
-     * The 'defined_primary_key' property, displayed as 'Defined Primary Key' in the IGC UI.
+     * The {@code defined_primary_key} property, displayed as '{@literal Defined Primary Key}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link CandidateKey} objects.
      */
     protected ReferenceList defined_primary_key;
 
     /**
-     * The 'selected_primary_key' property, displayed as 'User Selected Primary Key' in the IGC UI.
+     * The {@code selected_primary_key} property, displayed as '{@literal User Selected Primary Key}' in the IGC UI.
      */
     protected Boolean selected_primary_key;
 
     /**
-     * The 'selected_natural_key' property, displayed as 'User Selected Natural Key' in the IGC UI.
+     * The {@code selected_natural_key} property, displayed as '{@literal User Selected Natural Key}' in the IGC UI.
      */
     protected Boolean selected_natural_key;
 
     /**
-     * The 'defined_foreign_key' property, displayed as 'Defined Foreign Key' in the IGC UI.
+     * The {@code defined_foreign_key} property, displayed as '{@literal Defined Foreign Key}' in the IGC UI.
      */
     protected Boolean defined_foreign_key;
 
     /**
-     * The 'defined_foreign_key_references' property, displayed as 'Defined Foreign Key References' in the IGC UI.
+     * The {@code defined_foreign_key_references} property, displayed as '{@literal Defined Foreign Key References}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList defined_foreign_key_references;
 
     /**
-     * The 'defined_foreign_key_referenced' property, displayed as 'Defined Foreign Key Referenced' in the IGC UI.
+     * The {@code defined_foreign_key_referenced} property, displayed as '{@literal Defined Foreign Key Referenced}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataItem} objects.
      */
     protected ReferenceList defined_foreign_key_referenced;
 
     /**
-     * The 'selected_foreign_key' property, displayed as 'User Selected Foreign Key' in the IGC UI.
+     * The {@code selected_foreign_key} property, displayed as '{@literal User Selected Foreign Key}' in the IGC UI.
      */
     protected Boolean selected_foreign_key;
 
     /**
-     * The 'selected_foreign_key_references' property, displayed as 'User Selected Foreign Key References' in the IGC UI.
+     * The {@code selected_foreign_key_references} property, displayed as '{@literal User Selected Foreign Key References}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList selected_foreign_key_references;
 
     /**
-     * The 'selected_foreign_key_referenced' property, displayed as 'User Selected Foreign Key Referenced' in the IGC UI.
+     * The {@code selected_foreign_key_referenced} property, displayed as '{@literal User Selected Foreign Key Referenced}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList selected_foreign_key_referenced;
 
     /**
-     * The 'index' property, displayed as 'Index' in the IGC UI.
+     * The {@code index} property, displayed as '{@literal Index}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseIndex} objects.
      */
     protected ReferenceList index;
 
     /**
-     * The 'analysis' property, displayed as 'Analysis' in the IGC UI.
+     * The {@code analysis} property, displayed as '{@literal Analysis}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link ColumnAnalysis} objects.
      */
     protected ReferenceList analysis;
 
     /**
-     * The 'validity_tables' property, displayed as 'Validity Tables' in the IGC UI.
+     * The {@code validity_tables} property, displayed as '{@literal Validity Tables}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link ValidityTable} objects.
      */
     protected ReferenceList validity_tables;
 
     /**
-     * The 'column_definitions' property, displayed as 'Column Definitions' in the IGC UI.
+     * The {@code column_definitions} property, displayed as '{@literal Column Definitions}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link ColumnDefinition} objects.
      */
     protected ReferenceList column_definitions;
 
     /**
-     * The 'mapped_to_physical_object_attributes' property, displayed as 'Mapped to Physical Object Attributes' in the IGC UI.
+     * The {@code mapped_to_physical_object_attributes} property, displayed as '{@literal Mapped to Physical Object Attributes}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link PhysicalObjectAttribute} objects.
      */
     protected ReferenceList mapped_to_physical_object_attributes;
 
     /**
-     * The 'read_by_(static)' property, displayed as 'Read by (Static)' in the IGC UI.
+     * The {@code read_by_(static)} property, displayed as '{@literal Read by (Static)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("read_by_(static)") protected ReferenceList read_by__static_;
 
     /**
-     * The 'written_by_(static)' property, displayed as 'Written by (Static)' in the IGC UI.
+     * The {@code written_by_(static)} property, displayed as '{@literal Written by (Static)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("written_by_(static)") protected ReferenceList written_by__static_;
 
     /**
-     * The 'read_by_(design)' property, displayed as 'Read by (Design)' in the IGC UI.
+     * The {@code read_by_(design)} property, displayed as '{@literal Read by (Design)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("read_by_(design)") protected ReferenceList read_by__design_;
 
     /**
-     * The 'written_by_(design)' property, displayed as 'Written by (Design)' in the IGC UI.
+     * The {@code written_by_(design)} property, displayed as '{@literal Written by (Design)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("written_by_(design)") protected ReferenceList written_by__design_;
 
     /**
-     * The 'read_by_(operational)' property, displayed as 'Read by (Operational)' in the IGC UI.
+     * The {@code read_by_(operational)} property, displayed as '{@literal Read by (Operational)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("read_by_(operational)") protected ReferenceList read_by__operational_;
 
     /**
-     * The 'written_by_(operational)' property, displayed as 'Written by (Operational)' in the IGC UI.
+     * The {@code written_by_(operational)} property, displayed as '{@literal Written by (Operational)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("written_by_(operational)") protected ReferenceList written_by__operational_;
 
     /**
-     * The 'read_by_(user_defined)' property, displayed as 'Read by (User-Defined)' in the IGC UI.
+     * The {@code read_by_(user_defined)} property, displayed as '{@literal Read by (User-Defined)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("read_by_(user_defined)") protected ReferenceList read_by__user_defined_;
 
     /**
-     * The 'written_by_(user_defined)' property, displayed as 'Written by (User-Defined)' in the IGC UI.
+     * The {@code written_by_(user_defined)} property, displayed as '{@literal Written by (User-Defined)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("written_by_(user_defined)") protected ReferenceList written_by__user_defined_;
 
     /**
-     * The 'impacted_by' property, displayed as 'Impacted by' in the IGC UI.
+     * The {@code impacted_by} property, displayed as '{@literal Impacted by}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     protected ReferenceList impacted_by;
 
     /**
-     * The 'impacts_on' property, displayed as 'Impacts on' in the IGC UI.
+     * The {@code impacts_on} property, displayed as '{@literal Impacts on}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     protected ReferenceList impacts_on;
 
     /**
-     * The 'bi_report_query_items' property, displayed as 'BI Report Query Items' in the IGC UI.
+     * The {@code bi_report_query_items} property, displayed as '{@literal BI Report Query Items}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Reportobject} objects.
      */
     protected ReferenceList bi_report_query_items;
 
     /**
-     * The 'bi_collection_members' property, displayed as 'BI Collection Members' in the IGC UI.
+     * The {@code bi_collection_members} property, displayed as '{@literal BI Collection Members}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link BiCollectionMember} objects.
      */
     protected ReferenceList bi_collection_members;
 
     /**
-     * The 'data_rule_definitions' property, displayed as 'Data Rule Definitions' in the IGC UI.
+     * The {@code data_rule_definitions} property, displayed as '{@literal Data Rule Definitions}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link NonPublishedDataRuleDefinition} objects.
      */
     protected ReferenceList data_rule_definitions;
 
     /**
-     * The 'data_rule_set_definitions' property, displayed as 'Data Rule Set Definitions' in the IGC UI.
+     * The {@code data_rule_set_definitions} property, displayed as '{@literal Data Rule Set Definitions}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link NonPublishedDataRuleSet} objects.
      */
     protected ReferenceList data_rule_set_definitions;
 
     /**
-     * The 'data_rules' property, displayed as 'Data Rules' in the IGC UI.
+     * The {@code data_rules} property, displayed as '{@literal Data Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataRule} objects.
      */
     protected ReferenceList data_rules;
 
     /**
-     * The 'data_rule_sets' property, displayed as 'Data Rule Sets' in the IGC UI.
+     * The {@code data_rule_sets} property, displayed as '{@literal Data Rule Sets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataRuleSet} objects.
      */
     protected ReferenceList data_rule_sets;
 
     /**
-     * The 'data_policies' property, displayed as 'Data Policies' in the IGC UI.
+     * The {@code data_policies} property, displayed as '{@literal Data Policies}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataPolicy} objects.
      */
     protected ReferenceList data_policies;
 
     /**
-     * The 'blueprint_elements' property, displayed as 'Blueprint Elements' in the IGC UI.
+     * The {@code blueprint_elements} property, displayed as '{@literal Blueprint Elements}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link BlueprintElementLink} objects.
      */
     protected ReferenceList blueprint_elements;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'mapping' asset type in IGC, displayed as 'Mapping' in the IGC UI.
+ * POJO for the {@code mapping} asset type in IGC, displayed as '{@literal Mapping}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,102 +24,102 @@ public class Mapping extends Reference {
     public static String getIgcTypeDisplayName() { return "Mapping"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'description' property, displayed as 'Description' in the IGC UI.
+     * The {@code description} property, displayed as '{@literal Description}' in the IGC UI.
      */
     protected ArrayList<String> description;
 
     /**
-     * The 'mapping_specification' property, displayed as 'Mapping Specification' in the IGC UI.
+     * The {@code mapping_specification} property, displayed as '{@literal Mapping Specification}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MainObject} objects.
      */
     protected ReferenceList mapping_specification;
 
     /**
-     * The 'source_column_names' property, displayed as 'Source Column Names' in the IGC UI.
+     * The {@code source_column_names} property, displayed as '{@literal Source Column Names}' in the IGC UI.
      */
     protected ArrayList<String> source_column_names;
 
     /**
-     * The 'source_columns' property, displayed as 'Source Columns' in the IGC UI.
+     * The {@code source_columns} property, displayed as '{@literal Source Columns}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList source_columns;
 
     /**
-     * The 'source_terms' property, displayed as 'Source Terms' in the IGC UI.
+     * The {@code source_terms} property, displayed as '{@literal Source Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList source_terms;
 
     /**
-     * The 'target_column_names' property, displayed as 'Target Column Names' in the IGC UI.
+     * The {@code target_column_names} property, displayed as '{@literal Target Column Names}' in the IGC UI.
      */
     protected ArrayList<String> target_column_names;
 
     /**
-     * The 'target_columns' property, displayed as 'Target Columns' in the IGC UI.
+     * The {@code target_columns} property, displayed as '{@literal Target Columns}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList target_columns;
 
     /**
-     * The 'target_terms' property, displayed as 'Target Terms' in the IGC UI.
+     * The {@code target_terms} property, displayed as '{@literal Target Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList target_terms;
 
     /**
-     * The 'status' property, displayed as 'Status' in the IGC UI.
+     * The {@code status} property, displayed as '{@literal Status}' in the IGC UI.
      */
     protected ArrayList<String> status;
 
     /**
-     * The 'tags' property, displayed as 'Tags' in the IGC UI.
+     * The {@code tags} property, displayed as '{@literal Tags}' in the IGC UI.
      */
     protected String tags;
 
     /**
-     * The 'rule_description' property, displayed as 'Rule Description' in the IGC UI.
+     * The {@code rule_description} property, displayed as '{@literal Rule Description}' in the IGC UI.
      */
     protected ArrayList<String> rule_description;
 
     /**
-     * The 'rule_expression' property, displayed as 'Rule Expression' in the IGC UI.
+     * The {@code rule_expression} property, displayed as '{@literal Rule Expression}' in the IGC UI.
      */
     protected ArrayList<String> rule_expression;
 
     /**
-     * The 'last_update_description' property, displayed as 'Last Update Description' in the IGC UI.
+     * The {@code last_update_description} property, displayed as '{@literal Last Update Description}' in the IGC UI.
      */
     protected ArrayList<String> last_update_description;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

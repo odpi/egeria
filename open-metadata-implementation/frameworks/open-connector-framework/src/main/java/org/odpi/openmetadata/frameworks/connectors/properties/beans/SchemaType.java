@@ -22,7 +22,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         <li>BoundedSchemaType is for sets and arrays</li>
  *         <li>APIOperation is for operations in an API</li>
  *     </ul>
- * </p>
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

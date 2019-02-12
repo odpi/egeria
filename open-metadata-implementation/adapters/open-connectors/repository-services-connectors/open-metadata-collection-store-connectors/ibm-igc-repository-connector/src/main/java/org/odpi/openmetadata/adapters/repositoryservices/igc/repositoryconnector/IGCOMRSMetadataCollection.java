@@ -4895,7 +4895,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      *
      * @param assetType the IGC asset type for which to find mappings
      * @param userId the userId making the request
-     * @return Map<String, RelationshipMapping> - keyed by IGC asset type with values of the RelationshipMappings
+     * @return {@code Map<String, RelationshipMapping>} - keyed by IGC asset type with values of the RelationshipMappings
      */
     public Map<String, List<RelationshipMapping>> getIgcPropertiesToRelationshipMappings(String assetType, String userId) {
 
@@ -5103,7 +5103,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      *
      * @param entityTypeGUID the GUID of the OMRS entity type for which to search
      * @param userId the userId through which to search
-     * @return List<EntityMapping>
+     * @return {@code List<EntityMapping>}
      */
     private List<EntityMapping> getMappingsToSearch(String entityTypeGUID, String userId) throws
             InvalidParameterException,
@@ -5262,7 +5262,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * Retrieves the classes to use for mapping the provided IGC asset type to an OMRS entity.
      *
      * @param igcAssetType the name of the IGC asset type
-     * @return List<EntityMapping>
+     * @return {@code List<EntityMapping>}
      */
     public List<EntityMapping> getMappers(String igcAssetType, String userId) {
 
@@ -5284,7 +5284,7 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
      * OMRS TypeDef name.
      *
      * @param omrsTypeName the name of the OMRS TypeDef for which to retrieve the attributes
-     * @return Map<String, TypeDefAttribute>
+     * @return {@code Map<String, TypeDefAttribute>}
      */
     public Map<String, TypeDefAttribute> getTypeDefAttributesForType(String omrsTypeName) {
         return typeDefStore.getAllTypeDefAttributesForName(omrsTypeName);

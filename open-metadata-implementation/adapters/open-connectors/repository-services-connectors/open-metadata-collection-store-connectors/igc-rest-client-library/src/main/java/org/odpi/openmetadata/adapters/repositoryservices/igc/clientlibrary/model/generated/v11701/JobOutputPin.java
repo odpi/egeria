@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'job_output_pin' asset type in IGC, displayed as 'Job Output Pin' in the IGC UI.
+ * POJO for the {@code job_output_pin} asset type in IGC, displayed as '{@literal Job Output Pin}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,85 +24,85 @@ public class JobOutputPin extends Reference {
     public static String getIgcTypeDisplayName() { return "Job Output Pin"; }
 
     /**
-     * The 'left_text_pos' property, displayed as 'Left Text Pos' in the IGC UI.
+     * The {@code left_text_pos} property, displayed as '{@literal Left Text Pos}' in the IGC UI.
      */
     protected Number left_text_pos;
 
     /**
-     * The 'partner' property, displayed as 'Partner' in the IGC UI.
+     * The {@code partner} property, displayed as '{@literal Partner}' in the IGC UI.
      */
     protected String partner;
 
     /**
-     * The 'a_xmeta_locking_root' property, displayed as 'A XMeta Locking Root' in the IGC UI.
+     * The {@code a_xmeta_locking_root} property, displayed as '{@literal A XMeta Locking Root}' in the IGC UI.
      */
     protected String a_xmeta_locking_root;
 
     /**
-     * The 'has_ds_meta_bag' property, displayed as 'Has DS Meta Bag' in the IGC UI.
+     * The {@code has_ds_meta_bag} property, displayed as '{@literal Has DS Meta Bag}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Dsmetabag} object.
      */
     protected Reference has_ds_meta_bag;
 
     /**
-     * The 'pin_type' property, displayed as 'Pin Type' in the IGC UI.
+     * The {@code pin_type} property, displayed as '{@literal Pin Type}' in the IGC UI.
      */
     protected String pin_type;
 
     /**
-     * The 'top_text_pos' property, displayed as 'Top Text Pos' in the IGC UI.
+     * The {@code top_text_pos} property, displayed as '{@literal Top Text Pos}' in the IGC UI.
      */
     protected Number top_text_pos;
 
     /**
-     * The 'internal_id' property, displayed as 'Internal ID' in the IGC UI.
+     * The {@code internal_id} property, displayed as '{@literal Internal ID}' in the IGC UI.
      */
     protected String internal_id;
 
     /**
-     * The 'has_ds_argument_map' property, displayed as 'Has DS Argument Map' in the IGC UI.
+     * The {@code has_ds_argument_map} property, displayed as '{@literal Has DS Argument Map}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Dsargumentmap} objects.
      */
     protected ReferenceList has_ds_argument_map;
 
     /**
-     * The 'of_job_component' property, displayed as 'Of Job Component' in the IGC UI.
+     * The {@code of_job_component} property, displayed as '{@literal Of Job Component}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MainObject} object.
      */
     protected Reference of_job_component;
 
     /**
-     * The 'is_source_of_link' property, displayed as 'Is Source Of Link' in the IGC UI.
+     * The {@code is_source_of_link} property, displayed as '{@literal Is Source Of Link}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MainObject} object.
      */
     protected Reference is_source_of_link;
 
     /**
-     * The 'sequence' property, displayed as 'Sequence' in the IGC UI.
+     * The {@code sequence} property, displayed as '{@literal Sequence}' in the IGC UI.
      */
     protected Number sequence;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'logical_domain' asset type in IGC, displayed as 'Logical Domain' in the IGC UI.
+ * POJO for the {@code logical_domain} asset type in IGC, displayed as '{@literal Logical Domain}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,95 +24,95 @@ public class LogicalDomain extends Reference {
     public static String getIgcTypeDisplayName() { return "Logical Domain"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'logical_data_model' property, displayed as 'Logical Data Model' in the IGC UI.
+     * The {@code logical_data_model} property, displayed as '{@literal Logical Data Model}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link LogicalDataModel} object.
      */
     protected Reference logical_data_model;
 
     /**
-     * The 'entity_attributes' property, displayed as 'Entity Attributes' in the IGC UI.
+     * The {@code entity_attributes} property, displayed as '{@literal Entity Attributes}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link EntityAttribute} objects.
      */
     protected ReferenceList entity_attributes;
 
     /**
-     * The 'parent_domain' property, displayed as 'Parent Domain' in the IGC UI.
+     * The {@code parent_domain} property, displayed as '{@literal Parent Domain}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link LogicalDomain} object.
      */
     protected Reference parent_domain;
 
     /**
-     * The 'child_domains' property, displayed as 'Child Domains' in the IGC UI.
+     * The {@code child_domains} property, displayed as '{@literal Child Domains}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link LogicalDomain} objects.
      */
     protected ReferenceList child_domains;
 
     /**
-     * The 'data_type' property, displayed as 'Data Type' in the IGC UI.
+     * The {@code data_type} property, displayed as '{@literal Data Type}' in the IGC UI.
      */
     protected String data_type;
 
     /**
-     * The 'native_type' property, displayed as 'Native Type' in the IGC UI.
+     * The {@code native_type} property, displayed as '{@literal Native Type}' in the IGC UI.
      */
     protected String native_type;
 
     /**
-     * The 'default_value' property, displayed as 'Default Value' in the IGC UI.
+     * The {@code default_value} property, displayed as '{@literal Default Value}' in the IGC UI.
      */
     protected String default_value;
 
     /**
-     * The 'null_value' property, displayed as 'Null Value' in the IGC UI.
+     * The {@code null_value} property, displayed as '{@literal Null Value}' in the IGC UI.
      */
     protected String null_value;
 
     /**
-     * The 'length' property, displayed as 'Length' in the IGC UI.
+     * The {@code length} property, displayed as '{@literal Length}' in the IGC UI.
      */
     protected Number length;
 
     /**
-     * The 'scale' property, displayed as 'Scale' in the IGC UI.
+     * The {@code scale} property, displayed as '{@literal Scale}' in the IGC UI.
      */
     protected Number scale;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 
