@@ -150,7 +150,7 @@ public class TypeDefStore {
      * Retrieves a map from attribute name to attribute definition for all attributes of the specified type definition.
      *
      * @param guid of the type definition
-     * @return Map<String, TypeDefAttribute>
+     * @return {@code Map<String, TypeDefAttribute>}
      */
     private Map<String, TypeDefAttribute> getTypeDefAttributesByGUID(String guid) {
         if (omrsGuidToAttributeMap.containsKey(guid)) {
@@ -166,7 +166,7 @@ public class TypeDefStore {
      * including all of its supertypes' attributes.
      *
      * @param guid of the type definition
-     * @return Map<String, TypeDefAttribute>
+     * @return {@code Map<String, TypeDefAttribute>}
      */
     public Map<String, TypeDefAttribute> getAllTypeDefAttributesForGUID(String guid) {
         Map<String, TypeDefAttribute> all = getTypeDefAttributesByGUID(guid);
@@ -188,7 +188,7 @@ public class TypeDefStore {
      * including all of its supertypes' attributes.
      *
      * @param name of the type definition
-     * @return Map<String, TypeDefAttribute>
+     * @return {@code Map<String, TypeDefAttribute>}
      */
     public Map<String, TypeDefAttribute> getAllTypeDefAttributesForName(String name) {
         if (omrsNameToGuid.containsKey(name)) {
@@ -203,7 +203,7 @@ public class TypeDefStore {
     /**
      * Retrieves a listing of all of the implemented type definitions for this repository.
      *
-     * @return List<TypeDef>
+     * @return {@code List<TypeDef>}
      */
     public List<TypeDef> getAllTypeDefs() {
         return new ArrayList<>(omrsGuidToTypeDef.values());

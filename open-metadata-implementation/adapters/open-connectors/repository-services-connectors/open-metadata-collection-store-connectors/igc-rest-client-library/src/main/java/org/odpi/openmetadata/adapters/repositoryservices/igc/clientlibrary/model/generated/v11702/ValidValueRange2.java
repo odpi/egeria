@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'validvaluerange' asset type in IGC, displayed as 'ValidValueRange' in the IGC UI.
+ * POJO for the {@code validvaluerange} asset type in IGC, displayed as '{@literal ValidValueRange}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,71 +24,71 @@ public class ValidValueRange2 extends Reference {
     public static String getIgcTypeDisplayName() { return "ValidValueRange"; }
 
     /**
-     * The 'is_max_inclusive' property, displayed as 'Is Max Inclusive' in the IGC UI.
+     * The {@code is_max_inclusive} property, displayed as '{@literal Is Max Inclusive}' in the IGC UI.
      */
     protected Boolean is_max_inclusive;
 
     /**
-     * The 'minimum_value' property, displayed as 'Minimum Value' in the IGC UI.
+     * The {@code minimum_value} property, displayed as '{@literal Minimum Value}' in the IGC UI.
      */
     protected String minimum_value;
 
     /**
-     * The 'is_min_inclusive' property, displayed as 'Is Min Inclusive' in the IGC UI.
+     * The {@code is_min_inclusive} property, displayed as '{@literal Is Min Inclusive}' in the IGC UI.
      */
     protected Boolean is_min_inclusive;
 
     /**
-     * The 'maximum_value' property, displayed as 'Maximum Value' in the IGC UI.
+     * The {@code maximum_value} property, displayed as '{@literal Maximum Value}' in the IGC UI.
      */
     protected String maximum_value;
 
     /**
-     * The 'valid_value_list_of_contains_valid_values_inverse' property, displayed as 'Valid Value List Of Contains Valid Values Inverse' in the IGC UI.
+     * The {@code valid_value_list_of_contains_valid_values_inverse} property, displayed as '{@literal Valid Value List Of Contains Valid Values Inverse}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link ValidValueList2} objects.
      */
     protected ReferenceList valid_value_list_of_contains_valid_values_inverse;
 
     /**
-     * The 'is_not' property, displayed as 'Is Not' in the IGC UI.
+     * The {@code is_not} property, displayed as '{@literal Is Not}' in the IGC UI.
      */
     protected Boolean is_not;
 
     /**
-     * The 'sequence' property, displayed as 'Sequence' in the IGC UI.
+     * The {@code sequence} property, displayed as '{@literal Sequence}' in the IGC UI.
      */
     protected Number sequence;
 
     /**
-     * The 'is_case_sensitive' property, displayed as 'Is Case Sensitive' in the IGC UI.
+     * The {@code is_case_sensitive} property, displayed as '{@literal Is Case Sensitive}' in the IGC UI.
      */
     protected Boolean is_case_sensitive;
 
     /**
-     * The 'custom_attribute_def_of_has_valid_values_inverse' property, displayed as 'Custom Attribute Def Of Has Valid Values Inverse' in the IGC UI.
+     * The {@code custom_attribute_def_of_has_valid_values_inverse} property, displayed as '{@literal Custom Attribute Def Of Has Valid Values Inverse}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     protected ReferenceList custom_attribute_def_of_has_valid_values_inverse;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

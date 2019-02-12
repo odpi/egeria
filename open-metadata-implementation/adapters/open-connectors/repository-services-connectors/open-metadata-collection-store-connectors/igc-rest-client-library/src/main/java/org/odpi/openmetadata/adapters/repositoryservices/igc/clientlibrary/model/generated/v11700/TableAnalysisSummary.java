@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'table_analysis_summary' asset type in IGC, displayed as 'Table Analysis Summary' in the IGC UI.
+ * POJO for the {@code table_analysis_summary} asset type in IGC, displayed as '{@literal Table Analysis Summary}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,112 +24,112 @@ public class TableAnalysisSummary extends Reference {
     public static String getIgcTypeDisplayName() { return "Table Analysis Summary"; }
 
     /**
-     * The 'short_&_long_description' property, displayed as 'Short & Long Description' in the IGC UI.
+     * The {@code short_&_long_description} property, displayed as '{@literal Short & Long Description}' in the IGC UI.
      */
     @JsonProperty("short_&_long_description") protected String short___long_description;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'steward' property, displayed as 'Steward' in the IGC UI.
+     * The {@code steward} property, displayed as '{@literal Steward}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Steward} objects.
      */
     protected ReferenceList steward;
 
     /**
-     * The 'analyzed_table' property, displayed as 'Analyzed Table' in the IGC UI.
+     * The {@code analyzed_table} property, displayed as '{@literal Analyzed Table}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Datagroup} object.
      */
     protected Reference analyzed_table;
 
     /**
-     * The 'project_name' property, displayed as 'Analysis Project' in the IGC UI.
+     * The {@code project_name} property, displayed as '{@literal Analysis Project}' in the IGC UI.
      */
     protected String project_name;
 
     /**
-     * The 'review_date' property, displayed as 'Review Date' in the IGC UI.
+     * The {@code review_date} property, displayed as '{@literal Review Date}' in the IGC UI.
      */
     protected Date review_date;
 
     /**
-     * The 'promoted_by_principal' property, displayed as 'Promoted By Principal' in the IGC UI.
+     * The {@code promoted_by_principal} property, displayed as '{@literal Promoted By Principal}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Steward} object.
      */
     protected Reference promoted_by_principal;
 
     /**
-     * The 'reviewed_by_principal' property, displayed as 'Reviewed By Principal' in the IGC UI.
+     * The {@code reviewed_by_principal} property, displayed as '{@literal Reviewed By Principal}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Steward} object.
      */
     protected Reference reviewed_by_principal;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 
     /**
-     * The 'number_of_fields' property, displayed as 'Number of Fields' in the IGC UI.
+     * The {@code number_of_fields} property, displayed as '{@literal Number of Fields}' in the IGC UI.
      */
     protected Number number_of_fields;
 
     /**
-     * The 'number_of_rows' property, displayed as 'Number of Rows' in the IGC UI.
+     * The {@code number_of_rows} property, displayed as '{@literal Number of Rows}' in the IGC UI.
      */
     protected Number number_of_rows;
 
     /**
-     * The 'inferred_primary_keys' property, displayed as 'Inferred Primary Keys' in the IGC UI.
+     * The {@code inferred_primary_keys} property, displayed as '{@literal Inferred Primary Keys}' in the IGC UI.
      */
     protected String inferred_primary_keys;
 
     /**
-     * The 'primary_key_duplicates' property, displayed as 'Primary Key Duplicates' in the IGC UI.
+     * The {@code primary_key_duplicates} property, displayed as '{@literal Primary Key Duplicates}' in the IGC UI.
      */
     protected Number primary_key_duplicates;
 
     /**
-     * The 'inferred_foreign_keys' property, displayed as 'Inferred Foreign Keys' in the IGC UI.
+     * The {@code inferred_foreign_keys} property, displayed as '{@literal Inferred Foreign Keys}' in the IGC UI.
      */
     protected String inferred_foreign_keys;
 
     /**
-     * The 'foreign_key_violations' property, displayed as 'Foreign Key Violations' in the IGC UI.
+     * The {@code foreign_key_violations} property, displayed as '{@literal Foreign Key Violations}' in the IGC UI.
      */
     protected Number foreign_key_violations;
 

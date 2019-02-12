@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'oslc_link' asset type in IGC, displayed as 'Link' in the IGC UI.
+ * POJO for the {@code oslc_link} asset type in IGC, displayed as '{@literal Link}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,31 +24,31 @@ public class OslcLink extends Reference {
     public static String getIgcTypeDisplayName() { return "Link"; }
 
     /**
-     * The 'url' property, displayed as 'Url' in the IGC UI.
+     * The {@code url} property, displayed as '{@literal Url}' in the IGC UI.
      */
     protected String url;
 
     /**
-     * The 'link_type' property, displayed as 'Link Type' in the IGC UI.
+     * The {@code link_type} property, displayed as '{@literal Link Type}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Linktype} object.
      */
     protected Reference link_type;
 
     /**
-     * The 'description' property, displayed as 'Description' in the IGC UI.
+     * The {@code description} property, displayed as '{@literal Description}' in the IGC UI.
      */
     protected String description;
 
     /**
-     * The 'of_main_object' property, displayed as 'Of Main Object' in the IGC UI.
+     * The {@code of_main_object} property, displayed as '{@literal Of Main Object}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MainObject} object.
      */
     protected Reference of_main_object;
 
     /**
-     * The 'of_provider_connection' property, displayed as 'Of Provider Connection' in the IGC UI.
+     * The {@code of_provider_connection} property, displayed as '{@literal Of Provider Connection}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link InformationAsset} object.
      */

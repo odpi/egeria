@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'data_class' asset type in IGC, displayed as 'Data Class' in the IGC UI.
+ * POJO for the {@code data_class} asset type in IGC, displayed as '{@literal Data Class}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,29 +24,29 @@ public class DataClass extends Reference {
     public static String getIgcTypeDisplayName() { return "Data Class"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'parent_data_class' property, displayed as 'Parent Data Class' in the IGC UI.
+     * The {@code parent_data_class} property, displayed as '{@literal Parent Data Class}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataClass} object.
      */
     protected Reference parent_data_class;
 
     /**
-     * The 'data_class_type_single' property, displayed as 'Type' in the IGC UI.
+     * The {@code data_class_type_single} property, displayed as '{@literal Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -62,63 +62,63 @@ public class DataClass extends Reference {
     protected String data_class_type_single;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'contains_data_classes' property, displayed as 'Contains Data Classes' in the IGC UI.
+     * The {@code contains_data_classes} property, displayed as '{@literal Contains Data Classes}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataClass} objects.
      */
     protected ReferenceList contains_data_classes;
 
     /**
-     * The 'classifications_selected' property, displayed as 'Selected Data Classifications' in the IGC UI.
+     * The {@code classifications_selected} property, displayed as '{@literal Selected Data Classifications}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Classificationenabledgroup} objects.
      */
     protected ReferenceList classifications_selected;
 
     /**
-     * The 'classified_assets_detected' property, displayed as 'Detected Data Classifications' in the IGC UI.
+     * The {@code classified_assets_detected} property, displayed as '{@literal Detected Data Classifications}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Classification} objects.
      */
     protected ReferenceList classified_assets_detected;
 
     /**
-     * The 'data_type_filter_elements_enum' property, displayed as 'Data Type' in the IGC UI.
+     * The {@code data_type_filter_elements_enum} property, displayed as '{@literal Data Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -132,32 +132,32 @@ public class DataClass extends Reference {
     protected ArrayList<String> data_type_filter_elements_enum;
 
     /**
-     * The 'default_threshold' property, displayed as 'Threshold (Percent)' in the IGC UI.
+     * The {@code default_threshold} property, displayed as '{@literal Threshold (Percent)}' in the IGC UI.
      */
     protected Number default_threshold;
 
     /**
-     * The 'length_filter_min' property, displayed as 'Minimum Data Length' in the IGC UI.
+     * The {@code length_filter_min} property, displayed as '{@literal Minimum Data Length}' in the IGC UI.
      */
     protected Number length_filter_min;
 
     /**
-     * The 'length_filter_max' property, displayed as 'Maximum Data Length' in the IGC UI.
+     * The {@code length_filter_max} property, displayed as '{@literal Maximum Data Length}' in the IGC UI.
      */
     protected Number length_filter_max;
 
     /**
-     * The 'java_class_name_single' property, displayed as 'JAVA Class' in the IGC UI.
+     * The {@code java_class_name_single} property, displayed as '{@literal JAVA Class}' in the IGC UI.
      */
     protected String java_class_name_single;
 
     /**
-     * The 'properties' property, displayed as 'Properties' in the IGC UI.
+     * The {@code properties} property, displayed as '{@literal Properties}' in the IGC UI.
      */
     protected String properties;
 
     /**
-     * The 'scope' property, displayed as 'Scope' in the IGC UI.
+     * The {@code scope} property, displayed as '{@literal Scope}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -170,12 +170,12 @@ public class DataClass extends Reference {
     protected String scope;
 
     /**
-     * The 'regular_expression_single' property, displayed as 'Regular Expression' in the IGC UI.
+     * The {@code regular_expression_single} property, displayed as '{@literal Regular Expression}' in the IGC UI.
      */
     protected String regular_expression_single;
 
     /**
-     * The 'applicable_for_single' property, displayed as 'Applicable For' in the IGC UI.
+     * The {@code applicable_for_single} property, displayed as '{@literal Applicable For}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -187,12 +187,12 @@ public class DataClass extends Reference {
     protected String applicable_for_single;
 
     /**
-     * The 'additional_regular_expression' property, displayed as 'Additional Regular Expression' in the IGC UI.
+     * The {@code additional_regular_expression} property, displayed as '{@literal Additional Regular Expression}' in the IGC UI.
      */
     protected String additional_regular_expression;
 
     /**
-     * The 'additionial_applicable_for' property, displayed as 'Additional Applicable For' in the IGC UI.
+     * The {@code additionial_applicable_for} property, displayed as '{@literal Additional Applicable For}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -204,42 +204,42 @@ public class DataClass extends Reference {
     protected String additionial_applicable_for;
 
     /**
-     * The 'valid_value_strings' property, displayed as 'Valid Values' in the IGC UI.
+     * The {@code valid_value_strings} property, displayed as '{@literal Valid Values}' in the IGC UI.
      */
     protected ArrayList<String> valid_value_strings;
 
     /**
-     * The 'valid_values_case_sensitive' property, displayed as 'Case Sensitive' in the IGC UI.
+     * The {@code valid_values_case_sensitive} property, displayed as '{@literal Case Sensitive}' in the IGC UI.
      */
     protected Boolean valid_values_case_sensitive;
 
     /**
-     * The 'allowSubstringMatch' property, displayed as 'Allow Substring Match' in the IGC UI.
+     * The {@code allowSubstringMatch} property, displayed as '{@literal Allow Substring Match}' in the IGC UI.
      */
     protected Boolean allowSubstringMatch;
 
     /**
-     * The 'squeezeConsecutiveWhiteSpaces' property, displayed as 'Collapse Consecutive White Spaces' in the IGC UI.
+     * The {@code squeezeConsecutiveWhiteSpaces} property, displayed as '{@literal Collapse Consecutive White Spaces}' in the IGC UI.
      */
     protected Boolean squeezeConsecutiveWhiteSpaces;
 
     /**
-     * The 'columnNameMatch' property, displayed as 'Column Name Match' in the IGC UI.
+     * The {@code columnNameMatch} property, displayed as '{@literal Column Name Match}' in the IGC UI.
      */
     protected String columnNameMatch;
 
     /**
-     * The 'expression' property, displayed as 'Expression' in the IGC UI.
+     * The {@code expression} property, displayed as '{@literal Expression}' in the IGC UI.
      */
     protected String expression;
 
     /**
-     * The 'script' property, displayed as 'Script' in the IGC UI.
+     * The {@code script} property, displayed as '{@literal Script}' in the IGC UI.
      */
     protected String script;
 
     /**
-     * The 'language' property, displayed as 'Language' in the IGC UI.
+     * The {@code language} property, displayed as '{@literal Language}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -250,76 +250,76 @@ public class DataClass extends Reference {
     protected String language;
 
     /**
-     * The 'reference_columns_metadata' property, displayed as 'Reference Columns Metadata' in the IGC UI.
+     * The {@code reference_columns_metadata} property, displayed as '{@literal Reference Columns Metadata}' in the IGC UI.
      */
     protected String reference_columns_metadata;
 
     /**
-     * The 'priority' property, displayed as 'Priority' in the IGC UI.
+     * The {@code priority} property, displayed as '{@literal Priority}' in the IGC UI.
      */
     protected Number priority;
 
     /**
-     * The 'example' property, displayed as 'Example' in the IGC UI.
+     * The {@code example} property, displayed as '{@literal Example}' in the IGC UI.
      */
     protected String example;
 
     /**
-     * The 'enabled' property, displayed as 'Enabled' in the IGC UI.
+     * The {@code enabled} property, displayed as '{@literal Enabled}' in the IGC UI.
      */
     protected Boolean enabled;
 
     /**
-     * The 'class_code' property, displayed as 'Class Code' in the IGC UI.
+     * The {@code class_code} property, displayed as '{@literal Class Code}' in the IGC UI.
      */
     protected String class_code;
 
     /**
-     * The 'validValueReferenceFile' property, displayed as 'Valid Value Reference File' in the IGC UI.
+     * The {@code validValueReferenceFile} property, displayed as '{@literal Valid Value Reference File}' in the IGC UI.
      */
     protected String validValueReferenceFile;
 
     /**
-     * The 'active' property, displayed as 'Active' in the IGC UI.
+     * The {@code active} property, displayed as '{@literal Active}' in the IGC UI.
      */
     protected Boolean active;
 
     /**
-     * The 'provider' property, displayed as 'Provider' in the IGC UI.
+     * The {@code provider} property, displayed as '{@literal Provider}' in the IGC UI.
      */
     protected String provider;
 
     /**
-     * The 'filters' property, displayed as 'Filters' in the IGC UI.
+     * The {@code filters} property, displayed as '{@literal Filters}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Filter} objects.
      */
     protected ReferenceList filters;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

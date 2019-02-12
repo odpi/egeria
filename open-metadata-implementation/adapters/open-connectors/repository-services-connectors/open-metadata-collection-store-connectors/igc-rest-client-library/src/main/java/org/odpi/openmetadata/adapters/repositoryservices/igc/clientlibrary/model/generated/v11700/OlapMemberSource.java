@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'olap_member_source' asset type in IGC, displayed as 'OLAP Member Source' in the IGC UI.
+ * POJO for the {@code olap_member_source} asset type in IGC, displayed as '{@literal OLAP Member Source}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,14 +24,14 @@ public class OlapMemberSource extends Reference {
     public static String getIgcTypeDisplayName() { return "OLAP Member Source"; }
 
     /**
-     * The 'olap_member' property, displayed as 'OLAP Member' in the IGC UI.
+     * The {@code olap_member} property, displayed as '{@literal OLAP Member}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link BiCollectionMember} object.
      */
     protected Reference olap_member;
 
     /**
-     * The 'data_field' property, displayed as 'Data Field' in the IGC UI.
+     * The {@code data_field} property, displayed as '{@literal Data Field}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataItem} object.
      */

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'valid_value_list' asset type in IGC, displayed as 'Valid Value List' in the IGC UI.
+ * POJO for the {@code valid_value_list} asset type in IGC, displayed as '{@literal Valid Value List}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,31 +24,31 @@ public class ValidValueList extends Reference {
     public static String getIgcTypeDisplayName() { return "Valid Value List"; }
 
     /**
-     * The 'valid_values' property, displayed as 'Valid Values' in the IGC UI.
+     * The {@code valid_values} property, displayed as '{@literal Valid Values}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataItemValue} objects.
      */
     protected ReferenceList valid_values;
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'valid_value_list' property, displayed as 'Valid Value List' in the IGC UI.
+     * The {@code valid_value_list} property, displayed as '{@literal Valid Value List}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link ValidValueList} object.
      */
     protected Reference valid_value_list;
 
     /**
-     * The 'design_column' property, displayed as 'Design Column' in the IGC UI.
+     * The {@code design_column} property, displayed as '{@literal Design Column}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataItem} objects.
      */
