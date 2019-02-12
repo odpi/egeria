@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'dsargumentmap' asset type in IGC, displayed as 'DSArgumentMap' in the IGC UI.
+ * POJO for the {@code dsargumentmap} asset type in IGC, displayed as '{@literal DSArgumentMap}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,32 +24,32 @@ public class Dsargumentmap extends Reference {
     public static String getIgcTypeDisplayName() { return "DSArgumentMap"; }
 
     /**
-     * The 'a_xmeta_locking_root' property, displayed as 'A XMeta Locking Root' in the IGC UI.
+     * The {@code a_xmeta_locking_root} property, displayed as '{@literal A XMeta Locking Root}' in the IGC UI.
      */
     protected String a_xmeta_locking_root;
 
     /**
-     * The 'argument_map' property, displayed as 'Argument Map' in the IGC UI.
+     * The {@code argument_map} property, displayed as '{@literal Argument Map}' in the IGC UI.
      */
     protected String argument_map;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

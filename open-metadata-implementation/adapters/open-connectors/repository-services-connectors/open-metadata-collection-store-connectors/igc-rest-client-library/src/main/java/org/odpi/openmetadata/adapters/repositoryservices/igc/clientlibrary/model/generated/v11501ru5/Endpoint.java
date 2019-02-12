@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'endpoint' asset type in IGC, displayed as 'Endpoint' in the IGC UI.
+ * POJO for the {@code endpoint} asset type in IGC, displayed as '{@literal Endpoint}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,82 +24,82 @@ public class Endpoint extends Reference {
     public static String getIgcTypeDisplayName() { return "Endpoint"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'namespace' property, displayed as 'Namespace' in the IGC UI.
+     * The {@code namespace} property, displayed as '{@literal Namespace}' in the IGC UI.
      */
     protected String namespace;
 
     /**
-     * The 'application' property, displayed as 'Application' in the IGC UI.
+     * The {@code application} property, displayed as '{@literal Application}' in the IGC UI.
      */
     protected String application;
 
     /**
-     * The 'host' property, displayed as 'Host' in the IGC UI.
+     * The {@code host} property, displayed as '{@literal Host}' in the IGC UI.
      */
     protected String host;
 
     /**
-     * The 'alias_(business_name)' property, displayed as 'Alias (Business Name)' in the IGC UI.
+     * The {@code alias_(business_name)} property, displayed as '{@literal Alias (Business Name)}' in the IGC UI.
      */
     @JsonProperty("alias_(business_name)") protected String alias__business_name_;
 
     /**
-     * The 'port' property, displayed as 'Port' in the IGC UI.
+     * The {@code port} property, displayed as '{@literal Port}' in the IGC UI.
      */
     protected String port;
 
     /**
-     * The 'direction' property, displayed as 'Direction' in the IGC UI.
+     * The {@code direction} property, displayed as '{@literal Direction}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -111,99 +111,99 @@ public class Endpoint extends Reference {
     protected String direction;
 
     /**
-     * The 'read_by_(static)' property, displayed as 'Read by (Static)' in the IGC UI.
+     * The {@code read_by_(static)} property, displayed as '{@literal Read by (Static)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("read_by_(static)") protected ReferenceList read_by__static_;
 
     /**
-     * The 'written_by_(static)' property, displayed as 'Written by (Static)' in the IGC UI.
+     * The {@code written_by_(static)} property, displayed as '{@literal Written by (Static)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("written_by_(static)") protected ReferenceList written_by__static_;
 
     /**
-     * The 'read_by_(design)' property, displayed as 'Read by (Design)' in the IGC UI.
+     * The {@code read_by_(design)} property, displayed as '{@literal Read by (Design)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("read_by_(design)") protected ReferenceList read_by__design_;
 
     /**
-     * The 'written_by_(design)' property, displayed as 'Written by (Design)' in the IGC UI.
+     * The {@code written_by_(design)} property, displayed as '{@literal Written by (Design)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("written_by_(design)") protected ReferenceList written_by__design_;
 
     /**
-     * The 'read_by_(operational)' property, displayed as 'Read by (Operational)' in the IGC UI.
+     * The {@code read_by_(operational)} property, displayed as '{@literal Read by (Operational)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("read_by_(operational)") protected ReferenceList read_by__operational_;
 
     /**
-     * The 'written_by_(operational)' property, displayed as 'Written by (Operational)' in the IGC UI.
+     * The {@code written_by_(operational)} property, displayed as '{@literal Written by (Operational)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("written_by_(operational)") protected ReferenceList written_by__operational_;
 
     /**
-     * The 'read_by_(user_defined)' property, displayed as 'Read by (User-Defined)' in the IGC UI.
+     * The {@code read_by_(user_defined)} property, displayed as '{@literal Read by (User-Defined)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("read_by_(user_defined)") protected ReferenceList read_by__user_defined_;
 
     /**
-     * The 'written_by_(user_defined)' property, displayed as 'Written by (User-Defined)' in the IGC UI.
+     * The {@code written_by_(user_defined)} property, displayed as '{@literal Written by (User-Defined)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("written_by_(user_defined)") protected ReferenceList written_by__user_defined_;
 
     /**
-     * The 'impacted_by' property, displayed as 'Impacted by' in the IGC UI.
+     * The {@code impacted_by} property, displayed as '{@literal Impacted by}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     protected ReferenceList impacted_by;
 
     /**
-     * The 'impacts_on' property, displayed as 'Impacts on' in the IGC UI.
+     * The {@code impacts_on} property, displayed as '{@literal Impacts on}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     protected ReferenceList impacts_on;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

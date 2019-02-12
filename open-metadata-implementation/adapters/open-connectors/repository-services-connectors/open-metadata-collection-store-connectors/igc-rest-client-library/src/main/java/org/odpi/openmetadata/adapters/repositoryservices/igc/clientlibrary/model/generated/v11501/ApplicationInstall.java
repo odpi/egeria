@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'application_install' asset type in IGC, displayed as 'Application Install' in the IGC UI.
+ * POJO for the {@code application_install} asset type in IGC, displayed as '{@literal Application Install}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,108 +24,108 @@ public class ApplicationInstall extends Reference {
     public static String getIgcTypeDisplayName() { return "Application Install"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'vendor_name' property, displayed as 'Vendor Name' in the IGC UI.
+     * The {@code vendor_name} property, displayed as '{@literal Vendor Name}' in the IGC UI.
      */
     protected String vendor_name;
 
     /**
-     * The 'instance_name' property, displayed as 'Instance Name' in the IGC UI.
+     * The {@code instance_name} property, displayed as '{@literal Instance Name}' in the IGC UI.
      */
     protected String instance_name;
 
     /**
-     * The 'default_credential' property, displayed as 'Default Credential' in the IGC UI.
+     * The {@code default_credential} property, displayed as '{@literal Default Credential}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Credential} object.
      */
     protected Reference default_credential;
 
     /**
-     * The 'location_name' property, displayed as 'Location Name' in the IGC UI.
+     * The {@code location_name} property, displayed as '{@literal Location Name}' in the IGC UI.
      */
     protected String location_name;
 
     /**
-     * The 'installation_date' property, displayed as 'Installation Date' in the IGC UI.
+     * The {@code installation_date} property, displayed as '{@literal Installation Date}' in the IGC UI.
      */
     protected String installation_date;
 
     /**
-     * The 'platform_identifier' property, displayed as 'Platform Identifier' in the IGC UI.
+     * The {@code platform_identifier} property, displayed as '{@literal Platform Identifier}' in the IGC UI.
      */
     protected String platform_identifier;
 
     /**
-     * The 'has_credential' property, displayed as 'Has Credential' in the IGC UI.
+     * The {@code has_credential} property, displayed as '{@literal Has Credential}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Credential} objects.
      */
     protected ReferenceList has_credential;
 
     /**
-     * The 'installed_on_host' property, displayed as 'Installed On Host' in the IGC UI.
+     * The {@code installed_on_host} property, displayed as '{@literal Installed On Host}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Host} object.
      */
     protected Reference installed_on_host;
 
     /**
-     * The 'installation_path' property, displayed as 'Installation Path' in the IGC UI.
+     * The {@code installation_path} property, displayed as '{@literal Installation Path}' in the IGC UI.
      */
     protected String installation_path;
 
     /**
-     * The 'release_number' property, displayed as 'Release Number' in the IGC UI.
+     * The {@code release_number} property, displayed as '{@literal Release Number}' in the IGC UI.
      */
     protected String release_number;
 

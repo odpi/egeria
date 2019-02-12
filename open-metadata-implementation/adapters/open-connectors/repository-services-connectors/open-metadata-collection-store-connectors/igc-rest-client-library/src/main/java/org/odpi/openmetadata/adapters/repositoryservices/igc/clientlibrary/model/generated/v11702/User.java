@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'user' asset type in IGC, displayed as 'User' in the IGC UI.
+ * POJO for the {@code user} asset type in IGC, displayed as '{@literal User}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,102 +24,102 @@ public class User extends Reference {
     public static String getIgcTypeDisplayName() { return "User"; }
 
     /**
-     * The 'full_name' property, displayed as 'Full Name' in the IGC UI.
+     * The {@code full_name} property, displayed as '{@literal Full Name}' in the IGC UI.
      */
     protected String full_name;
 
     /**
-     * The 'job_title' property, displayed as 'Job Title' in the IGC UI.
+     * The {@code job_title} property, displayed as '{@literal Job Title}' in the IGC UI.
      */
     protected String job_title;
 
     /**
-     * The 'email_address' property, displayed as 'Email Address' in the IGC UI.
+     * The {@code email_address} property, displayed as '{@literal Email Address}' in the IGC UI.
      */
     protected String email_address;
 
     /**
-     * The 'office_phone_number' property, displayed as 'Office Phone Number' in the IGC UI.
+     * The {@code office_phone_number} property, displayed as '{@literal Office Phone Number}' in the IGC UI.
      */
     protected String office_phone_number;
 
     /**
-     * The 'mobile_phone_number' property, displayed as 'Mobile Phone Number' in the IGC UI.
+     * The {@code mobile_phone_number} property, displayed as '{@literal Mobile Phone Number}' in the IGC UI.
      */
     protected String mobile_phone_number;
 
     /**
-     * The 'principal_id' property, displayed as 'User Name' in the IGC UI.
+     * The {@code principal_id} property, displayed as '{@literal User Name}' in the IGC UI.
      */
     protected String principal_id;
 
     /**
-     * The 'given_name' property, displayed as 'Given Name' in the IGC UI.
+     * The {@code given_name} property, displayed as '{@literal Given Name}' in the IGC UI.
      */
     protected String given_name;
 
     /**
-     * The 'surname' property, displayed as 'Surname' in the IGC UI.
+     * The {@code surname} property, displayed as '{@literal Surname}' in the IGC UI.
      */
     protected String surname;
 
     /**
-     * The 'courtesy_title' property, displayed as 'Courtesy Title' in the IGC UI.
+     * The {@code courtesy_title} property, displayed as '{@literal Courtesy Title}' in the IGC UI.
      */
     protected String courtesy_title;
 
     /**
-     * The 'organization' property, displayed as 'Organization' in the IGC UI.
+     * The {@code organization} property, displayed as '{@literal Organization}' in the IGC UI.
      */
     protected String organization;
 
     /**
-     * The 'location' property, displayed as 'Location' in the IGC UI.
+     * The {@code location} property, displayed as '{@literal Location}' in the IGC UI.
      */
     protected String location;
 
     /**
-     * The 'business_address' property, displayed as 'Business Address' in the IGC UI.
+     * The {@code business_address} property, displayed as '{@literal Business Address}' in the IGC UI.
      */
     protected String business_address;
 
     /**
-     * The 'home_phone_number' property, displayed as 'Home Phone Number' in the IGC UI.
+     * The {@code home_phone_number} property, displayed as '{@literal Home Phone Number}' in the IGC UI.
      */
     protected String home_phone_number;
 
     /**
-     * The 'fax_number' property, displayed as 'Fax Number' in the IGC UI.
+     * The {@code fax_number} property, displayed as '{@literal Fax Number}' in the IGC UI.
      */
     protected String fax_number;
 
     /**
-     * The 'pager_number' property, displayed as 'Pager Number' in the IGC UI.
+     * The {@code pager_number} property, displayed as '{@literal Pager Number}' in the IGC UI.
      */
     protected String pager_number;
 
     /**
-     * The 'instant_message_id' property, displayed as 'Instant Message ID' in the IGC UI.
+     * The {@code instant_message_id} property, displayed as '{@literal Instant Message ID}' in the IGC UI.
      */
     protected String instant_message_id;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

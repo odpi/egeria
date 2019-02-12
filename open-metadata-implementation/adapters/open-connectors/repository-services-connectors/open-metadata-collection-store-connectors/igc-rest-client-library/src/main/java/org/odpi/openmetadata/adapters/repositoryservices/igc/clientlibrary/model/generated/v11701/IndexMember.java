@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'index_member' asset type in IGC, displayed as 'Index Member' in the IGC UI.
+ * POJO for the {@code index_member} asset type in IGC, displayed as '{@literal Index Member}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,41 +24,41 @@ public class IndexMember extends Reference {
     public static String getIgcTypeDisplayName() { return "Index Member"; }
 
     /**
-     * The 'uses_data_field' property, displayed as 'Uses Data Field' in the IGC UI.
+     * The {@code uses_data_field} property, displayed as '{@literal Uses Data Field}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataField} object.
      */
     protected Reference uses_data_field;
 
     /**
-     * The 'of_index' property, displayed as 'Of Index' in the IGC UI.
+     * The {@code of_index} property, displayed as '{@literal Of Index}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DatabaseIndex} object.
      */
     protected Reference of_index;
 
     /**
-     * The 'sequence' property, displayed as 'Sequence' in the IGC UI.
+     * The {@code sequence} property, displayed as '{@literal Sequence}' in the IGC UI.
      */
     protected Number sequence;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 
