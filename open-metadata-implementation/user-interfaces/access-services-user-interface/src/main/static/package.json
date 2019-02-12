@@ -27,14 +27,20 @@
     "@polymer/iron-overlay-behavior": "^3.0.2",
     "@polymer/iron-pages": "^3.0.1",
     "@polymer/iron-selector": "^3.0.1",
+    "@polymer/neon-animation": "^3.0.1",
     "@polymer/paper-button": "^3.0.1",
+    "@polymer/paper-dropdown-menu": "^3.0.1",
     "@polymer/paper-icon-button": "^3.0.1",
     "@polymer/paper-input": "^3.0.1",
+    "@polymer/paper-item": "^3.0.1",
+    "@polymer/paper-listbox": "^3.0.1",
     "@polymer/paper-material": "^3.0.1",
+    "@polymer/paper-menu-button": "^3.0.1",
     "@polymer/paper-spinner": "^3.0.1",
     "@polymer/polymer": "^3.1.0",
     "@vaadin/vaadin-grid": "^5.2.6",
-    "@webcomponents/webcomponentsjs": "^2.1.3"
+    "@webcomponents/webcomponentsjs": "^2.1.3",
+    "web-animations-js": "^2.3.1"
   },
   "engines": {
     "node": ">=8.0"

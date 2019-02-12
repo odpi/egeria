@@ -732,7 +732,20 @@ public class OMRSOperationalServices
          */
         if (enterpriseConnectorManager != null)
         {
-            enterpriseConnectorManager.disconnect();
+            try {
+                enterpriseConnectorManager.disconnect();
+            }
+            catch (Throwable  error)
+                {
+                    auditCode = OMRSAuditCode.ENTERPRISE_CONNECTOR_DISCONNECT_ERROR;
+                    auditLog.logRecord(actionDescription,
+                            auditCode.getLogMessageId(),
+                            auditCode.getSeverity(),
+                            auditCode.getFormattedLogMessage(error.getMessage()),
+                            null,
+                            auditCode.getSystemAction(),
+                            auditCode.getUserAction());
+                }
         }
 
         if (archiveManager != null)
