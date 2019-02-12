@@ -18,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  * * @param exactMatchClassificationProperties optional list of entity properties that must match exactly.
  *      * @param exactMatchCriteria Enum defining how the exact match properties should be matched to the classifications in the repository.
  *      * @param fuzzyMatchClassificationProperties Optional list of entity properties to match (contains wildcards).
- *      * @param fuzzyMatchCriteria Enum defining how the fuzzy match properties should be matched to the classifications in the repository.
+ *      * @param matchCriteria Enum defining how the fuzzy match properties should be matched to the classifications in the repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -34,9 +34,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class PropertyMatchFindRequest extends TypeLimitedFindRequest
 {
     private InstanceProperties exactMatchProperties = null;
-    private MatchCriteria      exactMatchCriteria = null;
-    private InstanceProperties fuzzyMatchProperties = null;
-    private MatchCriteria      fuzzyMatchCriteria = null;
+    private MatchCriteria      exactMatchCriteria   = null;
+    private InstanceProperties matchProperties      = null;
+    private MatchCriteria      matchCriteria        = null;
 
 
 
@@ -62,8 +62,8 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
         {
             this.exactMatchCriteria = template.getExactMatchCriteria();
             this.exactMatchProperties = template.getExactMatchProperties();
-            this.fuzzyMatchCriteria = template.getFuzzyMatchCriteria();
-            this.fuzzyMatchProperties = template.getFuzzyMatchProperties();
+            this.matchCriteria = template.getFuzzyMatchCriteria();
+            this.matchProperties = template.getFuzzyMatchProperties();
         }
     }
 
@@ -119,7 +119,7 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
      */
     public InstanceProperties getFuzzyMatchProperties()
     {
-        return fuzzyMatchProperties;
+        return matchProperties;
     }
 
 
@@ -130,7 +130,7 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
      */
     public void setFuzzyMatchProperties(InstanceProperties matchProperties)
     {
-        this.fuzzyMatchProperties = matchProperties;
+        this.matchProperties = matchProperties;
     }
 
 
@@ -141,7 +141,7 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
      */
     public MatchCriteria getFuzzyMatchCriteria()
     {
-        return fuzzyMatchCriteria;
+        return matchCriteria;
     }
 
 
@@ -152,7 +152,7 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
      */
     public void setFuzzyMatchCriteria(MatchCriteria matchCriteria)
     {
-        this.fuzzyMatchCriteria = matchCriteria;
+        this.matchCriteria = matchCriteria;
     }
 
 
@@ -164,7 +164,7 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
     @Deprecated
     public InstanceProperties getMatchProperties()
     {
-        return fuzzyMatchProperties;
+        return matchProperties;
     }
 
 
@@ -176,7 +176,7 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
     @Deprecated
     public void setMatchProperties(InstanceProperties matchProperties)
     {
-        this.fuzzyMatchProperties = matchProperties;
+        this.matchProperties = matchProperties;
     }
 
 
@@ -188,7 +188,7 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
     @Deprecated
     public MatchCriteria getMatchCriteria()
     {
-        return fuzzyMatchCriteria;
+        return matchCriteria;
     }
 
 
@@ -200,7 +200,7 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
     @Deprecated
     public void setMatchCriteria(MatchCriteria matchCriteria)
     {
-        this.fuzzyMatchCriteria = matchCriteria;
+        this.matchCriteria = matchCriteria;
     }
 
 
@@ -215,8 +215,8 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
         return "PropertyMatchFindRequest{" +
                 "exactMatchProperties=" + exactMatchProperties +
                 ", exactMatchCriteria=" + exactMatchCriteria +
-                ", fuzzyMatchProperties=" + fuzzyMatchProperties +
-                ", fuzzyMatchCriteria=" + fuzzyMatchCriteria +
+                ", matchProperties=" + matchProperties +
+                ", matchCriteria=" + matchCriteria +
                 ", typeGUID='" + getTypeGUID() + '\'' +
                 ", sequencingProperty='" + getSequencingProperty() + '\'' +
                 ", sequencingOrder=" + getSequencingOrder() +
