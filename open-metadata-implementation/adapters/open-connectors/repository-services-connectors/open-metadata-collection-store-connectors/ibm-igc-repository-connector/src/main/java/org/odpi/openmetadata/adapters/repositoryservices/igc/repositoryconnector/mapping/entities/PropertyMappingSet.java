@@ -30,7 +30,7 @@ public class PropertyMappingSet {
     /**
      * Returns only the subset of mapped IGC properties that are simple one-to-one mappings to OMRS properties.
      *
-     * @return Set<String>
+     * @return {@code Set<String>}
      */
     public Set<String> getSimpleMappedIgcProperties() {
         return mappingByIgcProperty.keySet();
@@ -39,7 +39,7 @@ public class PropertyMappingSet {
     /**
      * Returns only the subset of mapped IGC properties that are complex mappings to OMRS properties.
      *
-     * @return Set<String>
+     * @return {@code Set<String>}
      */
     public Set<String> getComplexMappedIgcProperties() {
         return complexIgcProperties;
@@ -48,7 +48,7 @@ public class PropertyMappingSet {
     /**
      * Returns the set of all IGC properties that are mapped to OMRS properties.
      *
-     * @return Set<String>
+     * @return {@code Set<String>}
      */
     public Set<String> getAllMappedIgcProperties() {
         HashSet<String> igcProperties = new HashSet<>(getSimpleMappedIgcProperties());
@@ -59,7 +59,7 @@ public class PropertyMappingSet {
     /**
      * Returns only the subset of mapped OMRS properties that are simple one-to-one mappings to IGC properties.
      *
-     * @return Set<String>
+     * @return {@code Set<String>}
      */
     public Set<String> getSimpleMappedOmrsProperties() {
         return mappingByOmrsProperty.keySet();
@@ -68,7 +68,7 @@ public class PropertyMappingSet {
     /**
      * Returns only the subset of mapped OMRS properties that are complex mappings to IGC properties.
      *
-     * @return Set<String>
+     * @return {@code Set<String>}
      */
     public Set<String> getComplexMappedOmrsProperties() {
         return complexOmrsProperties;
@@ -77,7 +77,7 @@ public class PropertyMappingSet {
     /**
      * Returns the set of OMRS property names that are mapped to IGC properties.
      *
-     * @return Set<String>
+     * @return {@code Set<String>}
      */
     public Set<String> getAllMappedOmrsProperties() {
         Set<String> omrsProperties = getSimpleMappedOmrsProperties();

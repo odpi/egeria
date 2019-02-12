@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'development_log' asset type in IGC, displayed as 'DevelopmentLog' in the IGC UI.
+ * POJO for the {@code development_log} asset type in IGC, displayed as '{@literal DevelopmentLog}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,62 +24,62 @@ public class DevelopmentLog extends Reference {
     public static String getIgcTypeDisplayName() { return "DevelopmentLog"; }
 
     /**
-     * The 'date' property, displayed as 'Date' in the IGC UI.
+     * The {@code date} property, displayed as '{@literal Date}' in the IGC UI.
      */
     protected Date date;
 
     /**
-     * The 'workflow_task' property, displayed as 'Workflow Task' in the IGC UI.
+     * The {@code workflow_task} property, displayed as '{@literal Workflow Task}' in the IGC UI.
      */
     protected String workflow_task;
 
     /**
-     * The 'development_log' property, displayed as 'Header' in the IGC UI.
+     * The {@code development_log} property, displayed as '{@literal Header}' in the IGC UI.
      */
     protected ArrayList<String> development_log;
 
     /**
-     * The 'activity' property, displayed as 'Activity' in the IGC UI.
+     * The {@code activity} property, displayed as '{@literal Activity}' in the IGC UI.
      */
     protected String activity;
 
     /**
-     * The 'new_state' property, displayed as 'New State' in the IGC UI.
+     * The {@code new_state} property, displayed as '{@literal New State}' in the IGC UI.
      */
     protected String new_state;
 
     /**
-     * The 'person' property, displayed as 'Person' in the IGC UI.
+     * The {@code person} property, displayed as '{@literal Person}' in the IGC UI.
      */
     protected String person;
 
     /**
-     * The 'comment' property, displayed as 'Comment' in the IGC UI.
+     * The {@code comment} property, displayed as '{@literal Comment}' in the IGC UI.
      */
     protected String comment;
 
     /**
-     * The 'user_task_key' property, displayed as 'User Task Key' in the IGC UI.
+     * The {@code user_task_key} property, displayed as '{@literal User Task Key}' in the IGC UI.
      */
     protected String user_task_key;
 
     /**
-     * The 'user_task_name' property, displayed as 'User Task Name' in the IGC UI.
+     * The {@code user_task_name} property, displayed as '{@literal User Task Name}' in the IGC UI.
      */
     protected String user_task_name;
 
     /**
-     * The 'workflow_instance_id' property, displayed as 'Workflow Instance Id' in the IGC UI.
+     * The {@code workflow_instance_id} property, displayed as '{@literal Workflow Instance Id}' in the IGC UI.
      */
     protected String workflow_instance_id;
 
     /**
-     * The 'workflow_event' property, displayed as 'Workflow Event' in the IGC UI.
+     * The {@code workflow_event} property, displayed as '{@literal Workflow Event}' in the IGC UI.
      */
     protected String workflow_event;
 
     /**
-     * The 'workflow_new_state' property, displayed as 'Workflow New State' in the IGC UI.
+     * The {@code workflow_new_state} property, displayed as '{@literal Workflow New State}' in the IGC UI.
      */
     protected String workflow_new_state;
 

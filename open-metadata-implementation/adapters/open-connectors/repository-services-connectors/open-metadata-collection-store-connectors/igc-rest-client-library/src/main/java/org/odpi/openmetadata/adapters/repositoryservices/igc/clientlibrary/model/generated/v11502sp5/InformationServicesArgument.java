@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'information_services_argument' asset type in IGC, displayed as 'Information Services Argument' in the IGC UI.
+ * POJO for the {@code information_services_argument} asset type in IGC, displayed as '{@literal Information Services Argument}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,34 +24,34 @@ public class InformationServicesArgument extends Reference {
     public static String getIgcTypeDisplayName() { return "Information Services Argument"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'description' property, displayed as 'Description' in the IGC UI.
+     * The {@code description} property, displayed as '{@literal Description}' in the IGC UI.
      */
     protected String description;
 
     /**
-     * The 'information_services_operation' property, displayed as 'Information Services Operation' in the IGC UI.
+     * The {@code information_services_operation} property, displayed as '{@literal Information Services Operation}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationServicesOperation} objects.
      */
     protected ReferenceList information_services_operation;
 
     /**
-     * The 'argument_name' property, displayed as 'Argument Name' in the IGC UI.
+     * The {@code argument_name} property, displayed as '{@literal Argument Name}' in the IGC UI.
      */
     protected ArrayList<String> argument_name;
 
     /**
-     * The 'argument_type' property, displayed as 'Argument Type' in the IGC UI.
+     * The {@code argument_type} property, displayed as '{@literal Argument Type}' in the IGC UI.
      */
     protected ArrayList<String> argument_type;
 
     /**
-     * The 'reference_type' property, displayed as 'Reference Type' in the IGC UI.
+     * The {@code reference_type} property, displayed as '{@literal Reference Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -74,27 +74,27 @@ public class InformationServicesArgument extends Reference {
     protected String reference_type;
 
     /**
-     * The 'default_value' property, displayed as 'Default Value' in the IGC UI.
+     * The {@code default_value} property, displayed as '{@literal Default Value}' in the IGC UI.
      */
     protected String default_value;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

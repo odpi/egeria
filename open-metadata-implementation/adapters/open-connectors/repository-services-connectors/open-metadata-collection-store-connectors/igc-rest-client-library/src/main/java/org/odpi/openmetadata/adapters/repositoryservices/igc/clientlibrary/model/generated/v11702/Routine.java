@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'routine' asset type in IGC, displayed as 'Routine' in the IGC UI.
+ * POJO for the {@code routine} asset type in IGC, displayed as '{@literal Routine}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,118 +24,118 @@ public class Routine extends Reference {
     public static String getIgcTypeDisplayName() { return "Routine"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'transformation_project' property, displayed as 'Transformation Project' in the IGC UI.
+     * The {@code transformation_project} property, displayed as '{@literal Transformation Project}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link TransformationProject} object.
      */
     protected Reference transformation_project;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'vendor' property, displayed as 'Vendor' in the IGC UI.
+     * The {@code vendor} property, displayed as '{@literal Vendor}' in the IGC UI.
      */
     protected String vendor;
 
     /**
-     * The 'version' property, displayed as 'Version' in the IGC UI.
+     * The {@code version} property, displayed as '{@literal Version}' in the IGC UI.
      */
     protected String version;
 
     /**
-     * The 'author' property, displayed as 'Author' in the IGC UI.
+     * The {@code author} property, displayed as '{@literal Author}' in the IGC UI.
      */
     protected String author;
 
     /**
-     * The 'copyright' property, displayed as 'Copyright' in the IGC UI.
+     * The {@code copyright} property, displayed as '{@literal Copyright}' in the IGC UI.
      */
     protected String copyright;
 
     /**
-     * The 'source_code' property, displayed as 'Source Code' in the IGC UI.
+     * The {@code source_code} property, displayed as '{@literal Source Code}' in the IGC UI.
      */
     protected String source_code;
 
     /**
-     * The 'arguments' property, displayed as 'Arguments' in the IGC UI.
+     * The {@code arguments} property, displayed as '{@literal Arguments}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link RoutineArgument} objects.
      */
     protected ReferenceList arguments;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

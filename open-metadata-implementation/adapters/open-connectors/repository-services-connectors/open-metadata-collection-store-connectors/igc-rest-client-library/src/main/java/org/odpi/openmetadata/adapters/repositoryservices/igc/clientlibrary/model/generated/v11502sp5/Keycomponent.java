@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'keycomponent' asset type in IGC, displayed as 'KeyComponent' in the IGC UI.
+ * POJO for the {@code keycomponent} asset type in IGC, displayed as '{@literal KeyComponent}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,7 +24,7 @@ public class Keycomponent extends Reference {
     public static String getIgcTypeDisplayName() { return "KeyComponent"; }
 
     /**
-     * The 'sorting_order' property, displayed as 'Sorting Order' in the IGC UI.
+     * The {@code sorting_order} property, displayed as '{@literal Sorting Order}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -36,48 +36,48 @@ public class Keycomponent extends Reference {
     protected String sorting_order;
 
     /**
-     * The 'of_key' property, displayed as 'Of Key' in the IGC UI.
+     * The {@code of_key} property, displayed as '{@literal Of Key}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MainObject} object.
      */
     protected Reference of_key;
 
     /**
-     * The 'uses_data_field' property, displayed as 'Uses Data Field' in the IGC UI.
+     * The {@code uses_data_field} property, displayed as '{@literal Uses Data Field}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataItem} object.
      */
     protected Reference uses_data_field;
 
     /**
-     * The 'references_data_field' property, displayed as 'References Data Field' in the IGC UI.
+     * The {@code references_data_field} property, displayed as '{@literal References Data Field}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataItem} object.
      */
     protected Reference references_data_field;
 
     /**
-     * The 'sequence' property, displayed as 'Sequence' in the IGC UI.
+     * The {@code sequence} property, displayed as '{@literal Sequence}' in the IGC UI.
      */
     protected Number sequence;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

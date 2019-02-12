@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'model_eval_metric' asset type in IGC, displayed as 'Model Eval Metric' in the IGC UI.
+ * POJO for the {@code model_eval_metric} asset type in IGC, displayed as '{@literal Model Eval Metric}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,44 +24,44 @@ public class ModelEvalMetric extends Reference {
     public static String getIgcTypeDisplayName() { return "Model Eval Metric"; }
 
     /**
-     * The 'of_model' property, displayed as 'Of Model' in the IGC UI.
+     * The {@code of_model} property, displayed as '{@literal Of Model}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link AnalyticsModel} object.
      */
     protected Reference of_model;
 
     /**
-     * The 'metric_type' property, displayed as 'Metric Type' in the IGC UI.
+     * The {@code metric_type} property, displayed as '{@literal Metric Type}' in the IGC UI.
      */
     protected String metric_type;
 
     /**
-     * The 'value' property, displayed as 'Value' in the IGC UI.
+     * The {@code value} property, displayed as '{@literal Value}' in the IGC UI.
      */
     protected String value;
 
     /**
-     * The 'eval_date' property, displayed as 'Eval Date' in the IGC UI.
+     * The {@code eval_date} property, displayed as '{@literal Eval Date}' in the IGC UI.
      */
     protected Date eval_date;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

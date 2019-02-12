@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'ascl_steward' asset type in IGC, displayed as 'Steward' in the IGC UI.
+ * POJO for the {@code ascl_steward} asset type in IGC, displayed as '{@literal Steward}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,58 +24,58 @@ public class AsclSteward extends Reference {
     public static String getIgcTypeDisplayName() { return "Steward"; }
 
     /**
-     * The 'email_address' property, displayed as 'Email Address' in the IGC UI.
+     * The {@code email_address} property, displayed as '{@literal Email Address}' in the IGC UI.
      */
     protected String email_address;
 
     /**
-     * The 'organization' property, displayed as 'Organization' in the IGC UI.
+     * The {@code organization} property, displayed as '{@literal Organization}' in the IGC UI.
      */
     protected String organization;
 
     /**
-     * The 'managed_assets' property, displayed as 'Managed Assets' in the IGC UI.
+     * The {@code managed_assets} property, displayed as '{@literal Managed Assets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     protected ReferenceList managed_assets;
 
     /**
-     * The 'managed_assets_basic' property, displayed as 'Managed Assets' in the IGC UI.
+     * The {@code managed_assets_basic} property, displayed as '{@literal Managed Assets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MainObject} objects.
      */
     protected ReferenceList managed_assets_basic;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 
     /**
-     * The 'steward_user' property, displayed as 'Steward User' in the IGC UI.
+     * The {@code steward_user} property, displayed as '{@literal Steward User}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link StewardUser} object.
      */
     protected Reference steward_user;
 
     /**
-     * The 'steward_group' property, displayed as 'Steward Group' in the IGC UI.
+     * The {@code steward_group} property, displayed as '{@literal Steward Group}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link StewardGroup} object.
      */

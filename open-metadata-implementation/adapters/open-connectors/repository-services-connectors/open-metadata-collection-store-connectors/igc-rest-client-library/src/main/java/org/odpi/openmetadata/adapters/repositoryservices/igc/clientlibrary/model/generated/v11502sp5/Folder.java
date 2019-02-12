@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'folder' asset type in IGC, displayed as 'Folder' in the IGC UI.
+ * POJO for the {@code folder} asset type in IGC, displayed as '{@literal Folder}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,53 +24,53 @@ public class Folder extends Reference {
     public static String getIgcTypeDisplayName() { return "Folder"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'description' property, displayed as 'Description' in the IGC UI.
+     * The {@code description} property, displayed as '{@literal Description}' in the IGC UI.
      */
     protected String description;
 
     /**
-     * The 'parent_folder' property, displayed as 'Parent Folder' in the IGC UI.
+     * The {@code parent_folder} property, displayed as '{@literal Parent Folder}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Folder} object.
      */
     protected Reference parent_folder;
 
     /**
-     * The 'contains_folders' property, displayed as 'Contains Folders' in the IGC UI.
+     * The {@code contains_folders} property, displayed as '{@literal Contains Folders}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Folder} objects.
      */
     protected ReferenceList contains_folders;
 
     /**
-     * The 'contains_mapping_documents' property, displayed as 'Contains Mapping Documents' in the IGC UI.
+     * The {@code contains_mapping_documents} property, displayed as '{@literal Contains Mapping Documents}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MainObject} objects.
      */
     protected ReferenceList contains_mapping_documents;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

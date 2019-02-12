@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'data_file_definition_field' asset type in IGC, displayed as 'Data File Definition Field' in the IGC UI.
+ * POJO for the {@code data_file_definition_field} asset type in IGC, displayed as '{@literal Data File Definition Field}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,69 +24,69 @@ public class DataFileDefinitionField extends Reference {
     public static String getIgcTypeDisplayName() { return "Data File Definition Field"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'data_file_definition_record' property, displayed as 'Data File Definition Record' in the IGC UI.
+     * The {@code data_file_definition_record} property, displayed as '{@literal Data File Definition Record}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataFileDefinitionRecord} object.
      */
     protected Reference data_file_definition_record;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'type' property, displayed as 'Native Type' in the IGC UI.
+     * The {@code type} property, displayed as '{@literal Native Type}' in the IGC UI.
      */
     protected String type;
 
     /**
-     * The 'data_type' property, displayed as 'Data Type' in the IGC UI.
+     * The {@code data_type} property, displayed as '{@literal Data Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -117,7 +117,7 @@ public class DataFileDefinitionField extends Reference {
     protected String data_type;
 
     /**
-     * The 'odbc_type' property, displayed as 'ODBC Type' in the IGC UI.
+     * The {@code odbc_type} property, displayed as '{@literal ODBC Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -150,64 +150,64 @@ public class DataFileDefinitionField extends Reference {
     protected String odbc_type;
 
     /**
-     * The 'length' property, displayed as 'Length' in the IGC UI.
+     * The {@code length} property, displayed as '{@literal Length}' in the IGC UI.
      */
     protected String length;
 
     /**
-     * The 'minimum_length' property, displayed as 'Minimum Length' in the IGC UI.
+     * The {@code minimum_length} property, displayed as '{@literal Minimum Length}' in the IGC UI.
      */
     protected Number minimum_length;
 
     /**
-     * The 'fraction' property, displayed as 'Scale' in the IGC UI.
+     * The {@code fraction} property, displayed as '{@literal Scale}' in the IGC UI.
      */
     protected Number fraction;
 
     /**
-     * The 'position' property, displayed as 'Position' in the IGC UI.
+     * The {@code position} property, displayed as '{@literal Position}' in the IGC UI.
      */
     protected Number position;
 
     /**
-     * The 'level' property, displayed as 'Level Number' in the IGC UI.
+     * The {@code level} property, displayed as '{@literal Level Number}' in the IGC UI.
      */
     protected Number level;
 
     /**
-     * The 'allows_null_values' property, displayed as 'Allow Null Values' in the IGC UI.
+     * The {@code allows_null_values} property, displayed as '{@literal Allow Null Values}' in the IGC UI.
      */
     protected Boolean allows_null_values;
 
     /**
-     * The 'unique' property, displayed as 'Unique Constraint' in the IGC UI.
+     * The {@code unique} property, displayed as '{@literal Unique Constraint}' in the IGC UI.
      */
     protected Boolean unique;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'logical_validation_range' asset type in IGC, displayed as 'Logical Validation Range' in the IGC UI.
+ * POJO for the {@code logical_validation_range} asset type in IGC, displayed as '{@literal Logical Validation Range}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,61 +24,61 @@ public class LogicalValidationRange extends Reference {
     public static String getIgcTypeDisplayName() { return "Logical Validation Range"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'logical_data_model' property, displayed as 'Logical Data Model' in the IGC UI.
+     * The {@code logical_data_model} property, displayed as '{@literal Logical Data Model}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link LogicalDataModel} object.
      */
     protected Reference logical_data_model;
 
     /**
-     * The 'used_by_entity_attributes' property, displayed as 'Used by Entity Attributes' in the IGC UI.
+     * The {@code used_by_entity_attributes} property, displayed as '{@literal Used by Entity Attributes}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link EntityAttribute} objects.
      */
     protected ReferenceList used_by_entity_attributes;
 
     /**
-     * The 'maximum_value' property, displayed as 'Maximum Value' in the IGC UI.
+     * The {@code maximum_value} property, displayed as '{@literal Maximum Value}' in the IGC UI.
      */
     protected String maximum_value;
 
     /**
-     * The 'minimum_value' property, displayed as 'Minimum Value' in the IGC UI.
+     * The {@code minimum_value} property, displayed as '{@literal Minimum Value}' in the IGC UI.
      */
     protected String minimum_value;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 
