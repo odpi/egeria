@@ -67,7 +67,7 @@ public class ProxyUserAuthenticator implements UserAuthenticator {
     }
 
     /**
-     * Authentication based on this proxy user & can assert identity amd force automatic creation of schema
+     * Authentication based on this proxy user and can assert identity amd force automatic creation of schema
      * There are no additional checks to control if this user has privileges to perform escalation.
      *
      * @param userName the name of the user that should be authenticated

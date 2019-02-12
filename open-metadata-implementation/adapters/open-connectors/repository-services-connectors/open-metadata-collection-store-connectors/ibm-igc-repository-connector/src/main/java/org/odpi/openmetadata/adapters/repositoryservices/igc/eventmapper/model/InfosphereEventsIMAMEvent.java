@@ -13,19 +13,19 @@ public class InfosphereEventsIMAMEvent extends InfosphereEvents {
 
     /**
      * The 'createdRIDs' property lists (comma-separated) the RIDs of any objects that were created.
-     * Each comma-separated entry takes the form '<type>:RID'.
+     * Each comma-separated entry takes the form {@code <type>:RID}.
      */
     protected String createdRIDs;
 
     /**
      * The 'mergedRIDs' property lists (comma-separated) the RIDs of any objects that were merged.
-     * Each comma-separated entry takes the form '<type>:RID'.
+     * Each comma-separated entry takes the form {@code <type>:RID}.
      */
     protected String mergedRIDs;
 
     /**
      * The 'deletedRIDs' property lists (comma-separated) the RIDs of any objects that were deleted.
-     * Each comma-separated entry takes the form '<type>:RID'
+     * Each comma-separated entry takes the form {@code <type>:RID}
      */
     protected String deletedRIDs;
 

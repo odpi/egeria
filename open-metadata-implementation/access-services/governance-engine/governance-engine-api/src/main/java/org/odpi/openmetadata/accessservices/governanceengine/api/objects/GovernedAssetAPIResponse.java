@@ -20,16 +20,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class GovernedAssetAPIResponse extends GovernanceEngineOMASAPIResponse {
 
 
-    public GovernedAsset getAsset() {
-        return asset;
-    }
-
     /**
      * Return the Connection object.
      *
      * @return connection
      */
-
+    public GovernedAsset getAsset() {
+        return asset;
+    }
 
 
     private GovernedAsset asset = null;

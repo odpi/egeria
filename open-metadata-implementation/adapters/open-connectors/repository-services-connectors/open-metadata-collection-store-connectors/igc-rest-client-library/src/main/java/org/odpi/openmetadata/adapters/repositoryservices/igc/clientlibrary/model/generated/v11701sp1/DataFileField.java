@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'data_file_field' asset type in IGC, displayed as 'Data File Field' in the IGC UI.
+ * POJO for the {@code data_file_field} asset type in IGC, displayed as '{@literal Data File Field}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,88 +24,88 @@ public class DataFileField extends Reference {
     public static String getIgcTypeDisplayName() { return "Data File Field"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'data_file_record' property, displayed as 'Data File Record' in the IGC UI.
+     * The {@code data_file_record} property, displayed as '{@literal Data File Record}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataFileRecord} object.
      */
     protected Reference data_file_record;
 
     /**
-     * The 'qualityScore' property, displayed as 'Quality Score' in the IGC UI.
+     * The {@code qualityScore} property, displayed as '{@literal Quality Score}' in the IGC UI.
      */
     protected String qualityScore;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'implements_entity_attributes' property, displayed as 'Implements Entity Attributes' in the IGC UI.
+     * The {@code implements_entity_attributes} property, displayed as '{@literal Implements Entity Attributes}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link EntityAttribute} objects.
      */
     protected ReferenceList implements_entity_attributes;
 
     /**
-     * The 'implements_design_columns' property, displayed as 'Implements Design Columns' in the IGC UI.
+     * The {@code implements_design_columns} property, displayed as '{@literal Implements Design Columns}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DesignColumn} objects.
      */
     protected ReferenceList implements_design_columns;
 
     /**
-     * The 'type' property, displayed as 'Native Type' in the IGC UI.
+     * The {@code type} property, displayed as '{@literal Native Type}' in the IGC UI.
      */
     protected String type;
 
     /**
-     * The 'data_type' property, displayed as 'Data Type' in the IGC UI.
+     * The {@code data_type} property, displayed as '{@literal Data Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -136,26 +136,26 @@ public class DataFileField extends Reference {
     protected String data_type;
 
     /**
-     * The 'default_value' property, displayed as 'Default Value' in the IGC UI.
+     * The {@code default_value} property, displayed as '{@literal Default Value}' in the IGC UI.
      */
     protected String default_value;
 
     /**
-     * The 'selected_classification' property, displayed as 'Selected Data Classification' in the IGC UI.
+     * The {@code selected_classification} property, displayed as '{@literal Selected Data Classification}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataClass} object.
      */
     protected Reference selected_classification;
 
     /**
-     * The 'detected_classifications' property, displayed as 'Detected Data Classifications' in the IGC UI.
+     * The {@code detected_classifications} property, displayed as '{@literal Detected Data Classifications}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Classification} objects.
      */
     protected ReferenceList detected_classifications;
 
     /**
-     * The 'odbc_type' property, displayed as 'ODBC Type' in the IGC UI.
+     * The {@code odbc_type} property, displayed as '{@literal ODBC Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -188,104 +188,104 @@ public class DataFileField extends Reference {
     protected String odbc_type;
 
     /**
-     * The 'length' property, displayed as 'Length' in the IGC UI.
+     * The {@code length} property, displayed as '{@literal Length}' in the IGC UI.
      */
     protected Number length;
 
     /**
-     * The 'minimum_length' property, displayed as 'Minimum Length' in the IGC UI.
+     * The {@code minimum_length} property, displayed as '{@literal Minimum Length}' in the IGC UI.
      */
     protected Number minimum_length;
 
     /**
-     * The 'fraction' property, displayed as 'Fraction' in the IGC UI.
+     * The {@code fraction} property, displayed as '{@literal Fraction}' in the IGC UI.
      */
     protected Number fraction;
 
     /**
-     * The 'position' property, displayed as 'Position' in the IGC UI.
+     * The {@code position} property, displayed as '{@literal Position}' in the IGC UI.
      */
     protected Number position;
 
     /**
-     * The 'level' property, displayed as 'Level' in the IGC UI.
+     * The {@code level} property, displayed as '{@literal Level}' in the IGC UI.
      */
     protected Number level;
 
     /**
-     * The 'allows_null_values' property, displayed as 'Allow Null Values' in the IGC UI.
+     * The {@code allows_null_values} property, displayed as '{@literal Allow Null Values}' in the IGC UI.
      */
     protected Boolean allows_null_values;
 
     /**
-     * The 'unique' property, displayed as 'Unique Constraint' in the IGC UI.
+     * The {@code unique} property, displayed as '{@literal Unique Constraint}' in the IGC UI.
      */
     protected Boolean unique;
 
     /**
-     * The 'same_as_data_sources' property, displayed as 'Same as Data Sources' in the IGC UI.
+     * The {@code same_as_data_sources} property, displayed as '{@literal Same as Data Sources}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataField} objects.
      */
     protected ReferenceList same_as_data_sources;
 
     /**
-     * The 'uniqueFlag' property, displayed as 'Require Unique Values' in the IGC UI.
+     * The {@code uniqueFlag} property, displayed as '{@literal Require Unique Values}' in the IGC UI.
      */
     protected Boolean uniqueFlag;
 
     /**
-     * The 'nullabilityFlag' property, displayed as 'Include Null Values' in the IGC UI.
+     * The {@code nullabilityFlag} property, displayed as '{@literal Include Null Values}' in the IGC UI.
      */
     protected Boolean nullabilityFlag;
 
     /**
-     * The 'constantFlag' property, displayed as 'Include Constant Values' in the IGC UI.
+     * The {@code constantFlag} property, displayed as '{@literal Include Constant Values}' in the IGC UI.
      */
     protected Boolean constantFlag;
 
     /**
-     * The 'domainType' property, displayed as 'Domain' in the IGC UI.
+     * The {@code domainType} property, displayed as '{@literal Domain}' in the IGC UI.
      */
     protected ArrayList<String> domainType;
 
     /**
-     * The 'numberCompleteValues' property, displayed as 'Number of Complete Values' in the IGC UI.
+     * The {@code numberCompleteValues} property, displayed as '{@literal Number of Complete Values}' in the IGC UI.
      */
     protected ArrayList<Number> numberCompleteValues;
 
     /**
-     * The 'numberValidValues' property, displayed as 'Number of Valid Values' in the IGC UI.
+     * The {@code numberValidValues} property, displayed as '{@literal Number of Valid Values}' in the IGC UI.
      */
     protected ArrayList<Number> numberValidValues;
 
     /**
-     * The 'numberEmptyValues' property, displayed as 'Number of Empty Values' in the IGC UI.
+     * The {@code numberEmptyValues} property, displayed as '{@literal Number of Empty Values}' in the IGC UI.
      */
     protected ArrayList<Number> numberEmptyValues;
 
     /**
-     * The 'numberNullValues' property, displayed as 'Number of Null Values' in the IGC UI.
+     * The {@code numberNullValues} property, displayed as '{@literal Number of Null Values}' in the IGC UI.
      */
     protected ArrayList<Number> numberNullValues;
 
     /**
-     * The 'numberDistinctValues' property, displayed as 'Number of Distinct Values' in the IGC UI.
+     * The {@code numberDistinctValues} property, displayed as '{@literal Number of Distinct Values}' in the IGC UI.
      */
     protected ArrayList<Number> numberDistinctValues;
 
     /**
-     * The 'numberFormats' property, displayed as 'Number of Distinct Formats' in the IGC UI.
+     * The {@code numberFormats} property, displayed as '{@literal Number of Distinct Formats}' in the IGC UI.
      */
     protected ArrayList<Number> numberFormats;
 
     /**
-     * The 'numberZeroValues' property, displayed as 'Number of Zero Values' in the IGC UI.
+     * The {@code numberZeroValues} property, displayed as '{@literal Number of Zero Values}' in the IGC UI.
      */
     protected ArrayList<Number> numberZeroValues;
 
     /**
-     * The 'inferredDataType' property, displayed as 'Inferred Data Type' in the IGC UI.
+     * The {@code inferredDataType} property, displayed as '{@literal Inferred Data Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -316,186 +316,186 @@ public class DataFileField extends Reference {
     protected ArrayList<String> inferredDataType;
 
     /**
-     * The 'inferredLength' property, displayed as 'Inferred Length' in the IGC UI.
+     * The {@code inferredLength} property, displayed as '{@literal Inferred Length}' in the IGC UI.
      */
     protected ArrayList<Number> inferredLength;
 
     /**
-     * The 'inferredFormat' property, displayed as 'Inferred Format' in the IGC UI.
+     * The {@code inferredFormat} property, displayed as '{@literal Inferred Format}' in the IGC UI.
      */
     protected ArrayList<String> inferredFormat;
 
     /**
-     * The 'inferredScale' property, displayed as 'Inferred Scale' in the IGC UI.
+     * The {@code inferredScale} property, displayed as '{@literal Inferred Scale}' in the IGC UI.
      */
     protected ArrayList<Number> inferredScale;
 
     /**
-     * The 'inferredPrecision' property, displayed as 'Inferred Precision' in the IGC UI.
+     * The {@code inferredPrecision} property, displayed as '{@literal Inferred Precision}' in the IGC UI.
      */
     protected ArrayList<Number> inferredPrecision;
 
     /**
-     * The 'averageValue' property, displayed as 'Average Value' in the IGC UI.
+     * The {@code averageValue} property, displayed as '{@literal Average Value}' in the IGC UI.
      */
     protected ArrayList<String> averageValue;
 
     /**
-     * The 'isInferredForeignKey' property, displayed as 'Inferred Foreign Key' in the IGC UI.
+     * The {@code isInferredForeignKey} property, displayed as '{@literal Inferred Foreign Key}' in the IGC UI.
      */
     protected Boolean isInferredForeignKey;
 
     /**
-     * The 'isInferredPrimaryKey' property, displayed as 'Inferred Primary Key' in the IGC UI.
+     * The {@code isInferredPrimaryKey} property, displayed as '{@literal Inferred Primary Key}' in the IGC UI.
      */
     protected Boolean isInferredPrimaryKey;
 
     /**
-     * The 'hasDataClassification' property, displayed as 'Detected Data Classifications' in the IGC UI.
+     * The {@code hasDataClassification} property, displayed as '{@literal Detected Data Classifications}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Classification} objects.
      */
     protected ReferenceList hasDataClassification;
 
     /**
-     * The 'nbRecordsTested' property, displayed as 'Number of Records Tested' in the IGC UI.
+     * The {@code nbRecordsTested} property, displayed as '{@literal Number of Records Tested}' in the IGC UI.
      */
     protected ArrayList<Number> nbRecordsTested;
 
     /**
-     * The 'qualityScore_bubble' property, displayed as 'Quality Score' in the IGC UI.
+     * The {@code qualityScore_bubble} property, displayed as '{@literal Quality Score}' in the IGC UI.
      */
     protected String qualityScore_bubble;
 
     /**
-     * The 'quality_dimension' property, displayed as 'Quality Dimensions' in the IGC UI.
+     * The {@code quality_dimension} property, displayed as '{@literal Quality Dimensions}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link QualityProblem} objects.
      */
     protected ReferenceList quality_dimension;
 
     /**
-     * The 'read_by_(static)' property, displayed as 'Read by (Static)' in the IGC UI.
+     * The {@code read_by_(static)} property, displayed as '{@literal Read by (Static)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("read_by_(static)") protected ReferenceList read_by__static_;
 
     /**
-     * The 'written_by_(static)' property, displayed as 'Written by (Static)' in the IGC UI.
+     * The {@code written_by_(static)} property, displayed as '{@literal Written by (Static)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("written_by_(static)") protected ReferenceList written_by__static_;
 
     /**
-     * The 'read_by_(design)' property, displayed as 'Read by (Design)' in the IGC UI.
+     * The {@code read_by_(design)} property, displayed as '{@literal Read by (Design)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("read_by_(design)") protected ReferenceList read_by__design_;
 
     /**
-     * The 'written_by_(design)' property, displayed as 'Written by (Design)' in the IGC UI.
+     * The {@code written_by_(design)} property, displayed as '{@literal Written by (Design)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("written_by_(design)") protected ReferenceList written_by__design_;
 
     /**
-     * The 'read_by_(operational)' property, displayed as 'Read by (Operational)' in the IGC UI.
+     * The {@code read_by_(operational)} property, displayed as '{@literal Read by (Operational)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("read_by_(operational)") protected ReferenceList read_by__operational_;
 
     /**
-     * The 'written_by_(operational)' property, displayed as 'Written by (Operational)' in the IGC UI.
+     * The {@code written_by_(operational)} property, displayed as '{@literal Written by (Operational)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("written_by_(operational)") protected ReferenceList written_by__operational_;
 
     /**
-     * The 'read_by_(user_defined)' property, displayed as 'Read by (User-Defined)' in the IGC UI.
+     * The {@code read_by_(user_defined)} property, displayed as '{@literal Read by (User-Defined)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("read_by_(user_defined)") protected ReferenceList read_by__user_defined_;
 
     /**
-     * The 'written_by_(user_defined)' property, displayed as 'Written by (User-Defined)' in the IGC UI.
+     * The {@code written_by_(user_defined)} property, displayed as '{@literal Written by (User-Defined)}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     @JsonProperty("written_by_(user_defined)") protected ReferenceList written_by__user_defined_;
 
     /**
-     * The 'impacted_by' property, displayed as 'Impacted by' in the IGC UI.
+     * The {@code impacted_by} property, displayed as '{@literal Impacted by}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     protected ReferenceList impacted_by;
 
     /**
-     * The 'impacts_on' property, displayed as 'Impacts on' in the IGC UI.
+     * The {@code impacts_on} property, displayed as '{@literal Impacts on}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     protected ReferenceList impacts_on;
 
     /**
-     * The 'used_by_analytics_objects' property, displayed as 'Used By Data Science' in the IGC UI.
+     * The {@code used_by_analytics_objects} property, displayed as '{@literal Used By Data Science}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AnalyticsObject} objects.
      */
     protected ReferenceList used_by_analytics_objects;
 
     /**
-     * The 'suggested_term_assignments' property, displayed as 'Suggested Term Assignments' in the IGC UI.
+     * The {@code suggested_term_assignments} property, displayed as '{@literal Suggested Term Assignments}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link TermAssignment} objects.
      */
     protected ReferenceList suggested_term_assignments;
 
     /**
-     * The 'datafile_data_rules' property, displayed as 'Data Rules' in the IGC UI.
+     * The {@code datafile_data_rules} property, displayed as '{@literal Data Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataRule} objects.
      */
     protected ReferenceList datafile_data_rules;
 
     /**
-     * The 'database_data_rule_sets' property, displayed as 'Data Rule Sets' in the IGC UI.
+     * The {@code database_data_rule_sets} property, displayed as '{@literal Data Rule Sets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataRuleSet} objects.
      */
     protected ReferenceList database_data_rule_sets;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

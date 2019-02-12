@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'analysissummaryobject' asset type in IGC, displayed as 'AnalysisSummaryObject' in the IGC UI.
+ * POJO for the {@code analysissummaryobject} asset type in IGC, displayed as '{@literal AnalysisSummaryObject}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,79 +24,79 @@ public class Analysissummaryobject extends Reference {
     public static String getIgcTypeDisplayName() { return "AnalysisSummaryObject"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'is_viewable' property, displayed as 'Is Viewable' in the IGC UI.
+     * The {@code is_viewable} property, displayed as '{@literal Is Viewable}' in the IGC UI.
      */
     protected Boolean is_viewable;
 
     /**
-     * The 'review_date' property, displayed as 'Review Date' in the IGC UI.
+     * The {@code review_date} property, displayed as '{@literal Review Date}' in the IGC UI.
      */
     protected Date review_date;
 
     /**
-     * The 'promoted_by_principal' property, displayed as 'Promoted By Principal' in the IGC UI.
+     * The {@code promoted_by_principal} property, displayed as '{@literal Promoted By Principal}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Steward} object.
      */
     protected Reference promoted_by_principal;
 
     /**
-     * The 'project_name' property, displayed as 'Project Name' in the IGC UI.
+     * The {@code project_name} property, displayed as '{@literal Project Name}' in the IGC UI.
      */
     protected String project_name;
 
     /**
-     * The 'reviewed_by_principal' property, displayed as 'Reviewed By Principal' in the IGC UI.
+     * The {@code reviewed_by_principal} property, displayed as '{@literal Reviewed By Principal}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Steward} object.
      */

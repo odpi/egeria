@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'entity_attribute' asset type in IGC, displayed as 'Entity Attribute' in the IGC UI.
+ * POJO for the {@code entity_attribute} asset type in IGC, displayed as '{@literal Entity Attribute}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,182 +24,182 @@ public class EntityAttribute extends Reference {
     public static String getIgcTypeDisplayName() { return "Entity Attribute"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'logical_entity' property, displayed as 'Logical Entity' in the IGC UI.
+     * The {@code logical_entity} property, displayed as '{@literal Logical Entity}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link LogicalEntity} object.
      */
     protected Reference logical_entity;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'implemented_by_design_columns' property, displayed as 'Implemented by Design Columns' in the IGC UI.
+     * The {@code implemented_by_design_columns} property, displayed as '{@literal Implemented by Design Columns}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DesignColumn} objects.
      */
     protected ReferenceList implemented_by_design_columns;
 
     /**
-     * The 'implemented_by_database_columns' property, displayed as 'Implemented by Database Columns' in the IGC UI.
+     * The {@code implemented_by_database_columns} property, displayed as '{@literal Implemented by Database Columns}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList implemented_by_database_columns;
 
     /**
-     * The 'primary_key' property, displayed as 'Primary Key' in the IGC UI.
+     * The {@code primary_key} property, displayed as '{@literal Primary Key}' in the IGC UI.
      */
     protected Boolean primary_key;
 
     /**
-     * The 'logical_keys' property, displayed as 'Logical Keys' in the IGC UI.
+     * The {@code logical_keys} property, displayed as '{@literal Logical Keys}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link LogicalKey} objects.
      */
     protected ReferenceList logical_keys;
 
     /**
-     * The 'parent_logical_foreignKey' property, displayed as 'Parent Logical Foreign Key' in the IGC UI.
+     * The {@code parent_logical_foreignKey} property, displayed as '{@literal Parent Logical Foreign Key}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link LogicalForeignKey} objects.
      */
     protected ReferenceList parent_logical_foreignKey;
 
     /**
-     * The 'child_logical_foreign_keys' property, displayed as 'Child Logical Foreign Keys' in the IGC UI.
+     * The {@code child_logical_foreign_keys} property, displayed as '{@literal Child Logical Foreign Keys}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link EntityAttribute} objects.
      */
     protected ReferenceList child_logical_foreign_keys;
 
     /**
-     * The 'validation_rule' property, displayed as 'Validation Rule' in the IGC UI.
+     * The {@code validation_rule} property, displayed as '{@literal Validation Rule}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link LogicalValidationRule} object.
      */
     protected Reference validation_rule;
 
     /**
-     * The 'validation_range' property, displayed as 'Validation Range' in the IGC UI.
+     * The {@code validation_range} property, displayed as '{@literal Validation Range}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link LogicalValidationRange} object.
      */
     protected Reference validation_range;
 
     /**
-     * The 'validation_list' property, displayed as 'Validation List' in the IGC UI.
+     * The {@code validation_list} property, displayed as '{@literal Validation List}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link LogicalValidationList} object.
      */
     protected Reference validation_list;
 
     /**
-     * The 'physical_name' property, displayed as 'Physical Name' in the IGC UI.
+     * The {@code physical_name} property, displayed as '{@literal Physical Name}' in the IGC UI.
      */
     protected String physical_name;
 
     /**
-     * The 'native_type' property, displayed as 'Native Type' in the IGC UI.
+     * The {@code native_type} property, displayed as '{@literal Native Type}' in the IGC UI.
      */
     protected String native_type;
 
     /**
-     * The 'data_type' property, displayed as 'Data Type' in the IGC UI.
+     * The {@code data_type} property, displayed as '{@literal Data Type}' in the IGC UI.
      */
     protected String data_type;
 
     /**
-     * The 'length' property, displayed as 'Length' in the IGC UI.
+     * The {@code length} property, displayed as '{@literal Length}' in the IGC UI.
      */
     protected Number length;
 
     /**
-     * The 'scale' property, displayed as 'Scale' in the IGC UI.
+     * The {@code scale} property, displayed as '{@literal Scale}' in the IGC UI.
      */
     protected Number scale;
 
     /**
-     * The 'required' property, displayed as 'Required' in the IGC UI.
+     * The {@code required} property, displayed as '{@literal Required}' in the IGC UI.
      */
     protected Boolean required;
 
     /**
-     * The 'sequence' property, displayed as 'Sequence' in the IGC UI.
+     * The {@code sequence} property, displayed as '{@literal Sequence}' in the IGC UI.
      */
     protected Number sequence;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

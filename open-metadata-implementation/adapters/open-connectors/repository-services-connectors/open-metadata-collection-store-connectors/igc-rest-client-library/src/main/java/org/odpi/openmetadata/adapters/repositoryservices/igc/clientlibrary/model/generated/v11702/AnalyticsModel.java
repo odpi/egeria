@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'analytics_model' asset type in IGC, displayed as 'Data Science Model' in the IGC UI.
+ * POJO for the {@code analytics_model} asset type in IGC, displayed as '{@literal Data Science Model}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,161 +24,161 @@ public class AnalyticsModel extends Reference {
     public static String getIgcTypeDisplayName() { return "Data Science Model"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'analytics_project' property, displayed as 'Data Science Project' in the IGC UI.
+     * The {@code analytics_project} property, displayed as '{@literal Data Science Project}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link AnalyticsProject} object.
      */
     protected Reference analytics_project;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'input_training_notebook' property, displayed as 'Notebooks' in the IGC UI.
+     * The {@code input_training_notebook} property, displayed as '{@literal Notebooks}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Notebook} objects.
      */
     protected ReferenceList input_training_notebook;
 
     /**
-     * The 'input_training_script' property, displayed as 'Scripts' in the IGC UI.
+     * The {@code input_training_script} property, displayed as '{@literal Scripts}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AnalyticsScript} objects.
      */
     protected ReferenceList input_training_script;
 
     /**
-     * The 'input_training_column' property, displayed as 'Input Data Assets' in the IGC UI.
+     * The {@code input_training_column} property, displayed as '{@literal Input Data Assets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataField} objects.
      */
     protected ReferenceList input_training_column;
 
     /**
-     * The 'label_training_column' property, displayed as 'Output Data Assets' in the IGC UI.
+     * The {@code label_training_column} property, displayed as '{@literal Output Data Assets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataField} objects.
      */
     protected ReferenceList label_training_column;
 
     /**
-     * The 'eval_metric' property, displayed as 'Eval Metric' in the IGC UI.
+     * The {@code eval_metric} property, displayed as '{@literal Eval Metric}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link ModelEvalMetric} objects.
      */
     protected ReferenceList eval_metric;
 
     /**
-     * The 'system_equiv_id' property, displayed as 'System Equiv Id' in the IGC UI.
+     * The {@code system_equiv_id} property, displayed as '{@literal System Equiv Id}' in the IGC UI.
      */
     protected String system_equiv_id;
 
     /**
-     * The 'first_published_date' property, displayed as 'First Published Date' in the IGC UI.
+     * The {@code first_published_date} property, displayed as '{@literal First Published Date}' in the IGC UI.
      */
     protected Date first_published_date;
 
     /**
-     * The 'package_name' property, displayed as 'Package Name' in the IGC UI.
+     * The {@code package_name} property, displayed as '{@literal Package Name}' in the IGC UI.
      */
     protected String package_name;
 
     /**
-     * The 'logical_name' property, displayed as 'Logical Name' in the IGC UI.
+     * The {@code logical_name} property, displayed as '{@literal Logical Name}' in the IGC UI.
      */
     protected String logical_name;
 
     /**
-     * The 'url' property, displayed as 'URL' in the IGC UI.
+     * The {@code url} property, displayed as '{@literal URL}' in the IGC UI.
      */
     protected String url;
 
     /**
-     * The 'model_type' property, displayed as 'Type' in the IGC UI.
+     * The {@code model_type} property, displayed as '{@literal Type}' in the IGC UI.
      */
     protected String model_type;
 
     /**
-     * The 'model_quality' property, displayed as 'Quality' in the IGC UI.
+     * The {@code model_quality} property, displayed as '{@literal Quality}' in the IGC UI.
      */
     protected String model_quality;
 
     /**
-     * The 'version' property, displayed as 'Version' in the IGC UI.
+     * The {@code version} property, displayed as '{@literal Version}' in the IGC UI.
      */
     protected Number version;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

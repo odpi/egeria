@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'database_index' asset type in IGC, displayed as 'Database Index' in the IGC UI.
+ * POJO for the {@code database_index} asset type in IGC, displayed as '{@literal Database Index}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,81 +24,81 @@ public class DatabaseIndex extends Reference {
     public static String getIgcTypeDisplayName() { return "Database Index"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'indexed_database_columns' property, displayed as 'Database Columns' in the IGC UI.
+     * The {@code indexed_database_columns} property, displayed as '{@literal Database Columns}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList indexed_database_columns;
 
     /**
-     * The 'expression' property, displayed as 'Expression' in the IGC UI.
+     * The {@code expression} property, displayed as '{@literal Expression}' in the IGC UI.
      */
     protected ArrayList<String> expression;
 
     /**
-     * The 'unique' property, displayed as 'Unique Index' in the IGC UI.
+     * The {@code unique} property, displayed as '{@literal Unique Index}' in the IGC UI.
      */
     protected Boolean unique;
 
     /**
-     * The 'type' property, displayed as 'Type' in the IGC UI.
+     * The {@code type} property, displayed as '{@literal Type}' in the IGC UI.
      */
     protected String type;
 
     /**
-     * The 'function' property, displayed as 'Function' in the IGC UI.
+     * The {@code function} property, displayed as '{@literal Function}' in the IGC UI.
      */
     protected Boolean function;
 
     /**
-     * The 'partition' property, displayed as 'Partition' in the IGC UI.
+     * The {@code partition} property, displayed as '{@literal Partition}' in the IGC UI.
      */
     protected Boolean partition;
 
     /**
-     * The 'join' property, displayed as 'Join' in the IGC UI.
+     * The {@code join} property, displayed as '{@literal Join}' in the IGC UI.
      */
     protected Boolean join;
 
     /**
-     * The 'joined_database_columns' property, displayed as 'Joined Database Columns' in the IGC UI.
+     * The {@code joined_database_columns} property, displayed as '{@literal Joined Database Columns}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList joined_database_columns;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 
