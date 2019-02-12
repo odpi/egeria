@@ -45,7 +45,7 @@ public class EntityMappingStore {
     /**
      * Retrieves a listing of all TypeDefs for which entity mappings have been implemented.
      *
-     * @return List<TypeDef>
+     * @return {@code List<TypeDef>}
      */
     public List<TypeDef> getTypeDefs() { return this.typeDefs; }
 
@@ -126,7 +126,7 @@ public class EntityMappingStore {
      * a generated prefix for one or more of them (this method will return both the prefix and non-prefix mappings).
      *
      * @param assetType IGC asset type
-     * @return List<EntityMapping>
+     * @return {@code List<EntityMapping>}
      */
     public List<EntityMapping> getMappingsByIgcAssetType(String assetType) {
         String simpleType = Reference.getAssetTypeForSearch(assetType);
@@ -197,7 +197,7 @@ public class EntityMappingStore {
     /**
      * Retrieves all entity mappings that are implemented for this repository.
      *
-     * @return List<EntityMapping>
+     * @return {@code List<EntityMapping>}
      */
     public List<EntityMapping> getAllMappings() {
         return new ArrayList<>(omrsGuidToMapping.values());

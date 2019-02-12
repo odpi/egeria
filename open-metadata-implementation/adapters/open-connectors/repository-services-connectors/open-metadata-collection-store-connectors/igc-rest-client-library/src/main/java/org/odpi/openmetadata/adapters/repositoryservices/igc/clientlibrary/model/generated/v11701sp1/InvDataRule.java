@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'inv_data_rule' asset type in IGC, displayed as 'Data Rule' in the IGC UI.
+ * POJO for the {@code inv_data_rule} asset type in IGC, displayed as '{@literal Data Rule}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,32 +24,32 @@ public class InvDataRule extends Reference {
     public static String getIgcTypeDisplayName() { return "Data Rule"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_&_long_description' property, displayed as 'Short & Long Description' in the IGC UI.
+     * The {@code short_&_long_description} property, displayed as '{@literal Short & Long Description}' in the IGC UI.
      */
     @JsonProperty("short_&_long_description") protected String short___long_description;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'project' property, displayed as 'Project' in the IGC UI.
+     * The {@code project} property, displayed as '{@literal Project}' in the IGC UI.
      */
     protected String project;
 
     /**
-     * The 'status' property, displayed as 'Status' in the IGC UI.
+     * The {@code status} property, displayed as '{@literal Status}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -66,48 +66,48 @@ public class InvDataRule extends Reference {
     protected String status;
 
     /**
-     * The 'steward' property, displayed as 'Steward' in the IGC UI.
+     * The {@code steward} property, displayed as '{@literal Steward}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList steward;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'data_rule_definitions' property, displayed as 'Data Rule Definitions' in the IGC UI.
+     * The {@code data_rule_definitions} property, displayed as '{@literal Data Rule Definitions}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link InvDataRuleDefinition} object.
      */
     protected Reference data_rule_definitions;
 
     /**
-     * The 'expression' property, displayed as 'Expression' in the IGC UI.
+     * The {@code expression} property, displayed as '{@literal Expression}' in the IGC UI.
      */
     protected ArrayList<String> expression;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

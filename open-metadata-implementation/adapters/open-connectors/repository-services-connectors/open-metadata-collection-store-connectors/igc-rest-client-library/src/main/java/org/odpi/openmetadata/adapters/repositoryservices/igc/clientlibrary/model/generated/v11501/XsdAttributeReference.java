@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'xsd_attribute_reference' asset type in IGC, displayed as 'XSD Attribute Reference' in the IGC UI.
+ * POJO for the {@code xsd_attribute_reference} asset type in IGC, displayed as '{@literal XSD Attribute Reference}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,33 +24,33 @@ public class XsdAttributeReference extends Reference {
     public static String getIgcTypeDisplayName() { return "XSD Attribute Reference"; }
 
     /**
-     * The 'usage' property, displayed as 'Usage' in the IGC UI.
+     * The {@code usage} property, displayed as '{@literal Usage}' in the IGC UI.
      */
     protected String usage;
 
     /**
-     * The 'xsd_element' property, displayed as 'XSD Element' in the IGC UI.
+     * The {@code xsd_element} property, displayed as '{@literal XSD Element}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MainObject} objects.
      */
     protected ReferenceList xsd_element;
 
     /**
-     * The 'xsd_attribute_group' property, displayed as 'Attribute Group' in the IGC UI.
+     * The {@code xsd_attribute_group} property, displayed as '{@literal Attribute Group}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link XsdAttributeGroup} objects.
      */
     protected ReferenceList xsd_attribute_group;
 
     /**
-     * The 'xsd_complex_type' property, displayed as 'XSD Complex Type' in the IGC UI.
+     * The {@code xsd_complex_type} property, displayed as '{@literal XSD Complex Type}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link XsdComplexType} objects.
      */
     protected ReferenceList xsd_complex_type;
 
     /**
-     * The 'references_xsd_attribute' property, displayed as 'XSD Attribute' in the IGC UI.
+     * The {@code references_xsd_attribute} property, displayed as '{@literal XSD Attribute}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link XsdAttribute} object.
      */

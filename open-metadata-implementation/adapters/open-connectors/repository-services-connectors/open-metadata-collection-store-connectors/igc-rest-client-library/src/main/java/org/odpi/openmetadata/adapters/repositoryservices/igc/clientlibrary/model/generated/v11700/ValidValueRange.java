@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'valid_value_range' asset type in IGC, displayed as 'Valid Value Range' in the IGC UI.
+ * POJO for the {@code valid_value_range} asset type in IGC, displayed as '{@literal Valid Value Range}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,44 +24,44 @@ public class ValidValueRange extends Reference {
     public static String getIgcTypeDisplayName() { return "Valid Value Range"; }
 
     /**
-     * The 'is_max_inclusive' property, displayed as 'Is Max Inclusive' in the IGC UI.
+     * The {@code is_max_inclusive} property, displayed as '{@literal Is Max Inclusive}' in the IGC UI.
      */
     protected Boolean is_max_inclusive;
 
     /**
-     * The 'minimum_value' property, displayed as 'Minimum Value' in the IGC UI.
+     * The {@code minimum_value} property, displayed as '{@literal Minimum Value}' in the IGC UI.
      */
     protected String minimum_value;
 
     /**
-     * The 'is_min_inclusive' property, displayed as 'Is Min Inclusive' in the IGC UI.
+     * The {@code is_min_inclusive} property, displayed as '{@literal Is Min Inclusive}' in the IGC UI.
      */
     protected Boolean is_min_inclusive;
 
     /**
-     * The 'maximum_value' property, displayed as 'Maximum Value' in the IGC UI.
+     * The {@code maximum_value} property, displayed as '{@literal Maximum Value}' in the IGC UI.
      */
     protected String maximum_value;
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'valid_value_list' property, displayed as 'Valid Value List' in the IGC UI.
+     * The {@code valid_value_list} property, displayed as '{@literal Valid Value List}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link ValidValueList} object.
      */
     protected Reference valid_value_list;
 
     /**
-     * The 'design_column' property, displayed as 'Design Column' in the IGC UI.
+     * The {@code design_column} property, displayed as '{@literal Design Column}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataItem} objects.
      */

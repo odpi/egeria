@@ -113,7 +113,7 @@ public class AttributeMappingStore {
      * Retrieves a listing of all AttributeTypeDefs of the provided category.
      *
      * @param category of the AttributeTypeDef
-     * @return List<AttributeTypeDef>
+     * @return {@code List<AttributeTypeDef>}
      */
     public List<AttributeTypeDef> getAttributeTypeDefsByCategory(AttributeTypeDefCategory category) {
         String categoryName = category.getName();
@@ -131,7 +131,7 @@ public class AttributeMappingStore {
     /**
      * Retrieves a listing of all AttributeTypeDefs implemented for this repository.
      *
-     * @return List<AttributeTypeDef>
+     * @return {@code List<AttributeTypeDef>}
      */
     public List<AttributeTypeDef> getAllAttributeTypeDefs() {
         return new ArrayList<>(omrsGuidToAttributeTypeDef.values());

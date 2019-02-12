@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'credential' asset type in IGC, displayed as 'Credential' in the IGC UI.
+ * POJO for the {@code credential} asset type in IGC, displayed as '{@literal Credential}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,60 +24,60 @@ public class Credential extends Reference {
     public static String getIgcTypeDisplayName() { return "Credential"; }
 
     /**
-     * The 'password' property, displayed as 'Password' in the IGC UI.
+     * The {@code password} property, displayed as '{@literal Password}' in the IGC UI.
      */
     protected String password;
 
     /**
-     * The 'username' property, displayed as 'Username' in the IGC UI.
+     * The {@code username} property, displayed as '{@literal Username}' in the IGC UI.
      */
     protected String username;
 
     /**
-     * The 'for_application_install' property, displayed as 'For Application Install' in the IGC UI.
+     * The {@code for_application_install} property, displayed as '{@literal For Application Install}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link ApplicationInstall} object.
      */
     protected Reference for_application_install;
 
     /**
-     * The 'used_by_user_credentials' property, displayed as 'Used By User Credentials' in the IGC UI.
+     * The {@code used_by_user_credentials} property, displayed as '{@literal Used By User Credentials}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Credentials} object.
      */
     protected Reference used_by_user_credentials;
 
     /**
-     * The 'of_user_credentials' property, displayed as 'Of User Credentials' in the IGC UI.
+     * The {@code of_user_credentials} property, displayed as '{@literal Of User Credentials}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Credentials} object.
      */
     protected Reference of_user_credentials;
 
     /**
-     * The 'default_for_application_install' property, displayed as 'Default For Application Install' in the IGC UI.
+     * The {@code default_for_application_install} property, displayed as '{@literal Default For Application Install}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link ApplicationInstall} object.
      */
     protected Reference default_for_application_install;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'xsd_simple_type' asset type in IGC, displayed as 'XSD Simple Type' in the IGC UI.
+ * POJO for the {@code xsd_simple_type} asset type in IGC, displayed as '{@literal XSD Simple Type}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,224 +24,224 @@ public class XsdSimpleType extends Reference {
     public static String getIgcTypeDisplayName() { return "XSD Simple Type"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'xsd_schema' property, displayed as 'XSD Schema' in the IGC UI.
+     * The {@code xsd_schema} property, displayed as '{@literal XSD Schema}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link XmlSchemaDefinition} object.
      */
     protected Reference xsd_schema;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'defines_xsd_elements' property, displayed as 'Defines XSD Elements' in the IGC UI.
+     * The {@code defines_xsd_elements} property, displayed as '{@literal Defines XSD Elements}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MainObject} objects.
      */
     protected ReferenceList defines_xsd_elements;
 
     /**
-     * The 'defines_xsd_attributes' property, displayed as 'Defines XSD Attributes' in the IGC UI.
+     * The {@code defines_xsd_attributes} property, displayed as '{@literal Defines XSD Attributes}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link XsdAttribute} objects.
      */
     protected ReferenceList defines_xsd_attributes;
 
     /**
-     * The 'extends_xsd_simple_type' property, displayed as 'Extends XSD Simple Type' in the IGC UI.
+     * The {@code extends_xsd_simple_type} property, displayed as '{@literal Extends XSD Simple Type}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link XsdSimpleType} object.
      */
     protected Reference extends_xsd_simple_type;
 
     /**
-     * The 'extended_by_xsd_simple_type' property, displayed as 'Extended by XSD Simple Types' in the IGC UI.
+     * The {@code extended_by_xsd_simple_type} property, displayed as '{@literal Extended by XSD Simple Types}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link XsdSimpleType} objects.
      */
     protected ReferenceList extended_by_xsd_simple_type;
 
     /**
-     * The 'restricts_xsd_simple_type' property, displayed as 'Restricts XSD Simple Type' in the IGC UI.
+     * The {@code restricts_xsd_simple_type} property, displayed as '{@literal Restricts XSD Simple Type}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link XsdSimpleType} object.
      */
     protected Reference restricts_xsd_simple_type;
 
     /**
-     * The 'restricted_by_xsd_simple_type' property, displayed as 'Restricted by XSD Simple Types' in the IGC UI.
+     * The {@code restricted_by_xsd_simple_type} property, displayed as '{@literal Restricted by XSD Simple Types}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link XsdSimpleType} objects.
      */
     protected ReferenceList restricted_by_xsd_simple_type;
 
     /**
-     * The 'extends_xsd_element' property, displayed as 'Extends XSD Elements' in the IGC UI.
+     * The {@code extends_xsd_element} property, displayed as '{@literal Extends XSD Elements}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MainObject} objects.
      */
     protected ReferenceList extends_xsd_element;
 
     /**
-     * The 'restricts_xsd_element' property, displayed as 'Restricts XSD Elements' in the IGC UI.
+     * The {@code restricts_xsd_element} property, displayed as '{@literal Restricts XSD Elements}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MainObject} objects.
      */
     protected ReferenceList restricts_xsd_element;
 
     /**
-     * The 'extended_by_xsd_complex_type' property, displayed as 'Extended by XSD Complex Types' in the IGC UI.
+     * The {@code extended_by_xsd_complex_type} property, displayed as '{@literal Extended by XSD Complex Types}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link XsdComplexType} objects.
      */
     protected ReferenceList extended_by_xsd_complex_type;
 
     /**
-     * The 'base_type' property, displayed as 'Data Type' in the IGC UI.
+     * The {@code base_type} property, displayed as '{@literal Data Type}' in the IGC UI.
      */
     protected String base_type;
 
     /**
-     * The 'length' property, displayed as 'Length' in the IGC UI.
+     * The {@code length} property, displayed as '{@literal Length}' in the IGC UI.
      */
     protected Number length;
 
     /**
-     * The 'max_length' property, displayed as 'Maximum Length' in the IGC UI.
+     * The {@code max_length} property, displayed as '{@literal Maximum Length}' in the IGC UI.
      */
     protected Number max_length;
 
     /**
-     * The 'min_length' property, displayed as 'Minimum Length' in the IGC UI.
+     * The {@code min_length} property, displayed as '{@literal Minimum Length}' in the IGC UI.
      */
     protected Number min_length;
 
     /**
-     * The 'fraction' property, displayed as 'Fraction' in the IGC UI.
+     * The {@code fraction} property, displayed as '{@literal Fraction}' in the IGC UI.
      */
     protected Number fraction;
 
     /**
-     * The 'total_digits' property, displayed as 'Total Digits' in the IGC UI.
+     * The {@code total_digits} property, displayed as '{@literal Total Digits}' in the IGC UI.
      */
     protected Number total_digits;
 
     /**
-     * The 'whitespace' property, displayed as 'Whitespace' in the IGC UI.
+     * The {@code whitespace} property, displayed as '{@literal Whitespace}' in the IGC UI.
      */
     protected String whitespace;
 
     /**
-     * The 'timezone' property, displayed as 'Timezone' in the IGC UI.
+     * The {@code timezone} property, displayed as '{@literal Timezone}' in the IGC UI.
      */
     protected String timezone;
 
     /**
-     * The 'final' property, displayed as 'Final' in the IGC UI.
+     * The {@code final} property, displayed as '{@literal Final}' in the IGC UI.
      */
     @JsonProperty("final") protected String __final;
 
     /**
-     * The 'restriction_pattern' property, displayed as 'Pattern' in the IGC UI.
+     * The {@code restriction_pattern} property, displayed as '{@literal Pattern}' in the IGC UI.
      */
     protected String restriction_pattern;
 
     /**
-     * The 'restriction_minimum_value' property, displayed as 'Minimum Range' in the IGC UI.
+     * The {@code restriction_minimum_value} property, displayed as '{@literal Minimum Range}' in the IGC UI.
      */
     protected String restriction_minimum_value;
 
     /**
-     * The 'restriction_minimum_inclusive_string' property, displayed as 'Minimum Range Inclusive' in the IGC UI.
+     * The {@code restriction_minimum_inclusive_string} property, displayed as '{@literal Minimum Range Inclusive}' in the IGC UI.
      */
     protected ArrayList<String> restriction_minimum_inclusive_string;
 
     /**
-     * The 'restriction_maximum_value' property, displayed as 'Maximum Range' in the IGC UI.
+     * The {@code restriction_maximum_value} property, displayed as '{@literal Maximum Range}' in the IGC UI.
      */
     protected String restriction_maximum_value;
 
     /**
-     * The 'restriction_maximum_inclusive_string' property, displayed as 'Maximum Range Inclusive' in the IGC UI.
+     * The {@code restriction_maximum_inclusive_string} property, displayed as '{@literal Maximum Range Inclusive}' in the IGC UI.
      */
     protected ArrayList<String> restriction_maximum_inclusive_string;
 
     /**
-     * The 'restriction_enumeration_values' property, displayed as 'Enumeration Values' in the IGC UI.
+     * The {@code restriction_enumeration_values} property, displayed as '{@literal Enumeration Values}' in the IGC UI.
      */
     protected ArrayList<String> restriction_enumeration_values;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 
