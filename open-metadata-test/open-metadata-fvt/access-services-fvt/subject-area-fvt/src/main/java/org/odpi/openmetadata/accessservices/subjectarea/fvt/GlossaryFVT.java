@@ -22,18 +22,20 @@ public class GlossaryFVT
     private static final String DEFAULT_TEST_GLOSSARY_NAME3 = "Testglossary3";
     private SubjectAreaGlossary subjectAreaGlossary = null;
     private String serverName = null;
+    private String userId = null;
 
-    public GlossaryFVT(String url,String serverName) throws InvalidParameterException
+    public GlossaryFVT(String url,String serverName,String userId) throws InvalidParameterException
     {
         subjectAreaGlossary = new SubjectAreaImpl(serverName,url).getSubjectAreaGlossary();
         this.serverName=serverName;
+        this.userId=userId;
     }
-    public static void runit(String url) throws SubjectAreaCheckedExceptionBase
+    public static void runWith2Servers(String url) throws SubjectAreaCheckedExceptionBase
     {
-        GlossaryFVT fvt =new GlossaryFVT(url,FVTConstants.SERVER_NAME1);
+        GlossaryFVT fvt =new GlossaryFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
         fvt.run();
         // check that a second server will work
-        GlossaryFVT fvt2 =new GlossaryFVT(url,FVTConstants.SERVER_NAME2);
+        GlossaryFVT fvt2 =new GlossaryFVT(url,FVTConstants.SERVER_NAME2,FVTConstants.USERID);
         fvt2.run();
     }
     public static void main(String args[])
@@ -41,7 +43,7 @@ public class GlossaryFVT
         try
         {
            String url = RunAllFVT.getUrl(args);
-           runit(url);
+           runWith2Servers(url);
 
         } catch (IOException e1)
         {
@@ -50,6 +52,11 @@ public class GlossaryFVT
         {
             System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
+    }
+
+    public static void runIt(String url, String serverName, String userId) throws SubjectAreaCheckedExceptionBase {
+        GlossaryFVT fvt =new GlossaryFVT(url,serverName,userId);
+        fvt.run();
     }
 
     public void run() throws SubjectAreaCheckedExceptionBase
@@ -128,7 +135,7 @@ public class GlossaryFVT
     }
 
     public Glossary issueCreateGlossary(Glossary glossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, UnrecognizedGUIDException {
-        Glossary newGlossary = subjectAreaGlossary.createGlossary(serverName,FVTConstants.USERID, glossary);
+        Glossary newGlossary = subjectAreaGlossary.createGlossary(serverName,this.userId, glossary);
         if (newGlossary != null)
         {
             System.out.println("Created Glossary " + newGlossary.getName() + " with guid " + newGlossary.getSystemAttributes().getGUID());
@@ -148,7 +155,7 @@ public class GlossaryFVT
         long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
         glossary.setEffectiveToTime(new Date(now-10));
-        Glossary newGlossary  = subjectAreaGlossary.createGlossary(serverName,FVTConstants.USERID, glossary);
+        Glossary newGlossary  = subjectAreaGlossary.createGlossary(serverName,this.userId, glossary);
         FVTUtils.validateNode(newGlossary);
         System.out.println("Created Glossary " + newGlossary.getName() + " with guid " + newGlossary.getSystemAttributes().getGUID());
 
@@ -161,7 +168,7 @@ public class GlossaryFVT
         long now = new Date().getTime();
         // expire the glossary 10 milliseconds ago
         glossary.setEffectiveFromTime(new Date(now-10));
-       return  subjectAreaGlossary.createGlossary(serverName,FVTConstants.USERID, glossary);
+       return  subjectAreaGlossary.createGlossary(serverName,this.userId, glossary);
     }
     public  Glossary createInvalidEffectiveDateGlossary(String name) throws SubjectAreaCheckedExceptionBase
     {
@@ -171,7 +178,7 @@ public class GlossaryFVT
         // expire the glossary 10 milliseconds ago
         glossary.setEffectiveFromTime(new Date(now - 10));
         glossary.setEffectiveToTime(new Date(now - 11));
-        return  subjectAreaGlossary.createGlossary(serverName, FVTConstants.USERID, glossary);
+        return  subjectAreaGlossary.createGlossary(serverName, this.userId, glossary);
     }
 
     public  Glossary createFutureGlossary(String name) throws SubjectAreaCheckedExceptionBase
@@ -182,7 +189,7 @@ public class GlossaryFVT
         // make the glossary effective in a days time for day
         glossary.setEffectiveFromTime(new Date(now+1000*60*60*24));
         glossary.setEffectiveToTime(new Date(now+2000*60*60*24));
-        Glossary newGlossary  = subjectAreaGlossary.createGlossary(serverName,FVTConstants.USERID, glossary);
+        Glossary newGlossary  = subjectAreaGlossary.createGlossary(serverName,this.userId, glossary);
         FVTUtils.validateNode(newGlossary);
         System.out.println("Created Glossary " + newGlossary.getName() + " with guid " + newGlossary.getSystemAttributes().getGUID());
         return newGlossary;
@@ -191,7 +198,7 @@ public class GlossaryFVT
     {
         List<Glossary> glossaries = subjectAreaGlossary.findGlossary(
                 serverName,
-                FVTConstants.USERID,
+                this.userId,
                 criteria,
                 null,
                 0,
@@ -202,7 +209,7 @@ public class GlossaryFVT
     }
 
     public  Glossary getGlossaryByGUID(String guid) throws SubjectAreaCheckedExceptionBase {
-        Glossary glossary = subjectAreaGlossary.getGlossaryByGuid(serverName, FVTConstants.USERID, guid);
+        Glossary glossary = subjectAreaGlossary.getGlossaryByGuid(serverName, this.userId, guid);
         FVTUtils.validateNode(glossary);
         System.out.println("Got Glossary " + glossary.getName() + " with guid " + glossary.getSystemAttributes().getGUID() + " and status " + glossary.getSystemAttributes().getStatus());
 
@@ -210,7 +217,7 @@ public class GlossaryFVT
     }
     public  Glossary updateGlossary(String guid, Glossary glossary) throws SubjectAreaCheckedExceptionBase
     {
-        Glossary updatedGlossary = subjectAreaGlossary.updateGlossary(serverName,FVTConstants.USERID, guid, glossary);
+        Glossary updatedGlossary = subjectAreaGlossary.updateGlossary(serverName,this.userId, guid, glossary);
         FVTUtils.validateNode(updatedGlossary);
         System.out.println("Updated Glossary name to " + updatedGlossary.getName());
         return updatedGlossary;
@@ -218,14 +225,14 @@ public class GlossaryFVT
 
     public Glossary deleteGlossary(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Glossary deletedGlossary = subjectAreaGlossary.deleteGlossary(serverName,FVTConstants.USERID, guid);
+        Glossary deletedGlossary = subjectAreaGlossary.deleteGlossary(serverName,this.userId, guid);
         FVTUtils.validateNode(deletedGlossary);
         System.out.println("Deleted Glossary name is " + deletedGlossary.getName());
         return deletedGlossary;
     }
     public Glossary restoreGlossary(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Glossary restoredGlossary = subjectAreaGlossary.restoreGlossary(serverName,FVTConstants.USERID, guid);
+        Glossary restoredGlossary = subjectAreaGlossary.restoreGlossary(serverName,this.userId, guid);
         FVTUtils.validateNode(restoredGlossary);
         System.out.println("Restored Glossary name is " + restoredGlossary.getName());
         return restoredGlossary;
@@ -233,11 +240,11 @@ public class GlossaryFVT
 
     public  void purgeGlossary(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        subjectAreaGlossary.purgeGlossary(serverName,FVTConstants.USERID, guid);
+        subjectAreaGlossary.purgeGlossary(serverName,this.userId, guid);
         System.out.println("Purge succeeded");
     }
     public List<Line> getGlossaryRelationships(Glossary glossary) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
-        return subjectAreaGlossary.getGlossaryRelationships(serverName,FVTConstants.USERID,
+        return subjectAreaGlossary.getGlossaryRelationships(serverName,this.userId,
                 glossary.getSystemAttributes().getGUID(),
                 null,
                 0,
