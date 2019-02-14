@@ -29,50 +29,6 @@ public class AssetLineageEnterpriseOmrsEventListener implements OMRSTopicListene
         this.auditLog = auditLog;
     }
 
-
-    /**
-     * @param event - inbound event
-     */
-    public void processEvent(OMRSEventV1 event) {
-        String actionDescription = "Process Incoming Event";
-
-        /*
-         * The event should not be null but worth checking.
-         */
-        if (event != null) {
-            /*
-             * Determine the category of event to process.
-             */
-            switch (event.getEventCategory()) {
-
-                case INSTANCE:
-                    this.processInstanceEvent(new OMRSInstanceEvent(event));
-                    break;
-
-                default:
-                    log.debug("This event should not be handled by the Asset Lineage OMAS: " + event.getEventCategory());
-            }
-        } else {
-            /*
-             * A null event was passed - probably should not happen so log audit record.
-             */
-            OMRSAuditCode auditCode = OMRSAuditCode.NULL_OMRS_EVENT_RECEIVED;
-
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
-
-
-            log.debug("Null OMRS Event received ");
-        }
-
-    }
-
-
     @Override
     public void processRegistryEvent(OMRSRegistryEvent event) {
 
@@ -119,6 +75,15 @@ public class AssetLineageEnterpriseOmrsEventListener implements OMRSTopicListene
                                 instanceEvent.getEntity());
                         break;
 
+                    case UPDATED_RELATIONSHIP_EVENT:
+                        instanceEventProcessor.processUpdatedRelationshipEvent("EnterpriseOMRSTopic",
+                                instanceEventOriginator.getMetadataCollectionId(),
+                                instanceEventOriginator.getServerName(),
+                                instanceEventOriginator.getServerType(),
+                                instanceEventOriginator.getOrganizationName(),
+                                instanceEvent.getOriginalRelationship(),
+                                instanceEvent.getRelationship());
+                        break;
                 }
             } else {
                 log.debug("Ignored instance event - null type");

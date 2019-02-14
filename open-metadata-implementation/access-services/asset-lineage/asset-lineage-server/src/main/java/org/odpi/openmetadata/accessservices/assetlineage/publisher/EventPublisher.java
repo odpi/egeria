@@ -5,8 +5,13 @@ package org.odpi.openmetadata.accessservices.assetlineage.publisher;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.accessservices.assetlineage.contentmanager.ColumnContextEventBuilder;
 import org.odpi.openmetadata.accessservices.assetlineage.events.AssetLineageHeader;
+import org.odpi.openmetadata.accessservices.assetlineage.events.DatabaseColumn;
+import org.odpi.openmetadata.accessservices.assetlineage.events.SemanticAssignment;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
+import org.odpi.openmetadata.accessservices.assetlineage.utils.Constants;
+import org.odpi.openmetadata.accessservices.assetlineage.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
@@ -20,6 +25,11 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcesso
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.odpi.openmetadata.accessservices.assetlineage.utils.Constants.RELATIONAL_COLUMN;
+import static org.odpi.openmetadata.accessservices.assetlineage.utils.Constants.SEMANTIC_ASSIGNMENT;
 
 
 public class EventPublisher implements OMRSInstanceEventProcessor {
@@ -28,10 +38,14 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private OpenMetadataTopic assetLineageTopicConnector;
     private OMRSAuditLog auditLog;
+    private ColumnContextEventBuilder columnContextEventBuilder;
 
-    public EventPublisher(OpenMetadataTopic assetLineageTopicConnector, OMRSAuditLog auditLog) {
+    public EventPublisher(OpenMetadataTopic assetLineageTopicConnector,
+                          ColumnContextEventBuilder columnContextEventBuilder,
+                          OMRSAuditLog auditLog) {
         this.assetLineageTopicConnector = assetLineageTopicConnector;
         this.auditLog = auditLog;
+        this.columnContextEventBuilder = columnContextEventBuilder;
     }
 
 
@@ -192,9 +206,66 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
                                             String originatorServerType,
                                             String originatorOrganizationName,
                                             Relationship relationship) {
+        //It should handle only semantic assignments for relational columns
+        if (!(relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT) && relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN))) {
+            log.info("Event is ignored as the relationship is not a semantic assignment for a column");
+            return;
+        }
 
+        try {
+            publishSemanticAssignment(relationship);
+        } catch (Exception e) {
+
+            log.error("Exception building events", e);
+            AssetLineageErrorCode auditCode = AssetLineageErrorCode.PUBLISH_EVENT_EXCEPTION;
+
+            auditLog.logException("processNewRelationshipEvent",
+                    auditCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    auditCode.getFormattedErrorMessage(SemanticAssignment.class.getName(), e.getMessage()),
+                    e.getMessage(),
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction(),
+                    e);
+        }
     }
 
+    private void publishSemanticAssignment(Relationship relationship) throws Exception {
+        SemanticAssignment semanticAssignment = new SemanticAssignment();
+        EntityDetail businessTerm = retrieveReferencedEntity(relationship.getEntityTwoProxy().getGUID());
+        semanticAssignment.setBusinessTerm(columnContextEventBuilder.buildBusinessTerm(businessTerm));
+        DatabaseColumn databaseColumn = new DatabaseColumn();
+        EntityDetail columnEntity = retrieveReferencedEntity(relationship.getEntityOneProxy().getGUID());
+        databaseColumn.setGuid(columnEntity.getGUID());
+        databaseColumn.setName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.NAME));
+        databaseColumn.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.QUALIFIED_NAME));
+        semanticAssignment.setDatabaseColumn(databaseColumn);
+        sendEvent(semanticAssignment);
+    }
+
+    public EntityDetail retrieveReferencedEntity(String guid) throws Exception {
+        try {
+            EntityDetail entity = columnContextEventBuilder.getEntity(guid);
+            if (entity != null) {
+                return entity;
+            } else {
+                log.error("Entity with guid {} not found", guid);
+                throw new Exception(String.format("Entity with guid %s not found", guid));
+            }
+        } catch (Exception e) {
+            AssetLineageErrorCode auditCode = AssetLineageErrorCode.GET_ENTITY_EXCEPTION;
+            auditLog.logException("retrieveReferencedEntity",
+                    auditCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    auditCode.getFormattedErrorMessage("guid: " + guid),
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction(),
+                    "",
+                    e);
+
+            throw new Exception(e);
+        }
+    }
 
 
     public void processUpdatedRelationshipEvent(String sourceName,
