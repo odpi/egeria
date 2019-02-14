@@ -22,7 +22,7 @@ The current Egeria maintainers are:
 | Wu Yue Feng | wyf1116@gmail.com |
 | Chris Grote | chris@thegrotes.net |
 | Raluca Popa | raluca.popa2@ing.com |
-
+| Cong Chen | cong.chen@ing.com |
 
 
 ----
