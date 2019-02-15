@@ -9,7 +9,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.informationview.events.InformationViewEvent;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewInTopicListener;
@@ -139,8 +139,8 @@ public class InformationViewOmasListenerTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        EntitiesCreatorHelper entitiesCreatorHelper = new EntitiesCreatorHelper(enterpriseConnector, auditLog);
-        listener = new InformationViewInTopicListener(entitiesCreatorHelper, eventPublisher,enterpriseConnector.getRepositoryHelper(), auditLog);
+        OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, auditLog);
+        listener = new InformationViewInTopicListener(omEntityDao, eventPublisher,enterpriseConnector.getRepositoryHelper(), auditLog);
         when(enterpriseConnector.getMetadataCollection()).thenReturn(omrsMetadataCollection);
         when(enterpriseConnector.getRepositoryHelper()).thenReturn(helper);
 

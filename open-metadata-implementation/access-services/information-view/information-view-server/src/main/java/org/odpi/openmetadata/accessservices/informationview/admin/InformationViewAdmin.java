@@ -5,11 +5,11 @@ package org.odpi.openmetadata.accessservices.informationview.admin;
 
 
 import org.odpi.openmetadata.accessservices.informationview.auditlog.InformationViewAuditCode;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.ColumnContextEventBuilder;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.DataViewHandler;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
+import org.odpi.openmetadata.accessservices.informationview.views.ColumnContextEventBuilder;
+import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportHandler;
+import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewEnterpriseOmrsEventListener;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewInTopicListener;
@@ -83,7 +83,7 @@ public class InformationViewAdmin implements AccessServiceAdmin {
         informationViewInTopicConnector = initializeInformationViewTopicConnector(inTopicConnection);
         OpenMetadataTopicConnector informationViewOutTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
 
-        EntitiesCreatorHelper entitiesCreatorHelper = new EntitiesCreatorHelper(enterpriseConnector, auditLog);
+        OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, auditLog);
 
 
         EventPublisher eventPublisher = null;
@@ -104,7 +104,7 @@ public class InformationViewAdmin implements AccessServiceAdmin {
 
 
         if (informationViewInTopicConnector != null) {
-            OpenMetadataTopicListener informationViewInTopicListener = new InformationViewInTopicListener(entitiesCreatorHelper, eventPublisher, enterpriseConnector.getRepositoryHelper(),
+            OpenMetadataTopicListener informationViewInTopicListener = new InformationViewInTopicListener(omEntityDao, eventPublisher, enterpriseConnector.getRepositoryHelper(),
                     auditLog);
             this.informationViewInTopicConnector.registerListener(informationViewInTopicListener);
             startConnector(InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_IN_TOPIC, actionDescription, inTopicName, informationViewInTopicConnector);
@@ -114,9 +114,9 @@ public class InformationViewAdmin implements AccessServiceAdmin {
             startConnector(InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_OUT_TOPIC, actionDescription, outTopicName, informationViewOutTopicConnector);
         }
 
-        LookupHelper lookupHelper = new LookupHelper(enterpriseConnector, entitiesCreatorHelper, auditLog);
-        DataViewHandler dataViewHandler = new DataViewHandler(entitiesCreatorHelper, enterpriseConnector.getRepositoryHelper(), auditLog);
-        instance = new InformationViewServicesInstance(new ReportHandler(entitiesCreatorHelper, lookupHelper, auditLog), dataViewHandler, serverName);
+        LookupHelper lookupHelper = new LookupHelper(enterpriseConnector, omEntityDao, auditLog);
+        DataViewHandler dataViewHandler = new DataViewHandler(omEntityDao, enterpriseConnector.getRepositoryHelper(), auditLog);
+        instance = new InformationViewServicesInstance(new ReportHandler(omEntityDao, lookupHelper, auditLog), dataViewHandler, serverName);
 
         auditCode = InformationViewAuditCode.SERVICE_INITIALIZED;
         auditLog.logRecord(actionDescription,

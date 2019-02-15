@@ -83,5 +83,4 @@ public class Constants {
     public static final String REGULAR_AGGREGATE = "regularAggregate";
     public static final String PRIMITIVE_SCHEMA_TYPE = "PrimitiveSchemaType";
     public static final String DERIVED_DATA_VIEW_SCHEMA_ATTRIBUTE = "DerivedDataViewSchemaAttribute";
-    public static final String QUALIFIED_NAME_SEPARATOR = ":";
 }

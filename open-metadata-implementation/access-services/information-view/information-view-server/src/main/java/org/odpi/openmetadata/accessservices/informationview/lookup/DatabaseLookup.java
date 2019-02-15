@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.lookup;
 
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -29,8 +29,8 @@ public class DatabaseLookup extends EntityLookup<TableSource> {
 
     private static final Logger log = LoggerFactory.getLogger(DatabaseLookup.class);
 
-    public DatabaseLookup(OMRSRepositoryConnector enterpriseConnector, EntitiesCreatorHelper entitiesCreatorHelper, EntityLookup parentChain, OMRSAuditLog auditLog) {
-        super(enterpriseConnector, entitiesCreatorHelper, parentChain, auditLog);
+    public DatabaseLookup(OMRSRepositoryConnector enterpriseConnector, OMEntityDao omEntityDao, EntityLookup parentChain, OMRSAuditLog auditLog) {
+        super(enterpriseConnector, omEntityDao, parentChain, auditLog);
     }
 
 
@@ -39,11 +39,11 @@ public class DatabaseLookup extends EntityLookup<TableSource> {
         EntityDetail endpointEntity = parentChain.lookupEntity(source);
         if(endpointEntity == null)
             return null;
-        List<Relationship> relationships = entitiesCreatorHelper.getRelationships(Constants.CONNECTION_TO_ENDPOINT, endpointEntity.getGUID());
+        List<Relationship> relationships = omEntityDao.getRelationships(Constants.CONNECTION_TO_ENDPOINT, endpointEntity.getGUID());
         List<String> allConnectionGuids = relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
         List<Relationship> allConnectionToDatabaseRelationships = allConnectionGuids.stream().flatMap(e -> {
             try {
-                return entitiesCreatorHelper.getRelationships(Constants.CONNECTION_TO_ASSET, e).stream();
+                return omEntityDao.getRelationships(Constants.CONNECTION_TO_ASSET, e).stream();
             } catch (Exception exception) {
                 throw new RuntimeException(exception.getMessage(), exception);
             }

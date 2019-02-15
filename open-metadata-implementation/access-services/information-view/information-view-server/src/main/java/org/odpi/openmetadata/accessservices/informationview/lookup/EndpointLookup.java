@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.lookup;
 
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -25,8 +25,8 @@ public class EndpointLookup extends EntityLookup<Source> {
 
     private static final Logger log = LoggerFactory.getLogger(EndpointLookup.class);
 
-    public EndpointLookup(OMRSRepositoryConnector enterpriseConnector, EntitiesCreatorHelper entitiesCreatorHelper, EntityLookup chain, OMRSAuditLog auditLog) {
-        super(enterpriseConnector, entitiesCreatorHelper, chain, auditLog);
+    public EndpointLookup(OMRSRepositoryConnector enterpriseConnector, OMEntityDao omEntityDao, EntityLookup chain, OMRSAuditLog auditLog) {
+        super(enterpriseConnector, omEntityDao, chain, auditLog);
 
     }
 

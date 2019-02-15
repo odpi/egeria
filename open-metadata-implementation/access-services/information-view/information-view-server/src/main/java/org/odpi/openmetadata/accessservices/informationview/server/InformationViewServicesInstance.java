@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.informationview.server;
 
 
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.DataViewHandler;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportHandler;
+import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
+import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
 
 
 /**

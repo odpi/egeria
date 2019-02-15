@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.lookup;
 
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumnSource;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -29,8 +29,8 @@ public class ColumnLookup extends EntityLookup<DatabaseColumnSource> {
 
     private static final Logger log = LoggerFactory.getLogger(ColumnLookup.class);
 
-    public ColumnLookup(OMRSRepositoryConnector enterpriseConnector, EntitiesCreatorHelper entitiesCreatorHelper, EntityLookup parentChain, OMRSAuditLog auditLog) {
-        super(enterpriseConnector, entitiesCreatorHelper, parentChain, auditLog);
+    public ColumnLookup(OMRSRepositoryConnector enterpriseConnector, OMEntityDao omEntityDao, EntityLookup parentChain, OMRSAuditLog auditLog) {
+        super(enterpriseConnector, omEntityDao, parentChain, auditLog);
     }
 
     @Override
@@ -38,12 +38,12 @@ public class ColumnLookup extends EntityLookup<DatabaseColumnSource> {
         EntityDetail tableEntity = parentChain.lookupEntity(source.getTableSource());
         if(tableEntity == null)
             return null;
-        List<Relationship> relationships = entitiesCreatorHelper.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, tableEntity.getGUID());
+        List<Relationship> relationships = omEntityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, tableEntity.getGUID());
         List<String> allTableTypeGuids = relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
 
         List<Relationship> allTableTypeToColumnRelationships = allTableTypeGuids.stream().flatMap(e -> {
             try {
-                return entitiesCreatorHelper.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, e).stream();
+                return omEntityDao.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, e).stream();
             } catch (Exception exception) {
                 throw new RuntimeException(exception.getMessage(), exception);
             }

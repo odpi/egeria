@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.informationview.contentmanager;
+package org.odpi.openmetadata.accessservices.informationview.reports;
 
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewElement;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewTable;
@@ -29,12 +30,12 @@ public abstract class DataViewBasicOperation {
 
 
     private static final Logger log = LoggerFactory.getLogger(DataViewBasicOperation.class);
-    protected final EntitiesCreatorHelper entitiesCreatorHelper;
+    protected final org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao omEntityDao;
     private OMRSRepositoryHelper helper;
     protected final OMRSAuditLog auditLog;
 
-    protected DataViewBasicOperation(EntitiesCreatorHelper entitiesCreatorHelper, OMRSRepositoryHelper helper,  OMRSAuditLog auditLog) {
-        this.entitiesCreatorHelper = entitiesCreatorHelper;
+    protected DataViewBasicOperation(OMEntityDao omEntityDao, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
+        this.omEntityDao = omEntityDao;
         this.auditLog = auditLog;
         this.helper = helper;
     }
@@ -75,12 +76,12 @@ public abstract class DataViewBasicOperation {
                 .withStringProperty(Constants.NATIVE_CLASS, dataViewTable.getNativeClass())
                 .withStringProperty(Constants.DESCRIPTION, dataViewTable.getDescription())
                 .build();
-        EntityDetail dataViewTableEntity = entitiesCreatorHelper.addEntity(Constants.DATA_VIEW_SCHEMA_ATTRIBUTE,
+        EntityDetail dataViewTableEntity = omEntityDao.addEntity(Constants.DATA_VIEW_SCHEMA_ATTRIBUTE,
                 qualifiedNameForDataViewTable,
                 sectionProperties);
 
 
-        entitiesCreatorHelper.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
+        omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
                 parentGuid,
                 dataViewTableEntity.getGUID(),
                 Constants.INFORMATION_VIEW_OMAS_NAME,
@@ -115,11 +116,11 @@ public abstract class DataViewBasicOperation {
             columnProperties = helper.addMapPropertyToInstance("", columnProperties, "additionalProperties", prop, "");
 
 
-        EntityDetail dataViewColumnEntity = entitiesCreatorHelper.addEntity(Constants.DERIVED_DATA_VIEW_SCHEMA_ATTRIBUTE,
+        EntityDetail dataViewColumnEntity = omEntityDao.addEntity(Constants.DERIVED_DATA_VIEW_SCHEMA_ATTRIBUTE,
                 qualifiedNameForColumn,
                 columnProperties);
 
-        entitiesCreatorHelper.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
+        omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
                 parentGuid,
                 dataViewColumnEntity.getGUID(),
                 Constants.INFORMATION_VIEW_OMAS_NAME,
@@ -154,11 +155,11 @@ public abstract class DataViewBasicOperation {
         }
 
 
-        EntityDetail schemaTypeEntity = entitiesCreatorHelper.addEntity(schemaAttributeType,
+        EntityDetail schemaTypeEntity = omEntityDao.addEntity(schemaAttributeType,
                 qualifiedNameForType,
                 typeProperties);
 
-        entitiesCreatorHelper.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
+        omEntityDao.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
                 schemaAttributeEntity.getGUID(),
                 schemaTypeEntity.getGUID(),
                 Constants.INFORMATION_VIEW_OMAS_NAME,
@@ -170,7 +171,7 @@ public abstract class DataViewBasicOperation {
     private void addBusinessTerm(DataViewColumn dataViewColumn, EntityDetail derivedColumnEntity) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, StatusNotSupportedException, TypeDefNotKnownException, EntityNotKnownException {
         String businessTermGuid = dataViewColumn.getBusinessTermGuid();
         if (!StringUtils.isEmpty(businessTermGuid)) {
-            entitiesCreatorHelper.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
+            omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
                     derivedColumnEntity.getGUID(),
                     businessTermGuid,
                     Constants.INFORMATION_VIEW_OMAS_NAME,
@@ -185,7 +186,7 @@ public abstract class DataViewBasicOperation {
                 .withStringProperty(Constants.QUERY, "")
                 .build();
 
-            entitiesCreatorHelper.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
+            omEntityDao.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
                     derivedColumnEntity.getGUID(),
                     sourceColumnGUID,
                     Constants.INFORMATION_VIEW_OMAS_NAME,
