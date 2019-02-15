@@ -21,6 +21,7 @@ public final class Constants {
     public static final String SCHEMA_ATTRIBUTE_TYPE = "SchemaAttributeType";
     public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
     public static final String ATTRIBUTE_FOR_SCHEMA = "AttributeForSchema";
+    public static final String COMPLEX_SCHEMA_TYPE = "ComplexSchemaType";
     public static final String ASSET_SCHEMA_TYPE = "AssetSchemaType";
     public static final String CONNECTION_TO_ASSET = "ConnectionToAsset";
     public static final String CONNECTION_CONNECTOR_TYPE = "ConnectionConnectorType";

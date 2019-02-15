@@ -2,60 +2,32 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetcatalog.service;
 
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogErrorCode;
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetCatalogException;
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.AssetNotFoundException;
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.ClassificationNotFoundException;
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.NotImplementedException;
-import org.odpi.openmetadata.accessservices.assetcatalog.exception.PropertyServerException;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Column;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Connection;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Connector;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Context;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.DataType;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Database;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Endpoint;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Schema;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.SequenceOrderType;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Status;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Table;
+import org.odpi.openmetadata.accessservices.assetcatalog.exception.*;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.*;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.Converter;
 import org.odpi.openmetadata.accessservices.assetcatalog.util.ExceptionHandler;
-import org.odpi.openmetadata.accessservices.assetcatalog.util.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefGallery;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * The AssetCatalogService provides the server-side implementation of the Asset Catalog Open Metadata
@@ -637,7 +609,7 @@ public class AssetCatalogService {
         for (AssetDescription assetDescription : assetDescriptions) {
 
             List<Context> contexts = assetDescription.getContexts();
-            if(contexts != null) {
+            if (contexts != null) {
                 for (Context context : contexts) {
                     if (context.getDatabase() != null && context.getDatabase().getGuid() != null) {
                         Connection connection;
@@ -713,13 +685,11 @@ public class AssetCatalogService {
         return asset.getClassifications();
     }
 
-    private String getTypeID(String serverName, String userId, String relationshipType) throws AssetNotFoundException, PropertyServerException {
+    private String getTypeID(String userId, String typeName, OMRSMetadataCollection metadataCollection) throws AssetNotFoundException, PropertyServerException {
 
-        OMRSMetadataCollection metadataCollection = instanceHandler.getMetadataCollection(serverName);
-
-        if (relationshipType != null) {
+        if (typeName != null) {
             try {
-                return metadataCollection.getTypeDefByName(userId, relationshipType).getGUID();
+                return metadataCollection.getTypeDefByName(userId, typeName).getGUID();
             } catch (InvalidParameterException
                     | RepositoryErrorException
                     | UserNotAuthorizedException
@@ -1455,6 +1425,21 @@ public class AssetCatalogService {
         }
 
         return getThePairEntity(metadataCollectionForSearch, userId, assetId, relationshipsToColumnTypes.get(0));
+    }
+
+    private List<EntityDetail> getTheEndsRelationship(String userId, String assetId, String relationshipType) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
+
+        List<Relationship> relationships = getRelationshipsByAssetId(userId, assetId, relationshipType);
+
+        if (relationships.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        List<EntityDetail> entityDetails = new ArrayList<>(relationships.size());
+        for (Relationship relationship : relationships) {
+            entityDetails.add(getThePairEntity(metadataCollectionForSearch, userId, assetId, relationship));
+        }
+        return entityDetails;
     }
 
     private DataType getColumnType(OMRSMetadataCollection metadataCollection, String userId, EntityDetail relationalColumn) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {

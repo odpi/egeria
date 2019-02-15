@@ -1,32 +1,16 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetcatalog.util;
 
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Asset;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.DataType;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.SequenceOrderType;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.Status;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.*;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyCategory;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING;
@@ -401,5 +385,59 @@ public class Converter {
         }
 
         return null;
+    }
+
+    public Map<String, String> getMapProperties(InstanceProperties properties) {
+        Map<String, String> attributes = new HashMap<>();
+
+        if (properties != null) {
+
+            Map<String, InstancePropertyValue> instanceProperties = properties.getInstanceProperties();
+            if (instanceProperties != null) {
+                for (Map.Entry<String, InstancePropertyValue> property : instanceProperties.entrySet()) {
+                    if (property.getValue() != null) {
+                        String propertyValue = getStringForPropertyValue(property.getValue());
+                        if (!propertyValue.equals("")) {
+                            attributes.put(property.getKey(), propertyValue);
+                        }
+                    }
+                }
+            }
+        }
+
+        return attributes;
+    }
+
+    private String getStringForPropertyValue(InstancePropertyValue ipv) {
+
+        if (ipv instanceof PrimitivePropertyValue) {
+            PrimitiveDefCategory primtype =
+                    ((PrimitivePropertyValue) ipv).getPrimitiveDefCategory();
+            switch (primtype) {
+                case OM_PRIMITIVE_TYPE_STRING:
+                    return (String) ((PrimitivePropertyValue) ipv).getPrimitiveValue();
+                case OM_PRIMITIVE_TYPE_INT:
+                case OM_PRIMITIVE_TYPE_BIGDECIMAL:
+                case OM_PRIMITIVE_TYPE_BIGINTEGER:
+                case OM_PRIMITIVE_TYPE_BOOLEAN:
+                case OM_PRIMITIVE_TYPE_BYTE:
+                case OM_PRIMITIVE_TYPE_CHAR:
+                case OM_PRIMITIVE_TYPE_DATE:
+                case OM_PRIMITIVE_TYPE_DOUBLE:
+                case OM_PRIMITIVE_TYPE_FLOAT:
+                case OM_PRIMITIVE_TYPE_LONG:
+                case OM_PRIMITIVE_TYPE_SHORT:
+                    return ((PrimitivePropertyValue) ipv).getPrimitiveValue().toString();
+                case OM_PRIMITIVE_TYPE_UNKNOWN:
+                default:
+                    return "";
+            }
+        } else {
+            if (ipv instanceof EnumPropertyValue) {
+                return ((EnumPropertyValue) ipv).getSymbolicName();
+            } else {
+                return "";
+            }
+        }
     }
 }
