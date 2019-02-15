@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.informationview.contentmanager;
+package org.odpi.openmetadata.accessservices.informationview.views;
 
 
 import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
@@ -72,6 +72,17 @@ public class ColumnContextEventBuilder {
         return allEvents;
     }
 
+    public List<String> getAssignedColumnsGuids(String businessTermGuid) throws Exception{
+        List<String> guids = new ArrayList<>();
+
+        String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.SEMANTIC_ASSIGNMENT).getGUID();
+        List<Relationship> columnsAssigned = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, businessTermGuid, relationshipTypeGuid, 0, null, null, null, null, 0);
+        if(columnsAssigned != null && !columnsAssigned.isEmpty()){
+            return  columnsAssigned.stream().filter(r -> Constants.RELATIONAL_COLUMN.equals(r.getEntityOneProxy().getType().getTypeDefName())).map(e -> e.getEntityOneProxy().getGUID()).collect(Collectors.toList());
+        }
+        return guids;
+    }
+
     /**
      * Returns the list of column contexts populated with table type details
      *
@@ -122,10 +133,10 @@ public class ColumnContextEventBuilder {
         for (Relationship schemaTypeRelationship : enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, tableEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0)) {
             List<TableContextEvent> events = getDbSchemaTypeDetails(tableGuid, schemaTypeRelationship);
             allEvents.addAll(events.stream().map(e -> {
-                e.getTableSource().setTableName(tableName);
-                e.setTableColumns(allColumns);
-                return e;
-            }).collect(Collectors.toList()));
+                                                e.getTableSource().setTableName(tableName);
+                                                e.setTableColumns(allColumns);
+                                                return e;
+                                                }).collect(Collectors.toList()));
         }
         return allEvents;
     }
@@ -449,8 +460,18 @@ public class ColumnContextEventBuilder {
         return relationship.getEntityOneProxy().getGUID();
     }
 
-    public EntityDetail getEntity(String guid) throws RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException {
+    public EntityDetail getEntity(String guid) throws RepositoryErrorException,
+                                                      UserNotAuthorizedException,
+                                                      EntityProxyOnlyException,
+                                                      InvalidParameterException,
+                                                      EntityNotKnownException {
         return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);
+    }
+    public Relationship getRelationship(String relationshipGuid) throws RepositoryErrorException,
+                                                                        InvalidParameterException,
+                                                                        RelationshipNotKnownException,
+                                                                        UserNotAuthorizedException {
+        return enterpriseConnector.getMetadataCollection().getRelationship(Constants.USER_ID, relationshipGuid);
     }
 
     public BusinessTerm buildBusinessTerm(EntityDetail businessTermEntity) {

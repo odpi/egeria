@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.informationview.contentmanager;
+package org.odpi.openmetadata.accessservices.informationview.reports;
 
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityWrapper;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.DataViewCreationException;
@@ -20,16 +22,16 @@ public class DataViewHandler {
 
 
     private static final Logger log = LoggerFactory.getLogger(DataViewHandler.class);
-    private EntitiesCreatorHelper entitiesCreatorHelper;
+    private org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao omEntityDao;
     private OMRSAuditLog auditLog;
     private DataViewCreator dataViewCreator;
     private DataViewUpdater dataViewUpdater;
 
 
-    public DataViewHandler(EntitiesCreatorHelper entitiesCreatorHelper, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
-        this.entitiesCreatorHelper = entitiesCreatorHelper;
-        dataViewCreator = new DataViewCreator(entitiesCreatorHelper, helper, auditLog);
-        dataViewUpdater = new DataViewUpdater(entitiesCreatorHelper, helper, auditLog);
+    public DataViewHandler(OMEntityDao omEntityDao, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
+        this.omEntityDao = omEntityDao;
+        dataViewCreator = new DataViewCreator(omEntityDao, helper, auditLog);
+        dataViewUpdater = new DataViewUpdater(omEntityDao, helper, auditLog);
         this.auditLog = auditLog;
     }
 
@@ -56,7 +58,7 @@ public class DataViewHandler {
                     .build();
 
 
-            EntityDetailWrapper dataViewWrapper = entitiesCreatorHelper.createOrUpdateEntity(Constants.DATA_VIEW,
+            OMEntityWrapper dataViewWrapper = omEntityDao.createOrUpdateEntity(Constants.DATA_VIEW,
                                                                             qualifiedNameForDataView,
                                                                             dataViewProperties,
                                                                             null,
@@ -65,7 +67,7 @@ public class DataViewHandler {
 
             dataViewCreator.createDataView(requestBody, dataViewWrapper.getEntityDetail());
 
-//            if (dataViewWrapper.getEntityStatus().equals(EntityDetailWrapper.EntityStatus.NEW)) {
+//            if (dataViewWrapper.getEntityStatus().equals(OMEntityWrapper.EntityStatus.NEW)) {
 //                dataViewCreator.createDataView(requestBody, dataViewWrapper.getEntityDetail());
 //            } else {
 //                dataViewUpdater.updateDataView(requestBody, dataViewWrapper.getEntityDetail());

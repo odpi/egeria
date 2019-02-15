@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.informationview.contentmanager;
+package org.odpi.openmetadata.accessservices.informationview.reports;
 
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityWrapper;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.ReportCreationException;
@@ -22,13 +24,13 @@ public class ReportHandler {
     private static final Logger log = LoggerFactory.getLogger(ReportHandler.class);
     private ReportCreator reportCreator;
     private ReportUpdater reportUpdater;
-    private EntitiesCreatorHelper entitiesCreatorHelper;
+    private org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao omEntityDao;
     private OMRSAuditLog auditLog;
 
-    public ReportHandler(EntitiesCreatorHelper entitiesCreatorHelper, LookupHelper lookupHelper, OMRSAuditLog auditLog) {
-        reportCreator = new ReportCreator(entitiesCreatorHelper, lookupHelper, auditLog);
-        reportUpdater = new ReportUpdater(entitiesCreatorHelper, lookupHelper, auditLog);
-        this.entitiesCreatorHelper = entitiesCreatorHelper;
+    public ReportHandler(OMEntityDao omEntityDao, LookupHelper lookupHelper, OMRSAuditLog auditLog) {
+        reportCreator = new ReportCreator(omEntityDao, lookupHelper, auditLog);
+        reportUpdater = new ReportUpdater(omEntityDao, lookupHelper, auditLog);
+        this.omEntityDao = omEntityDao;
         this.auditLog = auditLog;
     }
 
@@ -55,14 +57,14 @@ public class ReportHandler {
                     .build();
 
 
-            EntityDetailWrapper reportWrapper = entitiesCreatorHelper.createOrUpdateEntity(Constants.DEPLOYED_REPORT,
+            OMEntityWrapper reportWrapper = omEntityDao.createOrUpdateEntity(Constants.DEPLOYED_REPORT,
                     qualifiedNameForReport,
                     reportProperties,
                     null,
                     true);
 
 
-            if (reportWrapper.getEntityStatus().equals(EntityDetailWrapper.EntityStatus.NEW)) {
+            if (reportWrapper.getEntityStatus().equals(OMEntityWrapper.EntityStatus.NEW)) {
                 reportCreator.createReport(payload, reportWrapper.getEntityDetail());
             } else {
                 reportUpdater.updateReport(payload, reportWrapper.getEntityDetail());

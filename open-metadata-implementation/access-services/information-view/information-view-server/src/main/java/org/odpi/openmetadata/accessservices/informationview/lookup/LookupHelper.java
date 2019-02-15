@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.informationview.lookup;
 
 
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumnSource;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -25,22 +25,22 @@ public class LookupHelper {
 
     private static final Logger log = LoggerFactory.getLogger(LookupHelper.class);
     private OMRSRepositoryConnector enterpriseConnector;
-    private EntitiesCreatorHelper entitiesCreatorHelper;
+    private OMEntityDao omEntityDao;
     private OMRSAuditLog auditLog;
 
-    public LookupHelper(OMRSRepositoryConnector enterpriseConnector, EntitiesCreatorHelper entitiesCreatorHelper, OMRSAuditLog auditLog) {
+    public LookupHelper(OMRSRepositoryConnector enterpriseConnector, OMEntityDao omEntityDao, OMRSAuditLog auditLog) {
         this.enterpriseConnector = enterpriseConnector;
         this.auditLog = auditLog;
-        this.entitiesCreatorHelper = entitiesCreatorHelper;
+        this.omEntityDao = omEntityDao;
     }
 
     public EntityDetail lookupDatabaseColumn(DatabaseColumnSource source) throws EntityNotKnownException, UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
         log.debug(MessageFormat.format("lookup database column {0}", source));
-        EndpointLookup endpointLookup = new EndpointLookup(enterpriseConnector, entitiesCreatorHelper, null, auditLog);
-        DatabaseLookup databaseLookup = new DatabaseLookup(enterpriseConnector, entitiesCreatorHelper, endpointLookup, auditLog);
-        DatabaseSchemaLookup databaseSchemaLookup = new DatabaseSchemaLookup(enterpriseConnector, entitiesCreatorHelper, databaseLookup, auditLog);
-        TableLookup tableLookup = new TableLookup(enterpriseConnector, entitiesCreatorHelper, databaseSchemaLookup, auditLog);
-        ColumnLookup columnLookup = new ColumnLookup(enterpriseConnector, entitiesCreatorHelper, tableLookup, auditLog);
+        EndpointLookup endpointLookup = new EndpointLookup(enterpriseConnector, omEntityDao, null, auditLog);
+        DatabaseLookup databaseLookup = new DatabaseLookup(enterpriseConnector, omEntityDao, endpointLookup, auditLog);
+        DatabaseSchemaLookup databaseSchemaLookup = new DatabaseSchemaLookup(enterpriseConnector, omEntityDao, databaseLookup, auditLog);
+        TableLookup tableLookup = new TableLookup(enterpriseConnector, omEntityDao, databaseSchemaLookup, auditLog);
+        ColumnLookup columnLookup = new ColumnLookup(enterpriseConnector, omEntityDao, tableLookup, auditLog);
         return columnLookup.lookupEntity(source);
     }
 

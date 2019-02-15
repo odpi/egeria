@@ -1,8 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.informationview.contentmanager;
+package org.odpi.openmetadata.accessservices.informationview.reports;
 
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityWrapper;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
@@ -18,8 +19,8 @@ public class DataViewCreator extends DataViewBasicOperation{
 
     private static final Logger log = LoggerFactory.getLogger(DataViewCreator.class);
 
-    protected DataViewCreator(EntitiesCreatorHelper entitiesCreatorHelper, OMRSRepositoryHelper helper,OMRSAuditLog auditLog) {
-        super(entitiesCreatorHelper, helper, auditLog);
+    protected DataViewCreator(org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao omEntityDao, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
+        super(omEntityDao, helper, auditLog);
     }
 
 
@@ -30,11 +31,11 @@ public class DataViewCreator extends DataViewBasicOperation{
             InstanceProperties complexSchemaTypeProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
                     .build();
-            EntityDetailWrapper complexSchemaTypeEntityWrapper = entitiesCreatorHelper.createOrUpdateEntity(Constants.COMPLEX_SCHEMA_TYPE,
+            OMEntityWrapper complexSchemaTypeEntityWrapper = omEntityDao.createOrUpdateEntity(Constants.COMPLEX_SCHEMA_TYPE,
                     qualifiedNameForComplexSchemaType, complexSchemaTypeProperties, null, false);
 
             log.debug("Created data view schema type {}", complexSchemaTypeEntityWrapper.getEntityDetail().getGUID());
-            entitiesCreatorHelper.addRelationship(Constants.ASSET_SCHEMA_TYPE,
+            omEntityDao.addRelationship(Constants.ASSET_SCHEMA_TYPE,
                     dataViewEntity.getGUID(),
                     complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(),
                     Constants.INFORMATION_VIEW_OMAS_NAME,

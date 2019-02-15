@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.informationview.lookup;
 
 
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
@@ -39,13 +39,13 @@ public abstract class EntityLookup<T extends Source> {
     private static final Integer PAGE_SIZE = 0;
     private static final Logger log = LoggerFactory.getLogger(EntityLookup.class);
     protected OMRSRepositoryConnector enterpriseConnector;
-    protected EntitiesCreatorHelper entitiesCreatorHelper;
+    protected OMEntityDao omEntityDao;
     protected OMRSAuditLog auditLog;
     protected EntityLookup parentChain;
 
-    public EntityLookup(OMRSRepositoryConnector enterpriseConnector, EntitiesCreatorHelper entitiesCreatorHelper, EntityLookup parentChain, OMRSAuditLog auditLog) {
+    public EntityLookup(OMRSRepositoryConnector enterpriseConnector, OMEntityDao omEntityDao, EntityLookup parentChain, OMRSAuditLog auditLog) {
         this.enterpriseConnector = enterpriseConnector;
-        this.entitiesCreatorHelper = entitiesCreatorHelper;
+        this.omEntityDao = omEntityDao;
         this.auditLog = auditLog;
         this.parentChain = parentChain;
     }

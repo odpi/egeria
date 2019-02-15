@@ -41,14 +41,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class EntitiesCreatorHelper {
+public class OMEntityDao {
 
-    private static final Logger log = LoggerFactory.getLogger(EntitiesCreatorHelper.class);
+    private static final Logger log = LoggerFactory.getLogger(OMEntityDao.class);
     private static final Integer PAGE_SIZE = 100;
-    private OMRSRepositoryConnector enterpriseConnector;
-    private OMRSAuditLog auditLog;
+    private final OMRSRepositoryConnector enterpriseConnector;
+    private final OMRSAuditLog auditLog;
 
-    public EntitiesCreatorHelper(OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog) {
+    public OMEntityDao(OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog) {
         this.enterpriseConnector = enterpriseConnector;
         this.auditLog = auditLog;
     }
@@ -349,7 +349,7 @@ public class EntitiesCreatorHelper {
                                   InstanceProperties properties,
                                   List<Classification> classifications) throws InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeErrorException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException {
 
-        EntityDetailWrapper wrapper = createOrUpdateEntity(typeName,
+        OMEntityWrapper wrapper = createOrUpdateEntity(typeName,
                 qualifiedName,
                 properties,
                 classifications,
@@ -357,27 +357,31 @@ public class EntitiesCreatorHelper {
         return wrapper != null ? wrapper.getEntityDetail() : null;
     }
 
-    public EntityDetailWrapper createOrUpdateEntity(String typeName,
-                                                    String qualifiedName,
-                                                    InstanceProperties properties,
-                                                    List<Classification> classifications,
-                                                    boolean update) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, ClassificationErrorException, StatusNotSupportedException, EntityNotKnownException {
+    public OMEntityWrapper createOrUpdateEntity(String typeName,
+                                                String qualifiedName,
+                                                InstanceProperties properties,
+                                                List<Classification> classifications,
+                                                boolean update) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, ClassificationErrorException, StatusNotSupportedException, EntityNotKnownException {
         EntityDetail entityDetail;
-        EntityDetailWrapper wrapper;
+        OMEntityWrapper wrapper;
         entityDetail = getEntity(typeName, qualifiedName);
         if (entityDetail == null) {
             entityDetail = addEntity("", Constants.USER_ID, typeName, properties, classifications, Constants.INFORMATION_VIEW_OMAS_NAME);
             log.info("Entity with qualified name {} added", qualifiedName);
             log.debug("Entity: {}", entityDetail);
-            wrapper = new EntityDetailWrapper(entityDetail, EntityDetailWrapper.EntityStatus.NEW);
+            wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.NEW);
         } else {
             log.info("Entity with qualified name {} already exists", qualifiedName);
             log.debug("Entity: {}", entityDetail);
             if (update && !EntityPropertiesUtils.matchExactlyInstanceProperties(entityDetail.getProperties(), properties)) {//TODO should add validation
                 log.info("Updating entity with qualified name {} ", qualifiedName);
                 entityDetail = updateEntity(entityDetail, Constants.USER_ID, properties);
+                wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.UPDATED);
             }
-            wrapper = new EntityDetailWrapper(entityDetail, EntityDetailWrapper.EntityStatus.UPDATED);
+            else{
+                wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.EXISTING);
+            }
+
         }
 
         return wrapper;

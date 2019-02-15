@@ -100,15 +100,12 @@ public class EntityPropertiesUtils {
         }
         if (value1 instanceof PrimitivePropertyValue && value2 instanceof PrimitivePropertyValue) {
             if (((PrimitivePropertyValue) value1).getPrimitiveDefCategory() == ((PrimitivePropertyValue) value2).getPrimitiveDefCategory()) {
-
-
                 Object primitiveValue1 = ((PrimitivePropertyValue) value1).getPrimitiveValue();
                 Object primitiveValue2 = ((PrimitivePropertyValue) value2).getPrimitiveValue();
 
                 if(primitiveValue1 == null && primitiveValue2 == null){
                     return true;
                 }
-
                 if(primitiveValue1 == null || primitiveValue2 != null){
                     return false;
                 }

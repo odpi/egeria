@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.informationview.events.DataViewSourc
 public class QualifiedNameUtil {
 
 
-    private static final String QUALIFIED_NAME_SEPARATOR = ":";
+    public static final String QUALIFIED_NAME_SEPARATOR = ":";
 
 
     public static String getQualifiedName(DataViewColumnSource dataViewColumn) {
