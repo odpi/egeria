@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.rest;
 
-
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -59,29 +58,30 @@ public abstract class DataEngineOMASAPIResponse implements java.io.Serializable 
         }
     }
 
-    public int getRelatedHTTPCode() {
+    int getRelatedHTTPCode() {
         return relatedHTTPCode;
     }
 
-    public String getExceptionClassName() {
+    String getExceptionClassName() {
         return exceptionClassName;
     }
 
-    public String getExceptionErrorMessage() {
+    String getExceptionErrorMessage() {
         return exceptionErrorMessage;
     }
 
-    public String getExceptionSystemAction() {
+    String getExceptionSystemAction() {
         return exceptionSystemAction;
     }
 
-    public String getExceptionUserAction() {
+    String getExceptionUserAction() {
         return exceptionUserAction;
     }
 
-    public Map<String, Object> getExceptionProperties() {
+    Map<String, Object> getExceptionProperties() {
         return exceptionProperties;
     }
+
     public void setRelatedHTTPCode(int relatedHTTPCode) {
         this.relatedHTTPCode = relatedHTTPCode;
     }
@@ -155,7 +155,6 @@ public abstract class DataEngineOMASAPIResponse implements java.io.Serializable 
                 Objects.equals(getExceptionUserAction(), that.getExceptionUserAction()) &&
                 Objects.equals(getExceptionProperties(), that.getExceptionProperties());
     }
-
 
     /**
      * Return hash code for this object
