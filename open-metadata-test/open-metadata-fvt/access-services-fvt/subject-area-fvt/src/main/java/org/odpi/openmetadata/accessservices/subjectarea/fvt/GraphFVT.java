@@ -36,13 +36,14 @@ public class GraphFVT
     private SubjectAreaDefinitionCategoryFVT subjectAreaFVT = null;
 
     private String serverName = null;
+    private String userId = null;
 
     public static void main(String args[])
     {
         try
         {
             String url = RunAllFVT.getUrl(args);
-            runit(url);
+            runWith2Servers(url);
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
@@ -52,23 +53,28 @@ public class GraphFVT
         }
 
     }
-    public GraphFVT(String url, String serverName) throws SubjectAreaCheckedExceptionBase
+    public GraphFVT(String url, String serverName,String userId) throws SubjectAreaCheckedExceptionBase
     {
         subjectAreaGraph = new SubjectAreaImpl(serverName,url).getSubjectAreaGraph();
         System.out.println("Create a glossary");
-        glossaryFVT = new GlossaryFVT(url,serverName);
-        termFVT = new TermFVT(url,serverName);
-        categoryFVT = new CategoryFVT(url,serverName);
-        relationshipFVT = new RelationshipsFVT(url,serverName);
-        subjectAreaFVT = new SubjectAreaDefinitionCategoryFVT(url,serverName);
+        glossaryFVT = new GlossaryFVT(url,serverName,userId);
+        termFVT = new TermFVT(url,serverName,userId);
+        categoryFVT = new CategoryFVT(url,serverName,userId);
+        relationshipFVT = new RelationshipsFVT(url,serverName,userId);
+        subjectAreaFVT = new SubjectAreaDefinitionCategoryFVT(url,serverName,userId);
         this.serverName=serverName;
+        this.userId=userId;
     }
-    public static void runit(String url) throws SubjectAreaCheckedExceptionBase
+    public static void runWith2Servers(String url) throws SubjectAreaCheckedExceptionBase
     {
-        GraphFVT fvt =new GraphFVT(url,FVTConstants.SERVER_NAME1);
+        GraphFVT fvt =new GraphFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
         fvt.run();
-        GraphFVT fvt2 =new GraphFVT(url,FVTConstants.SERVER_NAME2);
+        GraphFVT fvt2 =new GraphFVT(url,FVTConstants.SERVER_NAME2,FVTConstants.USERID);
         fvt2.run();
+    }
+
+    public static void runIt(String url, String serverName, String userId) {
+
     }
 
     public void run() throws SubjectAreaCheckedExceptionBase
@@ -250,7 +256,7 @@ public class GraphFVT
             MetadataServerUncontactableException,
             UnexpectedResponseException {
         return subjectAreaGraph.getGraph(serverName,
-                FVTConstants.USERID,
+                userId,
                 guid,
                 asOfTime,
                 nodeFilter,
