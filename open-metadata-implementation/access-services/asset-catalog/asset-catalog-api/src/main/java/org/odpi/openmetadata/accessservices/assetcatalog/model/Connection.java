@@ -21,13 +21,29 @@ public class Connection implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private String guid;
     private String displayName;
     private String description;
-    private String guid;
+    private String qualifiedName;
     protected Map<String, Object> securedProperties = null;
 
     private Connector connector;
     private Endpoint endpoint;
+
+    public Connection(){}
+
+    public Connection(String guid, String qualifiedName) {
+        this.guid = guid;
+        this.qualifiedName = qualifiedName;
+    }
+
+    public String getGuid() {
+        return guid;
+    }
+
+    public void setGuid(String guid) {
+        this.guid = guid;
+    }
 
     public String getDisplayName() {
         return displayName;
@@ -45,12 +61,12 @@ public class Connection implements Serializable {
         this.description = description;
     }
 
-    public String getGuid() {
-        return guid;
+    public String getQualifiedName() {
+        return qualifiedName;
     }
 
-    public void setGuid(String guid) {
-        this.guid = guid;
+    public void setQualifiedName(String qualifiedName) {
+        this.qualifiedName = qualifiedName;
     }
 
     public Map<String, Object> getSecuredProperties() {

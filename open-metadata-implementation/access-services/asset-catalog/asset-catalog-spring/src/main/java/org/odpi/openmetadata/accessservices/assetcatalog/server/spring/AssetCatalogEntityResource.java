@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.exception.NotImplemente
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchParameters;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogService;
@@ -310,7 +311,6 @@ public class AssetCatalogEntityResource {
 
     /**
      * Return a list of assets matching the search criteria.
-     * Return the connection id
      *
      * @param serverName       unique identifier for requested server.
      * @param userId           the unique identifier for the user
