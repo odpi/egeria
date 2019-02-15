@@ -131,7 +131,7 @@ public abstract class RelationshipMapping {
     /**
      * Retrieve the list of statuses that are supported by the relationship mapping.
      *
-     * @return List<InstanceStatus>
+     * @return {@code List<InstanceStatus>}
      */
     public List<InstanceStatus> getSupportedStatuses() { return this.omrsSupportedStatuses; }
 
@@ -145,7 +145,7 @@ public abstract class RelationshipMapping {
     /**
      * Retrieve the set of OMRS properties that are supported by the classification mapping.
      *
-     * @return Set<String>
+     * @return {@code Set<String>}
      */
     public Set<String> getMappedOmrsPropertyNames() { return this.mappedOmrsPropertyNames; }
 
@@ -246,7 +246,7 @@ public abstract class RelationshipMapping {
      * Subtypes can be used where the same relationship may represent relationships between a number of different
      * IGC objects and each needs to be distinguished to appropriately apply a mapping.
      *
-     * @return List<RelationshipMapping>
+     * @return {@code List<RelationshipMapping>}
      */
     public List<RelationshipMapping> getSubTypes() { return this.subtypes; }
 
@@ -283,7 +283,7 @@ public abstract class RelationshipMapping {
     /**
      * Get the optimal starting point for traversing this relationship.
      *
-     * @return
+     * @return OptimalStart
      */
     public OptimalStart getOptimalStart() { return this.optimalStart; }
 
@@ -410,7 +410,7 @@ public abstract class RelationshipMapping {
      * Retrieve the IGC relationship properties that define the relationship for the provided IGC asset type.
      *
      * @param igcAssetType the IGC asset type for which to retrieve the relationship properties
-     * @return List<String>
+     * @return {@code List<String>}
      */
     public List<String> getIgcRelationshipPropertiesForType(String igcAssetType) {
 
@@ -491,7 +491,7 @@ public abstract class RelationshipMapping {
          * mapping to traverse to the other side of the relationship. (In most cases this will just be a single
          * relationship in the list.)
          *
-         * @return List<String>
+         * @return {@code List<String>}
          */
         public List<String> getIgcRelationshipProperties() { return this.igcRelationshipProperties; }
 

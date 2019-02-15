@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'job_input_pin' asset type in IGC, displayed as 'Job Input Pin' in the IGC UI.
+ * POJO for the {@code job_input_pin} asset type in IGC, displayed as '{@literal Job Input Pin}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,105 +24,105 @@ public class JobInputPin extends Reference {
     public static String getIgcTypeDisplayName() { return "Job Input Pin"; }
 
     /**
-     * The 'condition_not_met' property, displayed as 'Condition Not Met' in the IGC UI.
+     * The {@code condition_not_met} property, displayed as '{@literal Condition Not Met}' in the IGC UI.
      */
     protected String condition_not_met;
 
     /**
-     * The 'partner' property, displayed as 'Partner' in the IGC UI.
+     * The {@code partner} property, displayed as '{@literal Partner}' in the IGC UI.
      */
     protected String partner;
 
     /**
-     * The 'a_xmeta_locking_root' property, displayed as 'A XMeta Locking Root' in the IGC UI.
+     * The {@code a_xmeta_locking_root} property, displayed as '{@literal A XMeta Locking Root}' in the IGC UI.
      */
     protected String a_xmeta_locking_root;
 
     /**
-     * The 'has_ds_meta_bag' property, displayed as 'Has DS Meta Bag' in the IGC UI.
+     * The {@code has_ds_meta_bag} property, displayed as '{@literal Has DS Meta Bag}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Dsmetabag} object.
      */
     protected Reference has_ds_meta_bag;
 
     /**
-     * The 'pin_type' property, displayed as 'Pin Type' in the IGC UI.
+     * The {@code pin_type} property, displayed as '{@literal Pin Type}' in the IGC UI.
      */
     protected String pin_type;
 
     /**
-     * The 'has_dsmf_column_info' property, displayed as 'Has DSMF Column Info' in the IGC UI.
+     * The {@code has_dsmf_column_info} property, displayed as '{@literal Has DSMF Column Info}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Dsmfcolumninfo} objects.
      */
     protected ReferenceList has_dsmf_column_info;
 
     /**
-     * The 'lookup_fail' property, displayed as 'Lookup Fail' in the IGC UI.
+     * The {@code lookup_fail} property, displayed as '{@literal Lookup Fail}' in the IGC UI.
      */
     protected String lookup_fail;
 
     /**
-     * The 'internal_id' property, displayed as 'Internal ID' in the IGC UI.
+     * The {@code internal_id} property, displayed as '{@literal Internal ID}' in the IGC UI.
      */
     protected String internal_id;
 
     /**
-     * The 'transaction_size' property, displayed as 'Transaction Size' in the IGC UI.
+     * The {@code transaction_size} property, displayed as '{@literal Transaction Size}' in the IGC UI.
      */
     protected Number transaction_size;
 
     /**
-     * The 'link_type' property, displayed as 'Link Type' in the IGC UI.
+     * The {@code link_type} property, displayed as '{@literal Link Type}' in the IGC UI.
      */
     protected Number link_type;
 
     /**
-     * The 'txn_behaviour' property, displayed as 'TXN Behaviour' in the IGC UI.
+     * The {@code txn_behaviour} property, displayed as '{@literal TXN Behaviour}' in the IGC UI.
      */
     protected Number txn_behaviour;
 
     /**
-     * The 'enable_tx_group' property, displayed as 'Enable Tx Group' in the IGC UI.
+     * The {@code enable_tx_group} property, displayed as '{@literal Enable Tx Group}' in the IGC UI.
      */
     protected Number enable_tx_group;
 
     /**
-     * The 'of_job_component' property, displayed as 'Of Job Component' in the IGC UI.
+     * The {@code of_job_component} property, displayed as '{@literal Of Job Component}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MainObject} object.
      */
     protected Reference of_job_component;
 
     /**
-     * The 'is_target_of_link' property, displayed as 'Is Target Of Link' in the IGC UI.
+     * The {@code is_target_of_link} property, displayed as '{@literal Is Target Of Link}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link MainObject} object.
      */
     protected Reference is_target_of_link;
 
     /**
-     * The 'sequence' property, displayed as 'Sequence' in the IGC UI.
+     * The {@code sequence} property, displayed as '{@literal Sequence}' in the IGC UI.
      */
     protected Number sequence;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

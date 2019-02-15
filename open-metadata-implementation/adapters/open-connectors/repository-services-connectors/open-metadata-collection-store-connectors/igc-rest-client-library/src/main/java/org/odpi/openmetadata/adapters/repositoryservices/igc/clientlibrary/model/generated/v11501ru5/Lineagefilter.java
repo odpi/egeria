@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'lineagefilter' asset type in IGC, displayed as 'LineageFilter' in the IGC UI.
+ * POJO for the {@code lineagefilter} asset type in IGC, displayed as '{@literal LineageFilter}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,7 +24,7 @@ public class Lineagefilter extends Reference {
     public static String getIgcTypeDisplayName() { return "LineageFilter"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 

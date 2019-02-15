@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'table_definition' asset type in IGC, displayed as 'Table Definition' in the IGC UI.
+ * POJO for the {@code table_definition} asset type in IGC, displayed as '{@literal Table Definition}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,183 +24,183 @@ public class TableDefinition extends Reference {
     public static String getIgcTypeDisplayName() { return "Table Definition"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'transformation_project' property, displayed as 'Transformation Project' in the IGC UI.
+     * The {@code transformation_project} property, displayed as '{@literal Transformation Project}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link TransformationProject} object.
      */
     protected Reference transformation_project;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'column_definitions' property, displayed as 'Column Definitions' in the IGC UI.
+     * The {@code column_definitions} property, displayed as '{@literal Column Definitions}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link ColumnDefinition} objects.
      */
     protected ReferenceList column_definitions;
 
     /**
-     * The 'included_by_stages' property, displayed as 'Included by Stages' in the IGC UI.
+     * The {@code included_by_stages} property, displayed as '{@literal Included by Stages}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Stage} objects.
      */
     protected ReferenceList included_by_stages;
 
     /**
-     * The 'foreign_keys' property, displayed as 'Foreign Keys' in the IGC UI.
+     * The {@code foreign_keys} property, displayed as '{@literal Foreign Keys}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link ForeignKeyDefinition} objects.
      */
     protected ReferenceList foreign_keys;
 
     /**
-     * The 'referenced_by_foreign_keys' property, displayed as 'Referenced by Foreign Keys' in the IGC UI.
+     * The {@code referenced_by_foreign_keys} property, displayed as '{@literal Referenced by Foreign Keys}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link ForeignKeyDefinition} objects.
      */
     protected ReferenceList referenced_by_foreign_keys;
 
     /**
-     * The 'data_source_type' property, displayed as 'Data Source Type' in the IGC UI.
+     * The {@code data_source_type} property, displayed as '{@literal Data Source Type}' in the IGC UI.
      */
     protected String data_source_type;
 
     /**
-     * The 'data_source_name' property, displayed as 'Data Source Name' in the IGC UI.
+     * The {@code data_source_name} property, displayed as '{@literal Data Source Name}' in the IGC UI.
      */
     protected String data_source_name;
 
     /**
-     * The 'machine_or_platform_type' property, displayed as 'Machine or Platform Type' in the IGC UI.
+     * The {@code machine_or_platform_type} property, displayed as '{@literal Machine or Platform Type}' in the IGC UI.
      */
     protected String machine_or_platform_type;
 
     /**
-     * The 'mainframe_access_type' property, displayed as 'Mainframe Access Type' in the IGC UI.
+     * The {@code mainframe_access_type} property, displayed as '{@literal Mainframe Access Type}' in the IGC UI.
      */
     protected String mainframe_access_type;
 
     /**
-     * The 'owner' property, displayed as 'Owner' in the IGC UI.
+     * The {@code owner} property, displayed as '{@literal Owner}' in the IGC UI.
      */
     protected String owner;
 
     /**
-     * The 'referenced_by_data_sources' property, displayed as 'Referenced by Data Sources' in the IGC UI.
+     * The {@code referenced_by_data_sources} property, displayed as '{@literal Referenced by Data Sources}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Datagroup} object.
      */
     protected Reference referenced_by_data_sources;
 
     /**
-     * The 'table_type' property, displayed as 'Table Type' in the IGC UI.
+     * The {@code table_type} property, displayed as '{@literal Table Type}' in the IGC UI.
      */
     protected String table_type;
 
     /**
-     * The 'computer' property, displayed as 'Computer' in the IGC UI.
+     * The {@code computer} property, displayed as '{@literal Computer}' in the IGC UI.
      */
     protected String computer;
 
     /**
-     * The 'software_product' property, displayed as 'Software Product' in the IGC UI.
+     * The {@code software_product} property, displayed as '{@literal Software Product}' in the IGC UI.
      */
     protected String software_product;
 
     /**
-     * The 'data_store' property, displayed as 'Data Store' in the IGC UI.
+     * The {@code data_store} property, displayed as '{@literal Data Store}' in the IGC UI.
      */
     protected String data_store;
 
     /**
-     * The 'data_schema' property, displayed as 'Data Schema' in the IGC UI.
+     * The {@code data_schema} property, displayed as '{@literal Data Schema}' in the IGC UI.
      */
     protected String data_schema;
 
     /**
-     * The 'data_collection' property, displayed as 'Data Collection' in the IGC UI.
+     * The {@code data_collection} property, displayed as '{@literal Data Collection}' in the IGC UI.
      */
     protected String data_collection;
 
     /**
-     * The 'data_connection' property, displayed as 'Data Connection' in the IGC UI.
+     * The {@code data_connection} property, displayed as '{@literal Data Connection}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DsdataConnection} object.
      */
     protected Reference data_connection;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

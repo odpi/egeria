@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'data_map_filter_operation' asset type in IGC, displayed as 'Data Map Filter Operation' in the IGC UI.
+ * POJO for the {@code data_map_filter_operation} asset type in IGC, displayed as '{@literal Data Map Filter Operation}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,36 +24,36 @@ public class DataMapFilterOperation extends Reference {
     public static String getIgcTypeDisplayName() { return "Data Map Filter Operation"; }
 
     /**
-     * The 'infoset' property, displayed as 'InfoSet' in the IGC UI.
+     * The {@code infoset} property, displayed as '{@literal InfoSet}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Infoset} object.
      */
     protected Reference infoset;
 
     /**
-     * The 'primary_input' property, displayed as 'Primary Input' in the IGC UI.
+     * The {@code primary_input} property, displayed as '{@literal Primary Input}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Infoset} object.
      */
     protected Reference primary_input;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

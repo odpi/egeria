@@ -190,7 +190,7 @@ public class IGCRestClient {
      * @param contentType the type of content to expect in the payload (if any)
      * @param payload the payload (if any) for the request
      * @param alreadyTriedNewSession indicates whether a new session was already attempted (true) or not (false)
-     * @return ResponseEntity<String>
+     * @return {@code ResponseEntity<String>}
      */
     private ResponseEntity<String> openNewSessionWithRequest(String endpoint,
                                                              HttpMethod method,
@@ -216,7 +216,7 @@ public class IGCRestClient {
      * @param method the HTTP method to use in sending the request
      * @param file the Spring FileSystemResource or ClassPathResource containing the file to be uploaded
      * @param alreadyTriedNewSession indicates whether a new session was already attempted (true) or not (false)
-     * @return ResponseEntity<String>
+     * @return {@code ResponseEntity<String>}
      */
     private ResponseEntity<String> openNewSessionWithUpload(String endpoint,
                                                             HttpMethod method,
@@ -357,7 +357,7 @@ public class IGCRestClient {
      * @param endpoint the URL against which to POST the upload
      * @param file the Spring FileSystemResource or ClassPathResource of the file to be uploaded
      * @param forceLogin a boolean indicating whether login should be forced (true) or session reused (false)
-     * @return ResponseEntity<String>
+     * @return {@code ResponseEntity<String>}
      */
     private ResponseEntity<String> uploadFile(String endpoint, HttpMethod method, AbstractResource file, boolean forceLogin) {
 
@@ -415,7 +415,7 @@ public class IGCRestClient {
      * @param contentType the type of content to expect in the payload (if any)
      * @param payload if POSTing some content, the JSON structure providing what should be POSTed
      * @param forceLogin a boolean indicating whether login should be forced (true) or session reused (false)
-     * @return ResponseEntity<String>
+     * @return {@code ResponseEntity<String>}
      */
     private ResponseEntity<String> makeRequest(String endpoint,
                                                HttpMethod method,
@@ -715,7 +715,7 @@ public class IGCRestClient {
     /**
      * Retrieve the set of OpenIGC bundles already defined in the environment.
      *
-     * @return List<String>
+     * @return {@code List<String>}
      */
     public List<String> getOpenIgcBundles() {
         JsonNode bundles = makeRequest(baseURL + EP_BUNDLES, HttpMethod.GET, null,null);
@@ -827,7 +827,7 @@ public class IGCRestClient {
      *
      * @param items the List of items for which to retrieve all pages
      * @param paging the Paging object for which to retrieve all pages
-     * @return List - an List containing all items from all pages of results
+     * @return {@code List<Reference>} - an List containing all items from all pages of results
      */
     public List<Reference> getAllPages(List<Reference> items, Paging paging) {
         List<Reference> allPages = items;

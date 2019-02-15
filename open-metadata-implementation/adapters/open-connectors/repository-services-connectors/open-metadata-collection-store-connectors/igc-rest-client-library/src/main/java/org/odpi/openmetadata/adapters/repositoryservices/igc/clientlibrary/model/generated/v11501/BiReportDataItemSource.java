@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'bi_report_data_item_source' asset type in IGC, displayed as 'BI Report Data Item Source' in the IGC UI.
+ * POJO for the {@code bi_report_data_item_source} asset type in IGC, displayed as '{@literal BI Report Data Item Source}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,28 +24,28 @@ public class BiReportDataItemSource extends Reference {
     public static String getIgcTypeDisplayName() { return "BI Report Data Item Source"; }
 
     /**
-     * The 'defined_of_report_field' property, displayed as 'Defined of Report Field' in the IGC UI.
+     * The {@code defined_of_report_field} property, displayed as '{@literal Defined of Report Field}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Reportobject} objects.
      */
     protected ReferenceList defined_of_report_field;
 
     /**
-     * The 'defined_in_report_data_item' property, displayed as 'Defined in Report Data Item' in the IGC UI.
+     * The {@code defined_in_report_data_item} property, displayed as '{@literal Defined in Report Data Item}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link BiReportQueryItem} object.
      */
     protected Reference defined_in_report_data_item;
 
     /**
-     * The 'defined_by_data_field' property, displayed as 'Defined by Data Field' in the IGC UI.
+     * The {@code defined_by_data_field} property, displayed as '{@literal Defined by Data Field}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataItem} objects.
      */
     protected ReferenceList defined_by_data_field;
 
     /**
-     * The 'defined_by_olap_member' property, displayed as 'Defined by OLAP Member' in the IGC UI.
+     * The {@code defined_by_olap_member} property, displayed as '{@literal Defined by OLAP Member}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link BiCollectionMember} object.
      */
