@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'candidate_key' asset type in IGC, displayed as 'Candidate Key' in the IGC UI.
+ * POJO for the {@code candidate_key} asset type in IGC, displayed as '{@literal Candidate Key}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,63 +24,63 @@ public class CandidateKey extends Reference {
     public static String getIgcTypeDisplayName() { return "Candidate Key"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'database_table_view' property, displayed as 'Database Table View' in the IGC UI.
+     * The {@code database_table_view} property, displayed as '{@literal Database Table View}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Datagroup} object.
      */
     protected Reference database_table_view;
 
     /**
-     * The 'primary_key' property, displayed as 'Primary Key' in the IGC UI.
+     * The {@code primary_key} property, displayed as '{@literal Primary Key}' in the IGC UI.
      */
     protected Boolean primary_key;
 
     /**
-     * The 'defined_on_database_columns' property, displayed as 'Defined on Database Columns' in the IGC UI.
+     * The {@code defined_on_database_columns} property, displayed as '{@literal Defined on Database Columns}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DatabaseColumn} objects.
      */
     protected ReferenceList defined_on_database_columns;
 
     /**
-     * The 'referenced_by_foreign_keys' property, displayed as 'Referenced by Foreign Keys' in the IGC UI.
+     * The {@code referenced_by_foreign_keys} property, displayed as '{@literal Referenced by Foreign Keys}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link ForeignKey} objects.
      */
     protected ReferenceList referenced_by_foreign_keys;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

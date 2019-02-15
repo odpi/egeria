@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'role_assignment' asset type in IGC, displayed as 'Role Assignment' in the IGC UI.
+ * POJO for the {@code role_assignment} asset type in IGC, displayed as '{@literal Role Assignment}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,48 +24,48 @@ public class RoleAssignment extends Reference {
     public static String getIgcTypeDisplayName() { return "Role Assignment"; }
 
     /**
-     * The 'assigns_principal' property, displayed as 'Assigns Principal' in the IGC UI.
+     * The {@code assigns_principal} property, displayed as '{@literal Assigns Principal}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Steward} objects.
      */
     protected ReferenceList assigns_principal;
 
     /**
-     * The 'defined_by_system_role' property, displayed as 'Defined By System Role' in the IGC UI.
+     * The {@code defined_by_system_role} property, displayed as '{@literal Defined By System Role}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link SystemRole} object.
      */
     protected Reference defined_by_system_role;
 
     /**
-     * The 'has_role_context' property, displayed as 'Has Role Context' in the IGC UI.
+     * The {@code has_role_context} property, displayed as '{@literal Has Role Context}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link RoleContext} object.
      */
     protected Reference has_role_context;
 
     /**
-     * The 'sequence' property, displayed as 'Sequence' in the IGC UI.
+     * The {@code sequence} property, displayed as '{@literal Sequence}' in the IGC UI.
      */
     protected Number sequence;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

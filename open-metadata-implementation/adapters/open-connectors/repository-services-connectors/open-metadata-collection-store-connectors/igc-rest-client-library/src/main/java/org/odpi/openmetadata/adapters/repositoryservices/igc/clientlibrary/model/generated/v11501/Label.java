@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'label' asset type in IGC, displayed as 'Label' in the IGC UI.
+ * POJO for the {@code label} asset type in IGC, displayed as '{@literal Label}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,17 +24,17 @@ public class Label extends Reference {
     public static String getIgcTypeDisplayName() { return "Label"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'description' property, displayed as 'Description' in the IGC UI.
+     * The {@code description} property, displayed as '{@literal Description}' in the IGC UI.
      */
     protected String description;
 
     /**
-     * The 'labeled_assets' property, displayed as 'Labeled Assets' in the IGC UI.
+     * The {@code labeled_assets} property, displayed as '{@literal Labeled Assets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */

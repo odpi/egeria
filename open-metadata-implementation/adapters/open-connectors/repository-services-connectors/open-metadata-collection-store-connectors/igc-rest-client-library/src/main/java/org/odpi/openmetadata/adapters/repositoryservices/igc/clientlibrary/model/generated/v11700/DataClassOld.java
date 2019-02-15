@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'data_class_old' asset type in IGC, displayed as 'Data Class' in the IGC UI.
+ * POJO for the {@code data_class_old} asset type in IGC, displayed as '{@literal Data Class}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,90 +24,90 @@ public class DataClassOld extends Reference {
     public static String getIgcTypeDisplayName() { return "Data Class"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'is_sub_of_data_class' property, displayed as 'Is Sub Of Data Class' in the IGC UI.
+     * The {@code is_sub_of_data_class} property, displayed as '{@literal Is Sub Of Data Class}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataClassOld} object.
      */
     protected Reference is_sub_of_data_class;
 
     /**
-     * The 'classifies_data_field' property, displayed as 'Classifies Data Field' in the IGC UI.
+     * The {@code classifies_data_field} property, displayed as '{@literal Classifies Data Field}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataItem} objects.
      */
     protected ReferenceList classifies_data_field;
 
     /**
-     * The 'has_sub_data_class' property, displayed as 'Has Sub Data Class' in the IGC UI.
+     * The {@code has_sub_data_class} property, displayed as '{@literal Has Sub Data Class}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataClassOld} objects.
      */
     protected ReferenceList has_sub_data_class;
 
     /**
-     * The 'class_code' property, displayed as 'Class Code' in the IGC UI.
+     * The {@code class_code} property, displayed as '{@literal Class Code}' in the IGC UI.
      */
     protected String class_code;
 
     /**
-     * The 'inferred_by_df_analysis_summary' property, displayed as 'Inferred By DF Analysis Summary' in the IGC UI.
+     * The {@code inferred_by_df_analysis_summary} property, displayed as '{@literal Inferred By DF Analysis Summary}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link ColumnAnalysisSummary} objects.
      */
     protected ReferenceList inferred_by_df_analysis_summary;
 
     /**
-     * The 'is_user_defined' property, displayed as 'Is User Defined' in the IGC UI.
+     * The {@code is_user_defined} property, displayed as '{@literal Is User Defined}' in the IGC UI.
      */
     protected Boolean is_user_defined;
 

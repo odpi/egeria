@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'data_connection' asset type in IGC, displayed as 'Data Connection' in the IGC UI.
+ * POJO for the {@code data_connection} asset type in IGC, displayed as '{@literal Data Connection}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,68 +24,68 @@ public class DataConnection extends Reference {
     public static String getIgcTypeDisplayName() { return "Data Connection"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'host' property, displayed as 'Host' in the IGC UI.
+     * The {@code host} property, displayed as '{@literal Host}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Host} object.
      */
     protected Reference host;
 
     /**
-     * The 'imports_database' property, displayed as 'Imports Database' in the IGC UI.
+     * The {@code imports_database} property, displayed as '{@literal Imports Database}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Database} object.
      */
     protected Reference imports_database;
 
     /**
-     * The 'data_connectors' property, displayed as 'Data Connectors' in the IGC UI.
+     * The {@code data_connectors} property, displayed as '{@literal Data Connectors}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Connector} object.
      */
     protected Reference data_connectors;
 
     /**
-     * The 'connection_string' property, displayed as 'Connection String' in the IGC UI.
+     * The {@code connection_string} property, displayed as '{@literal Connection String}' in the IGC UI.
      */
     protected String connection_string;
 
     /**
-     * The 'imported_from' property, displayed as 'Imported From' in the IGC UI.
+     * The {@code imported_from} property, displayed as '{@literal Imported From}' in the IGC UI.
      */
     protected String imported_from;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

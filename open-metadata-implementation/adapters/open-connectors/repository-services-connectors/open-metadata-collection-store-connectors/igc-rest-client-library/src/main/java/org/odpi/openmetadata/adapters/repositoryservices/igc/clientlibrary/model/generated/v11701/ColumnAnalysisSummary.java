@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'column_analysis_summary' asset type in IGC, displayed as 'Column Analysis Summary' in the IGC UI.
+ * POJO for the {@code column_analysis_summary} asset type in IGC, displayed as '{@literal Column Analysis Summary}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,137 +24,137 @@ public class ColumnAnalysisSummary extends Reference {
     public static String getIgcTypeDisplayName() { return "Column Analysis Summary"; }
 
     /**
-     * The 'short_&_long_description' property, displayed as 'Short & Long Description' in the IGC UI.
+     * The {@code short_&_long_description} property, displayed as '{@literal Short & Long Description}' in the IGC UI.
      */
     @JsonProperty("short_&_long_description") protected String short___long_description;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'steward' property, displayed as 'Steward' in the IGC UI.
+     * The {@code steward} property, displayed as '{@literal Steward}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Steward} objects.
      */
     protected ReferenceList steward;
 
     /**
-     * The 'analyzed_column' property, displayed as 'Analyzed Column' in the IGC UI.
+     * The {@code analyzed_column} property, displayed as '{@literal Analyzed Column}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataField} object.
      */
     protected Reference analyzed_column;
 
     /**
-     * The 'project_name' property, displayed as 'Project Name' in the IGC UI.
+     * The {@code project_name} property, displayed as '{@literal Project Name}' in the IGC UI.
      */
     protected String project_name;
 
     /**
-     * The 'review_date' property, displayed as 'Review Date' in the IGC UI.
+     * The {@code review_date} property, displayed as '{@literal Review Date}' in the IGC UI.
      */
     protected Date review_date;
 
     /**
-     * The 'promoted_by_principal' property, displayed as 'Promoted By Principal' in the IGC UI.
+     * The {@code promoted_by_principal} property, displayed as '{@literal Promoted By Principal}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Steward} object.
      */
     protected Reference promoted_by_principal;
 
     /**
-     * The 'reviewed_by_principal' property, displayed as 'Reviewed By Principal' in the IGC UI.
+     * The {@code reviewed_by_principal} property, displayed as '{@literal Reviewed By Principal}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Steward} object.
      */
     protected Reference reviewed_by_principal;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 
     /**
-     * The 'allow_null_values' property, displayed as 'Allow Null Values' in the IGC UI.
+     * The {@code allow_null_values} property, displayed as '{@literal Allow Null Values}' in the IGC UI.
      */
     protected Boolean allow_null_values;
 
     /**
-     * The 'require_unique_values' property, displayed as 'Require Unique Values' in the IGC UI.
+     * The {@code require_unique_values} property, displayed as '{@literal Require Unique Values}' in the IGC UI.
      */
     protected Boolean require_unique_values;
 
     /**
-     * The 'number_values' property, displayed as 'Number Values' in the IGC UI.
+     * The {@code number_values} property, displayed as '{@literal Number Values}' in the IGC UI.
      */
     protected Number number_values;
 
     /**
-     * The 'number_of_complete_values' property, displayed as 'Number of Complete Values' in the IGC UI.
+     * The {@code number_of_complete_values} property, displayed as '{@literal Number of Complete Values}' in the IGC UI.
      */
     protected Number number_of_complete_values;
 
     /**
-     * The 'number_of_valid_values' property, displayed as 'Number of Valid Values' in the IGC UI.
+     * The {@code number_of_valid_values} property, displayed as '{@literal Number of Valid Values}' in the IGC UI.
      */
     protected Number number_of_valid_values;
 
     /**
-     * The 'number_of_empty_values' property, displayed as 'Number of Empty Values' in the IGC UI.
+     * The {@code number_of_empty_values} property, displayed as '{@literal Number of Empty Values}' in the IGC UI.
      */
     protected Number number_of_empty_values;
 
     /**
-     * The 'number_of_null_values' property, displayed as 'Number of Null Values' in the IGC UI.
+     * The {@code number_of_null_values} property, displayed as '{@literal Number of Null Values}' in the IGC UI.
      */
     protected Number number_of_null_values;
 
     /**
-     * The 'number_of_distinct_values' property, displayed as 'Number of Distinct Values' in the IGC UI.
+     * The {@code number_of_distinct_values} property, displayed as '{@literal Number of Distinct Values}' in the IGC UI.
      */
     protected Number number_of_distinct_values;
 
     /**
-     * The 'number_of_distinct_patterns' property, displayed as 'Number of Distinct Patterns' in the IGC UI.
+     * The {@code number_of_distinct_patterns} property, displayed as '{@literal Number of Distinct Patterns}' in the IGC UI.
      */
     protected Number number_of_distinct_patterns;
 
     /**
-     * The 'number_of_distinct_formats' property, displayed as 'Number of Distinct Formats' in the IGC UI.
+     * The {@code number_of_distinct_formats} property, displayed as '{@literal Number of Distinct Formats}' in the IGC UI.
      */
     protected Number number_of_distinct_formats;
 
     /**
-     * The 'inferred_data_type' property, displayed as 'Inferred Data Type' in the IGC UI.
+     * The {@code inferred_data_type} property, displayed as '{@literal Inferred Data Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -185,52 +185,52 @@ public class ColumnAnalysisSummary extends Reference {
     protected String inferred_data_type;
 
     /**
-     * The 'inferred_format' property, displayed as 'Inferred Format' in the IGC UI.
+     * The {@code inferred_format} property, displayed as '{@literal Inferred Format}' in the IGC UI.
      */
     protected String inferred_format;
 
     /**
-     * The 'mask' property, displayed as 'Mask' in the IGC UI.
+     * The {@code mask} property, displayed as '{@literal Mask}' in the IGC UI.
      */
     protected String mask;
 
     /**
-     * The 'constant' property, displayed as 'Constant' in the IGC UI.
+     * The {@code constant} property, displayed as '{@literal Constant}' in the IGC UI.
      */
     protected Boolean constant;
 
     /**
-     * The 'domain_type' property, displayed as 'Domain Type' in the IGC UI.
+     * The {@code domain_type} property, displayed as '{@literal Domain Type}' in the IGC UI.
      */
     protected String domain_type;
 
     /**
-     * The 'average_length' property, displayed as 'Average Length' in the IGC UI.
+     * The {@code average_length} property, displayed as '{@literal Average Length}' in the IGC UI.
      */
     protected String average_length;
 
     /**
-     * The 'longest_length' property, displayed as 'Longest Length' in the IGC UI.
+     * The {@code longest_length} property, displayed as '{@literal Longest Length}' in the IGC UI.
      */
     protected String longest_length;
 
     /**
-     * The 'shortest_length' property, displayed as 'Shortest Length' in the IGC UI.
+     * The {@code shortest_length} property, displayed as '{@literal Shortest Length}' in the IGC UI.
      */
     protected String shortest_length;
 
     /**
-     * The 'inferred_length' property, displayed as 'Inferred Length' in the IGC UI.
+     * The {@code inferred_length} property, displayed as '{@literal Inferred Length}' in the IGC UI.
      */
     protected Number inferred_length;
 
     /**
-     * The 'inferred_scale' property, displayed as 'Inferred Scale' in the IGC UI.
+     * The {@code inferred_scale} property, displayed as '{@literal Inferred Scale}' in the IGC UI.
      */
     protected Number inferred_scale;
 
     /**
-     * The 'inferred_precision' property, displayed as 'Inferred Precision' in the IGC UI.
+     * The {@code inferred_precision} property, displayed as '{@literal Inferred Precision}' in the IGC UI.
      */
     protected Number inferred_precision;
 

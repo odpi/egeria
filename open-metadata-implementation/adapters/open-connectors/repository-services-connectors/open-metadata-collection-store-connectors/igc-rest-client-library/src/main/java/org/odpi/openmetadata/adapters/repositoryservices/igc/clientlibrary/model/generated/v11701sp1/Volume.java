@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'volume' asset type in IGC, displayed as 'Volume' in the IGC UI.
+ * POJO for the {@code volume} asset type in IGC, displayed as '{@literal Volume}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,69 +24,69 @@ public class Volume extends Reference {
     public static String getIgcTypeDisplayName() { return "Volume"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'instance' property, displayed as 'Instance' in the IGC UI.
+     * The {@code instance} property, displayed as '{@literal Instance}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Instance} object.
      */
     protected Reference instance;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'data_server' property, displayed as 'Data Server' in the IGC UI.
+     * The {@code data_server} property, displayed as '{@literal Data Server}' in the IGC UI.
      */
     protected String data_server;
 
     /**
-     * The 'type' property, displayed as 'Type' in the IGC UI.
+     * The {@code type} property, displayed as '{@literal Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -99,76 +99,76 @@ public class Volume extends Reference {
     protected String type;
 
     /**
-     * The 'source_type' property, displayed as 'Source Type' in the IGC UI.
+     * The {@code source_type} property, displayed as '{@literal Source Type}' in the IGC UI.
      */
     protected String source_type;
 
     /**
-     * The 'server_name' property, displayed as 'Server' in the IGC UI.
+     * The {@code server_name} property, displayed as '{@literal Server}' in the IGC UI.
      */
     protected String server_name;
 
     /**
-     * The 'object_count' property, displayed as 'Number of Objects' in the IGC UI.
+     * The {@code object_count} property, displayed as '{@literal Number of Objects}' in the IGC UI.
      */
     protected Number object_count;
 
     /**
-     * The 'size' property, displayed as 'Size (Bytes)' in the IGC UI.
+     * The {@code size} property, displayed as '{@literal Size (Bytes)}' in the IGC UI.
      */
     protected Number size;
 
     /**
-     * The 'last_harvested' property, displayed as 'Last Harvest Date' in the IGC UI.
+     * The {@code last_harvested} property, displayed as '{@literal Last Harvest Date}' in the IGC UI.
      */
     protected Date last_harvested;
 
     /**
-     * The 'tool_id' property, displayed as 'Tool ID' in the IGC UI.
+     * The {@code tool_id} property, displayed as '{@literal Tool ID}' in the IGC UI.
      */
     protected String tool_id;
 
     /**
-     * The 'sync_state' property, displayed as 'State' in the IGC UI.
+     * The {@code sync_state} property, displayed as '{@literal State}' in the IGC UI.
      */
     protected String sync_state;
 
     /**
-     * The 'url' property, displayed as 'URL' in the IGC UI.
+     * The {@code url} property, displayed as '{@literal URL}' in the IGC UI.
      */
     protected String url;
 
     /**
-     * The 'infosets' property, displayed as 'InfoSets' in the IGC UI.
+     * The {@code infosets} property, displayed as '{@literal InfoSets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Infoset} objects.
      */
     protected ReferenceList infosets;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 
