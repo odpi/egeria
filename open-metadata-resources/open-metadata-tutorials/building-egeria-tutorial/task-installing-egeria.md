@@ -75,7 +75,7 @@ Change to the OMAG server platform's directory.
 
 ```text
 
-$ cd servers/omag-server*
+$ cd server/omag-server*
 $ resources				server-chassis-spring-0.3-SNAPSHOT.jar
 
 ```

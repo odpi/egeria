@@ -59,7 +59,7 @@ public class TestAssetSummary
         testObject.setOwner("TestOwner");
         testObject.setShortDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
-        testObject.setAssetProperties(assetProperties);
+        testObject.setExtendedProperties(assetProperties);
         testObject.setZoneMembership(zoneMembership);
 
         return new AssetSummary(testObject);
@@ -85,7 +85,7 @@ public class TestAssetSummary
         testObject.setOwner("TestOwner");
         testObject.setShortDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
-        testObject.setAssetProperties(assetProperties);
+        testObject.setExtendedProperties(assetProperties);
 
         return new AssetSummary(testObject);
     }
@@ -110,7 +110,7 @@ public class TestAssetSummary
         testObject.setOwner("TestOwner");
         testObject.setShortDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
-        testObject.setAssetProperties(assetProperties);
+        testObject.setExtendedProperties(assetProperties);
 
         return new AssetSummary(testObject);
     }
@@ -134,7 +134,7 @@ public class TestAssetSummary
         assertTrue(resultObject.getShortDescription().equals("TestShortDescription"));
         assertTrue(resultObject.getOwner().equals("TestOwner"));
         assertTrue(resultObject.getZoneMembership() != null);
-        assertTrue(resultObject.getAssetProperties() == null);
+        assertTrue(resultObject.getExtendedProperties() == null);
         assertTrue(resultObject.getAdditionalProperties() == null);
     }
 
@@ -156,7 +156,7 @@ public class TestAssetSummary
         assertTrue(nullObject.getDescription() == null);
         assertTrue(nullObject.getShortDescription() == null);
         assertTrue(nullObject.getOwner() == null);
-        assertTrue(nullObject.getAssetProperties() == null);
+        assertTrue(nullObject.getExtendedProperties() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
     }
 
@@ -199,11 +199,11 @@ public class TestAssetSummary
         propertyMap.put("property2", new Integer(2));
 
         Asset assetBean = new Asset();
-        assetBean.setAssetProperties(propertyMap);
+        assetBean.setExtendedProperties(propertyMap);
 
         AssetSummary testObject = new AssetSummary(assetBean);
 
-        AdditionalProperties assetProperties = testObject.getAssetProperties();
+        AdditionalProperties assetProperties = testObject.getExtendedProperties();
 
         assertTrue(assetProperties.getPropertyNames() != null);
 
@@ -232,16 +232,16 @@ public class TestAssetSummary
         assetBean = new Asset();
         testObject = new AssetSummary(assetBean);
 
-        assetProperties = testObject.getAssetProperties();
+        assetProperties = testObject.getExtendedProperties();
 
         assertTrue(assetProperties == null);
 
         propertyMap = new HashMap<>();
         assetBean = new Asset();
-        assetBean.setAssetProperties(propertyMap);
+        assetBean.setExtendedProperties(propertyMap);
         testObject = new AssetSummary(assetBean);
 
-        assetProperties = testObject.getAssetProperties();
+        assetProperties = testObject.getExtendedProperties();
 
         assertTrue(assetProperties == null);
     }
