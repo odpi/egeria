@@ -177,7 +177,7 @@ public class OpenMetadataTypesArchive
 
 
     /**
-     * Defines the "map<string,string>" type.
+     * Defines the {@code map<string,string>} type.
      *
      * @return CollectionDef for this type
      */
@@ -196,7 +196,7 @@ public class OpenMetadataTypesArchive
 
 
     /**
-     * Defines the "map<string,boolean>" type.
+     * Defines the {@code map<string,boolean>} type.
      *
      * @return CollectionDef for this type
      */
@@ -215,7 +215,7 @@ public class OpenMetadataTypesArchive
 
 
     /**
-     * Defines the "map<string,int>" type.
+     * Defines the {@code map<string,int>} type.
      *
      * @return CollectionDef for this type
      */
@@ -234,7 +234,7 @@ public class OpenMetadataTypesArchive
 
 
     /**
-     * Defines the "map<string,long>" type.
+     * Defines the {@code map<string,long>} type.
      *
      * @return CollectionDef for this type
      */
@@ -253,7 +253,7 @@ public class OpenMetadataTypesArchive
 
 
     /**
-     * Define the "array<string>" type.
+     * Define the {@code array<string>} type.
      *
      * @return CollectionDef for this object
      */
@@ -271,7 +271,7 @@ public class OpenMetadataTypesArchive
 
 
     /**
-     * Define the "array<int>" type.
+     * Define the {@code array<int>} type.
      *
      * @return CollectionDef for this object
      */

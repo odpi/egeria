@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'bi_olap_level_element' asset type in IGC, displayed as 'BI OLAP Level Element' in the IGC UI.
+ * POJO for the {@code bi_olap_level_element} asset type in IGC, displayed as '{@literal BI OLAP Level Element}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,36 +24,36 @@ public class BiOlapLevelElement extends Reference {
     public static String getIgcTypeDisplayName() { return "BI OLAP Level Element"; }
 
     /**
-     * The 'name' property, displayed as 'Element Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Element Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'business_name' property, displayed as 'Business Name' in the IGC UI.
+     * The {@code business_name} property, displayed as '{@literal Business Name}' in the IGC UI.
      */
     protected String business_name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'defined_in_level' property, displayed as 'Defined in Level' in the IGC UI.
+     * The {@code defined_in_level} property, displayed as '{@literal Defined in Level}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link BiLevel} object.
      */
     protected Reference defined_in_level;
 
     /**
-     * The 'key_level' property, displayed as 'Key Level' in the IGC UI.
+     * The {@code key_level} property, displayed as '{@literal Key Level}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link BiLevel} object.
      */
     protected Reference key_level;
 
     /**
-     * The 'defined_as_an_olap_member' property, displayed as 'Defined as an OLAP Member' in the IGC UI.
+     * The {@code defined_as_an_olap_member} property, displayed as '{@literal Defined as an OLAP Member}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link BiCollectionMember} object.
      */

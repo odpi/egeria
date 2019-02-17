@@ -55,7 +55,7 @@ public abstract class ClassificationMapping {
     /**
      * Retrieve the list of statuses that are supported by the classification mapping.
      *
-     * @return List<InstanceStatus>
+     * @return {@code List<InstanceStatus>}
      */
     public List<InstanceStatus> getSupportedStatuses() { return this.omrsSupportedStatuses; }
 
@@ -69,7 +69,7 @@ public abstract class ClassificationMapping {
     /**
      * Retrieve the set of OMRS properties that are supported by the classification mapping.
      *
-     * @return Set<String>
+     * @return {@code Set<String>}
      */
     public Set<String> getMappedOmrsPropertyNames() { return this.mappedOmrsPropertyNames; }
 
@@ -83,7 +83,7 @@ public abstract class ClassificationMapping {
     /**
      * Retrieve the list of IGC properties used to apply this classification mapping.
      *
-     * @return List<String>
+     * @return {@code List<String>}
      */
     public List<String> getIgcRelationshipProperties() { return this.igcRelationshipProperties; }
 

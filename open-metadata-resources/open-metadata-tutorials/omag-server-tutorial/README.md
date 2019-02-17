@@ -13,7 +13,7 @@ At the end of this tutorial you will be able to perform the following tasks.
 
 * Starting the OMAG Server Platform
 * Using the Administration Services to:
-  * Configure open metadata and governance services in "logical servers".
+  * Configure open metadata and governance services in logical **OMAG servers**.
   * Start up the configured services.
   * Make calls to the running services.
   * Shutdown running services.

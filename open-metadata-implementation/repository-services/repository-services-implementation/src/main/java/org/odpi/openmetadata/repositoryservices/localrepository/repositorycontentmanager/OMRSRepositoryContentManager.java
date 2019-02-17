@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
@@ -42,8 +41,7 @@ import java.util.*;
  *     </li>
  * </ul>
  */
-public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
-                                                     OMRSTypeDefManager
+public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor implements OMRSTypeDefManager
 {
     private LocalOMRSRepositoryConnector    localRepositoryConnector       = null;
     private String                          localServerName                = null;
@@ -2748,6 +2746,13 @@ public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
             return null;
         }
     }
+
+
+
+
+    /* ========================
+     * Private error handling
+     */
 
 
 

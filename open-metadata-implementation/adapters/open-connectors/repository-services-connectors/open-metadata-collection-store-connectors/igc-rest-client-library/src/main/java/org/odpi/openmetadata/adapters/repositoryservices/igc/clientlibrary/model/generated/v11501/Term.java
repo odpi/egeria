@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'term' asset type in IGC, displayed as 'Term' in the IGC UI.
+ * POJO for the {@code term} asset type in IGC, displayed as '{@literal Term}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,50 +24,50 @@ public class Term extends Reference {
     public static String getIgcTypeDisplayName() { return "Term"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'parent_category' property, displayed as 'Parent Category' in the IGC UI.
+     * The {@code parent_category} property, displayed as '{@literal Parent Category}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Category} object.
      */
     protected Reference parent_category;
 
     /**
-     * The 'referencing_categories' property, displayed as 'Referencing Categories' in the IGC UI.
+     * The {@code referencing_categories} property, displayed as '{@literal Referencing Categories}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Category} objects.
      */
     protected ReferenceList referencing_categories;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'status' property, displayed as 'Status' in the IGC UI.
+     * The {@code status} property, displayed as '{@literal Status}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -80,44 +80,44 @@ public class Term extends Reference {
     protected String status;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'language' property, displayed as 'Language' in the IGC UI.
+     * The {@code language} property, displayed as '{@literal Language}' in the IGC UI.
      */
     protected String language;
 
     /**
-     * The 'abbreviation' property, displayed as 'Abbreviation' in the IGC UI.
+     * The {@code abbreviation} property, displayed as '{@literal Abbreviation}' in the IGC UI.
      */
     protected String abbreviation;
 
     /**
-     * The 'additional_abbreviation' property, displayed as 'Additional Abbreviation' in the IGC UI.
+     * The {@code additional_abbreviation} property, displayed as '{@literal Additional Abbreviation}' in the IGC UI.
      */
     protected String additional_abbreviation;
 
     /**
-     * The 'example' property, displayed as 'Example' in the IGC UI.
+     * The {@code example} property, displayed as '{@literal Example}' in the IGC UI.
      */
     protected String example;
 
     /**
-     * The 'usage' property, displayed as 'Usage' in the IGC UI.
+     * The {@code usage} property, displayed as '{@literal Usage}' in the IGC UI.
      */
     protected String usage;
 
     /**
-     * The 'is_modifier' property, displayed as 'Is Modifier' in the IGC UI.
+     * The {@code is_modifier} property, displayed as '{@literal Is Modifier}' in the IGC UI.
      */
     protected Boolean is_modifier;
 
     /**
-     * The 'type' property, displayed as 'Type' in the IGC UI.
+     * The {@code type} property, displayed as '{@literal Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -129,127 +129,127 @@ public class Term extends Reference {
     protected String type;
 
     /**
-     * The 'translations' property, displayed as 'Translations' in the IGC UI.
+     * The {@code translations} property, displayed as '{@literal Translations}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList translations;
 
     /**
-     * The 'is_a_type_of' property, displayed as 'Is a Type Of' in the IGC UI.
+     * The {@code is_a_type_of} property, displayed as '{@literal Is a Type Of}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList is_a_type_of;
 
     /**
-     * The 'has_types' property, displayed as 'Has Types' in the IGC UI.
+     * The {@code has_types} property, displayed as '{@literal Has Types}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList has_types;
 
     /**
-     * The 'is_of' property, displayed as 'Is Of' in the IGC UI.
+     * The {@code is_of} property, displayed as '{@literal Is Of}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList is_of;
 
     /**
-     * The 'has_a' property, displayed as 'Has A' in the IGC UI.
+     * The {@code has_a} property, displayed as '{@literal Has A}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Term} object.
      */
     protected Reference has_a;
 
     /**
-     * The 'synonyms' property, displayed as 'Synonyms' in the IGC UI.
+     * The {@code synonyms} property, displayed as '{@literal Synonyms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList synonyms;
 
     /**
-     * The 'preferred_synonym' property, displayed as 'Preferred Synonym' in the IGC UI.
+     * The {@code preferred_synonym} property, displayed as '{@literal Preferred Synonym}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Term} object.
      */
     protected Reference preferred_synonym;
 
     /**
-     * The 'related_terms' property, displayed as 'Related Terms' in the IGC UI.
+     * The {@code related_terms} property, displayed as '{@literal Related Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList related_terms;
 
     /**
-     * The 'replaces' property, displayed as 'Replaces' in the IGC UI.
+     * The {@code replaces} property, displayed as '{@literal Replaces}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList replaces;
 
     /**
-     * The 'replaced_by' property, displayed as 'Replaced By' in the IGC UI.
+     * The {@code replaced_by} property, displayed as '{@literal Replaced By}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Term} object.
      */
     protected Reference replaced_by;
 
     /**
-     * The 'assigned_terms' property, displayed as 'Assigned Terms' in the IGC UI.
+     * The {@code assigned_terms} property, displayed as '{@literal Assigned Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_terms;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'assigned_assets' property, displayed as 'Assigned Assets' in the IGC UI.
+     * The {@code assigned_assets} property, displayed as '{@literal Assigned Assets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationAsset} objects.
      */
     protected ReferenceList assigned_assets;
 
     /**
-     * The 'blueprint_elements' property, displayed as 'Blueprint Elements' in the IGC UI.
+     * The {@code blueprint_elements} property, displayed as '{@literal Blueprint Elements}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link BlueprintElementLink} objects.
      */
     protected ReferenceList blueprint_elements;
 
     /**
-     * The 'in_collections' property, displayed as 'In Collections' in the IGC UI.
+     * The {@code in_collections} property, displayed as '{@literal In Collections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Collection} objects.
      */
     protected ReferenceList in_collections;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

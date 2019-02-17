@@ -1523,14 +1523,12 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param classificationProperties properties to test
      * @param methodName method receiving the call
      * @throws PropertyErrorException classification name is null
-     * @throws TypeErrorException the classification is invalid for this entity
      */
     public  void validateClassificationProperties(String             sourceName,
                                                   String             classificationName,
                                                   String             propertiesParameterName,
                                                   InstanceProperties classificationProperties,
-                                                  String             methodName) throws PropertyErrorException,
-                                                                                        TypeErrorException
+                                                  String             methodName) throws PropertyErrorException
     {
         validateRepositoryContentManager(methodName);
 
@@ -2964,16 +2962,187 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
 
     /**
+     * Return the string form of the instance properties.  Can be used as propertyValue on find property
+     * value calls.
+     *
+     * @param instanceProperties value to extract the string from
+     * @return extracted string value.
+     */
+    public String getStringValuesFromInstancePropertiesAsArray(InstanceProperties   instanceProperties)
+    {
+        final String  stringStart = "{ ";
+        final String  stringDelimiter = ", ";
+        final String  stringEnd = " }";
+
+        String        results = null;
+
+        if (instanceProperties != null)
+        {
+            Iterator<String> propertyNames = instanceProperties.getPropertyNames();
+
+            while (propertyNames.hasNext())
+            {
+                String propertyName = propertyNames.next();
+
+                if (results == null)
+                {
+                    results = getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName));
+                }
+                else
+                {
+                    results = results + stringDelimiter + getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName));
+                }
+            }
+        }
+
+        return stringStart + results + stringEnd;
+    }
+
+
+    /**
+     * Return the string form of the instance properties.  Can be used as propertyValue on find property
+     * value calls.
+     *
+     * @param instanceProperties value to extract the string from
+     * @return extracted string value.
+     */
+    public String getStringValuesFromInstancePropertiesAsMap(InstanceProperties   instanceProperties)
+    {
+        final String  stringStart = "{ ";
+        final String  stringDelimiter = ", ";
+        final String  mappingDelimiter = " -> ";
+        final String  stringEnd = " }";
+
+        String        results = null;
+
+        if (instanceProperties != null)
+        {
+            Iterator<String> propertyNames = instanceProperties.getPropertyNames();
+
+            while (propertyNames.hasNext())
+            {
+                String propertyName = propertyNames.next();
+
+                if (results == null)
+                {
+                    results = propertyName + mappingDelimiter + getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName));
+                }
+                else
+                {
+                    results = results + stringDelimiter + propertyName + mappingDelimiter + getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName));
+                }
+            }
+        }
+
+        return stringStart + results + stringEnd;
+    }
+
+
+    /**
+     * Return the string form of the instance properties.  Can be used as propertyValue on find property
+     * value calls.
+     *
+     * @param instanceProperties value to extract the string from
+     * @return extracted string value.
+     */
+    public String getStringValuesFromInstancePropertiesAsStruct(InstanceProperties   instanceProperties)
+    {
+        final String  stringStart = "{ ";
+        final String  stringDelimiter = ", ";
+        final String  mappingDelimiter = " : ";
+        final String  stringEnd = " }";
+
+        String        results = null;
+
+        if (instanceProperties != null)
+        {
+            Iterator<String> propertyNames = instanceProperties.getPropertyNames();
+
+            while (propertyNames.hasNext())
+            {
+                String propertyName = propertyNames.next();
+
+                if (results == null)
+                {
+                    results = propertyName + mappingDelimiter + getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName));
+                }
+                else
+                {
+                    results = results + stringDelimiter + propertyName + mappingDelimiter + getStringFromPropertyValue(instanceProperties.getPropertyValue(propertyName));
+                }
+            }
+        }
+
+        return stringStart + results + stringEnd;
+    }
+
+
+    /**
+     * Return the string form of a property value.  Can be used as propertyValue on find property
+     * value calls.
+     *
+     * @param instancePropertyValue value to extract the string from
+     * @return extracted string value.
+     */
+    public String getStringFromPropertyValue(InstancePropertyValue   instancePropertyValue)
+    {
+        if (instancePropertyValue != null)
+        {
+            if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+            {
+                PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue)instancePropertyValue;
+
+                return primitivePropertyValue.getPrimitiveValue().toString();
+            }
+            else if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.ENUM)
+            {
+                EnumPropertyValue enumPropertyValue = (EnumPropertyValue)instancePropertyValue;
+
+                return enumPropertyValue.getSymbolicName();
+            }
+            else if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.ARRAY)
+            {
+                ArrayPropertyValue  arrayPropertyValue = (ArrayPropertyValue)instancePropertyValue;
+
+                if (arrayPropertyValue.getArrayCount() > 0)
+                {
+                    return this.getStringValuesFromInstancePropertiesAsArray(arrayPropertyValue.getArrayValues());
+                }
+            }
+            else if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.MAP)
+            {
+                MapPropertyValue mapPropertyValue = (MapPropertyValue)instancePropertyValue;
+
+                return this.getStringValuesFromInstancePropertiesAsMap(mapPropertyValue.getMapValues());
+            }
+            else if (instancePropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.STRUCT)
+            {
+                StructPropertyValue structPropertyValue = (StructPropertyValue)instancePropertyValue;
+
+                return this.getStringValuesFromInstancePropertiesAsStruct(structPropertyValue.getAttributes());
+            }
+        }
+
+        return null;
+    }
+
+
+
+    /**
      * Count the number of matching property values that an instance has.  They may come from an entity,
      * classification or relationship.
      *
      * @param matchProperties the properties to match.
      * @param instanceProperties the properties from the instance.
+     * @param exactMatch is this an exact match (or false = fuzzy match)
      * @return integer count of the matching properties.
+     * @throws InvalidParameterException invalid search criteria
      */
     public int countMatchingPropertyValues(InstanceProperties       matchProperties,
-                                           InstanceProperties       instanceProperties)
+                                           InstanceProperties       instanceProperties,
+                                           boolean                  exactMatch) throws InvalidParameterException
     {
+        final String  methodName = "countMatchingPropertyValues";
         int       matchingProperties = 0;
 
         if ((matchProperties != null) && (instanceProperties != null))
@@ -2987,20 +3156,71 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 if (matchPropertyName != null)
                 {
                     InstancePropertyValue matchPropertyValue = matchProperties.getPropertyValue(matchPropertyName);
-                    Iterator<String>      instancePropertyNames  = instanceProperties.getPropertyNames();
 
-                    while (instancePropertyNames.hasNext())
+                    if (matchPropertyValue != null)
                     {
-                        String instancePropertyName = instancePropertyNames.next();
+                        String           matchPropertyValueString = this.getStringFromPropertyValue(matchPropertyValue);
+                        Iterator<String> instancePropertyNames    = instanceProperties.getPropertyNames();
 
-                        if (instancePropertyName != null)
+                        while (instancePropertyNames.hasNext())
                         {
-                            InstancePropertyValue instancePropertyValue = instanceProperties.getPropertyValue(instancePropertyName);
+                            String instancePropertyName = instancePropertyNames.next();
 
-                            if ((instancePropertyName.equals(matchPropertyName)) &&
-                                (instancePropertyValue.equals(matchPropertyValue)))
+                            if (instancePropertyName != null)
                             {
-                                matchingProperties++;
+                                InstancePropertyValue instancePropertyValue = instanceProperties.getPropertyValue(instancePropertyName);
+
+                                if (instancePropertyValue != null)
+                                {
+                                    if (instancePropertyName.equals(matchPropertyName))
+                                    {
+                                        /*
+                                         * The property names match - do the values?
+                                         */
+                                        if (instancePropertyValue.equals(matchPropertyValue))
+                                        {
+                                            /*
+                                             * The values match exactly.
+                                             */
+                                            matchingProperties++;
+                                        }
+                                        else if (! exactMatch)
+                                        {
+                                            /*
+                                             * Does a fuzzy match work?
+                                             */
+                                            String instancePropertyValueString = this.getStringFromPropertyValue(instancePropertyValue);
+
+                                            if (instancePropertyValueString != null)
+                                            {
+                                                try
+                                                {
+                                                    if ((instancePropertyName.equals(matchPropertyName)) &&
+                                                        (instancePropertyValueString.matches(matchPropertyValueString)))
+                                                    {
+                                                        matchingProperties++;
+                                                    }
+                                                }
+                                                catch (Throwable error)
+                                                {
+                                                    OMRSErrorCode errorCode = OMRSErrorCode.INVALID_SEARCH_CRITERIA;
+                                                    String errorMessage =
+                                                            errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                                                                    error.getClass().getName(), matchPropertyValueString,
+                                                                    instancePropertyValueString, error.getMessage(),
+                                                                    methodName);
+
+                                                    throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                                                        this.getClass().getName(),
+                                                                                        methodName,
+                                                                                        errorMessage,
+                                                                                        errorCode.getSystemAction(),
+                                                                                        errorCode.getUserAction());
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -3018,11 +3238,13 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param propertyMap map with the properties
      * @param propertyName name of the property to test
      * @param expectedValue expected value
+     * @param exactMatch should the strings match exactly
      * @return boolean result
      */
     private  boolean  checkStringPropertyValue(Map<String, InstancePropertyValue>   propertyMap,
                                                String                               propertyName,
-                                               String                               expectedValue)
+                                               String                               expectedValue,
+                                               boolean                              exactMatch)
     {
         boolean                 result = false;
         InstancePropertyValue   instancePropertyValue = propertyMap.get(propertyName);
@@ -3038,9 +3260,19 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                     if (matchValue != null)
                     {
-                        if (matchValue.equals(expectedValue))
+                        if (exactMatch)
                         {
-                            result = true;
+                            if (matchValue.equals(expectedValue))
+                            {
+                                result = true;
+                            }
+                        }
+                        else
+                        {
+                            if (matchValue.matches(expectedValue))
+                            {
+                                result = true;
+                            }
                         }
                     }
                 }
@@ -3052,6 +3284,7 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                 }
             }
         }
+
         return result;
     }
 
@@ -3106,10 +3339,14 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      *
      * @param matchProperties  the properties to match.
      * @param instanceHeader  the header properties from the instance.
+     * @param instanceProperties  the effectivity dates.
+     * @param exactMatch whether this is a fuzzy or exact match.
      * @return integer count of the matching properties.
      */
     public int countMatchingHeaderPropertyValues(InstanceProperties       matchProperties,
-                                                 InstanceAuditHeader      instanceHeader)
+                                                 InstanceAuditHeader      instanceHeader,
+                                                 InstanceProperties       instanceProperties,
+                                                 boolean                  exactMatch)
     {
         final String metadataCollectionIdPropertyName = "metadataCollectionId";
         final String metadataCollectionNamePropertyName = "metadataCollectionName";
@@ -3119,6 +3356,8 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
         final String updatedByPropertyName = "updatedBy";
         final String createTimePropertyName = "createTime";
         final String updateTimePropertyName = "updateTime";
+        final String effectiveFromPropertyName = "effectiveFrom";
+        final String effectiveToPropertyName = "effectiveTo";
 
         int       matchingProperties = 0;
 
@@ -3128,27 +3367,27 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
             if (propertyMap != null)
             {
-                if (this.checkStringPropertyValue(propertyMap, metadataCollectionIdPropertyName, instanceHeader.getMetadataCollectionId()))
+                if (this.checkStringPropertyValue(propertyMap, metadataCollectionIdPropertyName, instanceHeader.getMetadataCollectionId(), exactMatch))
                 {
                     matchingProperties ++;
                 }
-                if (this.checkStringPropertyValue(propertyMap, metadataCollectionNamePropertyName, instanceHeader.getMetadataCollectionName()))
+                if (this.checkStringPropertyValue(propertyMap, metadataCollectionNamePropertyName, instanceHeader.getMetadataCollectionName(), exactMatch))
                 {
                     matchingProperties ++;
                 }
-                if (this.checkStringPropertyValue(propertyMap, typeNamePropertyName, instanceHeader.getType().getTypeDefName()))
+                if (this.checkStringPropertyValue(propertyMap, typeNamePropertyName, instanceHeader.getType().getTypeDefName(), exactMatch))
                 {
                     matchingProperties ++;
                 }
-                if (this.checkStringPropertyValue(propertyMap, typeGUIDPropertyName, instanceHeader.getType().getTypeDefGUID()))
+                if (this.checkStringPropertyValue(propertyMap, typeGUIDPropertyName, instanceHeader.getType().getTypeDefGUID(), exactMatch))
                 {
                     matchingProperties ++;
                 }
-                if (this.checkStringPropertyValue(propertyMap, createdByPropertyName, instanceHeader.getCreatedBy()))
+                if (this.checkStringPropertyValue(propertyMap, createdByPropertyName, instanceHeader.getCreatedBy(), exactMatch))
                 {
                     matchingProperties ++;
                 }
-                if (this.checkStringPropertyValue(propertyMap, updatedByPropertyName, instanceHeader.getUpdatedBy()))
+                if (this.checkStringPropertyValue(propertyMap, updatedByPropertyName, instanceHeader.getUpdatedBy(), exactMatch))
                 {
                     matchingProperties ++;
                 }
@@ -3157,6 +3396,14 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
                     matchingProperties ++;
                 }
                 if (this.checkDatePropertyValue(propertyMap, updateTimePropertyName, instanceHeader.getUpdateTime()))
+                {
+                    matchingProperties ++;
+                }
+                if (this.checkDatePropertyValue(propertyMap, effectiveFromPropertyName, instanceProperties.getEffectiveFromTime()))
+                {
+                    matchingProperties ++;
+                }
+                if (this.checkDatePropertyValue(propertyMap, effectiveToPropertyName, instanceProperties.getEffectiveToTime()))
                 {
                     matchingProperties ++;
                 }
@@ -3174,17 +3421,20 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * @param instanceHeader the header of the instance.
      * @param instanceProperties  the properties from the instance.
      * @param matchCriteria  rule on how the match should occur.
+     * @param exactMatch is this an exact match (or false = fuzzy match)
      * @return boolean flag indicating whether the two sets of properties match
+     * @throws InvalidParameterException invalid search criteria
      */
     public boolean verifyMatchingInstancePropertyValues(InstanceProperties   matchProperties,
                                                         InstanceAuditHeader  instanceHeader,
                                                         InstanceProperties   instanceProperties,
-                                                        MatchCriteria        matchCriteria)
+                                                        MatchCriteria        matchCriteria,
+                                                        boolean              exactMatch) throws InvalidParameterException
     {
         if (matchProperties != null)
         {
-            int matchingProperties = this.countMatchingPropertyValues(matchProperties, instanceProperties) +
-                                     this.countMatchingHeaderPropertyValues(matchProperties, instanceHeader);
+            int matchingProperties = this.countMatchingPropertyValues(matchProperties, instanceProperties, exactMatch) +
+                                     this.countMatchingHeaderPropertyValues(matchProperties, instanceHeader, instanceProperties, exactMatch);
 
             switch (matchCriteria)
             {
@@ -3424,6 +3674,128 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
             OMRSErrorCode errorCode = OMRSErrorCode.BAD_PROPERTY_FOR_INSTANCE;
             String errorMessage = errorCode.getErrorMessageId()
                                 + errorCode.getFormattedErrorMessage(sourceName, methodName);
+
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction(),
+                                               error);
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Search for property values exactly matching the supplied property value
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param properties list of properties associated with the in instance
+     * @param searchPropertyValue property value as a string
+     * @param methodName name of the method requiring the search.
+     * @return boolean indicating whether the search criteria is located in any of the string parameter values.
+     * @throws RepositoryErrorException the properties are not properly set up in the instance
+     */
+    public boolean verifyInstancePropertiesMatchPropertyValue(String              sourceName,
+                                                              InstanceProperties  properties,
+                                                              String              searchPropertyValue,
+                                                              String              methodName) throws RepositoryErrorException
+    {
+        if (properties == null)
+        {
+            return false;
+        }
+
+        Iterator<String>  propertyNames = properties.getPropertyNames();
+
+        try
+        {
+            while (propertyNames.hasNext())
+            {
+                InstancePropertyValue  instancePropertyValue = properties.getPropertyValue(propertyNames.next());
+
+                switch (instancePropertyValue.getInstancePropertyCategory())
+                {
+                    case PRIMITIVE:
+                        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue)instancePropertyValue;
+                        Object    instanceProperty = primitivePropertyValue.getPrimitiveValue();
+                        String    stringProperty = null;
+
+                        if (instanceProperty != null)
+                        {
+                            stringProperty = instanceProperty.toString();
+                        }
+
+                        if (stringProperty != null)
+                        {
+                            if (stringProperty.equals(searchPropertyValue))
+                            {
+                                return true;
+                            }
+                        }
+                        break;
+
+                    case ENUM:
+                        EnumPropertyValue enumPropertyValue = (EnumPropertyValue)instancePropertyValue;
+
+                        String  enumValue = enumPropertyValue.getSymbolicName();
+                        if (enumValue != null)
+                        {
+                            if (enumValue.equals(searchPropertyValue))
+                            {
+                                return true;
+                            }
+                        }
+                        break;
+
+                    case STRUCT:
+                        StructPropertyValue structPropertyValue = (StructPropertyValue)instancePropertyValue;
+
+                        if (verifyInstancePropertiesMatchPropertyValue(sourceName,
+                                                                       structPropertyValue.getAttributes(),
+                                                                       searchPropertyValue,
+                                                                       methodName))
+                        {
+                            return true;
+                        }
+                        break;
+
+                    case ARRAY:
+                        ArrayPropertyValue arrayPropertyValue = (ArrayPropertyValue)instancePropertyValue;
+
+                        if (verifyInstancePropertiesMatchPropertyValue(sourceName,
+                                                                       arrayPropertyValue.getArrayValues(),
+                                                                       searchPropertyValue,
+                                                                       methodName))
+                        {
+                            return true;
+                        }
+                        break;
+
+                    case MAP:
+                        MapPropertyValue mapPropertyValue = (MapPropertyValue)instancePropertyValue;
+
+                        if (verifyInstancePropertiesMatchPropertyValue(sourceName,
+                                                                       mapPropertyValue.getMapValues(),
+                                                                       searchPropertyValue,
+                                                                       methodName))
+                        {
+                            return true;
+                        }
+                        break;
+                }
+            }
+        }
+        catch (Throwable   error)
+        {
+            /*
+             * Probably a class cast error which should never occur.
+             */
+            OMRSErrorCode errorCode = OMRSErrorCode.BAD_PROPERTY_FOR_INSTANCE;
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(sourceName, methodName);
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
                                                this.getClass().getName(),

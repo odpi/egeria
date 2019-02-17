@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'data_connection_mapping' asset type in IGC, displayed as 'Data Connection Mapping' in the IGC UI.
+ * POJO for the {@code data_connection_mapping} asset type in IGC, displayed as '{@literal Data Connection Mapping}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,43 +24,43 @@ public class DataConnectionMapping extends Reference {
     public static String getIgcTypeDisplayName() { return "Data Connection Mapping"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'host_(engine)_name' property, displayed as 'Host (Engine) Name' in the IGC UI.
+     * The {@code host_(engine)_name} property, displayed as '{@literal Host (Engine) Name}' in the IGC UI.
      */
     @JsonProperty("host_(engine)_name") protected String host__engine__name;
 
     /**
-     * The 'type' property, displayed as 'Type' in the IGC UI.
+     * The {@code type} property, displayed as '{@literal Type}' in the IGC UI.
      */
     protected String type;
 
     /**
-     * The 'used_by' property, displayed as 'Used by' in the IGC UI.
+     * The {@code used_by} property, displayed as '{@literal Used by}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MainObject} objects.
      */
     protected ReferenceList used_by;
 
     /**
-     * The 'same_as_data_connections' property, displayed as 'Same as Data Connections' in the IGC UI.
+     * The {@code same_as_data_connections} property, displayed as '{@literal Same as Data Connections}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DataConnectionMapping} objects.
      */
     protected ReferenceList same_as_data_connections;
 
     /**
-     * The 'preferred_data_connection' property, displayed as 'Preferred Data Connection' in the IGC UI.
+     * The {@code preferred_data_connection} property, displayed as '{@literal Preferred Data Connection}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link DataConnectionMapping} object.
      */
     protected Reference preferred_data_connection;
 
     /**
-     * The 'bound_to_database' property, displayed as 'Bound to Database' in the IGC UI.
+     * The {@code bound_to_database} property, displayed as '{@literal Bound to Database}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Database} object.
      */

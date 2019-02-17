@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'navigationdescriptor' asset type in IGC, displayed as 'NavigationDescriptor' in the IGC UI.
+ * POJO for the {@code navigationdescriptor} asset type in IGC, displayed as '{@literal NavigationDescriptor}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,49 +24,49 @@ public class Navigationdescriptor extends Reference {
     public static String getIgcTypeDisplayName() { return "NavigationDescriptor"; }
 
     /**
-     * The 'of_class_descriptor' property, displayed as 'Of Class Descriptor' in the IGC UI.
+     * The {@code of_class_descriptor} property, displayed as '{@literal Of Class Descriptor}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Classdescriptor} object.
      */
     protected Reference of_class_descriptor;
 
     /**
-     * The 'description' property, displayed as 'Description' in the IGC UI.
+     * The {@code description} property, displayed as '{@literal Description}' in the IGC UI.
      */
     protected String description;
 
     /**
-     * The 'expression' property, displayed as 'Expression' in the IGC UI.
+     * The {@code expression} property, displayed as '{@literal Expression}' in the IGC UI.
      */
     protected String expression;
 
     /**
-     * The 'display_name' property, displayed as 'Display Name' in the IGC UI.
+     * The {@code display_name} property, displayed as '{@literal Display Name}' in the IGC UI.
      */
     protected String display_name;
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

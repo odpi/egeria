@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'data_policy' asset type in IGC, displayed as 'Data Policy' in the IGC UI.
+ * POJO for the {@code data_policy} asset type in IGC, displayed as '{@literal Data Policy}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,61 +24,61 @@ public class DataPolicy extends Reference {
     public static String getIgcTypeDisplayName() { return "Data Policy"; }
 
     /**
-     * The 'name' property, displayed as 'Title' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Title}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'policy_number' property, displayed as 'Policy Number' in the IGC UI.
+     * The {@code policy_number} property, displayed as '{@literal Policy Number}' in the IGC UI.
      */
     protected String policy_number;
 
     /**
-     * The 'long_description' property, displayed as 'Policy Text' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Policy Text}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'effective_date' property, displayed as 'Effective Date' in the IGC UI.
+     * The {@code effective_date} property, displayed as '{@literal Effective Date}' in the IGC UI.
      */
     protected Date effective_date;
 
     /**
-     * The 'termination_date' property, displayed as 'Termination Date' in the IGC UI.
+     * The {@code termination_date} property, displayed as '{@literal Termination Date}' in the IGC UI.
      */
     protected Date termination_date;
 
     /**
-     * The 'contacts' property, displayed as 'Contacts' in the IGC UI.
+     * The {@code contacts} property, displayed as '{@literal Contacts}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Steward} objects.
      */
     protected ReferenceList contacts;
 
     /**
-     * The 'applied_to_assets' property, displayed as 'Applied to Assets' in the IGC UI.
+     * The {@code applied_to_assets} property, displayed as '{@literal Applied to Assets}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link MainObject} objects.
      */
     protected ReferenceList applied_to_assets;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 
