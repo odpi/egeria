@@ -60,7 +60,7 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-infrastructure-client</artifactId>
+            <artifactId>it-infrastructure-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
         <dependency>
