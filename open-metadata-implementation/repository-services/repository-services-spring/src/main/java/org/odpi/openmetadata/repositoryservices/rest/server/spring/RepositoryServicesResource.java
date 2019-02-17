@@ -1210,7 +1210,7 @@ public class RepositoryServicesResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/by-property-value")
 
-    public  RelationshipListResponse findRelationshipsByPropertyValue(@PathVariable String     serverName,
+    public  RelationshipListResponse findRelationshipsByPropertyValue(@PathVariable String                    serverName,
                                                                       @PathVariable String                    userId,
                                                                       @RequestParam String                    searchCriteria,
                                                                       @RequestBody  TypeLimitedFindRequest    findRequestParameters)
