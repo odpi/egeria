@@ -32,7 +32,7 @@ import static org.odpi.openmetadata.accessservices.governanceengine.server.util.
  * GovernanceEnginePublisher is responsible for publishing events about governed asset components .  It is called
  * when an interesting OMRS Event is added to the Enterprise OMRS Topic.
  */
-public class GovernanceEnginePublisher implements OMRSInstanceEventProcessor {
+public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(GovernanceEnginePublisher.class);
     private GovernanceEngineEventProcessor governanceEngineEventProcessor;

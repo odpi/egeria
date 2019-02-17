@@ -41,8 +41,7 @@ import java.util.*;
  *     </li>
  * </ul>
  */
-public class OMRSRepositoryContentManager implements OMRSTypeDefEventProcessor,
-                                                     OMRSTypeDefManager
+public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor implements OMRSTypeDefManager
 {
     private LocalOMRSRepositoryConnector    localRepositoryConnector       = null;
     private String                          localServerName                = null;
