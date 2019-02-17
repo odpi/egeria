@@ -307,6 +307,10 @@ public enum OMRSErrorCode
             "AttributeDefs may only be of primitive, collection or enum type. {0} of category {1} is not allowed.",
             "There is an error in the creation of an AttributeDefType.",
             "Recode the call to the AttributeDefType object with a valid type."),
+    INVALID_SEARCH_CRITERIA(400, "OMRS-PROPERTIES-400-006 ",
+            "A {0} exception was returned when matching {2} against {1} in method {4}.  The exception message was: {3}.",
+            "There is an error in the creation of an AttributeDefType.",
+            "Recode the call to the AttributeDefType object with a valid type."),
     REPOSITORY_URL_MALFORMED(400, "OMRS-CONNECTOR-400-001 ",
             "The Open Metadata Repository Server URL {0} is not in a recognized format",
             "The system is unable to connect to the open metadata repository to retrieve metadata properties.",
@@ -330,7 +334,7 @@ public enum OMRSErrorCode
                                  "Review previous error messages to determine the precise error in the " +
                                  "start up configuration. " +
                                  "Correct the configuration and reconnect the server to the cohort. "),
-    NO_EVENT_BUS_CONNECTORS(400, "OMRS-CONNECTOR-400-001 ",
+    NO_EVENT_BUS_CONNECTORS(400, "OMRS-TOPIC-CONNECTOR-400-002 ",
             "The connector {0} has been configured without an embedded event bus connector",
             "There is an error in the connection for this connector. The connection is defined in the server's configuration document.",
             "Review the configuration document and correct the definition of the connection."),

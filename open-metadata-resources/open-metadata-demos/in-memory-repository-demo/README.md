@@ -83,7 +83,7 @@ POST localhost:8081/open-metadata/admin-services/users/david/servers/myserverb/.
 ## Using the Subject Area OMAS to test the synchronization
  
 ```console
-POST localhost:8080/open-metadata/access-services/subject-area/users/david/glossaries
+POST localhost:8080/servers/myservera/open-metadata/access-services/subject-area/users/david/glossaries
 {
 "name":"Glossary2",
 "description":"test glossary 1 ",
@@ -124,9 +124,10 @@ POST localhost:8080/open-metadata/access-services/subject-area/users/david/gloss
           }
 ```
 Note the guid and issue a get to other server (8081). 
+
 ```console
 
-localhost:8081/open-metadata/access-services/subject-area/users/david/glossaries/9b08873e-5317-4199-9c5e-a7213947f271
+GET localhost:8081/servers/myserverb/open-metadata/access-services/subject-area/users/david/glossaries/9b08873e-5317-4199-9c5e-a7213947f271
 
 ```          
 You should get the glossary back. 
@@ -144,7 +145,6 @@ myserverb.cocoCohort.registrystore
 
 ```
 If you want to start a clean system, you should delete these files and restart the servers.
-
 
 
 ----
