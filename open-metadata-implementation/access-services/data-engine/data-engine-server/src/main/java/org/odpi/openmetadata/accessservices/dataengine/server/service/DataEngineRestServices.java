@@ -7,13 +7,7 @@ import org.odpi.openmetadata.accessservices.dataengine.exception.UserNotAuthoriz
 import org.odpi.openmetadata.accessservices.dataengine.rest.GUIDResponse;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.util.DataEngineErrorHandler;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,7 +73,7 @@ public class DataEngineRestServices {
 
             response.setGuid(processGuid);
 
-        } catch (TypeErrorException | EntityNotKnownException | StatusNotSupportedException | InvalidParameterException
+        } catch (TypeErrorException | EntityNotKnownException | FunctionNotSupportedException | StatusNotSupportedException | InvalidParameterException
                 | PropertyErrorException | ClassificationErrorException | RepositoryErrorException
                 |
                 org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {

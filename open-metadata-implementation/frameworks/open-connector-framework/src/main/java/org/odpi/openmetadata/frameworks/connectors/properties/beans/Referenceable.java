@@ -42,9 +42,10 @@ public class Referenceable extends ElementHeader
     /*
      * Attributes of a Referenceable
      */
-    protected String             qualifiedName        = null;
-    protected Map<String,Object> additionalProperties = null;
-    protected List<Meaning>      meanings             = null;
+    protected String              qualifiedName        = null;
+    protected Map<String, Object> additionalProperties = null;
+    protected Map<String, Object> extendedProperties   = null;
+    protected List<Meaning>       meanings             = null;
 
     /**
      * Default constructor
@@ -68,6 +69,7 @@ public class Referenceable extends ElementHeader
         {
             qualifiedName = template.getQualifiedName();
             additionalProperties = template.getAdditionalProperties();
+            extendedProperties = template.getExtendedProperties();
             meanings = template.getMeanings();
         }
     }
@@ -128,6 +130,38 @@ public class Referenceable extends ElementHeader
         }
     }
 
+    /**
+     * Set up properties from subclasses properties.
+     *
+     * @param extendedProperties asset properties map
+     */
+    public void setExtendedProperties(Map<String,Object> extendedProperties)
+    {
+        this.extendedProperties = extendedProperties;
+    }
+
+
+    /**
+     * Return a copy of the properties from subclasses.  Null means no extended properties are available.
+     *
+     * @return asset property map
+     */
+    public Map<String,Object> getExtendedProperties()
+    {
+        if (extendedProperties == null)
+        {
+            return null;
+        }
+        else if (extendedProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(extendedProperties);
+        }
+    }
+
 
     /**
      * Return the assigned meanings for this metadata entity.
@@ -173,11 +207,12 @@ public class Referenceable extends ElementHeader
         return "Referenceable{" +
                 "qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
+                ", extendedProperties=" + extendedProperties +
                 ", meanings=" + meanings +
-                ", type=" + type +
-                ", guid='" + guid + '\'' +
-                ", url='" + url + '\'' +
-                ", classifications=" + classifications +
+                ", type=" + getType() +
+                ", GUID='" + getGUID() + '\'' +
+                ", URL='" + getURL() + '\'' +
+                ", classifications=" + getClassifications() +
                 '}';
     }
 
@@ -195,7 +230,7 @@ public class Referenceable extends ElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof Referenceable))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -205,6 +240,21 @@ public class Referenceable extends ElementHeader
         }
         Referenceable that = (Referenceable) objectToCompare;
         return Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
-                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
+                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties()) &&
+                Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
+                Objects.equals(getMeanings(), that.getMeanings());
+    }
+
+
+    /**
+     * Return has code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getQualifiedName(), getAdditionalProperties(), getExtendedProperties(),
+                            getMeanings());
     }
 }
