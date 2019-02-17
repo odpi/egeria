@@ -3,13 +3,14 @@
 package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper;
 
 
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
-import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessorInterface;
+import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessorInterface;
 
 /**
  * OMRSRepositoryEventProcessor describes the interface of a component that can process both TypeDef and Instance
  * events from an open metadata repository.
  */
-public interface OMRSRepositoryEventProcessor extends OMRSTypeDefEventProcessor, OMRSInstanceEventProcessor
+public abstract class OMRSRepositoryEventProcessor implements OMRSTypeDefEventProcessorInterface,
+                                                              OMRSInstanceEventProcessorInterface
 {
 }

@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.metadatahighway.cohortregistry;
 
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ import java.util.List;
  * </ul>
  * Within a server, there is a single instance of the cohort registry for each cohort that the server joins.
  */
-public class OMRSCohortRegistry implements OMRSRegistryEventProcessor
+public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
 {
     /*
      * Local name of the cohort.  This is used for messages rather than being part of the protocol.
