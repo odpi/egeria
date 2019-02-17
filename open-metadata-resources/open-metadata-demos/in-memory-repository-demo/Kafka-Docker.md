@@ -53,29 +53,46 @@ This file defines the configuration for your Kafka. Note that
   - this yml starts Kafka with one broker. 
          
 #### Starting up the environment
+
 ```console
-docker-compose -f docker-compose-single-broker.yml up -d  --force-recreate
+
+$ docker-compose -f docker-compose-single-broker.yml up -d  --force-recreate
+
 ```
 
 #### Check it is running 
 
 ```console
-docker container ls
+
+$ docker container ls
 CONTAINER ID        IMAGE                                     COMMAND                  CREATED             STATUS              PORTS                                                NAMES
 bfcbcf26e260        wurstmeister/zookeeper                    "/bin/sh -c '/usr/sb…"   3 minutes ago       Up 3 minutes        22/tcp, 2888/tcp, 3888/tcp, 0.0.0.0:2181->2181/tcp   wurstmeister-kafka-docker-39f4872_zookeeper_1
 38be12058832        wurstmeister-kafka-docker-39f4872_kafka   "start-kafka.sh"         3 minutes ago       Up 3 minutes        0.0.0.0:9092->9092/tcp                               wurstmeister-kafka-docker-39f4872_kafka_1
+$
+
 ```
 or 
+
 ```console
-docker ps
+
+$ docker ps
+$
+
 ```
+
 or 
+
 ```console
-docker-compose-ps
+
+$ docker-compose-ps
+$ 
+
 ```
 #### Check the topics are there
+
 ```console
-docker ps 
+
+$ docker ps
  ```
  - get the container id then put it in the following command to list topics from within the container.
 ```console
@@ -93,20 +110,33 @@ docker exec -t -i <image id from docker ps> /bin/bash
 ```
 #### Deleting the containers images
 
-list the containers 
+List the containers 
+
 ```console
-docker ps -a 
-```
-get the containerid and remove it with thie command
-```console 
-docker rm  containerid
+$ docker ps -a
+$
 ```
 
-delete all containers
-```console
-docker rm $(docker ps -a -q)
+Get the containerid and remove it with this command
+
+```console 
+$ docker rm  containerid
+$
 ```
-delete all images 
+
+Delete all containers
+
 ```console
-docker rmi $(docker images -q)
+
+$ docker rm $(docker ps -a -q)
+$
+
+```
+Delete all images 
+
+```console
+
+$ docker rmi $(docker images -q)
+$
+
 ```
