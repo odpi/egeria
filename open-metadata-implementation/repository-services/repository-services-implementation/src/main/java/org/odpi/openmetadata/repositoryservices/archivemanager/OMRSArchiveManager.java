@@ -10,12 +10,12 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
-import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessorInterface;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.OpenMetadataArchiveStoreConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.AttributeTypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefPatch;
+import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessorInterface;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ public class OMRSArchiveManager
 {
     private List<OpenMetadataArchiveStoreConnector> openMetadataArchiveStores   = new ArrayList<>();
     private OMRSRepositoryContentManager            repositoryContentManager    = null;
-    private OMRSInstanceEventProcessor              localInstanceEventProcessor = null;
+    private OMRSInstanceEventProcessorInterface     localInstanceEventProcessor = null;
 
 
     /*
@@ -90,8 +90,8 @@ public class OMRSArchiveManager
      * @param repositoryContentManager typeDef processor for the local repository
      * @param instanceProcessor  instance processor for the local repository
      */
-    public void setLocalRepository(OMRSRepositoryContentManager repositoryContentManager,
-                                   OMRSInstanceEventProcessor   instanceProcessor)
+    public void setLocalRepository(OMRSRepositoryContentManager              repositoryContentManager,
+                                   OMRSInstanceEventProcessorInterface       instanceProcessor)
     {
         this.repositoryContentManager = repositoryContentManager;
         this.localInstanceEventProcessor = instanceProcessor;
@@ -147,8 +147,8 @@ public class OMRSArchiveManager
      * @param instanceProcessor receiver of new instances
      */
     private void processOpenMetadataArchiveStore(OpenMetadataArchiveStoreConnector    archiveStore,
-                                                 OMRSTypeDefEventProcessor            typeDefProcessor,
-                                                 OMRSInstanceEventProcessor           instanceProcessor)
+                                                 OMRSTypeDefEventProcessorInterface   typeDefProcessor,
+                                                 OMRSInstanceEventProcessorInterface  instanceProcessor)
     {
         if (archiveStore != null)
         {
@@ -185,9 +185,9 @@ public class OMRSArchiveManager
      *
      * @param archiveContent open metadata archive to process
      */
-    private void processOpenMetadataArchive(OpenMetadataArchive          archiveContent,
-                                            OMRSTypeDefEventProcessor    typeDefProcessor,
-                                            OMRSInstanceEventProcessor   instanceProcessor)
+    private void processOpenMetadataArchive(OpenMetadataArchive                   archiveContent,
+                                            OMRSTypeDefEventProcessorInterface    typeDefProcessor,
+                                            OMRSInstanceEventProcessorInterface   instanceProcessor)
     {
         OMRSAuditCode    auditCode;
         final String     actionDescription = "Process Open Metadata Archive";
@@ -258,9 +258,9 @@ public class OMRSArchiveManager
      * @param archiveTypeStore TypeStore from the archive
      * @return type count
      */
-    private int  processTypeDefStore(OpenMetadataArchiveProperties    archiveProperties,
-                                     OpenMetadataArchiveTypeStore     archiveTypeStore,
-                                     OMRSTypeDefEventProcessor        typeDefProcessor)
+    private int  processTypeDefStore(OpenMetadataArchiveProperties          archiveProperties,
+                                     OpenMetadataArchiveTypeStore           archiveTypeStore,
+                                     OMRSTypeDefEventProcessorInterface     typeDefProcessor)
     {
         List<TypeDefPatch>     typeDefPatches       = archiveTypeStore.getTypeDefPatches();
         List<AttributeTypeDef> newAttributeTypeDefs = archiveTypeStore.getAttributeTypeDefs();
@@ -360,9 +360,9 @@ public class OMRSArchiveManager
      *                          if there is no local repository configured for this server.
      * @return instance count
      */
-    private int  processInstanceStore(OpenMetadataArchiveProperties    archiveProperties,
-                                      OpenMetadataArchiveInstanceStore archiveInstanceStore,
-                                      OMRSInstanceEventProcessor       instanceProcessor)
+    private int  processInstanceStore(OpenMetadataArchiveProperties             archiveProperties,
+                                      OpenMetadataArchiveInstanceStore          archiveInstanceStore,
+                                      OMRSInstanceEventProcessorInterface       instanceProcessor)
     {
         List<EntityDetail>                  entities        = archiveInstanceStore.getEntities();
         List<Relationship>                  relationships   = archiveInstanceStore.getRelationships();

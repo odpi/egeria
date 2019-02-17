@@ -162,9 +162,7 @@ public class OMRSCohortManager
                                                                                                              cohortTopicConnector,
                                                                                                              auditLog.createNewAuditLog(OMRSAuditingComponent.EVENT_PUBLISHER));
 
-
-                    localRepositoryEventManager.registerTypeDefProcessor(repositoryEventPublisher);
-                    localRepositoryEventManager.registerInstanceProcessor(repositoryEventPublisher);
+                    localRepositoryEventManager.registerRepositoryEventProcessor(repositoryEventPublisher);
                 }
 
                 /*
@@ -208,7 +206,7 @@ public class OMRSCohortManager
                                                                                                          enterpriseTopicConnector,
                                                                                                          auditLog.createNewAuditLog(OMRSAuditingComponent.EVENT_PUBLISHER));
 
-                this.cohortRepositoryEventManager.registerInstanceProcessor(enterpriseEventPublisher);
+                this.cohortRepositoryEventManager.registerRepositoryEventProcessor(enterpriseEventPublisher);
             }
 
             this.cohortConnectionStatus = CohortConnectionStatus.NEW;
@@ -234,7 +232,6 @@ public class OMRSCohortManager
                 OMRSEventListener cohortEventListener = new OMRSEventListener(cohortName,
                                                                               localMetadataCollectionId,
                                                                               this.cohortRegistry,
-                                                                              this.cohortRepositoryEventManager,
                                                                               this.cohortRepositoryEventManager,
                                                                               auditLog.createNewAuditLog(OMRSAuditingComponent.EVENT_LISTENER));
                 cohortTopicConnector.registerListener(cohortEventListener);
