@@ -51,7 +51,7 @@ import java.util.Date;
  *     until all of the requested metadata is assembled.
  * </p>
  */
-public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
+class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 {
     private static final Logger log = LoggerFactory.getLogger(EnterpriseOMRSMetadataCollection.class);
 
@@ -2103,10 +2103,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
-     * @param exactMatchProperties Optional list of entity properties that must match exactly.
-     * @param exactMatchCriteria Enum defining how the exact match properties should be matched to the entities in the repository.
-     * @param fuzzyMatchProperties Optional list of entity properties to match (contains wildcards).
-     * @param fuzzyMatchCriteria Enum defining how the fuzzy match properties should be matched to the entities in the repository.
+     * @param matchProperties Optional list of entity properties to match (contains wildcards).
+     * @param matchCriteria Enum defining how the match properties should be matched to the entities in the repository.
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -2135,10 +2133,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      */
     public List<EntityDetail> findEntitiesByProperty(String                    userId,
                                                      String                    entityTypeGUID,
-                                                     InstanceProperties        exactMatchProperties,
-                                                     MatchCriteria             exactMatchCriteria,
-                                                     InstanceProperties        fuzzyMatchProperties,
-                                                     MatchCriteria             fuzzyMatchCriteria,
+                                                     InstanceProperties        matchProperties,
+                                                     MatchCriteria             matchCriteria,
                                                      int                       fromEntityElement,
                                                      List<InstanceStatus>      limitResultsByStatus,
                                                      List<String>              limitResultsByClassification,
@@ -2160,10 +2156,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         super.findEntitiesByPropertyParameterValidation(userId,
                                                         entityTypeGUID,
-                                                        exactMatchProperties,
-                                                        exactMatchCriteria,
-                                                        fuzzyMatchProperties,
-                                                        fuzzyMatchCriteria,
+                                                        matchProperties,
+                                                        matchCriteria,
                                                         fromEntityElement,
                                                         limitResultsByStatus,
                                                         limitResultsByClassification,
@@ -2214,10 +2208,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                      */
                     List<EntityDetail> results = metadataCollection.findEntitiesByProperty(userId,
                                                                                            entityTypeGUID,
-                                                                                           exactMatchProperties,
-                                                                                           exactMatchCriteria,
-                                                                                           fuzzyMatchProperties,
-                                                                                           fuzzyMatchCriteria,
+                                                                                           matchProperties,
+                                                                                           matchCriteria,
                                                                                            fromEntityElement,
                                                                                            limitResultsByStatus,
                                                                                            limitResultsByClassification,
@@ -2296,10 +2288,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
      *                       (but could be slow so not recommended.
      * @param classificationName name of the classification, note a null is not valid.
-     * @param exactMatchClassificationProperties optional list of entity properties that must match exactly.
-     * @param exactMatchCriteria Enum defining how the exact match properties should be matched to the classifications in the repository.
-     * @param fuzzyMatchClassificationProperties Optional list of entity properties to match (contains wildcards).
-     * @param fuzzyMatchCriteria Enum defining how the fuzzy match properties should be matched to the classifications in the repository.
+     * @param matchClassificationProperties Optional list of entity properties to match (contains wildcards).
+     * @param matchCriteria Enum defining how the match properties should be matched to the classifications in the repository.
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -2330,10 +2320,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     public  List<EntityDetail> findEntitiesByClassification(String                    userId,
                                                             String                    entityTypeGUID,
                                                             String                    classificationName,
-                                                            InstanceProperties        exactMatchClassificationProperties,
-                                                            MatchCriteria             exactMatchCriteria,
-                                                            InstanceProperties        fuzzyMatchClassificationProperties,
-                                                            MatchCriteria             fuzzyMatchCriteria,
+                                                            InstanceProperties        matchClassificationProperties,
+                                                            MatchCriteria             matchCriteria,
                                                             int                       fromEntityElement,
                                                             List<InstanceStatus>      limitResultsByStatus,
                                                             Date                      asOfTime,
@@ -2356,10 +2344,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         super.findEntitiesByClassificationParameterValidation(userId,
                                                               entityTypeGUID,
                                                               classificationName,
-                                                              exactMatchClassificationProperties,
-                                                              exactMatchCriteria,
-                                                              fuzzyMatchClassificationProperties,
-                                                              fuzzyMatchCriteria,
+                                                              matchClassificationProperties,
+                                                              matchCriteria,
                                                               fromEntityElement,
                                                               limitResultsByStatus,
                                                               asOfTime,
@@ -2411,10 +2397,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                     List<EntityDetail> results = metadataCollection.findEntitiesByClassification(userId,
                                                                                                  entityTypeGUID,
                                                                                                  classificationName,
-                                                                                                 exactMatchClassificationProperties,
-                                                                                                 exactMatchCriteria,
-                                                                                                 fuzzyMatchClassificationProperties,
-                                                                                                 fuzzyMatchCriteria,
+                                                                                                 matchClassificationProperties,
+                                                                                                 matchCriteria,
                                                                                                  fromEntityElement,
                                                                                                  limitResultsByStatus,
                                                                                                  asOfTime,
@@ -2665,188 +2649,6 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                           pageSize,
                                           methodName);
     }
-
-
-    /**
-     * Return a list of entities whose string based property values match the supplied property value exactly.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param entityTypeGUID GUID of the type of entity to search for. Null means all types will
-     *                       be searched (could be slow so not recommended).
-     * @param propertyValue String expression contained in any of the property values within the entities
-     *                       of the supplied type.
-     * @param fromEntityElement the starting element number of the entities to return.
-     *                                This is used when retrieving elements
-     *                                beyond the first page of results. Zero means start from the first element.
-     * @param limitResultsByStatus By default, entities in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param limitResultsByClassification List of classifications that must be present on all returned entities.
-     * @param asOfTime Requests a historical query of the entity.  Null means return the present values.
-     * @param sequencingProperty String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
-     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
-     * collection.
-     * @throws InvalidParameterException a parameter is invalid or null.
-     * @throws TypeErrorException the type guid passed on the request is not known by the
-     *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored.
-     * @throws PropertyErrorException the sequencing property specified is not valid for any of the requested types of
-     *                                  entity.
-     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public  List<EntityDetail> findEntitiesByExactPropertyValue(String                userId,
-                                                                String                entityTypeGUID,
-                                                                String                propertyValue,
-                                                                int                   fromEntityElement,
-                                                                List<InstanceStatus>  limitResultsByStatus,
-                                                                List<String>          limitResultsByClassification,
-                                                                Date                  asOfTime,
-                                                                String                sequencingProperty,
-                                                                SequencingOrder       sequencingOrder,
-                                                                int                   pageSize) throws InvalidParameterException,
-                                                                                                       TypeErrorException,
-                                                                                                       RepositoryErrorException,
-                                                                                                       PropertyErrorException,
-                                                                                                       PagingErrorException,
-                                                                                                       FunctionNotSupportedException,
-                                                                                                       UserNotAuthorizedException
-    {
-        final String  methodName = "findEntitiesByExactPropertyValue";
-
-        /*
-         * Validate parameters
-         */
-        this.findEntitiesByExactPropertyValueParameterValidation(userId,
-                                                                 entityTypeGUID,
-                                                                 propertyValue,
-                                                                 fromEntityElement,
-                                                                 limitResultsByStatus,
-                                                                 limitResultsByClassification,
-                                                                 asOfTime,
-                                                                 sequencingProperty,
-                                                                 sequencingOrder,
-                                                                 pageSize);
-
-        /*
-         * Perform operation
-         *
-         * The list of cohort connectors are retrieved for each request to ensure that any changes in
-         * the shape of the cohort are reflected immediately.
-         */
-        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
-
-        /*
-         * Ready to process the request.  Search results need to come from all members of the cohort.
-         * They need to be combined and then duplicates removed to create the final list of results.
-         * Some repositories may produce exceptions.  These exceptions are saved and one selected to
-         * be returned if there are no results from any repository.
-         */
-        Map<String, EntityDetail>     combinedResults               = new HashMap<>();
-
-        InvalidParameterException     invalidParameterException     = null;
-        FunctionNotSupportedException functionNotSupportedException = null;
-        TypeErrorException            typeErrorException            = null;
-        PropertyErrorException        propertyErrorException        = null;
-        UserNotAuthorizedException    userNotAuthorizedException    = null;
-        RepositoryErrorException      repositoryErrorException      = null;
-        Throwable                     anotherException              = null;
-
-        /*
-         * Loop through the metadata collections extracting the typedefs from each repository.
-         */
-        for (OMRSRepositoryConnector cohortConnector : cohortConnectors)
-        {
-            if (cohortConnector != null)
-            {
-                OMRSMetadataCollection   metadataCollection = cohortConnector.getMetadataCollection();
-
-                validateMetadataCollection(metadataCollection, methodName);
-
-                try
-                {
-                    /*
-                     * Issue the request
-                     */
-                    List<EntityDetail> results = metadataCollection.findEntitiesByExactPropertyValue(userId,
-                                                                                                     entityTypeGUID,
-                                                                                                     propertyValue,
-                                                                                                     fromEntityElement,
-                                                                                                     limitResultsByStatus,
-                                                                                                     limitResultsByClassification,
-                                                                                                     asOfTime,
-                                                                                                     sequencingProperty,
-                                                                                                     sequencingOrder,
-                                                                                                     pageSize);
-
-                    /*
-                     * Step through the list of returned TypeDefs and remove duplicates.
-                     */
-                    combinedResults = this.addUniqueEntities(combinedResults,
-                                                             results,
-                                                             cohortConnector.getServerName(),
-                                                             cohortConnector.getMetadataCollectionId(),
-                                                             methodName);
-                }
-                catch (InvalidParameterException error)
-                {
-                    invalidParameterException = error;
-                }
-                catch (FunctionNotSupportedException error)
-                {
-                    functionNotSupportedException = error;
-                }
-                catch (TypeErrorException error)
-                {
-                    typeErrorException = error;
-                }
-                catch (PropertyErrorException error)
-                {
-                    propertyErrorException = error;
-                }
-                catch (RepositoryErrorException error)
-                {
-                    repositoryErrorException = error;
-                }
-                catch (UserNotAuthorizedException error)
-                {
-                    userNotAuthorizedException = error;
-                }
-                catch (Throwable error)
-                {
-                    anotherException = error;
-                }
-            }
-        }
-
-
-        if (combinedResults.isEmpty())
-        {
-            throwCapturedRepositoryErrorException(repositoryErrorException);
-            throwCapturedUserNotAuthorizedException(userNotAuthorizedException);
-            throwCapturedThrowableException(anotherException, methodName);
-            throwCapturedTypeErrorException(typeErrorException);
-            throwCapturedPropertyErrorException(propertyErrorException);
-            throwCapturedInvalidParameterException(invalidParameterException);
-            throwCapturedFunctionNotSupportedException(functionNotSupportedException);
-
-            return null;
-        }
-
-        return validatedEntityListResults(repositoryName,
-                                          combinedResults,
-                                          sequencingProperty,
-                                          sequencingOrder,
-                                          pageSize,
-                                          methodName);
-    }
-
 
 
     /**
@@ -3141,11 +2943,9 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param userId unique identifier for requesting user.
      * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.  Null means all types
      *                             (but may be slow so not recommended).
-     * @param exactMatchProperties Optional list of entity properties that must match exactly.
-     * @param exactMatchCriteria Enum defining how the exact match properties should be matched to the entities in the repository.
-     * @param fuzzyMatchProperties list of properties used to narrow the search.  The property values may include
+     * @param matchProperties list of properties used to narrow the search.  The property values may include
      *                        regex style wild cards.
-     * @param fuzzyMatchCriteria Enum defining how the properties should be matched to the relationships in the repository.
+     * @param matchCriteria Enum defining how the properties should be matched to the relationships in the repository.
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -3173,10 +2973,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      */
     public  List<Relationship> findRelationshipsByProperty(String                    userId,
                                                            String                    relationshipTypeGUID,
-                                                           InstanceProperties        exactMatchProperties,
-                                                           MatchCriteria             exactMatchCriteria,
-                                                           InstanceProperties        fuzzyMatchProperties,
-                                                           MatchCriteria             fuzzyMatchCriteria,
+                                                           InstanceProperties        matchProperties,
+                                                           MatchCriteria             matchCriteria,
                                                            int                       fromRelationshipElement,
                                                            List<InstanceStatus>      limitResultsByStatus,
                                                            Date                      asOfTime,
@@ -3197,10 +2995,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          */
         super.findRelationshipsByPropertyParameterValidation(userId,
                                                              relationshipTypeGUID,
-                                                             exactMatchProperties,
-                                                             exactMatchCriteria,
-                                                             fuzzyMatchProperties,
-                                                             fuzzyMatchCriteria,
+                                                             matchProperties,
+                                                             matchCriteria,
                                                              fromRelationshipElement,
                                                              limitResultsByStatus,
                                                              asOfTime,
@@ -3250,10 +3046,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                      */
                     List<Relationship> results = metadataCollection.findRelationshipsByProperty(userId,
                                                                                                 relationshipTypeGUID,
-                                                                                                exactMatchProperties,
-                                                                                                exactMatchCriteria,
-                                                                                                fuzzyMatchProperties,
-                                                                                                fuzzyMatchCriteria,
+                                                                                                matchProperties,
+                                                                                                matchCriteria,
                                                                                                 fromRelationshipElement,
                                                                                                 limitResultsByStatus,
                                                                                                 asOfTime,
@@ -3500,184 +3294,6 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                             pageSize,
                                             methodName);
     }
-
-
-
-
-    /**
-     * Return a list of relationships whose string based property values exactly match the supplied property value.
-     *
-     * @param userId unique identifier for requesting user.
-     * @param relationshipTypeGUID GUID of the type of entity to search for. Null means all types will
-     *                       be searched (could be slow so not recommended).
-     * @param propertyValue String value for the property.
-     * @param fromRelationshipElement Element number of the results to skip to when building the results list
-     *                                to return.  Zero means begin at the start of the results.  This is used
-     *                                to retrieve the results over a number of pages.
-     * @param limitResultsByStatus By default, relationships in all statuses are returned.  However, it is possible
-     *                             to specify a list of statuses (eg ACTIVE) to restrict the results to.  Null means all
-     *                             status values.
-     * @param asOfTime Requests a historical query of the relationships for the entity.  Null means return the
-     *                 present values.
-     * @param sequencingProperty String name of the property that is to be used to sequence the results.
-     *                           Null means do not sequence on a property name (see SequencingOrder).
-     * @param sequencingOrder Enum defining how the results should be ordered.
-     * @param pageSize the maximum number of result relationships that can be returned on this request.  Zero means
-     *                 unrestricted return results size.
-     * @return a list of relationships.  Null means no matching relationships.
-     * @throws InvalidParameterException one of the parameters is invalid or null.
-     * @throws TypeErrorException the type guid passed on the request is not known by the
-     *                              metadata collection.
-     * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored.
-     * @throws PropertyErrorException there is a problem with one of the other parameters.
-     * @throws PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
-     * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public  List<Relationship> findRelationshipsByExactPropertyValue(String                    userId,
-                                                                     String                    relationshipTypeGUID,
-                                                                     String                    propertyValue,
-                                                                     int                       fromRelationshipElement,
-                                                                     List<InstanceStatus>      limitResultsByStatus,
-                                                                     Date                      asOfTime,
-                                                                     String                    sequencingProperty,
-                                                                     SequencingOrder           sequencingOrder,
-                                                                     int                       pageSize) throws InvalidParameterException,
-                                                                                                                TypeErrorException,
-                                                                                                                RepositoryErrorException,
-                                                                                                                PropertyErrorException,
-                                                                                                                PagingErrorException,
-                                                                                                                FunctionNotSupportedException,
-                                                                                                                UserNotAuthorizedException
-    {
-        final String  methodName = "findRelationshipsByExactPropertyName";
-
-        /*
-         * Validate parameters
-         */
-        super.findRelationshipsByExactPropertyValueParameterValidation(userId,
-                                                                       relationshipTypeGUID,
-                                                                       propertyValue,
-                                                                       fromRelationshipElement,
-                                                                       limitResultsByStatus,
-                                                                       asOfTime,
-                                                                       sequencingProperty,
-                                                                       sequencingOrder,
-                                                                       pageSize);
-
-        /*
-         * Perform operation
-         *
-         * The list of cohort connectors are retrieved for each request to ensure that any changes in
-         * the shape of the cohort are reflected immediately.
-         */
-        List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
-
-        /*
-         * Ready to process the request.  Search results need to come from all members of the cohort.
-         * They need to be combined and then duplicates removed to create the final list of results.
-         * Some repositories may produce exceptions.  These exceptions are saved and one selected to
-         * be returned if there are no results from any repository.
-         */
-        Map<String, Relationship>     combinedResults               = new HashMap<>();
-
-        InvalidParameterException     invalidParameterException     = null;
-        FunctionNotSupportedException functionNotSupportedException = null;
-        PropertyErrorException        propertyErrorException        = null;
-        TypeErrorException            typeErrorException            = null;
-        UserNotAuthorizedException    userNotAuthorizedException    = null;
-        RepositoryErrorException      repositoryErrorException      = null;
-        Throwable                     anotherException              = null;
-
-        /*
-         * Loop through the metadata collections extracting the typedefs from each repository.
-         */
-        for (OMRSRepositoryConnector cohortConnector : cohortConnectors)
-        {
-            if (cohortConnector != null)
-            {
-                OMRSMetadataCollection   metadataCollection = cohortConnector.getMetadataCollection();
-
-                validateMetadataCollection(metadataCollection, methodName);
-
-                try
-                {
-                    /*
-                     * Issue the request
-                     */
-                    List<Relationship> results = metadataCollection.findRelationshipsByExactPropertyValue(userId,
-                                                                                                          relationshipTypeGUID,
-                                                                                                          propertyValue,
-                                                                                                          fromRelationshipElement,
-                                                                                                          limitResultsByStatus,
-                                                                                                          asOfTime,
-                                                                                                          sequencingProperty,
-                                                                                                          sequencingOrder,
-                                                                                                          pageSize);
-
-                    /*
-                     * Step through the list of returned TypeDefs and remove duplicates.
-                     */
-                    combinedResults = this.addUniqueRelationships(combinedResults,
-                                                                  results,
-                                                                  cohortConnector.getServerName(),
-                                                                  cohortConnector.getMetadataCollectionId(),
-                                                                  methodName);
-                }
-                catch (InvalidParameterException error)
-                {
-                    invalidParameterException = error;
-                }
-                catch (FunctionNotSupportedException error)
-                {
-                    functionNotSupportedException = error;
-                }
-                catch (PropertyErrorException error)
-                {
-                    propertyErrorException = error;
-                }
-                catch (TypeErrorException error)
-                {
-                    typeErrorException = error;
-                }
-                catch (RepositoryErrorException error)
-                {
-                    repositoryErrorException = error;
-                }
-                catch (UserNotAuthorizedException error)
-                {
-                    userNotAuthorizedException = error;
-                }
-                catch (Throwable error)
-                {
-                    anotherException = error;
-                }
-            }
-        }
-
-
-        if (combinedResults.isEmpty())
-        {
-            throwCapturedRepositoryErrorException(repositoryErrorException);
-            throwCapturedUserNotAuthorizedException(userNotAuthorizedException);
-            throwCapturedThrowableException(anotherException, methodName);
-            throwCapturedTypeErrorException(typeErrorException);
-            throwCapturedPropertyErrorException(propertyErrorException);
-            throwCapturedInvalidParameterException(invalidParameterException);
-            throwCapturedFunctionNotSupportedException(functionNotSupportedException);
-
-            return null;
-        }
-
-        return validatedRelationshipResults(repositoryName,
-                                            combinedResults,
-                                            sequencingProperty,
-                                            sequencingOrder,
-                                            pageSize,
-                                            methodName);
-    }
-
 
 
     /**

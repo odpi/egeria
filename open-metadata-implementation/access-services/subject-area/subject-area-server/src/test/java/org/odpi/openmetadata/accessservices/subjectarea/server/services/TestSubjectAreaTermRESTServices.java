@@ -671,13 +671,13 @@ public class TestSubjectAreaTermRESTServices {
             }
 
             @Override
-            public List<EntityDetail> findEntitiesByProperty(String userId, String entityTypeGUID, InstanceProperties  exactMatchProperties, MatchCriteria    exactMatchCriteria, InstanceProperties   fuzzyMatchProperties, MatchCriteria  fuzzyMatchCriteria, int fromEntityElement, List<InstanceStatus> limitResultsByStatus, List<String> limitResultsByClassification, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            public List<EntityDetail> findEntitiesByProperty(String userId, String entityTypeGUID, InstanceProperties  matchProperties, MatchCriteria    matchCriteria, int fromEntityElement, List<InstanceStatus> limitResultsByStatus, List<String> limitResultsByClassification, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
             {
                 return null;
             }
 
             @Override
-            public List<EntityDetail> findEntitiesByClassification(String userId, String entityTypeGUID, String classificationName, InstanceProperties  exactMatchClassificationProperties, MatchCriteria    exactMatchCriteria, InstanceProperties   fuzzyMatchClassificationProperties, MatchCriteria    fuzzyMatchCriteria, int fromEntityElement, List<InstanceStatus> limitResultsByStatus, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, ClassificationErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            public List<EntityDetail> findEntitiesByClassification(String userId, String entityTypeGUID, String classificationName, InstanceProperties  matchClassificationProperties, MatchCriteria    matchCriteria, int fromEntityElement, List<InstanceStatus> limitResultsByStatus, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, ClassificationErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
             {
                 return null;
             }
@@ -707,7 +707,7 @@ public class TestSubjectAreaTermRESTServices {
             }
 
             @Override
-            public List<Relationship> findRelationshipsByProperty(String userId, String relationshipTypeGUID, InstanceProperties exactMatchProperties, MatchCriteria  exactMatchCriteria, InstanceProperties fuzzyMatchProperties, MatchCriteria fuzzyMatchCriteria, int fromRelationshipElement, List<InstanceStatus> limitResultsByStatus, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            public List<Relationship> findRelationshipsByProperty(String userId, String relationshipTypeGUID, InstanceProperties matchProperties, MatchCriteria  matchCriteria, int fromRelationshipElement, List<InstanceStatus> limitResultsByStatus, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
             {
                 return null;
             }
