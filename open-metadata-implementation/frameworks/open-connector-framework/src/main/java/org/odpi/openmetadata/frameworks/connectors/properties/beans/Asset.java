@@ -42,12 +42,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Asset extends Referenceable
 {
-    protected String               displayName      = null;
-    protected String               shortDescription = null;
-    protected String               description      = null;
-    protected String               owner            = null;
-    protected List<String>         zoneMembership   = null;
-    protected Map<String,Object>   assetProperties  = null;
+    protected String             displayName        = null;
+    protected String             shortDescription   = null;
+    protected String             description        = null;
+    protected String             owner              = null;
+    protected List<String>       zoneMembership     = null;
 
 
     /**
@@ -74,7 +73,6 @@ public class Asset extends Referenceable
             description = templateAsset.getDescription();
             owner = templateAsset.getOwner();
             zoneMembership = templateAsset.getZoneMembership();
-            assetProperties = templateAsset.getAssetProperties();
         }
     }
 
@@ -200,38 +198,6 @@ public class Asset extends Referenceable
     }
 
 
-    /**
-     * Set up asset properties.
-     *
-     * @param assetProperties asset properties map
-     */
-    public void setAssetProperties(Map<String,Object> assetProperties)
-    {
-        this.assetProperties = assetProperties;
-    }
-
-
-    /**
-     * Return a copy of the asset properties.  Null means no asset properties are available.
-     *
-     * @return asset property map
-     */
-    public Map<String,Object> getAssetProperties()
-    {
-        if (assetProperties == null)
-        {
-            return null;
-        }
-        else if (assetProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(assetProperties);
-        }
-    }
-
 
     /**
      * Standard toString method.
@@ -241,16 +207,20 @@ public class Asset extends Referenceable
     @Override
     public String toString()
     {
-        return "AssetSummary{" +
-                "type=" + type +
-                ", qualifiedName='" + qualifiedName + '\'' +
-                ", displayName='" + displayName + '\'' +
+        return "Asset{" +
+                "displayName='" + displayName + '\'' +
                 ", shortDescription='" + shortDescription + '\'' +
                 ", description='" + description + '\'' +
                 ", owner='" + owner + '\'' +
-                ", classifications=" + classifications + '\'' +
-                ", zoneMembership=" + zoneMembership + '\'' +
-                ", schemaProperties=" + assetProperties +
+                ", zoneMembership=" + zoneMembership +
+                ", qualifiedName='" + getQualifiedName() + '\'' +
+                ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
+                ", meanings=" + getMeanings() +
+                ", type=" + getType() +
+                ", GUID='" + getGUID() + '\'' +
+                ", URL='" + getURL() + '\'' +
+                ", classifications=" + getClassifications() +
                 '}';
     }
 
@@ -268,7 +238,7 @@ public class Asset extends Referenceable
         {
             return true;
         }
-        if (!(objectToCompare instanceof Asset))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -281,7 +251,19 @@ public class Asset extends Referenceable
                 Objects.equals(getShortDescription(), asset.getShortDescription()) &&
                 Objects.equals(getDescription(), asset.getDescription()) &&
                 Objects.equals(getOwner(), asset.getOwner()) &&
-                Objects.equals(getZoneMembership(), asset.getZoneMembership()) &&
-                Objects.equals(getAssetProperties(), asset.getAssetProperties());
+                Objects.equals(getZoneMembership(), asset.getZoneMembership());
+    }
+
+
+    /**
+     * Return has code based on properties.
+     *
+     * @return int
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getDisplayName(), getShortDescription(), getDescription(), getOwner(),
+                            getZoneMembership());
     }
 }

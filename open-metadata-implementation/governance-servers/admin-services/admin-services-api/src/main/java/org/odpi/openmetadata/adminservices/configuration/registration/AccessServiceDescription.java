@@ -20,8 +20,8 @@ public enum AccessServiceDescription implements Serializable
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/community-profile/"),
     CONNECTED_ASSET_OMAS             (1004,   "Connected Asset", "Understand an asset",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/connected-asset/"),
-    DATA_INFRASTRUCTURE_OMAS         (1010,   "Data Infrastructure", "Manage information about the deployed IT infrastructure",
-                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-infrastructure/"),
+    IT_INFRASTRUCTURE_OMAS           (1010,   "IT Infrastructure", "Manage information about the deployed IT infrastructure",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/it-infrastructure/"),
     DATA_ENGINE_OMAS                 (1021,   "Data Engine", "Create processes for lineage",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/data-engine/"),
     DATA_PLATFORM_OMAS               (1005,   "Data Platform", "Capture changes to the data stores and data set managed by a data platform",
@@ -77,7 +77,7 @@ public enum AccessServiceDescription implements Serializable
         accessServiceDescriptionList.add(AccessServiceDescription.ASSET_OWNER_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.COMMUNITY_PROFILE_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.CONNECTED_ASSET_OMAS);
-        accessServiceDescriptionList.add(AccessServiceDescription.DATA_INFRASTRUCTURE_OMAS);
+        accessServiceDescriptionList.add(AccessServiceDescription.IT_INFRASTRUCTURE_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.DATA_PLATFORM_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.DATA_PRIVACY_OMAS);
         accessServiceDescriptionList.add(AccessServiceDescription.DATA_PROCESS_OMAS);

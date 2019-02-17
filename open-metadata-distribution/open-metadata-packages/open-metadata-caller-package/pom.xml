@@ -60,7 +60,7 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-infrastructure-spring</artifactId>
+            <artifactId>it-infrastructure-spring</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
         <dependency>

@@ -21,13 +21,13 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownEx
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.*;
 
 public class ContextBuilder {
+
+    private Map<String, String> relationalTableNames= new HashMap();
 
     public List<Context> buildContextForColumn(OMRSMetadataCollection metadataCollection, String assetId) throws UserNotAuthorizedException, RepositoryErrorException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, FunctionNotSupportedException, PagingErrorException {
         EntityDetail column = getEntity(metadataCollection, assetId);
@@ -84,10 +84,16 @@ public class ContextBuilder {
 
     private String getTableName(OMRSMetadataCollection metadataCollection, String relationalColumnGuid) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException, TypeErrorException, FunctionNotSupportedException, EntityNotKnownException, PagingErrorException, PropertyErrorException, EntityProxyOnlyException {
         final String relationalTableTypeGUID = getRelationalTableTypeGUID(metadataCollection, relationalColumnGuid);
+        if(relationalTableNames.containsKey(relationalTableTypeGUID)){
+            return relationalTableNames.get(relationalTableTypeGUID);
+        }
+
         final EntityDetail relationalTable = getRelationalTable(metadataCollection, relationalTableTypeGUID);
 
         if (relationalTable != null && relationalTable.getProperties() != null) {
-            return getStringProperty(relationalTable.getProperties(), NAME);
+            String tableName = getStringProperty(relationalTable.getProperties(), NAME);
+            relationalTableNames.put(relationalTableTypeGUID, tableName);
+            return tableName;
         }
 
         return null;
