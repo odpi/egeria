@@ -17,7 +17,7 @@ and a **resources** directory.
 ```text
 
 $ ls
-resources				server-chassis-spring-0.3-SNAPSHOT.jar
+resources				server-chassis-spring-1.1-SNAPSHOT.jar
 $
 
 ```
