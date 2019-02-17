@@ -22,7 +22,8 @@ import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrange
 public class RangerGaianAuthorizer implements GaianAuthorizer {
 
     private static final Logger logger = new Logger("RangerGaianAuthorizer", 25);
-    private static volatile RangerBasePlugin gaianPlugin = null;
+    private static volatile RangerBasePlugin gaianPlugin;
+    private RangerServerProperties rangerServerProperties;
 
     public void init() {
         logger.logDetail("==> RangerGaianPlugin.init()");
@@ -36,17 +37,12 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
                     plugin = new RangerGaianPlugin();
                     plugin.init();
                     plugin.setResultProcessor(new RangerDefaultAuditHandler());
-                    String rangerURL = RangerConfiguration.getInstance().get("ranger.plugin.gaian.policy.rest.url");
-                    ((RangerGaianPlugin) plugin).setRangerURL(rangerURL);
+                    rangerServerProperties = loadRangerServerProperties();
                     gaianPlugin = plugin;
                 }
             }
         }
         logger.logDetail("<== RangerGaianPlugin.init()");
-    }
-
-    public String getRangerURL() {
-        return ((RangerGaianPlugin) gaianPlugin).getRangerURL();
     }
 
     public boolean isAuthorized(QueryContext queryContext) throws GaianAuthorizationException {
@@ -85,6 +81,28 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
 
     public void cleanUp() {
         logger.logDetail("==> cleanUp ");
+    }
+
+    public RangerServerProperties getRangerServerProperties(){
+        return rangerServerProperties;
+    }
+
+    private RangerServerProperties loadRangerServerProperties() {
+        RangerServerProperties serverProperties = new RangerServerProperties();
+
+        if(RangerConfiguration.getInstance() != null){
+            String rangerURL = RangerConfiguration.getInstance().get("ranger.plugin.gaian.policy.rest.url");
+            if(rangerURL != null){
+                serverProperties.setServerURL(rangerURL);
+            }
+
+            String rangerAuthorization = RangerConfiguration.getInstance().get("ranger.plugin.gaian.policy.rest.authorization");
+            if(rangerAuthorization != null) {
+                serverProperties.setServerAuthorization(rangerAuthorization);
+            }
+        }
+
+        return serverProperties;
     }
 
     private GaianResourceType getGaianResourceType(String resourceType) {
@@ -196,19 +214,10 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
 
 class RangerGaianPlugin extends RangerBasePlugin {
 
-    private String rangerURL;
-
     RangerGaianPlugin() {
         super(DEFAULT_SERVICE_TYPE, DEFAULT_APP_ID);
     }
 
-    public String getRangerURL() {
-        return rangerURL;
-    }
-
-    public void setRangerURL(String rangerURL) {
-        this.rangerURL = rangerURL;
-    }
 }
 
 class RangerGaianAccessRequest extends RangerAccessRequestImpl {

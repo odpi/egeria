@@ -4,18 +4,20 @@ package org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugi
 
 public class Constants {
 
-    public static final String DEFAULT_SERVICE_TYPE = "gaian";
-    public static final String DEFAULT_APP_ID = "gaian";
+    protected static final String DEFAULT_SERVICE_TYPE = "gaian";
+    protected static final String DEFAULT_APP_ID = "gaian";
 
-    public static final String SCHEMA_RESOURCE = "SCHEMA";
-    public static final String TABLE_RESOURCE = "TABLE";
-    public static final String COLUMN_RESOURCE = "COLUMN";
+    protected static final String SCHEMA_RESOURCE = "SCHEMA";
+    protected static final String TABLE_RESOURCE = "TABLE";
+    protected static final String COLUMN_RESOURCE = "COLUMN";
 
-    public static final String SELECT_ACTION = "SELECT";
+    protected static final String SELECT_ACTION = "SELECT";
 
-    public static final String DEFAULT_GAIAN_DB_USER = "gaiandb";
-    public static final String DEFAULT_SCHEMA = "Gaian";
-    public static final String UNKNOWN_USER = "<UNKNOWN>";
+    protected static final String DEFAULT_SCHEMA = "Gaian";
+    protected static final String UNKNOWN_USER = "<UNKNOWN>";
 
-    public static final String NULL_MASK_TYPE = "NULL";
+    protected static final String NULL_MASK_TYPE = "NULL";
+
+    protected static final String USER_GROUPS = "/service/xusers/secure/users/{0}";
+    protected static final String USER_DETAILS = "/service/xusers/users/userName/{0}";
 }
