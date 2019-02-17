@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'parameter_set_definition' asset type in IGC, displayed as 'Parameter Set Definition' in the IGC UI.
+ * POJO for the {@code parameter_set_definition} asset type in IGC, displayed as '{@literal Parameter Set Definition}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,43 +24,43 @@ public class ParameterSetDefinition extends Reference {
     public static String getIgcTypeDisplayName() { return "Parameter Set Definition"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'context' property, displayed as 'Context' in the IGC UI.
+     * The {@code context} property, displayed as '{@literal Context}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link TransformationProject} object.
      */
     protected Reference context;
 
     /**
-     * The 'referenced_by_jobs' property, displayed as 'Referenced by Jobs' in the IGC UI.
+     * The {@code referenced_by_jobs} property, displayed as '{@literal Referenced by Jobs}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Jobdef} objects.
      */
     protected ReferenceList referenced_by_jobs;
 
     /**
-     * The 'parameters' property, displayed as 'Parameters' in the IGC UI.
+     * The {@code parameters} property, displayed as '{@literal Parameters}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link DsparameterSet} objects.
      */
     protected ReferenceList parameters;
 
     /**
-     * The 'type' property, displayed as 'Type' in the IGC UI.
+     * The {@code type} property, displayed as '{@literal Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -77,32 +77,32 @@ public class ParameterSetDefinition extends Reference {
     protected String type;
 
     /**
-     * The 'display_caption' property, displayed as 'Display Caption' in the IGC UI.
+     * The {@code display_caption} property, displayed as '{@literal Display Caption}' in the IGC UI.
      */
     protected String display_caption;
 
     /**
-     * The 'default_value' property, displayed as 'Default Value' in the IGC UI.
+     * The {@code default_value} property, displayed as '{@literal Default Value}' in the IGC UI.
      */
     protected String default_value;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

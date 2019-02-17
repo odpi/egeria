@@ -15,13 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.springframework.util.StringUtils;
 
 import java.util.Date;
@@ -93,8 +87,9 @@ class ProcessHandler {
     String createProcess(String userId, String processName, String description, String latestChange,
                          List<String> zoneMembership, String displayName, String parentProcessGuid)
             throws UserNotAuthorizedException, TypeErrorException, ClassificationErrorException,
-            StatusNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-            InvalidParameterException, RepositoryErrorException, PropertyErrorException {
+                   StatusNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+                   InvalidParameterException, RepositoryErrorException, PropertyErrorException, FunctionNotSupportedException
+    {
 
         final String methodName = "createProcess";
 
@@ -194,7 +189,7 @@ class ProcessHandler {
      * @throws EntityNotKnownException                                                            the entity instance is not known in the metadata collection.
      */
     void addInputRelationships(String userId, String processGuid, List<String> inputs)
-            throws UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException,
+            throws UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException, FunctionNotSupportedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException,
             InvalidParameterException, RepositoryErrorException, PropertyErrorException {
 
@@ -225,7 +220,7 @@ class ProcessHandler {
      * @throws EntityNotKnownException                                                            the entity instance is not known in the metadata collection.
      */
     void addOutputRelationships(String userId, String processGuid, List<String> outputs)
-            throws UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException,
+            throws UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException, FunctionNotSupportedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException,
             InvalidParameterException, RepositoryErrorException, PropertyErrorException {
 
@@ -242,7 +237,7 @@ class ProcessHandler {
     private void addRelationship(String userId, String processGuid, String dataSetGuid, String relationshipType,
                                  String methodName)
             throws TypeErrorException, InvalidParameterException, RepositoryErrorException, PropertyErrorException,
-            EntityNotKnownException, StatusNotSupportedException,
+            EntityNotKnownException, StatusNotSupportedException, FunctionNotSupportedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, UserNotAuthorizedException {
 
         errorHandler.validateUserId(userId, methodName);

@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.accessservices.api;
 
-import org.odpi.openmetadata.accessservice.assetcatalog.exception.InvalidParameterException;
-import org.odpi.openmetadata.accessservice.assetcatalog.exception.PropertyServerException;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
+import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.assetcatalog.exception.PropertyServerException;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.userinterface.accessservices.service.AssetCatalogOMASService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

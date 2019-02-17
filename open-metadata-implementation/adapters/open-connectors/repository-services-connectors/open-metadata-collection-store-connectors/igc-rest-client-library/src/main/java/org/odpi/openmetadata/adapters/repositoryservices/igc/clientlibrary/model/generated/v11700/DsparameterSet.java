@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'dsparameter_set' asset type in IGC, displayed as 'Parameter' in the IGC UI.
+ * POJO for the {@code dsparameter_set} asset type in IGC, displayed as '{@literal Parameter}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,39 +24,39 @@ public class DsparameterSet extends Reference {
     public static String getIgcTypeDisplayName() { return "Parameter"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'of_parameter_set' property, displayed as 'Context' in the IGC UI.
+     * The {@code of_parameter_set} property, displayed as '{@literal Context}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link ParameterSet2} object.
      */
     protected Reference of_parameter_set;
 
     /**
-     * The 'display_caption' property, displayed as 'Display Caption' in the IGC UI.
+     * The {@code display_caption} property, displayed as '{@literal Display Caption}' in the IGC UI.
      */
     protected String display_caption;
 
     /**
-     * The 'default_value' property, displayed as 'Default Value' in the IGC UI.
+     * The {@code default_value} property, displayed as '{@literal Default Value}' in the IGC UI.
      */
     protected String default_value;
 
     /**
-     * The 'type' property, displayed as 'Type' in the IGC UI.
+     * The {@code type} property, displayed as '{@literal Type}' in the IGC UI.
      * <br><br>
      * Can be one of the following values:
      * <ul>
@@ -73,27 +73,27 @@ public class DsparameterSet extends Reference {
     protected String type;
 
     /**
-     * The 'help_text' property, displayed as 'Help Text' in the IGC UI.
+     * The {@code help_text} property, displayed as '{@literal Help Text}' in the IGC UI.
      */
     protected String help_text;
 
     /**
-     * The 'created_by' property, displayed as 'Created By' in the IGC UI.
+     * The {@code created_by} property, displayed as '{@literal Created By}' in the IGC UI.
      */
     protected String created_by;
 
     /**
-     * The 'created_on' property, displayed as 'Created On' in the IGC UI.
+     * The {@code created_on} property, displayed as '{@literal Created On}' in the IGC UI.
      */
     protected Date created_on;
 
     /**
-     * The 'modified_by' property, displayed as 'Modified By' in the IGC UI.
+     * The {@code modified_by} property, displayed as '{@literal Modified By}' in the IGC UI.
      */
     protected String modified_by;
 
     /**
-     * The 'modified_on' property, displayed as 'Modified On' in the IGC UI.
+     * The {@code modified_on} property, displayed as '{@literal Modified On}' in the IGC UI.
      */
     protected Date modified_on;
 

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 /**
- * POJO for the 'function' asset type in IGC, displayed as 'Function' in the IGC UI.
+ * POJO for the {@code function} asset type in IGC, displayed as '{@literal Function}' in the IGC UI.
  * <br><br>
  * (this code has been generated based on out-of-the-box IGC metadata types;
  *  if modifications are needed, eg. to handle custom attributes,
@@ -24,130 +24,130 @@ public class Function extends Reference {
     public static String getIgcTypeDisplayName() { return "Function"; }
 
     /**
-     * The 'name' property, displayed as 'Name' in the IGC UI.
+     * The {@code name} property, displayed as '{@literal Name}' in the IGC UI.
      */
     protected String name;
 
     /**
-     * The 'short_description' property, displayed as 'Short Description' in the IGC UI.
+     * The {@code short_description} property, displayed as '{@literal Short Description}' in the IGC UI.
      */
     protected String short_description;
 
     /**
-     * The 'long_description' property, displayed as 'Long Description' in the IGC UI.
+     * The {@code long_description} property, displayed as '{@literal Long Description}' in the IGC UI.
      */
     protected String long_description;
 
     /**
-     * The 'labels' property, displayed as 'Labels' in the IGC UI.
+     * The {@code labels} property, displayed as '{@literal Labels}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Label} objects.
      */
     protected ReferenceList labels;
 
     /**
-     * The 'stewards' property, displayed as 'Stewards' in the IGC UI.
+     * The {@code stewards} property, displayed as '{@literal Stewards}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link AsclSteward} objects.
      */
     protected ReferenceList stewards;
 
     /**
-     * The 'assigned_to_terms' property, displayed as 'Assigned to Terms' in the IGC UI.
+     * The {@code assigned_to_terms} property, displayed as '{@literal Assigned to Terms}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Term} objects.
      */
     protected ReferenceList assigned_to_terms;
 
     /**
-     * The 'implements_rules' property, displayed as 'Implements Rules' in the IGC UI.
+     * The {@code implements_rules} property, displayed as '{@literal Implements Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList implements_rules;
 
     /**
-     * The 'governed_by_rules' property, displayed as 'Governed by Rules' in the IGC UI.
+     * The {@code governed_by_rules} property, displayed as '{@literal Governed by Rules}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link InformationGovernanceRule} objects.
      */
     protected ReferenceList governed_by_rules;
 
     /**
-     * The 'module_name' property, displayed as 'Module Name' in the IGC UI.
+     * The {@code module_name} property, displayed as '{@literal Module Name}' in the IGC UI.
      */
     protected String module_name;
 
     /**
-     * The 'module_path' property, displayed as 'Module Path' in the IGC UI.
+     * The {@code module_path} property, displayed as '{@literal Module Path}' in the IGC UI.
      */
     protected String module_path;
 
     /**
-     * The 'is_inline' property, displayed as 'Is Inline' in the IGC UI.
+     * The {@code is_inline} property, displayed as '{@literal Is Inline}' in the IGC UI.
      */
     protected Boolean is_inline;
 
     /**
-     * The 'source_code' property, displayed as 'Source Code' in the IGC UI.
+     * The {@code source_code} property, displayed as '{@literal Source Code}' in the IGC UI.
      */
     protected String source_code;
 
     /**
-     * The 'vendor' property, displayed as 'Vendor' in the IGC UI.
+     * The {@code vendor} property, displayed as '{@literal Vendor}' in the IGC UI.
      */
     protected String vendor;
 
     /**
-     * The 'has_function_call' property, displayed as 'Has Function Call' in the IGC UI.
+     * The {@code has_function_call} property, displayed as '{@literal Has Function Call}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link FunctionCall2} objects.
      */
     protected ReferenceList has_function_call;
 
     /**
-     * The 'returns_parameter_def' property, displayed as 'Returns Parameter Def' in the IGC UI.
+     * The {@code returns_parameter_def} property, displayed as '{@literal Returns Parameter Def}' in the IGC UI.
      * <br><br>
      * Will be a single {@link Reference} to a {@link Parameter} object.
      */
     protected Reference returns_parameter_def;
 
     /**
-     * The 'platform_type' property, displayed as 'Platform Type' in the IGC UI.
+     * The {@code platform_type} property, displayed as '{@literal Platform Type}' in the IGC UI.
      */
     protected String platform_type;
 
     /**
-     * The 'external_name' property, displayed as 'External Name' in the IGC UI.
+     * The {@code external_name} property, displayed as '{@literal External Name}' in the IGC UI.
      */
     protected String external_name;
 
     /**
-     * The 'language' property, displayed as 'Language' in the IGC UI.
+     * The {@code language} property, displayed as '{@literal Language}' in the IGC UI.
      */
     protected String language;
 
     /**
-     * The 'version' property, displayed as 'Version' in the IGC UI.
+     * The {@code version} property, displayed as '{@literal Version}' in the IGC UI.
      */
     protected String version;
 
     /**
-     * The 'executed_by_function_call' property, displayed as 'Executed By Function Call' in the IGC UI.
+     * The {@code executed_by_function_call} property, displayed as '{@literal Executed By Function Call}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link FunctionCall2} objects.
      */
     protected ReferenceList executed_by_function_call;
 
     /**
-     * The 'has_parameter_def' property, displayed as 'Has Parameter Def' in the IGC UI.
+     * The {@code has_parameter_def} property, displayed as '{@literal Has Parameter Def}' in the IGC UI.
      * <br><br>
      * Will be a {@link ReferenceList} of {@link Parameter} objects.
      */
     protected ReferenceList has_parameter_def;
 
     /**
-     * The 'author' property, displayed as 'Author' in the IGC UI.
+     * The {@code author} property, displayed as '{@literal Author}' in the IGC UI.
      */
     protected String author;
 

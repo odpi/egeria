@@ -443,7 +443,7 @@ public class OmrsBeanModel {
      * It also converts arrays into lists.
      *
      * @param typeName
-     * @return
+     * @return String
      */
     private String normalizeTypeName(String typeName) {
         String normalizedTypeName = typeName;
