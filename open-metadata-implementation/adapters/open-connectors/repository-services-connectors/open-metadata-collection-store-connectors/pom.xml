@@ -29,7 +29,6 @@
         <module>graph-repository-connector</module>
         <module>inmemory-repository-connector</module>
         <module>omrs-rest-repository-connector</module>
-        <module>igc-rest-client-library</module>
         <module>ibm-igc-repository-connector</module>
     </modules>
 
