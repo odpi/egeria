@@ -6,13 +6,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <parent>
-        <artifactId>open-metadata-collection-store-connectors</artifactId>
+        <artifactId>ibm-igc-repository-connector</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>0.3-SNAPSHOT</version>
     </parent>
-
     <modelVersion>4.0.0</modelVersion>
 
     <name>IBM Information Governance Catalog REST API Client Library</name>
@@ -21,11 +19,6 @@
     </description>
 
     <artifactId>igc-rest-client-library</artifactId>
-
-    <properties>
-        <junit.platform.version>1.2.0</junit.platform.version>
-        <junit.surefire.version>1.2.0</junit.surefire.version>
-    </properties>
 
     <dependencies>
 
@@ -51,7 +44,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${maven-compiler.version}</version>
                 <configuration>
-<!--                    <compilerArgument>-J-Xmx1024m</compilerArgument> -->
                     <fork>true</fork>
                     <meminitial>128m</meminitial>
                     <maxmem>1024m</maxmem>
@@ -59,32 +51,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <profiles>
-        <profile>
-            <id>integration-tests</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-surefire-plugin</artifactId>
-                        <version>${surefire.plugin.version}</version>
-                        <configuration>
-                            <includes>
-                                <include>**/*_IT*</include>
-                            </includes>
-                        </configuration>
-                        <dependencies>
-                            <dependency>
-                                <groupId>org.junit.platform</groupId>
-                                <artifactId>junit-platform-surefire-provider</artifactId>
-                                <version>${junit.surefire.version}</version>
-                            </dependency>
-                        </dependencies>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 
 </project>
