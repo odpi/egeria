@@ -201,7 +201,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
-        final String   methodName = "getAssetProperties";
+        final String   methodName = "getExtendedProperties";
         final String   guidParameter = "assetGUID";
 
         invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);

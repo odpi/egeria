@@ -66,7 +66,7 @@ public abstract class ReportBasicOperation {
             }
         } catch (Exception e) {
             log.error("Exception creating report element", e);
-            throw new RuntimeException("Unable to create Report Element", e);//TODO throw specific exception
+            throw new RuntimeException("Unable to create Report Element due to exception: " + e.getClass().getName() + " and message " + e.getMessage(), e);//TODO throw specific exception
         }
     }
 

@@ -14,22 +14,22 @@ import java.util.*;
 /**
  * InMemoryOMRSMetadataStore provides the in memory stores for the InMemoryRepositoryConnector
  */
-public class InMemoryOMRSMetadataStore
+class InMemoryOMRSMetadataStore
 {
-    private String                        repositoryName           = null;
-    private Map<String, TypeDef>          typeDefStore             = new HashMap<>();
-    private Map<String, AttributeTypeDef> attributeTypeDefStore    = new HashMap<>();
-    private Map<String, EntityDetail>     entityStore              = new HashMap<>();
-    private Map<String, EntityProxy>      entityProxyStore         = new HashMap<>();
-    private List<EntityDetail>            entityHistoryStore       = new ArrayList<>();
-    private Map<String, Relationship>     relationshipStore        = new HashMap<>();
-    private List<Relationship>            relationshipHistoryStore = new ArrayList<>();
+    private String                                 repositoryName           = null;
+    private volatile Map<String, TypeDef>          typeDefStore             = new HashMap<>();
+    private volatile Map<String, AttributeTypeDef> attributeTypeDefStore    = new HashMap<>();
+    private volatile Map<String, EntityDetail>     entityStore              = new HashMap<>();
+    private volatile Map<String, EntityProxy>      entityProxyStore         = new HashMap<>();
+    private volatile List<EntityDetail>            entityHistoryStore       = new ArrayList<>();
+    private volatile Map<String, Relationship>     relationshipStore        = new HashMap<>();
+    private volatile List<Relationship>            relationshipHistoryStore = new ArrayList<>();
 
 
     /**
      * Default constructor
      */
-    public InMemoryOMRSMetadataStore()
+    InMemoryOMRSMetadataStore()
     {
     }
 
@@ -50,7 +50,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @return list of attribute type definitions
      */
-    protected List<AttributeTypeDef> getAttributeTypeDefs()
+    protected synchronized List<AttributeTypeDef> getAttributeTypeDefs()
     {
         return new ArrayList<>(attributeTypeDefStore.values());
     }
@@ -62,7 +62,7 @@ public class InMemoryOMRSMetadataStore
      * @param guid - unique identifier for the AttributeTypeDef
      * @return attribute type definition
      */
-    protected AttributeTypeDef   getAttributeTypeDef(String  guid)
+    protected synchronized AttributeTypeDef   getAttributeTypeDef(String  guid)
     {
         return attributeTypeDefStore.get(guid);
     }
@@ -73,7 +73,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @param attributeTypeDef - type to add
      */
-    protected void  putAttributeTypeDef(AttributeTypeDef   attributeTypeDef)
+    synchronized void  putAttributeTypeDef(AttributeTypeDef   attributeTypeDef)
     {
         attributeTypeDefStore.put(attributeTypeDef.getGUID(), attributeTypeDef);
     }
@@ -84,7 +84,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @return list of type definitions
      */
-    protected List<TypeDef>  getTypeDefs()
+    protected synchronized List<TypeDef>  getTypeDefs()
     {
         return new ArrayList<>(typeDefStore.values());
     }
@@ -96,7 +96,7 @@ public class InMemoryOMRSMetadataStore
      * @param guid - unique identifier for type definition
      * @return type definition
      */
-    protected TypeDef   getTypeDef(String guid)
+    protected synchronized TypeDef   getTypeDef(String guid)
     {
         return typeDefStore.get(guid);
     }
@@ -107,7 +107,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @param typeDef - type definition
      */
-    protected void  putTypeDef(TypeDef   typeDef)
+    synchronized void  putTypeDef(TypeDef   typeDef)
     {
         typeDefStore.put(typeDef.getGUID(), typeDef);
     }
@@ -118,7 +118,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @return list of EntityDetail objects
      */
-    protected List<EntityDetail>   getEntities()
+    synchronized List<EntityDetail>   getEntities()
     {
         return new ArrayList<>(entityStore.values());
     }
@@ -130,7 +130,7 @@ public class InMemoryOMRSMetadataStore
      * @param guid - unique identifier for the entity
      * @return entity object
      */
-    protected EntityDetail  getEntity(String   guid)
+    synchronized EntityDetail  getEntity(String   guid)
     {
         return entityStore.get(guid);
     }
@@ -142,7 +142,7 @@ public class InMemoryOMRSMetadataStore
      * @param guid - unique identifier
      * @return entity proxy object
      */
-    protected EntityProxy  getEntityProxy(String   guid)
+    synchronized EntityProxy  getEntityProxy(String   guid)
     {
         return entityProxyStore.get(guid);
     }
@@ -155,7 +155,7 @@ public class InMemoryOMRSMetadataStore
      * @param asOfTime - time for the store (or null means now)
      * @return entity store for the requested time
      */
-    protected Map<String, EntityDetail>  timeWarpEntityStore(Date         asOfTime)
+    synchronized Map<String, EntityDetail>  timeWarpEntityStore(Date         asOfTime)
     {
         if (asOfTime == null)
         {
@@ -237,7 +237,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @return list of relationships
      */
-    protected List<Relationship>   getRelationships()
+    synchronized List<Relationship>   getRelationships()
     {
         return new ArrayList<>(relationshipStore.values());
     }
@@ -249,7 +249,7 @@ public class InMemoryOMRSMetadataStore
      * @param guid - unique identifier for the relationship
      * @return relationship object
      */
-    protected Relationship  getRelationship(String   guid)
+    protected synchronized Relationship  getRelationship(String   guid)
     {
         return relationshipStore.get(guid);
     }
@@ -261,7 +261,7 @@ public class InMemoryOMRSMetadataStore
      * @param asOfTime - time for the store (or null means now)
      * @return relationship store for the requested time
      */
-    protected Map<String, Relationship>  timeWarpRelationshipStore(Date         asOfTime)
+    synchronized Map<String, Relationship>  timeWarpRelationshipStore(Date         asOfTime)
     {
         if (asOfTime == null)
         {
@@ -343,7 +343,7 @@ public class InMemoryOMRSMetadataStore
      * @param entity - new version of the entity
      * @return entity with potentially updated GUID
      */
-    protected EntityDetail createEntityInStore(EntityDetail    entity)
+    synchronized EntityDetail createEntityInStore(EntityDetail    entity)
     {
         /*
          * There is a small chance the randomly generated GUID will clash with an existing relationship.
@@ -367,7 +367,7 @@ public class InMemoryOMRSMetadataStore
      * @param relationship - new version of the relationship
      * @return relationship with potentially updated GUID
      */
-    protected Relationship createRelationshipInStore(Relationship    relationship)
+    synchronized Relationship createRelationshipInStore(Relationship    relationship)
     {
         /*
          * There is a small chance the randomly generated GUID will clash with an existing relationship.
@@ -390,7 +390,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @param entityProxy - entity proxy object to add
      */
-    protected void addEntityProxyToStore(EntityProxy    entityProxy)
+    synchronized void addEntityProxyToStore(EntityProxy    entityProxy)
     {
         entityProxyStore.put(entityProxy.getGUID(), entityProxy);
     }
@@ -402,7 +402,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @param entity - new version of the entity
      */
-    protected void updateEntityInStore(EntityDetail    entity)
+    synchronized void updateEntityInStore(EntityDetail    entity)
     {
         EntityDetail    oldEntity = entityStore.put(entity.getGUID(), entity);
 
@@ -418,7 +418,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @param entityProxy - entity proxy object to add
      */
-    protected void updateEntityProxyInStore(EntityProxy    entityProxy)
+    synchronized void updateEntityProxyInStore(EntityProxy    entityProxy)
     {
         entityProxyStore.put(entityProxy.getGUID(), entityProxy);
     }
@@ -430,7 +430,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @param relationship - new version of the relationship
      */
-    protected void updateRelationshipInStore(Relationship    relationship)
+    synchronized void updateRelationshipInStore(Relationship    relationship)
     {
         Relationship    oldRelationship = relationshipStore.put(relationship.getGUID(), relationship);
 
@@ -447,7 +447,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @param entity - object to save
      */
-    protected void saveReferenceEntityToStore(EntityDetail    entity)
+    synchronized void saveReferenceEntityToStore(EntityDetail    entity)
     {
         entityStore.put(entity.getGUID(), entity);
     }
@@ -459,7 +459,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @param relationship - object to save
      */
-    protected void saveReferenceRelationshipToStore(Relationship    relationship)
+    synchronized void saveReferenceRelationshipToStore(Relationship    relationship)
     {
         relationshipStore.put(relationship.getGUID(), relationship);
     }
@@ -472,7 +472,7 @@ public class InMemoryOMRSMetadataStore
      * @param guid - unique identifier for the required element
      * @return - previous version of this relationship - or null if not found
      */
-    protected Relationship retrievePreviousVersionOfRelationship(String   guid)
+    synchronized Relationship retrievePreviousVersionOfRelationship(String   guid)
     {
         if (guid != null)
         {
@@ -519,7 +519,7 @@ public class InMemoryOMRSMetadataStore
      * @param guid - unique identifier for the required element
      * @return - previous version of this Entity - or null if not found
      */
-    protected EntityDetail retrievePreviousVersionOfEntity(String   guid)
+    synchronized EntityDetail retrievePreviousVersionOfEntity(String   guid)
     {
         if (guid != null)
         {
@@ -564,7 +564,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @param entity - entity to remove
      */
-    protected void removeEntityFromStore(EntityDetail     entity)
+    synchronized void removeEntityFromStore(EntityDetail     entity)
     {
         entityStore.remove(entity.getGUID());
         entityHistoryStore.add(0, entity);
@@ -576,7 +576,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @param guid - entity to remove
      */
-    protected void removeReferenceEntityFromStore(String     guid)
+    synchronized void removeReferenceEntityFromStore(String     guid)
     {
         EntityDetail entity = entityStore.remove(guid);
 
@@ -592,7 +592,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @param guid - entity proxy to remove
      */
-    protected void removeEntityProxyFromStore(String     guid)
+    synchronized void removeEntityProxyFromStore(String     guid)
     {
         entityProxyStore.remove(guid);
     }
@@ -603,7 +603,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @param relationship - relationship to remove
      */
-    protected void removeRelationshipFromStore(Relationship     relationship)
+    synchronized void removeRelationshipFromStore(Relationship     relationship)
     {
         relationshipStore.remove(relationship.getGUID());
         relationshipHistoryStore.add(0, relationship);
@@ -615,7 +615,7 @@ public class InMemoryOMRSMetadataStore
      *
      * @param guid - relationship to remove
      */
-    protected void removeReferenceRelationshipFromStore(String     guid)
+    synchronized void removeReferenceRelationshipFromStore(String     guid)
     {
         Relationship  relationship = relationshipStore.remove(guid);
 
