@@ -15,6 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     A schema provides information about how the data is structured in the asset.  Schemas are typically
  *     described as nested structures of linked schema elements.  Schemas can also be reused in other schemas.
  * </p>
+ * <p>
  *     Schema type has a number of subtypes that hold additional properties.
  *     <ul>
  *         <li>PrimitiveSchemaType is for a leaf element in a schema.</li>

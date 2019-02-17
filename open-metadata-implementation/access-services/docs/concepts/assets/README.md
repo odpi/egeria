@@ -47,7 +47,7 @@ to classify and manage the asset, and understand how it is being used by the org
 asset's information that has been determined by specific analysis of the Asset's contents by a discovery service.
 * **[Data Platform OMAS](../../../data-platform/README.md)** enables
 a data platform (such as a database or file system) to maintain information about the assets stored on the platform.
-* **[Data Infrastructure OMAS](../../../data-infrastructure/README.md)** provides
+* **[IT Infrastructure OMAS](../../../it-infrastructure/README.md)** provides
 a service for maintaining information about the IT infrastructure owned or used by an organization.
 * **[Data Science OMAS](../../../data-science/README.md)** provides a service for maintaining information
 about analytical models and related assets such as python notebooks.

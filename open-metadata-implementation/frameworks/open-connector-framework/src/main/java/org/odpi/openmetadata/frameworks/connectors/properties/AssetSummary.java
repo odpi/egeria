@@ -222,9 +222,9 @@ public class AssetSummary extends AssetDescriptor
      *
      * @return AdditionalProperties asset properties using the name of attributes from the model.
      */
-    public AdditionalProperties getAssetProperties()
+    public AdditionalProperties getExtendedProperties()
     {
-        Map<String, Object>   assetProperties = assetBean.getAssetProperties();
+        Map<String, Object>   assetProperties = assetBean.getExtendedProperties();
 
         if (assetProperties == null)
         {

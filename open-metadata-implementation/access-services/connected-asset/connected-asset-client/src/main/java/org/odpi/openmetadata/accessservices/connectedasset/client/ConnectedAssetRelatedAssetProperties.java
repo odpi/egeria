@@ -144,7 +144,7 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
                 "userId='" + userId + '\'' +
                 ", omasServerURL='" + omasServerURL + '\'' +
                 ", assetGUID='" + assetGUID + '\'' +
-                ", assetProperties=" + assetProperties +
+                ", extendedProperties=" + assetProperties +
                 '}';
     }
 }
