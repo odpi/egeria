@@ -14,11 +14,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * PropertyMatchFindRequest adds match properties and the match criteria to a find request.
- *
- * * @param exactMatchClassificationProperties optional list of entity properties that must match exactly.
- *      * @param exactMatchCriteria Enum defining how the exact match properties should be matched to the classifications in the repository.
- *      * @param fuzzyMatchClassificationProperties Optional list of entity properties to match (contains wildcards).
- *      * @param matchCriteria Enum defining how the fuzzy match properties should be matched to the classifications in the repository.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -33,8 +28,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class PropertyMatchFindRequest extends TypeLimitedFindRequest
 {
-    private InstanceProperties exactMatchProperties = null;
-    private MatchCriteria      exactMatchCriteria   = null;
     private InstanceProperties matchProperties      = null;
     private MatchCriteria      matchCriteria        = null;
 
@@ -60,108 +53,19 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
 
         if (template != null)
         {
-            this.exactMatchCriteria = template.getExactMatchCriteria();
-            this.exactMatchProperties = template.getExactMatchProperties();
-            this.matchCriteria = template.getFuzzyMatchCriteria();
-            this.matchProperties = template.getFuzzyMatchProperties();
+            this.matchCriteria = template.getMatchCriteria();
+            this.matchProperties = template.getMatchProperties();
         }
     }
 
 
+
+
     /**
-     * Return the collection of exact match properties for this find request.
+     * Return the collection of match properties for this find request.
      *
      * @return instance properties object
      */
-    public InstanceProperties getExactMatchProperties()
-    {
-        return exactMatchProperties;
-    }
-
-
-    /**
-     * Set up the collection of exact match properties for this find request.
-     *
-     * @param matchProperties instance properties object
-     */
-    public void setExactMatchProperties(InstanceProperties matchProperties)
-    {
-        this.exactMatchProperties = matchProperties;
-    }
-
-
-    /**
-     * Return the criteria for how the exact properties should match - ie all, any, none.
-     *
-     * @return match criteria enum
-     */
-    public MatchCriteria getExactMatchCriteria()
-    {
-        return exactMatchCriteria;
-    }
-
-
-    /**
-     * Set up the criteria for how the exact properties should match - ie all, any, nome.
-     *
-     * @param matchCriteria match criteria enum
-     */
-    public void setExactMatchCriteria(MatchCriteria matchCriteria)
-    {
-        this.exactMatchCriteria = matchCriteria;
-    }
-
-
-    /**
-     * Return the collection of fuzzy match properties for this find request.
-     *
-     * @return instance properties object
-     */
-    public InstanceProperties getFuzzyMatchProperties()
-    {
-        return matchProperties;
-    }
-
-
-    /**
-     * Set up the collection of fuzzy match properties for this find request.
-     *
-     * @param matchProperties instance properties object
-     */
-    public void setFuzzyMatchProperties(InstanceProperties matchProperties)
-    {
-        this.matchProperties = matchProperties;
-    }
-
-
-    /**
-     * Return the criteria for how the fuzzy properties should match - ie all, any, none.
-     *
-     * @return match criteria enum
-     */
-    public MatchCriteria getFuzzyMatchCriteria()
-    {
-        return matchCriteria;
-    }
-
-
-    /**
-     * Set up the criteria for how the fuzzy properties should match - ie all, any, nome.
-     *
-     * @param matchCriteria match criteria enum
-     */
-    public void setFuzzyMatchCriteria(MatchCriteria matchCriteria)
-    {
-        this.matchCriteria = matchCriteria;
-    }
-
-
-    /**
-     * Return the collection of fuzzy match properties for this find request.
-     *
-     * @return instance properties object
-     */
-    @Deprecated
     public InstanceProperties getMatchProperties()
     {
         return matchProperties;
@@ -169,11 +73,10 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
 
 
     /**
-     * Set up the collection of fuzzy match properties for this find request.
+     * Set up the collection of match properties for this find request.
      *
      * @param matchProperties instance properties object
      */
-    @Deprecated
     public void setMatchProperties(InstanceProperties matchProperties)
     {
         this.matchProperties = matchProperties;
@@ -181,11 +84,10 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
 
 
     /**
-     * Return the criteria for how the fuzzy properties should match - ie all, any, none.
+     * Return the criteria for how the properties should match - ie all, any, none.
      *
      * @return match criteria enum
      */
-    @Deprecated
     public MatchCriteria getMatchCriteria()
     {
         return matchCriteria;
@@ -193,11 +95,10 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
 
 
     /**
-     * Set up the criteria for how the fuzzy properties should match - ie all, any, nome.
+     * Set up the criteria for how the properties should match - ie all, any, nome.
      *
      * @param matchCriteria match criteria enum
      */
-    @Deprecated
     public void setMatchCriteria(MatchCriteria matchCriteria)
     {
         this.matchCriteria = matchCriteria;
@@ -213,9 +114,7 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
     public String toString()
     {
         return "PropertyMatchFindRequest{" +
-                "exactMatchProperties=" + exactMatchProperties +
-                ", exactMatchCriteria=" + exactMatchCriteria +
-                ", matchProperties=" + matchProperties +
+                "matchProperties=" + matchProperties +
                 ", matchCriteria=" + matchCriteria +
                 ", typeGUID='" + getTypeGUID() + '\'' +
                 ", sequencingProperty='" + getSequencingProperty() + '\'' +
@@ -249,10 +148,8 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
             return false;
         }
         PropertyMatchFindRequest that = (PropertyMatchFindRequest) objectToCompare;
-        return Objects.equals(getExactMatchProperties(), that.getExactMatchProperties()) &&
-                getExactMatchCriteria() == that.getExactMatchCriteria() &&
-                Objects.equals(getFuzzyMatchProperties(), that.getFuzzyMatchProperties()) &&
-                getFuzzyMatchCriteria() == that.getFuzzyMatchCriteria();
+        return Objects.equals(getMatchProperties(), that.getMatchProperties()) &&
+                getMatchCriteria() == that.getMatchCriteria();
     }
 
 
@@ -264,8 +161,6 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getExactMatchProperties(), getExactMatchCriteria(),
-                            getFuzzyMatchProperties(),
-                            getFuzzyMatchCriteria());
+        return Objects.hash(super.hashCode(), getMatchProperties(), getMatchCriteria(), getMatchProperties(), getMatchCriteria());
     }
 }

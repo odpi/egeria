@@ -2007,27 +2007,23 @@ public class OMRSRepositoryRESTServices
 
         log.debug("Calling method: " + methodName);
 
-        String                    entityTypeGUID                    = null;
-        InstanceProperties        exactMatchProperties              = null;
-        MatchCriteria             exactMatchCriteria                = null;
-        InstanceProperties        fuzzyMatchProperties              = null;
-        MatchCriteria             fuzzyMatchCriteria                = null;
-        int                       fromEntityElement                 = 0;
-        List<InstanceStatus>      limitResultsByStatus              = null;
-        List<String>              limitResultsByClassification      = null;
-        String                    sequencingProperty                = null;
-        SequencingOrder           sequencingOrder                   = null;
-        int                       pageSize                          = 0;
+        String               entityTypeGUID               = null;
+        InstanceProperties   matchProperties              = null;
+        MatchCriteria        matchCriteria                = null;
+        int                  fromEntityElement            = 0;
+        List<InstanceStatus> limitResultsByStatus         = null;
+        List<String>         limitResultsByClassification = null;
+        String               sequencingProperty           = null;
+        SequencingOrder      sequencingOrder              = null;
+        int                  pageSize                     = 0;
 
         EntityListResponse response = new EntityListResponse();
 
         if (findRequestParameters != null)
         {
             entityTypeGUID                    = findRequestParameters.getTypeGUID();
-            exactMatchProperties              = findRequestParameters.getExactMatchProperties();
-            exactMatchCriteria                = findRequestParameters.getExactMatchCriteria();
-            fuzzyMatchProperties              = findRequestParameters.getFuzzyMatchProperties();
-            fuzzyMatchCriteria                = findRequestParameters.getFuzzyMatchCriteria();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            matchCriteria                     = findRequestParameters.getMatchCriteria();
             fromEntityElement                 = findRequestParameters.getOffset();
             limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
             limitResultsByClassification      = findRequestParameters.getLimitResultsByClassification();
@@ -2042,10 +2038,8 @@ public class OMRSRepositoryRESTServices
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByProperty(userId,
                                                                                           entityTypeGUID,
-                                                                                          exactMatchProperties,
-                                                                                          exactMatchCriteria,
-                                                                                          fuzzyMatchProperties,
-                                                                                          fuzzyMatchCriteria,
+                                                                                          matchProperties,
+                                                                                          matchCriteria,
                                                                                           fromEntityElement,
                                                                                           limitResultsByStatus,
                                                                                           limitResultsByClassification,
@@ -2137,10 +2131,8 @@ public class OMRSRepositoryRESTServices
         log.debug("Calling method: " + methodName);
 
         String                    entityTypeGUID                    = null;
-        InstanceProperties        exactMatchProperties              = null;
-        MatchCriteria             exactMatchCriteria                = null;
-        InstanceProperties        fuzzyMatchProperties              = null;
-        MatchCriteria             fuzzyMatchCriteria                = null;
+        InstanceProperties        matchProperties              = null;
+        MatchCriteria             matchCriteria                = null;
         int                       fromEntityElement                 = 0;
         List<InstanceStatus>      limitResultsByStatus              = null;
         List<String>              limitResultsByClassification      = null;
@@ -2154,10 +2146,8 @@ public class OMRSRepositoryRESTServices
         if (findRequestParameters != null)
         {
             entityTypeGUID                    = findRequestParameters.getTypeGUID();
-            exactMatchProperties              = findRequestParameters.getExactMatchProperties();
-            exactMatchCriteria                = findRequestParameters.getExactMatchCriteria();
-            fuzzyMatchProperties              = findRequestParameters.getFuzzyMatchProperties();
-            fuzzyMatchCriteria                = findRequestParameters.getFuzzyMatchCriteria();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            matchCriteria                     = findRequestParameters.getMatchCriteria();
             fromEntityElement                 = findRequestParameters.getOffset();
             limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
             limitResultsByClassification      = findRequestParameters.getLimitResultsByClassification();
@@ -2173,10 +2163,8 @@ public class OMRSRepositoryRESTServices
 
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByProperty(userId,
                                                                                           entityTypeGUID,
-                                                                                          exactMatchProperties,
-                                                                                          exactMatchCriteria,
-                                                                                          fuzzyMatchProperties,
-                                                                                          fuzzyMatchCriteria,
+                                                                                          matchProperties,
+                                                                                          matchCriteria,
                                                                                           fromEntityElement,
                                                                                           limitResultsByStatus,
                                                                                           limitResultsByClassification,
@@ -2270,10 +2258,8 @@ public class OMRSRepositoryRESTServices
         log.debug("Calling method: " + methodName);
 
         String               entityTypeGUID                     = null;
-        InstanceProperties   exactMatchClassificationProperties = null;
-        MatchCriteria        exactMatchCriteria                 = null;
-        InstanceProperties   fuzzyMatchClassificationProperties = null;
-        MatchCriteria        fuzzyMatchCriteria                 = null;
+        InstanceProperties   matchClassificationProperties      = null;
+        MatchCriteria        matchCriteria                      = null;
         int                  fromEntityElement                  = 0;
         List<InstanceStatus> limitResultsByStatus               = null;
         String               sequencingProperty                 = null;
@@ -2285,10 +2271,8 @@ public class OMRSRepositoryRESTServices
         if (findRequestParameters != null)
         {
             entityTypeGUID                     = findRequestParameters.getTypeGUID();
-            exactMatchClassificationProperties = findRequestParameters.getExactMatchProperties();
-            exactMatchCriteria                 = findRequestParameters.getExactMatchCriteria();
-            fuzzyMatchClassificationProperties = findRequestParameters.getFuzzyMatchProperties();
-            fuzzyMatchCriteria                 = findRequestParameters.getFuzzyMatchCriteria();
+            matchClassificationProperties      = findRequestParameters.getMatchProperties();
+            matchCriteria                      = findRequestParameters.getMatchCriteria();
             fromEntityElement                  = findRequestParameters.getOffset();
             limitResultsByStatus               = findRequestParameters.getLimitResultsByStatus();
             sequencingProperty                 = findRequestParameters.getSequencingProperty();
@@ -2303,10 +2287,8 @@ public class OMRSRepositoryRESTServices
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByClassification(userId,
                                                                                                 entityTypeGUID,
                                                                                                 classificationName,
-                                                                                                exactMatchClassificationProperties,
-                                                                                                exactMatchCriteria,
-                                                                                                fuzzyMatchClassificationProperties,
-                                                                                                fuzzyMatchCriteria,
+                                                                                                matchClassificationProperties,
+                                                                                                matchCriteria,
                                                                                                 fromEntityElement,
                                                                                                 limitResultsByStatus,
                                                                                                 null,
@@ -2402,10 +2384,8 @@ public class OMRSRepositoryRESTServices
         log.debug("Calling method: " + methodName);
 
         String               entityTypeGUID                     = null;
-        InstanceProperties   exactMatchClassificationProperties = null;
-        MatchCriteria        exactMatchCriteria                 = null;
-        InstanceProperties   fuzzyMatchClassificationProperties = null;
-        MatchCriteria        fuzzyMatchCriteria                 = null;
+        InstanceProperties   matchClassificationProperties      = null;
+        MatchCriteria        matchCriteria                      = null;
         int                  fromEntityElement                  = 0;
         List<InstanceStatus> limitResultsByStatus               = null;
         Date                 asOfTime                           = null;
@@ -2418,10 +2398,8 @@ public class OMRSRepositoryRESTServices
         if (findRequestParameters != null)
         {
             entityTypeGUID                     = findRequestParameters.getTypeGUID();
-            exactMatchClassificationProperties = findRequestParameters.getExactMatchProperties();
-            exactMatchCriteria                 = findRequestParameters.getExactMatchCriteria();
-            fuzzyMatchClassificationProperties = findRequestParameters.getFuzzyMatchProperties();
-            fuzzyMatchCriteria                 = findRequestParameters.getFuzzyMatchCriteria();
+            matchClassificationProperties      = findRequestParameters.getMatchProperties();
+            matchCriteria                      = findRequestParameters.getMatchCriteria();
             fromEntityElement                  = findRequestParameters.getOffset();
             limitResultsByStatus               = findRequestParameters.getLimitResultsByStatus();
             sequencingProperty                 = findRequestParameters.getSequencingProperty();
@@ -2438,10 +2416,8 @@ public class OMRSRepositoryRESTServices
             List<EntityDetail>  entities = localMetadataCollection.findEntitiesByClassification(userId,
                                                                                                 entityTypeGUID,
                                                                                                 classificationName,
-                                                                                                exactMatchClassificationProperties,
-                                                                                                exactMatchCriteria,
-                                                                                                fuzzyMatchClassificationProperties,
-                                                                                                fuzzyMatchCriteria,
+                                                                                                matchClassificationProperties,
+                                                                                                matchCriteria,
                                                                                                 fromEntityElement,
                                                                                                 limitResultsByStatus,
                                                                                                 asOfTime,
@@ -2748,247 +2724,6 @@ public class OMRSRepositoryRESTServices
 
 
     /**
-     *  Return a list of entities whose string based property values match the supplied property value exactly.
-     *
-     * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param propertyValue String expression contained in any of the property values within the entities
-     *                       of the supplied type.
-     * @param findRequestParameters find parameters used to limit the returned results.
-     * @return EntityListResponse:
-     * a list of entities matching the supplied criteria where null means no matching entities in the metadata
-     * collection or
-     * InvalidParameterException a parameter is invalid or null or
-     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored or
-     * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
-     *                                  entity or
-     * PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * FunctionNotSupportedException the repository does not support asOfTime parameter or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public  EntityListResponse findEntitiesByExactPropertyValue(String                    serverName,
-                                                                String                    userId,
-                                                                String                    propertyValue,
-                                                                EntityPropertyFindRequest findRequestParameters)
-    {
-        final  String   methodName = "findEntitiesByExactPropertyValue";
-
-        log.debug("Calling method: " + methodName);
-
-        String                  entityTypeGUID                    = null;
-        int                     fromEntityElement                 = 0;
-        List<InstanceStatus>    limitResultsByStatus              = null;
-        List<String>            limitResultsByClassification      = null;
-        String                  sequencingProperty                = null;
-        SequencingOrder         sequencingOrder                   = null;
-        int                     pageSize                          = 0;
-
-        EntityListResponse response = new EntityListResponse();
-
-        if (findRequestParameters != null)
-        {
-            entityTypeGUID                    = findRequestParameters.getTypeGUID();
-            fromEntityElement                 = findRequestParameters.getOffset();
-            limitResultsByClassification      = findRequestParameters.getLimitResultsByClassification();
-            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
-            sequencingProperty                = findRequestParameters.getSequencingProperty();
-            sequencingOrder                   = findRequestParameters.getSequencingOrder();
-            pageSize                          = findRequestParameters.getPageSize();
-        }
-
-        try
-        {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
-
-            List<EntityDetail>  entities = localMetadataCollection.findEntitiesByExactPropertyValue(userId,
-                                                                                                    entityTypeGUID,
-                                                                                                    propertyValue,
-                                                                                                    fromEntityElement,
-                                                                                                    limitResultsByStatus,
-                                                                                                    limitResultsByClassification,
-                                                                                                    null,
-                                                                                                    sequencingProperty,
-                                                                                                    sequencingOrder,
-                                                                                                    pageSize);
-            response.setEntities(entities);
-            if (entities != null)
-            {
-                response.setOffset(fromEntityElement);
-                response.setPageSize(pageSize);
-                if (entities.size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/entities/by-exact-property-value?propertyValue={1}";
-                    EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(serverName,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId,
-                                                              propertyValue));
-                }
-            }
-
-        }
-        catch (RepositoryErrorException  error)
-        {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
-        return response;
-    }
-
-
-    /**
-     *  Return a list of entities whose string based property values match the supplied property value exactly.
-     *
-     * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param propertyValue String expression contained in any of the property values within the entities
-     *                       of the supplied type.
-     * @param findRequestParameters find parameters used to limit the returned results.
-     * @return EntityListResponse:
-     * a list of entities matching the supplied criteria where null means no matching entities in the metadata
-     * collection or
-     * InvalidParameterException a parameter is invalid or null or
-     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored or
-     * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
-     *                                  entity or
-     * PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * FunctionNotSupportedException the repository does not support asOfTime parameter or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public  EntityListResponse findEntitiesByExactPropertyValueHistory(String                              serverName,
-                                                                       String                              userId,
-                                                                       String                              propertyValue,
-                                                                       EntityPropertyHistoricalFindRequest findRequestParameters)
-    {
-        final  String   methodName = "findEntitiesByExactPropertyValueHistory";
-
-        log.debug("Calling method: " + methodName);
-
-        String                  entityTypeGUID                    = null;
-        int                     fromEntityElement                 = 0;
-        List<InstanceStatus>    limitResultsByStatus              = null;
-        List<String>            limitResultsByClassification      = null;
-        Date                    asOfTime                          = null;
-        String                  sequencingProperty                = null;
-        SequencingOrder         sequencingOrder                   = null;
-        int                     pageSize                          = 0;
-
-        EntityListResponse response = new EntityListResponse();
-
-        if (findRequestParameters != null)
-        {
-            entityTypeGUID                    = findRequestParameters.getTypeGUID();
-            fromEntityElement                 = findRequestParameters.getOffset();
-            limitResultsByClassification      = findRequestParameters.getLimitResultsByClassification();
-            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
-            asOfTime                          = findRequestParameters.getAsOfTime();
-            sequencingProperty                = findRequestParameters.getSequencingProperty();
-            sequencingOrder                   = findRequestParameters.getSequencingOrder();
-            pageSize                          = findRequestParameters.getPageSize();
-        }
-
-        try
-        {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
-
-            List<EntityDetail>  entities = localMetadataCollection.findEntitiesByPropertyValue(userId,
-                                                                                               entityTypeGUID,
-                                                                                               propertyValue,
-                                                                                               fromEntityElement,
-                                                                                               limitResultsByStatus,
-                                                                                               limitResultsByClassification,
-                                                                                               asOfTime,
-                                                                                               sequencingProperty,
-                                                                                               sequencingOrder,
-                                                                                               pageSize);
-            response.setEntities(entities);
-            if (entities != null)
-            {
-                response.setOffset(fromEntityElement);
-                response.setPageSize(pageSize);
-                if (entities.size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/entities/by-exact-property-value/history?propertyValue={1}";
-                    EntityPropertyHistoricalFindRequest nextFindRequestParameters = new EntityPropertyHistoricalFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(serverName,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId,
-                                                              propertyValue));
-                }
-            }
-        }
-        catch (RepositoryErrorException  error)
-        {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
-        return response;
-    }
-
-
-    /**
      * Returns a boolean indicating if the relationship is stored in the metadata collection.
      *
      * @param serverName unique identifier for requested server.
@@ -3200,10 +2935,8 @@ public class OMRSRepositoryRESTServices
         log.debug("Calling method: " + methodName);
 
         String                    relationshipTypeGUID     = null;
-        InstanceProperties        exactMatchProperties     = null;
-        MatchCriteria             exactMatchCriteria       = null;
-        InstanceProperties        fuzzyMatchProperties     = null;
-        MatchCriteria             fuzzyMatchCriteria       = null;
+        InstanceProperties        matchProperties          = null;
+        MatchCriteria             matchCriteria            = null;
         int                       fromRelationshipElement  = 0;
         List<InstanceStatus>      limitResultsByStatus     = null;
         String                    sequencingProperty       = null;
@@ -3215,10 +2948,8 @@ public class OMRSRepositoryRESTServices
         if (findRequestParameters != null)
         {
             relationshipTypeGUID              = findRequestParameters.getTypeGUID();
-            exactMatchProperties              = findRequestParameters.getExactMatchProperties();
-            exactMatchCriteria                = findRequestParameters.getExactMatchCriteria();
-            fuzzyMatchProperties              = findRequestParameters.getFuzzyMatchProperties();
-            fuzzyMatchCriteria                = findRequestParameters.getFuzzyMatchCriteria();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            matchCriteria                     = findRequestParameters.getMatchCriteria();
             fromRelationshipElement           = findRequestParameters.getOffset();
             limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
             sequencingProperty                = findRequestParameters.getSequencingProperty();
@@ -3232,10 +2963,8 @@ public class OMRSRepositoryRESTServices
 
             List<Relationship>  relationships = localMetadataCollection.findRelationshipsByProperty(userId,
                                                                                                     relationshipTypeGUID,
-                                                                                                    exactMatchProperties,
-                                                                                                    exactMatchCriteria,
-                                                                                                    fuzzyMatchProperties,
-                                                                                                    fuzzyMatchCriteria,
+                                                                                                    matchProperties,
+                                                                                                    matchCriteria,
                                                                                                     fromRelationshipElement,
                                                                                                     limitResultsByStatus,
                                                                                                     null,
@@ -3325,10 +3054,8 @@ public class OMRSRepositoryRESTServices
         log.debug("Calling method: " + methodName);
 
         String                    relationshipTypeGUID     = null;
-        InstanceProperties        exactMatchProperties     = null;
-        MatchCriteria             exactMatchCriteria       = null;
-        InstanceProperties        fuzzyMatchProperties     = null;
-        MatchCriteria             fuzzyMatchCriteria       = null;
+        InstanceProperties        matchProperties          = null;
+        MatchCriteria             matchCriteria            = null;
         int                       fromRelationshipElement  = 0;
         List<InstanceStatus>      limitResultsByStatus     = null;
         Date                      asOfTime                 = null;
@@ -3341,10 +3068,8 @@ public class OMRSRepositoryRESTServices
         if (findRequestParameters != null)
         {
             relationshipTypeGUID              = findRequestParameters.getTypeGUID();
-            exactMatchProperties              = findRequestParameters.getExactMatchProperties();
-            exactMatchCriteria                = findRequestParameters.getExactMatchCriteria();
-            fuzzyMatchProperties              = findRequestParameters.getFuzzyMatchProperties();
-            fuzzyMatchCriteria                = findRequestParameters.getFuzzyMatchCriteria();
+            matchProperties                   = findRequestParameters.getMatchProperties();
+            matchCriteria                     = findRequestParameters.getMatchCriteria();
             fromRelationshipElement           = findRequestParameters.getOffset();
             limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
             asOfTime                          = findRequestParameters.getAsOfTime();
@@ -3359,10 +3084,8 @@ public class OMRSRepositoryRESTServices
 
             List<Relationship>  relationships = localMetadataCollection.findRelationshipsByProperty(userId,
                                                                                                     relationshipTypeGUID,
-                                                                                                    exactMatchProperties,
-                                                                                                    exactMatchCriteria,
-                                                                                                    fuzzyMatchProperties,
-                                                                                                    fuzzyMatchCriteria,
+                                                                                                    matchProperties,
+                                                                                                    matchCriteria,
                                                                                                     fromRelationshipElement,
                                                                                                     limitResultsByStatus,
                                                                                                     asOfTime,
@@ -3617,239 +3340,6 @@ public class OMRSRepositoryRESTServices
                                                               nextFindRequestParameters,
                                                               userId,
                                                               searchCriteria));
-                }
-            }
-
-        }
-        catch (RepositoryErrorException  error)
-        {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
-        return response;
-    }
-
-
-
-    /**
-     * Return a list of relationships that match the search criteria.  The results can be paged.
-     *
-     * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param propertyValue String value for the property.
-     * @param findRequestParameters find parameters used to limit the returned results.
-     * @return RelationshipListResponse:
-     * a list of relationships.  Null means no matching relationships or
-     * InvalidParameterException one of the parameters is invalid or null or
-     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored or
-     * PropertyErrorException there is a problem with one of the other parameters  or
-     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support asOfTime parameter or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public  RelationshipListResponse findRelationshipsByExactPropertyValue(String                    serverName,
-                                                                           String                    userId,
-                                                                           String                    propertyValue,
-                                                                           TypeLimitedFindRequest    findRequestParameters)
-    {
-        final  String   methodName = "findRelationshipsByExactPropertyValue";
-
-        log.debug("Calling method: " + methodName);
-
-        String                    relationshipTypeGUID     = null;
-        int                       fromRelationshipElement  = 0;
-        List<InstanceStatus>      limitResultsByStatus     = null;
-        String                    sequencingProperty       = null;
-        SequencingOrder           sequencingOrder          = null;
-        int                       pageSize                 = 0;
-
-        RelationshipListResponse response = new RelationshipListResponse();
-
-        if (findRequestParameters != null)
-        {
-            relationshipTypeGUID              = findRequestParameters.getTypeGUID();
-            fromRelationshipElement           = findRequestParameters.getOffset();
-            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
-            sequencingProperty                = findRequestParameters.getSequencingProperty();
-            sequencingOrder                   = findRequestParameters.getSequencingOrder();
-            pageSize                          = findRequestParameters.getPageSize();
-        }
-
-        try
-        {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
-
-            List<Relationship>  relationships = localMetadataCollection.findRelationshipsByPropertyValue(userId,
-                                                                                                         relationshipTypeGUID,
-                                                                                                         propertyValue,
-                                                                                                         fromRelationshipElement,
-                                                                                                         limitResultsByStatus,
-                                                                                                         null,
-                                                                                                         sequencingProperty,
-                                                                                                         sequencingOrder,
-                                                                                                         pageSize);
-            response.setRelationships(relationships);
-            if (relationships != null)
-            {
-                response.setOffset(fromRelationshipElement);
-                response.setPageSize(pageSize);
-                if (response.getRelationships().size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/relationships/by-exact-property-value?searchCriteria={1}";
-
-                    TypeLimitedFindRequest nextFindRequestParameters = new TypeLimitedFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(serverName,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId,
-                                                              propertyValue));
-                }
-            }
-
-        }
-        catch (RepositoryErrorException  error)
-        {
-            captureRepositoryErrorException(response, error);
-        }
-        catch (FunctionNotSupportedException  error)
-        {
-            captureFunctionNotSupportedException(response, error);
-        }
-        catch (UserNotAuthorizedException error)
-        {
-            captureUserNotAuthorizedException(response, error);
-        }
-        catch (InvalidParameterException error)
-        {
-            captureInvalidParameterException(response, error);
-        }
-        catch (PropertyErrorException error)
-        {
-            capturePropertyErrorException(response, error);
-        }
-        catch (TypeErrorException error)
-        {
-            captureTypeErrorException(response, error);
-        }
-        catch (PagingErrorException error)
-        {
-            capturePagingErrorException(response, error);
-        }
-
-        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
-
-        return response;
-    }
-
-
-    /**
-     * Return a list of relationships that match the search criteria.  The results can be paged.
-     *
-     * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param propertyValue String value for the property.
-     * @param findRequestParameters find parameters used to limit the returned results.
-     * @return RelationshipListResponse:
-     * a list of relationships.  Null means no matching relationships or
-     * InvalidParameterException one of the parameters is invalid or null or
-     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored or
-     * PropertyErrorException there is a problem with one of the other parameters  or
-     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support asOfTime parameter or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    public  RelationshipListResponse findRelationshipsByExactPropertyValueHistory(String                              serverName,
-                                                                                  String                              userId,
-                                                                                  String                              propertyValue,
-                                                                                  TypeLimitedHistoricalFindRequest    findRequestParameters)
-    {
-        final  String   methodName = "findRelationshipsByExactPropertyValueHistory";
-
-        log.debug("Calling method: " + methodName);
-
-        String                    relationshipTypeGUID     = null;
-        int                       fromRelationshipElement  = 0;
-        List<InstanceStatus>      limitResultsByStatus     = null;
-        Date                      asOfTime                 = null;
-        String                    sequencingProperty       = null;
-        SequencingOrder           sequencingOrder          = null;
-        int                       pageSize                 = 0;
-
-        RelationshipListResponse response = new RelationshipListResponse();
-
-        if (findRequestParameters != null)
-        {
-            relationshipTypeGUID              = findRequestParameters.getTypeGUID();
-            fromRelationshipElement           = findRequestParameters.getOffset();
-            limitResultsByStatus              = findRequestParameters.getLimitResultsByStatus();
-            asOfTime                          = findRequestParameters.getAsOfTime();
-            sequencingProperty                = findRequestParameters.getSequencingProperty();
-            sequencingOrder                   = findRequestParameters.getSequencingOrder();
-            pageSize                          = findRequestParameters.getPageSize();
-        }
-
-        try
-        {
-            OMRSMetadataCollection localMetadataCollection = validateLocalRepository(serverName, methodName);
-
-            List<Relationship>  relationships = localMetadataCollection.findRelationshipsByPropertyValue(userId,
-                                                                                                         relationshipTypeGUID,
-                                                                                                         propertyValue,
-                                                                                                         fromRelationshipElement,
-                                                                                                         limitResultsByStatus,
-                                                                                                         asOfTime,
-                                                                                                         sequencingProperty,
-                                                                                                         sequencingOrder,
-                                                                                                         pageSize);
-            response.setRelationships(relationships);
-            if (relationships != null)
-            {
-                response.setOffset(fromRelationshipElement);
-                response.setPageSize(pageSize);
-                if (response.getRelationships().size() == pageSize)
-                {
-                    final String urlTemplate = "{0}/instances/relationships/by-exact-property-value/history?searchCriteria={1}";
-
-                    TypeLimitedHistoricalFindRequest nextFindRequestParameters = new TypeLimitedHistoricalFindRequest(findRequestParameters);
-                    nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
-
-                    response.setNextPageURL(formatNextPageURL(serverName,
-                                                              urlTemplate,
-                                                              nextFindRequestParameters,
-                                                              userId,
-                                                              propertyValue));
                 }
             }
 
@@ -7366,6 +6856,7 @@ public class OMRSRepositoryRESTServices
                 }
                 catch (Throwable  exc)
                 {
+                    log.debug("Unable to format return URL; exception is: " + exc.getMessage());
                 }
             }
         }

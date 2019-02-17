@@ -1033,70 +1033,6 @@ public class RepositoryServicesResource
 
 
     /**
-     *  Return a list of entities whose string based property values match the supplied property value exactly.
-     *
-     * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param propertyValue String expression contained in any of the property values within the entities
-     *                       of the supplied type.
-     * @param findRequestParameters find parameters used to limit the returned results.
-     * @return EntityListResponse:
-     * a list of entities matching the supplied criteria where null means no matching entities in the metadata
-     * collection or
-     * InvalidParameterException a parameter is invalid or null or
-     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored or
-     * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
-     *                                  entity or
-     * PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * FunctionNotSupportedException the repository does not support asOfTime parameter or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/by-exact-property-value")
-
-    public  EntityListResponse findEntitiesByExactPropertyValue(@PathVariable String                    serverName,
-                                                                @PathVariable String                    userId,
-                                                                @RequestParam String                    propertyValue,
-                                                                @RequestBody  EntityPropertyFindRequest findRequestParameters)
-    {
-        return restAPI.findEntitiesByExactPropertyValue(serverName, userId, propertyValue, findRequestParameters);
-    }
-
-
-    /**
-     *  Return a list of entities whose string based property values match the supplied property value exactly.
-     *
-     * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param propertyValue String expression contained in any of the property values within the entities
-     *                       of the supplied type.
-     * @param findRequestParameters find parameters used to limit the returned results.
-     * @return EntityListResponse:
-     * a list of entities matching the supplied criteria where null means no matching entities in the metadata
-     * collection or
-     * InvalidParameterException a parameter is invalid or null or
-     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                    the metadata collection is stored or
-     * PropertyErrorException the sequencing property specified is not valid for any of the requested types of
-     *                                  entity or
-     * PagingErrorException the paging/sequencing parameters are set up incorrectly.
-     * FunctionNotSupportedException the repository does not support asOfTime parameter or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/entities/by-exact-property-value/history")
-
-    public  EntityListResponse findEntitiesByExactPropertyValueHistory(@PathVariable String                              serverName,
-                                                                       @PathVariable String                              userId,
-                                                                       @RequestParam String                              propertyValue,
-                                                                       @RequestBody  EntityPropertyHistoricalFindRequest findRequestParameters)
-    {
-        return restAPI.findEntitiesByExactPropertyValueHistory(serverName, userId, propertyValue, findRequestParameters);
-    }
-
-
-    /**
      * Returns a boolean indicating if the relationship is stored in the metadata collection.
      *
      * @param serverName unique identifier for requested server.
@@ -1274,7 +1210,7 @@ public class RepositoryServicesResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/by-property-value")
 
-    public  RelationshipListResponse findRelationshipsByPropertyValue(@PathVariable String     serverName,
+    public  RelationshipListResponse findRelationshipsByPropertyValue(@PathVariable String                    serverName,
                                                                       @PathVariable String                    userId,
                                                                       @RequestParam String                    searchCriteria,
                                                                       @RequestBody  TypeLimitedFindRequest    findRequestParameters)
@@ -1309,64 +1245,6 @@ public class RepositoryServicesResource
                                                                              @RequestBody  TypeLimitedHistoricalFindRequest    findRequestParameters)
     {
         return restAPI.findRelationshipsByPropertyValueHistory(serverName, userId, searchCriteria, findRequestParameters);
-    }
-
-
-    /**
-     * Return a list of relationships that match the search criteria.  The results can be paged.
-     *
-     * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param propertyValue String value for the property.
-     * @param findRequestParameters find parameters used to limit the returned results.
-     * @return RelationshipListResponse:
-     * a list of relationships.  Null means no matching relationships or
-     * InvalidParameterException one of the parameters is invalid or null or
-     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored or
-     * PropertyErrorException there is a problem with one of the other parameters  or
-     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support asOfTime parameter or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/by-exact-property-value")
-
-    public  RelationshipListResponse findRelationshipsByExactPropertyValue(@PathVariable String                    serverName,
-                                                                           @PathVariable String                    userId,
-                                                                           @RequestParam String                    propertyValue,
-                                                                           @RequestBody  TypeLimitedFindRequest    findRequestParameters)
-    {
-        return restAPI.findRelationshipsByExactPropertyValue(serverName, userId, propertyValue, findRequestParameters);
-    }
-
-
-    /**
-     * Return a list of relationships that match the search criteria.  The results can be paged.
-     *
-     * @param serverName unique identifier for requested server.
-     * @param userId unique identifier for requesting user.
-     * @param propertyValue String value for the property.
-     * @param findRequestParameters find parameters used to limit the returned results.
-     * @return RelationshipListResponse:
-     * a list of relationships.  Null means no matching relationships or
-     * InvalidParameterException one of the parameters is invalid or null or
-     * TypeErrorException the type guid passed on the request is not known by the metadata collection or
-     * RepositoryErrorException there is a problem communicating with the metadata repository where
-     *                                  the metadata collection is stored or
-     * PropertyErrorException there is a problem with one of the other parameters  or
-     * PagingErrorException the paging/sequencing parameters are set up incorrectly or
-     * FunctionNotSupportedException the repository does not support asOfTime parameter or
-     * UserNotAuthorizedException the userId is not permitted to perform this operation.
-     */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/instances/relationships/by-exact-property-value/history")
-
-    public  RelationshipListResponse findRelationshipsByExactPropertyValueHistory(@PathVariable String                              serverName,
-                                                                                  @PathVariable String                              userId,
-                                                                                  @RequestParam String                              propertyValue,
-                                                                                  @RequestBody  TypeLimitedHistoricalFindRequest    findRequestParameters)
-    {
-        return restAPI.findRelationshipsByExactPropertyValueHistory(serverName, userId, propertyValue, findRequestParameters);
     }
 
 
