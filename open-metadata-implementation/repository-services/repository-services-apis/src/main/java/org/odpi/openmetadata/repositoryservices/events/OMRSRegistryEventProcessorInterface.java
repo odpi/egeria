@@ -10,7 +10,7 @@ import java.util.Date;
  * OMRSRegistryEventProcessor is an interface implemented by a component that is able to process
  * registry events for an Open Metadata Repository's membership of an Open Metadata Repository Cohort.
  */
-public abstract class OMRSRegistryEventProcessor implements OMRSRegistryEventProcessorInterface
+public interface OMRSRegistryEventProcessorInterface
 {
 
     /*
@@ -32,14 +32,14 @@ public abstract class OMRSRegistryEventProcessor implements OMRSRegistryEventPro
      * @param remoteConnection  the Connection properties for the connector used to call the registering server.
      * @return flag indicating if the event was sent or not.
      */
-    public abstract boolean processRegistrationEvent(String                    sourceName,
-                                                     String                    originatorMetadataCollectionId,
-                                                     String                    originatorMetadataCollectionName,
-                                                     String                    originatorServerName,
-                                                     String                    originatorServerType,
-                                                     String                    originatorOrganizationName,
-                                                     Date                      registrationTimestamp,
-                                                     Connection                remoteConnection);
+    boolean processRegistrationEvent(String sourceName,
+                                     String originatorMetadataCollectionId,
+                                     String originatorMetadataCollectionName,
+                                     String originatorServerName,
+                                     String originatorServerType,
+                                     String originatorOrganizationName,
+                                     Date registrationTimestamp,
+                                     Connection remoteConnection);
 
 
     /**
@@ -52,10 +52,10 @@ public abstract class OMRSRegistryEventProcessor implements OMRSRegistryEventPro
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @return flag indicating if the event was sent or not.
      */
-    public abstract boolean processRegistrationRefreshRequest(String                    sourceName,
-                                                              String                    originatorServerName,
-                                                              String                    originatorServerType,
-                                                              String                    originatorOrganizationName);
+    boolean processRegistrationRefreshRequest(String sourceName,
+                                              String originatorServerName,
+                                              String originatorServerType,
+                                              String originatorOrganizationName);
 
 
     /**
@@ -72,14 +72,14 @@ public abstract class OMRSRegistryEventProcessor implements OMRSRegistryEventPro
      * @param remoteConnection  the Connection properties for the connector used to call the registering server.
      * @return flag indicating if the event was sent or not.
      */
-    public abstract boolean processReRegistrationEvent(String                    sourceName,
-                                                       String                    originatorMetadataCollectionId,
-                                                       String                    originatorMetadataCollectionName,
-                                                       String                    originatorServerName,
-                                                       String                    originatorServerType,
-                                                       String                    originatorOrganizationName,
-                                                       Date                      registrationTimestamp,
-                                                       Connection                remoteConnection);
+    boolean processReRegistrationEvent(String sourceName,
+                                       String originatorMetadataCollectionId,
+                                       String originatorMetadataCollectionName,
+                                       String originatorServerName,
+                                       String originatorServerType,
+                                       String originatorOrganizationName,
+                                       Date registrationTimestamp,
+                                       Connection remoteConnection);
 
 
     /**
@@ -94,12 +94,12 @@ public abstract class OMRSRegistryEventProcessor implements OMRSRegistryEventPro
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @return flag indicating if the event was sent or not.
      */
-    public abstract boolean processUnRegistrationEvent(String                    sourceName,
-                                                       String                    originatorMetadataCollectionId,
-                                                       String                    originatorMetadataCollectionName,
-                                                       String                    originatorServerName,
-                                                       String                    originatorServerType,
-                                                       String                    originatorOrganizationName);
+    boolean processUnRegistrationEvent(String sourceName,
+                                       String originatorMetadataCollectionId,
+                                       String originatorMetadataCollectionName,
+                                       String originatorServerName,
+                                       String originatorServerType,
+                                       String originatorOrganizationName);
 
 
     /**
@@ -117,14 +117,14 @@ public abstract class OMRSRegistryEventProcessor implements OMRSRegistryEventPro
      * @param conflictingMetadataCollectionId  unique identifier for the metadata collection that is registering with the cohort.
      * @param errorMessage  details of the conflict
      */
-    public abstract void processConflictingCollectionIdEvent(String  sourceName,
-                                                             String  originatorMetadataCollectionId,
-                                                             String  originatorMetadataCollectionName,
-                                                             String  originatorServerName,
-                                                             String  originatorServerType,
-                                                             String  originatorOrganizationName,
-                                                             String  conflictingMetadataCollectionId,
-                                                             String  errorMessage);
+    void processConflictingCollectionIdEvent(String sourceName,
+                                             String originatorMetadataCollectionId,
+                                             String originatorMetadataCollectionName,
+                                             String originatorServerName,
+                                             String originatorServerType,
+                                             String originatorOrganizationName,
+                                             String conflictingMetadataCollectionId,
+                                             String errorMessage);
 
 
     /**
@@ -141,13 +141,13 @@ public abstract class OMRSRegistryEventProcessor implements OMRSRegistryEventPro
      * @param remoteConnection  the Connection properties for the connector used to call the registering server.
      * @param errorMessage  details of the error that occurs when the connection is used.
      */
-    public abstract void processBadConnectionEvent(String     sourceName,
-                                                   String     originatorMetadataCollectionId,
-                                                   String     originatorMetadataCollectionName,
-                                                   String     originatorServerName,
-                                                   String     originatorServerType,
-                                                   String     originatorOrganizationName,
-                                                   String     targetMetadataCollectionId,
-                                                   Connection remoteConnection,
-                                                   String     errorMessage);
+    void processBadConnectionEvent(String sourceName,
+                                   String originatorMetadataCollectionId,
+                                   String originatorMetadataCollectionName,
+                                   String originatorServerName,
+                                   String originatorServerType,
+                                   String originatorOrganizationName,
+                                   String targetMetadataCollectionId,
+                                   Connection remoteConnection,
+                                   String errorMessage);
 }

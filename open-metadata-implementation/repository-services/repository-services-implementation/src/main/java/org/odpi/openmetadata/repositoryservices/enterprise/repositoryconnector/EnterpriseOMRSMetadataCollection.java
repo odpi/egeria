@@ -13,6 +13,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,8 +51,9 @@ import java.util.Date;
  *     until all of the requested metadata is assembled.
  * </p>
  */
-public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
+class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 {
+    private static final Logger log = LoggerFactory.getLogger(EnterpriseOMRSMetadataCollection.class);
 
     /*
      * Private variables for a metadata collection instance
@@ -1172,7 +1175,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                    TypeDefGallery  newTypes) throws FunctionNotSupportedException
 
     {
-        final String    methodName = "addTypeDefGallery()";
+        final String    methodName = "addTypeDefGallery";
 
         throwNotEnterpriseFunction(methodName);
     }
@@ -1189,7 +1192,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     public void addTypeDef(String       userId,
                            TypeDef      newTypeDef) throws FunctionNotSupportedException
     {
-        final String    methodName = "addTypeDef()";
+        final String    methodName = "addTypeDef";
 
         throwNotEnterpriseFunction(methodName);
     }
@@ -1205,7 +1208,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     public  void addAttributeTypeDef(String             userId,
                                      AttributeTypeDef   newAttributeTypeDef) throws FunctionNotSupportedException
     {
-        final String    methodName = "addAttributeTypeDef()";
+        final String    methodName = "addAttributeTypeDef";
 
         throwNotEnterpriseFunction(methodName);
     }
@@ -1420,7 +1423,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     public TypeDef updateTypeDef(String       userId,
                                  TypeDefPatch typeDefPatch) throws FunctionNotSupportedException
     {
-        final String                       methodName = "updateTypeDef()";
+        final String                       methodName = "updateTypeDef";
 
         throwNotEnterpriseFunction(methodName);
 
@@ -1441,7 +1444,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                               String    obsoleteTypeDefGUID,
                               String    obsoleteTypeDefName) throws FunctionNotSupportedException
     {
-        final String                       methodName = "deleteTypeDef()";
+        final String                       methodName = "deleteTypeDef";
 
         throwNotEnterpriseFunction(methodName);
     }
@@ -1460,7 +1463,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                        String    obsoleteTypeDefGUID,
                                        String    obsoleteTypeDefName) throws FunctionNotSupportedException
     {
-        final String                       methodName = "deleteAttributeTypeDef()";
+        final String                       methodName = "deleteAttributeTypeDef";
 
         throwNotEnterpriseFunction(methodName);
     }
@@ -1485,7 +1488,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                       String     newTypeDefGUID,
                                       String     newTypeDefName) throws FunctionNotSupportedException
     {
-        final String                       methodName = "reIdentifyTypeDef()";
+        final String                       methodName = "reIdentifyTypeDef";
 
         throwNotEnterpriseFunction(methodName);
 
@@ -1512,7 +1515,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                         String     newAttributeTypeDefGUID,
                                                         String     newAttributeTypeDefName) throws FunctionNotSupportedException
     {
-        final String                       methodName = "reIdentifyAttributeTypeDef()";
+        final String                       methodName = "reIdentifyAttributeTypeDef";
 
         throwNotEnterpriseFunction(methodName);
 
@@ -1542,16 +1545,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                              UserNotAuthorizedException
     {
         final String  methodName = "isEntityKnown";
-        final String  guidParameterName = "guid";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+        super.getInstanceParameterValidation(userId, guid, methodName);
 
         /*
          * The list of cohort connectors are retrieved for each request to ensure that any changes in
@@ -1636,16 +1634,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                  UserNotAuthorizedException
     {
         final String  methodName        = "getEntitySummary";
-        final String  guidParameterName = "guid";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+        super.getInstanceParameterValidation(userId, guid, methodName);
 
         /*
          * The list of cohort connectors are retrieved for each request to ensure that any changes in
@@ -1736,16 +1729,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                UserNotAuthorizedException
     {
         final String  methodName        = "getEntityDetail";
-        final String  guidParameterName = "guid";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+        super.getInstanceParameterValidation(userId, guid, methodName);
 
         /*
          * The list of cohort connectors are retrieved for each request to ensure that any changes in
@@ -1847,18 +1835,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                     UserNotAuthorizedException
     {
         final String  methodName        = "getEntityDetail";
-        final String  guidParameterName = "guid";
-        final String  asOfTimeParameter = "asOfTime";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
-        repositoryValidator.validateAsOfTimeNotNull(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        super.getInstanceParameterValidation(userId, guid, asOfTime, methodName);
 
         /*
          * The list of cohort connectors are retrieved for each request to ensure that any changes in
@@ -1989,22 +1970,19 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                                     UserNotAuthorizedException
     {
         final String  methodName        = "getRelationshipsForEntity";
-        final String  guidParameterName = "entityGUID";
-        final String  asOfTimeParameter = "asOfTime";
-        final String  typeGUIDParameter = "relationshipTypeGUID";
-        final String  pageSizeParameter = "pageSize";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, entityGUID, methodName);
-        repositoryValidator.validateOptionalTypeGUID(repositoryName, typeGUIDParameter, relationshipTypeGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+        super.getRelationshipsForEntityParameterValidation(userId,
+                                                           entityGUID,
+                                                           relationshipTypeGUID,
+                                                           fromRelationshipElement,
+                                                           limitResultsByStatus,
+                                                           asOfTime,
+                                                           sequencingProperty,
+                                                           sequencingOrder,
+                                                           pageSize);
 
         /*
          * Perform operation
@@ -2125,8 +2103,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
-     * @param matchProperties List of entity properties to match to (null means match on entityTypeGUID only).
-     * @param matchCriteria Enum defining how the properties should be matched to the entities in the repository.
+     * @param matchProperties Optional list of entity properties to match (contains wildcards).
+     * @param matchCriteria Enum defining how the match properties should be matched to the entities in the repository.
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -2140,7 +2118,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of entities matching the supplied criteria null means no matching entities in the metadata
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
      * collection.
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
@@ -2153,47 +2131,40 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public  List<EntityDetail> findEntitiesByProperty(String                    userId,
-                                                      String                    entityTypeGUID,
-                                                      InstanceProperties        matchProperties,
-                                                      MatchCriteria             matchCriteria,
-                                                      int                       fromEntityElement,
-                                                      List<InstanceStatus>      limitResultsByStatus,
-                                                      List<String>              limitResultsByClassification,
-                                                      Date                      asOfTime,
-                                                      String                    sequencingProperty,
-                                                      SequencingOrder           sequencingOrder,
-                                                      int                       pageSize) throws InvalidParameterException,
-                                                                                                 TypeErrorException,
-                                                                                                 RepositoryErrorException,
-                                                                                                 PropertyErrorException,
-                                                                                                 PagingErrorException,
-                                                                                                 FunctionNotSupportedException,
-                                                                                                 UserNotAuthorizedException
+    public List<EntityDetail> findEntitiesByProperty(String                    userId,
+                                                     String                    entityTypeGUID,
+                                                     InstanceProperties        matchProperties,
+                                                     MatchCriteria             matchCriteria,
+                                                     int                       fromEntityElement,
+                                                     List<InstanceStatus>      limitResultsByStatus,
+                                                     List<String>              limitResultsByClassification,
+                                                     Date                      asOfTime,
+                                                     String                    sequencingProperty,
+                                                     SequencingOrder           sequencingOrder,
+                                                     int                       pageSize) throws InvalidParameterException,
+                                                                                                RepositoryErrorException,
+                                                                                                TypeErrorException,
+                                                                                                PropertyErrorException,
+                                                                                                PagingErrorException,
+                                                                                                FunctionNotSupportedException,
+                                                                                                UserNotAuthorizedException
     {
         final String  methodName                   = "findEntitiesByProperty";
-        final String  matchCriteriaParameterName   = "matchCriteria";
-        final String  matchPropertiesParameterName = "matchProperties";
-        final String  asOfTimeParameter            = "asOfTime";
-        final String  guidParameter                = "entityTypeGUID";
-        final String  pageSizeParameter            = "pageSize";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateOptionalTypeGUID(repositoryName, guidParameter, entityTypeGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
-        repositoryValidator.validateMatchCriteria(repositoryName,
-                                                  matchCriteriaParameterName,
-                                                  matchPropertiesParameterName,
-                                                  matchCriteria,
-                                                  matchProperties,
-                                                  methodName);
+        super.findEntitiesByPropertyParameterValidation(userId,
+                                                        entityTypeGUID,
+                                                        matchProperties,
+                                                        matchCriteria,
+                                                        fromEntityElement,
+                                                        limitResultsByStatus,
+                                                        limitResultsByClassification,
+                                                        asOfTime,
+                                                        sequencingProperty,
+                                                        sequencingOrder,
+                                                        pageSize);
 
         /*
          * Perform operation
@@ -2314,10 +2285,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * Return a list of entities that have the requested type of classifications attached.
      *
      * @param userId unique identifier for requesting user.
-     * @param entityTypeGUID unique identifier for the type of entity requested.  Null mans any type of entity.
-     * @param classificationName name of the classification a null is not valid.
-     * @param matchClassificationProperties list of classification properties used to narrow the search.
-     * @param matchCriteria Enum defining how the properties should be matched to the classifications in the repository.
+     * @param entityTypeGUID unique identifier for the type of entity requested.  Null means any type of entity
+     *                       (but could be slow so not recommended.
+     * @param classificationName name of the classification, note a null is not valid.
+     * @param matchClassificationProperties Optional list of entity properties to match (contains wildcards).
+     * @param matchCriteria Enum defining how the match properties should be matched to the classifications in the repository.
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
      *                                beyond the first page of results. Zero means start from the first element.
@@ -2330,7 +2302,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @param sequencingOrder Enum defining how the results should be ordered.
      * @param pageSize the maximum number of result entities that can be returned on this request.  Zero means
      *                 unrestricted return results size.
-     * @return a list of entities matching the supplied criteria null means no matching entities in the metadata
+     * @return a list of entities matching the supplied criteria; null means no matching entities in the metadata
      * collection.
      * @throws InvalidParameterException a parameter is invalid or null.
      * @throws TypeErrorException the type guid passed on the request is not known by the
@@ -2344,6 +2316,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
+
     public  List<EntityDetail> findEntitiesByClassification(String                    userId,
                                                             String                    entityTypeGUID,
                                                             String                    classificationName,
@@ -2364,53 +2337,22 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                                        UserNotAuthorizedException
     {
         final String  methodName                   = "findEntitiesByClassification";
-        final String  classificationParameterName  = "classificationName";
-        final String  entityTypeGUIDParameterName  = "entityTypeGUID";
-
-        final String  matchCriteriaParameterName   = "matchCriteria";
-        final String  matchPropertiesParameterName = "matchClassificationProperties";
-        final String  asOfTimeParameter            = "asOfTime";
-        final String  pageSizeParameter            = "pageSize";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
+        super.findEntitiesByClassificationParameterValidation(userId,
+                                                              entityTypeGUID,
+                                                              classificationName,
+                                                              matchClassificationProperties,
+                                                              matchCriteria,
+                                                              fromEntityElement,
+                                                              limitResultsByStatus,
+                                                              asOfTime,
+                                                              sequencingProperty,
+                                                              sequencingOrder,
+                                                              pageSize);
 
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateOptionalTypeGUID(repositoryName, entityTypeGUIDParameterName, entityTypeGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
-
-        /*
-         * Validate TypeDef
-         */
-        if (entityTypeGUID != null)
-        {
-            TypeDef entityTypeDef = repositoryHelper.getTypeDef(repositoryName,
-                                                                entityTypeGUIDParameterName,
-                                                                entityTypeGUID,
-                                                                methodName);
-
-            repositoryValidator.validateTypeDefForInstance(repositoryName,
-                                                           entityTypeGUIDParameterName,
-                                                           entityTypeDef,
-                                                           methodName);
-
-            repositoryValidator.validateClassification(repositoryName,
-                                                       classificationParameterName,
-                                                       classificationName,
-                                                       entityTypeDef.getName(),
-                                                       methodName);
-        }
-
-        repositoryValidator.validateMatchCriteria(repositoryName,
-                                                  matchCriteriaParameterName,
-                                                  matchPropertiesParameterName,
-                                                  matchCriteria,
-                                                  matchClassificationProperties,
-                                                  methodName);
 
         /*
          * Perform operation
@@ -2580,22 +2522,20 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                                  UserNotAuthorizedException
     {
         final String  methodName = "findEntitiesByPropertyValue";
-        final String  searchCriteriaParameterName = "searchCriteria";
-        final String  asOfTimeParameter = "asOfTime";
-        final String  guidParameter = "entityTypeGUID";
-        final String  pageSizeParameter = "pageSize";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateSearchCriteria(repositoryName, searchCriteriaParameterName, searchCriteria, methodName);
-        repositoryValidator.validateOptionalTypeGUID(repositoryName, guidParameter, entityTypeGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+        super.findEntitiesByPropertyValueParameterValidation(userId,
+                                                             entityTypeGUID,
+                                                             searchCriteria,
+                                                             fromEntityElement,
+                                                             limitResultsByStatus,
+                                                             limitResultsByClassification,
+                                                             asOfTime,
+                                                             sequencingProperty,
+                                                             sequencingOrder,
+                                                             pageSize);
 
         /*
          * Perform operation
@@ -2728,16 +2668,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                     UserNotAuthorizedException
     {
         final String  methodName = "isRelationshipKnown";
-        final String  guidParameterName = "guid";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+        super.getInstanceParameterValidation(userId, guid, methodName);
 
         /*
          * The list of cohort connectors are retrieved for each request to ensure that any changes in
@@ -2824,16 +2759,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                UserNotAuthorizedException
     {
         final String  methodName = "getRelationship";
-        final String  guidParameterName = "guid";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
+        super.getInstanceParameterValidation(userId, guid, methodName);
 
         /*
          * The list of cohort connectors are retrieved for each request to ensure that any changes in
@@ -2926,18 +2856,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                     UserNotAuthorizedException
     {
         final String  methodName = "getRelationship";
-        final String  guidParameterName = "guid";
-        final String  asOfTimeParameter = "asOfTime";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, guid, methodName);
-        repositoryValidator.validateAsOfTimeNotNull(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        super.getInstanceParameterValidation(userId, guid, asOfTime, methodName);
 
         /*
          * The list of cohort connectors are retrieved for each request to ensure that any changes in
@@ -3015,11 +2938,13 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
 
     /**
      * Return a list of relationships that match the requested properties by the matching criteria.   The results
-     * can be broken into pages.
+     * can be received as a series of pages.
      *
      * @param userId unique identifier for requesting user.
-     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.
-     * @param matchProperties list of  properties used to narrow the search.
+     * @param relationshipTypeGUID unique identifier (guid) for the new relationship's type.  Null means all types
+     *                             (but may be slow so not recommended).
+     * @param matchProperties list of properties used to narrow the search.  The property values may include
+     *                        regex style wild cards.
      * @param matchCriteria Enum defining how the properties should be matched to the relationships in the repository.
      * @param fromRelationshipElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -3064,28 +2989,20 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                                       UserNotAuthorizedException
     {
         final String  methodName = "findRelationshipsByProperty";
-        final String  matchCriteriaParameterName = "matchCriteria";
-        final String  matchPropertiesParameterName = "matchProperties";
-        final String  asOfTimeParameter = "asOfTime";
-        final String  guidParameter = "relationshipTypeGUID";
-        final String  pageSizeParameter = "pageSize";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateOptionalTypeGUID(repositoryName, guidParameter, relationshipTypeGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
-        repositoryValidator.validateMatchCriteria(repositoryName,
-                                                  matchCriteriaParameterName,
-                                                  matchPropertiesParameterName,
-                                                  matchCriteria,
-                                                  matchProperties,
-                                                  methodName);
+        super.findRelationshipsByPropertyParameterValidation(userId,
+                                                             relationshipTypeGUID,
+                                                             matchProperties,
+                                                             matchCriteria,
+                                                             fromRelationshipElement,
+                                                             limitResultsByStatus,
+                                                             asOfTime,
+                                                             sequencingProperty,
+                                                             sequencingOrder,
+                                                             pageSize);
 
         /*
          * Perform operation
@@ -3201,6 +3118,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
     }
 
 
+
     /**
      * Return a list of relationships whose string based property values match the search criteria.  The
      * search criteria may include regex style wild cards.
@@ -3251,20 +3169,19 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                                            UserNotAuthorizedException
     {
         final String  methodName = "findRelationshipsByPropertyValue";
-        final String  asOfTimeParameter = "asOfTime";
-        final String  guidParameter = "relationshipTypeGUID";
-        final String  pageSizeParameter = "pageSize";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-        repositoryValidator.validateOptionalTypeGUID(repositoryName, guidParameter, relationshipTypeGUID, methodName);
-        repositoryValidator.validatePageSize(repositoryName, pageSizeParameter, pageSize, methodName);
+        this.findRelationshipsByPropertyValueParameterValidation(userId,
+                                                                 relationshipTypeGUID,
+                                                                 searchCriteria,
+                                                                 fromRelationshipElement,
+                                                                 limitResultsByStatus,
+                                                                 asOfTime,
+                                                                 sequencingProperty,
+                                                                 sequencingOrder,
+                                                                 pageSize);
 
         /*
          * Perform operation
@@ -3412,20 +3329,15 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                         UserNotAuthorizedException
     {
         final String methodName                   = "getLinkingEntities";
-        final String startEntityGUIDParameterName = "startEntityGUID";
-        final String endEntityGUIDParameterName   = "entityGUID";
-        final String asOfTimeParameter            = "asOfTime";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, startEntityGUIDParameterName, startEntityGUID, methodName);
-        repositoryValidator.validateGUID(repositoryName, endEntityGUIDParameterName, endEntityGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
+        super.getLinkingEntitiesParameterValidation(userId,
+                                                    startEntityGUID,
+                                                    endEntityGUID,
+                                                    limitResultsByStatus,
+                                                    asOfTime);
 
         /*
          * The list of cohort connectors are retrieved for each request to ensure that any changes in
@@ -3573,56 +3485,25 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                    FunctionNotSupportedException,
                                                                                    UserNotAuthorizedException
     {
-        final String methodName                                  = "getEntityNeighborhood";
-        final String entityGUIDParameterName                     = "entityGUID";
-        final String entityTypeGUIDParameterName                 = "entityTypeGUIDs";
-        final String relationshipTypeGUIDParameterName           = "relationshipTypeGUIDs";
-        final String limitedResultsByClassificationParameterName = "limitResultsByClassification";
-        final String asOfTimeParameter                           = "asOfTime";
+        final String methodName = "getEntityNeighborhood";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
-        repositoryValidator.validateAsOfTime(repositoryName, asOfTimeParameter, asOfTime, methodName);
-
-        if (entityTypeGUIDs != null)
-        {
-            for (String guid : entityTypeGUIDs)
-            {
-                repositoryValidator.validateTypeGUID(repositoryName, entityTypeGUIDParameterName, guid, methodName);
-            }
-        }
-
-        if (relationshipTypeGUIDs != null)
-        {
-            for (String guid : relationshipTypeGUIDs)
-            {
-                repositoryValidator.validateTypeGUID(repositoryName, relationshipTypeGUIDParameterName, guid, methodName);
-            }
-        }
-
-        if (limitResultsByClassification != null)
-        {
-            for (String classificationName : limitResultsByClassification)
-            {
-                repositoryValidator.validateClassificationName(repositoryName,
-                                                               limitedResultsByClassificationParameterName,
-                                                               classificationName,
-                                                               methodName);
-            }
-        }
+        super.getEntityNeighborhoodParameterValidation(userId,
+                                                       entityGUID,
+                                                       entityTypeGUIDs,
+                                                       relationshipTypeGUIDs,
+                                                       limitResultsByStatus,
+                                                       limitResultsByClassification,
+                                                       asOfTime,
+                                                       level);
 
         /*
          * The list of cohort connectors are retrieved for each request to ensure that any changes in
          * the shape of the cohort are reflected immediately.
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
-
 
         /*
          * Ready to process the request.  Search results need to come from all members of the cohort.
@@ -3944,6 +3825,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *                                           not defined for this entity type.
      * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                       the requested status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail addEntity(String                     userId,
@@ -3956,43 +3838,16 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                    PropertyErrorException,
                                                                                    ClassificationErrorException,
                                                                                    StatusNotSupportedException,
+                                                                                   FunctionNotSupportedException,
                                                                                    UserNotAuthorizedException
     {
-        final String  methodName                    = "addEntity";
-        final String  entityGUIDParameterName       = "entityTypeGUID";
-        final String  propertiesParameterName       = "initialProperties";
-        final String  classificationsParameterName  = "initialClassifications";
-        final String  initialStatusParameterName    = "initialStatus";
+        final String  methodName  = "addEntity";
 
-        /*
-         * Validate parameters
-         */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeGUID(repositoryName, entityGUIDParameterName, entityTypeGUID, methodName);
-
-        TypeDef  typeDef = repositoryHelper.getTypeDef(repositoryName, entityGUIDParameterName, entityTypeGUID, methodName);
-
-        repositoryValidator.validateTypeDefForInstance(repositoryName, entityGUIDParameterName, typeDef, methodName);
-        repositoryValidator.validateClassificationList(repositoryName,
-                                                       classificationsParameterName,
-                                                       initialClassifications,
-                                                       typeDef.getName(),
-                                                       methodName);
-
-        repositoryValidator.validatePropertiesForType(repositoryName,
-                                                      propertiesParameterName,
-                                                      typeDef,
-                                                      initialProperties,
-                                                      methodName);
-
-        repositoryValidator.validateInstanceStatus(repositoryName,
-                                                   initialStatusParameterName,
-                                                   initialStatus,
-                                                   typeDef,
-                                                   methodName);
+        super.addEntityParameterValidation(userId,
+                                           entityTypeGUID,
+                                           initialProperties,
+                                           initialClassifications,
+                                           initialStatus);
 
         /*
          * Validation complete, ok to create new instance
@@ -4007,14 +3862,15 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
          * there are no positive results from any repository.
          */
-        InvalidParameterException    invalidParameterException    = null;
-        TypeErrorException           typeErrorException           = null;
-        PropertyErrorException       propertyErrorException       = null;
-        ClassificationErrorException classificationErrorException = null;
-        StatusNotSupportedException  statusNotSupportedException  = null;
-        UserNotAuthorizedException   userNotAuthorizedException   = null;
-        RepositoryErrorException     repositoryErrorException     = null;
-        Throwable                    anotherException             = null;
+        InvalidParameterException     invalidParameterException     = null;
+        TypeErrorException            typeErrorException            = null;
+        PropertyErrorException        propertyErrorException        = null;
+        ClassificationErrorException  classificationErrorException  = null;
+        StatusNotSupportedException   statusNotSupportedException   = null;
+        UserNotAuthorizedException    userNotAuthorizedException    = null;
+        RepositoryErrorException      repositoryErrorException      = null;
+        FunctionNotSupportedException functionNotSupportedException = null;
+        Throwable                     anotherException              = null;
 
         /*
          * Loop through the metadata collections extracting the typedefs from each repository.
@@ -4081,6 +3937,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         throwCapturedPropertyErrorException(propertyErrorException);
         throwCapturedStatusNotSupportedException(statusNotSupportedException);
         throwCapturedInvalidParameterException(invalidParameterException);
+        throwCapturedFunctionNotSupportedException(functionNotSupportedException);
 
         return null;
     }
@@ -4114,8 +3971,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
-     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
-     *                                      the requested status.
+     * @throws StatusNotSupportedException invalid status for instance.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail updateEntityStatus(String           userId,
@@ -4124,19 +3981,15 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                               RepositoryErrorException,
                                                                               EntityNotKnownException,
                                                                               StatusNotSupportedException,
+                                                                              FunctionNotSupportedException,
                                                                               UserNotAuthorizedException
     {
-        final String  methodName               = "updateEntityStatus";
-        final String  entityGUIDParameterName  = "entityGUID";
+        final String  methodName   = "updateEntityStatus";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
+        super.updateInstanceStatusParameterValidation(userId, entityGUID, newStatus, methodName);
 
         /*
          * Locate entity
@@ -4182,6 +4035,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this entity's type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail updateEntityProperties(String               userId,
@@ -4190,19 +4044,15 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                        RepositoryErrorException,
                                                                                        EntityNotKnownException,
                                                                                        PropertyErrorException,
+                                                                                       FunctionNotSupportedException,
                                                                                        UserNotAuthorizedException
     {
         final String  methodName = "updateEntityProperties";
-        final String  entityGUIDParameterName  = "entityGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
+        this.updateInstancePropertiesPropertyValidation(userId, entityGUID, properties, methodName);
 
         /*
          * Locate entity
@@ -4257,21 +4107,15 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                       UserNotAuthorizedException
     {
         final String  methodName = "undoEntityUpdate";
-        final String  entityGUIDParameterName  = "entityGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
+        super.manageInstanceParameterValidation(userId, entityGUID, methodName);
 
         /*
          * Locate entity
          */
-
         EntitySummary     entity = this.getEntitySummary(userId, entityGUID);
 
         repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
@@ -4328,24 +4172,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                         UserNotAuthorizedException
     {
         final String  methodName               = "deleteEntity";
-        final String  typeDefGUIDParameterName = "typeDefGUID";
-        final String  typeDefNameParameterName = "typeDefName";
-        final String  entityGUIDParameterName  = "obsoleteEntityGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                                               typeDefGUIDParameterName,
-                                               typeDefNameParameterName,
-                                               typeDefGUID,
-                                               typeDefName,
-                                               methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, obsoleteEntityGUID, methodName);
+        super.removeInstanceParameterValidation(userId, typeDefGUID, typeDefName, obsoleteEntityGUID, methodName);
 
         /*
          * Locate entity
@@ -4391,6 +4222,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws EntityNotDeletedException the entity is not in DELETED status and so can not be purged
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public void purgeEntity(String    userId,
@@ -4400,27 +4232,15 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                 RepositoryErrorException,
                                                                 EntityNotKnownException,
                                                                 EntityNotDeletedException,
+                                                                FunctionNotSupportedException,
                                                                 UserNotAuthorizedException
     {
         final String  methodName               = "purgeEntity";
-        final String  typeDefGUIDParameterName = "typeDefGUID";
-        final String  typeDefNameParameterName = "typeDefName";
-        final String  entityGUIDParameterName  = "deletedEntityGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                                               typeDefGUIDParameterName,
-                                               typeDefNameParameterName,
-                                               typeDefGUID,
-                                               typeDefName,
-                                               methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, deletedEntityGUID, methodName);
+        this.removeInstanceParameterValidation(userId, typeDefGUID, typeDefName, deletedEntityGUID, methodName);
 
         /*
          * Validation complete, ok to purge the instance
@@ -4435,12 +4255,13 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          * Some repositories may produce exceptions.  These exceptions are saved and will be returned if
          * there are no positive results from any repository.
          */
-        InvalidParameterException  invalidParameterException  = null;
-        EntityNotKnownException    entityNotKnownException    = null;
-        EntityNotDeletedException  entityNotDeletedException  = null;
-        UserNotAuthorizedException userNotAuthorizedException = null;
-        RepositoryErrorException   repositoryErrorException   = null;
-        Throwable                  anotherException           = null;
+        InvalidParameterException     invalidParameterException     = null;
+        EntityNotKnownException       entityNotKnownException       = null;
+        EntityNotDeletedException     entityNotDeletedException     = null;
+        UserNotAuthorizedException    userNotAuthorizedException    = null;
+        RepositoryErrorException      repositoryErrorException      = null;
+        FunctionNotSupportedException functionNotSupportedException = null;
+        Throwable                     anotherException              = null;
 
         /*
          * Loop through the metadata collections extracting the typedefs from each repository.
@@ -4477,6 +4298,10 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                 {
                     repositoryErrorException = error;
                 }
+                catch (FunctionNotSupportedException error)
+                {
+                    functionNotSupportedException = error;
+                }
                 catch (UserNotAuthorizedException error)
                 {
                     userNotAuthorizedException = error;
@@ -4493,6 +4318,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         throwCapturedUserNotAuthorizedException(userNotAuthorizedException);
         throwCapturedThrowableException(anotherException, methodName);
         throwCapturedEntityNotKnownException(entityNotKnownException);
+        throwCapturedFunctionNotSupportedException(functionNotSupportedException);
         throwCapturedInvalidParameterException(invalidParameterException);
 
         return;
@@ -4522,16 +4348,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                           UserNotAuthorizedException
     {
         final String  methodName              = "restoreEntity";
-        final String  entityGUIDParameterName = "deletedEntityGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, deletedEntityGUID, methodName);
+        super.manageInstanceParameterValidation(userId, deletedEntityGUID, methodName);
 
         /*
          * Locate entity
@@ -4640,6 +4461,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *                                         for the entity.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this classification type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail classifyEntity(String               userId,
@@ -4650,19 +4472,15 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                              EntityNotKnownException,
                                                                                              ClassificationErrorException,
                                                                                              PropertyErrorException,
+                                                                                             FunctionNotSupportedException,
                                                                                              UserNotAuthorizedException
     {
         final String  methodName                  = "classifyEntity";
-        final String  entityGUIDParameterName     = "entityGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
+        this.classifyEntityParameterValidation(userId, entityGUID, classificationName, classificationProperties);
 
         /*
          * Locate entity
@@ -4711,6 +4529,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws ClassificationErrorException the requested classification is not set on the entity.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail declassifyEntity(String    userId,
@@ -4719,24 +4538,15 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                               RepositoryErrorException,
                                                                               EntityNotKnownException,
                                                                               ClassificationErrorException,
+                                                                              FunctionNotSupportedException,
                                                                               UserNotAuthorizedException
     {
         final String  methodName                  = "declassifyEntity";
-        final String  entityGUIDParameterName     = "entityGUID";
-        final String  classificationParameterName = "classificationName";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
-        repositoryValidator.validateClassificationName(repositoryName,
-                                                       classificationParameterName,
-                                                       classificationName,
-                                                       methodName);
+        super.declassifyEntityParameterValidation(userId, entityGUID, classificationName);
 
         /*
          * Locate entity
@@ -4785,6 +4595,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws ClassificationErrorException the requested classification is not attached to the classification.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this classification type
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public EntityDetail updateEntityClassification(String               userId,
@@ -4795,21 +4606,15 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                            EntityNotKnownException,
                                                                                            ClassificationErrorException,
                                                                                            PropertyErrorException,
+                                                                                           FunctionNotSupportedException,
                                                                                            UserNotAuthorizedException
     {
         final String  methodName = "updateEntityClassification";
-        final String  entityGUIDParameterName     = "entityGUID";
-        final String  classificationParameterName = "classificationName";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, entityGUIDParameterName, entityGUID, methodName);
-        repositoryValidator.validateClassificationName(repositoryName, classificationParameterName, classificationName, methodName);
+        super.updateEntityClassificationParameterValidation(userId, entityGUID, classificationName, properties);
 
         /*
          * Locate entity
@@ -4845,14 +4650,59 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                           properties);
     }
 
+
+    /**
+     * Validate that the metadata collection supports the ends of the new relationship (and add if can).
+     *
+     * @param userId calling user
+     * @param entityGUID guid of the entity.
+     * @param entityProxy proxy to add if missing.
+     * @param metadataCollection current repository.
+     * @return boolean - true if entity is known.
+     */
+    private boolean ensureEntityEndKnown(String                 userId,
+                                         String                 entityGUID,
+                                         EntityProxy            entityProxy,
+                                         OMRSMetadataCollection metadataCollection)
+    {
+        try
+        {
+            metadataCollection.getEntitySummary(userId, entityGUID);
+            return true;
+        }
+        catch (EntityNotKnownException error)
+        {
+            try
+            {
+                metadataCollection.addEntityProxy(userId, entityProxy);
+                return true;
+            }
+            catch (Throwable proxyError)
+            {
+                log.debug("Error from adding proxy: " + proxyError.getMessage());
+            }
+        }
+        catch (Throwable error)
+        {
+            log.debug("Error from querying entity: " + error.getMessage());
+        }
+
+        return false;
+    }
+
+
     /**
      * Add a new relationship between two entities to the metadata collection.
      * <p>
      * There are 3 parts to this method
      * <ol>
      *     <li>Validation of the associated typedefs and supplied properties </li>
-     *     <li>Validate that the requested relationship ends exist, by checking each server (each cohortConnector) looking for the entity at each end of the relationship. If either end entities are not found then an EntityNotKnonnException is thrown.</li>
-     *     <li>For each server, check it has the entity for each end, if not then attempt to create proxies. If we now have 2 valid ends on this server, then  add the relationship. Do this for each server in turn until it adds successfully. If it does not add to any server then throw an error.</li>
+     *     <li>Validate that the requested relationship ends exist, by checking each server (each cohortConnector)
+     *     looking for the entity at each end of the relationship. If either end entities are not found then an
+     *     EntityNotKnownException is thrown.</li>
+     *     <li>For each server, check it has the entity for each end, if not then attempt to create proxies.
+     *     If we now have 2 valid ends on this server, then  add the relationship. Do this for each server in turn until
+     *     it adds successfully. If it does not add to any server then throw an error.</li>
      * </ol>
      *
      * @param userId               unique identifier for requesting user.
@@ -4872,51 +4722,35 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws EntityNotKnownException     one of the requested entities is not known in the metadata collection.
      * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                     the requested status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException  the userId is not permitted to perform this operation.
      */
-    public Relationship addRelationship(String userId,
-                                        String relationshipTypeGUID,
-                                        InstanceProperties initialProperties,
-                                        String entityOneGUID,
-                                        String entityTwoGUID,
-                                        InstanceStatus initialStatus) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeErrorException,
-            PropertyErrorException,
-            EntityNotKnownException,
-            StatusNotSupportedException,
-            UserNotAuthorizedException
+    public Relationship addRelationship(String              userId,
+                                        String              relationshipTypeGUID,
+                                        InstanceProperties  initialProperties,
+                                        String              entityOneGUID,
+                                        String              entityTwoGUID,
+                                        InstanceStatus      initialStatus) throws InvalidParameterException,
+                                                                                  RepositoryErrorException,
+                                                                                  TypeErrorException,
+                                                                                  PropertyErrorException,
+                                                                                  EntityNotKnownException,
+                                                                                  StatusNotSupportedException,
+                                                                                  FunctionNotSupportedException,
+                                                                                  UserNotAuthorizedException
     {
         final String methodName = "addRelationship";
-        final String guidParameterName = "relationshipTypeGUID";
-        final String propertiesParameterName = "initialProperties";
-        final String initialStatusParameterName = "initialStatus";
+
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateTypeGUID(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
-
-        TypeDef typeDef = repositoryHelper.getTypeDef(repositoryName, guidParameterName, relationshipTypeGUID, methodName);
-
-        repositoryValidator.validateTypeDefForInstance(repositoryName, guidParameterName, typeDef, methodName);
-
-
-        repositoryValidator.validatePropertiesForType(repositoryName,
-                propertiesParameterName,
-                typeDef,
-                initialProperties,
-                methodName);
-
-        repositoryValidator.validateInstanceStatus(repositoryName,
-                initialStatusParameterName,
-                initialStatus,
-                typeDef,
-                methodName);
+        super.addRelationshipParameterValidation(userId,
+                                                 relationshipTypeGUID,
+                                                 initialProperties,
+                                                 entityOneGUID,
+                                                 entityTwoGUID,
+                                                 initialStatus);
 
         /*
          * Validation complete, ok to create new instance
@@ -4925,201 +4759,125 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
          * the shape of the cohort are reflected immediately.
          */
         List<OMRSRepositoryConnector> cohortConnectors = enterpriseParentConnector.getCohortConnectors(methodName);
-        Relationship relationship = null;
-        InvalidParameterException invalidParameterException = null;
-        EntityNotKnownException entityNotKnownException = null;
-        TypeErrorException typeErrorException = null;
-        PropertyErrorException propertyErrorException = null;
-        StatusNotSupportedException statusNotSupportedException = null;
-        UserNotAuthorizedException userNotAuthorizedException = null;
-        RepositoryErrorException repositoryErrorException = null;
-        Throwable anotherException = null;
 
-        EntityProxy entity1proxy = null;
-        EntityProxy entity2proxy = null;
-        /*
-         * Spin through the cohort connectors to find the entities associated with each end of the relationship. These are stored as proxies in case proxies
-         * need to be created prior to adding the relationship
-         */
-        for (OMRSRepositoryConnector cohortConnector : cohortConnectors)
-        {
-            if (cohortConnector != null)
-            {
-                OMRSMetadataCollection metadataCollection = cohortConnector.getMetadataCollection();
-                validateMetadataCollection(metadataCollection, methodName);
-                /*
-                 * if we have already found the end 1 then no need to look further for it
-                 */
-                if (entity1proxy == null)
-                {
-                    try
-                    {
-                        EntitySummary entitySummary = metadataCollection.getEntitySummary(userId, entityOneGUID);
-                        entity1proxy = new EntityProxy(entitySummary);
-                    } catch (OMRSCheckedExceptionBase e)
-                    {
-                    /*
-                     * error - carry on looking
-                     */
-                    }
-                }
-                /*
-                 * if we have already found the end 2 then no need to look further for it
-                 */
-                if (entity2proxy == null)
-                {
-                    try
-                    {
-                        EntitySummary entitySummary = metadataCollection.getEntitySummary(userId, entityTwoGUID);
-                        entity2proxy = new EntityProxy(entitySummary);
-                    } catch (OMRSCheckedExceptionBase e)
-                    {
-                    /*
-                     * error - carry on looking
-                     */
-                    }
-                }
-            }
-        }
+        InvalidParameterException     invalidParameterException     = null;
+        EntityNotKnownException       entityNotKnownException       = null;
+        TypeErrorException            typeErrorException            = null;
+        PropertyErrorException        propertyErrorException        = null;
+        StatusNotSupportedException   statusNotSupportedException   = null;
+        UserNotAuthorizedException    userNotAuthorizedException    = null;
+        RepositoryErrorException      repositoryErrorException      = null;
+        FunctionNotSupportedException functionNotSupportedException = null;
+        Throwable                     anotherException              = null;
 
+        EntityProxy entityOneProxy = new EntityProxy(this.getEntitySummary(userId, entityOneGUID));
+        EntityProxy entityTwoProxy = new EntityProxy(this.getEntitySummary(userId, entityTwoGUID));
 
-        if (entity1proxy == null)
+        if (entityOneProxy == null)
         {
             OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityOneGUID,
-                    methodName, repositoryName);
+                                                                                                     methodName,
+                                                                                                     repositoryName);
+
             throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
         }
-        if (entity2proxy == null)
+
+        if (entityTwoProxy == null)
         {
             OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityTwoGUID,
-                    methodName,
-                    repositoryName);
+                                                                                                     methodName,
+                                                                                                     repositoryName);
 
             throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                                              this.getClass().getName(),
+                                              methodName,
+                                              errorMessage,
+                                              errorCode.getSystemAction(),
+                                              errorCode.getUserAction());
         }
 
-            /*
-             * At this stage we have 2 valid ends of the relationship. Now try each metadataCollection, to add proxies for each end if necessary
-             * and then add the relationship. The addRelationship may fail because the metadataCollection doe snot support the type or
-             * with a Repository error (for example it does not support proxies).
-             */
+        /*
+         * At this stage we have 2 valid ends of the relationship. Now try each metadataCollection, to add proxies for each end if necessary
+         * and then add the relationship. The addRelationship may fail because the metadataCollection does not support the type or
+         * with a Repository error (for example it does not support proxies).
+         */
         for (OMRSRepositoryConnector cohortConnector : cohortConnectors)
         {
-                /*
-                 * only check another cohortConnector if we have not added a relationshiop
-                 */
-            if (relationship == null)
-            {
-                OMRSMetadataCollection metadataCollection = cohortConnector.getMetadataCollection();
-                    /*
-                     * we have a valid entity for each end and we have a metadatacollectionid we are about to add the relationship to.
-                     * For each end - check whether we have an entity, if not create a proxy.
-                     */
+            OMRSMetadataCollection metadataCollection = cohortConnector.getMetadataCollection();
 
-                boolean validEnds = true;
-                try
+            try
+            {
+                if ((this.ensureEntityEndKnown(userId, entityOneGUID, entityOneProxy, metadataCollection)) &&
+                    (this.ensureEntityEndKnown(userId, entityTwoGUID, entityTwoProxy, metadataCollection)))
                 {
-                    metadataCollection.getEntitySummary(userId, entityOneGUID);
-                } catch (EntityNotKnownException e)
-                {
-                    try
-                    {
-                        metadataCollection.addEntityProxy(userId, entity1proxy);
-                    } catch (RepositoryErrorException error)
-                    {
-                        validEnds = false;
-                    } catch (FunctionNotSupportedException error)
-                    {
-                        validEnds = false;
-                    }
+                    return metadataCollection.addRelationship(userId,
+                                                              relationshipTypeGUID,
+                                                              initialProperties,
+                                                              entityOneGUID,
+                                                              entityTwoGUID,
+                                                              initialStatus);
                 }
-                try
-                {
-                    metadataCollection.getEntitySummary(userId, entityTwoGUID);
-                } catch (EntityNotKnownException e)
-                {
-                    try
-                    {
-                        metadataCollection.addEntityProxy(userId, entity2proxy);
-                    } catch (RepositoryErrorException error)
-                    {
-                        validEnds = false;
-                    } catch (FunctionNotSupportedException error)
-                    {
-                        validEnds = false;
-                    }
-                }
-                if (validEnds)
-                {
-                    /*
-                     * Both ends are valid for the repository, so issue the request
-                     */
-                    try
-                    {
-                        relationship = metadataCollection.addRelationship(userId,
-                                relationshipTypeGUID,
-                                initialProperties,
-                                entityOneGUID,
-                                entityTwoGUID,
-                                initialStatus);
-                    } catch (TypeErrorException error)
-                    {
-                        typeErrorException = error;
-                    } catch (InvalidParameterException error)
-                    {
-                        invalidParameterException = error;
-                    } catch (EntityNotKnownException error)
-                    {
-                        entityNotKnownException = error;
-                    } catch (StatusNotSupportedException error)
-                    {
-                        statusNotSupportedException = error;
-                    } catch (PropertyErrorException error)
-                    {
-                        propertyErrorException = error;
-                    } catch (RepositoryErrorException error)
-                    {
-                        repositoryErrorException = error;
-                    } catch (UserNotAuthorizedException error)
-                    {
-                        userNotAuthorizedException = error;
-                    } catch (Throwable error)
-                    {
-                        anotherException = error;
-                    }
-                }
+
+            }
+            catch (TypeErrorException error)
+            {
+                typeErrorException = error;
+            }
+            catch (InvalidParameterException error)
+            {
+                invalidParameterException = error;
+            }
+            catch (EntityNotKnownException error)
+            {
+                entityNotKnownException = error;
+            }
+            catch (StatusNotSupportedException error)
+            {
+                statusNotSupportedException = error;
+            }
+            catch (PropertyErrorException error)
+            {
+                propertyErrorException = error;
+            }
+            catch (RepositoryErrorException error)
+            {
+                repositoryErrorException = error;
+            }
+            catch (UserNotAuthorizedException error)
+            {
+                userNotAuthorizedException = error;
+            }
+            catch (Throwable error)
+            {
+                anotherException = error;
             }
         }
 
-        if (relationship == null)
-        {
-                /*
-                 * The order of the following throwCaptured methods will determine the most informative Exception to throw if a relationship could not be added.
-                  * More than one addRelationship could have been issued, and could have failed for different reasons.
-                 */
-            throwCapturedEntityNotKnownException(entityNotKnownException);
-            throwCapturedInvalidParameterException(invalidParameterException);
-            throwCapturedRepositoryErrorException(repositoryErrorException);
-            throwCapturedStatusNotSupportedException(statusNotSupportedException);
-            throwCapturedTypeErrorException(typeErrorException);
-            throwCapturedPropertyErrorException(propertyErrorException);
-            throwCapturedUserNotAuthorizedException(userNotAuthorizedException);
-            throwCapturedThrowableException(anotherException, methodName);
-        }
-        return relationship;
+        /*
+         * The order of the following throwCaptured methods will determine the most informative Exception to throw if
+         * a relationship could not be added. More than one addRelationship could have been issued and each could
+         * have failed for different reasons.
+         */
+        throwCapturedEntityNotKnownException(entityNotKnownException);
+        throwCapturedInvalidParameterException(invalidParameterException);
+        throwCapturedRepositoryErrorException(repositoryErrorException);
+        throwCapturedStatusNotSupportedException(statusNotSupportedException);
+        throwCapturedTypeErrorException(typeErrorException);
+        throwCapturedPropertyErrorException(propertyErrorException);
+        throwCapturedUserNotAuthorizedException(userNotAuthorizedException);
+        throwCapturedFunctionNotSupportedException(functionNotSupportedException);
+        throwCapturedThrowableException(anotherException, methodName);
+
+        return null;
     }
+
 
     /**
      * Update the status of a specific relationship.
@@ -5132,8 +4890,8 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
-     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
-     *                                     the requested status.
+     * @throws StatusNotSupportedException invalid status for instance.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public Relationship updateRelationshipStatus(String           userId,
@@ -5142,19 +4900,15 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                     RepositoryErrorException,
                                                                                     RelationshipNotKnownException,
                                                                                     StatusNotSupportedException,
+                                                                                    FunctionNotSupportedException,
                                                                                     UserNotAuthorizedException
     {
         final String  methodName          = "updateRelationshipStatus";
-        final String  guidParameterName   = "relationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, relationshipGUID, methodName);
+        super.updateInstanceStatusParameterValidation(userId, relationshipGUID, newStatus, methodName);
 
         /*
          * Locate relationship
@@ -5200,6 +4954,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this relationship's type.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public Relationship updateRelationshipProperties(String               userId,
@@ -5208,19 +4963,15 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                              RepositoryErrorException,
                                                                                              RelationshipNotKnownException,
                                                                                              PropertyErrorException,
+                                                                                             FunctionNotSupportedException,
                                                                                              UserNotAuthorizedException
     {
         final String  methodName = "updateRelationshipProperties";
-        final String  guidParameterName = "relationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, relationshipGUID, methodName);
+        super.updateInstancePropertiesPropertyValidation(userId, relationshipGUID, properties, methodName);
 
         /*
          * Locate relationship
@@ -5274,16 +5025,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                   UserNotAuthorizedException
     {
         final String  methodName = "undoRelationshipUpdate";
-        final String  guidParameterName = "relationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, relationshipGUID, methodName);
+        super.manageInstanceParameterValidation(userId, relationshipGUID, methodName);
 
         /*
          * Locate relationship
@@ -5344,24 +5090,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                       UserNotAuthorizedException
     {
         final String  methodName = "deleteRelationship";
-        final String  guidParameterName = "typeDefGUID";
-        final String  nameParameterName = "typeDefName";
-        final String  relationshipParameterName = "obsoleteRelationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, obsoleteRelationshipGUID, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                                               guidParameterName,
-                                               nameParameterName,
-                                               typeDefGUID,
-                                               typeDefName,
-                                               methodName);
+        this.removeInstanceParameterValidation(userId, typeDefGUID, typeDefName, obsoleteRelationshipGUID, methodName);
 
         /*
          * Locate relationship
@@ -5416,6 +5149,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
      *                                    the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws RelationshipNotDeletedException the requested relationship is not in DELETED status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public void purgeRelationship(String    userId,
@@ -5425,27 +5159,15 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                             RepositoryErrorException,
                                                                             RelationshipNotKnownException,
                                                                             RelationshipNotDeletedException,
+                                                                            FunctionNotSupportedException,
                                                                             UserNotAuthorizedException
     {
         final String  methodName = "purgeRelationship";
-        final String  guidParameterName = "typeDefGUID";
-        final String  nameParameterName = "typeDefName";
-        final String  relationshipParameterName = "deletedRelationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, relationshipParameterName, deletedRelationshipGUID, methodName);
-        repositoryValidator.validateTypeDefIds(repositoryName,
-                                               guidParameterName,
-                                               nameParameterName,
-                                               typeDefGUID,
-                                               typeDefName,
-                                               methodName);
+        this.removeInstanceParameterValidation(userId, typeDefGUID, typeDefName, deletedRelationshipGUID, methodName);
 
         /*
          * Validation is complete.  It is ok to purge the relationship.
@@ -5464,6 +5186,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         RelationshipNotKnownException   relationshipNotKnownException   = null;
         RelationshipNotDeletedException relationshipNotDeletedException = null;
         UserNotAuthorizedException      userNotAuthorizedException      = null;
+        FunctionNotSupportedException   functionNotSupportedException   = null;
         RepositoryErrorException        repositoryErrorException        = null;
         Throwable                       anotherException                = null;
 
@@ -5502,6 +5225,10 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                 {
                     repositoryErrorException = error;
                 }
+                catch (FunctionNotSupportedException error)
+                {
+                    functionNotSupportedException = error;
+                }
                 catch (UserNotAuthorizedException error)
                 {
                     userNotAuthorizedException = error;
@@ -5518,6 +5245,7 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
         throwCapturedUserNotAuthorizedException(userNotAuthorizedException);
         throwCapturedThrowableException(anotherException, methodName);
         throwCapturedRelationshipNotKnownException(relationshipNotKnownException);
+        throwCapturedFunctionNotSupportedException(functionNotSupportedException);
         throwCapturedInvalidParameterException(invalidParameterException);
 
         return;
@@ -5548,16 +5276,11 @@ public class EnterpriseOMRSMetadataCollection extends OMRSMetadataCollectionBase
                                                                                       UserNotAuthorizedException
     {
         final String  methodName = "restoreRelationship";
-        final String  guidParameterName = "deletedRelationshipGUID";
 
         /*
          * Validate parameters
          */
-        this.validateRepositoryConnector(methodName);
-        parentConnector.validateRepositoryIsActive(methodName);
-
-        repositoryValidator.validateUserId(repositoryName, userId, methodName);
-        repositoryValidator.validateGUID(repositoryName, guidParameterName, deletedRelationshipGUID, methodName);
+        this.manageInstanceParameterValidation(userId, deletedRelationshipGUID, methodName);
 
         /*
          * Validation is complete.  It is ok to restore the relationship.
