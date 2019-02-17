@@ -12,7 +12,6 @@
   * [Community Profile OMAS](../../open-metadata-implementation/access-services/community-profile)
   * [Connected Asset OMAS](../../open-metadata-implementation/access-services/connected-asset)
   * [Data Engine OMAS](../../open-metadata-implementation/access-services/data-engine)
-  * [Data Infrastructure OMAS](../../open-metadata-implementation/access-services/data-infrastructure)
   * [Data Platform OMAS](../../open-metadata-implementation/access-services/data-platform)
   * [Data Privacy OMAS](../../open-metadata-implementation/access-services/data-privacy)
   * [Data Process OMAS](../../open-metadata-implementation/access-services/data-process)
@@ -23,6 +22,7 @@
   * [Governance Engine OMAS](../../open-metadata-implementation/access-services/governance-engine)
   * [Governance Program OMAS](../../open-metadata-implementation/access-services/governance-program)
   * [Information View OMAS](../../open-metadata-implementation/access-services/information-view)
+  * [IT Infrastructure OMAS](../../open-metadata-implementation/access-services/it-infrastructure)
   * [Project Management OMAS](../../open-metadata-implementation/access-services/project-management)
   * [Security Officer OMAS](../../open-metadata-implementation/access-services/security-officer)
   * [Software Developer OMAS](../../open-metadata-implementation/access-services/software-developer)
@@ -93,7 +93,6 @@
 ## D
 
 * [Data Engine OMAS](../../open-metadata-implementation/access-services/data-engine)
-* [Data Infrastructure OMAS](../../open-metadata-implementation/access-services/data-infrastructure)
 * [Data Platform OMAS](../../open-metadata-implementation/access-services/data-platform)
 * [Data Privacy OMAS](../../open-metadata-implementation/access-services/data-privacy)
 * [Data Process OMAS](../../open-metadata-implementation/access-services/data-process)
@@ -148,6 +147,7 @@
 
 * [Information View OMAS](../../open-metadata-implementation/access-services/information-view)
 * [In Memory Repository Connector](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/inmemory-repository-connector)
+* [IT Infrastructure OMAS](../../open-metadata-implementation/access-services/it-infrastructure)
 
 ## J
 
@@ -184,13 +184,14 @@
   * [Community Profile OMAS](../../open-metadata-implementation/access-services/community-profile)
   * [Connected Asset OMAS](../../open-metadata-implementation/access-services/connected-asset)
   * [Data Engine OMAS](../../open-metadata-implementation/access-services/data-engine)
-  * [Data Infrastructure OMAS](../../open-metadata-implementation/access-services/data-infrastructure)
   * [Data Platform OMAS](../../open-metadata-implementation/access-services/data-platform)
   * [Data Privacy OMAS](../../open-metadata-implementation/access-services/data-privacy)
   * [Data Process OMAS](../../open-metadata-implementation/access-services/data-process)
   * [Data Science OMAS](../../open-metadata-implementation/access-services/data-science)
   * [DevOps OMAS](../../open-metadata-implementation/access-services/dev-ops)
   * [Digital Architecture OMAS](../../open-metadata-implementation/access-services/digital-architecture)
+  * [Information View OMAS](../../open-metadata-implementation/access-services/information-view)
+  * [IT Infrastructure OMAS](../../open-metadata-implementation/access-services/it-infrastructure)
   * [Project Management OMAS](../../open-metadata-implementation/access-services/project-management)
   * [Security Officer OMAS](../../open-metadata-implementation/access-services/security-officer)
   * [Software Developer OMAS](../../open-metadata-implementation/access-services/software-developer)
@@ -249,7 +250,6 @@
   * [connected-asset](../../open-metadata-implementation/access-services/connected-asset)
   * [connector-configuration-factory](../../open-metadata-implementation/adapters/open-connectors/connector-configuration-factory)
   * [data-engine](../../open-metadata-implementation/access-services/data-engine)
-  * [data-infrastructure](../../open-metadata-implementation/access-services/data-infrastructure)
   * [data-platform](../../open-metadata-implementation/access-services/data-platform)
   * [data-privacy](../../open-metadata-implementation/access-services/data-privacy)
   * [data-process](../../open-metadata-implementation/access-services/data-process)
@@ -269,6 +269,7 @@
   * [graph-repository-connector](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/graph-repository-connector)
   * [information-view](../../open-metadata-implementation/access-services/information-view)
   * [inmemory-repository-connector](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/inmemory-repository-connector)
+  * [it-infrastructure](../../open-metadata-implementation/access-services/it-infrastructure)
   * [omrs-rest-repository-connector](../../open-metadata-implementation/adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors/omrs-rest-repository-connector)
   * [open-connector-framework](../../open-metadata-implementation/frameworks/open-connector-framework)
   * [open-connectors](../../open-metadata-implementation/adapters/open-connectors)
