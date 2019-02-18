@@ -16,7 +16,6 @@ The Egeria content is organized into the following modules:
     * **[asset-owner](open-metadata-implementation/access-services/asset-owner)** - manage metadata and feedback for owned assets.
     * **[community-profile](open-metadata-implementation/access-services/community-profile)** - manage personal profiles and communities.
     * **[connected-asset](open-metadata-implementation/access-services/connected-asset)** - provide metadata about assets for the connectors.
-    * **[data-infrastructure](open-metadata-implementation/access-services/data-infrastructure)** - manage metadata about deployed infrastructure.
     * **[data-engine](open-metadata-implementation/access-services/data-engine)** - exchange metadata with a data processing engine.
     * **[data-platform](open-metadata-implementation/access-services/data-platform)** - exchange metadata with a data platform.
     * **[data-privacy](open-metadata-implementation/access-services/data-privacy)** - support a data privacy officer.
@@ -28,6 +27,7 @@ The Egeria content is organized into the following modules:
     * **[governance-engine](open-metadata-implementation/access-services/governance-engine)** - manage metadata for an operational governance engine.
     * **[governance-program](open-metadata-implementation/access-services/governance-program)** - set up and manage a governance program.
     * **[information-view](open-metadata-implementation/access-services/information-view)** - configure and manage metadata for data tools that create virtual views over data - such as business intelligence tools and data virtualization platforms.
+    * **[it-infrastructure](open-metadata-implementation/access-services/it-infrastructure)** - manage metadata about deployed infrastructure.
     * **[project-management](open-metadata-implementation/access-services/project-management)** - manage definitions of projects for metadata management and governance.
     * **[security-officer](open-metadata-implementation/access-services/security-officer)** - set up rules to protect data.
     * **[software-developer](open-metadata-implementation/access-services/software-developer)** - deliver useful metadata to software developers.

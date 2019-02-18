@@ -13,7 +13,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * TypeDef events for an Open Metadata Repository.  TypeDef events are used to synchronize TypeDefs across
  * an Open Metadata Repository Cohort.
  */
-public interface OMRSTypeDefEventProcessor
+public abstract class OMRSTypeDefEventProcessor implements OMRSTypeDefEventProcessorInterface
 {
     /**
      * Send the TypeDef event to the OMRS Topic connector (providing TypeDef Events are enabled).
@@ -21,8 +21,8 @@ public interface OMRSTypeDefEventProcessor
      * @param sourceName    source of the event
      * @param typeDefEvent  properties of the event to send
      */
-    void sendTypeDefEvent(String           sourceName,
-                          OMRSTypeDefEvent typeDefEvent);
+    public abstract void sendTypeDefEvent(String           sourceName,
+                                          OMRSTypeDefEvent typeDefEvent);
 
 
     /*
@@ -42,12 +42,12 @@ public interface OMRSTypeDefEventProcessor
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param typeDef  details of the new TypeDef.
      */
-    void processNewTypeDefEvent(String      sourceName,
-                                String      originatorMetadataCollectionId,
-                                String      originatorServerName,
-                                String      originatorServerType,
-                                String      originatorOrganizationName,
-                                TypeDef     typeDef);
+    public abstract void processNewTypeDefEvent(String      sourceName,
+                                                String      originatorMetadataCollectionId,
+                                                String      originatorServerName,
+                                                String      originatorServerType,
+                                                String      originatorOrganizationName,
+                                                TypeDef     typeDef);
 
 
     /**
@@ -62,12 +62,12 @@ public interface OMRSTypeDefEventProcessor
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param attributeTypeDef  details of the new AttributeTypeDef.
      */
-    void processNewAttributeTypeDefEvent(String           sourceName,
-                                         String           originatorMetadataCollectionId,
-                                         String           originatorServerName,
-                                         String           originatorServerType,
-                                         String           originatorOrganizationName,
-                                         AttributeTypeDef attributeTypeDef);
+    public abstract void processNewAttributeTypeDefEvent(String           sourceName,
+                                                         String           originatorMetadataCollectionId,
+                                                         String           originatorServerName,
+                                                         String           originatorServerType,
+                                                         String           originatorOrganizationName,
+                                                         AttributeTypeDef attributeTypeDef);
 
 
     /**
@@ -82,12 +82,12 @@ public interface OMRSTypeDefEventProcessor
      * @param originatorOrganizationName  name of the organization that owns the server that sent the event.
      * @param typeDefPatch  details of the new version of the TypeDef
      */
-    void processUpdatedTypeDefEvent(String       sourceName,
-                                    String       originatorMetadataCollectionId,
-                                    String       originatorServerName,
-                                    String       originatorServerType,
-                                    String       originatorOrganizationName,
-                                    TypeDefPatch typeDefPatch);
+    public abstract void processUpdatedTypeDefEvent(String       sourceName,
+                                                    String       originatorMetadataCollectionId,
+                                                    String       originatorServerName,
+                                                    String       originatorServerType,
+                                                    String       originatorOrganizationName,
+                                                    TypeDefPatch typeDefPatch);
 
 
     /**
@@ -104,13 +104,13 @@ public interface OMRSTypeDefEventProcessor
      * @param typeDefGUID  unique identifier of the TypeDef
      * @param typeDefName  unique name of the TypeDef
      */
-    void processDeletedTypeDefEvent(String      sourceName,
-                                    String      originatorMetadataCollectionId,
-                                    String      originatorServerName,
-                                    String      originatorServerType,
-                                    String      originatorOrganizationName,
-                                    String      typeDefGUID,
-                                    String      typeDefName);
+    public abstract void processDeletedTypeDefEvent(String      sourceName,
+                                                    String      originatorMetadataCollectionId,
+                                                    String      originatorServerName,
+                                                    String      originatorServerType,
+                                                    String      originatorOrganizationName,
+                                                    String      typeDefGUID,
+                                                    String      typeDefName);
 
 
     /**
@@ -127,13 +127,13 @@ public interface OMRSTypeDefEventProcessor
      * @param attributeTypeDefGUID  unique identifier of the AttributeTypeDef
      * @param attributeTypeDefName  unique name of the AttributeTypeDef
      */
-    void processDeletedAttributeTypeDefEvent(String      sourceName,
-                                             String      originatorMetadataCollectionId,
-                                             String      originatorServerName,
-                                             String      originatorServerType,
-                                             String      originatorOrganizationName,
-                                             String      attributeTypeDefGUID,
-                                             String      attributeTypeDefName);
+    public abstract void processDeletedAttributeTypeDefEvent(String      sourceName,
+                                                             String      originatorMetadataCollectionId,
+                                                             String      originatorServerName,
+                                                             String      originatorServerType,
+                                                             String      originatorOrganizationName,
+                                                             String      attributeTypeDefGUID,
+                                                             String      attributeTypeDefName);
 
 
     /**
@@ -149,13 +149,13 @@ public interface OMRSTypeDefEventProcessor
      * @param originalTypeDef  description of original TypeDef
      * @param typeDef  updated TypeDef with new identifiers inside.
      */
-    void processReIdentifiedTypeDefEvent(String         sourceName,
-                                         String         originatorMetadataCollectionId,
-                                         String         originatorServerName,
-                                         String         originatorServerType,
-                                         String         originatorOrganizationName,
-                                         TypeDefSummary originalTypeDef,
-                                         TypeDef        typeDef);
+    public abstract void processReIdentifiedTypeDefEvent(String         sourceName,
+                                                         String         originatorMetadataCollectionId,
+                                                         String         originatorServerName,
+                                                         String         originatorServerType,
+                                                         String         originatorOrganizationName,
+                                                         TypeDefSummary originalTypeDef,
+                                                         TypeDef        typeDef);
 
 
     /**
@@ -172,13 +172,13 @@ public interface OMRSTypeDefEventProcessor
      * @param originalAttributeTypeDef  description of original AttributeTypeDef
      * @param attributeTypeDef  updated AttributeTypeDef with new identifiers inside.
      */
-    void processReIdentifiedAttributeTypeDefEvent(String           sourceName,
-                                                  String           originatorMetadataCollectionId,
-                                                  String           originatorServerName,
-                                                  String           originatorServerType,
-                                                  String           originatorOrganizationName,
-                                                  AttributeTypeDef originalAttributeTypeDef,
-                                                  AttributeTypeDef attributeTypeDef);
+    public abstract void processReIdentifiedAttributeTypeDefEvent(String           sourceName,
+                                                                  String           originatorMetadataCollectionId,
+                                                                  String           originatorServerName,
+                                                                  String           originatorServerType,
+                                                                  String           originatorOrganizationName,
+                                                                  AttributeTypeDef originalAttributeTypeDef,
+                                                                  AttributeTypeDef attributeTypeDef);
 
 
     /**
@@ -196,15 +196,15 @@ public interface OMRSTypeDefEventProcessor
      * @param conflictingTypeDef  description of the TypeDef in the other metadata collection.
      * @param errorMessage  details of the error that occurs when the connection is used.
      */
-    void processTypeDefConflictEvent(String         sourceName,
-                                     String         originatorMetadataCollectionId,
-                                     String         originatorServerName,
-                                     String         originatorServerType,
-                                     String         originatorOrganizationName,
-                                     TypeDefSummary originatorTypeDef,
-                                     String         otherMetadataCollectionId,
-                                     TypeDefSummary conflictingTypeDef,
-                                     String         errorMessage);
+    public abstract void processTypeDefConflictEvent(String         sourceName,
+                                                     String         originatorMetadataCollectionId,
+                                                     String         originatorServerName,
+                                                     String         originatorServerType,
+                                                     String         originatorOrganizationName,
+                                                     TypeDefSummary originatorTypeDef,
+                                                     String         otherMetadataCollectionId,
+                                                     TypeDefSummary conflictingTypeDef,
+                                                     String         errorMessage);
 
 
     /**
@@ -222,15 +222,15 @@ public interface OMRSTypeDefEventProcessor
      * @param conflictingAttributeTypeDef  description of the AttributeTypeDef in the other metadata collection.
      * @param errorMessage  details of the error that occurs when the connection is used.
      */
-    void processAttributeTypeDefConflictEvent(String           sourceName,
-                                              String           originatorMetadataCollectionId,
-                                              String           originatorServerName,
-                                              String           originatorServerType,
-                                              String           originatorOrganizationName,
-                                              AttributeTypeDef originatorAttributeTypeDef,
-                                              String           otherMetadataCollectionId,
-                                              AttributeTypeDef conflictingAttributeTypeDef,
-                                              String           errorMessage);
+    public abstract void processAttributeTypeDefConflictEvent(String           sourceName,
+                                                              String           originatorMetadataCollectionId,
+                                                              String           originatorServerName,
+                                                              String           originatorServerType,
+                                                              String           originatorOrganizationName,
+                                                              AttributeTypeDef originatorAttributeTypeDef,
+                                                              String           otherMetadataCollectionId,
+                                                              AttributeTypeDef conflictingAttributeTypeDef,
+                                                              String           errorMessage);
 
 
     /**
@@ -251,13 +251,13 @@ public interface OMRSTypeDefEventProcessor
      * @param otherTypeDef  details of the TypeDef in the other repository.
      * @param errorMessage  details of the error that occurs when the connection is used.
      */
-    void processTypeDefPatchMismatchEvent(String         sourceName,
-                                          String         originatorMetadataCollectionId,
-                                          String         originatorServerName,
-                                          String         originatorServerType,
-                                          String         originatorOrganizationName,
-                                          String         targetMetadataCollectionId,
-                                          TypeDefSummary targetTypeDef,
-                                          TypeDef        otherTypeDef,
-                                          String         errorMessage);
+    public abstract void processTypeDefPatchMismatchEvent(String         sourceName,
+                                                          String         originatorMetadataCollectionId,
+                                                          String         originatorServerName,
+                                                          String         originatorServerType,
+                                                          String         originatorOrganizationName,
+                                                          String         targetMetadataCollectionId,
+                                                          TypeDefSummary targetTypeDef,
+                                                          TypeDef        otherTypeDef,
+                                                          String         errorMessage);
 }
