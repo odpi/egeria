@@ -4229,6 +4229,10 @@ public class OpenMetadataTypesArchive
         final String attribute2Description     = "Role or level in the organization.";
         final String attribute2DescriptionGUID = null;
 
+        final String attribute3Name            = "isPublic";
+        final String attribute3Description     = "Is the profile visible to other collaborators?";
+        final String attribute3DescriptionGUID = null;
+
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
@@ -4237,6 +4241,11 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute3Name,
+                                                            attribute3Description,
+                                                            attribute3DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -4266,13 +4275,23 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
-        final String attribute1Name            = "karmaPoints";
-        final String attribute1Description     = "Points capturing a person's engagement with open metadata.";
+
+        final String attribute1Name            = "isPublic";
+        final String attribute1Description     = "Is the contribution visible to other collaborators?";
         final String attribute1DescriptionGUID = null;
 
-        property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
-                                                        attribute1Description,
-                                                        attribute1DescriptionGUID);
+        final String attribute2Name            = "karmaPoints";
+        final String attribute2Description     = "Points capturing a person's engagement with open metadata.";
+        final String attribute2DescriptionGUID = null;
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
+                                                        attribute2Description,
+                                                        attribute2DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -4384,6 +4403,23 @@ public class OpenMetadataTypesArchive
                                                                  end2AttributeDescriptionGUID,
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "isPublic";
+        final String attribute1Description     = "Is the appointment visible to more than the role owner and appointee?";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
@@ -6382,7 +6418,6 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addEntityDef(getCommentEntity());
         this.archiveBuilder.addEntityDef(getLikeEntity());
         this.archiveBuilder.addEntityDef(getInformalTagEntity());
-        this.archiveBuilder.addEntityDef(getPrivateTagEntity());
 
         this.archiveBuilder.addRelationshipDef(getAttachedRatingRelationship());
         this.archiveBuilder.addRelationshipDef(getAttachedCommentRelationship());
@@ -6680,6 +6715,9 @@ public class OpenMetadataTypesArchive
         List<TypeDefAttribute> properties = new ArrayList<>();
         TypeDefAttribute       property;
 
+        final String attribute1Name            = "isPublic";
+        final String attribute1Description     = "Is the tag visible to more than the originator?";
+        final String attribute1DescriptionGUID = null;
         final String attribute2Name            = "tagName";
         final String attribute2Description     = "Descriptive name of the tag.";
         final String attribute2DescriptionGUID = null;
@@ -6687,6 +6725,10 @@ public class OpenMetadataTypesArchive
         final String attribute3Description     = "More detail on the meaning of the tag.";
         final String attribute3DescriptionGUID = null;
 
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
+        properties.add(property);
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
@@ -6699,23 +6741,6 @@ public class OpenMetadataTypesArchive
         entityDef.setPropertiesDefinition(properties);
 
         return entityDef;
-    }
-
-
-    private EntityDef getPrivateTagEntity()
-    {
-        final String guid            = "9b3f5443-2475-4522-bfda-8f1f17e9a6c3";
-        final String name            = "PrivateTag";
-        final String description     = "A descriptive tag for an item that is visible only to the creator.";
-        final String descriptionGUID = null;
-
-        final String superTypeName = "InformalTag";
-
-        return archiveHelper.getDefaultEntityDef(guid,
-                                                 name,
-                                                 this.archiveBuilder.getEntityDef(superTypeName),
-                                                 description,
-                                                 descriptionGUID);
     }
 
 
@@ -6769,6 +6794,23 @@ public class OpenMetadataTypesArchive
                                                                  end2AttributeDescriptionGUID,
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "isPublic";
+        final String attribute1Description     = "Is the attached rating visible to more than the originator?";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
@@ -6825,6 +6867,23 @@ public class OpenMetadataTypesArchive
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "isPublic";
+        final String attribute1Description     = "Is the attached comment visible to more than the originator?";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
         return relationshipDef;
     }
 
@@ -6879,6 +6938,23 @@ public class OpenMetadataTypesArchive
                                                                  end2AttributeDescriptionGUID,
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "isPublic";
+        final String attribute1Description     = "Is the attached like visible to more than the originator?";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
@@ -6935,6 +7011,23 @@ public class OpenMetadataTypesArchive
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "isPublic";
+        final String attribute1Description     = "Is the attached answer visible to more than the originator?";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
         return relationshipDef;
     }
 
@@ -6990,6 +7083,23 @@ public class OpenMetadataTypesArchive
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
 
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "isPublic";
+        final String attribute1Description     = "Is the attached tag visible to more than the originator?";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
         return relationshipDef;
     }
 
@@ -7005,8 +7115,9 @@ public class OpenMetadataTypesArchive
     {
         this.archiveBuilder.addEnumDef(getCrowdSourcingRoleEnum());
 
+        this.archiveBuilder.addEntityDef(getCrowdSourcingContributorEntity());
 
-        this.archiveBuilder.addRelationshipDef(getContributorRelationship());
+        this.archiveBuilder.addRelationshipDef(getCrowdSourcingContributionRelationship());
     }
 
 
@@ -7083,10 +7194,26 @@ public class OpenMetadataTypesArchive
     }
 
 
-    private RelationshipDef getContributorRelationship()
+    private EntityDef getCrowdSourcingContributorEntity()
+    {
+        final String guid            = "3a84c94c-ac6f-4be1-a72a-07dcec7b1fe3";
+        final String name            = "CrowdSourcingContributor";
+        final String description     = "Person contributing new content.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "PersonRole";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+    }
+
+    private RelationshipDef getCrowdSourcingContributionRelationship()
     {
         final String guid            = "4db83564-b200-4956-94a4-c95a5c30e65a";
-        final String name            = "Contributor";
+        final String name            = "CrowdSourcingContribution";
         final String description     = "Defines one of the actors contributing content to a new description or asset.";
         final String descriptionGUID = null;
 
@@ -7106,7 +7233,7 @@ public class OpenMetadataTypesArchive
          */
         final String                     end1EntityType               = "Referenceable";
         final String                     end1AttributeName            = "contributions";
-        final String                     end1AttributeDescription     = "Items that this person, organization or engine has contributed.";
+        final String                     end1AttributeDescription     = "Items that this person has contributed.";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -7121,9 +7248,9 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "ActorProfile";
+        final String                     end2EntityType               = "CrowdSourcingContributor";
         final String                     end2AttributeName            = "contributors";
-        final String                     end2AttributeDescription     = "Profiles of people, organizations or engines that defined this element.";
+        final String                     end2AttributeDescription     = "Person contributing content.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
@@ -7169,11 +7296,12 @@ public class OpenMetadataTypesArchive
     {
         this.archiveBuilder.addEntityDef(getNoteEntryEntity());
         this.archiveBuilder.addEntityDef(getNoteLogEntity());
+        this.archiveBuilder.addEntityDef(getNoteLogAuthorEntity());
 
         this.archiveBuilder.addRelationshipDef(getAttachedNoteLogRelationship());
         this.archiveBuilder.addRelationshipDef(getAttachedNoteLogEntryRelationship());
+        this.archiveBuilder.addRelationshipDef(getNoteLogAuthorshipRelationship());
     }
-
 
     private EntityDef getNoteEntryEntity()
     {
@@ -7202,6 +7330,9 @@ public class OpenMetadataTypesArchive
         final String attribute2Name            = "text";
         final String attribute2Description     = "Text of the note entry.";
         final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "isPublic";
+        final String attribute3Description     = "Is the note visible to more than the note log authors?";
+        final String attribute3DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -7211,10 +7342,31 @@ public class OpenMetadataTypesArchive
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute3Name,
+                                                            attribute3Description,
+                                                            attribute3DescriptionGUID);
+        properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
 
         return entityDef;
+    }
+
+
+    private EntityDef getNoteLogAuthorEntity()
+    {
+        final String guid            = "3a84d94c-ac6f-4be1-a72a-07dbec7b1fe3";
+        final String name            = "NoteLogAuthor";
+        final String description     = "A person adding notes to a note log.";
+        final String descriptionGUID = null;
+
+        final String superTypeName = "PersonRole";
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
     }
 
 
@@ -7245,6 +7397,10 @@ public class OpenMetadataTypesArchive
         final String attribute2Name            = "description";
         final String attribute2Description     = "Description of the note log.";
         final String attribute2DescriptionGUID = null;
+        final String attribute3Name            = "isPublic";
+        final String attribute3Description     = "Is the note log visible to more than the note log authors?";
+        final String attribute3DescriptionGUID = null;
+
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -7253,6 +7409,10 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute3Name,
+                                                            attribute3Description,
+                                                            attribute3DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -7302,6 +7462,78 @@ public class OpenMetadataTypesArchive
         final String                     end2EntityType               = "NoteLog";
         final String                     end2AttributeName            = "noteLogs";
         final String                     end2AttributeDescription     = "Log of related notes.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                                                                 end2AttributeName,
+                                                                 end2AttributeDescription,
+                                                                 end2AttributeDescriptionGUID,
+                                                                 end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "isPublic";
+        final String attribute1Description     = "Is the attached note visible to more than the originator?";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        relationshipDef.setPropertiesDefinition(properties);
+
+        return relationshipDef;
+    }
+
+
+    private RelationshipDef getNoteLogAuthorshipRelationship()
+    {
+        final String guid            = "8f798c0c-6769-4a2d-b489-12714d89e0a4";
+        final String name            = "NoteLogAuthorship";
+        final String description     = "Links a note log to an author.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                                                                                name,
+                                                                                null,
+                                                                                description,
+                                                                                descriptionGUID,
+                                                                                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "NoteLogAuthor";
+        final String                     end1AttributeName            = "authors";
+        final String                     end1AttributeDescription     = "Person contributing to the note log.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                                                                 end1AttributeName,
+                                                                 end1AttributeDescription,
+                                                                 end1AttributeDescriptionGUID,
+                                                                 end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "NoteLog";
+        final String                     end2AttributeName            = "authoredNoteLogs";
+        final String                     end2AttributeDescription     = "Note log containing contributions.";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 

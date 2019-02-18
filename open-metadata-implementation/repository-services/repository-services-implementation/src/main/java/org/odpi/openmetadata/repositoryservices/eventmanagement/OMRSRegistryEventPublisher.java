@@ -18,7 +18,7 @@ import java.util.Date;
 /**
  * OMRSEventPublisher publishes OMRS Events to the supplied OMRSTopicConnector.
  */
-public class OMRSRegistryEventPublisher implements OMRSRegistryEventProcessor
+public class OMRSRegistryEventPublisher extends OMRSRegistryEventProcessor
 {
     private OMRSAuditLog auditLog;
 

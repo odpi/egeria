@@ -75,7 +75,7 @@ public class EntitiesCreatorHelper {
                                    String typeName,
                                    InstanceProperties instanceProperties,
                                    List<Classification> classifications,
-                                   String sourceName) throws ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException {
+                                   String sourceName) throws ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, FunctionNotSupportedException {
         EntityDetail entity;
         try {
             entity = enterpriseConnector.getRepositoryHelper()
@@ -127,7 +127,7 @@ public class EntitiesCreatorHelper {
                                          String typeName,
                                          InstanceProperties initialProperties,
                                          String entityOneGUID,
-                                         String entityTwoGUID) throws StatusNotSupportedException, UserNotAuthorizedException, EntityNotKnownException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException {
+                                         String entityTwoGUID) throws StatusNotSupportedException, UserNotAuthorizedException, EntityNotKnownException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, FunctionNotSupportedException {
 
         Relationship relationship;
         try {
@@ -383,7 +383,7 @@ public class EntitiesCreatorHelper {
         return wrapper;
     }
 
-    private EntityDetail updateEntity(EntityDetail entityDetail, String userId, InstanceProperties properties) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, EntityNotKnownException, PropertyErrorException {
+    private EntityDetail updateEntity(EntityDetail entityDetail, String userId, InstanceProperties properties) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, EntityNotKnownException, PropertyErrorException, FunctionNotSupportedException {
         //TODO add validation to new instance properties
         entityDetail = enterpriseConnector.getMetadataCollection().updateEntityProperties(userId, entityDetail.getGUID(), properties);
         return entityDetail;
