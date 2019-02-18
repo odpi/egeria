@@ -44,15 +44,6 @@ An OCF connector is a connector that supports the [Open Connector Framework (OCF
 engine to record the changes it is making the the data landscape. 
 This information forms a key part of asset lineage.
 
-* **[data-infrastructure](data-infrastructure)** - manage metadata about deployed infrastructure.
-
-  The Data Infrastructure OMAS provides support for the design and planning of the information infrastructure
-that supports the data assets.  This includes the development of system blueprints that link down to the metadata
-about real infrastructure components.
-This metadata helps in the linkage between information governance metadata
-and IT infrastructure management (ITIL) metadata typically stored in a
-Configuration Management Database (CMDB).
-
 * **[data-platform](data-platform)** - exchange metadata with a data platform.
 
   The Data Platform OMAS provides an integration point to enable data platforms to publish metadata to the metadata
@@ -113,6 +104,15 @@ It is designed for governance and CDO tools.
 
   The Information View OMAS provides information on existing assets plus the ability to define views over these assets.
 This OMAS is used by BI reporting tools and virtualization/federation tools to configure their engines.
+
+* **[it-infrastructure](it-infrastructure)** - manage metadata about deployed infrastructure.
+
+  The IT Infrastructure OMAS provides support for the design and planning of the information infrastructure
+that supports the data assets.  This includes the development of system blueprints that link down to the metadata
+about real infrastructure components.
+This metadata helps in the linkage between information governance metadata
+and IT infrastructure management (ITIL) metadata typically stored in a
+Configuration Management Database (CMDB).
 
 * **[project-management](project-management)** - manage definitions of projects for metadata
 management and governance.

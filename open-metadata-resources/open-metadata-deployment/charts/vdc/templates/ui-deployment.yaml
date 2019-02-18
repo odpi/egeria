@@ -37,7 +37,7 @@ spec:
         ports:
         - containerPort: 8443
         command: [ "/bin/bash" ]
-        args: [ "-c", "cd  /root/egeria/open-metadata-implementation/user-interfaces/access-services-user-interface/target/ && java -jar access-services-user-interface-0.3-SNAPSHOT.jar" ]
+        args: [ "-c", "cd  /root/egeria/open-metadata-implementation/user-interfaces/access-services-user-interface/target/ && java -jar access-services-user-interface-1.1-SNAPSHOT.jar" ]
         restartPolicy: Always
         envFrom:
         - configMapRef:

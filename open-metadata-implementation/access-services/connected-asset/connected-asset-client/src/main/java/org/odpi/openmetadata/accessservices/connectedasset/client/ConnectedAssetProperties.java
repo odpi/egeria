@@ -199,7 +199,7 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
                 ", connectorInstanceId='" + connectorInstanceId + '\'' +
                 ", connection=" + connection +
                 ", assetGUID='" + assetGUID + '\'' +
-                ", assetProperties=" + assetProperties +
+                ", extendedProperties=" + assetProperties +
                 '}';
     }
 }

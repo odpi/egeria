@@ -825,7 +825,7 @@ public abstract class OMRSMetadataCollection
      *
      * @param userId unique identifier for requesting user.
      * @param entityTypeGUID String unique identifier for the entity type of interest (null means any entity type).
-     * @param matchProperties List of entity properties to match to (null means match on entityTypeGUID only).
+     * @param matchProperties Optional list of entity properties to match (contains wildcards).
      * @param matchCriteria Enum defining how the properties should be matched to the entities in the repository.
      * @param fromEntityElement the starting element number of the entities to return.
      *                                This is used when retrieving elements
@@ -853,23 +853,23 @@ public abstract class OMRSMetadataCollection
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public abstract List<EntityDetail> findEntitiesByProperty(String                    userId,
-                                                              String                    entityTypeGUID,
-                                                              InstanceProperties        matchProperties,
-                                                              MatchCriteria             matchCriteria,
-                                                              int                       fromEntityElement,
-                                                              List<InstanceStatus>      limitResultsByStatus,
-                                                              List<String>              limitResultsByClassification,
-                                                              Date                      asOfTime,
-                                                              String                    sequencingProperty,
-                                                              SequencingOrder           sequencingOrder,
-                                                              int                       pageSize) throws InvalidParameterException,
-                                                                                                         RepositoryErrorException,
-                                                                                                         TypeErrorException,
-                                                                                                         PropertyErrorException,
-                                                                                                         PagingErrorException,
-                                                                                                         FunctionNotSupportedException,
-                                                                                                         UserNotAuthorizedException;
+    public  abstract List<EntityDetail> findEntitiesByProperty(String                    userId,
+                                                               String                    entityTypeGUID,
+                                                               InstanceProperties        matchProperties,
+                                                               MatchCriteria             matchCriteria,
+                                                               int                       fromEntityElement,
+                                                               List<InstanceStatus>      limitResultsByStatus,
+                                                               List<String>              limitResultsByClassification,
+                                                               Date                      asOfTime,
+                                                               String                    sequencingProperty,
+                                                               SequencingOrder           sequencingOrder,
+                                                               int                       pageSize) throws InvalidParameterException,
+                                                                                                          RepositoryErrorException,
+                                                                                                          TypeErrorException,
+                                                                                                          PropertyErrorException,
+                                                                                                          PagingErrorException,
+                                                                                                          FunctionNotSupportedException,
+                                                                                                          UserNotAuthorizedException;
 
 
     /**
@@ -907,24 +907,24 @@ public abstract class OMRSMetadataCollection
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public abstract List<EntityDetail> findEntitiesByClassification(String                    userId,
-                                                                    String                    entityTypeGUID,
-                                                                    String                    classificationName,
-                                                                    InstanceProperties        matchClassificationProperties,
-                                                                    MatchCriteria             matchCriteria,
-                                                                    int                       fromEntityElement,
-                                                                    List<InstanceStatus>      limitResultsByStatus,
-                                                                    Date                      asOfTime,
-                                                                    String                    sequencingProperty,
-                                                                    SequencingOrder           sequencingOrder,
-                                                                    int                       pageSize) throws InvalidParameterException,
-                                                                                                               TypeErrorException,
-                                                                                                               RepositoryErrorException,
-                                                                                                               ClassificationErrorException,
-                                                                                                               PropertyErrorException,
-                                                                                                               PagingErrorException,
-                                                                                                               FunctionNotSupportedException,
-                                                                                                               UserNotAuthorizedException;
+    public  abstract List<EntityDetail> findEntitiesByClassification(String                    userId,
+                                                                     String                    entityTypeGUID,
+                                                                     String                    classificationName,
+                                                                     InstanceProperties        matchClassificationProperties,
+                                                                     MatchCriteria             matchCriteria,
+                                                                     int                       fromEntityElement,
+                                                                     List<InstanceStatus>      limitResultsByStatus,
+                                                                     Date                      asOfTime,
+                                                                     String                    sequencingProperty,
+                                                                     SequencingOrder           sequencingOrder,
+                                                                     int                       pageSize) throws InvalidParameterException,
+                                                                                                                TypeErrorException,
+                                                                                                                RepositoryErrorException,
+                                                                                                                ClassificationErrorException,
+                                                                                                                PropertyErrorException,
+                                                                                                                PagingErrorException,
+                                                                                                                FunctionNotSupportedException,
+                                                                                                                UserNotAuthorizedException;
 
 
     /**
@@ -1075,22 +1075,22 @@ public abstract class OMRSMetadataCollection
      * @throws FunctionNotSupportedException the repository does not support the asOfTime parameter.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
-    public abstract List<Relationship> findRelationshipsByProperty(String                    userId,
-                                                                   String                    relationshipTypeGUID,
-                                                                   InstanceProperties        matchProperties,
-                                                                   MatchCriteria             matchCriteria,
-                                                                   int                       fromRelationshipElement,
-                                                                   List<InstanceStatus>      limitResultsByStatus,
-                                                                   Date                      asOfTime,
-                                                                   String                    sequencingProperty,
-                                                                   SequencingOrder           sequencingOrder,
-                                                                   int                       pageSize) throws InvalidParameterException,
-                                                                                                              TypeErrorException,
-                                                                                                              RepositoryErrorException,
-                                                                                                              PropertyErrorException,
-                                                                                                              PagingErrorException,
-                                                                                                              FunctionNotSupportedException,
-                                                                                                              UserNotAuthorizedException;
+    public  abstract List<Relationship> findRelationshipsByProperty(String                    userId,
+                                                                    String                    relationshipTypeGUID,
+                                                                    InstanceProperties        matchProperties,
+                                                                    MatchCriteria             matchCriteria,
+                                                                    int                       fromRelationshipElement,
+                                                                    List<InstanceStatus>      limitResultsByStatus,
+                                                                    Date                      asOfTime,
+                                                                    String                    sequencingProperty,
+                                                                    SequencingOrder           sequencingOrder,
+                                                                    int                       pageSize) throws InvalidParameterException,
+                                                                                                               TypeErrorException,
+                                                                                                               RepositoryErrorException,
+                                                                                                               PropertyErrorException,
+                                                                                                               PagingErrorException,
+                                                                                                               FunctionNotSupportedException,
+                                                                                                               UserNotAuthorizedException;
 
 
     /**
@@ -1298,6 +1298,7 @@ public abstract class OMRSMetadataCollection
      *                                           not defined for this entity type.
      * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                       the requested status.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public abstract EntityDetail addEntity(String                     userId,
@@ -1310,6 +1311,7 @@ public abstract class OMRSMetadataCollection
                                                                                             PropertyErrorException,
                                                                                             ClassificationErrorException,
                                                                                             StatusNotSupportedException,
+                                                                                            FunctionNotSupportedException,
                                                                                             UserNotAuthorizedException;
 
 
@@ -1343,9 +1345,9 @@ public abstract class OMRSMetadataCollection
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection.
-     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
-     *                                      the requested status.
+     * @throws StatusNotSupportedException invalid status for instance.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
     public abstract EntityDetail updateEntityStatus(String           userId,
                                                     String           entityGUID,
@@ -1353,7 +1355,8 @@ public abstract class OMRSMetadataCollection
                                                                                        RepositoryErrorException,
                                                                                        EntityNotKnownException,
                                                                                        StatusNotSupportedException,
-                                                                                       UserNotAuthorizedException;
+                                                                                       UserNotAuthorizedException,
+                                                                                       FunctionNotSupportedException;
 
 
     /**
@@ -1370,6 +1373,7 @@ public abstract class OMRSMetadataCollection
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this entity's type
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
     public abstract EntityDetail updateEntityProperties(String               userId,
                                                         String               entityGUID,
@@ -1377,7 +1381,8 @@ public abstract class OMRSMetadataCollection
                                                                                                 RepositoryErrorException,
                                                                                                 EntityNotKnownException,
                                                                                                 PropertyErrorException,
-                                                                                                UserNotAuthorizedException;
+                                                                                                UserNotAuthorizedException,
+                                                                                                FunctionNotSupportedException;
 
 
     /**
@@ -1443,6 +1448,7 @@ public abstract class OMRSMetadataCollection
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws EntityNotDeletedException the entity is not in DELETED status and so can not be purged
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
     public abstract void purgeEntity(String    userId,
                                      String    typeDefGUID,
@@ -1451,7 +1457,8 @@ public abstract class OMRSMetadataCollection
                                                                          RepositoryErrorException,
                                                                          EntityNotKnownException,
                                                                          EntityNotDeletedException,
-                                                                         UserNotAuthorizedException;
+                                                                         UserNotAuthorizedException,
+                                                                         FunctionNotSupportedException;
 
 
     /**
@@ -1494,6 +1501,7 @@ public abstract class OMRSMetadataCollection
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this classification type
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
     public abstract EntityDetail classifyEntity(String               userId,
                                                 String               entityGUID,
@@ -1503,7 +1511,8 @@ public abstract class OMRSMetadataCollection
                                                                                                       EntityNotKnownException,
                                                                                                       ClassificationErrorException,
                                                                                                       PropertyErrorException,
-                                                                                                      UserNotAuthorizedException;
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      FunctionNotSupportedException;
 
 
     /**
@@ -1519,6 +1528,7 @@ public abstract class OMRSMetadataCollection
      * @throws EntityNotKnownException the entity identified by the guid is not found in the metadata collection
      * @throws ClassificationErrorException the requested classification is not set on the entity.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
     public abstract EntityDetail declassifyEntity(String  userId,
                                                   String  entityGUID,
@@ -1526,7 +1536,8 @@ public abstract class OMRSMetadataCollection
                                                                                      RepositoryErrorException,
                                                                                      EntityNotKnownException,
                                                                                      ClassificationErrorException,
-                                                                                     UserNotAuthorizedException;
+                                                                                     UserNotAuthorizedException,
+                                                                                     FunctionNotSupportedException;
 
 
     /**
@@ -1545,6 +1556,7 @@ public abstract class OMRSMetadataCollection
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this classification type
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
     public abstract EntityDetail updateEntityClassification(String               userId,
                                                             String               entityGUID,
@@ -1554,7 +1566,8 @@ public abstract class OMRSMetadataCollection
                                                                                                     EntityNotKnownException,
                                                                                                     ClassificationErrorException,
                                                                                                     PropertyErrorException,
-                                                                                                    UserNotAuthorizedException;
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    FunctionNotSupportedException;
 
 
 
@@ -1579,6 +1592,7 @@ public abstract class OMRSMetadataCollection
      * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
      *                                     the requested status.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
     public abstract Relationship addRelationship(String               userId,
                                                  String               relationshipTypeGUID,
@@ -1591,7 +1605,8 @@ public abstract class OMRSMetadataCollection
                                                                                             PropertyErrorException,
                                                                                             EntityNotKnownException,
                                                                                             StatusNotSupportedException,
-                                                                                            UserNotAuthorizedException;
+                                                                                            UserNotAuthorizedException,
+                                                                                            FunctionNotSupportedException;
 
 
     /**
@@ -1605,9 +1620,9 @@ public abstract class OMRSMetadataCollection
      * @throws RepositoryErrorException there is a problem communicating with the metadata repository where
      *                                  the metadata collection is stored.
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
-     * @throws StatusNotSupportedException the metadata repository hosting the metadata collection does not support
-     *                                     the requested status.
+     * @throws StatusNotSupportedException invalid status for instance.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
     public abstract Relationship updateRelationshipStatus(String           userId,
                                                           String           relationshipGUID,
@@ -1615,7 +1630,8 @@ public abstract class OMRSMetadataCollection
                                                                                              RepositoryErrorException,
                                                                                              RelationshipNotKnownException,
                                                                                              StatusNotSupportedException,
-                                                                                             UserNotAuthorizedException;
+                                                                                             UserNotAuthorizedException,
+                                                                                             FunctionNotSupportedException;
 
 
     /**
@@ -1632,6 +1648,7 @@ public abstract class OMRSMetadataCollection
      * @throws PropertyErrorException one or more of the requested properties are not defined, or have different
      *                                characteristics in the TypeDef for this relationship's type.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
     public abstract Relationship updateRelationshipProperties(String               userId,
                                                               String               relationshipGUID,
@@ -1639,7 +1656,8 @@ public abstract class OMRSMetadataCollection
                                                                                                       RepositoryErrorException,
                                                                                                       RelationshipNotKnownException,
                                                                                                       PropertyErrorException,
-                                                                                                      UserNotAuthorizedException;
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      FunctionNotSupportedException;
 
 
     /**
@@ -1704,6 +1722,7 @@ public abstract class OMRSMetadataCollection
      * @throws RelationshipNotKnownException the requested relationship is not known in the metadata collection.
      * @throws RelationshipNotDeletedException the requested relationship is not in DELETED status.
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
+     * @throws FunctionNotSupportedException the repository does not support maintenance of metadata.
      */
     public abstract void purgeRelationship(String    userId,
                                            String    typeDefGUID,
@@ -1712,7 +1731,8 @@ public abstract class OMRSMetadataCollection
                                                                                      RepositoryErrorException,
                                                                                      RelationshipNotKnownException,
                                                                                      RelationshipNotDeletedException,
-                                                                                     UserNotAuthorizedException;
+                                                                                     UserNotAuthorizedException,
+                                                                                     FunctionNotSupportedException;
 
 
     /**

@@ -34,7 +34,7 @@ import static org.odpi.openmetadata.accessservices.informationview.utils.Constan
 import static org.odpi.openmetadata.accessservices.informationview.utils.Constants.SEMANTIC_ASSIGNMENT;
 
 
-public class EventPublisher implements OMRSInstanceEventProcessor {
+public class EventPublisher extends OMRSInstanceEventProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(EventPublisher.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();

@@ -29,7 +29,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
  * Events that are to be processed are converted into reference copies of their respective entities and
  * relationships and stored in the local repository.
  */
-public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcessor, OMRSInstanceRetrievalEventProcessor
+public class LocalOMRSInstanceEventProcessor extends OMRSInstanceEventProcessor implements OMRSInstanceRetrievalEventProcessor
 {
     private String                          localMetadataCollectionId;
     private String                          localServerName;
@@ -197,6 +197,15 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                                                   instanceEvent.getInstanceGUID());
                     break;
 
+                case DELETE_PURGED_ENTITY_EVENT:
+                    this.processDeletePurgedEntityEvent(cohortName,
+                                                        instanceEventOriginator.getMetadataCollectionId(),
+                                                        instanceEventOriginator.getServerName(),
+                                                        instanceEventOriginator.getServerType(),
+                                                        instanceEventOriginator.getOrganizationName(),
+                                                        instanceEvent.getEntity());
+                    break;
+
                 case UNDONE_ENTITY_EVENT:
                     this.processUndoneEntityEvent(cohortName,
                                                   instanceEventOriginator.getMetadataCollectionId(),
@@ -312,6 +321,15 @@ public class LocalOMRSInstanceEventProcessor implements OMRSInstanceEventProcess
                                                         instanceEvent.getTypeDefGUID(),
                                                         instanceEvent.getTypeDefName(),
                                                         instanceEvent.getInstanceGUID());
+                    break;
+
+                case DELETE_PURGED_RELATIONSHIP_EVENT:
+                    this.processDeletePurgedRelationshipEvent(cohortName,
+                                                              instanceEventOriginator.getMetadataCollectionId(),
+                                                              instanceEventOriginator.getServerName(),
+                                                              instanceEventOriginator.getServerType(),
+                                                              instanceEventOriginator.getOrganizationName(),
+                                                              instanceEvent.getRelationship());
                     break;
 
                 case RESTORED_RELATIONSHIP_EVENT:

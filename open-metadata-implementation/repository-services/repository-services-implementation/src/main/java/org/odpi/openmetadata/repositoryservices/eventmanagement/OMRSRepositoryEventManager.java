@@ -4,11 +4,11 @@ package org.odpi.openmetadata.repositoryservices.eventmanagement;
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventProcessor;
 import org.odpi.openmetadata.repositoryservices.events.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -31,14 +31,14 @@ import java.util.List;
  */
 public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 {
-    private String                           eventManagerName;
-    private boolean                          isActive               = false;
-    private List<OMRSTypeDefEvent>           typeDefEventBuffer     = new ArrayList<>();
-    private List<OMRSInstanceEvent>          instanceEventBuffer    = new ArrayList<>();
-    private List<OMRSTypeDefEventProcessor>  typeDefEventConsumers  = new ArrayList<>();
-    private List<OMRSInstanceEventProcessor> instanceEventConsumers = new ArrayList<>();
-    private OMRSRepositoryContentValidator   repositoryValidator;   /* set in constructor */
-    private OMRSRepositoryEventExchangeRule  exchangeRule;          /* set in constructor */
+    private String                                    eventManagerName;
+    private boolean                                   isActive               = false;
+    private List<OMRSTypeDefEvent>                    typeDefEventBuffer     = new ArrayList<>();
+    private List<OMRSInstanceEvent>                   instanceEventBuffer    = new ArrayList<>();
+    private List<OMRSTypeDefEventProcessorInterface>  typeDefEventConsumers  = new ArrayList<>();
+    private List<OMRSInstanceEventProcessorInterface> instanceEventConsumers = new ArrayList<>();
+    private OMRSRepositoryContentValidator            repositoryValidator;   /* set in constructor */
+    private OMRSRepositoryEventExchangeRule           exchangeRule;          /* set in constructor */
 
     /*
      * The audit log provides a verifiable record of the open metadata archives that have been loaded into
@@ -142,6 +142,19 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     public void registerInstanceProcessor(OMRSInstanceEventProcessor instanceEventConsumer)
     {
         instanceEventConsumers.add(instanceEventConsumer);
+    }
+
+
+    /**
+     * Adds a new consumer to the list of consumers that the OMRSRepositoryEventManager will notify of
+     * any instance events it receives.
+     *
+     * @param repositoryEventProcessor the new consumer of instance events from other members of the cohort
+     */
+    public void registerRepositoryEventProcessor(OMRSRepositoryEventProcessor repositoryEventProcessor)
+    {
+        instanceEventConsumers.add(repositoryEventProcessor);
+        typeDefEventConsumers.add(repositoryEventProcessor);
     }
 
 
@@ -253,7 +266,7 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     {
         if (exchangeRule.processTypeDefEvents())
         {
-            for (OMRSTypeDefEventProcessor consumer : typeDefEventConsumers)
+            for (OMRSTypeDefEventProcessorInterface consumer : typeDefEventConsumers)
             {
                 consumer.sendTypeDefEvent(eventManagerName, event);
             }
@@ -273,14 +286,16 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     	
     	if (event.getInstanceEventType() == OMRSInstanceEventType.BATCH_INSTANCES_EVENT) 
     	{
-    		// A batch instance event is valid and should be processed if all 
-    		// references and entities in the contained graph are valid to be processed
+    	    /*
+    		 * A batch instance event is valid and should be processed if all
+    	     * references and entities in the contained graph are valid to be processed
+    		 */
     		InstanceGraph eventGraph = event.getInstanceBatch();
     		List<EntityDetail> eventEntities = eventGraph.getEntities();
     		List<Relationship> eventRelationships = eventGraph.getRelationships();
     		
-    		List<EntityDetail> validEntities = new ArrayList<EntityDetail>();
-    		List<Relationship> validRelationships = new ArrayList<Relationship>();
+    		List<EntityDetail> validEntities = new ArrayList<>();
+    		List<Relationship> validRelationships = new ArrayList<>();
     		
     		for (EntityDetail entity: eventEntities)
     		{
@@ -301,10 +316,13 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     		
     		if (validEntities.size() > 0 || validRelationships.size() > 0)
     		{
-    			// Can't just update the instance graph on the event, so we'll
-    			// construct a new event with the updated instances and adjust...
+    		    /*
+    			 * Can't just update the instance graph on the event, so we'll
+    			 * construct a new event with the updated instances and adjust...
+    			 */
     			InstanceGraph validInstanceGraph = new InstanceGraph(validEntities, validRelationships);
-    	        OMRSInstanceEvent validInstanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.BATCH_INSTANCES_EVENT, validInstanceGraph);
+    	        OMRSInstanceEvent validInstanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.BATCH_INSTANCES_EVENT,
+                                                                             validInstanceGraph);
     	        validInstanceEvent.setEventOriginator(event.getEventOriginator());
     	        event = validInstanceEvent;
     	        validEvent = true;
@@ -317,9 +335,9 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
                                                            event.getTypeDefName());
         }
     	
-    	if(validEvent)
+    	if (validEvent)
     	{
-            for (OMRSInstanceEventProcessor consumer : instanceEventConsumers)
+            for (OMRSInstanceEventProcessorInterface consumer : instanceEventConsumers)
             {
                 consumer.sendInstanceEvent(eventManagerName, event);
             }
@@ -380,11 +398,11 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the new entity
      */
-    public void processNewEntityEvent(String sourceName,
-                                      String originatorMetadataCollectionId,
-                                      String originatorServerName,
-                                      String originatorServerType,
-                                      String originatorOrganizationName,
+    public void processNewEntityEvent(String       sourceName,
+                                      String       originatorMetadataCollectionId,
+                                      String       originatorServerName,
+                                      String       originatorServerType,
+                                      String       originatorOrganizationName,
                                       EntityDetail entity)
     {
         if (repositoryValidator.validEntity(sourceName, entity))
@@ -412,11 +430,11 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param oldEntity                      original values for the entity.
      * @param newEntity                      details of the new version of the entity.
      */
-    public void processUpdatedEntityEvent(String sourceName,
-                                          String originatorMetadataCollectionId,
-                                          String originatorServerName,
-                                          String originatorServerType,
-                                          String originatorOrganizationName,
+    public void processUpdatedEntityEvent(String       sourceName,
+                                          String       originatorMetadataCollectionId,
+                                          String       originatorServerName,
+                                          String       originatorServerType,
+                                          String       originatorOrganizationName,
                                           EntityDetail oldEntity,
                                           EntityDetail newEntity)
     {
@@ -445,11 +463,11 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the version of the entity that has been restored.
      */
-    public void processUndoneEntityEvent(String sourceName,
-                                         String originatorMetadataCollectionId,
-                                         String originatorServerName,
-                                         String originatorServerType,
-                                         String originatorOrganizationName,
+    public void processUndoneEntityEvent(String       sourceName,
+                                         String       originatorMetadataCollectionId,
+                                         String       originatorServerName,
+                                         String       originatorServerType,
+                                         String       originatorOrganizationName,
                                          EntityDetail entity)
     {
         if (repositoryValidator.validEntity(sourceName, entity))
@@ -476,11 +494,11 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the entity with the new classification added.
      */
-    public void processClassifiedEntityEvent(String sourceName,
-                                             String originatorMetadataCollectionId,
-                                             String originatorServerName,
-                                             String originatorServerType,
-                                             String originatorOrganizationName,
+    public void processClassifiedEntityEvent(String       sourceName,
+                                             String       originatorMetadataCollectionId,
+                                             String       originatorServerName,
+                                             String       originatorServerType,
+                                             String       originatorOrganizationName,
                                              EntityDetail entity)
     {
         if (repositoryValidator.validEntity(sourceName, entity))
@@ -507,11 +525,11 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the entity after the classification has been removed.
      */
-    public void processDeclassifiedEntityEvent(String sourceName,
-                                               String originatorMetadataCollectionId,
-                                               String originatorServerName,
-                                               String originatorServerType,
-                                               String originatorOrganizationName,
+    public void processDeclassifiedEntityEvent(String       sourceName,
+                                               String       originatorMetadataCollectionId,
+                                               String       originatorServerName,
+                                               String       originatorServerType,
+                                               String       originatorOrganizationName,
                                                EntityDetail entity)
     {
         if (repositoryValidator.validEntity(sourceName, entity))
@@ -538,11 +556,11 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the entity after the classification has been changed.
      */
-    public void processReclassifiedEntityEvent(String sourceName,
-                                               String originatorMetadataCollectionId,
-                                               String originatorServerName,
-                                               String originatorServerType,
-                                               String originatorOrganizationName,
+    public void processReclassifiedEntityEvent(String       sourceName,
+                                               String       originatorMetadataCollectionId,
+                                               String       originatorServerName,
+                                               String       originatorServerType,
+                                               String       originatorOrganizationName,
                                                EntityDetail entity)
     {
         if (repositoryValidator.validEntity(sourceName, entity))
@@ -560,12 +578,9 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     /**
      * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
      * but it is no longer returned on queries.
-     * <p>
+     *
      * All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
      * will be notified through separate events.
-     * <p>
-     * Details of the TypeDef are included with the entity's unique id (guid) to ensure the right entity is deleted in
-     * the remote repositories.
      *
      * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
      *                                       local repository, or event mapper name.
@@ -576,11 +591,11 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         deleted entity
      */
-    public void processDeletedEntityEvent(String sourceName,
-                                          String originatorMetadataCollectionId,
-                                          String originatorServerName,
-                                          String originatorServerType,
-                                          String originatorOrganizationName,
+    public void processDeletedEntityEvent(String       sourceName,
+                                          String       originatorMetadataCollectionId,
+                                          String       originatorServerName,
+                                          String       originatorServerType,
+                                          String       originatorOrganizationName,
                                           EntityDetail entity)
     {
         if (repositoryValidator.validEntity(sourceName, entity))
@@ -591,6 +606,37 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
                                             originatorServerType,
                                             originatorOrganizationName,
                                             entity);
+        }
+    }
+
+
+    /**
+     * A deleted entity has been restored to the state it was before it was deleted.
+     *
+     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
+     *                                       local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName           name of the server that the event came from.
+     * @param originatorServerType           type of server that the event came from.
+     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
+     * @param entity                         details of the version of the entity that has been restored.
+     */
+    public void processRestoredEntityEvent(String       sourceName,
+                                           String       originatorMetadataCollectionId,
+                                           String       originatorServerName,
+                                           String       originatorServerType,
+                                           String       originatorOrganizationName,
+                                           EntityDetail entity)
+    {
+        if (repositoryValidator.validEntity(sourceName, entity))
+        {
+            super.processRestoredEntityEvent(sourceName,
+                                             originatorMetadataCollectionId,
+                                             originatorServerName,
+                                             originatorServerType,
+                                             originatorOrganizationName,
+                                             entity);
         }
     }
 
@@ -640,7 +686,11 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
 
     /**
-     * A deleted entity has been restored to the state it was before it was deleted.
+     * An existing entity has been deleted.  This is a soft delete. This means it is still in the repository
+     * but it is no longer returned on queries.
+     *
+     * All relationships to the entity are also deleted and purged and will no longer be usable.  These deleted relationships
+     * will be notified through separate events.
      *
      * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
      *                                       local repository, or event mapper name.
@@ -649,23 +699,23 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originatorServerName           name of the server that the event came from.
      * @param originatorServerType           type of server that the event came from.
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param entity                         details of the version of the entity that has been restored.
+     * @param entity                         deleted entity
      */
-    public void processRestoredEntityEvent(String sourceName,
-                                           String originatorMetadataCollectionId,
-                                           String originatorServerName,
-                                           String originatorServerType,
-                                           String originatorOrganizationName,
-                                           EntityDetail entity)
+    public void processDeletePurgedEntityEvent(String       sourceName,
+                                               String       originatorMetadataCollectionId,
+                                               String       originatorServerName,
+                                               String       originatorServerType,
+                                               String       originatorOrganizationName,
+                                               EntityDetail entity)
     {
         if (repositoryValidator.validEntity(sourceName, entity))
         {
-            super.processRestoredEntityEvent(sourceName,
-                                             originatorMetadataCollectionId,
-                                             originatorServerName,
-                                             originatorServerType,
-                                             originatorOrganizationName,
-                                             entity);
+            super.processDeletePurgedEntityEvent(sourceName,
+                                                 originatorMetadataCollectionId,
+                                                 originatorServerName,
+                                                 originatorServerType,
+                                                 originatorOrganizationName,
+                                                 entity);
         }
     }
 
@@ -685,12 +735,12 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originalEntityGUID             the existing identifier for the entity.
      * @param entity                         new values for this entity, including the new guid.
      */
-    public void processReIdentifiedEntityEvent(String sourceName,
-                                               String originatorMetadataCollectionId,
-                                               String originatorServerName,
-                                               String originatorServerType,
-                                               String originatorOrganizationName,
-                                               String originalEntityGUID,
+    public void processReIdentifiedEntityEvent(String       sourceName,
+                                               String       originatorMetadataCollectionId,
+                                               String       originatorServerName,
+                                               String       originatorServerType,
+                                               String       originatorOrganizationName,
+                                               String       originalEntityGUID,
                                                EntityDetail entity)
     {
         if (repositoryValidator.validEntity(sourceName, entity))
@@ -721,13 +771,13 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originalTypeDefSummary         details of this entity's original TypeDef.
      * @param entity                         new values for this entity, including the new type information.
      */
-    public void processReTypedEntityEvent(String sourceName,
-                                          String originatorMetadataCollectionId,
-                                          String originatorServerName,
-                                          String originatorServerType,
-                                          String originatorOrganizationName,
+    public void processReTypedEntityEvent(String         sourceName,
+                                          String         originatorMetadataCollectionId,
+                                          String         originatorServerName,
+                                          String         originatorServerType,
+                                          String         originatorOrganizationName,
                                           TypeDefSummary originalTypeDefSummary,
-                                          EntityDetail entity)
+                                          EntityDetail   entity)
     {
         if (repositoryValidator.validEntity(sourceName, entity))
         {
@@ -757,12 +807,12 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originalHomeMetadataCollectionId unique identifier for the original home metadata collection/repository.
      * @param entity                           new values for this entity, including the new home information.
      */
-    public void processReHomedEntityEvent(String sourceName,
-                                          String originatorMetadataCollectionId,
-                                          String originatorServerName,
-                                          String originatorServerType,
-                                          String originatorOrganizationName,
-                                          String originalHomeMetadataCollectionId,
+    public void processReHomedEntityEvent(String       sourceName,
+                                          String       originatorMetadataCollectionId,
+                                          String       originatorServerName,
+                                          String       originatorServerType,
+                                          String       originatorOrganizationName,
+                                          String       originalHomeMetadataCollectionId,
                                           EntityDetail entity)
     {
         if (repositoryValidator.validEntity(sourceName, entity))
@@ -835,11 +885,11 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param entity                         details of the requested entity
      */
-    public void processRefreshEntityEvent(String sourceName,
-                                          String originatorMetadataCollectionId,
-                                          String originatorServerName,
-                                          String originatorServerType,
-                                          String originatorOrganizationName,
+    public void processRefreshEntityEvent(String       sourceName,
+                                          String       originatorMetadataCollectionId,
+                                          String       originatorServerName,
+                                          String       originatorServerType,
+                                          String       originatorOrganizationName,
                                           EntityDetail entity)
     {
         if (repositoryValidator.validEntity(sourceName, entity))
@@ -866,11 +916,11 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param relationship                   details of the new relationship.
      */
-    public void processNewRelationshipEvent(String sourceName,
-                                            String originatorMetadataCollectionId,
-                                            String originatorServerName,
-                                            String originatorServerType,
-                                            String originatorOrganizationName,
+    public void processNewRelationshipEvent(String       sourceName,
+                                            String       originatorMetadataCollectionId,
+                                            String       originatorServerName,
+                                            String       originatorServerType,
+                                            String       originatorOrganizationName,
                                             Relationship relationship)
     {
         if (repositoryValidator.validRelationship(sourceName, relationship))
@@ -898,11 +948,11 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param oldRelationship                original details of the relationship.
      * @param newRelationship                details of the new version of the relationship.
      */
-    public void processUpdatedRelationshipEvent(String sourceName,
-                                                String originatorMetadataCollectionId,
-                                                String originatorServerName,
-                                                String originatorServerType,
-                                                String originatorOrganizationName,
+    public void processUpdatedRelationshipEvent(String       sourceName,
+                                                String       originatorMetadataCollectionId,
+                                                String       originatorServerName,
+                                                String       originatorServerType,
+                                                String       originatorOrganizationName,
                                                 Relationship oldRelationship,
                                                 Relationship newRelationship)
     {
@@ -931,11 +981,11 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param relationship                   details of the version of the relationship that has been restored.
      */
-    public void processUndoneRelationshipEvent(String sourceName,
-                                               String originatorMetadataCollectionId,
-                                               String originatorServerName,
-                                               String originatorServerType,
-                                               String originatorOrganizationName,
+    public void processUndoneRelationshipEvent(String       sourceName,
+                                               String       originatorMetadataCollectionId,
+                                               String       originatorServerName,
+                                               String       originatorServerType,
+                                               String       originatorOrganizationName,
                                                Relationship relationship)
     {
         if (repositoryValidator.validRelationship(sourceName, relationship))
@@ -953,9 +1003,6 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
     /**
      * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository
      * but it is no longer returned on queries.
-     * <p>
-     * Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
-     * relationship is deleted in the remote repositories.
      *
      * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
      *                                       local repository, or event mapper name.
@@ -966,11 +1013,11 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param relationship                   deleted relationship
      */
-    public void processDeletedRelationshipEvent(String sourceName,
-                                                String originatorMetadataCollectionId,
-                                                String originatorServerName,
-                                                String originatorServerType,
-                                                String originatorOrganizationName,
+    public void processDeletedRelationshipEvent(String       sourceName,
+                                                String       originatorMetadataCollectionId,
+                                                String       originatorServerName,
+                                                String       originatorServerType,
+                                                String       originatorOrganizationName,
                                                 Relationship relationship)
     {
         if (repositoryValidator.validRelationship(sourceName, relationship))
@@ -986,8 +1033,39 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
 
     /**
+     * A deleted relationship has been restored to the state it was before it was deleted.
+     *
+     * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
+     *                                       local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName           name of the server that the event came from.
+     * @param originatorServerType           type of server that the event came from.
+     * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
+     * @param relationship                   details of the version of the relationship that has been restored.
+     */
+    public void processRestoredRelationshipEvent(String       sourceName,
+                                                 String       originatorMetadataCollectionId,
+                                                 String       originatorServerName,
+                                                 String       originatorServerType,
+                                                 String       originatorOrganizationName,
+                                                 Relationship relationship)
+    {
+        if (repositoryValidator.validRelationship(sourceName, relationship))
+        {
+            super.processRestoredRelationshipEvent(sourceName,
+                                                   originatorMetadataCollectionId,
+                                                   originatorServerName,
+                                                   originatorServerType,
+                                                   originatorOrganizationName,
+                                                   relationship);
+        }
+    }
+
+
+    /**
      * A deleted relationship has been permanently removed from the repository.  This request can not be undone.
-     * <p>
+     *
      * Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
      * relationship is purged in the remote repositories.
      *
@@ -1030,7 +1108,8 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
 
 
     /**
-     * A deleted relationship has been restored to the state it was before it was deleted.
+     * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository
+     * but it is no longer returned on queries.
      *
      * @param sourceName                     name of the source of the event.  It may be the cohort name for incoming events or the
      *                                       local repository, or event mapper name.
@@ -1039,23 +1118,23 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originatorServerName           name of the server that the event came from.
      * @param originatorServerType           type of server that the event came from.
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
-     * @param relationship                   details of the version of the relationship that has been restored.
+     * @param relationship                   deleted relationship
      */
-    public void processRestoredRelationshipEvent(String sourceName,
-                                                 String originatorMetadataCollectionId,
-                                                 String originatorServerName,
-                                                 String originatorServerType,
-                                                 String originatorOrganizationName,
-                                                 Relationship relationship)
+    public void processDeletePurgedRelationshipEvent(String       sourceName,
+                                                     String       originatorMetadataCollectionId,
+                                                     String       originatorServerName,
+                                                     String       originatorServerType,
+                                                     String       originatorOrganizationName,
+                                                     Relationship relationship)
     {
         if (repositoryValidator.validRelationship(sourceName, relationship))
         {
-            super.processRestoredRelationshipEvent(sourceName,
-                                                   originatorMetadataCollectionId,
-                                                   originatorServerName,
-                                                   originatorServerType,
-                                                   originatorOrganizationName,
-                                                   relationship);
+            super.processDeletePurgedRelationshipEvent(sourceName,
+                                                       originatorMetadataCollectionId,
+                                                       originatorServerName,
+                                                       originatorServerType,
+                                                       originatorOrganizationName,
+                                                       relationship);
         }
     }
 
@@ -1075,12 +1154,12 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originalRelationshipGUID       the existing identifier for the relationship.
      * @param relationship                   new values for this relationship, including the new guid.
      */
-    public void processReIdentifiedRelationshipEvent(String sourceName,
-                                                     String originatorMetadataCollectionId,
-                                                     String originatorServerName,
-                                                     String originatorServerType,
-                                                     String originatorOrganizationName,
-                                                     String originalRelationshipGUID,
+    public void processReIdentifiedRelationshipEvent(String       sourceName,
+                                                     String       originatorMetadataCollectionId,
+                                                     String       originatorServerName,
+                                                     String       originatorServerType,
+                                                     String       originatorOrganizationName,
+                                                     String       originalRelationshipGUID,
                                                      Relationship relationship)
     {
         if (repositoryValidator.validRelationship(sourceName, relationship))
@@ -1111,13 +1190,13 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originalTypeDefSummary         original details for this relationship's TypeDef.
      * @param relationship                   new values for this relationship, including the new type information.
      */
-    public void processReTypedRelationshipEvent(String sourceName,
-                                                String originatorMetadataCollectionId,
-                                                String originatorServerName,
-                                                String originatorServerType,
-                                                String originatorOrganizationName,
+    public void processReTypedRelationshipEvent(String         sourceName,
+                                                String         originatorMetadataCollectionId,
+                                                String         originatorServerName,
+                                                String         originatorServerType,
+                                                String         originatorOrganizationName,
                                                 TypeDefSummary originalTypeDefSummary,
-                                                Relationship relationship)
+                                                Relationship   relationship)
     {
         if (repositoryValidator.validRelationship(sourceName, relationship))
         {
@@ -1147,12 +1226,12 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originalHomeMetadataCollection unique identifier for the original home repository.
      * @param relationship                   new values for this relationship, including the new home information.
      */
-    public void processReHomedRelationshipEvent(String sourceName,
-                                                String originatorMetadataCollectionId,
-                                                String originatorServerName,
-                                                String originatorServerType,
-                                                String originatorOrganizationName,
-                                                String originalHomeMetadataCollection,
+    public void processReHomedRelationshipEvent(String       sourceName,
+                                                String       originatorMetadataCollectionId,
+                                                String       originatorServerName,
+                                                String       originatorServerType,
+                                                String       originatorOrganizationName,
+                                                String       originalHomeMetadataCollection,
                                                 Relationship relationship)
     {
         if (repositoryValidator.validRelationship(sourceName, relationship))
@@ -1226,11 +1305,11 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param originatorOrganizationName     name of the organization that owns the server that sent the event.
      * @param relationship                   relationship details
      */
-    public void processRefreshRelationshipEvent(String sourceName,
-                                                String originatorMetadataCollectionId,
-                                                String originatorServerName,
-                                                String originatorServerType,
-                                                String originatorOrganizationName,
+    public void processRefreshRelationshipEvent(String       sourceName,
+                                                String       originatorMetadataCollectionId,
+                                                String       originatorServerName,
+                                                String       originatorServerType,
+                                                String       originatorOrganizationName,
                                                 Relationship relationship)
     {
         if (repositoryValidator.validRelationship(sourceName, relationship))
@@ -1333,19 +1412,19 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param otherInstanceGUID              unique identifier for the other (older) instance
      * @param errorMessage                   description of the error
      */
-    public void processConflictingInstancesEvent(String sourceName,
-                                                 String originatorMetadataCollectionId,
-                                                 String originatorServerName,
-                                                 String originatorServerType,
-                                                 String originatorOrganizationName,
-                                                 String targetMetadataCollectionId,
-                                                 TypeDefSummary targetTypeDefSummary,
-                                                 String targetInstanceGUID,
-                                                 String otherMetadataCollectionId,
+    public void processConflictingInstancesEvent(String                 sourceName,
+                                                 String                 originatorMetadataCollectionId,
+                                                 String                 originatorServerName,
+                                                 String                 originatorServerType,
+                                                 String                 originatorOrganizationName,
+                                                 String                 targetMetadataCollectionId,
+                                                 TypeDefSummary         targetTypeDefSummary,
+                                                 String                 targetInstanceGUID,
+                                                 String                 otherMetadataCollectionId,
                                                  InstanceProvenanceType otherOrigin,
-                                                 TypeDefSummary otherTypeDefSummary,
-                                                 String otherInstanceGUID,
-                                                 String errorMessage)
+                                                 TypeDefSummary         otherTypeDefSummary,
+                                                 String                 otherInstanceGUID,
+                                                 String                 errorMessage)
     {
         if ((repositoryValidator.validTypeDefSummary(sourceName, targetTypeDefSummary)) &&
                 (repositoryValidator.validTypeDefSummary(sourceName, otherTypeDefSummary)))
@@ -1387,16 +1466,16 @@ public class OMRSRepositoryEventManager extends OMRSRepositoryEventBuilder
      * @param otherTypeDefSummary            details of the other's TypeDef
      * @param errorMessage                   description of the error.
      */
-    public void processConflictingTypeEvent(String sourceName,
-                                            String originatorMetadataCollectionId,
-                                            String originatorServerName,
-                                            String originatorServerType,
-                                            String originatorOrganizationName,
-                                            String targetMetadataCollectionId,
+    public void processConflictingTypeEvent(String         sourceName,
+                                            String         originatorMetadataCollectionId,
+                                            String         originatorServerName,
+                                            String         originatorServerType,
+                                            String         originatorOrganizationName,
+                                            String         targetMetadataCollectionId,
                                             TypeDefSummary targetTypeDefSummary,
-                                            String targetInstanceGUID,
+                                            String         targetInstanceGUID,
                                             TypeDefSummary otherTypeDefSummary,
-                                            String errorMessage)
+                                            String         errorMessage)
     {
         if (exchangeRule.processInstanceEvent(targetTypeDefSummary))
         {

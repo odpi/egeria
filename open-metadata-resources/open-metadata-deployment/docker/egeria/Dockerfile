@@ -43,10 +43,10 @@ RUN if [ ! -z "$pr" ] ; then git pr $pr ; fi
 RUN mvn clean install -DskipTests
 
 # Launch the omag server in it's built & packaged location
-WORKDIR /root/egeria/open-metadata-distribution/open-metadata-assemblies/target/egeria-0.3-SNAPSHOT-omag-server/servers/omag-server-0.3-SNAPSHOT
+WORKDIR /root/egeria/open-metadata-distribution/open-metadata-assemblies/target/egeria-1.1-SNAPSHOT-omag-server/servers/omag-server-1.1-SNAPSHOT
 
 # Expose port 8080 (default) for client access
 EXPOSE 8080
 
 # The container will run the server chassis on startup -
-CMD ["/bin/bash", "-c", "java -jar server-chassis-spring-0.3-SNAPSHOT.jar"]
+CMD ["/bin/bash", "-c", "java -jar server-chassis-spring-1.1-SNAPSHOT.jar"]
