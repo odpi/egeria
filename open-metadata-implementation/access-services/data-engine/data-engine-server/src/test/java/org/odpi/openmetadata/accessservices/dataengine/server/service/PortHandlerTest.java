@@ -51,9 +51,10 @@ class PortHandlerTest {
 
     @Test
     void testCreatePort() throws TypeErrorException, ClassificationErrorException, StatusNotSupportedException,
-                             UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException,
-                             PropertyErrorException,
-                             org.odpi.openmetadata.accessservices.dataengine.exception.UserNotAuthorizedException {
+                                 UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException,
+                                 PropertyErrorException,
+                                 org.odpi.openmetadata.accessservices.dataengine.exception.UserNotAuthorizedException,
+                                 FunctionNotSupportedException {
         mockSkeletonEntity();
         mockCreatedEntity();
 
@@ -72,10 +73,10 @@ class PortHandlerTest {
 
     @Test
     void testAddPortInterfaceRelationship() throws TypeErrorException, StatusNotSupportedException,
-                                               org.odpi.openmetadata.accessservices.dataengine.exception.UserNotAuthorizedException,
-                                               EntityNotKnownException, InvalidParameterException,
-                                               RepositoryErrorException, PropertyErrorException,
-                                               UserNotAuthorizedException {
+                                                   org.odpi.openmetadata.accessservices.dataengine.exception.UserNotAuthorizedException,
+                                                   EntityNotKnownException, InvalidParameterException,
+                                                   RepositoryErrorException, PropertyErrorException,
+                                                   UserNotAuthorizedException, FunctionNotSupportedException {
         mockSkeletonRelationship();
 
         portHandler.addPortInterfaceRelationship(USER_ID,ENTITY_GUID, DEPLOYED_API_GUID);
@@ -95,7 +96,8 @@ class PortHandlerTest {
     private void mockCreatedEntity() throws InvalidParameterException, RepositoryErrorException, TypeErrorException,
                                             PropertyErrorException, ClassificationErrorException,
                                             StatusNotSupportedException,
-                                            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException {
+                                            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+                                            FunctionNotSupportedException {
         EntityDetail mockedCreatedEntity = mock(EntityDetail.class);
         when(metadataCollection.addEntity(USER_ID, TYPE_DEF_GUID, null, null,
                 InstanceStatus.ACTIVE)).thenReturn(mockedCreatedEntity);

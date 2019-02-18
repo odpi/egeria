@@ -10,7 +10,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -68,14 +67,20 @@ class ProcessHandler {
      * @throws RepositoryErrorException no metadata collection
      * @throws PropertyErrorException there is a problem with one of the other parameters
      * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the requesting user is
-     * not authorized to issue this request.
+     * not authorized to issue this request
+     * @throws FunctionNotSupportedException the repository does not support this call
      */
     String createProcess(String userId, String processName, String description, String latestChange,
-                         List<String> zoneMembership, String displayName, String parentProcessGuid)
-            throws UserNotAuthorizedException, TypeErrorException, ClassificationErrorException,
-                   StatusNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-                   InvalidParameterException, RepositoryErrorException, PropertyErrorException, FunctionNotSupportedException
-    {
+                         List<String> zoneMembership, String displayName, String parentProcessGuid) throws
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    TypeErrorException,
+                                                                                                    ClassificationErrorException,
+                                                                                                    StatusNotSupportedException,
+                                                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+                                                                                                    InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    PropertyErrorException,
+                                                                                                    FunctionNotSupportedException {
 
         final String methodName = "createProcess";
 
@@ -104,13 +109,20 @@ class ProcessHandler {
      * is not authorized to issue this request
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws RepositoryErrorException no metadata collection
-     * @throws PropertyErrorException there is a problem with one of the other parameters.
-     * @throws EntityNotKnownException the entity instance is not known in the metadata collection.
+     * @throws PropertyErrorException there is a problem with one of the other parameters
+     * @throws EntityNotKnownException the entity instance is not known in the metadata collection
+     * @throws FunctionNotSupportedException the repository does not support this call
      */
-    void addInputRelationships(String userId, String processGuid, List<String> inputs)
-            throws UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException, FunctionNotSupportedException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException,
-            InvalidParameterException, RepositoryErrorException, PropertyErrorException {
+    void addInputRelationships(String userId, String processGuid, List<String> inputs) throws
+                                                                                       UserNotAuthorizedException,
+                                                                                       TypeErrorException,
+                                                                                       StatusNotSupportedException,
+                                                                                       FunctionNotSupportedException,
+                                                                                       org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+                                                                                       EntityNotKnownException,
+                                                                                       InvalidParameterException,
+                                                                                       RepositoryErrorException,
+                                                                                       PropertyErrorException {
 
         if (inputs == null) {
             return;
@@ -138,13 +150,20 @@ class ProcessHandler {
      * is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws RepositoryErrorException no metadata collection
-     * @throws PropertyErrorException there is a problem with one of the other parameters.
-     * @throws EntityNotKnownException the entity instance is not known in the metadata collection.
+     * @throws PropertyErrorException there is a problem with one of the other parameters
+     * @throws EntityNotKnownException the entity instance is not known in the metadata collection
+     * @throws FunctionNotSupportedException the repository does not support this call
      */
-    void addOutputRelationships(String userId, String processGuid, List<String> outputs)
-            throws UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException, FunctionNotSupportedException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, EntityNotKnownException,
-            InvalidParameterException, RepositoryErrorException, PropertyErrorException {
+    void addOutputRelationships(String userId, String processGuid, List<String> outputs) throws
+                                                                                         UserNotAuthorizedException,
+                                                                                         TypeErrorException,
+                                                                                         StatusNotSupportedException,
+                                                                                         FunctionNotSupportedException,
+                                                                                         org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+                                                                                         EntityNotKnownException,
+                                                                                         InvalidParameterException,
+                                                                                         RepositoryErrorException,
+                                                                                         PropertyErrorException {
 
         if (outputs == null) {
             return;

@@ -59,7 +59,8 @@ class DeployedAPIHandlerTest {
     void testCreateDeployedAPI() throws TypeErrorException, ClassificationErrorException, StatusNotSupportedException,
                                         UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException,
                                         PropertyErrorException,
-                                        org.odpi.openmetadata.accessservices.dataengine.exception.UserNotAuthorizedException {
+                                        org.odpi.openmetadata.accessservices.dataengine.exception.UserNotAuthorizedException,
+                                        FunctionNotSupportedException {
         mockSkeletonEntity();
         mockCreatedEntity();
 
@@ -83,7 +84,7 @@ class DeployedAPIHandlerTest {
                                                org.odpi.openmetadata.accessservices.dataengine.exception.UserNotAuthorizedException,
                                                UserNotAuthorizedException, InvalidParameterException,
                                                RepositoryErrorException, EntityNotKnownException, TypeErrorException,
-                                               PropertyErrorException {
+                                               PropertyErrorException, FunctionNotSupportedException {
         mockSkeletonRelationship();
 
         deployedAPIHandler.addAssetWireRelationship(USER_ID,ENTITY_GUID, DEPLOYED_API_GUID);
@@ -101,8 +102,10 @@ class DeployedAPIHandlerTest {
     }
 
     private void mockCreatedEntity() throws InvalidParameterException, RepositoryErrorException, TypeErrorException,
-                                            PropertyErrorException, ClassificationErrorException, StatusNotSupportedException,
-                                            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException {
+                                            PropertyErrorException, ClassificationErrorException,
+                                            StatusNotSupportedException,
+                                            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+                                            FunctionNotSupportedException {
         EntityDetail mockedCreatedEntity = mock(EntityDetail.class);
         when(metadataCollection.addEntity(USER_ID, TYPE_DEF_GUID, null, null,
                 InstanceStatus.ACTIVE)).thenReturn(mockedCreatedEntity);

@@ -61,6 +61,7 @@ public class EntitiesCreatorHelper {
      * @throws StatusNotSupportedException status not supported
      * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the requesting user is
      * not authorized to issue this request
+     * @throws FunctionNotSupportedException the repository does not support this call
      */
     public String createEntity(String userId, InstanceProperties instanceProperties, String typeName) throws
                                                                                                       TypeErrorException,
@@ -69,6 +70,7 @@ public class EntitiesCreatorHelper {
                                                                                                       PropertyErrorException,
                                                                                                       ClassificationErrorException,
                                                                                                       StatusNotSupportedException,
+                                                                                                      FunctionNotSupportedException,
                                                                                                       org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException {
 
         EntityDetail entity = repositoryHelper.getSkeletonEntity(serviceName, "",
@@ -93,11 +95,17 @@ public class EntitiesCreatorHelper {
      * @throws StatusNotSupportedException status not supported
      * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the requesting user is
      * not authorized to issue this request
+     * @throws FunctionNotSupportedException the repository does not support this call
      */
-    public void addRelationship(String userId, String typeName, String entityOneGUID, String entityTwoGUID)
-            throws TypeErrorException, InvalidParameterException, RepositoryErrorException, PropertyErrorException,
-                   EntityNotKnownException, StatusNotSupportedException,
-                   org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException {
+    public void addRelationship(String userId, String typeName, String entityOneGUID, String entityTwoGUID) throws
+                                                                                                            TypeErrorException,
+                                                                                                            InvalidParameterException,
+                                                                                                            RepositoryErrorException,
+                                                                                                            PropertyErrorException,
+                                                                                                            EntityNotKnownException,
+                                                                                                            StatusNotSupportedException,
+                                                                                                            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+                                                                                                            FunctionNotSupportedException {
 
         Relationship relationship = repositoryHelper.getSkeletonRelationship(serviceName, "",
                 InstanceProvenanceType.LOCAL_COHORT, userId, typeName);
@@ -135,7 +143,6 @@ public class EntitiesCreatorHelper {
 
         return properties;
     }
-
 
 
     /**

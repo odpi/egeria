@@ -29,7 +29,7 @@ class DeployedAPIHandler {
      * collection and this access service's official name.
      *
      * @param serviceName         name of this service
-     * @param repositoryConnector connector to the property server.
+     * @param repositoryConnector connector to the property server
      */
     DeployedAPIHandler(String serviceName, OMRSRepositoryConnector repositoryConnector,
                        OMRSMetadataCollection metadataCollection) {
@@ -60,13 +60,15 @@ class DeployedAPIHandler {
      * @throws PropertyErrorException there is a problem with one of the other parameters
      * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the requesting user is
      * not authorized to issue this request
+     * @throws FunctionNotSupportedException the repository does not support this call
      */
     String createDeployedAPI(String userId, String name, String description, String latestChange,
                              List<String> zoneMembership) throws UserNotAuthorizedException, TypeErrorException,
                                                                  ClassificationErrorException,
                                                                  StatusNotSupportedException,
                                                                  org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-                                                                 InvalidParameterException, RepositoryErrorException, PropertyErrorException {
+                                                                 InvalidParameterException, RepositoryErrorException,
+                                                                 PropertyErrorException, FunctionNotSupportedException {
         errorHandler.validateUserId(userId, "createDeployedAPI");
 
         InstanceProperties instanceProperties = entitiesCreatorHelper.createAssetInstanceProperties(userId, name,
@@ -78,7 +80,7 @@ class DeployedAPIHandler {
      * Create PortInterface relationships between a Port and the corresponding DeployedAPI
      *
      * @param userId          the name of the calling user
-     * @param assetGuid        the unique identifier of the asset
+     * @param assetGuid       the unique identifier of the asset
      * @param deployedAPIGuid the unique identifier of the deployed api
      *
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -86,12 +88,13 @@ class DeployedAPIHandler {
      * @throws StatusNotSupportedException status not supported
      * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the requesting user
      * is not authorized to issue this request
-     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws InvalidParameterException one of the parameters is null or invalid
      * @throws RepositoryErrorException no metadata collection
-     * @throws PropertyErrorException there is a problem with one of the other parameters.
-     * @throws EntityNotKnownException the entity instance is not known in the metadata collection.
+     * @throws PropertyErrorException there is a problem with one of the other parameters
+     * @throws EntityNotKnownException the entity instance is not known in the metadata collection
+     * @throws FunctionNotSupportedException the repository does not support this call
      */
-    void addAssetWireRelationship(String userId,String assetGuid, String deployedAPIGuid) throws
+    void addAssetWireRelationship(String userId, String assetGuid, String deployedAPIGuid) throws
                                                                                            UserNotAuthorizedException,
                                                                                            TypeErrorException,
                                                                                            StatusNotSupportedException,
@@ -99,7 +102,8 @@ class DeployedAPIHandler {
                                                                                            EntityNotKnownException,
                                                                                            InvalidParameterException,
                                                                                            RepositoryErrorException,
-                                                                                           PropertyErrorException {
+                                                                                           PropertyErrorException,
+                                                                                           FunctionNotSupportedException {
         errorHandler.validateUserId(userId, "addAssetWireRelationship");
 
         entitiesCreatorHelper.addRelationship(userId, ASSET_WIRE_RELATIONSHIP_TYPE_NAME, assetGuid, deployedAPIGuid);

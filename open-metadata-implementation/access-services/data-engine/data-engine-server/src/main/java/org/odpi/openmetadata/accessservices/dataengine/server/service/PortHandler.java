@@ -55,12 +55,15 @@ class PortHandler {
      * @throws PropertyErrorException there is a problem with one of the other parameters
      * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the requesting user is
      * not authorized to issue this request
+     * @throws FunctionNotSupportedException the repository does not support this call
      */
     String createPort(String userId, String displayName) throws UserNotAuthorizedException, TypeErrorException,
                                                                 ClassificationErrorException,
                                                                 StatusNotSupportedException,
                                                                 org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-                                                                InvalidParameterException, RepositoryErrorException, PropertyErrorException {
+                                                                InvalidParameterException, RepositoryErrorException,
+                                                                PropertyErrorException,
+                                                                FunctionNotSupportedException {
         errorHandler.validateUserId(userId, "createPort");
 
         InstanceProperties instanceProperties = entitiesCreatorHelper.createPortInstanceProperties(displayName);
@@ -70,29 +73,31 @@ class PortHandler {
     /**
      * Create PortInterface relationships between a Port and the corresponding DeployedAPI
      *
-     * @param userId      the name of the calling user
-     * @param portGuid the unique identifier of the port
-     * @param deployedAPIGuid      the unique identifier of the deployed api
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @param userId          the name of the calling user
+     * @param portGuid        the unique identifier of the port
+     * @param deployedAPIGuid the unique identifier of the deployed api
      *
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws TypeErrorException unknown or invalid type
      * @throws StatusNotSupportedException status not supported
      * @throws org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException the requesting user
      * is not authorized to issue this request
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws RepositoryErrorException no metadata collection
-     * @throws PropertyErrorException there is a problem with one of the other parameters.
-     * @throws EntityNotKnownException the entity instance is not known in the metadata collection.
+     * @throws PropertyErrorException there is a problem with one of the other parameters
+     * @throws EntityNotKnownException the entity instance is not known in the metadata collection
+     * @throws FunctionNotSupportedException the repository does not support this call
      */
     void addPortInterfaceRelationship(String userId, String portGuid, String deployedAPIGuid) throws
-                                                                                               UserNotAuthorizedException,
-                                                                                               TypeErrorException,
-                                                                                               StatusNotSupportedException,
-                                                                                               org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-                                                                                               EntityNotKnownException,
-                                                                                               InvalidParameterException,
-                                                                                               RepositoryErrorException,
-                                                                                               PropertyErrorException {
+                                                                                              UserNotAuthorizedException,
+                                                                                              TypeErrorException,
+                                                                                              StatusNotSupportedException,
+                                                                                              org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+                                                                                              EntityNotKnownException,
+                                                                                              InvalidParameterException,
+                                                                                              RepositoryErrorException,
+                                                                                              PropertyErrorException,
+                                                                                              FunctionNotSupportedException {
         errorHandler.validateUserId(userId, "addAssetWireRelationship");
 
         entitiesCreatorHelper.addRelationship(userId, PORT_INTERFACE_RELATIONSHIP_TYPE_NAME, portGuid,
