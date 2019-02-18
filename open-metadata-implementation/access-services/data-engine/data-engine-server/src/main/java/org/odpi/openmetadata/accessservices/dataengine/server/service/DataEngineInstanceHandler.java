@@ -9,7 +9,6 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
-
 /**
  * DataEngineInstanceHandler retrieves information from the instance map for the access service instances.
  * The instance map is thread-safe. Instances are added and removed by the DataEngineAdmin class.
@@ -26,7 +25,6 @@ class DataEngineInstanceHandler {
     DataEngineInstanceHandler() {
         DataEngineRegistration.registerAccessService();
     }
-
 
     /**
      * Retrieve the metadata collection for the access service.
