@@ -127,7 +127,7 @@ public class DataEngineRestServices {
         } catch (TypeErrorException | StatusNotSupportedException | InvalidParameterException | PropertyErrorException |
                 ClassificationErrorException | RepositoryErrorException |
                 org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException |
-                EntityNotKnownException e) {
+                EntityNotKnownException | FunctionNotSupportedException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
         } catch (UserNotAuthorizedException |
                 PropertyServerException e) {
@@ -170,7 +170,7 @@ public class DataEngineRestServices {
         } catch (TypeErrorException | StatusNotSupportedException | InvalidParameterException | PropertyErrorException |
                 ClassificationErrorException | RepositoryErrorException |
                 org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException |
-                EntityNotKnownException e) {
+                EntityNotKnownException | FunctionNotSupportedException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
 
         } catch (UserNotAuthorizedException |
