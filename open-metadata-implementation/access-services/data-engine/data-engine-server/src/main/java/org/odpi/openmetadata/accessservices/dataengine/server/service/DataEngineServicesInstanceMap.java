@@ -13,9 +13,7 @@ import java.util.Map;
  * Instances of this class call the synchronized static methods to work with the map.
  */
 class DataEngineServicesInstanceMap {
-
     private static Map<String, DataEngineServicesInstance> instanceMap = new HashMap<>();
-
 
     /**
      * Add a new server instance to the server map.
@@ -27,7 +25,6 @@ class DataEngineServicesInstanceMap {
         instanceMap.put(serverName, instance);
     }
 
-
     /**
      * Return the instance for this server.
      *
@@ -38,7 +35,6 @@ class DataEngineServicesInstanceMap {
         return instanceMap.get(serverName);
     }
 
-
     /**
      * Remove the instance for this server.
      *
@@ -48,13 +44,11 @@ class DataEngineServicesInstanceMap {
         instanceMap.remove(serverName);
     }
 
-
     /**
      * Constructor
      */
     DataEngineServicesInstanceMap() {
     }
-
 
     /**
      * Return the instance for this server.
