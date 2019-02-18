@@ -14,6 +14,7 @@ public class RangerTagDef {
     private Date createTime;
     private Date updateTime;
     private Long version;
+    private String name;
 
     public Long getId() {
         return id;
@@ -79,6 +80,14 @@ public class RangerTagDef {
         this.version = version;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String toString() {
         return "RangerTagDef{" +
@@ -90,6 +99,7 @@ public class RangerTagDef {
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +
                 ", version=" + version +
+                ", name='" + name + '\'' +
                 '}';
     }
 }

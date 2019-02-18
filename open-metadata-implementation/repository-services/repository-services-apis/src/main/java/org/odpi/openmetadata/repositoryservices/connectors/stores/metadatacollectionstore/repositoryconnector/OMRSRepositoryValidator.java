@@ -714,14 +714,12 @@ public interface OMRSRepositoryValidator
      * @param classificationProperties  properties to test
      * @param methodName  method receiving the call
      * @throws PropertyErrorException  classification name is null
-     * @throws TypeErrorException  the classification is invalid for this entity
      */
     void validateClassificationProperties(String             sourceName,
                                           String             classificationName,
                                           String             propertiesParameterName,
                                           InstanceProperties classificationProperties,
-                                          String             methodName) throws PropertyErrorException,
-                                                                                TypeErrorException;
+                                          String             methodName) throws PropertyErrorException;
 
 
     /**
@@ -1140,10 +1138,13 @@ public interface OMRSRepositoryValidator
      *
      * @param matchProperties  the properties to match.
      * @param instanceProperties  the properties from the instance.
+     * @param exactMatch is this an exact match (or false = fuzzy match)
      * @return integer count of the matching properties.
+     * @throws InvalidParameterException invalid search criteria
      */
     int countMatchingPropertyValues(InstanceProperties       matchProperties,
-                                    InstanceProperties       instanceProperties);
+                                    InstanceProperties       instanceProperties,
+                                    boolean                  exactMatch) throws InvalidParameterException;
 
 
     /**
@@ -1152,10 +1153,15 @@ public interface OMRSRepositoryValidator
      *
      * @param matchProperties  the properties to match.
      * @param instanceHeader  the header properties from the instance.
+     * @param instanceProperties  the effectivity dates.
+     * @param exactMatch is this an exact match (or false = fuzzy match)
      * @return integer count of the matching properties.
+     * @throws InvalidParameterException invalid search criteria
      */
     int countMatchingHeaderPropertyValues(InstanceProperties       matchProperties,
-                                          InstanceAuditHeader      instanceHeader);
+                                          InstanceAuditHeader      instanceHeader,
+                                          InstanceProperties       instanceProperties,
+                                          boolean                  exactMatch) throws InvalidParameterException;
 
 
     /**
@@ -1165,12 +1171,15 @@ public interface OMRSRepositoryValidator
      * @param instanceHeader the header of the instance.
      * @param instanceProperties  the properties from the instance.
      * @param matchCriteria  rule on how the match should occur.
+     * @param exactMatch is this an exact match (or false = fuzzy match)
      * @return boolean flag indicating whether the two sets of properties match
+     * @throws InvalidParameterException invalid search criteria
      */
     boolean verifyMatchingInstancePropertyValues(InstanceProperties   matchProperties,
                                                  InstanceAuditHeader  instanceHeader,
                                                  InstanceProperties   instanceProperties,
-                                                 MatchCriteria        matchCriteria);
+                                                 MatchCriteria        matchCriteria,
+                                                 boolean              exactMatch) throws InvalidParameterException;
 
 
     /**
@@ -1223,6 +1232,62 @@ public interface OMRSRepositoryValidator
                                                         InstanceProperties  properties,
                                                         String              searchCriteria,
                                                         String              methodName) throws RepositoryErrorException;
+
+
+    /**
+     * Search for property values exactly matching the supplied property value
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param properties list of properties associated with the in instance
+     * @param searchPropertyValue property value as a string
+     * @param methodName name of the method requiring the search.
+     * @return boolean indicating whether the search criteria is located in any of the string parameter values.
+     * @throws RepositoryErrorException the properties are not properly set up in the instance
+     */
+    boolean verifyInstancePropertiesMatchPropertyValue(String              sourceName,
+                                                       InstanceProperties  properties,
+                                                       String              searchPropertyValue,
+                                                       String              methodName) throws RepositoryErrorException;
+
+
+    /**
+     * Return the string form of a property value.  Can be used as propertyValue on find property
+     * value calls.
+     *
+     * @param instancePropertyValue value to extract the string from
+     * @return extracted string value.
+     */
+    String getStringFromPropertyValue(InstancePropertyValue   instancePropertyValue);
+
+
+    /**
+     * Return the string form of the instance properties.  Can be used as propertyValue on find property
+     * value calls.
+     *
+     * @param instanceProperties value to extract the string from
+     * @return extracted string value.
+     */
+    String getStringValuesFromInstancePropertiesAsArray(InstanceProperties   instanceProperties);
+
+
+    /**
+     * Return the string form of the instance properties.  Can be used as propertyValue on find property
+     * value calls.
+     *
+     * @param instanceProperties value to extract the string from
+     * @return extracted string value.
+     */
+    String getStringValuesFromInstancePropertiesAsMap(InstanceProperties   instanceProperties);
+
+
+    /**
+     * Return the string form of the instance properties.  Can be used as propertyValue on find property
+     * value calls.
+     *
+     * @param instanceProperties value to extract the string from
+     * @return extracted string value.
+     */
+    String getStringValuesFromInstancePropertiesAsStruct(InstanceProperties   instanceProperties);
 
 
     /**

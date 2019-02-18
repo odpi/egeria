@@ -28,9 +28,9 @@ ENV PATH /usr/lib/jvm/java-8-openjdk-amd64/bin:/usr/local/apache-maven/bin:/usr/
 # Working directory - root home
 WORKDIR /root
 COPY dist/pom.xml .
-RUN mvn -DremoteRepositories=https://nexus.odpi.org/content/repositories/snapshots/ org.apache.maven.plugins:maven-dependency-plugin:3.1.1:get -Dartifact=org.odpi.egeria:igc-repository-proxy:0.3-SNAPSHOT
-RUN mvn install org.apache.maven.plugins:maven-dependency-plugin:3.1.1:copy -Dartifact=org.odpi.egeria:igc-repository-proxy:0.3-SNAPSHOT -DoutputDirectory=.
+RUN mvn -DremoteRepositories=https://nexus.odpi.org/content/repositories/snapshots/ org.apache.maven.plugins:maven-dependency-plugin:3.1.1:get -Dartifact=org.odpi.egeria:igc-repository-proxy:1.1-SNAPSHOT
+RUN mvn install org.apache.maven.plugins:maven-dependency-plugin:3.1.1:copy -Dartifact=org.odpi.egeria:igc-repository-proxy:1.1-SNAPSHOT -DoutputDirectory=.
 
 # now launch the igc repository proxy
-CMD [ "java", "-jar", "./igc-repository-proxy-0.3-SNAPSHOT.jar" ]
+CMD [ "java", "-jar", "./igc-repository-proxy-1.1-SNAPSHOT.jar" ]
 

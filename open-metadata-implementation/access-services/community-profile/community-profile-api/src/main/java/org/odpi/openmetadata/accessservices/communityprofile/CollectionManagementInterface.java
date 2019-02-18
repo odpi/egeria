@@ -146,6 +146,7 @@ public interface CollectionManagementInterface
      * @param userId          userId of user making request.
      * @param collectionGUID  unique identifier of the collection.
      * @param anchorGUID      unique identifier of referenceable object that the collection should be attached to.
+     *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
@@ -163,6 +164,7 @@ public interface CollectionManagementInterface
      * @param userId          userId of user making request.
      * @param collectionGUID  unique identifier of the collection.
      * @param anchorGUID      unique identifier of referenceable object that the collection should be attached to.
+     *
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.

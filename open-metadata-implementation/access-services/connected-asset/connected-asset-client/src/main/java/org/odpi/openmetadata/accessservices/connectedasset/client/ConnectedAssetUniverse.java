@@ -28,7 +28,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
 
 
     /**
-     * Constructor used by Asset Consumer OMAS for getAssetProperties() with no authentication
+     * Constructor used by Asset Consumer OMAS for getExtendedProperties() with no authentication
      * information being attached to the HTTP requests.  The calling user of the specific
      * request flows as a property in the URL.
      *
@@ -61,7 +61,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
 
 
     /**
-     * Constructor used by Asset Consumer OMAS for getAssetProperties() where a userId and password
+     * Constructor used by Asset Consumer OMAS for getExtendedProperties() where a userId and password
      * of the local calling server are embedded in the HTTP requests.  The calling user of the specific
      * request flows as a property in the URL.
      *
