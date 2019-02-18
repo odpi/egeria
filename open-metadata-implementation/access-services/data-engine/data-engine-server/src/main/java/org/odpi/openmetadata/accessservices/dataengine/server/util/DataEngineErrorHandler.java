@@ -19,8 +19,8 @@ public class DataEngineErrorHandler {
      * @param methodName name of the method where the exception occurs
      * @throws NewInstanceException a problem occurred during initialization
      */
-    public void handleNewInstanceException(DataEngineErrorCode errorCode,
-                                           String methodName) throws NewInstanceException {
+    public void handleNewInstanceException(DataEngineErrorCode errorCode, String methodName) throws
+                                                                                             NewInstanceException {
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
         throw new NewInstanceException(errorCode.getHttpErrorCode(),
@@ -39,8 +39,8 @@ public class DataEngineErrorHandler {
      * @param methodName name of the method where the exception occurs
      * @throws PropertyServerException no available instance for the requested server
      */
-    public void handlePropertyServerException(DataEngineErrorCode errorCode,
-                                              String methodName) throws PropertyServerException {
+    public void handlePropertyServerException(DataEngineErrorCode errorCode, String methodName) throws
+                                                                                                PropertyServerException {
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
         throw new PropertyServerException(errorCode.getHttpErrorCode(),
