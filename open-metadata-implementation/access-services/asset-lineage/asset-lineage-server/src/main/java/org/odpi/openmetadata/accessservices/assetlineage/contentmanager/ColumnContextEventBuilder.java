@@ -3,21 +3,14 @@
 package org.odpi.openmetadata.accessservices.assetlineage.contentmanager;
 
 
-import org.odpi.openmetadata.accessservices.assetlineage.events.*;
+import org.odpi.openmetadata.accessservices.assetlineage.events.BusinessTerm;
 import org.odpi.openmetadata.accessservices.assetlineage.utils.Constants;
 import org.odpi.openmetadata.accessservices.assetlineage.utils.EntityPropertiesUtils;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * ColumnContextEventBuilder loads the full context for a column from a relational table
