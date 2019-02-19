@@ -111,7 +111,15 @@ public class ViewHandler implements Callable<View> {
         return event.getTableSource().getProtocol() + event.getTableSource().getNetworkAddress() + "." + event.getTableSource().getDatabaseName() + "." + event.getTableSource().getSchemaName();
     }
 
-    private void deleteView(InformationViewEvent event) throws UserNotAuthorizedException, EntityNotKnownException, EntityNotDeletedException, InvalidParameterException, RepositoryErrorException, FunctionNotSupportedException {
+    private void deleteView(InformationViewEvent event) throws UserNotAuthorizedException,
+                                                               EntityNotKnownException,
+                                                               EntityNotDeletedException,
+                                                               InvalidParameterException,
+                                                               RepositoryErrorException,
+                                                               FunctionNotSupportedException,
+                                                               TypeErrorException,
+                                                               PropertyErrorException,
+                                                               PagingErrorException {
         String informationViewQualifiedName = getQualifiedNameForInformationView();
         String qualifiedNameForTableType = informationViewQualifiedName + "." + event.getTableSource().getTableName() + Constants.TYPE_SUFFIX;
         EntityDetail tableTypeEntity = omEntityDao.getEntity(Constants.RELATIONAL_TABLE_TYPE,

@@ -13,6 +13,7 @@ import org.odpi.openmetadata.accessservices.informationview.utils.EntityProperti
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,12 +28,14 @@ public class ReportHandler {
     private org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao omEntityDao;
     private OMRSAuditLog auditLog;
 
-    public ReportHandler(OMEntityDao omEntityDao, LookupHelper lookupHelper, OMRSAuditLog auditLog) {
-        reportCreator = new ReportCreator(omEntityDao, lookupHelper, auditLog);
-        reportUpdater = new ReportUpdater(omEntityDao, lookupHelper, auditLog);
+    public ReportHandler(OMEntityDao omEntityDao, LookupHelper lookupHelper, OMRSRepositoryHelper repositoryHelper, OMRSAuditLog auditLog) {
+        reportCreator = new ReportCreator(omEntityDao, lookupHelper, repositoryHelper, auditLog);
+        reportUpdater = new ReportUpdater(omEntityDao, lookupHelper, repositoryHelper, auditLog);
         this.omEntityDao = omEntityDao;
         this.auditLog = auditLog;
     }
+
+
 
     public void submitReportModel(ReportRequestBody payload) throws ReportCreationException {
 
@@ -44,7 +47,7 @@ public class ReportHandler {
                 networkAddress = networkAddress + ":" + url.getPort();
             }
 
-            String qualifiedNameForReport = networkAddress + "." + payload.getId();
+            String qualifiedNameForReport = networkAddress + BasicOperation.SEPARATOR + payload.getId();
             InstanceProperties reportProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForReport)
                     .withStringProperty(Constants.NAME, payload.getReportName())

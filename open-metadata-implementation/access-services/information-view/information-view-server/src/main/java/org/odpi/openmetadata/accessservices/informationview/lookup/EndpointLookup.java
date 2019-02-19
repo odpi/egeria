@@ -39,9 +39,9 @@ public class EndpointLookup extends EntityLookup<Source> {
     @Override
     protected InstanceProperties getMatchingProperties(Source source) {
         InstanceProperties matchProperties = new InstanceProperties();
-        matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", matchProperties, Constants.NETWORK_ADDRESS, source.getNetworkAddress(), "findEndpoint");
+        matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties, Constants.NETWORK_ADDRESS, source.getNetworkAddress(), "findEndpoint");
         if(!StringUtils.isEmpty(source.getProtocol())){
-            matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", matchProperties, Constants.PROTOCOL, source.getProtocol(), "findEndpoint");
+            matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties, Constants.PROTOCOL, source.getProtocol(), "findEndpoint");
         }
         return matchProperties;
     }

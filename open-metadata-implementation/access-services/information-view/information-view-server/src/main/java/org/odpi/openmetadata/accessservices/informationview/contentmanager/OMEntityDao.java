@@ -168,38 +168,55 @@ public class OMEntityDao {
      * @param qualifiedName qualified name property of the entity to be retrieved
      * @return the existing entity with the given qualified name or null if it doesn't exist
      */
-    public EntityDetail getEntity(String typeName, String qualifiedName)  {
+    public EntityDetail getEntity(String typeName, String qualifiedName) throws PagingErrorException,
+                                                                                UserNotAuthorizedException,
+                                                                                FunctionNotSupportedException,
+                                                                                InvalidParameterException,
+                                                                                RepositoryErrorException,
+                                                                                PropertyErrorException,
+                                                                                TypeErrorException {
         InstanceProperties matchProperties = buildMatchingInstanceProperties(Constants.QUALIFIED_NAME, qualifiedName);
+        List<EntityDetail> existingEntities;
+        existingEntities = findEntities(matchProperties, typeName);
+        return checkEntities(existingEntities, qualifiedName);
+    }
+
+    public List<EntityDetail> findEntities(InstanceProperties matchProperties, String typeName) throws
+                                                                                                PagingErrorException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                FunctionNotSupportedException,
+                                                                                                InvalidParameterException,
+                                                                                                RepositoryErrorException,
+                                                                                                PropertyErrorException,
+                                                                                                TypeErrorException {
         TypeDef typeDef = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.USER_ID, typeName);
         List<EntityDetail> existingEntities;
         try {
-            existingEntities = enterpriseConnector.getMetadataCollection()
-                    .findEntitiesByProperty(Constants.USER_ID,
-                            typeDef.getGUID(),
-                            matchProperties,
-                            MatchCriteria.ALL,
-                            0,
-                            Collections.singletonList(InstanceStatus.ACTIVE),
-                            null,
-                            null,
-                            null,
-                            SequencingOrder.ANY,
-                            PAGE_SIZE);
-            return checkEntities(existingEntities, qualifiedName);
-        } catch (Exception e) {
+            existingEntities = enterpriseConnector.getMetadataCollection().findEntitiesByProperty(Constants.USER_ID,
+                                                                                                    typeDef.getGUID(),
+                                                                                                    matchProperties,
+                                                                                                    MatchCriteria.ALL,
+                                                                                                    0,
+                                                                                                    Collections.singletonList(InstanceStatus.ACTIVE),
+                                                                                                    null,
+                                                                                                    null,
+                                                                                                    null,
+                                                                                                    SequencingOrder.ANY,
+                                                                                                    PAGE_SIZE);
+        } catch (InvalidParameterException | PropertyErrorException | TypeErrorException | FunctionNotSupportedException | UserNotAuthorizedException | RepositoryErrorException e) {
             InformationViewErrorCode auditCode = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
             auditLog.logException("getEntity",
                     auditCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage("qualifiedName: " + qualifiedName, e.getMessage()),
-                    "entity with properties{" + matchProperties + "}",
+                    auditCode.getFormattedErrorMessage("matchProperties: " + matchProperties, e.getMessage()),
+                    "entity with properties {" + matchProperties + "}",
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
                     e);
 
-            return null;
+            throw e;
         }
-
+        return existingEntities;
     }
 
 

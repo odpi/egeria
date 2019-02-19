@@ -26,18 +26,13 @@ import java.util.List;
 import java.util.Map;
 
 
-public abstract class DataViewBasicOperation {
+public abstract class DataViewBasicOperation extends BasicOperation{
 
 
     private static final Logger log = LoggerFactory.getLogger(DataViewBasicOperation.class);
-    protected final org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao omEntityDao;
-    private OMRSRepositoryHelper helper;
-    protected final OMRSAuditLog auditLog;
 
     protected DataViewBasicOperation(OMEntityDao omEntityDao, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
-        this.omEntityDao = omEntityDao;
-        this.auditLog = auditLog;
-        this.helper = helper;
+        super(omEntityDao, helper, auditLog);
     }
 
 
@@ -76,16 +71,8 @@ public abstract class DataViewBasicOperation {
                 .withStringProperty(Constants.NATIVE_CLASS, dataViewTable.getNativeClass())
                 .withStringProperty(Constants.DESCRIPTION, dataViewTable.getDescription())
                 .build();
-        EntityDetail dataViewTableEntity = omEntityDao.addEntity(Constants.DATA_VIEW_SCHEMA_ATTRIBUTE,
-                qualifiedNameForDataViewTable,
-                sectionProperties);
-
-
-        omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
-                parentGuid,
-                dataViewTableEntity.getGUID(),
-                Constants.INFORMATION_VIEW_OMAS_NAME,
-                new InstanceProperties());
+        EntityDetail dataViewTableEntity = createSchemaType(Constants.DATA_VIEW_SCHEMA_ATTRIBUTE,
+                qualifiedNameForDataViewTable, sectionProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
 
 
         EntityDetail schemaTypeEntity = addSchemaType(qualifiedNameForDataViewTable, dataViewTableEntity, Constants.COMPLEX_SCHEMA_TYPE, null);
@@ -116,15 +103,7 @@ public abstract class DataViewBasicOperation {
             columnProperties = helper.addMapPropertyToInstance("", columnProperties, "additionalProperties", prop, "");
 
 
-        EntityDetail dataViewColumnEntity = omEntityDao.addEntity(Constants.DERIVED_DATA_VIEW_SCHEMA_ATTRIBUTE,
-                qualifiedNameForColumn,
-                columnProperties);
-
-        omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
-                parentGuid,
-                dataViewColumnEntity.getGUID(),
-                Constants.INFORMATION_VIEW_OMAS_NAME,
-                new InstanceProperties());
+        EntityDetail dataViewColumnEntity = createSchemaType(Constants.DERIVED_DATA_VIEW_SCHEMA_ATTRIBUTE, qualifiedNameForColumn, columnProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
 
         addBusinessTerm(dataViewColumn, dataViewColumnEntity);
         addQueryTargets(dataViewColumn, dataViewColumnEntity);
@@ -155,17 +134,12 @@ public abstract class DataViewBasicOperation {
         }
 
 
-        EntityDetail schemaTypeEntity = omEntityDao.addEntity(schemaAttributeType,
-                qualifiedNameForType,
-                typeProperties);
-
-        omEntityDao.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
-                schemaAttributeEntity.getGUID(),
-                schemaTypeEntity.getGUID(),
-                Constants.INFORMATION_VIEW_OMAS_NAME,
-                new InstanceProperties());
+        EntityDetail schemaTypeEntity = createSchemaType(schemaAttributeType, qualifiedNameForType, typeProperties,
+                Constants.SCHEMA_ATTRIBUTE_TYPE, schemaAttributeEntity.getGUID());
         return schemaTypeEntity;
     }
+
+
 
 
     private void addBusinessTerm(DataViewColumn dataViewColumn, EntityDetail derivedColumnEntity) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, StatusNotSupportedException, TypeDefNotKnownException, EntityNotKnownException {

@@ -8,7 +8,6 @@ import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
@@ -22,8 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ColumnLookup extends EntityLookup<DatabaseColumnSource> {
 
@@ -38,26 +35,9 @@ public class ColumnLookup extends EntityLookup<DatabaseColumnSource> {
         EntityDetail tableEntity = parentChain.lookupEntity(source.getTableSource());
         if(tableEntity == null)
             return null;
-        List<Relationship> relationships = omEntityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, tableEntity.getGUID());
-        List<String> allTableTypeGuids = relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
 
-        List<Relationship> allTableTypeToColumnRelationships = allTableTypeGuids.stream().flatMap(e -> {
-            try {
-                return omEntityDao.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, e).stream();
-            } catch (Exception exception) {
-                throw new RuntimeException(exception.getMessage(), exception);
-            }
-        }).collect(Collectors.toList());
-
-        Set<String> allLinkedColumnsGuids = allTableTypeToColumnRelationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toSet());
-        List<EntityDetail> allLinkedColumnsList = allLinkedColumnsGuids.stream().map(guid -> {
-            try {
-                return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);
-            } catch (Exception e) {
-                throw new RuntimeException(e.getMessage(), e);
-            }
-        }).collect(Collectors.toList());
-
+        List<String> relatedEntitiesGuids = getRelatedEntities(tableEntity.getGUID(), Constants.SCHEMA_ATTRIBUTE_TYPE);
+        List<EntityDetail> allLinkedColumnsList = getRelatedEntities(relatedEntitiesGuids, Constants.ATTRIBUTE_FOR_SCHEMA);
         EntityDetail columnEntity = lookupEntity(source, allLinkedColumnsList);
         log.info("Column found [{}]", columnEntity);
         return columnEntity;
