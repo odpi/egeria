@@ -11,11 +11,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
@@ -32,7 +28,9 @@ import org.slf4j.LoggerFactory;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public abstract class EntityLookup<T extends Source> {
 
@@ -65,39 +63,12 @@ public abstract class EntityLookup<T extends Source> {
 
 
     public EntityDetail findEntity(InstanceProperties matchProperties, String typeDefName) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
-        TypeDef typeDef = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.USER_ID, typeDefName);
-        List<EntityDetail> existingEntities;
-        try {
-            existingEntities = enterpriseConnector.getMetadataCollection()
-                    .findEntitiesByProperty(Constants.USER_ID,
-                            typeDef.getGUID(),
-                            matchProperties,
-                            MatchCriteria.ALL,
-                            0,
-                            Collections.singletonList(InstanceStatus.ACTIVE),
-                            null,
-                            null,
-                            null,
-                            SequencingOrder.ANY,
-                            PAGE_SIZE);
-            return matchExactlyToUniqueEntity(existingEntities, matchProperties);
-        } catch (InvalidParameterException | PropertyErrorException | TypeErrorException | FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException e) {
-            InformationViewErrorCode auditCode = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
-            auditLog.logException("findEntity",
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage("matchingProperties: " + matchProperties),
-                    "entity with properties{" + matchProperties + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e);
-            throw e;
-        }
+        List<EntityDetail> existingEntities =  omEntityDao.findEntities(matchProperties, typeDefName);
+        return matchExactlyToUniqueEntity(existingEntities, matchProperties);
     }
 
 
     public EntityDetail matchExactlyToUniqueEntity(List<EntityDetail> entities, final InstanceProperties matchingProperties) throws RuntimeException {
-
         if (entities != null && !entities.isEmpty()) {
             List<EntityDetail> filteredEntities = entities.stream().filter(e -> matchProperties(e, matchingProperties)).collect(Collectors.toList());
             if (filteredEntities == null || filteredEntities.isEmpty()) {
@@ -124,4 +95,36 @@ public abstract class EntityLookup<T extends Source> {
     }
 
 
+    protected List<String> getRelatedEntities(String parentEntityGuid, String relationshipTypeName) {
+        List<Relationship> relationships = omEntityDao.getRelationships(relationshipTypeName, parentEntityGuid);
+        return relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
+    }
+
+
+    protected List<EntityDetail> getRelatedEntities(List<String> allEntitiesGuids, String relationshipType) {
+        List<Relationship> allSchemaTypeToTableRelationships = allEntitiesGuids.stream().flatMap(e ->  getRelationships(e, relationshipType).stream()).collect(Collectors.toList());
+        return getEntityDetails(allSchemaTypeToTableRelationships);
+    }
+
+    private List<Relationship> getRelationships(String guid, String relationshipType) {
+        List<Relationship> relationships = omEntityDao.getRelationships(relationshipType, guid);
+        if(relationships != null && !relationships.isEmpty()){
+            return relationships;
+        }
+        return Collections.emptyList();
+    }
+
+    protected List<EntityDetail> getEntityDetails(List<Relationship> relationships) {
+        Set<String> allLinkedTablesGuids = relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toSet());
+        return allLinkedTablesGuids.stream().map(guid -> getEntity(guid)).collect(Collectors.toList());
+    }
+
+
+    protected EntityDetail getEntity(String guid) {
+        try {
+            return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
 }

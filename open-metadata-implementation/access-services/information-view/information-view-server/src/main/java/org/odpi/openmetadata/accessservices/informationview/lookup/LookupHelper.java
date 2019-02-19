@@ -27,20 +27,32 @@ public class LookupHelper {
     private OMRSRepositoryConnector enterpriseConnector;
     private OMEntityDao omEntityDao;
     private OMRSAuditLog auditLog;
+    private EndpointLookup endpointLookup;
+    private DatabaseLookup databaseLookup;
+    private DatabaseSchemaLookup databaseSchemaLookup;
+    private TableLookup tableLookup;
+    private ColumnLookup columnLookup;
 
     public LookupHelper(OMRSRepositoryConnector enterpriseConnector, OMEntityDao omEntityDao, OMRSAuditLog auditLog) {
         this.enterpriseConnector = enterpriseConnector;
         this.auditLog = auditLog;
         this.omEntityDao = omEntityDao;
+        endpointLookup = new EndpointLookup(enterpriseConnector, omEntityDao, null, auditLog);
+        databaseLookup = new DatabaseLookup(enterpriseConnector, omEntityDao, endpointLookup, auditLog);
+        databaseSchemaLookup = new DatabaseSchemaLookup(enterpriseConnector, omEntityDao, databaseLookup, auditLog);
+        tableLookup = new TableLookup(enterpriseConnector, omEntityDao, databaseSchemaLookup, auditLog);
+        columnLookup = new ColumnLookup(enterpriseConnector, omEntityDao, tableLookup, auditLog);
     }
 
-    public EntityDetail lookupDatabaseColumn(DatabaseColumnSource source) throws EntityNotKnownException, UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+    public EntityDetail lookupDatabaseColumn(DatabaseColumnSource source) throws EntityNotKnownException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 FunctionNotSupportedException,
+                                                                                 InvalidParameterException,
+                                                                                 RepositoryErrorException,
+                                                                                 PropertyErrorException,
+                                                                                 TypeErrorException,
+                                                                                 PagingErrorException {
         log.debug(MessageFormat.format("lookup database column {0}", source));
-        EndpointLookup endpointLookup = new EndpointLookup(enterpriseConnector, omEntityDao, null, auditLog);
-        DatabaseLookup databaseLookup = new DatabaseLookup(enterpriseConnector, omEntityDao, endpointLookup, auditLog);
-        DatabaseSchemaLookup databaseSchemaLookup = new DatabaseSchemaLookup(enterpriseConnector, omEntityDao, databaseLookup, auditLog);
-        TableLookup tableLookup = new TableLookup(enterpriseConnector, omEntityDao, databaseSchemaLookup, auditLog);
-        ColumnLookup columnLookup = new ColumnLookup(enterpriseConnector, omEntityDao, tableLookup, auditLog);
         return columnLookup.lookupEntity(source);
     }
 

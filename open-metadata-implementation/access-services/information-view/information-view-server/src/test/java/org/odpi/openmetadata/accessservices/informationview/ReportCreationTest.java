@@ -28,6 +28,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventExchangeRule;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSConnectorProvider;
@@ -51,6 +52,8 @@ public class ReportCreationTest {
     @Mock
     private OMRSRepositoryConnector enterpriseConnector;
     @Mock
+    private OMRSRepositoryHelper omrsRepositoryHelper;
+    @Mock
     private OMRSAuditLog auditLog;
     private ReportHandler reportHandler;
     private OMRSRepositoryContentManager localRepositoryContentManager = null;
@@ -62,7 +65,7 @@ public class ReportCreationTest {
         MockitoAnnotations.initMocks(this);
         omEntityDao = new OMEntityDao(enterpriseConnector, auditLog);
         lookupHelper = new LookupHelper(enterpriseConnector, omEntityDao, auditLog);
-        reportHandler = new ReportHandler(omEntityDao, lookupHelper, auditLog);
+        reportHandler = new ReportHandler(omEntityDao, lookupHelper, omrsRepositoryHelper, auditLog);
         OMRSRepositoryConnector repositoryConnector = initializeInMemoryRepositoryConnector();
         when(enterpriseConnector.getMetadataCollection()).thenReturn(repositoryConnector.getMetadataCollection());
         when(enterpriseConnector.getRepositoryHelper()).thenReturn(repositoryConnector.getRepositoryHelper());

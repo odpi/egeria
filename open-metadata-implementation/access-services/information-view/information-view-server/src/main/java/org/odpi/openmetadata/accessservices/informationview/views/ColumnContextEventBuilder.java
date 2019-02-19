@@ -75,8 +75,7 @@ public class ColumnContextEventBuilder {
     public List<String> getAssignedColumnsGuids(String businessTermGuid) throws Exception{
         List<String> guids = new ArrayList<>();
 
-        String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.SEMANTIC_ASSIGNMENT).getGUID();
-        List<Relationship> columnsAssigned = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, businessTermGuid, relationshipTypeGuid, 0, null, null, null, null, 0);
+        List<Relationship> columnsAssigned = getRelationships(Constants.SEMANTIC_ASSIGNMENT, businessTermGuid);
         if(columnsAssigned != null && !columnsAssigned.isEmpty()){
             return  columnsAssigned.stream().filter(r -> Constants.RELATIONAL_COLUMN.equals(r.getEntityOneProxy().getType().getTypeDefName())).map(e -> e.getEntityOneProxy().getGUID()).collect(Collectors.toList());
         }
@@ -191,8 +190,8 @@ public class ColumnContextEventBuilder {
     private ForeignKey getReferencedColumn(EntityDetail columnEntity) throws RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException, UserNotAuthorizedException, TypeErrorException, FunctionNotSupportedException, EntityNotKnownException, PagingErrorException, PropertyErrorException, EntityProxyOnlyException, RelationshipNotKnownException {
 
         log.debug("Load foreign keys for entity with guid {}", columnEntity.getGUID());
-        String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.FOREIGN_KEY).getGUID();
-        List<Relationship> columnForeignKeys = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, columnEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0);
+        List<Relationship> columnForeignKeys = getRelationships(Constants.FOREIGN_KEY, columnEntity.getGUID());
+
         if (columnForeignKeys == null || columnForeignKeys.isEmpty()) {
             return null;
         }
@@ -223,7 +222,38 @@ public class ColumnContextEventBuilder {
 
     }
 
-    public List<EntityDetail> getTablesForColumn(String columnEntityGuid) throws InvalidParameterException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, EntityProxyOnlyException, UserNotAuthorizedException, TypeErrorException, RepositoryErrorException {
+    private List<Relationship> getRelationships(String relationshipTypeName, String guid) throws InvalidParameterException,
+                                                                                        RepositoryErrorException,
+                                                                                        TypeDefNotKnownException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        TypeErrorException,
+                                                                                        EntityNotKnownException,
+                                                                                        PropertyErrorException,
+                                                                                        PagingErrorException,
+                                                                                        FunctionNotSupportedException {
+        String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID,
+                                                                                                    relationshipTypeName).getGUID();
+        return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID,
+                                                                                    guid,
+                                                                                    relationshipTypeGuid,
+                                                                                    0,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    null,
+                                                                                    0);
+    }
+
+    public List<EntityDetail> getTablesForColumn(String columnEntityGuid) throws InvalidParameterException,
+                                                                                 TypeDefNotKnownException,
+                                                                                 PropertyErrorException,
+                                                                                 EntityNotKnownException,
+                                                                                 FunctionNotSupportedException,
+                                                                                 PagingErrorException,
+                                                                                 EntityProxyOnlyException,
+                                                                                 UserNotAuthorizedException,
+                                                                                 TypeErrorException,
+                                                                                 RepositoryErrorException {
         log.debug("Load table for column with guid {}", columnEntityGuid);
         String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
         Relationship columnToTableType = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, columnEntityGuid, relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
@@ -282,9 +312,7 @@ public class ColumnContextEventBuilder {
     private BusinessTerm getBusinessTermAssociated(EntityDetail columnEntity) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, EntityNotKnownException, TypeDefNotKnownException, PropertyErrorException, FunctionNotSupportedException, PagingErrorException, EntityProxyOnlyException, TypeErrorException {
         log.debug("Load business term associated to column with guid {}", columnEntity.getGUID());
         BusinessTerm businessTerm = null;
-        String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.SEMANTIC_ASSIGNMENT).getGUID();
-
-        List<Relationship> btRelationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, columnEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0);
+        List<Relationship> btRelationships = getRelationships(Constants.SEMANTIC_ASSIGNMENT, columnEntity.getGUID());
         if (btRelationships != null && !btRelationships.isEmpty()) {
             Relationship btRelationship = btRelationships.get(0);
             String btGuid = getOtherEntityGuid(columnEntity.getGUID(), btRelationship);
@@ -340,8 +368,8 @@ public class ColumnContextEventBuilder {
         EntityDetail deployedDatabaseSchemaEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, deployedDatabaseSchemaGuid);
         InstanceProperties deployedDatabaseSchemaEntityProperties = deployedDatabaseSchemaEntity.getProperties();
         String schemaName = EntityPropertiesUtils.getStringValueForProperty(deployedDatabaseSchemaEntityProperties, Constants.NAME);
-        String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.DATA_CONTENT_FOR_DATASET).getGUID();
-        List<Relationship> dbRelationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, deployedDatabaseSchemaGuid, relationshipTypeGuid, 0, null, null, null, null, 0);
+        List<Relationship> dbRelationships = getRelationships(Constants.DATA_CONTENT_FOR_DATASET,
+                deployedDatabaseSchemaGuid);
         for (Relationship relationship : dbRelationships) {
             List<TableContextEvent> events = getDatabaseDetails(deployedDatabaseSchemaGuid, relationship);
             allEvents.addAll(events.stream().map(e -> {
@@ -395,16 +423,37 @@ public class ColumnContextEventBuilder {
     private TableContextEvent getConnectionDetails(String guid, Relationship relationship) throws Exception {
         log.debug("Load connection details for entity with guid {}", guid);
         String connectionEntityGUID = getOtherEntityGuid(guid, relationship);
-        String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.CONNECTION_TO_ENDPOINT).getGUID();
-
-        Relationship relationshipToEndpoint = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, connectionEntityGUID, relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
-        String endpointGuid = getOtherEntityGuid(connectionEntityGUID, relationshipToEndpoint);
+        String endpointGuid = getRelatedEntityGuid(connectionEntityGUID, Constants.CONNECTION_TO_ENDPOINT);
 
 
         TableContextEvent event = getEndpointDetails(endpointGuid);
         EntityDetail connectorTypeEntity = getConnectorTypeProviderName(connectionEntityGUID);
         event.getTableSource().setConnectorProviderName(EntityPropertiesUtils.getStringValueForProperty(connectorTypeEntity.getProperties(), Constants.CONNECTOR_PROVIDER_CLASSNAME));
         return event;
+    }
+
+    private String getRelatedEntityGuid(String connectionEntityGUID, String connectionToEndpoint) throws
+                                                                                                  InvalidParameterException,
+                                                                                                  RepositoryErrorException,
+                                                                                                  TypeDefNotKnownException,
+                                                                                                  UserNotAuthorizedException,
+                                                                                                  TypeErrorException,
+                                                                                                  EntityNotKnownException,
+                                                                                                  PropertyErrorException,
+                                                                                                  PagingErrorException,
+                                                                                                  FunctionNotSupportedException {
+        String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID,
+                                                                                                    connectionToEndpoint).getGUID();
+        Relationship relationshipToEndpoint = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID,
+                                                                                                                    connectionEntityGUID,
+                                                                                                                    relationshipTypeGuid,
+                                                                                                0,
+                                                                                                    null,
+                                                                                                            null,
+                                                                                                    null,
+                                                                                                        null,
+                                                                                                            0).get(0);
+        return getOtherEntityGuid(connectionEntityGUID, relationshipToEndpoint);
     }
 
     /**
@@ -418,9 +467,7 @@ public class ColumnContextEventBuilder {
      * @throws EntityNotKnownException
      */
     private EntityDetail getConnectorTypeProviderName(String connectionEntityGuid) throws RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException, TypeDefNotKnownException, TypeErrorException, FunctionNotSupportedException, PagingErrorException, PropertyErrorException {
-        String relationshipTypeGuid = enterpriseConnector.getMetadataCollection().getTypeDefByName(Constants.USER_ID, Constants.CONNECTION_CONNECTOR_TYPE).getGUID();
-        Relationship relationshipToConnectorType = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, connectionEntityGuid, relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
-        String connectorTypeGuid = getOtherEntityGuid(connectionEntityGuid, relationshipToConnectorType);
+        String connectorTypeGuid = getRelatedEntityGuid(connectionEntityGuid, Constants.CONNECTION_CONNECTOR_TYPE);
         return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, connectorTypeGuid);
 
     }
