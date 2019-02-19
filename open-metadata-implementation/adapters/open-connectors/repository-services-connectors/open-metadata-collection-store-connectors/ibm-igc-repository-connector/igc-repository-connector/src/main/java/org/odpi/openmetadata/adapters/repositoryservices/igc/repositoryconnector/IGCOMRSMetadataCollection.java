@@ -3955,16 +3955,17 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     }
 
     /**
-     * Retrieve an OMRS asset stub (shadow copy of last version of an asset) for the provided asset.
+     * Retrieve an OMRS asset stub (shadow copy of last version of an asset) for the provided asset details.
      * If there is no existing stub, will return null.
      *
-     * @param asset the asset for which to retrieve the OMRS stub
+     * @param rid the Repository ID (RID) of the asset for which to retrieve the OMRS stub
+     * @param type the IGC asset type of the asset for which to retrieve the OMRS stub
      * @return OMRSStub
      */
-    public OMRSStub getOMRSStubForAsset(Reference asset) {
+    public OMRSStub getOMRSStubForAsset(String rid, String type) {
 
         // We need to translate the provided asset into a unique name for the stub
-        String stubName = getStubNameFromAsset(asset);
+        String stubName = getStubNameForAsset(rid, type);
         IGCSearchCondition condition = new IGCSearchCondition(
                 "name",
                 "=",
@@ -3985,6 +3986,18 @@ public class IGCOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         }
         return stub;
 
+    }
+
+    /**
+     * Retrieve an OMRS asset stub (shadow copy of last version of an asset) for the provided asset.
+     * If there is no existing stub, will return null.
+     *
+     * @param asset the asset for which to retrieve the OMRS stub
+     * @return OMRSStub
+     */
+    public OMRSStub getOMRSStubForAsset(Reference asset) {
+        // We need to translate the provided asset into a unique name for the stub
+        return getOMRSStubForAsset(asset.getId(), asset.getType());
     }
 
     /**
