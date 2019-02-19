@@ -58,19 +58,17 @@ public class DataEngineRestServices {
             }
 
             String processName = processRequestBody.getName();
-            List<String> inputs = processRequestBody.getInputs();
-            List<String> outputs = processRequestBody.getOutputs();
             String description = processRequestBody.getDescription();
             String latestChange = processRequestBody.getLatestChange();
             List<String> zoneMembership = processRequestBody.getZoneMembership();
             String parentProcessGuid = processRequestBody.getParentProcessGuid();
             String displayName = processRequestBody.getDisplayName();
+            String portGuid = processRequestBody.getPortGuid();
 
             String processGuid = processHandler.createProcess(userId, processName, description, latestChange,
                     zoneMembership, displayName, parentProcessGuid);
 
-            processHandler.addInputRelationships(userId, processGuid, inputs);
-            processHandler.addOutputRelationships(userId, processGuid, outputs);
+            processHandler.addProcessPortRelationship(userId, processGuid, portGuid);
 
             response.setGuid(processGuid);
 
