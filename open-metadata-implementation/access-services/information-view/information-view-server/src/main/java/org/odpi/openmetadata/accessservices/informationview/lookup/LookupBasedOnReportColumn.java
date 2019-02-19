@@ -46,7 +46,7 @@ public class LookupBasedOnReportColumn implements LookupStrategy {
         while (parentReportSection != null) {
             builder = builder.insert(0, parentReportSection.getName() + SEPARATOR);
             if (parentReportSection.getParentReportSection() == null) {
-                builder = builder.insert(0, parentReportSection.getNetworkAddress() + SEPARATOR);
+                builder = builder.insert(0, parentReportSection.getReportSource().getNetworkAddress() + SEPARATOR + parentReportSection.getReportSource().getReportId() + SEPARATOR);
             }
             parentReportSection = parentReportSection.getParentReportSection();
         }
