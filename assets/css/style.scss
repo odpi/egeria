@@ -84,6 +84,20 @@ button {
   background: white;
 }
 
+code {
+  white-space: pre-wrap !important;
+  word-break: break-all !important;
+}
+
+.highlight {
+  background-color:#eeeeee;
+}
+
+pre {
+  margin-bottom:1%;
+}
+
+
 body {
   background-color:#ffffff !important;
   font-family: 'Lato', sans-serif !important;
