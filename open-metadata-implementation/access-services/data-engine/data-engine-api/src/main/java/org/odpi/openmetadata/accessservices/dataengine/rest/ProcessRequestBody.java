@@ -2,23 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.rest;
 
-import java.util.List;
 import java.util.Objects;
 
 public class ProcessRequestBody extends AssetRequestBody {
-    private List<String> inputs;
-    private List<String> outputs;
     private String displayName;
     private String parentProcessGuid;
-
-    public List<String> getInputs() {
-        return inputs;
-    }
-
-    public List<String> getOutputs() {
-        return outputs;
-    }
-
+    private String portGuid;
 
     public String getDisplayName() {
         return displayName;
@@ -26,6 +15,10 @@ public class ProcessRequestBody extends AssetRequestBody {
 
     public String getParentProcessGuid() {
         return parentProcessGuid;
+    }
+
+    public String getPortGuid() {
+        return portGuid;
     }
 
     /**
@@ -36,8 +29,6 @@ public class ProcessRequestBody extends AssetRequestBody {
     @Override
     public String toString() {
         return "ProcessRequestBody{" +
-                ", inputs=" + inputs +
-                ", outputs=" + outputs +
                 ", displayName='" + displayName + '\'' +
                 ", parentProcessId='" + parentProcessGuid + '\'' +
                 '}';
@@ -49,15 +40,14 @@ public class ProcessRequestBody extends AssetRequestBody {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         ProcessRequestBody that = (ProcessRequestBody) o;
-        return Objects.equals(inputs, that.inputs) &&
-                Objects.equals(outputs, that.outputs) &&
-                Objects.equals(displayName, that.displayName) &&
-                Objects.equals(parentProcessGuid, that.parentProcessGuid);
+        return Objects.equals(displayName, that.displayName) &&
+                Objects.equals(parentProcessGuid, that.parentProcessGuid) &&
+                Objects.equals(portGuid, that.portGuid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), inputs, outputs, displayName, parentProcessGuid);
+        return Objects.hash(super.hashCode(), displayName, parentProcessGuid, portGuid);
     }
 }
 

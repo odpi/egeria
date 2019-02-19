@@ -10097,8 +10097,8 @@ public class OpenMetadataTypesArchive
          * Set up end 2.
          */
         final String                     end2EntityType               = "Port";
-        final String                     end2AttributeName            = "ports";
-        final String                     end2AttributeDescription     = "Ports to the process";
+        final String                     end2AttributeName            = "port";
+        final String                     end2AttributeDescription     = "Port to the process";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 

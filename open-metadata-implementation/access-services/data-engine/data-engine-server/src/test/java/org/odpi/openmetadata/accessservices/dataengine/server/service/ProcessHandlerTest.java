@@ -45,7 +45,7 @@ class ProcessHandlerTest {
     private static final List<String> ZONE_MEMBERSHIP = Collections.singletonList("zone");
     private static final String PARENT_PROCESS_ID = "parentProcessId";
     private static final String ENTITY_GUID = "entityGuid";
-    private static final String DATA_SET_GUID = "dataSetGuid";
+    private static final String PORT_GUID = "portGuid";
 
     @Mock
     private OMRSMetadataCollection metadataCollection;
@@ -92,71 +92,24 @@ class ProcessHandlerTest {
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-400-001"));
     }
 
-
     @Test
-    void testAddInputRelationships() throws StatusNotSupportedException, UserNotAuthorizedException,
+    void testProcessPortRelationship() throws StatusNotSupportedException, UserNotAuthorizedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, InvalidParameterException,
             FunctionNotSupportedException, RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
 
-        mockSkeletonRelationship("ProcessInput");
+        mockSkeletonRelationship("ProcessPort");
 
-        processHandler.addInputRelationships(USER_ID, ENTITY_GUID, Collections.singletonList(DATA_SET_GUID));
+        processHandler.addProcessPortRelationship(USER_ID, ENTITY_GUID, PORT_GUID);
 
         verify(metadataCollection, times(1)).addRelationship(USER_ID, TYPE_DEF_GUID,
-                null, ENTITY_GUID, DATA_SET_GUID, InstanceStatus.ACTIVE);
-    }
-
-    @Test
-    void testAddInputRelationshipsNoInput() throws StatusNotSupportedException, UserNotAuthorizedException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, InvalidParameterException,
-            FunctionNotSupportedException,
-            RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
-
-        processHandler.addInputRelationships(USER_ID, ENTITY_GUID, null);
-
-        verify(metadataCollection, times(0)).addRelationship(USER_ID, TYPE_DEF_GUID,
-                null, ENTITY_GUID, DATA_SET_GUID, InstanceStatus.ACTIVE);
+                null, ENTITY_GUID, PORT_GUID, InstanceStatus.ACTIVE);
     }
 
     @Test
     void testAddInputRelationshipsThrowsUserNotAuthorizedException() {
 
         Throwable thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                processHandler.addInputRelationships(null, ENTITY_GUID, Collections.singletonList(DATA_SET_GUID)));
-
-        assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-400-001"));
-    }
-
-
-    @Test
-    void testAddOutputRelationships() throws StatusNotSupportedException, UserNotAuthorizedException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, InvalidParameterException,
-            FunctionNotSupportedException, RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
-
-        mockSkeletonRelationship("ProcessOutput");
-
-        processHandler.addOutputRelationships(USER_ID, ENTITY_GUID, Collections.singletonList(DATA_SET_GUID));
-
-        verify(metadataCollection, times(1)).addRelationship(USER_ID, TYPE_DEF_GUID,
-                null, ENTITY_GUID, DATA_SET_GUID, InstanceStatus.ACTIVE);
-    }
-
-    @Test
-    void testAddOutputRelationshipsNoInput() throws StatusNotSupportedException, UserNotAuthorizedException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, InvalidParameterException,
-            FunctionNotSupportedException, RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
-
-        processHandler.addOutputRelationships(USER_ID, ENTITY_GUID, null);
-
-        verify(metadataCollection, times(0)).addRelationship(USER_ID, TYPE_DEF_GUID,
-                null, ENTITY_GUID, DATA_SET_GUID, InstanceStatus.ACTIVE);
-    }
-
-    @Test
-    void testAddOutputRelationshipsThrowsUserNotAuthorizedException() {
-
-        Throwable thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                processHandler.addOutputRelationships(null, ENTITY_GUID, Collections.singletonList(DATA_SET_GUID)));
+                processHandler.addProcessPortRelationship(null, ENTITY_GUID, PORT_GUID));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-400-001"));
     }
