@@ -6,8 +6,8 @@ package org.odpi.openmetadata.accessservices.assetlineage.utils;
 public class Constants {
 
 
-    public static final String INFORMATION_VIEW_OMAS_NAME = "InformationViewOmas";
-    public static final String INFORMATION_VIEW = "InformationView";
+    public static final String ASSET_LINEAGE_OMAS_NAME = "AssetLineageOmas";
+    public static final String ASSET_LINEAGE = "AssetLineage";
     public static final String RELATIONAL_TABLE = "RelationalTable";
     public static final String RELATIONAL_COLUMN = "RelationalColumn";
     public static final String BUSINESS_TERM = "GlossaryTerm";
@@ -38,7 +38,7 @@ public class Constants {
     public static final String IS_UNIQUE = "isUnique";
     public static final String QUERY = "query";
     public static final String FORMULA = "formula";
-    public static final String INFO_VIEW_PREFIX = "iv_";
+    public static final String ASSET_LINEAGE_PREFIX = "al_";
     public static final String TYPE_SUFFIX = "_type";
     public static final String CONNECTION_CONNECTOR_TYPE = "ConnectionConnectorType";
     public static final String RELATIONAL_COLUMN_TYPE = "RelationalColumnType";
@@ -53,7 +53,7 @@ public class Constants {
     public static final String ADDITIONAL_PROPERTIES = "additionalProperties";
     public static final String CONNECTOR_PROVIDER_CLASSNAME = "connectorProviderClassName";
     public static final String GAIAN_DB_NODE_NAME = "GDName";
-    public static final String USER_ID = "informationViewOmas";
+    public static final String USER_ID = "assetLineageOmas";
     public static final String CONNECTOR_TYPE = "ConnectorType";
     public static final String DEPLOYED_DATABASE_SCHEMA = "DeployedDatabaseSchema";
     public static final String ENDPOINT = "Endpoint";

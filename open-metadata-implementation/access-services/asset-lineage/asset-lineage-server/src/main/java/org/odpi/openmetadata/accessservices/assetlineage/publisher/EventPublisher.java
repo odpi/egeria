@@ -234,11 +234,13 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
         SemanticAssignment semanticAssignment = new SemanticAssignment();
         EntityDetail businessTerm = retrieveReferencedEntity(relationship.getEntityTwoProxy().getGUID());
         semanticAssignment.setBusinessTerm(columnContextEventBuilder.buildBusinessTerm(businessTerm));
+
         DatabaseColumn databaseColumn = new DatabaseColumn();
         EntityDetail columnEntity = retrieveReferencedEntity(relationship.getEntityOneProxy().getGUID());
         databaseColumn.setGuid(columnEntity.getGUID());
         databaseColumn.setName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.NAME));
         databaseColumn.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.QUALIFIED_NAME));
+
         semanticAssignment.setDatabaseColumn(databaseColumn);
         sendEvent(semanticAssignment);
     }
@@ -412,7 +414,6 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
         log.debug("event: ", event);
 
         try {
-
             assetLineageTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(event));
             successFlag = true;
 

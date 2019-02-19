@@ -18,8 +18,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 public class SemanticAssignment extends AssetLineageHeader{
-    private BusinessTerm businessTerm;
     private DatabaseColumn databaseColumn;
+    private BusinessTerm businessTerm;
 
     public BusinessTerm getBusinessTerm() {
         return businessTerm;
@@ -40,8 +40,8 @@ public class SemanticAssignment extends AssetLineageHeader{
     @Override
     public String toString() {
         return "SemanticAssignment{" +
-                "businessTerm=" + businessTerm +
-                ", databaseColumn=" + databaseColumn +
+                "databaseColumn=" + databaseColumn +
+                ", businessTerm=" + businessTerm +
                 '}';
     }
 }
