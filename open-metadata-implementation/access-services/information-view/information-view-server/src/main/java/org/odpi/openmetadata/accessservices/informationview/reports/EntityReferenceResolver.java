@@ -40,6 +40,8 @@ public class EntityReferenceResolver {
     public String getSourceGuid(Source source) throws UserNotAuthorizedException, FunctionNotSupportedException,
                                                       InvalidParameterException, RepositoryErrorException,
                                                       PropertyErrorException, TypeErrorException, PagingErrorException {
+        if (source == null)
+            return null;
         if (!StringUtils.isEmpty(source.getGuid())) {
             return source.getGuid();
         }
@@ -64,6 +66,8 @@ public class EntityReferenceResolver {
                                                                         RepositoryErrorException,
                                                                         PropertyErrorException, TypeErrorException,
                                                                         PagingErrorException {
+        if (businessTerm == null)
+            return null;
         if (!StringUtils.isEmpty(businessTerm.getGuid())) {
             return businessTerm.getGuid();
         }
