@@ -6,9 +6,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.publisher;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.contentmanager.ColumnContextEventBuilder;
-import org.odpi.openmetadata.accessservices.assetlineage.events.AssetLineageHeader;
-import org.odpi.openmetadata.accessservices.assetlineage.events.DatabaseColumn;
-import org.odpi.openmetadata.accessservices.assetlineage.events.SemanticAssignment;
+import org.odpi.openmetadata.accessservices.assetlineage.events.*;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.utils.Constants;
 import org.odpi.openmetadata.accessservices.assetlineage.utils.EntityPropertiesUtils;
@@ -60,6 +58,11 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
                                       String originatorServerType,
                                       String originatorOrganizationName,
                                       EntityDetail entity) {
+        NewEntityEvent newEntityEvent = new NewEntityEvent();
+        newEntityEvent.setNewProperties(entity.getProperties());
+        newEntityEvent.setType(entity.getType());
+        newEntityEvent.setGuid(entity.getGUID());
+        sendEvent(newEntityEvent);
 
     }
 
@@ -70,7 +73,14 @@ public class EventPublisher implements OMRSInstanceEventProcessor {
                                           String originatorOrganizationName,
                                           EntityDetail oldEntity,
                                           EntityDetail entity) {
-
+        UpdatedEntityEvent updatedEntityEvent = new UpdatedEntityEvent();
+        updatedEntityEvent.setNewProperties(entity.getProperties());
+        if(oldEntity != null) {
+            updatedEntityEvent.setOldProperties(oldEntity.getProperties());
+        }
+        updatedEntityEvent.setType(entity.getType());
+        updatedEntityEvent.setGuid(entity.getGUID());
+        sendEvent(updatedEntityEvent);
     }
 
     public void processUndoneEntityEvent(String sourceName,
