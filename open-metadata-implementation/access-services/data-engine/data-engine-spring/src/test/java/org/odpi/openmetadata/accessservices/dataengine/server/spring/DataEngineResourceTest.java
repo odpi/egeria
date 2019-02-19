@@ -9,6 +9,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
+import org.odpi.openmetadata.accessservices.dataengine.rest.DeployedAPIRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRestServices;
 
@@ -30,12 +32,28 @@ class DataEngineResourceTest {
 
     @Test
     void testCreateProcess() {
-
         ProcessRequestBody processRequestBody = new ProcessRequestBody();
 
         dataEngineResource.createProcess(USER, SERVER_NAME, processRequestBody);
 
-        verify(dataEngineRestServices, times(1))
-                .createProcess(USER, SERVER_NAME, processRequestBody);
+        verify(dataEngineRestServices, times(1)).createProcess(USER, SERVER_NAME, processRequestBody);
+    }
+
+    @Test
+    void testCreatePort() {
+        PortRequestBody portRequestBody = new PortRequestBody();
+
+        dataEngineResource.createPort(USER, SERVER_NAME, portRequestBody);
+
+        verify(dataEngineRestServices, times(1)).createPort(USER, SERVER_NAME, portRequestBody);
+    }
+
+    @Test
+    void testCreateDeployedAPI() {
+        DeployedAPIRequestBody deployedAPIRequestBody = new DeployedAPIRequestBody();
+
+        dataEngineResource.createDeployedAPI(USER, SERVER_NAME, deployedAPIRequestBody);
+
+        verify(dataEngineRestServices, times(1)).createDeployedAPI(USER, SERVER_NAME, deployedAPIRequestBody);
     }
 }
