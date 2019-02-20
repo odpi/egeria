@@ -67,20 +67,17 @@ public class Constants {
     public static final String PRIMARY_KEY = "PrimaryKey";
     public static final String FOREIGN_KEY = "ForeignKey";
     public static final String DEPLOYED_REPORT = "DeployedReport";
-    public static final String DATA_VIEW = "DataView";
     public static final String ID = "id";
     public static final String DOCUMENT_SCHEMA_TYPE = "DocumentSchemaType";
     public static final String DOCUMENT_SCHEMA_ATTRIBUTE = "DocumentSchemaAttribute";
     public static final String COMPLEX_SCHEMA_TYPE = "ComplexSchemaType";
-    public static final String DATA_VIEW_SCHEMA_ATTRIBUTE = "DataViewSchemaAttribute";
     public static final String LAST_MODIFIER = "lastModifier";
     public static final String LAST_MODIFIED_TIME = "lastModifiedTime";
     public static final String CREATE_TIME = "createdTime";
     public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
     public static final String SCHEMA_TYPE = "SchemaType";
     public static final String NATIVE_CLASS = "nativeClass";
+    public static final String AGGREGATING_FUNCTION = "aggregatingFunction";
     public static final String COMMENT = "comment";
-    public static final String REGULAR_AGGREGATE = "regularAggregate";
     public static final String PRIMITIVE_SCHEMA_TYPE = "PrimitiveSchemaType";
-    public static final String DERIVED_DATA_VIEW_SCHEMA_ATTRIBUTE = "DerivedDataViewSchemaAttribute";
 }
