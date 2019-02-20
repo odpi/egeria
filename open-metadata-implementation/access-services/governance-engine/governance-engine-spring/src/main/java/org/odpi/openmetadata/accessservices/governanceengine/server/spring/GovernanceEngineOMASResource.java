@@ -7,8 +7,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Governa
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.server.GovernanceEngineRESTServices;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,8 +23,6 @@ import java.util.List;
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/governance-engine/users/{userId}")
 public class GovernanceEngineOMASResource {
     private GovernanceEngineRESTServices restAPI = new GovernanceEngineRESTServices();
-
-    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineOMASResource.class);
 
     /**
      * Returns the list of governance tags for the enforcement engine
@@ -92,7 +89,7 @@ public class GovernanceEngineOMASResource {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/assets")
+    @RequestMapping(method = RequestMethod.GET, path = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
     GovernedAssetListAPIResponse getGovernedAssets(@PathVariable String serverName,
                                                    @PathVariable String userId,
                                                    @RequestParam(value = "classification", required = false) List<String> classification,

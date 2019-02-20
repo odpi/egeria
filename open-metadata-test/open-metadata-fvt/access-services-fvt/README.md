@@ -1,11 +1,13 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
   
-# Access Services Functional Verification Test (FVT) Resources
+# Open Metadata Access Services (OMAS) Functional Verification Test (FVT) Suite
   
-The access services FVT resources
+Functional Verification Tests (FVTs) test multiple components together to
+ensure they function correctly.  Each
 
-* **[subject-area-fvt](subject-area-fvt)** - provides the resources to run subject area access services FVT. 
+* **[asset-consumer-fvt](asset-consumer-fvt)** - provides the resources to run Asset Consumer OMAS FVTs. 
+* **[subject-area-fvt](subject-area-fvt)** - provides the resources to run Subject Area OMAS FVTs. 
 
 
 

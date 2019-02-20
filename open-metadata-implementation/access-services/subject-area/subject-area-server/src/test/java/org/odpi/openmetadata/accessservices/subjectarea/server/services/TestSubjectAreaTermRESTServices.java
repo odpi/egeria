@@ -671,13 +671,13 @@ public class TestSubjectAreaTermRESTServices {
             }
 
             @Override
-            public List<EntityDetail> findEntitiesByProperty(String userId, String entityTypeGUID, InstanceProperties matchProperties, MatchCriteria matchCriteria, int fromEntityElement, List<InstanceStatus> limitResultsByStatus, List<String> limitResultsByClassification, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            public List<EntityDetail> findEntitiesByProperty(String userId, String entityTypeGUID, InstanceProperties  matchProperties, MatchCriteria    matchCriteria, int fromEntityElement, List<InstanceStatus> limitResultsByStatus, List<String> limitResultsByClassification, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
             {
                 return null;
             }
 
             @Override
-            public List<EntityDetail> findEntitiesByClassification(String userId, String entityTypeGUID, String classificationName, InstanceProperties matchClassificationProperties, MatchCriteria matchCriteria, int fromEntityElement, List<InstanceStatus> limitResultsByStatus, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, ClassificationErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            public List<EntityDetail> findEntitiesByClassification(String userId, String entityTypeGUID, String classificationName, InstanceProperties  matchClassificationProperties, MatchCriteria    matchCriteria, int fromEntityElement, List<InstanceStatus> limitResultsByStatus, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, ClassificationErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
             {
                 return null;
             }
@@ -707,7 +707,7 @@ public class TestSubjectAreaTermRESTServices {
             }
 
             @Override
-            public List<Relationship> findRelationshipsByProperty(String userId, String relationshipTypeGUID, InstanceProperties matchProperties, MatchCriteria matchCriteria, int fromRelationshipElement, List<InstanceStatus> limitResultsByStatus, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
+            public List<Relationship> findRelationshipsByProperty(String userId, String relationshipTypeGUID, InstanceProperties matchProperties, MatchCriteria  matchCriteria, int fromRelationshipElement, List<InstanceStatus> limitResultsByStatus, Date asOfTime, String sequencingProperty, SequencingOrder sequencingOrder, int pageSize) throws InvalidParameterException, TypeErrorException, RepositoryErrorException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, UserNotAuthorizedException
             {
                 return null;
             }
@@ -737,7 +737,7 @@ public class TestSubjectAreaTermRESTServices {
             }
 
             @Override
-            public EntityDetail addEntity(String userId, String entityTypeGUID, InstanceProperties initialProperties, List<Classification> initialClassifications, InstanceStatus initialStatus) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException
+            public EntityDetail addEntity(String userId, String entityTypeGUID, InstanceProperties initialProperties, List<Classification> initialClassifications, InstanceStatus initialStatus) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException, FunctionNotSupportedException
             {
                 return null;
             }
@@ -749,13 +749,13 @@ public class TestSubjectAreaTermRESTServices {
             }
 
             @Override
-            public EntityDetail updateEntityStatus(String userId, String entityGUID, InstanceStatus newStatus) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, StatusNotSupportedException, UserNotAuthorizedException
+            public EntityDetail updateEntityStatus(String userId, String entityGUID, InstanceStatus newStatus) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, StatusNotSupportedException, UserNotAuthorizedException, FunctionNotSupportedException
             {
                 return null;
             }
 
             @Override
-            public EntityDetail updateEntityProperties(String userId, String entityGUID, InstanceProperties properties) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, PropertyErrorException, UserNotAuthorizedException
+            public EntityDetail updateEntityProperties(String userId, String entityGUID, InstanceProperties properties) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, PropertyErrorException, UserNotAuthorizedException, FunctionNotSupportedException
             {
                 return null;
             }
@@ -773,7 +773,7 @@ public class TestSubjectAreaTermRESTServices {
             }
 
             @Override
-            public void purgeEntity(String userId, String typeDefGUID, String typeDefName, String deletedEntityGUID) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, EntityNotDeletedException, UserNotAuthorizedException
+            public void purgeEntity(String userId, String typeDefGUID, String typeDefName, String deletedEntityGUID) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, EntityNotDeletedException, UserNotAuthorizedException, FunctionNotSupportedException
             {
 
             }
@@ -785,37 +785,37 @@ public class TestSubjectAreaTermRESTServices {
             }
 
             @Override
-            public EntityDetail classifyEntity(String userId, String entityGUID, String classificationName, InstanceProperties classificationProperties) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, ClassificationErrorException, PropertyErrorException, UserNotAuthorizedException
+            public EntityDetail classifyEntity(String userId, String entityGUID, String classificationName, InstanceProperties classificationProperties) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, ClassificationErrorException, PropertyErrorException, UserNotAuthorizedException, FunctionNotSupportedException
             {
                 return null;
             }
 
             @Override
-            public EntityDetail declassifyEntity(String userId, String entityGUID, String classificationName) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, ClassificationErrorException, UserNotAuthorizedException
+            public EntityDetail declassifyEntity(String userId, String entityGUID, String classificationName) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, ClassificationErrorException, UserNotAuthorizedException, FunctionNotSupportedException
             {
                 return null;
             }
 
             @Override
-            public EntityDetail updateEntityClassification(String userId, String entityGUID, String classificationName, InstanceProperties properties) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, ClassificationErrorException, PropertyErrorException, UserNotAuthorizedException
+            public EntityDetail updateEntityClassification(String userId, String entityGUID, String classificationName, InstanceProperties properties) throws InvalidParameterException, RepositoryErrorException, EntityNotKnownException, ClassificationErrorException, PropertyErrorException, UserNotAuthorizedException, FunctionNotSupportedException
             {
                 return null;
             }
 
             @Override
-            public Relationship addRelationship(String userId, String relationshipTypeGUID, InstanceProperties initialProperties, String entityOneGUID, String entityTwoGUID, InstanceStatus initialStatus) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, EntityNotKnownException, StatusNotSupportedException, UserNotAuthorizedException
+            public Relationship addRelationship(String userId, String relationshipTypeGUID, InstanceProperties initialProperties, String entityOneGUID, String entityTwoGUID, InstanceStatus initialStatus) throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, EntityNotKnownException, StatusNotSupportedException, UserNotAuthorizedException, FunctionNotSupportedException
             {
                 return null;
             }
 
             @Override
-            public Relationship updateRelationshipStatus(String userId, String relationshipGUID, InstanceStatus newStatus) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, StatusNotSupportedException, UserNotAuthorizedException
+            public Relationship updateRelationshipStatus(String userId, String relationshipGUID, InstanceStatus newStatus) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, StatusNotSupportedException, UserNotAuthorizedException, FunctionNotSupportedException
             {
                 return null;
             }
 
             @Override
-            public Relationship updateRelationshipProperties(String userId, String relationshipGUID, InstanceProperties properties) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, PropertyErrorException, UserNotAuthorizedException
+            public Relationship updateRelationshipProperties(String userId, String relationshipGUID, InstanceProperties properties) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, PropertyErrorException, UserNotAuthorizedException, FunctionNotSupportedException
             {
                 return null;
             }
@@ -833,7 +833,7 @@ public class TestSubjectAreaTermRESTServices {
             }
 
             @Override
-            public void purgeRelationship(String userId, String typeDefGUID, String typeDefName, String deletedRelationshipGUID) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, RelationshipNotDeletedException, UserNotAuthorizedException
+            public void purgeRelationship(String userId, String typeDefGUID, String typeDefName, String deletedRelationshipGUID) throws InvalidParameterException, RepositoryErrorException, RelationshipNotKnownException, RelationshipNotDeletedException, UserNotAuthorizedException, FunctionNotSupportedException
             {
 
             }

@@ -222,7 +222,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -412,7 +412,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -502,7 +502,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -604,7 +604,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -663,7 +663,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (RepositoryErrorException e) {
+        } catch (RepositoryErrorException  | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -720,7 +720,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -831,7 +831,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (RepositoryErrorException e) {
+        } catch (RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -986,7 +986,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,

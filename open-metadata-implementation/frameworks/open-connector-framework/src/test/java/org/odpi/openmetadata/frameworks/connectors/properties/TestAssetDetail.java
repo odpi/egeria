@@ -61,7 +61,7 @@ public class TestAssetDetail
         testObject.setOwner("TestOwner");
         testObject.setShortDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
-        testObject.setAssetProperties(assetProperties);
+        testObject.setExtendedProperties(assetProperties);
 
         return new AssetDetail(testObject,
                                externalIdentifiers,
@@ -93,7 +93,7 @@ public class TestAssetDetail
         testObject.setOwner("TestOwner");
         testObject.setShortDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
-        testObject.setAssetProperties(assetProperties);
+        testObject.setExtendedProperties(assetProperties);
 
         return new AssetDetail(testObject,
                                externalIdentifiers,
@@ -125,7 +125,7 @@ public class TestAssetDetail
         testObject.setOwner("TestOwner");
         testObject.setShortDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
-        testObject.setAssetProperties(assetProperties);
+        testObject.setExtendedProperties(assetProperties);
 
         return new AssetDetail(testObject,
                                new MockAssetExternalIdentifiers(null, 45, 8),

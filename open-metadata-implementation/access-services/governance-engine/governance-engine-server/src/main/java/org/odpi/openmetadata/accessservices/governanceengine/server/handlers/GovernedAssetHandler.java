@@ -108,11 +108,9 @@ public class GovernedAssetHandler {
                                                  List<String> type) throws InvalidParameterException, EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException {
         final String methodName = "getGovernedAssets";
         final String classificationParameter = "classification";
-        final String typeParameter = "type";
 
         GovernanceEngineValidator.validateUserId(userId, methodName);
         GovernanceEngineValidator.validateClassification(classification, classificationParameter, methodName);
-        GovernanceEngineValidator.validateType(classification, typeParameter, methodName);
 
         if (classification == null) {
             List<String> classificationTypeDef = getClassificationsDef(userId);
@@ -353,6 +351,8 @@ public class GovernedAssetHandler {
         governedAsset.setGuid(entity.getGUID());
         governedAsset.setType(entity.getType().getTypeDefName());
         governedAsset.setFullQualifiedName(getResourceValue(entity, QUALIFIED_NAME));
+        log.info("Qualified name: " + getResourceValue(entity, QUALIFIED_NAME));
+
         governedAsset.setName(getResourceValue(entity, DISPLAY_NAME));
         governedAsset.setContexts(buildDatabaseContext(entity));
 
