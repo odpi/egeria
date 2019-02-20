@@ -610,7 +610,12 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                         List<ChangeSet.Change> changesForProperty = changeSet.getChangesForProperty(igcProperty);
                         log.debug(" ...... found differences for property: {}", changesForProperty);
                         for (RelationshipMapping relationshipMapping : relationshipMap.get(igcProperty)) {
-                            processRelationships(relationshipMapping, latestVersion, changesForProperty, relationshipGUID);
+                            processRelationships(
+                                    relationshipMapping,
+                                    latestVersion,
+                                    changesForProperty,
+                                    relationshipGUID
+                            );
                         }
                     }
                 }
@@ -666,6 +671,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                                     relationshipMapping,
                                     latestVersion,
                                     relatedAsset,
+                                    referenceListProperties,
                                     change,
                                     relationshipTriggerGUID
                             );
@@ -678,6 +684,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                                 relationshipMapping,
                                 latestVersion,
                                 relatedAsset,
+                                referenceListProperties,
                                 change,
                                 relationshipTriggerGUID
                         );
@@ -685,15 +692,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                         // In cases where a single object has been replaced, the JSON Patch may only show each property
                         // as needing replacement rather than the object as a whole -- so just watch for any changes to '_id'
                         // and if found pull back a new asset reference for the related asset to use
-                        log.debug(" ... found single Reference by '_id', processing it");
-                        Reference relatedAsset = igcRestClient.getAssetRefById((String) relatedValue);
-                        processOneOrMoreRelationships(
-                                relationshipMapping,
-                                latestVersion,
-                                relatedAsset,
-                                change,
-                                relationshipTriggerGUID
-                        );
+                        log.error(" ... change consolidation in ChangeSet did not work: {}", change);
                     } else {
                         log.warn("Expected relationship for path '{}' for guid {} but found neither Reference nor ReferenceList: {}", change.getIgcPropertyPath(), latestVersion.getId(), relatedValue);
                     }
@@ -716,13 +715,15 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
      * @param relationshipMapping the relationship mapping through which to translate the relationship
      * @param latestVersion the latest version (non-stub) for one end of the relationship
      * @param relatedAsset the latest version (non-stub) for the other end of the relationship
-     * @param change the JSON Patch entry indicating a specific change
+     * @param referenceListProperties the list of IGC property names that contain reference lists
+     * @param change the JSON Patch entry indicating a specific change (always from the perspective of latestVersion)
      * @param relationshipTriggerGUID passthrough of GUID for relationship that triggered this process (if not triggered
      *                                directly from an event), null if not triggered by another relationship
      */
     private void processOneOrMoreRelationships(RelationshipMapping relationshipMapping,
                                                Reference latestVersion,
                                                Reference relatedAsset,
+                                               List<String> referenceListProperties,
                                                ChangeSet.Change change,
                                                String relationshipTriggerGUID) {
 
@@ -775,6 +776,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                             relationshipMapping,
                             proxyOne,
                             proxyTwo,
+                            referenceListProperties,
                             change,
                             relationshipTriggerGUID
                     );
@@ -795,6 +797,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
      * @param relationshipMapping the relationship mapping through which to translate the relationship
      * @param proxyOne the latest version (non-stub) for one end of the relationship
      * @param proxyTwo the latest version (non-stub) for the other end of the relationship
+     * @param referenceListProperties the list of IGC property names that contain reference lists
      * @param change the JSON Patch entry indicating a specific change
      * @param relationshipTriggerGUID passthrough of GUID for relationship that triggered this process (if not triggered
      *                                directly from an event), null if not triggered by another relationship
@@ -802,6 +805,7 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
     private void processSingleRelationship(RelationshipMapping relationshipMapping,
                                            Reference proxyOne,
                                            Reference proxyTwo,
+                                           List<String> referenceListProperties,
                                            ChangeSet.Change change,
                                            String relationshipTriggerGUID) {
 
@@ -876,7 +880,14 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                                 sendNewRelationship(relationship);
                                 break;
                             case "replace":
-                                sendUpdatedRelationship(relationship);
+                                sendReplacedRelationship(
+                                        relationshipMapping,
+                                        relationship,
+                                        proxyOne,
+                                        proxyTwo,
+                                        referenceListProperties,
+                                        change
+                                );
                                 break;
                             default:
                                 log.warn("Unknown action '{}' for relationship {}", changeType, relationshipGUID);
@@ -993,6 +1004,78 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
     }
 
     /**
+     * Send out the events needed for a relationship that has been replaced: basically a DeletePurge followed by a
+     * New.
+     *
+     * @param relationshipMapping the mapping to use for translating this relationship
+     * @param relationship the new relationship
+     * @param proxyOne the IGC asset used as proxyOne of the new relationship
+     * @param proxyTwo the IGC asset used as proxyTwo of the new relationship
+     * @param referenceListProperties the list of IGC property names that contain reference lists
+     * @param change the change that indicated this relationship replacement
+     */
+    private void sendReplacedRelationship(RelationshipMapping relationshipMapping,
+                                          Relationship relationship,
+                                          Reference proxyOne,
+                                          Reference proxyTwo,
+                                          List<String> referenceListProperties,
+                                          ChangeSet.Change change) {
+
+        String newRelationshipGUID = relationship.getGUID();
+
+        String igcPropertyName = change.getIgcPropertyName();
+        Reference oldRelatedAsset = (Reference) change.getOldValue(referenceListProperties);
+        Reference newRelatedAsset = (Reference) change.getNewValue(referenceListProperties);
+        if (oldRelatedAsset != null) {
+            log.debug("Processing relationship replacement for: {}", oldRelatedAsset);
+            String newRelatedAssetRID = newRelatedAsset.getId();
+            try {
+                RelationshipDef relationshipDef = (RelationshipDef) igcomrsMetadataCollection.getTypeDefByName(localServerUserId,
+                        relationshipMapping.getOmrsRelationshipType());
+                // Determine which end of the relationship is which (proxyOne vs proxyTwo), and
+                // retrieve the old related asset from the stub itself
+                Reference oldProxyOne = null;
+                Reference oldProxyTwo = null;
+                if (newRelatedAssetRID.equals(proxyOne.getId())) {
+                    oldProxyOne = oldRelatedAsset;
+                    oldProxyTwo = proxyTwo;
+                } else if (newRelatedAssetRID.equals(proxyTwo.getId())) {
+                    oldProxyOne = proxyOne;
+                    oldProxyTwo = oldRelatedAsset;
+                }
+                if (oldProxyOne != null && oldProxyTwo != null) {
+                    // Re-construct the old relationship GUID from this replaced RID
+                    String oldRelationshipGUID = RelationshipMapping.getRelationshipGUID(
+                            relationshipMapping,
+                            oldProxyOne,
+                            oldProxyTwo,
+                            igcPropertyName,
+                            null,
+                            true
+                    );
+                    log.debug(" ... calculated old relationship GUID: {}", oldRelationshipGUID);
+                    sendPurgedRelationship(
+                            relationshipMapping,
+                            relationshipDef,
+                            oldRelationshipGUID,
+                            igcPropertyName,
+                            oldProxyOne,
+                            oldProxyTwo
+                    );
+                } else {
+                    log.warn("Unable to find previous version for relationship replacement -- sending only new: {}", newRelationshipGUID);
+                }
+            } catch (InvalidParameterException | RepositoryErrorException | TypeDefNotKnownException | UserNotAuthorizedException e) {
+                log.error("Unable to find relationship type definition '{}' / not supported for guid: {}", relationshipMapping.getOmrsRelationshipType(), newRelationshipGUID);
+            }
+        } else {
+            log.warn("Unable to find any previous version for the relationship replacement -- sending only new: {}", newRelationshipGUID);
+        }
+        sendNewRelationship(relationship);
+
+    }
+
+    /**
      * Send an event out on OMRS topic for a purged relationship.
      *
      * @param relationshipMapping the relationship mapping to use to determine what to delete and purge
@@ -1033,7 +1116,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
                         getIgcAssetFromStubPayload(stubTwo),
                         igcPropertyName,
                         localServerUserId,
-                        relationshipLevelRid
+                        relationshipLevelRid,
+                        true
                 );
                 repositoryEventProcessor.processDeletePurgedRelationshipEvent(
                         sourceName,
