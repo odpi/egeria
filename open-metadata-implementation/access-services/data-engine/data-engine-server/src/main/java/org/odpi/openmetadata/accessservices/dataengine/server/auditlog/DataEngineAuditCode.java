@@ -57,7 +57,6 @@ public enum DataEngineAuditCode {
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineAuditCode.class);
 
-
     /**
      * The constructor for DataEngineAuditCode expects to be passed one of the enumeration rows defined in
      * DataEngineAuditCode above.   For example:
@@ -81,7 +80,6 @@ public enum DataEngineAuditCode {
         this.userAction = userAction;
     }
 
-
     /**
      * Returns the unique identifier for the error message.
      *
@@ -90,7 +88,6 @@ public enum DataEngineAuditCode {
     public String getLogMessageId() {
         return logMessageId;
     }
-
 
     /**
      * Return the severity of the audit log record.
@@ -122,7 +119,6 @@ public enum DataEngineAuditCode {
         return result;
     }
 
-
     /**
      * Returns a description of the action taken by the system when the condition that caused this exception was
      * detected.
@@ -132,7 +128,6 @@ public enum DataEngineAuditCode {
     public String getSystemAction() {
         return systemAction;
     }
-
 
     /**
      * Returns instructions of how to resolve the issue reported in this exception.

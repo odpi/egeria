@@ -30,14 +30,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.odpi.openmetadata.repositoryservices.rest.properties.TypeLimitedFindRequest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -175,7 +168,7 @@ public class InformationViewOmasListenerTest {
                 .thenReturn(skeletonClassification);
     }
 
-    private void captureRepositoryCalls() throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException, EntityNotKnownException {
+    private void captureRepositoryCalls() throws InvalidParameterException, RepositoryErrorException, TypeErrorException, PropertyErrorException, ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException {
 
         softwareServerInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
         endpointInstanceProperties = ArgumentCaptor.forClass(InstanceProperties.class);
@@ -230,7 +223,8 @@ public class InformationViewOmasListenerTest {
                 typeName)).thenReturn(skeletonRelationship);
     }
 
-    private void mockAddEntityCall(String typeGuid, String typeName, ArgumentCaptor<InstanceProperties> propertiesArgumentCaptor, EntityDetail entityDetail) throws TypeErrorException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException {
+    private void mockAddEntityCall(String typeGuid, String typeName, ArgumentCaptor<InstanceProperties> propertiesArgumentCaptor, EntityDetail entityDetail) throws TypeErrorException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException, FunctionNotSupportedException
+    {
         EntityDetail skeletonEntity = mock(EntityDetail.class);
         InstanceType mockType = mock(InstanceType.class);
         when(mockType.getTypeDefGUID()).thenReturn(typeGuid);
@@ -380,7 +374,7 @@ public class InformationViewOmasListenerTest {
 
 
     @Test
-    public void testListener() throws StatusNotSupportedException, UserNotAuthorizedException, EntityNotKnownException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, JsonProcessingException, ClassificationErrorException {
+    public void testListener() throws StatusNotSupportedException, UserNotAuthorizedException, EntityNotKnownException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, JsonProcessingException, ClassificationErrorException, FunctionNotSupportedException {
 
         TypeLimitedFindRequest type = (new TypeLimitedFindRequest());
         type.setTypeGUID("dbc20663-d705-4ff0-8424-80c262c6b8e7");

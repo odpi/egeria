@@ -16,6 +16,7 @@ public class RangerResource {
     private Map<Long, RangerTag> tags;
     private List<RangerServiceResource> serviceResources;
     private Map<Long, List<Long>> resourceToTagIds;
+    private Map<Long, RangerTagDef> tagDefinitions;
 
     public String getOp() {
         return op;
@@ -71,6 +72,14 @@ public class RangerResource {
 
     public void setResourceToTagIds(Map<Long, List<Long>> resourceToTagIds) {
         this.resourceToTagIds = resourceToTagIds;
+    }
+
+    public Map<Long, RangerTagDef> getTagDefinitions() {
+        return tagDefinitions;
+    }
+
+    public void setTagDefinitions(Map<Long, RangerTagDef> tagDefinitions) {
+        this.tagDefinitions = tagDefinitions;
     }
 
     @Override

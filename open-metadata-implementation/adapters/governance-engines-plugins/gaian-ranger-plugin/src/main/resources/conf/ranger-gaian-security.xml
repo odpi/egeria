@@ -28,6 +28,12 @@
 	</property>
 
 	<property>
+		<name>ranger.plugin.gaian.policy.rest.authorization</name>
+		<value>Example</value>
+		<description>Basic Authorization for Ranger Admin</description>
+	</property>
+
+	<property>
 		<name>ranger.plugin.gaian.policy.rest.ssl.config.file</name>
 		<value>ranger-policymgr-ssl.xml</value>
 		<description>

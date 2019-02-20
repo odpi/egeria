@@ -115,7 +115,7 @@
         </fileSet>
 
         <fileSet>
-            <directory>../../open-metadata-implementation/access-services/data-infrastructure/data-infrastructure-client/target/</directory>
+            <directory>../../open-metadata-implementation/access-services/it-infrastructure/it-infrastructure-client/target/</directory>
             <outputDirectory>./clients</outputDirectory>
             <includes>
                 <include>*.jar</include>
