@@ -58,7 +58,7 @@ public class DataViewHandler {
                     .build();
 
 
-            OMEntityWrapper dataViewWrapper = omEntityDao.createOrUpdateEntity(Constants.DATA_VIEW,
+            OMEntityWrapper dataViewWrapper = omEntityDao.createOrUpdateEntity(Constants.INFORMATION_VIEW,
                                                                             qualifiedNameForDataView,
                                                                             dataViewProperties,
                                                                             null,

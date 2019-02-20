@@ -71,7 +71,7 @@ public abstract class DataViewBasicOperation extends BasicOperation{
                 .withStringProperty(Constants.NATIVE_CLASS, dataViewTable.getNativeClass())
                 .withStringProperty(Constants.DESCRIPTION, dataViewTable.getDescription())
                 .build();
-        EntityDetail dataViewTableEntity = createSchemaType(Constants.DATA_VIEW_SCHEMA_ATTRIBUTE,
+        EntityDetail dataViewTableEntity = createSchemaType(Constants.SCHEMA_ATTRIBUTE,
                 qualifiedNameForDataViewTable, sectionProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
 
 
@@ -90,20 +90,15 @@ public abstract class DataViewBasicOperation extends BasicOperation{
         InstanceProperties columnProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
                 .withStringProperty(Constants.ATTRIBUTE_NAME, dataViewColumn.getName())
-                //.withStringProperty(Constants.FORMULA, dataViewColumn.getRegularAggregate())
                 .withStringProperty(Constants.DESCRIPTION, dataViewColumn.getDescription())
                 .withStringProperty(Constants.COMMENT, dataViewColumn.getComment())
                 .withStringProperty(Constants.FORMULA, dataViewColumn.getExpression())
                 .withStringProperty(Constants.ID, dataViewColumn.getId())
                 .withStringProperty(Constants.NATIVE_CLASS, dataViewColumn.getNativeClass())
+                .withStringProperty(Constants.AGGREGATING_FUNCTION, dataViewColumn.getRegularAggregate())
                 .build();
 
-        HashMap<String, String> prop = new HashMap<>();
-        prop.put("regularAggregate", dataViewColumn.getRegularAggregate());
-            columnProperties = helper.addMapPropertyToInstance("", columnProperties, "additionalProperties", prop, "");
-
-
-        EntityDetail dataViewColumnEntity = createSchemaType(Constants.DERIVED_DATA_VIEW_SCHEMA_ATTRIBUTE, qualifiedNameForColumn, columnProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
+        EntityDetail dataViewColumnEntity = createSchemaType(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedNameForColumn, columnProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
 
         addBusinessTerm(dataViewColumn, dataViewColumnEntity);
         addQueryTargets(dataViewColumn, dataViewColumnEntity);
