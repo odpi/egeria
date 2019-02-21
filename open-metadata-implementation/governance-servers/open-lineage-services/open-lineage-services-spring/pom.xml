@@ -8,32 +8,32 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>discovery-engine-services</artifactId>
+        <artifactId>open-lineage-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>0.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Discovery Engine with Spring</name>
+    <name>Open Lineage with Spring</name>
     <description>
-        The discovery engine with Spring module uses Spring to implement a RESTful service
-        for the discovery engine server.
+        The open lineage with Spring module uses Spring to implement a RESTful service
+        for the open lineage server.
     </description>
 
-    <artifactId>discovery-engine-services-spring</artifactId>
+    <artifactId>open-lineage-services-spring</artifactId>
 
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-engine-services-api</artifactId>
+            <artifactId>open-lineage-services-api</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-engine-services-server</artifactId>
+            <artifactId>open-lineage-services-server</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
     </dependencies>
