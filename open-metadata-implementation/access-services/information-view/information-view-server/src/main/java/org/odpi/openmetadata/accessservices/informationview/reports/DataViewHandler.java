@@ -36,6 +36,11 @@ public class DataViewHandler {
     }
 
 
+    /**
+     *
+     * @param requestBody - json describing the data view
+     * @throws DataViewCreationException
+     */
     public void createDataView(DataViewRequestBody requestBody) throws DataViewCreationException {
 
         log.info("Creating data view based on payload {}", requestBody);

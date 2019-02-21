@@ -37,6 +37,18 @@ public class EntityReferenceResolver {
     }
 
 
+    /**
+     *
+     * @param source - object used to describe the source of the report column
+     * @return
+     * @throws UserNotAuthorizedException
+     * @throws FunctionNotSupportedException
+     * @throws InvalidParameterException
+     * @throws RepositoryErrorException
+     * @throws PropertyErrorException
+     * @throws TypeErrorException
+     * @throws PagingErrorException
+     */
     public String getSourceGuid(Source source) throws UserNotAuthorizedException, FunctionNotSupportedException,
                                                       InvalidParameterException, RepositoryErrorException,
                                                       PropertyErrorException, TypeErrorException, PagingErrorException {
@@ -60,6 +72,18 @@ public class EntityReferenceResolver {
     }
 
 
+    /**
+     *
+     * @param businessTerm - object describing the business term
+     * @return
+     * @throws UserNotAuthorizedException
+     * @throws FunctionNotSupportedException
+     * @throws InvalidParameterException
+     * @throws RepositoryErrorException
+     * @throws PropertyErrorException
+     * @throws TypeErrorException
+     * @throws PagingErrorException
+     */
     public String getBusinessTermGuid(BusinessTerm businessTerm) throws UserNotAuthorizedException,
                                                                         FunctionNotSupportedException,
                                                                         InvalidParameterException,

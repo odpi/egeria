@@ -24,7 +24,12 @@ public class DataViewCreator extends DataViewBasicOperation{
     }
 
 
-
+    /**
+     *
+     * @param requestBody json describing the data view
+     * @param dataViewEntity the entity describing the data view
+     * @throws Exception
+     */
     public void createDataView(DataViewRequestBody requestBody, EntityDetail dataViewEntity) throws Exception {
             String qualifiedNameForDataView = EntityPropertiesUtils.getStringValueForProperty(dataViewEntity.getProperties(), Constants.QUALIFIED_NAME);
             String qualifiedNameForComplexSchemaType = qualifiedNameForDataView + Constants.TYPE_SUFFIX;

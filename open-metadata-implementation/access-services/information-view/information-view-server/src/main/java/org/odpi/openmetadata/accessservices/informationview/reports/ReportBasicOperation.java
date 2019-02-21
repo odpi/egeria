@@ -47,6 +47,12 @@ public abstract class ReportBasicOperation extends BasicOperation{
     }
 
 
+    /**
+     *
+     * @param qualifiedNameForParent qualified name of the parent element
+     * @param parentGuid guid of the parent element
+     * @param allElements all elements linked to the current element
+     */
     public void addElements(String qualifiedNameForParent, String parentGuid, List<ReportElement> allElements) {
         if (allElements == null || allElements.isEmpty())
             return;
@@ -54,6 +60,12 @@ public abstract class ReportBasicOperation extends BasicOperation{
     }
 
 
+    /**
+     *
+     * @param qualifiedNameForParent qualified name of the parent element
+     * @param parentGuid guid of the parent element
+     * @param element object describing the current element
+     */
     public void addReportElement(String qualifiedNameForParent, String parentGuid, ReportElement element) {
         try {
             if (element instanceof ReportSection) {
@@ -67,6 +79,23 @@ public abstract class ReportBasicOperation extends BasicOperation{
         }
     }
 
+    /**
+     *
+     * @param qualifiedNameForParent qualified name of the parent element
+     * @param parentGuid guid of the parent element
+     * @param reportSection object describing the current section in the report
+     * @throws InvalidParameterException
+     * @throws PropertyErrorException
+     * @throws TypeDefNotKnownException
+     * @throws RepositoryErrorException
+     * @throws EntityNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws PagingErrorException
+     * @throws ClassificationErrorException
+     * @throws UserNotAuthorizedException
+     * @throws TypeErrorException
+     * @throws StatusNotSupportedException
+     */
     private void addReportSection(String qualifiedNameForParent, String parentGuid, ReportSection reportSection) throws InvalidParameterException, PropertyErrorException, TypeDefNotKnownException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
         EntityDetail typeEntity = addSectionAndSectionType(qualifiedNameForParent, parentGuid, reportSection);
         String qualifiedNameForSection = EntityPropertiesUtils.getStringValueForProperty(typeEntity.getProperties(), Constants.QUALIFIED_NAME);
@@ -75,6 +104,24 @@ public abstract class ReportBasicOperation extends BasicOperation{
     }
 
 
+    /**
+     *
+     * @param qualifiedNameForParent qualified name of the parent element
+     * @param parentGuid guid of the parent element
+     * @param reportSection object describing the current section in the report
+     * @return
+     * @throws InvalidParameterException
+     * @throws StatusNotSupportedException
+     * @throws PropertyErrorException
+     * @throws EntityNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws PagingErrorException
+     * @throws ClassificationErrorException
+     * @throws UserNotAuthorizedException
+     * @throws TypeErrorException
+     * @throws RepositoryErrorException
+     * @throws TypeDefNotKnownException
+     */
     protected EntityDetail addSectionAndSectionType(String qualifiedNameForParent, String parentGuid, ReportSection reportSection) throws InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, RepositoryErrorException, TypeDefNotKnownException {
 
         String qualifiedNameForSection = qualifiedNameForParent + SEPARATOR + reportSection.getName();
@@ -98,9 +145,27 @@ public abstract class ReportBasicOperation extends BasicOperation{
     }
 
 
-    protected EntityDetail addReportColumn(String parentQualifiedName, String parentGuid, ReportColumn reportColumn) throws InvalidParameterException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
+    /**
+     *
+     * @param qualifiedNameForParent qualified name of the parent element
+     * @param parentGuid guid of the parent element
+     * @param reportColumn object describing the current column in the report
+     * @return
+     * @throws InvalidParameterException
+     * @throws TypeErrorException
+     * @throws TypeDefNotKnownException
+     * @throws PropertyErrorException
+     * @throws EntityNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws PagingErrorException
+     * @throws ClassificationErrorException
+     * @throws UserNotAuthorizedException
+     * @throws RepositoryErrorException
+     * @throws StatusNotSupportedException
+     */
+    protected EntityDetail addReportColumn(String qualifiedNameForParent, String parentGuid, ReportColumn reportColumn) throws InvalidParameterException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
 
-        String qualifiedNameForColumn = parentQualifiedName + SEPARATOR + reportColumn.getName();
+        String qualifiedNameForColumn = qualifiedNameForParent + SEPARATOR + reportColumn.getName();
 
         InstanceProperties columnProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
@@ -124,14 +189,32 @@ public abstract class ReportBasicOperation extends BasicOperation{
         return derivedColumnEntity;
     }
 
-    protected EntityDetail addSchemaType(String qualifiedNameOfSchemaAttribute, EntityDetail schemaAttributeEntity, String schemaAttributeType) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
+    /**
+     *
+     * @param qualifiedNameOfSchemaAttribute qualified name for the schema attribute
+     * @param schemaAttributeEntity entity describing the schema entity
+     * @param schemaAttributeTypeName typename for the schema type
+     * @return
+     * @throws InvalidParameterException
+     * @throws StatusNotSupportedException
+     * @throws TypeErrorException
+     * @throws FunctionNotSupportedException
+     * @throws PropertyErrorException
+     * @throws EntityNotKnownException
+     * @throws TypeDefNotKnownException
+     * @throws PagingErrorException
+     * @throws UserNotAuthorizedException
+     * @throws RepositoryErrorException
+     * @throws ClassificationErrorException
+     */
+    protected EntityDetail addSchemaType(String qualifiedNameOfSchemaAttribute, EntityDetail schemaAttributeEntity, String schemaAttributeTypeName) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
         String qualifiedNameForType = qualifiedNameOfSchemaAttribute + Constants.TYPE_SUFFIX;
 
         InstanceProperties typeProperties = new EntityPropertiesBuilder()
                                                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForType)
                                                 .build();
 
-        EntityDetail schemaTypeEntity = omEntityDao.addEntity(schemaAttributeType,
+        EntityDetail schemaTypeEntity = omEntityDao.addEntity(schemaAttributeTypeName,
                                                                         qualifiedNameForType,
                                                                         typeProperties);
 
@@ -143,6 +226,21 @@ public abstract class ReportBasicOperation extends BasicOperation{
         return schemaTypeEntity;
     }
 
+    /**
+     *
+     * @param reportColumn object describing the report column
+     * @param derivedColumnEntity entity describing the derived column
+     * @throws UserNotAuthorizedException
+     * @throws FunctionNotSupportedException
+     * @throws InvalidParameterException
+     * @throws RepositoryErrorException
+     * @throws PropertyErrorException
+     * @throws TypeErrorException
+     * @throws PagingErrorException
+     * @throws StatusNotSupportedException
+     * @throws TypeDefNotKnownException
+     * @throws EntityNotKnownException
+     */
     private void addBusinessTerm(ReportColumn reportColumn, EntityDetail derivedColumnEntity) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, StatusNotSupportedException, TypeDefNotKnownException, EntityNotKnownException {
         String businessTermGuid = entityReferenceResolver.getBusinessTermGuid(reportColumn.getBusinessTerm());
             if (!StringUtils.isEmpty(businessTermGuid)) {
@@ -154,6 +252,21 @@ public abstract class ReportBasicOperation extends BasicOperation{
             }
     }
 
+    /**
+     *
+     * @param reportColumn object describing the report column
+     * @param derivedColumnEntity entity describing the derived column
+     * @throws InvalidParameterException
+     * @throws StatusNotSupportedException
+     * @throws TypeErrorException
+     * @throws FunctionNotSupportedException
+     * @throws PropertyErrorException
+     * @throws EntityNotKnownException
+     * @throws TypeDefNotKnownException
+     * @throws PagingErrorException
+     * @throws UserNotAuthorizedException
+     * @throws RepositoryErrorException
+     */
     private void addQueryTargets(ReportColumn reportColumn, EntityDetail derivedColumnEntity) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException {
         for (Source source : reportColumn.getSources()) {
 
@@ -179,6 +292,24 @@ public abstract class ReportBasicOperation extends BasicOperation{
     }
 
 
+    /**
+     * \
+     * @param reportEntity entity describing the report
+     * @param qualifiedNameForComplexSchemaType qualified name for complex schema type
+     * @param complexSchemaTypeProperties properties of the complex schema type
+     * @return
+     * @throws InvalidParameterException
+     * @throws StatusNotSupportedException
+     * @throws TypeErrorException
+     * @throws FunctionNotSupportedException
+     * @throws PropertyErrorException
+     * @throws EntityNotKnownException
+     * @throws TypeDefNotKnownException
+     * @throws PagingErrorException
+     * @throws UserNotAuthorizedException
+     * @throws RepositoryErrorException
+     * @throws ClassificationErrorException
+     */
     protected EntityDetail addReportSchemaType(EntityDetail reportEntity, String qualifiedNameForComplexSchemaType, InstanceProperties complexSchemaTypeProperties) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
         EntityDetail complexSchemaTypeEntity;
         complexSchemaTypeEntity = omEntityDao.addEntity(Constants.COMPLEX_SCHEMA_TYPE,
@@ -195,6 +326,16 @@ public abstract class ReportBasicOperation extends BasicOperation{
     }
 
 
+    /**
+     *
+     * @param existingAssignments semantic assignment to be deleted
+     * @throws RepositoryErrorException
+     * @throws UserNotAuthorizedException
+     * @throws InvalidParameterException
+     * @throws RelationshipNotDeletedException
+     * @throws RelationshipNotKnownException
+     * @throws FunctionNotSupportedException
+     */
     protected void deleteRelationships(List<Relationship> existingAssignments) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, RelationshipNotDeletedException, RelationshipNotKnownException, FunctionNotSupportedException {
         if (existingAssignments != null && !existingAssignments.isEmpty()) {
             for (Relationship relationship : existingAssignments) {

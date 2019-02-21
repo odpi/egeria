@@ -37,6 +37,12 @@ public class ReportUpdater extends ReportBasicOperation {
         super(omEntityDao, lookupHelper, helper, auditLog);
     }
 
+    /**
+     *
+     * @param payload  - object describing the report
+     * @param reportEntity - entity describing the report
+     * @throws Exception
+     */
     public void updateReport(ReportRequestBody payload, EntityDetail reportEntity) throws Exception {
         String qualifiedNameForComplexSchemaType = EntityPropertiesUtils.getStringValueForProperty(reportEntity.getProperties(), Constants.QUALIFIED_NAME) + Constants.TYPE_SUFFIX;
 
@@ -69,6 +75,13 @@ public class ReportUpdater extends ReportBasicOperation {
 
     }
 
+    /**
+     *
+     * @param qualifiedNameForParent - qualified name of the parent element
+     * @param parentGuid - guid of the parent element
+     * @param reportElements - elements describing the report
+     * @throws Exception
+     */
     private void createOrUpdateElements(String qualifiedNameForParent, String parentGuid, List<ReportElement> reportElements) throws Exception {
         List<Relationship> relationships = omEntityDao.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
         List<EntityDetail> matchingEntities = filterMatchingEntities(relationships, reportElements);
@@ -77,7 +90,13 @@ public class ReportUpdater extends ReportBasicOperation {
         }
     }
 
-
+    /**
+     *
+     * @param relationships - list of existing relationships linking to report elements
+     * @param reportElements - list of report elements
+     * @return - list of entities matching the report elements
+     * @throws Exception
+     */
     private List<EntityDetail> filterMatchingEntities(List<Relationship> relationships, List<ReportElement> reportElements) throws Exception {
         List<EntityDetail> matchingEntities = new ArrayList<>();
         if (relationships != null && !relationships.isEmpty()) {
@@ -95,6 +114,18 @@ public class ReportUpdater extends ReportBasicOperation {
         return matchingEntities;
     }
 
+    /**
+     *
+     * @param entity - entity describing the section that no longer exists
+     * @throws RepositoryErrorException
+     * @throws UserNotAuthorizedException
+     * @throws InvalidParameterException
+     * @throws RelationshipNotDeletedException
+     * @throws RelationshipNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws EntityNotKnownException
+     * @throws EntityNotDeletedException
+     */
     private void deleteSection(EntitySummary entity) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, RelationshipNotDeletedException, RelationshipNotKnownException, FunctionNotSupportedException, EntityNotKnownException, EntityNotDeletedException {
 
         List<Relationship> typeRelationships = omEntityDao.getRelationships(Constants.COMPLEX_SCHEMA_TYPE, entity.getGUID());
@@ -112,12 +143,25 @@ public class ReportUpdater extends ReportBasicOperation {
 
     }
 
+    /**
+     *
+     * @param reportElements - list of defined report elements
+     * @param properties - properties of the report element to be checked
+     * @return
+     */
     private boolean isReportElementDeleted(List<ReportElement> reportElements, InstanceProperties properties) {
         String elementName = EntityPropertiesUtils.getStringValueForProperty(properties, Constants.NAME);
         return reportElements != null && !reportElements.isEmpty() && reportElements.stream().noneMatch((e -> e.getName().equals(elementName)));
     }
 
 
+    /**
+     *
+     * @param qualifiedNameForParent qualified name for the parent
+     * @param parentGuid guid of the report element
+     * @param existingElements entities already defined
+     * @param element element in the report
+     */
     private void createOrUpdateReportElement(String qualifiedNameForParent, String parentGuid, List<EntityDetail> existingElements, ReportElement element) {
         try {
             if (element instanceof ReportSection) {
@@ -131,6 +175,14 @@ public class ReportUpdater extends ReportBasicOperation {
     }
 
 
+    /**
+     *
+     * @param qualifiedNameForParent qualified name for the parent
+     * @param parentGuid guid of the report element
+     * @param reportSection section in the report
+     * @param existingElements entities already defined
+     * @throws Exception
+     */
     private void createOrUpdateReportSection(String qualifiedNameForParent, String parentGuid, ReportSection reportSection, List<EntityDetail> existingElements) throws Exception {
 
         EntityDetail matchingSection = findMatchingEntityForElements(reportSection, existingElements);
@@ -154,6 +206,12 @@ public class ReportUpdater extends ReportBasicOperation {
     }
 
 
+    /**
+     *
+     * @param reportElement
+     * @param existingElements
+     * @return
+     */
     private EntityDetail findMatchingEntityForElements(ReportElement reportElement, List<EntityDetail> existingElements) {
         List<EntityDetail> matchingElements = existingElements.stream().filter(e -> EntityPropertiesUtils.getStringValueForProperty(e.getProperties(), Constants.NAME).contains(reportElement.getName())).collect(Collectors.toList());
         if (matchingElements != null && !matchingElements.isEmpty()) {

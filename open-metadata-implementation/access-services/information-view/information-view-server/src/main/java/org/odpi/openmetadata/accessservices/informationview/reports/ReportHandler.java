@@ -36,7 +36,11 @@ public class ReportHandler {
     }
 
 
-
+    /**
+     *
+     * @param payload - object describing the report
+     * @throws ReportCreationException
+     */
     public void submitReportModel(ReportRequestBody payload) throws ReportCreationException {
 
         try {
