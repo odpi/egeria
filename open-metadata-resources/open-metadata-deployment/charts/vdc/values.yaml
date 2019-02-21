@@ -73,7 +73,7 @@ igc:
 image:
   ranger:
     repository: planetf1/ranger-admin-egeriavdc
-    tag: 0.2.2
+    tag: 1.1-SNAPSHOT
     pullPolicy: IfNotPresent
 
   mariadb:
@@ -83,67 +83,67 @@ image:
 
   egeria:
     repository: planetf1/egeria-egeriavdc
-    tag: 0.1.9
+    tag: 1.1-SNAPSHOT
     pullPolicy: IfNotPresent
 
   gaian:
     repository: planetf1/gaian-egeriavdc
-    tag: 0.1.0
+    tag: 1.1-SNAPSHOT
     pullPolicy: IfNotPresent
 
   atlas:
     repository: planetf1/atlas-1773-egeria
-    tag: 0.1.12
+    tag: 1.1-SNAPSHOT
     pullPolicy: IfNotPresent
 
   atlasinit:
     repository: planetf1/atlas-init-egeria
-    tag: 0.1.6
+    tag: 1.1-SNAPSHOT
     pullPolicy: IfNotPresent
 
   igcproxy:
     repository: planetf1/egeria-egeriavdc
-    tag: 0.1.9
+    tag: 1.1-SNAPSHOT
     pullPolicy: IfNotPresent
 
   kafkamonitor:
     repository: planetf1/kafka-monitor-egeriavdc
-    tag: 0.1.6
+    tag: 1.1-SNAPSHOT
     pullPolicy: IfNotPresent
 
   egeriainit:
     repository: planetf1/egeria-init-egeria
-    tag: 0.1.2
+    tag: 1.1-SNAPSHOT
     pullPolicy: IfNotPresent
 
   igcproxyinit:
     repository: planetf1/igcproxy-init-egeriavdc
-    tag: 0.1.3
+    tag: 1.1-SNAPSHOT
     pullPolicy: IfNotPresent
 
   postgresqlinit:
     repository: planetf1/postgresql-init-egeria
-    tag: 0.1.14
+    tag: 1.1-SNAPSHOT
     pullPolicy: IfNotPresent
 
   postgresql:
     repository: planetf1/postgresql-egeriavdc
-    tag: 0.2.1
+    tag: 1.1-SNAPSHOT
     pullPolicy: IfNotPresent
 
   ui:
     repository: planetf1/egeria-egeriavdc
-    tag: 0.1.9
+    tag: 1.1-SNAPSHOT
     pullPolicy: IfNotPresent
 
   omrsmonitor:
     repository: planetf1/omrsmonitor-egeriavdc
-    tag: 0.0.2
+    tag: 1.1-SNAPSHOT
     pullPolicy: IfNotPresent
 
   ldapinit:
     repository: planetf1/ldap-init-egeriavdc
-    tag: 0.1.2
+    tag: 1.1-SNAPSHOT
     pullPolicy: IfNotPresent
 
   nameOverride: ""
