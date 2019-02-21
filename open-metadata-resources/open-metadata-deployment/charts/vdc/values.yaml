@@ -83,7 +83,7 @@ image:
 
   egeria:
     repository: planetf1/egeria-egeriavdc
-    tag: mandytest
+    tag: 0.1.9
     pullPolicy: IfNotPresent
 
   gaian:
@@ -103,7 +103,7 @@ image:
 
   igcproxy:
     repository: planetf1/egeria-egeriavdc
-    tag: mandytest
+    tag: 0.1.9
     pullPolicy: IfNotPresent
 
   kafkamonitor:
@@ -133,7 +133,7 @@ image:
 
   ui:
     repository: planetf1/egeria-egeriavdc
-    tag: mandytest
+    tag: 0.1.9
     pullPolicy: IfNotPresent
 
   omrsmonitor:
