@@ -74,7 +74,7 @@ image:
   ranger:
     repository: planetf1/ranger-admin-egeriavdc
     tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   mariadb:
     repository: mariadb
@@ -84,67 +84,67 @@ image:
   egeria:
     repository: planetf1/egeria-egeriavdc
     tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   gaian:
     repository: planetf1/gaian-egeriavdc
     tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   atlas:
     repository: planetf1/atlas-1773-egeria
     tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   atlasinit:
     repository: planetf1/atlas-init-egeria
     tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   igcproxy:
     repository: planetf1/egeria-egeriavdc
     tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   kafkamonitor:
     repository: planetf1/kafka-monitor-egeriavdc
     tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   egeriainit:
     repository: planetf1/egeria-init-egeria
     tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   igcproxyinit:
     repository: planetf1/igcproxy-init-egeriavdc
     tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   postgresqlinit:
     repository: planetf1/postgresql-init-egeria
     tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   postgresql:
     repository: planetf1/postgresql-egeriavdc
     tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   ui:
     repository: planetf1/egeria-egeriavdc
     tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   omrsmonitor:
     repository: planetf1/omrsmonitor-egeriavdc
     tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   ldapinit:
     repository: planetf1/ldap-init-egeriavdc
     tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   nameOverride: ""
   fullnameOverride: ""
