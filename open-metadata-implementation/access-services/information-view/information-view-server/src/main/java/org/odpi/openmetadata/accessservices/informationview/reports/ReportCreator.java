@@ -25,6 +25,12 @@ public class ReportCreator extends ReportBasicOperation {
     }
 
 
+    /**
+     *
+     * @param payload object describing the report
+     * @param reportEntity entity describing the report
+     * @throws Exception
+     */
     public void createReport(ReportRequestBody payload, EntityDetail reportEntity) throws Exception {
         String qualifiedNameForComplexSchemaType = EntityPropertiesUtils.getStringValueForProperty(reportEntity.getProperties(), Constants.QUALIFIED_NAME) + Constants.TYPE_SUFFIX;
         InstanceProperties complexSchemaTypeProperties = new EntityPropertiesBuilder()

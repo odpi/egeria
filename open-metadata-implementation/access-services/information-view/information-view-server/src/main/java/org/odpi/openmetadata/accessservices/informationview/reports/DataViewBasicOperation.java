@@ -36,6 +36,12 @@ public abstract class DataViewBasicOperation extends BasicOperation{
     }
 
 
+    /**
+     *
+     * @param parentQualifiedName qualified name for the parent element
+     * @param parentGuid guid of the parent element
+     * @param dataViewElements the list of all nested elements
+     */
     protected void addElements(String parentQualifiedName, String parentGuid, List<DataViewElement> dataViewElements) {
         if (dataViewElements == null || dataViewElements.isEmpty())
             return;
@@ -43,6 +49,12 @@ public abstract class DataViewBasicOperation extends BasicOperation{
     }
 
 
+    /**
+     *
+     * @param qualifiedNameForParent qualified name for the parent element
+     * @param parentGuid  guid of the parent element
+     * @param element element to be added
+     */
     public void addDataViewElement(String qualifiedNameForParent, String parentGuid, DataViewElement element) {
         try {
             if (element instanceof DataViewTable) {
@@ -58,6 +70,23 @@ public abstract class DataViewBasicOperation extends BasicOperation{
     }
 
 
+    /**
+     *
+     * @param qualifiedNameForParent qualified name for the parent element
+     * @param parentGuid guid of the parent element
+     * @param dataViewTable current element
+     * @throws InvalidParameterException
+     * @throws PropertyErrorException
+     * @throws TypeDefNotKnownException
+     * @throws RepositoryErrorException
+     * @throws EntityNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws PagingErrorException
+     * @throws ClassificationErrorException
+     * @throws UserNotAuthorizedException
+     * @throws TypeErrorException
+     * @throws StatusNotSupportedException
+     */
     private void addDataViewTable(String qualifiedNameForParent, String parentGuid, DataViewTable dataViewTable) throws InvalidParameterException, PropertyErrorException, TypeDefNotKnownException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
 
         String normalizedId = dataViewTable.getId().replace(".", ":");
@@ -80,6 +109,24 @@ public abstract class DataViewBasicOperation extends BasicOperation{
     }
 
 
+    /**
+     *
+     * @param parentQualifiedName qualified name for the parent element
+     * @param parentGuid guid of the parent element
+     * @param dataViewColumn element to be created
+     * @return
+     * @throws InvalidParameterException
+     * @throws TypeErrorException
+     * @throws TypeDefNotKnownException
+     * @throws PropertyErrorException
+     * @throws EntityNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws PagingErrorException
+     * @throws ClassificationErrorException
+     * @throws UserNotAuthorizedException
+     * @throws RepositoryErrorException
+     * @throws StatusNotSupportedException
+     */
     protected EntityDetail addDataViewColumn(String parentQualifiedName, String parentGuid, DataViewColumn dataViewColumn) throws InvalidParameterException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
 
         String normalizedId = dataViewColumn.getId().replace(".", ":");
@@ -112,6 +159,25 @@ public abstract class DataViewBasicOperation extends BasicOperation{
     }
 
 
+    /**
+     *
+     * @param qualifiedNameOfSchemaAttribute qualified name of the schema attribute
+     * @param schemaAttributeEntity schema attribute entity
+     * @param schemaAttributeType schema attribute type entity
+     * @param properties properties for the type entity
+     * @return
+     * @throws InvalidParameterException
+     * @throws StatusNotSupportedException
+     * @throws TypeErrorException
+     * @throws FunctionNotSupportedException
+     * @throws PropertyErrorException
+     * @throws EntityNotKnownException
+     * @throws TypeDefNotKnownException
+     * @throws PagingErrorException
+     * @throws UserNotAuthorizedException
+     * @throws RepositoryErrorException
+     * @throws ClassificationErrorException
+     */
     protected EntityDetail addSchemaType(String qualifiedNameOfSchemaAttribute, EntityDetail schemaAttributeEntity, String schemaAttributeType, InstanceProperties properties) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
         String qualifiedNameForType = qualifiedNameOfSchemaAttribute + Constants.TYPE_SUFFIX;
 
@@ -135,8 +201,21 @@ public abstract class DataViewBasicOperation extends BasicOperation{
     }
 
 
-
-
+    /**
+     *
+     * @param dataViewColumn element describing the data view column
+     * @param derivedColumnEntity the entity representing the derived column
+     * @throws UserNotAuthorizedException
+     * @throws FunctionNotSupportedException
+     * @throws InvalidParameterException
+     * @throws RepositoryErrorException
+     * @throws PropertyErrorException
+     * @throws TypeErrorException
+     * @throws PagingErrorException
+     * @throws StatusNotSupportedException
+     * @throws TypeDefNotKnownException
+     * @throws EntityNotKnownException
+     */
     private void addBusinessTerm(DataViewColumn dataViewColumn, EntityDetail derivedColumnEntity) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, StatusNotSupportedException, TypeDefNotKnownException, EntityNotKnownException {
         String businessTermGuid = dataViewColumn.getBusinessTermGuid();
         if (!StringUtils.isEmpty(businessTermGuid)) {
@@ -148,6 +227,21 @@ public abstract class DataViewBasicOperation extends BasicOperation{
         }
     }
 
+    /**
+     *
+     * @param dataViewColumn element describing the data view column
+     * @param derivedColumnEntity the entity representing the derived column
+     * @throws InvalidParameterException
+     * @throws StatusNotSupportedException
+     * @throws TypeErrorException
+     * @throws FunctionNotSupportedException
+     * @throws PropertyErrorException
+     * @throws EntityNotKnownException
+     * @throws TypeDefNotKnownException
+     * @throws PagingErrorException
+     * @throws UserNotAuthorizedException
+     * @throws RepositoryErrorException
+     */
     private void addQueryTargets(DataViewColumn dataViewColumn, EntityDetail derivedColumnEntity) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException {
         String sourceColumnGUID = dataViewColumn.getColumnGuid();
 
@@ -160,7 +254,6 @@ public abstract class DataViewBasicOperation extends BasicOperation{
                     sourceColumnGUID,
                     Constants.INFORMATION_VIEW_OMAS_NAME,
                     schemaQueryImplProperties);
-
 
     }
 

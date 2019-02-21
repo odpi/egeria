@@ -26,10 +26,30 @@ public abstract class BasicOperation {
         this.helper = helper;
     }
 
-    protected EntityDetail createSchemaType(String schemaAttributeType,
-                                            String qualifiedNameForType,
-                                            InstanceProperties typeProperties,
-                                            String schemaTypeRelationship,
+    /**
+     *
+     * @param schemaAttributeTypeName - type name for the actual schema type entity to be created
+     * @param qualifiedNameForSchemaType - qualifiedName for schema type entity
+     * @param schemaAttributeTypeProperties - instance properties for schema attribute
+     * @param schemaTypeRelationshipName - type name for the actual schema type entity to be created
+     * @param schemaAttributeGuid - guid of the schema attribute for which the schema type was created
+     * @return
+     * @throws InvalidParameterException
+     * @throws StatusNotSupportedException
+     * @throws PropertyErrorException
+     * @throws EntityNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws PagingErrorException
+     * @throws ClassificationErrorException
+     * @throws UserNotAuthorizedException
+     * @throws TypeErrorException
+     * @throws RepositoryErrorException
+     * @throws TypeDefNotKnownException
+     */
+    protected EntityDetail createSchemaType(String schemaAttributeTypeName,
+                                            String qualifiedNameForSchemaType,
+                                            InstanceProperties schemaAttributeTypeProperties,
+                                            String schemaTypeRelationshipName,
                                             String schemaAttributeGuid) throws InvalidParameterException,
                                                                                StatusNotSupportedException,
                                                                                PropertyErrorException,
@@ -41,11 +61,11 @@ public abstract class BasicOperation {
                                                                                TypeErrorException,
                                                                                RepositoryErrorException,
                                                                                TypeDefNotKnownException {
-        EntityDetail schemaTypeEntity = omEntityDao.addEntity(schemaAttributeType,
-                qualifiedNameForType,
-                typeProperties);
+        EntityDetail schemaTypeEntity = omEntityDao.addEntity(schemaAttributeTypeName,
+                qualifiedNameForSchemaType,
+                schemaAttributeTypeProperties);
 
-        omEntityDao.addRelationship(schemaTypeRelationship,
+        omEntityDao.addRelationship(schemaTypeRelationshipName,
                 schemaAttributeGuid,
                 schemaTypeEntity.getGUID(),
                 Constants.INFORMATION_VIEW_OMAS_NAME,
