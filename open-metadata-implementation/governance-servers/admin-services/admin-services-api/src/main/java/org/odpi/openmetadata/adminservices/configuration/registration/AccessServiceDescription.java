@@ -14,7 +14,7 @@ public enum AccessServiceDescription implements Serializable
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-catalog/"),
     ASSET_CONSUMER_OMAS              (1001,   "Asset Consumer", "Access assets through connectors",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-consumer/"),
-    ASSET_LINEAGE_OMAS              (1022,   "AssetLineage", "Store asset lineage",
+    ASSET_LINEAGE_OMAS              (1022,    "Asset Lineage", "Store asset lineage",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-lineage/"),
     ASSET_OWNER_OMAS                 (1002,   "AssetOwner", "Manage an asset",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/asset-owner/"),
