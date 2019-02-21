@@ -57,7 +57,7 @@ public class TestRelatedAsset
         testBean.setShortDescription("TestShortDescription");
         testBean.setDescription("TestDescription");
         testBean.setOwner("TestOwner");
-        testBean.setAssetProperties(assetProperties);
+        testBean.setExtendedProperties(assetProperties);
 
         return new RelatedAsset(testBean, relatedAssetProperties);
     }
@@ -84,7 +84,7 @@ public class TestRelatedAsset
         testBean.setShortDescription("TestShortDescription");
         testBean.setDescription("TestDescription");
         testBean.setOwner("TestOwner");
-        testBean.setAssetProperties(assetProperties);
+        testBean.setExtendedProperties(assetProperties);
 
         return new RelatedAsset(testBean, relatedAssetProperties);
     }
@@ -111,7 +111,7 @@ public class TestRelatedAsset
         testBean.setShortDescription("TestShortDescription");
         testBean.setDescription("TestDescription");
         testBean.setOwner("TestOwner");
-        testBean.setAssetProperties(assetProperties);
+        testBean.setExtendedProperties(assetProperties);
 
         return new RelatedAsset(testBean, relatedAssetProperties);
     }

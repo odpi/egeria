@@ -6,6 +6,11 @@
 The OMAG Server Platform provides a runtime process and platform to host one or more
 [logical OMAG Servers](logical-omag-server.md).
 
+The OMAG server platform can host multiple OMAG servers at a time.
+Each OMAG server is isolated within the server platform and so
+the OMAG server platform can be used to support
+[multi-tenant operation](https://en.wikipedia.org/wiki/Multitenancy).
+
 
 ## Further reading
 

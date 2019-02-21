@@ -10,7 +10,7 @@
     <parent>
         <artifactId>open-metadata-packages</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>0.3-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
 
     <name>Open Metadata Caller Package</name>
@@ -60,7 +60,7 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-infrastructure-spring</artifactId>
+            <artifactId>it-infrastructure-spring</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
         <dependency>

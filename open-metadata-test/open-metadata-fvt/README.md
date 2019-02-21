@@ -1,11 +1,14 @@
 <!-- SPDX-License-Identifier: Apache-2.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
   
-# Open Metadata FVT Resources
+# ODPi Egeria Functional Verification Test (FVT) Suite
   
-The open metadata FVT resources
+Functional Verification Tests (FVTs) test multiple components together to
+ensure they function correctly.   Typically they load test data into the in-memory repository and drive the
+external APIs of the components under test to ensure they are robust enough to support the range of functions
+needed by their consumers.
 
-* **[access-services-fvt](access-services-fvt)** - provides the resources to run access services FVT. 
+* **[access-services-fvt](access-services-fvt)** - provides an FVT test suite for each of the Open Metadata Access Services (OMAS). 
 
 
 
