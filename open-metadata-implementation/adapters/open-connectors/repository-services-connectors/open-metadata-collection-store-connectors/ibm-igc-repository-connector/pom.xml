@@ -10,60 +10,21 @@
     <parent>
         <artifactId>open-metadata-collection-store-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>0.3-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
 
     <name>IBM Information Governance Catalog Repository Connector</name>
     <description>
         An OCF OMRS Repository Connector for IBM Information Governance Catalog (IGC) (using its REST API to call into the IGC metadata repository).
     </description>
+    <modules>
+        <module>igc-rest-client-library</module>
+        <module>igc-repository-connector</module>
+    </modules>
 
     <artifactId>ibm-igc-repository-connector</artifactId>
-
-    <properties>
-        <zjsonpatch.version>0.4.6</zjsonpatch.version>
-    </properties>
-
-    <dependencies>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>igc-rest-client-library</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.flipkart.zjsonpatch</groupId>
-            <artifactId>zjsonpatch</artifactId>
-            <version>${zjsonpatch.version}</version>
-        </dependency>
-
-    </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-antrun-plugin</artifactId>
-                <inherited>false</inherited>
-                <executions>
-                    <execution>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <tasks>
-                                <zip basedir="src/main/resources/bundleOMRS/"
-                                     destfile="src/main/resources/OMRS.zip"
-                                     includes="**/*">
-                                </zip>
-                            </tasks>
-                        </configuration>
-                        <goals>
-                            <goal>run</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>

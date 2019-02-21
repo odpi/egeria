@@ -19,13 +19,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -76,6 +70,7 @@ class ProcessHandlerTest {
     @Test
     void testCreateProcess() throws TypeErrorException, ClassificationErrorException, StatusNotSupportedException,
             UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException,
+            FunctionNotSupportedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException {
 
         mockSkeletonEntity();
@@ -101,7 +96,7 @@ class ProcessHandlerTest {
     @Test
     void testAddInputRelationships() throws StatusNotSupportedException, UserNotAuthorizedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, InvalidParameterException,
-            RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
+            FunctionNotSupportedException, RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
 
         mockSkeletonRelationship("ProcessInput");
 
@@ -114,6 +109,7 @@ class ProcessHandlerTest {
     @Test
     void testAddInputRelationshipsNoInput() throws StatusNotSupportedException, UserNotAuthorizedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, InvalidParameterException,
+            FunctionNotSupportedException,
             RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
 
         processHandler.addInputRelationships(USER_ID, ENTITY_GUID, null);
@@ -135,7 +131,7 @@ class ProcessHandlerTest {
     @Test
     void testAddOutputRelationships() throws StatusNotSupportedException, UserNotAuthorizedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, InvalidParameterException,
-            RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
+            FunctionNotSupportedException, RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
 
         mockSkeletonRelationship("ProcessOutput");
 
@@ -148,7 +144,7 @@ class ProcessHandlerTest {
     @Test
     void testAddOutputRelationshipsNoInput() throws StatusNotSupportedException, UserNotAuthorizedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, InvalidParameterException,
-            RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
+            FunctionNotSupportedException, RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
 
         processHandler.addOutputRelationships(USER_ID, ENTITY_GUID, null);
 
@@ -167,7 +163,7 @@ class ProcessHandlerTest {
 
     private void mockCreatedEntity() throws InvalidParameterException, RepositoryErrorException, TypeErrorException,
             PropertyErrorException, ClassificationErrorException, StatusNotSupportedException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException {
+            FunctionNotSupportedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException {
 
         EntityDetail mockedCreatedEntity = mock(EntityDetail.class);
         when(metadataCollection.addEntity(USER_ID, TYPE_DEF_GUID, null, null,

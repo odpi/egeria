@@ -9,11 +9,11 @@ contains a Java Archive (Jar) file for the server platform itself along with a d
 ```text
 
 $ ls
-resources				server-chassis-spring-0.3-SNAPSHOT.jar
+resources				server-chassis-spring-1.1-SNAPSHOT.jar
 
 ```
 The name of the Java Archive (Jar) file will
-depend on the release of ODPi Egeria that you have installed.  In this example, the release is **0.3-SNAPSHOT**.
+depend on the release of ODPi Egeria that you have installed.  In this example, the release is **1.1-SNAPSHOT**.
 
 The [OMAG Server Platform](../../../open-metadata-publication/website/omag-server) is started with the **java** command.
 Ensure you have a Java runtime at Version 8 (Update 151) or above installed on your machine.

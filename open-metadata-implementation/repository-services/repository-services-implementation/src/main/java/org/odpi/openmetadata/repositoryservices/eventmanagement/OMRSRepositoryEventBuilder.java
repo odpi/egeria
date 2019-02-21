@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.eventmanagement;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -16,7 +17,7 @@ import org.odpi.openmetadata.repositoryservices.events.*;
 /**
  * OMRSRepositoryEventBuilder creates OMRS Events ready to be distributed.
  */
-public abstract class OMRSRepositoryEventBuilder implements OMRSRepositoryEventProcessor
+public abstract class OMRSRepositoryEventBuilder extends OMRSRepositoryEventProcessor
 {
 
     /**
@@ -246,6 +247,7 @@ public abstract class OMRSRepositoryEventBuilder implements OMRSRepositoryEventP
 
         this.sendTypeDefEvent(sourceName, typeDefEvent);
     }
+
 
     /**
      * Process an event that changes either the name or guid of an AttributeTypeDef.
@@ -650,9 +652,6 @@ public abstract class OMRSRepositoryEventBuilder implements OMRSRepositoryEventP
      * All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
      * will be notified through separate events.
      *
-     * Details of the TypeDef are included with the entity's unique id (guid) to ensure the right entity is deleted in
-     * the remote repositories.
-     *
      * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
      * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
@@ -683,6 +682,43 @@ public abstract class OMRSRepositoryEventBuilder implements OMRSRepositoryEventP
 
         this.sendInstanceEvent(sourceName, instanceEvent);
     }
+
+
+    /**
+     * A deleted entity has been restored to the state it was before it was deleted.
+     *
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param entity details of the version of the entity that has been restored.
+     */
+    public void processRestoredEntityEvent(String       sourceName,
+                                           String       originatorMetadataCollectionId,
+                                           String       originatorServerName,
+                                           String       originatorServerType,
+                                           String       originatorOrganizationName,
+                                           EntityDetail entity)
+    {
+        OMRSEventOriginator eventOriginator = new OMRSEventOriginator();
+
+        eventOriginator.setMetadataCollectionId(originatorMetadataCollectionId);
+        eventOriginator.setServerName(originatorServerName);
+        eventOriginator.setServerType(originatorServerType);
+        eventOriginator.setOrganizationName(originatorOrganizationName);
+
+        OMRSInstanceEvent instanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.RESTORED_ENTITY_EVENT,
+                                                                entity);
+
+
+        instanceEvent.setEventOriginator(eventOriginator);
+
+        this.sendInstanceEvent(sourceName, instanceEvent);
+    }
+
 
 
     /**
@@ -730,7 +766,10 @@ public abstract class OMRSRepositoryEventBuilder implements OMRSRepositoryEventP
 
 
     /**
-     * A deleted entity has been restored to the state it was before it was deleted.
+     * An existing entity has been deleted and purged. This request can not be undone.
+     *
+     * All relationships to the entity are also soft-deleted and will no longer be usable.  These deleted relationships
+     * will be notified through separate events.
      *
      * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
@@ -739,14 +778,14 @@ public abstract class OMRSRepositoryEventBuilder implements OMRSRepositoryEventP
      * @param originatorServerName name of the server that the event came from.
      * @param originatorServerType type of server that the event came from.
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
-     * @param entity details of the version of the entity that has been restored.
+     * @param entity deleted entity
      */
-    public void processRestoredEntityEvent(String       sourceName,
-                                           String       originatorMetadataCollectionId,
-                                           String       originatorServerName,
-                                           String       originatorServerType,
-                                           String       originatorOrganizationName,
-                                           EntityDetail entity)
+    public void processDeletePurgedEntityEvent(String       sourceName,
+                                               String       originatorMetadataCollectionId,
+                                               String       originatorServerName,
+                                               String       originatorServerType,
+                                               String       originatorOrganizationName,
+                                               EntityDetail entity)
     {
         OMRSEventOriginator eventOriginator = new OMRSEventOriginator();
 
@@ -755,9 +794,7 @@ public abstract class OMRSRepositoryEventBuilder implements OMRSRepositoryEventP
         eventOriginator.setServerType(originatorServerType);
         eventOriginator.setOrganizationName(originatorOrganizationName);
 
-        OMRSInstanceEvent instanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.RESTORED_ENTITY_EVENT,
-                                                                entity);
-
+        OMRSInstanceEvent instanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.DELETE_PURGED_ENTITY_EVENT, entity);
 
         instanceEvent.setEventOriginator(eventOriginator);
 
@@ -1072,12 +1109,10 @@ public abstract class OMRSRepositoryEventBuilder implements OMRSRepositoryEventP
         this.sendInstanceEvent(sourceName, instanceEvent);
     }
 
+
     /**
      * An existing relationship has been deleted.  This is a soft delete. This means it is still in the repository
      * but it is no longer returned on queries.
-     *
-     * Details of the TypeDef are included with the relationship's unique id (guid) to ensure the right
-     * relationship is deleted in the remote repositories.
      *
      * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
@@ -1109,6 +1144,42 @@ public abstract class OMRSRepositoryEventBuilder implements OMRSRepositoryEventP
 
         this.sendInstanceEvent(sourceName, instanceEvent);
     }
+
+
+    /**
+     * A deleted relationship has been restored to the state it was before it was deleted.
+     *
+     * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
+     *                   local repository, or event mapper name.
+     * @param originatorMetadataCollectionId unique identifier for the metadata collection hosted by the server that
+     *                                       sent the event.
+     * @param originatorServerName name of the server that the event came from.
+     * @param originatorServerType type of server that the event came from.
+     * @param originatorOrganizationName name of the organization that owns the server that sent the event.
+     * @param relationship details of the version of the relationship that has been restored.
+     */
+    public void processRestoredRelationshipEvent(String       sourceName,
+                                                 String       originatorMetadataCollectionId,
+                                                 String       originatorServerName,
+                                                 String       originatorServerType,
+                                                 String       originatorOrganizationName,
+                                                 Relationship relationship)
+    {
+        OMRSEventOriginator eventOriginator = new OMRSEventOriginator();
+
+        eventOriginator.setMetadataCollectionId(originatorMetadataCollectionId);
+        eventOriginator.setServerName(originatorServerName);
+        eventOriginator.setServerType(originatorServerType);
+        eventOriginator.setOrganizationName(originatorOrganizationName);
+
+        OMRSInstanceEvent instanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.RESTORED_RELATIONSHIP_EVENT,
+                                                                relationship);
+
+        instanceEvent.setEventOriginator(eventOriginator);
+
+        this.sendInstanceEvent(sourceName, instanceEvent);
+    }
+
 
 
     /**
@@ -1156,7 +1227,7 @@ public abstract class OMRSRepositoryEventBuilder implements OMRSRepositoryEventP
 
 
     /**
-     * A deleted relationship has been restored to the state it was before it was deleted.
+     * An existing relationship has been deleted and purged.  This request can not be undone.
      *
      * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
@@ -1165,14 +1236,14 @@ public abstract class OMRSRepositoryEventBuilder implements OMRSRepositoryEventP
      * @param originatorServerName name of the server that the event came from.
      * @param originatorServerType type of server that the event came from.
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.
-     * @param relationship details of the version of the relationship that has been restored.
+     * @param relationship deleted relationship
      */
-    public void processRestoredRelationshipEvent(String       sourceName,
-                                                 String       originatorMetadataCollectionId,
-                                                 String       originatorServerName,
-                                                 String       originatorServerType,
-                                                 String       originatorOrganizationName,
-                                                 Relationship relationship)
+    public void processDeletePurgedRelationshipEvent(String       sourceName,
+                                                     String       originatorMetadataCollectionId,
+                                                     String       originatorServerName,
+                                                     String       originatorServerType,
+                                                     String       originatorOrganizationName,
+                                                     Relationship relationship)
     {
         OMRSEventOriginator eventOriginator = new OMRSEventOriginator();
 
@@ -1181,7 +1252,7 @@ public abstract class OMRSRepositoryEventBuilder implements OMRSRepositoryEventP
         eventOriginator.setServerType(originatorServerType);
         eventOriginator.setOrganizationName(originatorOrganizationName);
 
-        OMRSInstanceEvent instanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.RESTORED_RELATIONSHIP_EVENT,
+        OMRSInstanceEvent instanceEvent = new OMRSInstanceEvent(OMRSInstanceEventType.DELETE_PURGED_RELATIONSHIP_EVENT,
                                                                 relationship);
 
         instanceEvent.setEventOriginator(eventOriginator);

@@ -25,14 +25,14 @@ import static org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrange
 
 /**
  * Initial policy plugin for GaianDB
- * Refer to the top level README.md in this project for further information on how to build, deploy & use
+ * Refer to the top level README.md in this project for further information on how to build, deploy and use
  */
 public class RangerPolicyResultFilter extends SQLResultFilterX {
 
     private static final Logger logger = new Logger("RangerPolicyResultFilter", 25);
 
     private QueryContext queryContext = new QueryContext();
-    private GaianAuthorizer authorizer = new RangerGaianAuthorizer();
+    private RangerGaianAuthorizer rangerGaianAuthorizer = new RangerGaianAuthorizer();
     private boolean authorizeResult = true;
 
     /**
@@ -50,7 +50,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
      * @param url the URL to Ranger Server
      * @return information about the user
      */
-    private static RangerUser getRangerUser(String url) {
+    private RangerUser getRangerUser(String url) {
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
 
@@ -75,23 +75,19 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
         return null;
     }
 
-    private static HttpHeaders getHttpHeaders() {
+    private HttpHeaders getHttpHeaders() {
         HttpHeaders headers = new HttpHeaders();
 
         headers.setContentType(MediaType.APPLICATION_JSON);
-        List<MediaType> accept = new ArrayList<>(1);
-        accept.add(MediaType.APPLICATION_JSON);
-        headers.setAccept(accept);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        String base64Credentials = getBase64CredsString();
-        headers.set("Authorization", "Basic " + base64Credentials);
+        if(rangerGaianAuthorizer.getRangerServerProperties() != null
+                && rangerGaianAuthorizer.getRangerServerProperties().getServerAuthorization() != null){
+            String base64Credentials = rangerGaianAuthorizer.getRangerServerProperties().getServerAuthorization();
+            headers.set("Authorization", base64Credentials);
+        }
+
         return headers;
-    }
-
-    private static String getBase64CredsString() {
-        byte[] plainCredentialBytes = "admin:admin".getBytes();
-        byte[] base64Credential = Base64.getEncoder().encode(plainCredentialBytes);
-        return new String(base64Credential);
     }
 
     /**
@@ -186,7 +182,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
         // results or exceptions.
         // **HACK** for now, skip over columns with NULL_MASK_TYPE data. PURELY for demo support pending a proper
         // fix
-        authorizer.applyRowFilterAndColumnMasking(queryContext);
+        rangerGaianAuthorizer.applyRowFilterAndColumnMasking(queryContext);
 
         if (rows.length == 0) {
             return rows;
@@ -230,7 +226,6 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 
             }
             querySetColumnIndex++;
-
         }
 
         // END of hack. Original code follows:
@@ -283,10 +278,10 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
             queryContext.setResourceType(COLUMN_RESOURCE);
             logger.logDetail("This is the setQueriedColumns " + queryContext.toString());
 
-            authorizer.init();
-            authorizeResult = authorizer.isAuthorized(queryContext);
+            rangerGaianAuthorizer.init();
+            authorizeResult = rangerGaianAuthorizer.isAuthorized(queryContext);
         } catch (GaianAuthorizationException e) {
-            logger.logException(String.valueOf("1"), e.getMessage(), e);
+            logger.logException("1", e.getMessage(), e);
         }
 
         // As of 9 Feb 2018 there is a bug in GaianTable that means this return is ignored.
@@ -309,7 +304,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
             if (args != null && args.length >= 1 && null != args[0]) {
                 /* Ranger Gaian Plugin must be initialized at this step because
                 properties should be loaded before fetching the user's groups */
-                authorizer.init();
+                rangerGaianAuthorizer.init();
                 setUserDetailsForQueryContext(args[0]);
                 haveUser = true;
 
@@ -353,8 +348,8 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
     private List<String> getQueryColumns(int[] queriedColumns) {
         List<String> columns = new ArrayList<>(queriedColumns.length);
 
-        for (int i = 0; i < queriedColumns.length; i++) {
-            columns.add(queryContext.getColumns().get(queriedColumns[i] - 1));
+        for (int queriedColumn : queriedColumns) {
+            columns.add(queryContext.getColumns().get(queriedColumn - 1));
         }
 
         return columns;
@@ -362,10 +357,10 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 
     /**
      * Overwritten in setQueriedColumns, which provides a more precise list
-     * accounting for what columns are used in select & predicate.
+     * accounting for what columns are used in select and predicate.
      *
      * @param logicalTableResultSetMetaData logical table structure
-     * @return the list of the columns are used in select & predicate
+     * @return the list of the columns are used in select and predicate
      * @throws SQLException provides information on a database access error or other errors
      */
     private List<String> getColumnNamesForLogicalTableResultSet(ResultSetMetaData logicalTableResultSetMetaData) throws SQLException {
@@ -405,23 +400,27 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
      * @return a collection of user's groups
      */
     private Set<String> getUserGroups(String userName) {
-        logger.logDetail("getUserGroups for: " + userName);
-        String rangerURL = ((RangerGaianAuthorizer) authorizer).getRangerURL();
-        logger.logDetail("RangerURL: " + rangerURL);
+        String userDetailsURL = getRangerURL(userName, USER_DETAILS);
+        if(userDetailsURL == null){
+            return Collections.emptySet();
+        }
 
-        String userDetailsUrl = getUserDetailsURL(rangerURL, userName);
-        final RangerUser userDetails = getRangerUser(userDetailsUrl);
+        final RangerUser userDetails = getRangerUser(userDetailsURL);
         if (userDetails != null) {
             logger.logInfo(userDetails.toString());
-            return getUserGroupsByUserId(rangerURL, userDetails);
+            return getUserGroupsByUserId(userDetails);
         }
 
         return Collections.emptySet();
     }
 
-    private Set<String> getUserGroupsByUserId(String rangerURL, RangerUser userDetails) {
-        String userGroupsUrl = getUserGroupURL(rangerURL, userDetails.getId());
-        final RangerUser userGroups = getRangerUser(userGroupsUrl);
+    private Set<String> getUserGroupsByUserId(RangerUser userDetails) {
+        String userGroupsURL = getRangerURL(userDetails.getId(), USER_GROUPS);
+        if(userGroupsURL == null){
+            return Collections.emptySet();
+        }
+
+        final RangerUser userGroups = getRangerUser(userGroupsURL);
 
         if (userGroups != null) {
             logger.logInfo(userGroups.toString());
@@ -431,14 +430,25 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
         return Collections.emptySet();
     }
 
-    private String getUserGroupURL(String rangerURL, String userId) {
-        final String url = rangerURL + "/service/xusers/secure/users/{0}";
+    private String getRangerURL(String userId, String rangerSpecificURL) {
+        String rangerURL  = getRangerServerURL();
+        if(rangerURL == null){
+            return null;
+        }
+
+        final String url = rangerURL + rangerSpecificURL;
         return MessageFormat.format(url, userId);
     }
 
-    private String getUserDetailsURL(String rangerURL, String param) {
-        final String url = rangerURL + "/service/xusers/users/userName/{0}";
-        return MessageFormat.format(url, param);
+    private String getRangerServerURL() {
+        if(rangerGaianAuthorizer.getRangerServerProperties() == null ||
+                rangerGaianAuthorizer.getRangerServerProperties().getServerURL() == null){
+            return null;
+        }
+        String rangerURL  = rangerGaianAuthorizer.getRangerServerProperties().getServerURL();
+        logger.logDetail("RangerURL: " + rangerURL);
+
+        return rangerURL;
     }
 
 }

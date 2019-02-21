@@ -28,8 +28,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class PropertyMatchFindRequest extends TypeLimitedFindRequest
 {
-    private InstanceProperties matchProperties = null;
-    private MatchCriteria      matchCriteria = null;
+    private InstanceProperties matchProperties      = null;
+    private MatchCriteria      matchCriteria        = null;
+
 
 
     /**
@@ -56,6 +57,8 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
             this.matchProperties = template.getMatchProperties();
         }
     }
+
+
 
 
     /**
@@ -136,7 +139,7 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
         {
             return true;
         }
-        if (!(objectToCompare instanceof PropertyMatchFindRequest))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -158,7 +161,6 @@ public class PropertyMatchFindRequest extends TypeLimitedFindRequest
     @Override
     public int hashCode()
     {
-
-        return Objects.hash(super.hashCode(), getMatchProperties(), getMatchCriteria());
+        return Objects.hash(super.hashCode(), getMatchProperties(), getMatchCriteria(), getMatchProperties(), getMatchCriteria());
     }
 }

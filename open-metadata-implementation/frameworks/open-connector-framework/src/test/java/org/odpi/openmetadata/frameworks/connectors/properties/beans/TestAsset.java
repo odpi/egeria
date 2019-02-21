@@ -56,7 +56,7 @@ public class TestAsset
         testObject.setShortDescription("TestShortDescription");
         testObject.setOwner("TestOwner");
         testObject.setZoneMembership(zoneMembership);
-        testObject.setAssetProperties(assetProperties);
+        testObject.setExtendedProperties(assetProperties);
 
         return testObject;
     }
@@ -82,7 +82,7 @@ public class TestAsset
         assertTrue(resultObject.getShortDescription().equals("TestShortDescription"));
         assertTrue(resultObject.getOwner().equals("TestOwner"));
         assertTrue(resultObject.getZoneMembership() != null);
-        assertTrue(resultObject.getAssetProperties() == null);
+        assertTrue(resultObject.getExtendedProperties() == null);
     }
 
 
@@ -106,7 +106,7 @@ public class TestAsset
         assertTrue(nullObject.getShortDescription() == null);
         assertTrue(nullObject.getOwner() == null);
         assertTrue(nullObject.getZoneMembership() == null);
-        assertTrue(nullObject.getAssetProperties() == null);
+        assertTrue(nullObject.getExtendedProperties() == null);
 
         nullObject = new Asset(null);
 
@@ -123,7 +123,7 @@ public class TestAsset
         assertTrue(nullObject.getShortDescription() == null);
         assertTrue(nullObject.getOwner() == null);
         assertTrue(nullObject.getZoneMembership() == null);
-        assertTrue(nullObject.getAssetProperties() == null);
+        assertTrue(nullObject.getExtendedProperties() == null);
 
         nullObject = new Asset();
 
@@ -141,25 +141,25 @@ public class TestAsset
         Map<String, Object> propertyMap;
         Asset               testObject = new Asset();
 
-        assertTrue(testObject.getAssetProperties() == null);
+        assertTrue(testObject.getExtendedProperties() == null);
 
         propertyMap = null;
         testObject = new Asset();
-        testObject.setAssetProperties(propertyMap);
+        testObject.setExtendedProperties(propertyMap);
 
-        assertTrue(testObject.getAssetProperties() == null);
+        assertTrue(testObject.getExtendedProperties() == null);
 
         propertyMap = new HashMap<>();
         testObject = new Asset();
-        testObject.setAssetProperties(propertyMap);
+        testObject.setExtendedProperties(propertyMap);
 
-        assertTrue(testObject.getAssetProperties() == null);
+        assertTrue(testObject.getExtendedProperties() == null);
 
         propertyMap.put("propertyName", "propertyValue");
         testObject = new Asset();
-        testObject.setAssetProperties(propertyMap);
+        testObject.setExtendedProperties(propertyMap);
 
-        Map<String, Object>   retrievedPropertyMap = testObject.getAssetProperties();
+        Map<String, Object>   retrievedPropertyMap = testObject.getExtendedProperties();
 
         assertTrue(retrievedPropertyMap != null);
         assertFalse(retrievedPropertyMap.isEmpty());

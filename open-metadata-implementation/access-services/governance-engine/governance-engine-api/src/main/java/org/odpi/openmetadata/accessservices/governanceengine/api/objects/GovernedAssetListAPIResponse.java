@@ -20,7 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GovernedAssetListAPIResponse extends GovernanceEngineOMASAPIResponse {
-    private List<GovernedAsset> assetList = null;
+
+    private List<GovernedAsset> assetList;
 
     /**
      * Default constructor

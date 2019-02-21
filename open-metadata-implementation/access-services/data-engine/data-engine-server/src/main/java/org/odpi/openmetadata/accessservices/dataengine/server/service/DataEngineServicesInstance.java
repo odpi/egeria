@@ -20,7 +20,6 @@ public class DataEngineServicesInstance {
     private OMRSMetadataCollection metadataCollection;
     private String serverName;
 
-
     /**
      * Set up the local repository connector that will service the REST Calls.
      *
@@ -96,7 +95,6 @@ public class DataEngineServicesInstance {
             return null;
         }
     }
-
 
     /**
      * Unregister this instance from the instance map.
