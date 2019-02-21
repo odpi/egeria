@@ -2,9 +2,9 @@
 
 # Asset Lineage Open Metadata Access Service (OMAS)
 
-The Asset Catalog OMAS provides services to query the lineage of business terms and data assets.
+The Asset Lineage OMAS provides services to query the lineage of business terms and data assets.
 
-The module structure for the Asset Catalog OMAS is as follows:
+The module structure for the Asset Lineage OMAS is as follows:
 
 * [asset-lineage-client](asset-lineage-client) supports the client library.
 * [asset-lineage-api](asset-lineage-api) supports the common Java classes that are used both by the client and the server.
