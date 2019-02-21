@@ -6,7 +6,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <parent>
         <artifactId>open-lineage-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
@@ -15,12 +14,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Open Lineage Server-side</name>
+    <name>Open Lineage Client</name>
     <description>
-        Server side implementation of the open lineage services.
+        Client side implementation of the open lineage services.
     </description>
 
-    <artifactId>open-lineage-services-server</artifactId>
+    <artifactId>open-lineage-services-client</artifactId>
 
     <dependencies>
 
@@ -32,7 +31,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>connector-configuration-factory</artifactId>
+            <artifactId>open-lineage-services-server</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
