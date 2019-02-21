@@ -1,10 +1,10 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Discovery Engine Server
+# Open Lineage Server
 
-The discovery engine server module contains the server-side
-implementation of the discovery engine.
+The open lineage server module contains the server-side
+implementation of the open lineage.
 
 
 

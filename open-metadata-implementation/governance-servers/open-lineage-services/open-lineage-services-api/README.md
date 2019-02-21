@@ -1,10 +1,10 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Discovery Engine API
+# Open Lineage API
 
-The discovery engine API provides the property structures and
-REST structures used to drive the discovery engine.
+The open lineage API provides the property structures and
+REST structures used to drive the open lineage.
 
 
 

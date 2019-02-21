@@ -15,31 +15,25 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Discovery Engine Services</name>
+    <name>Open Lineage Services</name>
     <description>
-        The discovery engine runs Open Discovery Services on demand.
+        The open lineage services allow for the storage and querying of lineage data.
     </description>
 
-    <artifactId>discovery-engine-services</artifactId>
+    <artifactId>open-lineage-services</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>discovery-engine-services-api</module>
-        <module>discovery-engine-services-client</module>
-        <module>discovery-engine-services-server</module>
-        <module>discovery-engine-services-spring</module>
+        <module>open-lineage-services-api</module>
+        <module>open-lineage-services-client</module>
+        <module>open-lineage-services-server</module>
+        <module>open-lineage-services-spring</module>
     </modules>
 
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>open-discovery-framework</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-engine-client</artifactId>
+            <artifactId>open-lineage-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 

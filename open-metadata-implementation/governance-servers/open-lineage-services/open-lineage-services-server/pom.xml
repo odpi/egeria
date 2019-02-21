@@ -8,25 +8,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>discovery-engine-services</artifactId>
+        <artifactId>open-lineage-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>0.3-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Discovery Engine Server-side</name>
+    <name>Open Lineage Server-side</name>
     <description>
-        Server side implementation of the discovery engine.
+        Server side implementation of the open lineage.
     </description>
 
-    <artifactId>discovery-engine-services-server</artifactId>
+    <artifactId>open-lineage-services-server</artifactId>
 
     <dependencies>
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>discovery-engine-services-api</artifactId>
+            <artifactId>open-lineage-services-api</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 

@@ -8,7 +8,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>discovery-engine-services</artifactId>
+        <artifactId>open-lineage-services</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>0.3-SNAPSHOT</version>
     </parent>
@@ -16,12 +16,12 @@
     <modelVersion>4.0.0</modelVersion>
 
 
-    <name>Discovery Engine API</name>
+    <name>Open Lineage API</name>
     <description>
         Provides the definitions that make up the APIs used by external components when communicating
-        with the discovery engine.
+        with the open lineage.
     </description>
 
-    <artifactId>discovery-engine-services-api</artifactId>
+    <artifactId>open-lineage-services-api</artifactId>
 
 </project>
