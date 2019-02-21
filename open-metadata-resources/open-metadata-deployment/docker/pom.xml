@@ -28,7 +28,6 @@
         <module>egeria</module>
         <module>egeria-init</module>
         <module>gaian</module>
-        <module>igcconnect</module>
         <module>igcconnect-init</module>
         <module>kafka-monitor</module>
         <module>ldap-init</module>
