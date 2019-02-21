@@ -14,12 +14,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Docker image - Atlas Init</name>
+    <name>Docker image - Gaian</name>
     <description>
         Samples, Helm charts to deploy Egeria and associated components such as docker image build scripts
     </description>
 
-    <artifactId>open-metadata-docker-atlasinit</artifactId>
+    <artifactId>open-metadata-docker-gaian</artifactId>
 
     <packaging>pom</packaging>
     <build>
@@ -41,7 +41,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>${docker.repo}/atlas-init-egeria</repository>
+                    <repository>${docker.repo}/gaian-egeriavdc</repository>
                     <tag>${project.version}</tag>
                     <buildArgs>
                     </buildArgs>
