@@ -37,6 +37,7 @@ import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconten
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentManager;
 import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentValidator;
 import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.io.File;
@@ -45,6 +46,7 @@ import java.util.List;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
+@Ignore
 public class ReportCreationTest {
 
 
