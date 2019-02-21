@@ -347,4 +347,23 @@ public class AssetCatalogEntityResource {
                                         @RequestBody SearchParameters searchParameters) {
         return assetService.searchAssetsGeneric(serverName, userId, searchCriteria, searchParameters);
     }
+
+    @RequestMapping(method = RequestMethod.POST,
+            path = "/search-asset-first-level/{searchCriteria}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public AssetResponse searchAssetsFirstLevel(@PathVariable("serverName") String serverName,
+                                        @PathVariable("userId") String userId,
+                                        @PathVariable("searchCriteria") String searchCriteria,
+                                        @RequestBody SearchParameters searchParameters) {
+        return assetService.searchForAssetFirstLevel(serverName, userId, searchCriteria, searchParameters);
+    }
+
+    @RequestMapping(method = RequestMethod.GET,
+            path = "/search-asset-second-level/{assetId}",
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public AssetResponse searchAssetsFirstLevel(@PathVariable("serverName") String serverName,
+                                                @PathVariable("userId") String userId,
+                                                @PathVariable("assetId") String assetId) {
+        return assetService.searchForAssetSecondLevel(serverName, userId, assetId);
+    }
 }
