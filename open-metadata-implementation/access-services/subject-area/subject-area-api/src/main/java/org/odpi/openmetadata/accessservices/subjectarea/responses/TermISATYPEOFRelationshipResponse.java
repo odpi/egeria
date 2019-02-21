@@ -31,8 +31,8 @@ public class TermISATYPEOFRelationshipResponse extends SubjectAreaOMASAPIRespons
     }
     public TermISATYPEOFRelationshipResponse(TermISATypeOFRelationship termISATYPEOFRelationship)
     {
+        this();
         this.termISATYPEOFRelationship=termISATYPEOFRelationship;
-        this.setResponseCategory(ResponseCategory.TermISATYPEOFRelationship);
     }
 
 

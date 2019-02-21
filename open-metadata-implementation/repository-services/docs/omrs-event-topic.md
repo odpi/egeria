@@ -28,6 +28,19 @@ copies of metadata in the open metadata repositories.  They are used to speed up
 TypeDef events and Instance events are collectively called Repository events
 because they affect the contents of the open metadata repositories.
 Details of the structure of the different types of OMRS Events can be
-found on the [OMRS Events page](./event-descriptions/README.md).
+found on the [events descriptions](event-descriptions).
 
-## OMRS Federated Event Topic
+## OMRS Enterprise Event Topic
+
+The [enterprise repository services](subsystem-descriptions/enterprise-repository-services.md)
+combine the OMRS events from all of the [open metadata repository cohorts](open-metadata-repository-cohort.md)
+that the server is connected to and makes them available to each local
+[Open Metadata Access Service (OMAS)](../../access-services).  This is called the
+enterprise event topic.  By default, it is implemented as an
+[in-memory open metadata topic](../../adapters/open-connectors/event-bus-connectors/open-metadata-topic-connectors/inmemory-open-metadata-topic-connector).
+
+
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

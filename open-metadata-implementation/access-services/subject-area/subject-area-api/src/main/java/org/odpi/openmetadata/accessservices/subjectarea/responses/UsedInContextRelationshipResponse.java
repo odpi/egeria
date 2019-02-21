@@ -31,8 +31,8 @@ public class UsedInContextRelationshipResponse extends SubjectAreaOMASAPIRespons
     }
     public UsedInContextRelationshipResponse(UsedInContext usedInContext)
     {
+        this();
         this.usedInContext=usedInContext;
-        this.setResponseCategory(ResponseCategory.TermUsedInContextRelationship);
     }
 
 

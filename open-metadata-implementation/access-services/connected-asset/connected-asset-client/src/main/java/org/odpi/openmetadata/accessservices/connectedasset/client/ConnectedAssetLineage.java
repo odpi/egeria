@@ -10,12 +10,13 @@ import org.odpi.openmetadata.frameworks.connectors.properties.AssetLineage;
  */
 public class ConnectedAssetLineage extends AssetLineage
 {
-    private String              serverName;
-    private String              userId;
-    private String              omasServerURL;
-    private String              assetGUID;
-    private ConnectedAsset      connectedAsset;
-    private int                 maxCacheSize;
+    private String                 serverName;
+    private String                 userId;
+    private String                 omasServerURL;
+    private String                 assetGUID;
+    private ConnectedAssetUniverse connectedAsset;
+    private int                    maxCacheSize;
+    private RESTClient             restClient;
 
 
     /**
@@ -29,21 +30,46 @@ public class ConnectedAssetLineage extends AssetLineage
      * @param parentAsset descriptor of parent asset.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
+     * @param restClient client to call REST API
      */
-    ConnectedAssetLineage(String              serverName,
-                          String              userId,
-                          String              omasServerURL,
-                          String              assetGUID,
-                          ConnectedAsset      parentAsset,
-                          int                 maxCacheSize)
+    ConnectedAssetLineage(String                 serverName,
+                          String                 userId,
+                          String                 omasServerURL,
+                          String                 assetGUID,
+                          ConnectedAssetUniverse parentAsset,
+                          int                    maxCacheSize,
+                          RESTClient             restClient)
     {
         super(parentAsset);
 
-        this.serverName = serverName;
-        this.userId = userId;
-        this.omasServerURL = omasServerURL;
-        this.assetGUID = assetGUID;
+        this.serverName     = serverName;
+        this.userId         = userId;
+        this.omasServerURL  = omasServerURL;
+        this.assetGUID      = assetGUID;
         this.connectedAsset = parentAsset;
-        this.maxCacheSize = maxCacheSize;
+        this.maxCacheSize   = maxCacheSize;
+        this.restClient     = restClient;
+    }
+
+
+    /**
+     * Copy/clone constructor.  Used to reset iterator element pointer to 0;
+     *
+     * @param parentAsset descriptor of parent asset
+     * @param template type-specific iterator to copy; null to create an empty iterator
+     */
+    private ConnectedAssetLineage(ConnectedAssetUniverse parentAsset, ConnectedAssetLineage template)
+    {
+        super(parentAsset, template);
+
+        if (template != null)
+        {
+            this.serverName     = template.serverName;
+            this.userId         = template.userId;
+            this.omasServerURL  = template.omasServerURL;
+            this.assetGUID      = template.assetGUID;
+            this.connectedAsset = parentAsset;
+            this.restClient     = template.restClient;
+        }
     }
 }

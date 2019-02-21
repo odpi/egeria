@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.connectedasset.server;
 
 import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.connectedasset.handlers.*;
 import org.odpi.openmetadata.accessservices.connectedasset.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -57,15 +58,14 @@ public class ConnectedAssetRESTServices
 
         try
         {
-            AssetHandler   assetHandler = new AssetHandler(instanceHandler.getAccessServiceName(),
-                                                           serverName,
-                                                           instanceHandler.getRepositoryConnector(serverName),
-                                                           userId,
-                                                           assetGUID,
-                                                           connectionGUID);
+            AssetHandler assetHandler = new AssetHandler(instanceHandler.getAccessServiceName(),
+                                                         serverName,
+                                                         instanceHandler.getRepositoryConnector(serverName),
+                                                         userId,
+                                                         assetGUID,
+                                                         connectionGUID);
 
             response.setAsset(assetHandler.getAsset());
-            response.setAnnotationCount(assetHandler.getAnnotationCount());
             response.setCertificationCount(assetHandler.getCertificationCount());
             response.setCommentCount(assetHandler.getCommentCount());
             response.setConnectionCount(assetHandler.getConnectionCount());
@@ -140,7 +140,6 @@ public class ConnectedAssetRESTServices
                                                            assetGUID);
 
             response.setAsset(assetHandler.getAsset());
-            response.setAnnotationCount(assetHandler.getAnnotationCount());
             response.setCertificationCount(assetHandler.getCertificationCount());
             response.setCommentCount(assetHandler.getCommentCount());
             response.setConnectionCount(assetHandler.getConnectionCount());
@@ -180,51 +179,6 @@ public class ConnectedAssetRESTServices
 
 
     /**
-     * Returns the identifier of the asset linked to a specific connection.
-     *
-     * @param serverName   String   name of server instance to call.
-     * @param userId             userId of user making request.
-     * @param connectionGUID     unique id for connection.
-     *
-     * @return a bean with the basic properties about the asset or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public GUIDResponse getAssetIdForConnection(String   serverName,
-                                                String   userId,
-                                                String   connectionGUID)
-    {
-        return null;
-    }
-
-
-    /**
-     * Returns the list of annotations for the asset.
-     *
-     * @param serverName   String   name of server instance to call.
-     * @param userId       String   userId of user making request.
-     * @param assetGUID    String   unique id for asset.
-     * @param elementStart int      starting position for fist returned element.
-     * @param maxElements  int      maximum number of elements to return on the call.
-     *
-     * @return a list of annotations  or
-     * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
-     * PropertyServerException - there is a problem retrieving the asset properties from the property server or
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-    public AnnotationsResponse getAnnotations(String  serverName,
-                                              String  userId,
-                                              String  assetGUID,
-                                              int     elementStart,
-                                              int     maxElements)
-    {
-        return null;
-    }
-
-
-    /**
      * Returns the list of certifications for the asset.
      *
      * @param serverName   String   name of server instance to call.
@@ -235,7 +189,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of certifications  or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -245,7 +198,40 @@ public class ConnectedAssetRESTServices
                                                     int     elementStart,
                                                     int     maxElements)
     {
-        return null;
+        final String        methodName = "getCertifications";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        CertificationsResponse  response = new CertificationsResponse();
+
+        try
+        {
+            CertificationsHandler handler = new CertificationsHandler(instanceHandler.getAccessServiceName(),
+                                                                      serverName,
+                                                                      instanceHandler.getRepositoryConnector(serverName),
+                                                                      userId,
+                                                                      assetGUID,
+                                                                      elementStart,
+                                                                      maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -260,7 +246,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of comments or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -270,7 +255,40 @@ public class ConnectedAssetRESTServices
                                         int     elementStart,
                                         int     maxElements)
     {
-        return null;
+        final String        methodName = "getComments";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        CommentsResponse  response = new CommentsResponse();
+
+        try
+        {
+            CommentsHandler handler = new CommentsHandler(instanceHandler.getAccessServiceName(),
+                                                          serverName,
+                                                          instanceHandler.getRepositoryConnector(serverName),
+                                                          userId,
+                                                          assetGUID,
+                                                          elementStart,
+                                                          maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -285,7 +303,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of comments or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -295,7 +312,40 @@ public class ConnectedAssetRESTServices
                                               int     elementStart,
                                               int     maxElements)
     {
-        return null;
+        final String        methodName = "getCommentReplies";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        CommentsResponse  response = new CommentsResponse();
+
+        try
+        {
+            CommentRepliesHandler handler = new CommentRepliesHandler(instanceHandler.getAccessServiceName(),
+                                                                      serverName,
+                                                                      instanceHandler.getRepositoryConnector(serverName),
+                                                                      userId,
+                                                                      commentGUID,
+                                                                      elementStart,
+                                                                      maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -310,7 +360,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of connections or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -320,7 +369,40 @@ public class ConnectedAssetRESTServices
                                               int     elementStart,
                                               int     maxElements)
     {
-        return null;
+        final String        methodName = "getConnections";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        ConnectionsResponse  response = new ConnectionsResponse();
+
+        try
+        {
+            ConnectionsHandler handler = new ConnectionsHandler(instanceHandler.getAccessServiceName(),
+                                                                serverName,
+                                                                instanceHandler.getRepositoryConnector(serverName),
+                                                                userId,
+                                                                assetGUID,
+                                                                elementStart,
+                                                                maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -335,7 +417,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of external identifiers or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -345,7 +426,40 @@ public class ConnectedAssetRESTServices
                                                               int     elementStart,
                                                               int     maxElements)
     {
-        return null;
+        final String        methodName = "getExternalIdentifiers";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        ExternalIdentifiersResponse  response = new ExternalIdentifiersResponse();
+
+        try
+        {
+            ExternalIdentifiersHandler handler = new ExternalIdentifiersHandler(instanceHandler.getAccessServiceName(),
+                                                                                serverName,
+                                                                                instanceHandler.getRepositoryConnector(serverName),
+                                                                                userId,
+                                                                                assetGUID,
+                                                                                elementStart,
+                                                                                maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -360,7 +474,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of external references or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -370,7 +483,40 @@ public class ConnectedAssetRESTServices
                                                             int     elementStart,
                                                             int     maxElements)
     {
-        return null;
+        final String        methodName = "getExternalReferences";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        ExternalReferencesResponse  response = new ExternalReferencesResponse();
+
+        try
+        {
+            ExternalReferencesHandler handler = new ExternalReferencesHandler(instanceHandler.getAccessServiceName(),
+                                                                              serverName,
+                                                                              instanceHandler.getRepositoryConnector(serverName),
+                                                                              userId,
+                                                                              assetGUID,
+                                                                              elementStart,
+                                                                              maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -385,7 +531,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of informal tags or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -395,7 +540,40 @@ public class ConnectedAssetRESTServices
                                                 int     elementStart,
                                                 int     maxElements)
     {
-        return null;
+        final String        methodName = "getInformalTags";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        InformalTagsResponse  response = new InformalTagsResponse();
+
+        try
+        {
+            InformalTagsHandler handler = new InformalTagsHandler(instanceHandler.getAccessServiceName(),
+                                                                  serverName,
+                                                                  instanceHandler.getRepositoryConnector(serverName),
+                                                                  userId,
+                                                                  assetGUID,
+                                                                  elementStart,
+                                                                  maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -410,7 +588,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of licenses or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -420,7 +597,40 @@ public class ConnectedAssetRESTServices
                                         int     elementStart,
                                         int     maxElements)
     {
-        return null;
+        final String        methodName = "getLicenses";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        LicensesResponse  response = new LicensesResponse();
+
+        try
+        {
+            LicensesHandler handler = new LicensesHandler(instanceHandler.getAccessServiceName(),
+                                                          serverName,
+                                                          instanceHandler.getRepositoryConnector(serverName),
+                                                          userId,
+                                                          assetGUID,
+                                                          elementStart,
+                                                          maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -435,7 +645,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of likes or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -445,7 +654,40 @@ public class ConnectedAssetRESTServices
                                   int     elementStart,
                                   int     maxElements)
     {
-        return null;
+        final String        methodName = "getLikes";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        LikesResponse  response = new LikesResponse();
+
+        try
+        {
+            LikesHandler handler = new LikesHandler(instanceHandler.getAccessServiceName(),
+                                                    serverName,
+                                                    instanceHandler.getRepositoryConnector(serverName),
+                                                    userId,
+                                                    assetGUID,
+                                                    elementStart,
+                                                    maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -460,7 +702,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of known locations or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -470,7 +711,40 @@ public class ConnectedAssetRESTServices
                                                int     elementStart,
                                                int     maxElements)
     {
-        return null;
+        final String        methodName = "getKnownLocations";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        LocationsResponse  response = new LocationsResponse();
+
+        try
+        {
+            LocationsHandler handler = new LocationsHandler(instanceHandler.getAccessServiceName(),
+                                                            serverName,
+                                                            instanceHandler.getRepositoryConnector(serverName),
+                                                            userId,
+                                                            assetGUID,
+                                                            elementStart,
+                                                            maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -485,7 +759,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of note logs or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -495,7 +768,40 @@ public class ConnectedAssetRESTServices
                                         int     elementStart,
                                         int     maxElements)
     {
-        return null;
+        final String        methodName = "getNoteLogs";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        NoteLogsResponse  response = new NoteLogsResponse();
+
+        try
+        {
+            NoteLogsHandler handler = new NoteLogsHandler(instanceHandler.getAccessServiceName(),
+                                                          serverName,
+                                                          instanceHandler.getRepositoryConnector(serverName),
+                                                          userId,
+                                                          assetGUID,
+                                                          elementStart,
+                                                          maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -510,7 +816,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of notes or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -520,7 +825,40 @@ public class ConnectedAssetRESTServices
                                   int     elementStart,
                                   int     maxElements)
     {
-        return null;
+        final String        methodName = "getNotes";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        NotesResponse  response = new NotesResponse();
+
+        try
+        {
+            NotesHandler handler = new NotesHandler(instanceHandler.getAccessServiceName(),
+                                                    serverName,
+                                                    instanceHandler.getRepositoryConnector(serverName),
+                                                    userId,
+                                                    noteLogGUID,
+                                                    elementStart,
+                                                    maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -535,7 +873,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of ratings or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -545,7 +882,40 @@ public class ConnectedAssetRESTServices
                                       int     elementStart,
                                       int     maxElements)
     {
-        return null;
+        final String        methodName = "getRatings";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        RatingsResponse  response = new RatingsResponse();
+
+        try
+        {
+            RatingsHandler handler = new RatingsHandler(instanceHandler.getAccessServiceName(),
+                                                        serverName,
+                                                        instanceHandler.getRepositoryConnector(serverName),
+                                                        userId,
+                                                        assetGUID,
+                                                        elementStart,
+                                                        maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -560,7 +930,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of assets or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -570,7 +939,40 @@ public class ConnectedAssetRESTServices
                                                   int     elementStart,
                                                   int     maxElements)
     {
-        return null;
+        final String        methodName = "getRelatedAssets";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        RelatedAssetsResponse  response = new RelatedAssetsResponse();
+
+        try
+        {
+            RelatedAssetsHandler handler = new RelatedAssetsHandler(instanceHandler.getAccessServiceName(),
+                                                                    serverName,
+                                                                    instanceHandler.getRepositoryConnector(serverName),
+                                                                    userId,
+                                                                    assetGUID,
+                                                                    elementStart,
+                                                                    maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -585,7 +987,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a list of related media references or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedAssetGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -595,7 +996,40 @@ public class ConnectedAssetRESTServices
                                                                     int     elementStart,
                                                                     int     maxElements)
     {
-        return null;
+        final String        methodName = "getRelatedMediaReferences";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        RelatedMediaReferencesResponse  response = new RelatedMediaReferencesResponse();
+
+        try
+        {
+            RelatedMediaReferencesHandler handler = new RelatedMediaReferencesHandler(instanceHandler.getAccessServiceName(),
+                                                                                      serverName,
+                                                                                      instanceHandler.getRepositoryConnector(serverName),
+                                                                                      userId,
+                                                                                      assetGUID,
+                                                                                      elementStart,
+                                                                                      maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -610,7 +1044,6 @@ public class ConnectedAssetRESTServices
      *
      * @return a schema attributes response or
      * InvalidParameterException - the GUID is not recognized or the paging values are invalid or
-     * UnrecognizedGUIDException - the GUID is null or invalid or
      * PropertyServerException - there is a problem retrieving the asset properties from the property server or
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
@@ -620,7 +1053,40 @@ public class ConnectedAssetRESTServices
                                                        int     elementStart,
                                                        int     maxElements)
     {
-        return null;
+        final String        methodName = "getSchemaAttributes";
+
+        log.debug("Calling method: " + methodName + " for server " + serverName);
+
+        SchemaAttributesResponse  response = new SchemaAttributesResponse();
+
+        try
+        {
+            SchemaAttributesHandler handler = new SchemaAttributesHandler(instanceHandler.getAccessServiceName(),
+                                                                          serverName,
+                                                                          instanceHandler.getRepositoryConnector(serverName),
+                                                                          userId,
+                                                                          schemaTypeGUID,
+                                                                          elementStart,
+                                                                          maxElements);
+
+            response.setList(handler.getList());
+        }
+        catch (InvalidParameterException error)
+        {
+            captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException error)
+        {
+            capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
+
+        return response;
     }
 
 
@@ -736,41 +1202,6 @@ public class ConnectedAssetRESTServices
         else
         {
             captureCheckedException(response, error, error.getClass().getName());
-        }
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void captureUnrecognizedGUIDException(ConnectedAssetOMASAPIResponse response,
-                                                  UnrecognizedGUIDException error)
-    {
-        Map<String, Object>  exceptionProperties = new HashMap<>();
-
-        String  guid = error.getGUID();
-        String  guidType = error.getGUIDType();
-
-        if (guid != null)
-        {
-            exceptionProperties.put("guid", guid);
-        }
-
-        if (guidType != null)
-        {
-            exceptionProperties.put("guidType", guidType);
-        }
-
-        if (exceptionProperties.isEmpty())
-        {
-            captureCheckedException(response, error, error.getClass().getName());
-        }
-        else
-        {
-            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
         }
     }
 

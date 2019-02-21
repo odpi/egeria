@@ -41,6 +41,7 @@ public class TestAssetElementType
         testObject.setElementSourceServer("TestSourceServer");
         testObject.setElementOrigin(ElementOrigin.DEREGISTERED_REPOSITORY);
         testObject.setElementHomeMetadataCollectionId("TestHomeId");
+        testObject.setElementLicense("TestLicense");
 
         return new AssetElementType(testObject);
     }
@@ -62,6 +63,7 @@ public class TestAssetElementType
         testObject.setElementSourceServer("TestSourceServer");
         testObject.setElementOrigin(ElementOrigin.DEREGISTERED_REPOSITORY);
         testObject.setElementHomeMetadataCollectionId("TestHomeId");
+        testObject.setElementLicense("TestLicense");
 
         return new AssetElementType(testObject);
     }
@@ -83,6 +85,7 @@ public class TestAssetElementType
         testObject.setElementSourceServer("TestDifferentSourceServer");
         testObject.setElementOrigin(ElementOrigin.DEREGISTERED_REPOSITORY);
         testObject.setElementHomeMetadataCollectionId("TestHomeId");
+        testObject.setElementLicense("TestLicense");
 
         return new AssetElementType(testObject);
     }
@@ -102,6 +105,7 @@ public class TestAssetElementType
         assertTrue(resultObject.getElementSourceServer().equals("TestSourceServer"));
         assertTrue(resultObject.getElementOrigin().equals(ElementOrigin.DEREGISTERED_REPOSITORY));
         assertTrue(resultObject.getElementHomeMetadataCollectionId().equals("TestHomeId"));
+        assertTrue(resultObject.getElementLicense().equals("TestLicense"));
     }
 
 
@@ -119,6 +123,7 @@ public class TestAssetElementType
         assertTrue(nullObject.getElementSourceServer() == null);
         assertTrue(nullObject.getElementOrigin() == ElementOrigin.CONFIGURATION);
         assertTrue(nullObject.getElementHomeMetadataCollectionId() == null);
+        assertTrue(nullObject.getElementLicense() == null);
     }
 
 

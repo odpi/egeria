@@ -33,11 +33,11 @@ public class InvalidParameterExceptionResponse extends SubjectAreaOMASAPIRespons
     }
     public InvalidParameterExceptionResponse(SubjectAreaCheckedExceptionBase e)
     {
+        this();
         this.exceptionClassName = e.getReportingClassName();
         this.exceptionErrorMessage = e.getErrorMessage();
         this.exceptionSystemAction = e.getReportedSystemAction();
         this.exceptionUserAction = e.getReportedUserAction();
-        this.setResponseCategory(ResponseCategory.InvalidParameterException);
     }
 
     @Override

@@ -9,8 +9,10 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.update.IGCUpdate;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.attributes.AttributeMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.ReferenceableMapper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -781,6 +783,8 @@ public abstract class RelationshipMapping {
                                                       String userId,
                                                       String ridPrefix) {
 
+        final String methodName = "getEntityProxyForObject";
+
         IGCRestClient igcRestClient = igcomrsRepositoryConnector.getIGCRestClient();
         String igcType = igcObj.getType();
 
@@ -798,11 +802,14 @@ public abstract class RelationshipMapping {
                 if (ridPrefix != null) {
                     identity = ridPrefix + identity;
                 }
-                PrimitivePropertyValue qualifiedName = EntityMapping.getPrimitivePropertyValue(identity);
 
-                // 'qualifiedName' is the only unique InstanceProperty we need on an EntityProxy
-                InstanceProperties uniqueProperties = new InstanceProperties();
-                uniqueProperties.setProperty("qualifiedName", qualifiedName);
+                InstanceProperties uniqueProperties = igcomrsRepositoryConnector.getRepositoryHelper().addStringPropertyToInstance(
+                        igcomrsRepositoryConnector.getRepositoryName(),
+                        null,
+                        "qualifiedName",
+                        identity,
+                        methodName
+                );
 
                 try {
                     entityProxy = igcomrsRepositoryConnector.getRepositoryHelper().getNewEntityProxy(
@@ -821,6 +828,7 @@ public abstract class RelationshipMapping {
                     }
 
                     if (igcObj.hasModificationDetails()) {
+                        igcObj.populateModificationDetails(igcRestClient);
                         entityProxy.setCreatedBy((String) igcObj.getPropertyByName(IGCRestConstants.MOD_CREATED_BY));
                         entityProxy.setCreateTime((Date) igcObj.getPropertyByName(IGCRestConstants.MOD_CREATED_ON));
                         entityProxy.setUpdatedBy((String) igcObj.getPropertyByName(IGCRestConstants.MOD_MODIFIED_BY));
@@ -1435,6 +1443,155 @@ public abstract class RelationshipMapping {
         }
 
         return relationship;
+
+    }
+
+    /**
+     * Adds the provided relationship to IGC (if possible), or throws a RepositoryErrorException if the relationship
+     * cannot be created in IGC.
+     *
+     * @param igcomrsRepositoryConnector connectivity via an IGC OMRS Repository Connector
+     * @param relationshipMapping relationship mapping definition
+     * @param initialProperties the properties to set on the relationship
+     * @param proxyOne IGC object representing the first proxy of the relationship
+     * @param proxyTwo IGC object representing the second proxy of the relationship
+     * @param userId userId through which to create the relationship
+     * @return Relationship the created OMRS relationship
+     * @throws RepositoryErrorException
+     */
+    public static Relationship addIgcRelationship(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                  RelationshipMapping relationshipMapping,
+                                                  InstanceProperties initialProperties,
+                                                  Reference proxyOne,
+                                                  Reference proxyTwo,
+                                                  String userId) throws RepositoryErrorException {
+
+        String omrsRelationshipType = relationshipMapping.getOmrsRelationshipType();
+        String propertyUsed = null;
+        Map<String, InstancePropertyValue> relationshipProperties = null;
+        if (initialProperties != null) {
+            relationshipProperties = initialProperties.getInstanceProperties();
+        }
+
+        if (!relationshipMapping.isSelfReferencing()) {
+
+            IGCRestClient igcRestClient = igcomrsRepositoryConnector.getIGCRestClient();
+            String repositoryName = igcomrsRepositoryConnector.getRepositoryName();
+            String methodName = "addIgcRelationship";
+            String className = "RelationshipMapping";
+
+            // If there is a relationship-level asset, these cannot be created, so we need to simply fail
+            if (relationshipMapping.hasRelationshipLevelAsset()) {
+                String relationshipLevelAssetType = relationshipMapping.getRelationshipLevelIgcAsset();
+                Class pojo = igcRestClient.getPOJOForType(relationshipLevelAssetType);
+                if (Reference.isCreatableFromPOJO(pojo)) {
+                    // TODO: for creatable relationship-level assets, create a new one to represent this relationship
+                    //  (this should never be reached as there currently are no such assets in IGC)
+                    log.info("Creating a relationship-level asset for IGC type {} is not yet implemented.", relationshipLevelAssetType);
+                }
+                OMRSErrorCode errorCode = OMRSErrorCode.REPOSITORY_LOGIC_ERROR;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                        repositoryName,
+                        methodName,
+                        "Cannot create relationship for IGC asset type: " + relationshipLevelAssetType
+                );
+                throw new RepositoryErrorException(
+                        errorCode.getHTTPErrorCode(),
+                        className,
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction()
+                );
+            } else if (relationshipProperties != null && !relationshipProperties.isEmpty()) {
+                OMRSErrorCode errorCode = OMRSErrorCode.REPOSITORY_LOGIC_ERROR;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                        repositoryName,
+                        methodName,
+                        "Cannot capture any relationship-level properties in IGC: " + initialProperties
+                );
+                throw new RepositoryErrorException(
+                        errorCode.getHTTPErrorCode(),
+                        className,
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction()
+                );
+            }
+
+            OptimalStart direction = relationshipMapping.getOptimalStart();
+            List<String> igcRelationshipProperties = null;
+            String entityToUpdateRid = null;
+            String relatedEntityRid = null;
+            switch (relationshipMapping.getOptimalStart()) {
+                case ONE:
+                case OPPOSITE:
+                    igcRelationshipProperties = relationshipMapping.getProxyOneMapping().getIgcRelationshipProperties();
+                    entityToUpdateRid = proxyOne.getId();
+                    relatedEntityRid = proxyTwo.getId();
+                    break;
+                case TWO:
+                    igcRelationshipProperties = relationshipMapping.getProxyTwoMapping().getIgcRelationshipProperties();
+                    entityToUpdateRid = proxyTwo.getId();
+                    relatedEntityRid = proxyOne.getId();
+                    break;
+                case CUSTOM:
+                    break;
+            }
+
+            if (igcRelationshipProperties != null && !igcRelationshipProperties.isEmpty()) {
+                // Pick the first property and use that to setup the relationship
+                IGCUpdate igcUpdate = new IGCUpdate(entityToUpdateRid);
+                propertyUsed = igcRelationshipProperties.get(0);
+                igcUpdate.addRelationship(propertyUsed, relatedEntityRid);
+                igcUpdate.setRelationshipUpdateMode(IGCUpdate.UpdateMode.APPEND);
+                if (!igcomrsRepositoryConnector.getIGCRestClient().update(igcUpdate)) {
+                    OMRSErrorCode errorCode = OMRSErrorCode.REPOSITORY_LOGIC_ERROR;
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                            repositoryName,
+                            methodName,
+                            "Failed to create relationship: " + omrsRelationshipType
+                    );
+                    throw new RepositoryErrorException(
+                            errorCode.getHTTPErrorCode(),
+                            className,
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction()
+                    );
+                }
+            } else {
+                OMRSErrorCode errorCode = OMRSErrorCode.REPOSITORY_LOGIC_ERROR;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(
+                        repositoryName,
+                        methodName,
+                        "Cannot create relationships of this type: " + omrsRelationshipType
+                );
+                throw new RepositoryErrorException(
+                        errorCode.getHTTPErrorCode(),
+                        className,
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction()
+                );
+            }
+
+        } else {
+            log.info("Relationship {} is self-referencing in IGC; skipping.", omrsRelationshipType);
+            propertyUsed = RelationshipMapping.SELF_REFERENCE_SENTINEL;
+        }
+
+        return getMappedRelationship(
+                igcomrsRepositoryConnector,
+                relationshipMapping,
+                proxyOne,
+                proxyTwo,
+                propertyUsed,
+                userId
+        );
 
     }
 

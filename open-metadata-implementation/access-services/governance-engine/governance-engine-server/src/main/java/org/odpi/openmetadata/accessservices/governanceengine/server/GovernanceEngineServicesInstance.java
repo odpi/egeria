@@ -13,13 +13,12 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * GovernanceEngineServicesInstance caches references to OMRS objects for a specific server.
  * It is also responsible for registering itself in the instance map.
  */
-public class GovernanceEngineServicesInstance
-{
-    private OMRSRepositoryConnector  repositoryConnector = null;
-    private OMRSMetadataCollection   metadataCollection  = null;
-    private String                   serverName          = null;
-    private AccessServiceDescription myDescription       = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
+public class GovernanceEngineServicesInstance {
 
+    private OMRSRepositoryConnector repositoryConnector;
+    private OMRSMetadataCollection metadataCollection;
+    private String serverName;
+    private AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -27,40 +26,38 @@ public class GovernanceEngineServicesInstance
      * @param repositoryConnector link to the repository responsible for servicing the REST calls.
      * @throws NewInstanceException a problem occurred during initialization
      */
-    public GovernanceEngineServicesInstance(OMRSRepositoryConnector repositoryConnector) throws NewInstanceException
-    {
+    public GovernanceEngineServicesInstance(OMRSRepositoryConnector repositoryConnector) throws NewInstanceException {
         final String methodName = "new ServiceInstance";
 
         if (repositoryConnector != null) {
-            try
-            {
+            try {
                 this.repositoryConnector = repositoryConnector;
                 this.serverName = repositoryConnector.getServerName();
                 this.metadataCollection = repositoryConnector.getMetadataCollection();
 
                 GovernanceEngineServicesInstanceMap.setNewInstanceForJVM(serverName, this);
             } catch (Throwable error) {
-                GovernanceEngineErrorCode errorCode    = GovernanceEngineErrorCode.OMRS_NOT_INITIALIZED;
-                String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+                GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.OMRS_NOT_INITIALIZED;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
                 throw new NewInstanceException(errorCode.getHTTPErrorCode(),
-                                               this.getClass().getName(),
-                                               methodName,
-                                               errorMessage,
-                                               errorCode.getSystemAction(),
-                                               errorCode.getUserAction());
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
 
             }
         } else {
-            GovernanceEngineErrorCode errorCode    = GovernanceEngineErrorCode.OMRS_NOT_INITIALIZED;
-            String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.OMRS_NOT_INITIALIZED;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new NewInstanceException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
 
         }
     }
@@ -78,15 +75,15 @@ public class GovernanceEngineServicesInstance
         if (serverName != null) {
             return serverName;
         } else {
-            GovernanceEngineErrorCode errorCode    = GovernanceEngineErrorCode.OMRS_NOT_AVAILABLE;
-            String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.OMRS_NOT_AVAILABLE;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new NewInstanceException(errorCode.getHTTPErrorCode(),
-                                           this.getClass().getName(),
-                                           methodName,
-                                           errorMessage,
-                                           errorCode.getSystemAction(),
-                                           errorCode.getUserAction());
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
     }
 
@@ -96,8 +93,7 @@ public class GovernanceEngineServicesInstance
      *
      * @return String name
      */
-    public String  getAccessServiceName()
-    {
+    public String getAccessServiceName() {
         return myDescription.getAccessServiceName();
     }
 
@@ -108,22 +104,21 @@ public class GovernanceEngineServicesInstance
      * @return OMRSMetadataCollection object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public OMRSMetadataCollection getMetadataCollection() throws PropertyServerException
-    {
+    public OMRSMetadataCollection getMetadataCollection() throws PropertyServerException {
         final String methodName = "getMetadataCollection";
 
         if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive())) {
             return metadataCollection;
         } else {
-            GovernanceEngineErrorCode errorCode    = GovernanceEngineErrorCode.OMRS_NOT_AVAILABLE;
-            String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.OMRS_NOT_AVAILABLE;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
     }
 
@@ -134,22 +129,21 @@ public class GovernanceEngineServicesInstance
      * @return OMRSRepositoryConnector object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public OMRSRepositoryConnector getRepositoryConnector() throws PropertyServerException
-    {
+    public OMRSRepositoryConnector getRepositoryConnector() throws PropertyServerException {
         final String methodName = "getRepositoryConnector";
 
         if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive())) {
             return repositoryConnector;
         } else {
-            GovernanceEngineErrorCode errorCode    = GovernanceEngineErrorCode.OMRS_NOT_AVAILABLE;
-            String                errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+            GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.OMRS_NOT_AVAILABLE;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
             throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
         }
     }
 

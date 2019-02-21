@@ -1,0 +1,42 @@
+# <!-- SPDX-License-Identifier: Apache-2.0 -->
+# Copyright Contributors to the Egeria project.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: {{ include "myapp.fullname" . }}-kafka-monitor-deployment
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: kafka-monitor-deployment
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "myapp.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: kafka-monitor-deployment
+
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: kafka-monitor-deployment
+
+    spec:
+      containers:
+      - image: "{{ .Values.image.kafkamonitor.repository }}:{{ .Values.image.kafkamonitor.tag }}"
+        ImagePullPolicy: Always
+        name: {{ include "myapp.fullname" . }}-kafka-monitor
+        resources: {}
+        envFrom:
+        - configMapRef:
+            name: {{ include "myapp.fullname" . }}-configmap
+      restartPolicy: Always
+status: {}

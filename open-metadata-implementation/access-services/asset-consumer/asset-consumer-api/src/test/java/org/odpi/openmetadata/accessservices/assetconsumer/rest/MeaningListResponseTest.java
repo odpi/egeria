@@ -54,7 +54,6 @@ public class MeaningListResponseTest
         testObject.setExceptionProperties(additionalProperties);
 
         testObject.setStartingFromElement(10);
-        testObject.setTotalListSize(100);
         testObject.setMeanings(meaningList);
 
         return testObject;
@@ -77,7 +76,6 @@ public class MeaningListResponseTest
         assertTrue(resultObject.getExceptionProperties().equals(additionalProperties));
 
         assertTrue(resultObject.getStartingFromElement() == 10);
-        assertTrue(resultObject.getTotalListSize() == 100);
         assertTrue(resultObject.getMeanings().equals(meaningList));
     }
 

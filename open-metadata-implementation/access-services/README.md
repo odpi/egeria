@@ -64,13 +64,6 @@ that use personal data as they move through their development, deployment and us
   The Information Process OMAS provides the ability to manage process metadata that is used to provide design metadata.
 It is used by data engineering tools such as ETL design tools.
 
-* **[data-protection](data-protection)** - set up rules to protect data.
-
-  The Data Protection OMAS provides the services to support the definition of roles and 
-rules for managing the protection of metadata and assets, plus work with the audit
-logs captured by the open metadata and governance tools.
-It is typically used by the security, compliance and auditing teams.
-
 * **[data-science](data-science)** - manage metadata for analytics.
 
   The Data Science OMAS provides access to metadata for data assets,
@@ -120,6 +113,13 @@ management and governance.
 
   The Project Management OMAS supports the metadata associated with projects and campaigns.
 These projects and campaigns may be for governance projects, or generic data use projects.
+
+* **[security-officer](security-officer)** - set up rules to protect data.
+
+  The Security Officer OMAS provides the services to support the definition of roles and 
+rules for managing the protection of metadata and assets, plus work with the audit
+logs captured by the open metadata and governance tools.
+It is typically used by the security, compliance and auditing teams.
 
 * **[software-developer](software-developer)** - deliver useful metadata to software developers.
 
