@@ -25,7 +25,7 @@
 
     <!-- Only build docker images if containers property is set
           ie
-          mvn clean deploy -Pcontainers
+          mvn clean deploy -Pdocker
     -->
     <profiles>
         <profile>
