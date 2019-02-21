@@ -355,7 +355,7 @@ public class GovernanceEventProcessor {
 
     private void deleteMappingBetweenTagAndResource(ResourceTagMapper resourceTagMapper) {
         String rangerBaseURL = securitySyncConfig.getSecurityServerURL();
-        String deleteAssociationURL = MessageFormat.format("{0}/service/tags/tagresourcemap/{1}", rangerBaseURL, resourceTagMapper.getGuid());
+        String deleteAssociationURL = MessageFormat.format("{0}/service/tags/tagresourcemap/{1}", rangerBaseURL, resourceTagMapper.getId());
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = getHttpHeaders();
@@ -395,6 +395,7 @@ public class GovernanceEventProcessor {
 
     private HttpHeaders getHttpHeaders() {
         HttpHeaders headers = getBasicHTTPHeaders();
+
         headers.set("Authorization", securitySyncConfig.getSecurityServerAuthorization());
         return headers;
     }
