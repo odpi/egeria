@@ -30,12 +30,26 @@ spec:
         app.kubernetes.io/component: igcproxy-service
 
     spec:
+      hostAliases:
+      - ip: "158.176.66.119"
+        hostnames:
+        - "igc.openmetadata.ibmcloud.com"
       containers:
       - image: "{{ .Values.image.igcproxy.repository }}:{{ .Values.image.igcproxy.tag }}"
         ImagePullPolicy: Always
-        name: {{ .Chart.Name }}-igcproxy
+        name: {{ include "myapp.fullname" . }}-igcproxy
+        envFrom:
+        - configMapRef:
+           name: {{ include "myapp.fullname" . }}-configmap
         ports:
         - containerPort: 8080
+        resources: {}
+      - image: "{{ .Values.image.igcproxyinit.repository }}:{{ .Values.image.igcproxyinit.tag }}"
+        name: {{ include "myapp.fullname" . }}-igcproxyinit
+        ImagePullPolicy: "{{ .Values.image.igcproxyinit.pullPolicy }}"
+        envFrom:
+        - configMapRef:
+           name: {{ include "myapp.fullname" . }}-configmap
         resources: {}
       restartPolicy: Always
 status: {}

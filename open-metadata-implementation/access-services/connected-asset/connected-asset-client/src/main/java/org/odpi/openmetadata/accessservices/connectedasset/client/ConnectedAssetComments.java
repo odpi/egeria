@@ -25,12 +25,14 @@ import java.util.List;
  */
 public class ConnectedAssetComments extends AssetComments
 {
-    private String              serverName;
-    private String              userId;
-    private String              omasServerURL;
-    private String              assetGUID;
-    private ConnectedAsset      connectedAsset;
-    private int                 maxCacheSize;
+    private String                 serverName;
+    private String                 userId;
+    private String                 omasServerURL;
+    private String                 assetGUID;
+    private ConnectedAssetUniverse connectedAsset;
+    private int                    maxCacheSize;
+    private RESTClient             restClient;
+
 
 
 
@@ -45,14 +47,16 @@ public class ConnectedAssetComments extends AssetComments
      * @param totalElementCount the total number of elements to process.  A negative value is converted to 0.
      * @param maxCacheSize maximum number of elements that should be retrieved from the property server and
      *                     cached in the element list at any one time.  If a number less than one is supplied, 1 is used.
+     * @param restClient client to call REST API
      */
-    ConnectedAssetComments(String              serverName,
-                           String              userId,
-                           String              omasServerURL,
-                           String              assetGUID,
-                           ConnectedAsset      parentAsset,
-                           int                 totalElementCount,
-                           int                 maxCacheSize)
+    ConnectedAssetComments(String                 serverName,
+                           String                 userId,
+                           String                 omasServerURL,
+                           String                 assetGUID,
+                           ConnectedAssetUniverse parentAsset,
+                           int                    totalElementCount,
+                           int                    maxCacheSize,
+                           RESTClient             restClient)
     {
         super(parentAsset, totalElementCount, maxCacheSize);
 
@@ -62,7 +66,7 @@ public class ConnectedAssetComments extends AssetComments
         this.assetGUID       = assetGUID;
         this.connectedAsset  = parentAsset;
         this.maxCacheSize    = maxCacheSize;
-
+        this.restClient      = restClient;
     }
 
 
@@ -72,7 +76,7 @@ public class ConnectedAssetComments extends AssetComments
      * @param parentAsset descriptor of parent asset
      * @param template type-specific iterator to copy; null to create an empty iterator
      */
-    private ConnectedAssetComments(ConnectedAsset   parentAsset, ConnectedAssetComments template)
+    private ConnectedAssetComments(ConnectedAssetUniverse parentAsset, ConnectedAssetComments template)
     {
         super(parentAsset, template);
 
@@ -84,7 +88,7 @@ public class ConnectedAssetComments extends AssetComments
             this.assetGUID       = template.assetGUID;
             this.connectedAsset  = parentAsset;
             this.maxCacheSize    = template.maxCacheSize;
-
+            this.restClient      = template.restClient;
         }
     }
 
@@ -129,23 +133,25 @@ public class ConnectedAssetComments extends AssetComments
         final String   methodName = "AssetComments.getCachedList";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/assets/{2}/comments?elementStart={3}&maxElements={4}";
 
-        connectedAsset.validateOMASServerURL(methodName);
+        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+        RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
+
+        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
 
         try
         {
-            CommentsResponse restResult = (CommentsResponse)connectedAsset.callGetRESTCall(methodName,
-                                                                                           CommentsResponse.class,
-                                                                                           omasServerURL + urlTemplate,
-                                                                                           serverName,
-                                                                                           userId,
-                                                                                           assetGUID,
-                                                                                           cacheStartPointer,
-                                                                                           maximumSize);
+            CommentsResponse restResult = restClient.callCommentGetRESTCall(methodName,
+                                                                            omasServerURL + urlTemplate,
+                                                                            serverName,
+                                                                            userId,
+                                                                            assetGUID,
+                                                                            cacheStartPointer,
+                                                                            maximumSize);
 
-            connectedAsset.detectAndThrowInvalidParameterException(methodName, restResult);
-            connectedAsset.detectAndThrowUnrecognizedAssetGUIDException(methodName, restResult);
-            connectedAsset.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-            connectedAsset.detectAndThrowPropertyServerException(methodName, restResult);
+            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+            restExceptionHandler.detectAndThrowUnrecognizedAssetGUIDException(methodName, restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
             List<CommentResponse> Responses = restResult.getList();
             if ((Responses == null) || (Responses.isEmpty()))
@@ -171,7 +177,8 @@ public class ConnectedAssetComments extends AssetComments
                                                                               bean.getGUID(),
                                                                               connectedAsset,
                                                                               commentResponse.getReplyCount(),
-                                                                              maxCacheSize);
+                                                                              maxCacheSize,
+                                                                              restClient);
                         }
 
                         /*

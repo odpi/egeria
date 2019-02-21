@@ -97,7 +97,6 @@ public class OMRSOperationalServices
      * @param localServerName name of the local server
      * @param localServerType type of the local server
      * @param organizationName name of the organization that owns the local server
-     * @param localMetadataCollectionName name of the metadata collection residing in the local server
      * @param localServerUserId user id for this server to use if processing inbound messages.
      * @param localServerURL URL root for this server.
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter

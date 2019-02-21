@@ -27,13 +27,11 @@
             <artifactId>admin-services-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
-        <!--
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-catalog-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
-        -->
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-consumer-client</artifactId>
@@ -44,13 +42,11 @@
             <artifactId>asset-owner-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
-        <!--
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>community-profile-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
-        -->
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>connected-asset-client</artifactId>
@@ -83,11 +79,6 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>data-protection-client</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>data-science-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
@@ -111,16 +102,19 @@
             <artifactId>governance-program-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
-        <!--
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>information-view-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
-        -->
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>project-management-client</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>security-officer-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
         <dependency>

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTerm;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryTerm.GlossaryTermMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermAnchor.TermAnchor;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermISATypeOFRelationship.TermISATypeOFRelationshipMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.server.SubjectAreaBeansToAccessOMRS;
@@ -30,6 +31,8 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.*;
 import java.util.Set;
 
@@ -315,6 +318,13 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             if (pageSize == null) {
                 pageSize = new Integer(0);
             }
+            if (sequencingProperty !=null) {
+                try {
+                    sequencingProperty = URLDecoder.decode(sequencingProperty,"UTF-8");
+                } catch (UnsupportedEncodingException e) {
+                    // TODO error
+                }
+            }
             SequencingOrder omrsSequencingOrder =  SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
             Set<Line> omrsTermRelationships = subjectAreaOmasREST.getGlossaryTermRelationships(
                     userId,
@@ -375,6 +385,80 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         }
         return response;
     }
+    /**
+     * Find Term
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param searchCriteria String expression matching Term property values (this does not include the GlossarySummary content). When not specified, all terms are returned.
+     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
+     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     *                 beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize the maximum number of elements that can be returned on this request.
+     *                 0 means there is no limit to the page size
+     * @param sequencingOrder the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @return A list of Terms meeting the search Criteria
+     *
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
+     * </ul>
+     */
+    public  SubjectAreaOMASAPIResponse findTerm(String serverName, String userId,
+                               String searchCriteria,
+                               Date asOfTime,
+                               Integer offset,
+                               Integer pageSize,
+                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                               String sequencingProperty) {
+
+        final String methodName = "findTerm";
+        if (log.isDebugEnabled())
+        {
+            log.debug("==> Method: " + methodName + ",userId=" + userId);
+        }
+        List<Term> terms = null;
+        SubjectAreaOMASAPIResponse response =null;
+        try
+        {
+            // initialise omrs API helper with the right instance based on the server name
+            initializeAPI(serverName, userId, methodName);
+            List<EntityDetail> entitydetails = OMRSAPIHelper.findEntitiesByType(oMRSAPIHelper,serverName, userId, "GlossaryTerm", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
+            if (entitydetails !=null) {
+                terms= new ArrayList<>();
+                for (EntityDetail entityDetail : entitydetails) {
+                    GlossaryTerm glossaryTerm = GlossaryTermMapper.mapOmrsEntityDetailToGlossaryTerm(entityDetail);
+                    Term term = TermMapper.mapOMRSBeantoTerm(glossaryTerm);
+                    terms.add(term);
+                }
+            }
+            response =new TermsResponse(terms);
+        } catch (InvalidParameterException e)
+        {
+            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (UserNotAuthorizedException e)
+        {
+            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+        } catch (MetadataServerUncontactableException e)
+        {
+            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
+        }
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", Response=" + response);
+        }
+        return response;
+
+
+    }
+
 
     private int getSizeToGet(Set<Line> omrsTermRelationships, List<Line> termRelationships) {
         int sizeToGet =0;

@@ -15,6 +15,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.searc
 import org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.model.*;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSMetadataCollection;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnector;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.EntityMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.entities.ReferenceableMapper;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.mapping.relationships.RelationshipMapping;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.model.OMRSStub;
@@ -349,7 +350,11 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             case InfosphereEventsAssetEvent.ACTION_CREATE:
             case InfosphereEventsAssetEvent.ACTION_MODIFY:
             case InfosphereEventsAssetEvent.ACTION_DELETE:
-                processAsset(assetRid, event.getAssetType(), null);
+                String igcAssetDisplayName = event.getAssetType();
+                if (igcAssetDisplayName != null && !igcAssetDisplayName.equals("OMRS Stub")) {
+                    String igcAssetType = igcomrsMetadataCollection.getIgcAssetTypeForAssetName(igcAssetDisplayName);
+                    processAsset(assetRid, igcAssetType, null);
+                }
                 break;
             case InfosphereEventsAssetEvent.ACTION_ASSIGNED_RELATIONSHIP:
                 log.debug("Ignoring ASSIGNED_RELATIONSHIP event -- should be handled already by an earlier CREATE or MODIFY event: {}", event);
@@ -540,8 +545,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             // If we can't retrieve the asset by RID, it no longer exists -- so send a delete event
             sendPurgedEntity(assetType, rid);
             // Find any mapper(s) for this type that use a prefix and send a purge for the prefixed entity as well
-            List<ReferenceableMapper> referenceableMappers = igcomrsMetadataCollection.getMappers(assetType, localServerUserId);
-            for (ReferenceableMapper referenceableMapper : referenceableMappers) {
+            List<EntityMapping> referenceableMappers = igcomrsMetadataCollection.getMappers(assetType, localServerUserId);
+            for (EntityMapping referenceableMapper : referenceableMappers) {
                 List<RelationshipMapping> relationshipMappings = referenceableMapper.getRelationshipMappers();
                 for (RelationshipMapping relationshipMapping : relationshipMappings) {
                     String prefixOne = relationshipMapping.getProxyOneMapping().getIgcRidPrefix();
@@ -1016,8 +1021,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             }
 
             // See if there are any generated entities to send an event for (ie. *Type)
-            List<ReferenceableMapper> referenceableMappers = igcomrsMetadataCollection.getMappers(asset.getType(), localServerUserId);
-            for (ReferenceableMapper referenceableMapper : referenceableMappers) {
+            List<EntityMapping> referenceableMappers = igcomrsMetadataCollection.getMappers(asset.getType(), localServerUserId);
+            for (EntityMapping referenceableMapper : referenceableMappers) {
                 // Generated entities MUST have a prefix, so if there is no prefix ignore that mapper
                 String ridPrefix = referenceableMapper.getIgcRidPrefix();
                 if (ridPrefix != null) {
@@ -1083,8 +1088,8 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
             processClassifications(latest, latest.getClassifications(), last == null ? new ArrayList<>() : last.getClassifications());
 
             // See if there are any generated entities to send an event for (ie. *Type)
-            List<ReferenceableMapper> referenceableMappers = igcomrsMetadataCollection.getMappers(latestVersion.getType(), localServerUserId);
-            for (ReferenceableMapper referenceableMapper : referenceableMappers) {
+            List<EntityMapping> referenceableMappers = igcomrsMetadataCollection.getMappers(latestVersion.getType(), localServerUserId);
+            for (EntityMapping referenceableMapper : referenceableMappers) {
                 // Generated entities MUST have a prefix, so if there is no prefix ignore that mapper
                 String ridPrefix = referenceableMapper.getIgcRidPrefix();
                 if (ridPrefix != null) {
@@ -1233,17 +1238,16 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
     /**
      * Send an event out on OMRS topic for a purged entity.
      *
-     * @param assetTypeName the IGC display name of the asset type (ie. ASSET_TYPE from the event)
+     * @param igcAssetType the IGC asset type (ie. translated from the ASSET_TYPE from the event)
      * @param rid the IGC Repository ID (RID) of the asset
      */
-    private void sendPurgedEntity(String assetTypeName, String rid) {
+    private void sendPurgedEntity(String igcAssetType, String rid) {
 
         // Purge entities by getting all mappers used for that entity (ie. *Type generated entities
         // as well as non-generated entities)
-        String igcAssetType = igcomrsMetadataCollection.getIgcAssetTypeForAssetName(assetTypeName);
         if (igcAssetType != null) {
-            List<ReferenceableMapper> referenceableMappers = igcomrsMetadataCollection.getMappers(igcAssetType, localServerUserId);
-            for (ReferenceableMapper referenceableMapper : referenceableMappers) {
+            List<EntityMapping> referenceableMappers = igcomrsMetadataCollection.getMappers(igcAssetType, localServerUserId);
+            for (EntityMapping referenceableMapper : referenceableMappers) {
                 String typeDefName = referenceableMapper.getOmrsTypeDefName();
                 TypeDef typeDef = igcomrsRepositoryConnector.getRepositoryHelper().getTypeDefByName(
                         igcomrsRepositoryConnector.getRepositoryName(),
@@ -1268,10 +1272,10 @@ public class IGCOMRSRepositoryEventMapper extends OMRSRepositoryEventMapperBase
 
             // Finally, remove the stub (so that if such an asset is created in the future it is recognised as new
             // rather than an update)
-            igcomrsMetadataCollection.deleteOMRSStubForAsset(rid, assetTypeName);
+            igcomrsMetadataCollection.deleteOMRSStubForAsset(rid, igcAssetType);
 
         } else {
-            log.warn("Unable to find asset type from display name '{}' for RID: {}", assetTypeName, rid);
+            log.warn("No asset type was provided for purged RID {} -- cannot generate purgeEntity event.", rid);
         }
 
     }

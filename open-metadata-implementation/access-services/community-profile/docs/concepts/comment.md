@@ -3,7 +3,7 @@
 
 # Comments
 
-Comments are informal messages or feedback.  They can be attached to many places, for example
+[Comments] are informal messages or feedback.  They can be attached to many places, for example
 a [personal note](personal-notes.md),
 a [community](community.md), 
 a [community forum or community forum contribution](community-forum.md),
@@ -23,6 +23,9 @@ together to show a detailed conversation on a topic.
 The owner of a personal profile or the administrator of a community
 are able to remove inappropriate or out-of-date comments
 attached to their personal profile or community respectively.
+See:
+* [Removing]
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

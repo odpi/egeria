@@ -31,8 +31,8 @@ public class TranslationRelationshipResponse extends SubjectAreaOMASAPIResponse
     }
     public TranslationRelationshipResponse(Translation translation)
     {
+        this();
         this.translation=translation;
-        this.setResponseCategory(ResponseCategory.TranslationRelationship);
     }
 
 
