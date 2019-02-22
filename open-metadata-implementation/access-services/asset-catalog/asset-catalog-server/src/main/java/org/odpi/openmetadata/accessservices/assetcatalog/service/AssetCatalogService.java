@@ -1493,7 +1493,7 @@ public class AssetCatalogService {
                 .count() == 1 ? Boolean.TRUE : Boolean.FALSE;
     }
 
-    public AssetResponse searchForAssetFirstLevel(String serverName, String userId, String searchCriteria, SearchParameters searchParameters){
+    public AssetResponse findAssetsBySearchedPropertyValue(String serverName, String userId, String searchCriteria, SearchParameters searchParameters){
         AssetResponse response = new AssetResponse();
 
         try {
@@ -1519,7 +1519,7 @@ public class AssetCatalogService {
     }
 
 
-    public AssetResponse searchForAssetSecondLevel(String serverName, String userId, String assetId){
+    public AssetResponse buildAssetContext(String serverName, String userId, String assetId){
         AssetResponse response = new AssetResponse();
 
         try {

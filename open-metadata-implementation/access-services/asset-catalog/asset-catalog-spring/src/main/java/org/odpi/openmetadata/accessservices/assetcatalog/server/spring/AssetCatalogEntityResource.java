@@ -348,22 +348,42 @@ public class AssetCatalogEntityResource {
         return assetService.searchAssetsGeneric(serverName, userId, searchCriteria, searchParameters);
     }
 
+
+    /**
+     * Return a list of assets matching the search criteria without the full context
+     *
+     * @param serverName       unique identifier for requested server.
+     * @param userId           the unique identifier for the user
+     * @param searchCriteria   a string expression of the characteristics of the required assets
+     * @param searchParameters constrains to make the assets's search results more precise
+     * @return list of properties used to narrow the search
+     */
     @RequestMapping(method = RequestMethod.POST,
-            path = "/search-asset-first-level/{searchCriteria}",
+            path = "/find-asset/{searchCriteria}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetResponse searchAssetsFirstLevel(@PathVariable("serverName") String serverName,
                                         @PathVariable("userId") String userId,
                                         @PathVariable("searchCriteria") String searchCriteria,
                                         @RequestBody SearchParameters searchParameters) {
-        return assetService.searchForAssetFirstLevel(serverName, userId, searchCriteria, searchParameters);
+        return assetService.findAssetsBySearchedPropertyValue(serverName, userId, searchCriteria, searchParameters);
     }
 
+
+    /**
+     * Return the full context of an asset/glossary term based on its identifier.
+     * The response contains the list of the connections assigned to the asset.
+     *
+     * @param serverName       unique identifier for requested server.
+     * @param userId           the unique identifier for the user
+     * @param assetId          the global unique identifier of the asset
+     * @return list of properties used to narrow the search
+     */
     @RequestMapping(method = RequestMethod.GET,
-            path = "/search-asset-second-level/{assetId}",
+            path = "/asset-context/{assetId}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetResponse searchAssetsFirstLevel(@PathVariable("serverName") String serverName,
+    public AssetResponse getAssetContext(@PathVariable("serverName") String serverName,
                                                 @PathVariable("userId") String userId,
                                                 @PathVariable("assetId") String assetId) {
-        return assetService.searchForAssetSecondLevel(serverName, userId, assetId);
+        return assetService.buildAssetContext(serverName, userId, assetId);
     }
 }
