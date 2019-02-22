@@ -26,6 +26,6 @@ In this example:
  * All docker builds will currently set the tag (version) to be the same as the maven version ie 1.1-SNAPSHOT. This means that when testing it is imperitive to always force pull fresh images, or an old version may be used. For example when using kubernetes ensure ImagePullPolicy = 'Always'
 . Previously every single change was versioned, but this led to significant overhead in storage as well as constant changes in the source code just to do a rebuild.
 
-* If DOCKER_HOST is set to a remote host connecton using ssh, the docker build may fail. Refer to https://github.com/spotify/dockerfile-maven/issues/272 for further information
+* If DOCKER_HOST is set to a remote host connecton using ssh, the docker build may fail. Refer to https://github.com/spotify/dockerfile-maven/issues/272 for further information 
 
 * If building on MacOS, the OSX credential store is not supported for docker logins (which is needed to push an image to the repo). To workaround this remove the line '"credsStore": "osxkeychain",' from ~/.docker/config.json and reissue 'docker login'. See https://github.com/spotify/dockerfile-maven/issues/273 for further info
