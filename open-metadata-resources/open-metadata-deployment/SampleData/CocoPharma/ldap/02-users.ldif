@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the ODPi Egeria project.
 
-#Founder
-dn: uid=Zach_Now,cn=Founder,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Zach_Now,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -13,7 +12,7 @@ sn: Now
 uid: Zach_Now
 userPassword: password
 
-dn: uid=Steve_Starter,cn=Founder,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Steve_Starter,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -25,7 +24,7 @@ uid: Steve_Starter
 userPassword: password
 
 
-dn: uid=Terri_Daring,cn=Founder,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Terri_Daring,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -36,8 +35,7 @@ sn: Starter
 uid: Steve_Starter
 userPassword: password
 
-#Data Steward
-dn: uid=Tanya_Tidy,cn=Data Steward,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Tanya_Tidy,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -49,8 +47,7 @@ uid: Tanya_Tidy
 userPassword: password
 
 
-#IT Project Leader
-dn: uid=Polly_Tasker,cn=IT Project Leader,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Polly_Tasker,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -61,8 +58,7 @@ sn: Tasker
 uid: Polly_Tasker
 userPassword: password
 
-#Lead Researcher
-dn: uid=Tessa_Tube,cn=Lead Researcher,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Tessa_Tube,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -73,8 +69,7 @@ sn: Tube
 uid: Tessa_Tube
 userPassword: password
 
-#Data Scientist
-dn: uid=Callie_Quartile,cn=Data Scientist,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Callie_Quartile,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -85,8 +80,7 @@ sn: Quartile
 uid: Callie_Quartile
 userPassword: password
 
-#Chief Security Officer
-dn: uid=Ivor_Padlock,cn=Chief Security Officer,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Ivor_Padlock,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -98,8 +92,7 @@ uid: Ivor_Padlock
 userPassword: password
 
 
-#Application Developer
-dn: uid=Bob_Nitter,cn=Application Developer,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Bob_Nitter,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -110,8 +103,7 @@ sn: Nitter
 uid: Bob_Nitter
 userPassword: password
 
-#Human Resources and Compliance Director
-dn: uid=Faith_Broker,cn=Human Resources and Compliance Director,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Faith_Broker,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -123,8 +115,7 @@ uid: Faith_Broker
 userPassword: password
 
 
-#Payment Clerk
-dn: uid=Sally_Counter,cn=Payment Clerk,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Sally_Counter,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -136,8 +127,7 @@ uid: Sally_Counter
 userPassword: password
 
 
-#DataStage Specialist
-dn: uid=Lemmie_Stage,cn=DataStage Specialist,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Lemmie_Stage,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -149,8 +139,7 @@ uid: Lemmie_Stage
 userPassword: password
 
 
-#Information Architect
-dn: uid=Erin_Overview,cn=Information Architect,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Erin_Overview,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -162,8 +151,7 @@ uid: Erin_Overview
 userPassword: password
 
 
-#Sales Specialist New York
-dn: uid=Harry_Hopeful,cn=Sales Specialist,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Harry_Hopeful,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -175,8 +163,7 @@ uid: Harry_Hopeful
 userPassword: password
 
 
-#IT Infrastructure Lead
-dn: uid=Gary_Geeke,cn=IT Infrastructure Leadt,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Gary_Geeke,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -188,8 +175,7 @@ uid: Gary_Geeke
 userPassword: password
 
 
-#Chief Finance Officer (CFO)
-dn: uid=Reggie_Mint,cn=Chief Finance Officer (CFO),ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Reggie_Mint,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -201,8 +187,7 @@ uid: Reggie_Mint
 userPassword: password
 
 
-#Information Analyst
-dn: uid=Peter_Profile,cn=Information Analyst,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Peter_Profile,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -214,8 +199,7 @@ uid: Peter_Profile
 userPassword: password
 
 
-#Accounts Manager, Finance HQ
-dn: uid=Tom_Tally,cn=Accounts Manager,ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Tom_Tally,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
@@ -226,8 +210,7 @@ sn: Tally
 uid: Tom_Tally
 userPassword: password
 
-#Chief Data Officer (CDO)
-dn: uid=Jules_Keeper,cn=Chief Data Officer (CDO),ou=data-lake,dc=ing-atlas,dc=com
+dn: uid=Jules_Keeper,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
 objectclass: organizationalPerson
