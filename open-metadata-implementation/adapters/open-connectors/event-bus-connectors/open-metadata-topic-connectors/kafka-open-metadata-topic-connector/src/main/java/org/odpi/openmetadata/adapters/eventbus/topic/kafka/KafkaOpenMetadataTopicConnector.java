@@ -290,4 +290,61 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
     }
+
+
+    /**
+     * Return the properties used to control Kafka with the sensitive property values hidden.
+     *
+     * @param liveProperties property object
+     * @return properties with selected hidden values
+     */
+    public String getPrintableProperties(Properties   liveProperties)
+    {
+        final String    mask = "[hidden]";
+        final String    secretProperty1 = "sasl.jaas.config";
+        final String    secretProperty2 = "ssl.truststore.password";
+
+        String  printableProperties = null;
+
+        if (liveProperties != null)
+        {
+            Set<Object>  propertyNames = liveProperties.keySet();
+
+            for (Object name : propertyNames)
+            {
+                String  propertyName = name.toString();
+
+                if (printableProperties == null)
+                {
+                    printableProperties = "[";
+                }
+                else
+                {
+                    printableProperties = printableProperties + ", ";
+                }
+
+                if ((secretProperty1.equals(propertyName)) || (secretProperty2.equals(propertyName)))
+                {
+                    printableProperties = printableProperties + propertyName + "->" + mask;
+                }
+                else
+                {
+                    Object  propertyValue = liveProperties.getProperty(propertyName);
+
+                    printableProperties = printableProperties + propertyName + "->" + propertyValue;
+                }
+            }
+        }
+
+        if (printableProperties != null)
+        {
+            printableProperties = printableProperties + ']';
+        }
+        else
+        {
+            printableProperties = "<none>";
+        }
+
+        return printableProperties;
+    }
 }

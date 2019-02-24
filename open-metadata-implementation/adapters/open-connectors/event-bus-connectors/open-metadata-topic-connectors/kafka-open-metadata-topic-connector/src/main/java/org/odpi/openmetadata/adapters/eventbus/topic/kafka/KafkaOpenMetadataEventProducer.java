@@ -77,7 +77,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(topicName, producerProperties.toString()),
+                           auditCode.getFormattedLogMessage(topicName, connector.getPrintableProperties(producerProperties)),
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
@@ -185,7 +185,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
                            auditCode.getFormattedLogMessage(topicName, Integer.toString(sendBuffer.size())),
-                           this.producerProperties.toString(),
+                           connector.getPrintableProperties(this.producerProperties),
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
 
@@ -236,7 +236,7 @@ public class KafkaOpenMetadataEventProducer implements Runnable
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
                            auditCode.getFormattedLogMessage(topicName, Integer.toString(getSendBufferSize()), Long.toString(messageSendCount)),
-                           this.producerProperties.toString(),
+                           connector.getPrintableProperties(this.producerProperties),
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
     }
