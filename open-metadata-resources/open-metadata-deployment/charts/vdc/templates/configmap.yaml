@@ -43,3 +43,6 @@ data:
   OMAS_SERVER_URL: http://{{ include "myapp.fullname" . }}-egeria-service.default.svc.cluster.local:8080
   OMAS_SERVER_NAME: myserver
   GAIAN_HOST: {{ include "myapp.fullname" . }}-gaian-service.default.svc.cluster.local
+  LDAP_ENDPOINT: {{ .Release.Name }}-openldap.default.svc.cluster.local:{{ .Values.openldap.servicePort }}
+  LDAP_USER: cn=admin,dc=example,dc=org
+  LDAP_PASS: {{ .Values.openldap.adminPassword }}

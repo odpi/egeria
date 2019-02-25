@@ -18,13 +18,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AssetResponse extends AssetCatalogOMASAPIResponse {
 
-    private List<Term> terms = new ArrayList<>();
+    private List<Term> assets = new ArrayList<>();
 
-    public List<Term> getTerms() {
-        return terms;
+    public List<Term> getAssets() {
+        return assets;
     }
 
-    public void setTerms(List<Term> terms) {
-        this.terms = terms;
+    public void setAssets(List<Term> assets) {
+        this.assets = assets;
     }
 }

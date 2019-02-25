@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -17,22 +16,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AssetElement extends Element {
 
-    private List<Element> subElements = new ArrayList<>();
-    private List<Connection> connectionIds;
+    private List<Element> context;
+    private List<Connection> connections;
 
-    public List<Element> getSubElements() {
-        return subElements;
+    public List<Element> getContext() {
+        return context;
     }
 
-    public void setSubElements(List<Element> subElements) {
-        this.subElements = subElements;
+    public void setContext(List<Element> context) {
+        this.context = context;
     }
 
-    public List<Connection> getConnectionIds() {
-        return connectionIds;
+    public List<Connection> getConnections() {
+        return connections;
     }
 
-    public void setConnectionIds(List<Connection> connectionIds) {
-        this.connectionIds = connectionIds;
+    public void setConnections(List<Connection> connections) {
+        this.connections = connections;
     }
 }
