@@ -1,0 +1,75 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+#founder group
+dn: cn=Founder,ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Zach_Now,ou=People,dc=example,dc=org
+member: uid=Steve_Starter,ou=People,dc=example,dc=org
+member: uid=Terri_Daring,ou=People,dc=example,dc=org
+
+
+dn: cn=Data Steward,ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Tanya_Tidy,ou=People,dc=example,dc=org
+
+dn: cn=IT Project Leader,ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Polly_Tasker,ou=People,dc=example,dc=org
+
+
+dn: cn=Lead Researcher,ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Tessa_Tube,ou=People,dc=example,dc=org
+
+dn: cn=Data Scientist,ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Callie_Quartile,ou=People,dc=example,dc=org
+
+dn: cn=Chief Security Officer,ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Ivor_Padlock,ou=People,dc=example,dc=org
+
+dn: cn=Application Developer,ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Bob_Nitter,ou=People,dc=example,dc=org
+
+dn: cn=Human Resources and Compliance Director,ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Faith_Broker,ou=People,dc=example,dc=org
+
+dn: cn=Payment Clerk,ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Sally_Counter,ou=People,dc=example,dc=org
+
+dn: cn=DataStage Specialist,ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Lemmie_Stage,People,dc=example,dc=org
+
+dn: cn=Information Architect,ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Erin_Overview,ou=People,dc=example,dc=org
+
+dn: cn=Sales Specialist,ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Harry_Hopeful,ou=People,dc=example,dc=org
+
+dn: cn=IT Infrastructure Lead,ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Gary_Geeke,ou=People,dc=example,dc=org
+
+dn: cn=Chief Finance Officer (CFO),ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Reggie_Mint,ou=People,dc=example,dc=org
+
+dn: cn=Information Analyst,ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Peter_Profile,ou=People,dc=example,dc=org
+
+dn: cn=Accounts Manager,ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Tom_Tally,ou=People,dc=example,dc=org
+
+dn: cn=Chief Data Officer (CDO),ou=groups,dc=example,dc=org
+objectclass: groupofnames
+member: uid=Jules_Keeper,ou=People=example,dc=org

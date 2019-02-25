@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+#Organizational Units
+dn: ou=People,dc=example,dc=org
+objectClass: organizationalUnit
+ou: People
+description: All members of the organization
+
+dn: ou=groups,dc=example,dc=org
+objectClass: organizationalUnit
+ou: groups
+description: Groups
