@@ -23,7 +23,7 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
 
     private static final Logger logger = new Logger("RangerGaianAuthorizer", 25);
     private static volatile RangerBasePlugin gaianPlugin;
-    private RangerServerProperties rangerServerProperties;
+    private RangerServerProperties rangerServerProperties = loadRangerServerProperties();
 
     public void init() {
         logger.logDetail("==> RangerGaianPlugin.init()");
@@ -37,7 +37,6 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
                     plugin = new RangerGaianPlugin();
                     plugin.init();
                     plugin.setResultProcessor(new RangerDefaultAuditHandler());
-                    rangerServerProperties = loadRangerServerProperties();
                     gaianPlugin = plugin;
                 }
             }

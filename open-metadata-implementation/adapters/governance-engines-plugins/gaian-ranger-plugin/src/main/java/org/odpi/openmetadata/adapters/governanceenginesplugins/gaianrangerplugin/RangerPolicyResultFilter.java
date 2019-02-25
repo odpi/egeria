@@ -401,11 +401,13 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
      */
     private Set<String> getUserGroups(String userName) {
         String userDetailsURL = getRangerURL(userName, USER_DETAILS);
+        logger.logInfo("1. user details url: " + userDetailsURL);
         if(userDetailsURL == null){
             return Collections.emptySet();
         }
 
         final RangerUser userDetails = getRangerUser(userDetailsURL);
+        logger.logInfo(userDetails.toString());
         if (userDetails != null) {
             logger.logInfo(userDetails.toString());
             return getUserGroupsByUserId(userDetails);
