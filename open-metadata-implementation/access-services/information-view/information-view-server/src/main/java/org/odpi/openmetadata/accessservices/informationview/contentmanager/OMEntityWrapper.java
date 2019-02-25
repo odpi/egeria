@@ -5,13 +5,13 @@ package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
-public class EntityDetailWrapper {
+public class OMEntityWrapper {
 
     private EntityDetail entityDetail;
     private EntityStatus entityStatus;
 
 
-    public EntityDetailWrapper(EntityDetail entityDetail, EntityStatus entityStatus) {
+    public OMEntityWrapper(EntityDetail entityDetail, EntityStatus entityStatus) {
         this.entityDetail = entityDetail;
         this.entityStatus = entityStatus;
     }
@@ -34,6 +34,7 @@ public class EntityDetailWrapper {
 
     public enum EntityStatus {
         NEW,
+        EXISTING,
         UPDATED,
         DELETED
 
