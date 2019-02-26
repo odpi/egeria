@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+    <parent>
+        <artifactId>open-metadata-deployment</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>1.1-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Open Metadata Docker Images</name>
+    <description>
+        Samples, Helm charts to deploy Egeria and associated components such as docker image build scripts
+    </description>
+
+    <artifactId>open-metadata-docker</artifactId>
+
+    <packaging>pom</packaging>
+    <modules>
+        <module>atlas</module>
+        <module>atlas-init</module>
+        <module>egeria</module>
+        <module>egeria-init</module>
+        <module>gaian</module>
+        <module>igcconnect-init</module>
+        <module>kafka-monitor</module>
+        <module>ldap-init</module>
+        <module>omrs-monitor</module>
+        <module>postgreSQL</module>
+        <module>postgreSQL-init</module>
+        <module>ranger</module>
+    </modules>
+
+    <!-- Default docker registry to use -->
+    <properties>
+        <docker.registry>registry-1.docker.io</docker.registry>
+        <docker.namespace>${docker.repo}</docker.namespace>
+        <dockerfile.build.noCache>true</dockerfile.build.noCache>
+    </properties>
+    <build>
+        <plugins>
+            <!-- If we get to run this module we MUST have the repo set, otherwise docker
+      push will fail, and there's no useful default -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>enforce-property</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireProperty>
+                                    <property>docker.repo</property>
+                                    <message>You must specify a docker repository to use via '-Ddocker.repo=xxxxx!</message>
+                                </requireProperty>
+                            </rules>
+                            <fail>true</fail>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -16,11 +16,28 @@
 
     <name>Open Metadata Deployment</name>
     <description>
-        Helm charts to deploy Egeria and associated components such as docker image build scripts
+        Samples, Helm charts to deploy Egeria and associated components such as docker image build scripts
     </description>
 
     <artifactId>open-metadata-deployment</artifactId>
 
     <packaging>pom</packaging>
 
+    <!-- Only build docker images if containers property is set
+          ie
+          mvn clean deploy -Pdocker
+    -->
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <activation>
+                <property>
+                    <name>docker</name>
+                </property>
+            </activation>
+            <modules>
+                <module>docker</module>
+            </modules>
+        </profile>
+    </profiles>
 </project>

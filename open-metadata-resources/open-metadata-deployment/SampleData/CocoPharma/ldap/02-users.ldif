@@ -1,0 +1,222 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the ODPi Egeria project.
+
+dn: uid=Zach_Now,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Zach Now
+gn: Zach
+sn: Now
+uid: Zach_Now
+userPassword: password
+
+dn: uid=Steve_Starter,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Steve Starter
+gn: Steve
+sn: Starter
+uid: Steve_Starter
+userPassword: password
+
+
+dn: uid=Terri_Daring,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Steve Starter
+gn: Steve
+sn: Starter
+uid: Steve_Starter
+userPassword: password
+
+dn: uid=Tanya_Tidy,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Tanya Tidy
+gn: Tanya
+sn: Tidy
+uid: Tanya_Tidy
+userPassword: password
+
+
+dn: uid=Polly_Tasker,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Polly Tasker
+gn: Polly
+sn: Tasker
+uid: Polly_Tasker
+userPassword: password
+
+dn: uid=Tessa_Tube,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Tessa Tube
+gn: Tessa
+sn: Tube
+uid: Tessa_Tube
+userPassword: password
+
+dn: uid=Callie_Quartile,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Callie Quartile
+gn: Callie
+sn: Quartile
+uid: Callie_Quartile
+userPassword: password
+
+dn: uid=Ivor_Padlock,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Ivor Padlock
+gn: Ivor
+sn: Padlock
+uid: Ivor_Padlock
+userPassword: password
+
+
+dn: uid=Bob_Nitter,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Bob Nitter
+gn: Bob
+sn: Nitter
+uid: Bob_Nitter
+userPassword: password
+
+dn: uid=Faith_Broker,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Faith Broker
+gn: Faith
+sn: Broker
+uid: Faith_Broker
+userPassword: password
+
+
+dn: uid=Sally_Counter,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Sally Counter
+gn: Sally
+sn: Counter
+uid: Sally_Counter
+userPassword: password
+
+
+dn: uid=Lemmie_Stage,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Lemmie Stage
+gn: Lemmie
+sn: Stage
+uid: Lemmie_Stage
+userPassword: password
+
+
+dn: uid=Erin_Overview,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Erin_Overview
+gn: Erin_Overview
+sn: Erin_Overview
+uid: Erin_Overview
+userPassword: password
+
+
+dn: uid=Harry_Hopeful,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Harry Hopeful
+gn: Harry
+sn: Hopeful
+uid: Harry_Hopeful
+userPassword: password
+
+
+dn: uid=Gary_Geeke,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Gary Geeke
+gn: Gary
+sn: Geeke
+uid: Gary_Geeke
+userPassword: password
+
+
+dn: uid=Reggie_Mint,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Reggie_Mint
+gn: Reggie_Mint
+sn: Reggie_Mint
+uid: Reggie_Mint
+userPassword: password
+
+
+dn: uid=Peter_Profile,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Peter Profile
+gn: Peter
+sn: Profile
+uid: Peter_Profile
+userPassword: password
+
+
+dn: uid=Tom_Tally,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Tom Tally
+gn: Tom
+sn: Tally
+uid: Tom_Tally
+userPassword: password
+
+dn: uid=Jules_Keeper,ou=People,dc=example,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Jules Keeper
+gn: Jules
+sn: Keeper
+uid: Jules_Keeper
+userPassword: password
