@@ -123,6 +123,15 @@ public class InformationViewEnterpriseOmrsEventListener implements OMRSTopicList
                                 instanceEvent.getEntity());
                         break;
 
+                    case DELETED_RELATIONSHIP_EVENT:
+                        instanceEventProcessor.processDeletedRelationshipEvent("EnterpriseOMRSTopic",
+                                instanceEventOriginator.getMetadataCollectionId(),
+                                instanceEventOriginator.getServerName(),
+                                instanceEventOriginator.getServerType(),
+                                instanceEventOriginator.getOrganizationName(),
+                                instanceEvent.getRelationship());
+                        break;
+
                 }
             } else {
                 log.debug("Ignored instance event - null type");

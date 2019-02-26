@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.informationview.eventprocessor;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.ColumnContextEventBuilder;
+import org.odpi.openmetadata.accessservices.informationview.views.ColumnContextEventBuilder;
 import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.InformationViewHeader;
 import org.odpi.openmetadata.accessservices.informationview.events.SemanticAssignment;
@@ -24,6 +24,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -81,6 +85,32 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
         updatedEntityEvent.setType(entity.getType());
         updatedEntityEvent.setGuid(entity.getGUID());
         sendEvent(updatedEntityEvent);
+
+
+        if( (entity.getType().getTypeDefName().equals(Constants.BUSINESS_TERM) && isRename(oldEntity, entity))){
+            log.info("Glossary term name was updated");
+            String glossaryTermGuid = entity.getGUID();
+
+            try {
+                List<String> assignedColumns = columnContextEventBuilder.getAssignedColumnsGuids(glossaryTermGuid);
+                if(assignedColumns != null && !assignedColumns.isEmpty()) {
+                    assignedColumns.parallelStream().forEach(s -> publishColumnContextEvent(s));
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage(), e);
+            }
+
+        }
+
+    }
+
+    private boolean isRename(EntityDetail oldEntity, EntityDetail entity) {
+        if(oldEntity != null && entity != null){
+            String oldName = EntityPropertiesUtils.getStringValueForProperty(oldEntity.getProperties(), Constants.DISPLAY_NAME);
+            String newName = EntityPropertiesUtils.getStringValueForProperty(entity.getProperties(), Constants.DISPLAY_NAME);
+            return !newName.equals(oldName);
+        }
+        return false;
     }
 
     public void processUndoneEntityEvent(String sourceName,
@@ -241,8 +271,10 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
                    e);
        }
 
-        String guid = relationship.getEntityOneProxy().getGUID();
+        publishColumnContextEvent(relationship.getEntityOneProxy().getGUID());
+    }
 
+    private void publishColumnContextEvent(String guid) {
         List<TableContextEvent> events = new ArrayList<>();
         try {
             events = columnContextEventBuilder.buildEvents(guid);
@@ -329,6 +361,12 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
                                                 String originatorOrganizationName,
                                                 Relationship relationship) {
 
+        if( !(relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT) && relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN))){
+            log.info("Event is ignored as the relationship is not a delete of semantic assignment for a column");
+            return;
+        }
+
+        publishColumnContextEvent(relationship.getEntityOneProxy().getGUID());
     }
 
     public void processPurgedRelationshipEvent(String sourceName,
@@ -339,7 +377,23 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
                                                String typeDefGUID,
                                                String typeDefName,
                                                String instanceGUID) {
-
+        if (typeDefName.equals(SEMANTIC_ASSIGNMENT)) {
+            log.info("Event is a semantic assignment");
+            Relationship relationship;
+            try {
+                relationship = columnContextEventBuilder.getRelationship(instanceGUID);
+                if (!relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN)) {
+                    log.info("Event is ignored as the relationship is not a delete of semantic assignment for a column");
+                } else {
+                    publishColumnContextEvent(relationship.getEntityOneProxy().getGUID());
+                }
+            } catch (RepositoryErrorException | InvalidParameterException | RelationshipNotKnownException | UserNotAuthorizedException e) {
+                log.error("Unable to load relationship", e);
+            }
+        } else {
+            log.info("Event is ignored as the relationship is not a delete of semantic assignment for a column");
+            return;
+        }
     }
 
     public void processRestoredRelationshipEvent(String sourceName,
@@ -454,7 +508,7 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
         String actionDescription = "Send New Event";
         boolean successFlag = false;
 
-        log.info("Sending event to information view out topic");
+        log.info("Sending event {} to information view out topic", event.getClass());
         log.debug("event: ", event);
 
         try {

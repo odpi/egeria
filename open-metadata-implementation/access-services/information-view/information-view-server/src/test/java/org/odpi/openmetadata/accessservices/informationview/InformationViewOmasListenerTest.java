@@ -9,7 +9,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.informationview.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.informationview.events.InformationViewEvent;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewInTopicListener;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
@@ -74,13 +75,13 @@ public class InformationViewOmasListenerTest {
     private static final String ENDPOINT_QUALIFIED_NAME = "jdbc:derby://localhost:9393";
     private static final String CONNECTION_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection";
     private static final String CONNECTOR_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.GaianConnectorProvider_type";
-    private static final String DATABASE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest";
+    private static final String DATABASE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.databaseTest";
     private static final String INFORMATION_VIEW_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema";
     private static final String DB_SCHEMA_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema_type";
-    private static final String TABLE_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema.customer_table_type";
-    private static final String TABLE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema.customer_table";
-    private static final String DERIVED_COLUMN_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema.customer_table.client_name";
-    private static final String DERIVED_COLUMN_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema.customer_table.client_name_type";
+    private static final String TABLE_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.databaseTest.schema.customer_table_type";
+    private static final String TABLE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.databaseTest.schema.customer_table";
+    private static final String DERIVED_COLUMN_QUALIFIED_NAME = "jdbc:derby://localhost:9393.databaseTest.schema.customer_table.client_name";
+    private static final String DERIVED_COLUMN_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.databaseTest.schema.customer_table.client_name_type";
     private static final String IV_PREFIX = "iv_";
 
     private InformationViewInTopicListener listener;
@@ -115,6 +116,8 @@ public class InformationViewOmasListenerTest {
     private EntityDetail businessTerm;
     @Mock
     private OMRSRepositoryHelper helper;
+    @Mock
+    private EventPublisher eventPublisher;
 
     private OMRSAuditLog auditLog;
 
@@ -136,8 +139,8 @@ public class InformationViewOmasListenerTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        EntitiesCreatorHelper entitiesCreatorHelper = new EntitiesCreatorHelper(enterpriseConnector, auditLog);
-        listener = new InformationViewInTopicListener(entitiesCreatorHelper, auditLog);
+        OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, auditLog);
+        listener = new InformationViewInTopicListener(omEntityDao, eventPublisher,enterpriseConnector.getRepositoryHelper(), auditLog);
         when(enterpriseConnector.getMetadataCollection()).thenReturn(omrsMetadataCollection);
         when(enterpriseConnector.getRepositoryHelper()).thenReturn(helper);
 
