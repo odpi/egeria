@@ -58,12 +58,12 @@ public class OMAGServerAdminForOpenLineage {
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
-            openLineageConfig.setOpenLineageInTopic(
+            openLineageConfig.setALOutTopicConnection(
                     connectorConfigurationFactory.getDefaultEventBusConnection(
                             defaultInTopicName,
                             eventBusConfig.getConnectorProvider(),
                             eventBusConfig.getTopicURLRoot() + ".server",
-                            openLineageConfig.getOpenLineageInTopicName(),
+                            openLineageConfig.getALOutTopicName(),
                             UUID.randomUUID().toString(),
                             eventBusConfig.getAdditionalProperties()));
 

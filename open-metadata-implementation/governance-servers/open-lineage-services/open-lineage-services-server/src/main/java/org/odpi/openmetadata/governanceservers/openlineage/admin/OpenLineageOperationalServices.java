@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.admin;
 
 import auditlog.OpenLineageAuditCode;
-import listeners.OpenLineageInTopicListener;
+import listeners.ALOutTopicListener;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
@@ -35,7 +35,7 @@ public class OpenLineageOperationalServices {
     private int maxPageSize;
 
     private OMRSAuditLog auditLog;
-    private OpenMetadataTopicConnector openLineageInTopicConnector;
+    private OpenMetadataTopicConnector ALOutTopicConnector;
 
 
     /**
@@ -79,16 +79,15 @@ public class OpenLineageOperationalServices {
 
             this.auditLog = auditLog;
 
+            Connection ALOutTopicConnection = openLineageConfig.getALOutTopicConnection();
+            String ALOutTopicName = getTopicName(ALOutTopicConnection);
 
-            Connection inTopicConnection = openLineageConfig.getOpenLineageInTopic();
-            String inTopicName = getTopicName(inTopicConnection);
+            ALOutTopicConnector = initializeOpenLineageTopicConnector(ALOutTopicConnection);
 
-            openLineageInTopicConnector = initializeOpenLineageTopicConnector(inTopicConnection);
-
-            if (openLineageInTopicConnector != null) {
-                OpenMetadataTopicListener openLineageInTopicListener = new OpenLineageInTopicListener(auditLog);
-                this.openLineageInTopicConnector.registerListener(openLineageInTopicListener);
-                startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_IN_TOPIC, actionDescription, inTopicName, openLineageInTopicConnector);
+            if (ALOutTopicConnector != null) {
+                OpenMetadataTopicListener ALOutTopicListener = new ALOutTopicListener(auditLog);
+                this.ALOutTopicConnector.registerListener(ALOutTopicListener);
+                startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, ALOutTopicName, ALOutTopicConnector);
             }
 
             auditCode = OpenLineageAuditCode.SERVICE_INITIALIZED;
@@ -183,7 +182,6 @@ public class OpenLineageOperationalServices {
 
 
     private void startConnector(OpenLineageAuditCode auditCode, String actionDescription, String topicName, OpenMetadataTopicConnector topicConnector) throws OMAGConfigurationErrorException {
-
         auditLog.logRecord(actionDescription,
                 auditCode.getLogMessageId(),
                 auditCode.getSeverity(),
@@ -212,6 +210,7 @@ public class OpenLineageOperationalServices {
             );
         }
     }
+
     /**
      * Shutdown the Open Lineage Services.
      *

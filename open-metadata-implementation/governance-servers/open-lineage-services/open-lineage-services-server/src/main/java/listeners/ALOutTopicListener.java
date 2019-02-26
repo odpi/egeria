@@ -10,13 +10,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-public class OpenLineageInTopicListener implements OpenMetadataTopicListener {
+public class ALOutTopicListener implements OpenMetadataTopicListener {
 
-    private static final Logger log = LoggerFactory.getLogger(OpenLineageInTopicListener.class);
+    private static final Logger log = LoggerFactory.getLogger(ALOutTopicListener.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final OMRSAuditLog auditLog;
 
-    public OpenLineageInTopicListener(OMRSAuditLog auditLog) {
+    public ALOutTopicListener(OMRSAuditLog auditLog) {
         this.auditLog = auditLog;
     }
 

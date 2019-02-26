@@ -25,9 +25,8 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
     private String openLineageName;
     private String openLineageDescription;
     private String lineageServerURL;
-    private String lineageServerType;
-    private String openLineageInTopicName;
-    private Connection openLineageInTopic;
+    private String ALOutTopicName;
+    private Connection ALOutTopicConnection;
 
 
     /**
@@ -51,7 +50,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
             openLineageName = template.openLineageName;
             openLineageDescription = template.openLineageDescription;
             lineageServerURL = template.lineageServerURL;
-            openLineageInTopic = template.openLineageInTopic;
+            ALOutTopicConnection = template.ALOutTopicConnection;
         }
     }
 
@@ -130,41 +129,21 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
 
 
     /**
-     * Return the server type in order to identify the Governance Connector.
-     *
-     * @return String Server type
-     */
-    public String getLineageServerType() {
-        return lineageServerType;
-    }
-
-    /**
-     * Set up the server type in order to identify the Governance Connector.
-     *
-     * @param lineageServerType String
-     */
-    public void setLineageServerType(String lineageServerType) {
-        this.lineageServerType = lineageServerType;
-    }
-
-
-
-    /**
      * Return the Input Topic Name for Open Lineage
      *
      * @return String Input Topic name
      */
-    public String getOpenLineageInTopicName() {
-        return openLineageInTopicName;
+    public String getALOutTopicName() {
+        return ALOutTopicName;
     }
 
     /**
      * Set up the Open Lineage In Topic Name
      *
-     * @param openLineageInTopicName String Open Lineage Name
+     * @param ALOutTopicName String Open Lineage Name
      */
-    public void setOpenLineageInTopicName(String openLineageInTopicName) {
-        this.openLineageInTopicName = openLineageInTopicName;
+    public void setALOutTopicName(String ALOutTopicName) {
+        this.ALOutTopicName = ALOutTopicName;
     }
 
     /**
@@ -174,17 +153,17 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
      *
      * @return  Connection for In Topic
      */
-    public Connection getOpenLineageInTopic() {
-        return openLineageInTopic;
+    public Connection getALOutTopicConnection() {
+        return ALOutTopicConnection;
     }
 
     /**
      * Set up the OCF Connection for the Out Topic used to pass requests to this Open Lineage.
      *
-     * @param openLineageInTopic  Connection for In Topic
+     * @param ALOutTopicConnection  Connection for In Topic
      */
-    public void setOpenLineageInTopic(Connection openLineageInTopic) {
-        this.openLineageInTopic = openLineageInTopic;
+    public void setALOutTopicConnection(Connection ALOutTopicConnection) {
+        this.ALOutTopicConnection = ALOutTopicConnection;
     }
 
 
@@ -196,9 +175,8 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
                 ", openLineageName='" + openLineageName + '\'' +
                 ", openLineageDescription='" + openLineageDescription + '\'' +
                 ", lineageServerURL='" + lineageServerURL + '\'' +
-                ", lineageServerType='" + lineageServerType + '\'' +
-                ", openLineageInTopicName='" + openLineageInTopicName + '\'' +
-                ", openLineageInTopic=" + openLineageInTopic +
+                ", ALOutTopicName='" + ALOutTopicName + '\'' +
+                ", ALOutTopicConnection=" + ALOutTopicConnection +
                 '}';
     }
 
@@ -221,8 +199,8 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
                 Objects.equals(getOpenLineageName(), that.getOpenLineageName()) &&
                 Objects.equals(getOpenLineageDescription(), that.getOpenLineageDescription()) &&
                 Objects.equals(getLineageServerURL(), that.getLineageServerURL()) &&
-                Objects.equals(getOpenLineageInTopic(), that.getOpenLineageInTopic()) &&
-                Objects.equals(getOpenLineageInTopicName(), that.getOpenLineageInTopicName());
+                Objects.equals(getALOutTopicConnection(), that.getALOutTopicConnection()) &&
+                Objects.equals(getALOutTopicName(), that.getALOutTopicName());
     }
 
     /**
@@ -233,7 +211,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
     @Override
     public int hashCode() {
         return Objects.hash(getOpenLineageId(), getOpenLineageName(),
-                getOpenLineageDescription(),  getLineageServerURL(), getOpenLineageInTopic(),
-                getOpenLineageInTopicName());
+                getOpenLineageDescription(),  getLineageServerURL(), getALOutTopicConnection(),
+                getALOutTopicName());
     }
 }
