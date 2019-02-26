@@ -4,10 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;

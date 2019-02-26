@@ -1,0 +1,25 @@
+# <!-- SPDX-License-Identifier: Apache-2.0 -->
+# Copyright Contributors to the Egeria project.
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: omrsmonitor-service
+
+  name: {{ include "myapp.fullname" . }}-omrsmonitor-service
+
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 58080
+      targetPort: 58080
+      nodePort: {{ .Values.service.nodeport.omrsmonitor }}
+
+  selector:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: omrsmonitor-service

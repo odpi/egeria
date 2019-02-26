@@ -44,6 +44,20 @@ li {
     box-sizing: border-box;
 }
 
+code {
+  white-space: pre-wrap !important;
+  word-break: break-all !important;
+}
+
+.highlight {
+  background-color:#eeeeee;
+}
+
+pre {
+  margin-bottom:1%;
+}
+
+
 ol {
   margin-left:2%;
 }

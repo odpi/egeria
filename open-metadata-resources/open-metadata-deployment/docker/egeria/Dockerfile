@@ -16,7 +16,7 @@ LABEL org.label-schema.version="0.1.0"
 LABEL org.label-schema.schema-version = "1.0"
 
 # Install Git,java sdk (openjdk) & maven -- needed to built Egeria
-RUN apt-get update && apt-get install -y openjdk-8-jdk maven git
+RUN apt-get update && apt-get install -y openjdk-8-jdk maven git git-extras
 
 # Setup some environment variables for later
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
@@ -28,18 +28,25 @@ ENV PATH /usr/lib/jvm/java-8-openjdk-amd64/bin:/usr/local/apache-maven/bin:/usr/
 # Working directory - root home
 WORKDIR /root
 
-# Pull down Egeria and build it
-RUN git clone http://github.com/odpi/egeria.git -b master
+ARG              branch
+ENV              branch                  ${branch:-master}
 
-# Remove -DskipTests if unit tests are to be included - build the code...
+ARG		 pr
+
+# Pull down Egeria and build it
+RUN git clone http://github.com/odpi/egeria.git -b ${branch}
+
 WORKDIR /root/egeria
+# Add Pull request if specified (requires git-extras package)
+RUN if [ ! -z "$pr" ] ; then git pr $pr ; fi
+
 RUN mvn clean install -DskipTests
 
 # Launch the omag server in it's built & packaged location
-WORKDIR /root/egeria/open-metadata-distribution/open-metadata-assemblies/target/egeria-0.3-SNAPSHOT-omag-server/servers/omag-server-0.3-SNAPSHOT
+WORKDIR /root/egeria/open-metadata-distribution/open-metadata-assemblies/target/egeria-1.1-SNAPSHOT-omag-server/servers/omag-server-1.1-SNAPSHOT
 
 # Expose port 8080 (default) for client access
 EXPOSE 8080
 
 # The container will run the server chassis on startup -
-CMD ["/bin/bash", "-c", "java -jar server-chassis-spring-0.3-SNAPSHOT.jar"]
+CMD ["/bin/bash", "-c", "java -jar server-chassis-spring-1.1-SNAPSHOT.jar"]

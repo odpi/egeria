@@ -17,6 +17,7 @@ public class QueryContext {
     private List<String> columns;
     private String actionType;
     private String resourceType;
+    private Boolean isNullMasking;
     private List<String> columnTransformers;
 
     public String getUser() {
@@ -75,6 +76,14 @@ public class QueryContext {
         this.resourceType = resourceType;
     }
 
+    public Boolean getNullMasking() {
+        return isNullMasking;
+    }
+
+    public void setNullMasking(Boolean nullMasking) {
+        isNullMasking = nullMasking;
+    }
+
     public List<String> getColumnTransformers() {
         return columnTransformers;
     }
@@ -93,6 +102,7 @@ public class QueryContext {
                 ", columns=" + columns +
                 ", actionType='" + actionType + '\'' +
                 ", resourceType='" + resourceType + '\'' +
+                ", isNullMasking='" + isNullMasking + '\'' +
                 ", columnTransformers=" + columnTransformers +
                 '}';
     }

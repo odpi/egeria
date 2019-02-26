@@ -4,7 +4,7 @@
 # 0110 Actors
 
 Most metadata repositories are run in a secure mode
-requiring incoming requests to include the requestor’s
+requiring incoming requests to include the requester’s
 security credentials.
 Therefore we have an identifier for each unique logged on
 security identity (aka userId).

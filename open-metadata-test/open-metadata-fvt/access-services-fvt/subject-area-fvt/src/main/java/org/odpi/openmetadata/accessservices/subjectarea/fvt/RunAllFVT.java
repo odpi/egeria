@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
 
 import java.io.BufferedReader;
@@ -10,26 +9,26 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 /**
- * FVT resource to call subject area term client API FVT resources
+ * FVT resource to call subject area term client API FVT resources on 2 in memory servers names Server1 and
+ * Server2.
  */
 public class RunAllFVT
 {
 
     public static void main(String args[])
     {
-        SubjectArea subjectArea = null;
         try
         {
             String url = RunAllFVT.getUrl(args);
-
-            GlossaryFVT.runit(url);
-            TermFVT.runit(url);
-            CategoryFVT.runit(url);
-            CategoryHierarchyFVT.runit(url);
-            RelationshipsFVT.runit(url);
-            SubjectAreaDefinitionCategoryFVT.runit(url);
-            EffectiveDatesFVT.runit(url);
-            System.out.println("Samples all run");
+            GlossaryFVT.runWith2Servers(url);
+            TermFVT.runWith2Servers(url);
+            CategoryFVT.runWith2Servers(url);
+            CategoryHierarchyFVT.runWith2Servers(url);
+            RelationshipsFVT.runWith2Servers(url);
+            SubjectAreaDefinitionCategoryFVT.runWith2Servers(url);
+            EffectiveDatesFVT.runWith2Servers(url);
+            GraphFVT.runWith2Servers(url);
+            System.out.println("FVT ran successfully");
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");

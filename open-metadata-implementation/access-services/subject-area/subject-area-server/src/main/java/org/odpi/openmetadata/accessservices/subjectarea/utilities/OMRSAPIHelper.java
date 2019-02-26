@@ -49,14 +49,14 @@ public class OMRSAPIHelper {
     private ErrorHandler errorHandler=null;
     private String serviceName="Subject Area OMAS";
     private String serverName = null;
-    private OMRSRepositoryConnector omrsConnector = null;
+    private OMRSRepositoryHelper omrsRepositoryHelper  = null;
 
     public OMRSMetadataCollection getOMRSMetadataCollection() throws MetadataServerUncontactableException {
         validateInitialization();
         return oMRSMetadataCollection;
     }
     public OMRSRepositoryHelper getOMRSRepositoryHelper() {
-        return omrsConnector.getRepositoryHelper();
+        return omrsRepositoryHelper;
     }
 
     /**
@@ -74,6 +74,7 @@ public class OMRSAPIHelper {
 
         try {
             this.oMRSMetadataCollection = connector.getMetadataCollection();
+            this.omrsRepositoryHelper = connector.getRepositoryHelper();
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.METADATA_SERVER_UNCONTACTABLE_ERROR;
             String errorMessage = errorCode.getErrorMessageId()
@@ -103,7 +104,7 @@ public class OMRSAPIHelper {
     private void validateInitialization() throws MetadataServerUncontactableException {
         String restAPIName= "";
         if (oMRSMetadataCollection == null) {
-            if (this.omrsConnector == null) {
+            if (this.omrsRepositoryHelper == null) {
                 SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.SERVICE_NOT_INITIALIZED;
                 String errorMessage = errorCode.getErrorMessageId()
                         + errorCode.getFormattedErrorMessage(restAPIName);
@@ -114,8 +115,6 @@ public class OMRSAPIHelper {
                         errorMessage,
                         errorCode.getSystemAction(),
                         errorCode.getUserAction());
-            } else {
-                this.setOMRSRepositoryConnector(this.omrsConnector);
             }
         }
     }
@@ -223,7 +222,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -309,6 +308,9 @@ public class OMRSAPIHelper {
 
 
     }
+
+
+
 
     public List<EntityDetail> callFindEntitiesByPropertyValue(String               userId,
                                                          String                    entityTypeGUID,
@@ -410,7 +412,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -500,7 +502,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -602,7 +604,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -661,7 +663,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (RepositoryErrorException e) {
+        } catch (RepositoryErrorException  | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -718,7 +720,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -829,7 +831,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (RepositoryErrorException e) {
+        } catch (RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -984,7 +986,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -1031,7 +1033,6 @@ public class OMRSAPIHelper {
         }
         //TODO cascade
         String restAPIName = methodName;
-        Relationship updatedRelationship = null;
         List<InstanceStatus> statusList = new ArrayList<>();
         statusList.add(InstanceStatus.ACTIVE);
         List<Relationship> relationships = null;
@@ -1211,12 +1212,16 @@ public class OMRSAPIHelper {
         }
         return typeDefGuid;
     }
-    public InstanceGraph callGetEntityNeighbourhood(String userId, String entityGUID, List<String> entityTypeGUIDs,
+    public InstanceGraph callGetEntityNeighbourhood(String userId, String entityGUID,
+                                                    List<String> entityTypeGUIDs,
                                                     List<String> relationshipTypeGUIDs,
                                                     List<InstanceStatus> limitResultsByStatus,
                                                     List<String> limitResultsByClassification,
                                                     Date asOfTime,
-                                                    int level) throws org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException, MetadataServerUncontactableException, org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException, UnrecognizedGUIDException, org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.FunctionNotSupportedException
+                                                    int level) throws org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException,
+            MetadataServerUncontactableException, org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException,
+            UnrecognizedGUIDException,
+            org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.FunctionNotSupportedException
     {
         String methodName = "callgetEntityNeighborhood";
         if (log.isDebugEnabled()) {
@@ -1286,6 +1291,8 @@ public class OMRSAPIHelper {
         }
         return instanceGraph;
     }
+
+
     public static List<EntityDetail> findEntitiesByType(OMRSAPIHelper oMRSAPIHelper, String serverName, String userId, String type, String searchCriteria, Date asOfTime, Integer offset, Integer pageSize, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder, String sequencingProperty, String methodName) throws MetadataServerUncontactableException, org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException, org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException, org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.FunctionNotSupportedException {
         // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
         if (offset == null) {

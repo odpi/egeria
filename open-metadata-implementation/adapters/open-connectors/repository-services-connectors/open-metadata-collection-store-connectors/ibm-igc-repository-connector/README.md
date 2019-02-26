@@ -100,6 +100,15 @@ example payloads and endpoints, see the [Postman samples](../../../../../../open
    POST http://localhost:8080/open-metadata/admin-services/users/{{user}}/servers/{{server}}/instance
    ```
 
+## How it works
+
+The IBM IGC Repository Connector works through a combination of the following:
+
+- IBM IGC's REST API, itself abstracted through the [IGC REST Client Library](igc-rest-client-library/)
+- IBM InfoSphere Information Server's embedded Apache Kafka event bus
+    - specifically the `InfosphereEvents` topic (hence the need to enable events in the setup)
+- Some [IGC extensions](docs/ibm-igc-extensions.md) that implement specific additional functionality
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

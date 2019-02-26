@@ -28,11 +28,13 @@ The implementation is not complete. The following has been implemented :
 * Java and REST API for create, get and update for Glossary, Category, Term , SubjectAreaDefinition.
 * Java and REST API for the Term to Term relationships HASA, RelatedTerm, Synonym, Antonym, Translations, used in context,
   preferred terms, valid values, replacement terms, typed by, is a, is a type of.
-* getTermRelationships
-* findTerm. findCategory and findGlossary  
+* Java and REST API for the Term to Category relationship TermCategorization.  
+* getTermRelationships, get GlossaryRelationships and getCategoryRelationships
+* findTerm, findCategory and findGlossary  
 
-## Example JAVA calls: 
-See the [Subject Area samples](../../../open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples/README.md) and [Subject Area FVT](../../../open-metadata-test/open-metadata-fvt/access-services-fvt/README.md) projects for examples around how to use the Java API.    
+This has been verified by running the [Subject Area samples](../../../open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples/README.md) and
+ [Subject Area FVT](../../../open-metadata-test/open-metadata-fvt/access-services-fvt/README.md) against an in-memory repository
+
 
 ## Example REST calls: 
 ### Create Glossary instance

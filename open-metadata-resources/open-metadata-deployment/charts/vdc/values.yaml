@@ -1,13 +1,79 @@
-# SPDX-License-Identifier: Apache-2.0 
+---
+
+# SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
-# Default values for ranger.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+
+# Network configuration
+# note that load balancer configuration tends to be cloud-specific
+# So review the templates/loadbalancer* files for any
+# required updates
+
+service:
+  #LoadBalancer is another option (not for IBM Cloud free cluster)
+  # ClusterIP is recommended for IBMCloud - and enable ingress below
+  # NodePort will work ok in other environments, including IBM ICP, but note that the ports may
+  # well be non standard and services will be at http://<external address of a workernode>:<randomport>
+  # Review output from 'kubectl get services' to see the external port used
+  type: NodePort
+  externalName:  default.svc.cluster.local
+
+  loadbalancer:
+    enabled: false
+    iptype: public
+    publicip: <undefined>
+  # Currently IBMCloud is the only supported setting, and enabled additional Ingress rules. Comment out for other platforms
+
+  ingress:
+    # Update this with your own domain
+    enabled: false
+    externaldomain: egeriadev.eu-gb.containers.appdomain.cloud
+    cloudservice: IBMCloud
+
+  # If type is NodePort, these are the ports we will request - but if not free, another will be allocated
+  # and then things may not work externally. LoadBalancer & Ingress are recommended if possible.
+  # Ports are required to be in the range 30000-32767 for IBM Cloud
+  nodeport:
+    egeria: 30080
+    atlas: 31000
+    igcproxy: 30081
+    gaian: 30414
+    postgresql: 30432
+    ui: 30443
+    ranger: 32080
+    rangersecure: 30182
+    # Set this to address of one of the local nodes - public IP
+    omrsmonitor: 31080
+  externalip: 10.10.1.30
+    # KAFKA is not exposed externally (issues in chart, complexity)
+
+# IGC configuration
+igc:
+  host: 158.176.66.119
+  hostname: igc.openmetadata.ibmcloud.com
+  webport: 9446
+  kafkaport: 59092
+  auth:
+    os:
+      user: ibm
+      pass: letme1n2
+    app:
+      user: isadmin
+      pass: isadmin
+
+# The following section defines all of the DOCKER images being used by this
+# chart. Normally they should be left as is, but are exposed here in case the
+# user wishes to extend.
+
+# Images ending -init are typically containers that perform configuration,
+# often in the same container as the component they are configuring
+
+# Note that sometimes the same docker image is used for multiple purposes - for example
+# Both the Egeria UI, and Egeria core use the same docker image -- for now
 
 image:
   ranger:
     repository: planetf1/ranger-admin-egeriavdc
-    tag: 0.2.1
+    tag: 0.2.2
     pullPolicy: IfNotPresent
 
   mariadb:
@@ -17,7 +83,7 @@ image:
 
   egeria:
     repository: planetf1/egeria-egeriavdc
-    tag: 0.1.5
+    tag: 0.1.8
     pullPolicy: IfNotPresent
 
   gaian:
@@ -27,7 +93,7 @@ image:
 
   atlas:
     repository: planetf1/atlas-1773-egeria
-    tag: 0.1.8
+    tag: 0.1.10
     pullPolicy: IfNotPresent
 
   atlasinit:
@@ -35,13 +101,9 @@ image:
     tag: 0.1.6
     pullPolicy: IfNotPresent
 
-    #igcproxy:
-    #repository: planetf1/igcproxy-egeriavdc
-    #tag: 0.1.2
-    #pullPolicy: IfNotPresent
   igcproxy:
     repository: planetf1/egeria-egeriavdc
-    tag: 0.1.5
+    tag: 0.1.8
     pullPolicy: IfNotPresent
 
   kafkamonitor:
@@ -59,26 +121,42 @@ image:
     tag: 0.1.3
     pullPolicy: IfNotPresent
 
+  postgresqlinit:
+    repository: planetf1/postgresql-init-egeria
+    tag: 0.1.13
+    pullPolicy: IfNotPresent
+
+  postgresql:
+    repository: planetf1/postgresql-egeriavdc
+    tag: 0.2.1
+    pullPolicy: IfNotPresent
+
+  ui:
+    repository: planetf1/egeria-egeriavdc
+    tag: 0.1.8
+    pullPolicy: IfNotPresent
+
+  omrsmonitor:
+    repository: planetf1/omrsmonitor-egeriavdc
+    tag: 0.0.2
+    pullPolicy: IfNotPresent
   nameOverride: ""
   fullnameOverride: ""
 
+postgres:
+  password: passw0rd
 
+# Egeria depends on kafka, but it is not exposed externally
+# The sample also requires auto topic creation
 kafka:
-  #replicas: 1
   external:
     enabled: false
     type: NodePort
   configurationOverrides:
-    "auto.create.topics.enable": true
+    auto.create.topics.enable: true
 
-
-# Network configuration
-service:
-  #LoadBalancer is another option (not for IBM Cloud free cluster)
-  type: NodePort
-  externalName:  default.svc.cluster.local
-
-# Confluent kafka chart configuration
+# For the Confluent kafka chart there are many additional components
+# that we don't need -- so they are removed here
 cp-schema-registry:
   enabled: false
 cp-kafka-rest:
@@ -87,3 +165,4 @@ cp-kafka-connect:
   enabled: false
 cp-ksql-server:
   enabled: false
+

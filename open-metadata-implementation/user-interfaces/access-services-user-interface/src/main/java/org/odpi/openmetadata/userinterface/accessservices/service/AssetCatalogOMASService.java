@@ -1,12 +1,13 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.userinterface.accessservices.service;
 
-import org.odpi.openmetadata.accessservice.assetcatalog.client.AssetCatalog;
-import org.odpi.openmetadata.accessservice.assetcatalog.exception.InvalidParameterException;
-import org.odpi.openmetadata.accessservice.assetcatalog.exception.PropertyServerException;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.AssetDescription;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.Classification;
-import org.odpi.openmetadata.accessservice.assetcatalog.model.Relationship;
+import org.odpi.openmetadata.accessservices.assetcatalog.client.AssetCatalog;
+import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.assetcatalog.exception.PropertyServerException;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,23 @@ public class AssetCatalogOMASService {
     }
 
     /**
+     * Fetch asset's header, classification and properties
+     *
+     * @param searchCriteria the searchCriteria
+     * @return the assets for the search criteria
+     * @throws PropertyServerException   there is a problem retrieving information from the property server
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     */
+    public List<AssetDescription> searchAssets(String searchCriteria) throws PropertyServerException, InvalidParameterException {
+        try {
+            return assetCatalog.searchAssets(user, searchCriteria).getAssetDescriptionList();
+        } catch (InvalidParameterException | PropertyServerException e) {
+            LOG.error(String.format("Error retrieving asset details for '%s'", searchCriteria));
+            throw e;
+        }
+    }
+
+    /**
      * Fetch asset's header and classification
      *
      * @param assetId the unique identifier for the asset
@@ -41,7 +59,7 @@ public class AssetCatalogOMASService {
         try {
             return assetCatalog.getAssetSummary(user, assetId).getAssetDescriptionList();
         } catch (InvalidParameterException | PropertyServerException e) {
-            LOG.error(String.format("Error retrieving asset description for %s", assetId), e);
+            LOG.error(String.format("Error retrieving asset description for %s", assetId));
             throw e;
         }
     }
@@ -58,10 +76,12 @@ public class AssetCatalogOMASService {
         try {
             return assetCatalog.getAssetDetails(user, assetId).getAssetDescriptionList();
         } catch (InvalidParameterException | PropertyServerException e) {
-            LOG.error(String.format("Error retrieving asset details for %s", assetId), e);
+            LOG.error(String.format("Error retrieving asset details for %s", assetId));
             throw e;
         }
     }
+
+
 
     /**
      * Fetch asset's header, classification, properties and relationships
@@ -75,7 +95,7 @@ public class AssetCatalogOMASService {
         try {
             return assetCatalog.getAssetUniverse(user, assetId).getAssetDescriptionList();
         } catch (InvalidParameterException | PropertyServerException e) {
-            LOG.error(String.format("Error retrieving asset universe for %s", assetId), e);
+            LOG.error(String.format("Error retrieving asset universe for %s", assetId));
             throw e;
         }
     }
@@ -92,7 +112,7 @@ public class AssetCatalogOMASService {
         try {
             return assetCatalog.getAssetRelationships(user, assetId).getRelationships();
         } catch (InvalidParameterException | PropertyServerException e) {
-            LOG.error(String.format("Error retrieving asset relationships for %s", assetId), e);
+            LOG.error(String.format("Error retrieving asset relationships for %s", assetId));
             throw e;
         }
     }
@@ -112,7 +132,7 @@ public class AssetCatalogOMASService {
             return assetCatalog.getAssetRelationshipsForType(user, assetId, relationshipType).getRelationships();
         } catch (InvalidParameterException | PropertyServerException e) {
             LOG.error(String.format("Error retrieving asset relationships for %s and relationship type %s", assetId,
-                    relationshipType), e);
+                    relationshipType));
             throw e;
         }
     }
@@ -129,7 +149,7 @@ public class AssetCatalogOMASService {
         try {
             return assetCatalog.getClassificationForAsset(user, assetId).getClassifications();
         } catch (InvalidParameterException | PropertyServerException e) {
-            LOG.error(String.format("Error retrieving asset classifications for %s", assetId), e);
+            LOG.error(String.format("Error retrieving asset classifications for %s", assetId));
             throw e;
         }
     }

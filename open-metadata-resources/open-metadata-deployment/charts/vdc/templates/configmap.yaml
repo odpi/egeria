@@ -1,26 +1,45 @@
-# <!-- SPDX-License-Identifier: Apache-2.0 -->
+---
+# SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 apiVersion: v1
 kind: ConfigMap
 metadata:
-    name: {{ include "myapp.fullname" . }}-configmap
-    labels:
-        app.kubernetes.io/name: {{ include "myapp.name" . }}
-        helm.sh/chart: {{ include "myapp.chart" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/managed-by: {{ .Release.Service }}
+  name: {{ include "myapp.fullname" . }}-configmap
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
-        ATLAS_ENDPOINT: http://{{ include "myapp.fullname" . }}-atlas-service.default.svc.cluster.local:21000
-        EGERIA_ENDPOINT: http://{{ include "myapp.fullname" . }}-egeria-service.default.svc.cluster.local:8080
-        IGCPROXY_ENDPOINT: http://{{ include "myapp.fullname" . }}-igcproxy-service.default.svc.cluster.local:8080
-        KAFKA_ENDPOINT: {{ .Release.Name }}-cp-kafka.default.svc.cluster.local:9092
-        IGC_KAFKA_ENDPOINT: 158.176.66.119:59092
-        IGC_ENDPOINT: "https://158.176.66.119:9446"
-        EGERIA_USER: myuser
-        EGERIA_COHORT: coco
-        EGERIA_SERVER: myserver
-        KAFKA_TOPIC: open-metadata.repository-services.cohort.coco.OMRSTopic
-        IGC_USER: isadmin
-        IGC_PASSWORD: isadmin
-        STRICT_SSL: "false"
-        LOGGING_LEVEL_ROOT: INFO
+  # General cluster configuration
+  ATLAS_ENDPOINT: http://{{ include "myapp.fullname" . }}-atlas-service.default.svc.cluster.local:21000
+  EGERIA_ENDPOINT: http://{{ include "myapp.fullname" . }}-egeria-service.default.svc.cluster.local:8080
+  IGCPROXY_ENDPOINT: http://{{ include "myapp.fullname" . }}-igcproxy-service.default.svc.cluster.local:8080
+  KAFKA_ENDPOINT: {{ .Release.Name }}-cp-kafka.default.svc.cluster.local:9092
+  IGC_KAFKA_ENDPOINT: "{{ .Values.igc.host}}:{{ .Values.igc.kafkaport}}"
+  IGC_ENDPOINT: https://{{ .Values.igc.host}}:{{ .Values.igc.webport}}
+  EGERIA_USER: myuser
+  EGERIA_COHORT: coco
+  EGERIA_SERVER: myserver
+  KAFKA_TOPIC: open-metadata.repository-services.cohort.coco.OMRSTopic
+  # Used by IGC/Postgres & initialization
+  IGC_USER: {{ .Values.igc.auth.app.user }}
+  IGC_PASSWORD: {{ .Values.igc.auth.app.pass }}
+  STRICT_SSL: "false"
+  LOGGING_LEVEL_ROOT: INFO
+  POSTGRESQL_SERVER: {{ include "myapp.fullname" . }}-postgresql-service.default.svc.cluster.local
+  POSTGRESQL_SERVICE_PORT: "5432"
+  POSTGRESQL_SERVER_EXT: "{{ .Values.service.externalip }}"
+  POSTGRESQL_SERVICE_PORT_EXT: "{{ .Values.service.nodeport.postgresql }}"
+  POSTGRESQL_OS_USER: root
+  POSTGRESQL_OS_PASS: passw0rd
+  IGC_SERVER: "{{ .Values.igc.host }}"
+  IGC_HOSTNAME: "{{ .Values.igc.hostname }}"
+  IGC_SERVICE_PORT: "{{ .Values.igc.webport }}"
+  IGC_OS_USER: {{ .Values.igc.auth.os.user }}
+  IGC_OS_PASS: {{ .Values.igc.auth.os.pass }}
+  POSTGRESQL_PASSWORD: passw0rd
+  # Used by User Interface
+  OMAS_SERVER_URL: http://{{ include "myapp.fullname" . }}-egeria-service.default.svc.cluster.local:8080
+  OMAS_SERVER_NAME: myserver
+  GAIAN_HOST: {{ include "myapp.fullname" . }}-gaian-service.default.svc.cluster.local

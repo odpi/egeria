@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 
 import java.util.Date;
 import java.util.List;
@@ -34,7 +35,7 @@ public interface SubjectAreaCategory
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public Category createCategory(String serverName, String userId, Category suppliedCategory) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException ;
+     Category createCategory(String serverName, String userId, Category suppliedCategory) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException ;
     /**
      * Get a category by guid.
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -53,7 +54,7 @@ public interface SubjectAreaCategory
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public  Category getCategoryByGuid(String serverName, String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException ;
+      Category getCategoryByGuid(String serverName, String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException ;
     /**
      * Replace a Category. This means to override all the existing attributes with the supplied attributes.
      * <p>
@@ -73,7 +74,7 @@ public interface SubjectAreaCategory
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public Category replaceCategory(String serverName, String userId, String guid, Category suppliedCategory) throws
+     Category replaceCategory(String serverName, String userId, String guid, Category suppliedCategory) throws
                                                                                                               UnexpectedResponseException,
                                                                                                               UserNotAuthorizedException,
                                                                                                               FunctionNotSupportedException,
@@ -102,7 +103,7 @@ public interface SubjectAreaCategory
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public Category updateCategory(String serverName, String userId, String guid, Category suppliedCategory) throws UnexpectedResponseException,
+     Category updateCategory(String serverName, String userId, String guid, Category suppliedCategory) throws UnexpectedResponseException,
                                                                                                                     UserNotAuthorizedException,
                                                                                                                     FunctionNotSupportedException,
                                                                                                                     InvalidParameterException,
@@ -128,7 +129,7 @@ public interface SubjectAreaCategory
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public Category deleteCategory(String serverName, String userId,String guid) throws InvalidParameterException,
+     Category deleteCategory(String serverName, String userId,String guid) throws InvalidParameterException,
                                                                                         MetadataServerUncontactableException,
                                                                                         UserNotAuthorizedException,
                                                                                         FunctionNotSupportedException,
@@ -153,7 +154,7 @@ public interface SubjectAreaCategory
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public  void purgeCategory(String serverName, String userId,String guid) throws InvalidParameterException,
+      void purgeCategory(String serverName, String userId,String guid) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     MetadataServerUncontactableException,
                                                                                     GUIDNotPurgedException,
@@ -175,7 +176,7 @@ public interface SubjectAreaCategory
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public  Category restoreCategory(String serverName, String userId,String guid) throws InvalidParameterException,
+      Category restoreCategory(String serverName, String userId,String guid) throws InvalidParameterException,
             UserNotAuthorizedException,
             MetadataServerUncontactableException,
             UnrecognizedGUIDException,
@@ -200,7 +201,7 @@ public interface SubjectAreaCategory
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public SubjectAreaDefinition createSubjectAreaDefinition(String serverName, String userId, SubjectAreaDefinition suppliedSubjectAreaDefinition) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException ;
+     SubjectAreaDefinition createSubjectAreaDefinition(String serverName, String userId, SubjectAreaDefinition suppliedSubjectAreaDefinition) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException ;
     /**
      * Get a subjectAreaDefinition by guid.
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -219,7 +220,43 @@ public interface SubjectAreaCategory
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public  SubjectAreaDefinition getSubjectAreaDefinitionByGuid(String serverName, String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException ;
+      SubjectAreaDefinition getSubjectAreaDefinitionByGuid(String serverName, String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException ;
+    /**
+     * Get Category relationships
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the category to get
+     * @param guid   guid of the category to get
+     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
+     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     *                 beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize the maximum number of elements that can be returned on this request.
+     *                 0 means there is not limit to the page size
+     * @param sequencingOrder the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @return the relationships associated with the requested Category guid
+     *
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException   Function not supported
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+     List<Line> getCategoryRelationships(String serverName, String userId, String guid,
+                                               Date asOfTime,
+                                               int offset,
+                                               int pageSize,
+                                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                               String sequencingProperty) throws
+            UserNotAuthorizedException,
+            InvalidParameterException,
+            FunctionNotSupportedException,
+            UnexpectedResponseException,
+            MetadataServerUncontactableException;
     /**
      * Find Category
      *
@@ -276,7 +313,7 @@ public interface SubjectAreaCategory
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public SubjectAreaDefinition replaceSubjectAreaDefinition(String serverName, String userId, String guid, SubjectAreaDefinition suppliedSubjectAreaDefinition) throws
+     SubjectAreaDefinition replaceSubjectAreaDefinition(String serverName, String userId, String guid, SubjectAreaDefinition suppliedSubjectAreaDefinition) throws
                                                                                                                                                                   UnexpectedResponseException,
                                                                                                                                                                   UserNotAuthorizedException,
                                                                                                                                                                   FunctionNotSupportedException,
@@ -305,7 +342,7 @@ public interface SubjectAreaCategory
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public SubjectAreaDefinition updateSubjectAreaDefinition(String serverName, String userId, String guid, SubjectAreaDefinition suppliedSubjectAreaDefinition) throws UnexpectedResponseException,
+     SubjectAreaDefinition updateSubjectAreaDefinition(String serverName, String userId, String guid, SubjectAreaDefinition suppliedSubjectAreaDefinition) throws UnexpectedResponseException,
                                                                                                                                                                         UserNotAuthorizedException,
                                                                                                                                                                         FunctionNotSupportedException,
                                                                                                                                                                         InvalidParameterException,
@@ -332,7 +369,7 @@ public interface SubjectAreaCategory
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public SubjectAreaDefinition deleteSubjectAreaDefinition(String serverName, String userId,String guid) throws InvalidParameterException,
+     SubjectAreaDefinition deleteSubjectAreaDefinition(String serverName, String userId,String guid) throws InvalidParameterException,
                                                                                                                   MetadataServerUncontactableException,
                                                                                                                   UserNotAuthorizedException,
                                                                                                                   FunctionNotSupportedException,
@@ -357,7 +394,7 @@ public interface SubjectAreaCategory
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public  void purgeSubjectAreaDefinition(String serverName, String userId,String guid)  throws InvalidParameterException,
+      void purgeSubjectAreaDefinition(String serverName, String userId,String guid)  throws InvalidParameterException,
             UserNotAuthorizedException,
             MetadataServerUncontactableException,
             GUIDNotPurgedException,
@@ -379,7 +416,7 @@ public interface SubjectAreaCategory
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public  SubjectAreaDefinition restoreSubjectAreaDefinition(String serverName, String userId,String guid) throws InvalidParameterException,
+      SubjectAreaDefinition restoreSubjectAreaDefinition(String serverName, String userId,String guid) throws InvalidParameterException,
             UserNotAuthorizedException,
             MetadataServerUncontactableException,
             UnrecognizedGUIDException,

@@ -215,7 +215,7 @@ public class OMRSOperationalServices
     public void initialize(RepositoryServicesConfig repositoryServicesConfig)
     {
         final String   actionDescription = "Initialize Open Metadata Repository Operational Services";
-        final String   methodName        = "initialize()";
+        final String   methodName        = "initialize";
         OMRSAuditCode  auditCode;
 
 
@@ -670,6 +670,17 @@ public class OMRSOperationalServices
 
 
     /**
+     * Add an open metadata archive to the local repository.
+     *
+     * @param openMetadataArchiveConnection connection to the archive
+     */
+    public void addOpenMetadataArchive(Connection    openMetadataArchiveConnection)
+    {
+        archiveManager.addOpenMetadataArchive(this.getOpenMetadataArchiveStore(openMetadataArchiveConnection));
+    }
+
+
+    /**
      * Shutdown the Open Metadata Repository Services.
      *
      * @param permanent boolean flag indicating whether this server permanently shutting down or not
@@ -721,7 +732,20 @@ public class OMRSOperationalServices
          */
         if (enterpriseConnectorManager != null)
         {
-            enterpriseConnectorManager.disconnect();
+            try {
+                enterpriseConnectorManager.disconnect();
+            }
+            catch (Throwable  error)
+                {
+                    auditCode = OMRSAuditCode.ENTERPRISE_CONNECTOR_DISCONNECT_ERROR;
+                    auditLog.logRecord(actionDescription,
+                            auditCode.getLogMessageId(),
+                            auditCode.getSeverity(),
+                            auditCode.getFormattedLogMessage(error.getMessage()),
+                            null,
+                            auditCode.getSystemAction(),
+                            auditCode.getUserAction());
+                }
         }
 
         if (archiveManager != null)

@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.eventmanagement;
 
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryeventmapper.OMRSRepositoryEventProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
@@ -30,9 +31,9 @@ public class OMRSEventListener implements OMRSTopicListener
      * There is an event processor for each category of event.  The OMRSEventListener passes appropriate events to these
      * objects depending on the settings of its configuration.
      */
-    private OMRSRegistryEventProcessor registryEventProcessor;
-    private OMRSTypeDefEventProcessor  typeDefEventProcessor;
-    private OMRSInstanceEventProcessor instanceEventProcessor;
+    private OMRSRegistryEventProcessor          registryEventProcessor;
+    private OMRSTypeDefEventProcessorInterface  typeDefEventProcessor;
+    private OMRSInstanceEventProcessorInterface instanceEventProcessor;
 
     /*
      * The audit log is used for recording events, decisions, errors and exceptions
@@ -48,23 +49,21 @@ public class OMRSEventListener implements OMRSTopicListener
      * @param cohortName name of the cohort that this event listener belongs to
      * @param localMetadataCollectionId unique identifier for the local metadata collection
      * @param registryEventProcessor processor for registry events
-     * @param typeDefEventProcessor processor for TypeDef synchronization events
-     * @param instanceEventProcessor processor for metadata instance replication
+     * @param repositoryEventProcessor processor for TypeDef and Instance synchronization events
      * @param auditLog audit log for this component.
      */
     public OMRSEventListener(String                                cohortName,
                              String                                localMetadataCollectionId,
                              OMRSRegistryEventProcessor            registryEventProcessor,
-                             OMRSTypeDefEventProcessor             typeDefEventProcessor,
-                             OMRSInstanceEventProcessor            instanceEventProcessor,
+                             OMRSRepositoryEventProcessor          repositoryEventProcessor,
                              OMRSAuditLog                          auditLog)
     {
-        this.cohortName = cohortName;
+        this.cohortName                = cohortName;
         this.localMetadataCollectionId = localMetadataCollectionId;
-        this.registryEventProcessor = registryEventProcessor;
-        this.typeDefEventProcessor  = typeDefEventProcessor;
-        this.instanceEventProcessor = instanceEventProcessor;
-        this.auditLog = auditLog;
+        this.registryEventProcessor    = registryEventProcessor;
+        this.typeDefEventProcessor     = repositoryEventProcessor;
+        this.instanceEventProcessor    = repositoryEventProcessor;
+        this.auditLog                  = auditLog;
 
         final String   actionDescription = "Initialize OMRS Event Listener";
 
@@ -220,7 +219,7 @@ public class OMRSEventListener implements OMRSTopicListener
             log.debug("Null TypeDef event; ignoring event");
         }
         else if ((localMetadataCollectionId != null) &&
-                (localMetadataCollectionId.equals(typeDefEvent.getEventOriginator().getMetadataCollectionId())))
+                 (localMetadataCollectionId.equals(typeDefEvent.getEventOriginator().getMetadataCollectionId())))
         {
             log.debug("Ignoring event that this server originated");
         }
@@ -249,7 +248,7 @@ public class OMRSEventListener implements OMRSTopicListener
             log.debug("Null instance event ignoring event");
         }
         else if ((localMetadataCollectionId != null) &&
-                (localMetadataCollectionId.equals(instanceEvent.getEventOriginator().getMetadataCollectionId())))
+                 (localMetadataCollectionId.equals(instanceEvent.getEventOriginator().getMetadataCollectionId())))
         {
             log.debug("Ignoring event that this server originated");
         }

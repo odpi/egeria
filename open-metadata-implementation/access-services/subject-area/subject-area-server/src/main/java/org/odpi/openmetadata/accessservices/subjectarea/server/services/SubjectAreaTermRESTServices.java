@@ -13,8 +13,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.classificatio
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
@@ -26,19 +26,16 @@ import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUti
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.TypeGuids;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.RestValidator;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.*;
 import java.util.Set;
 
 
 /**
- * TheSubjectAreaTermRESTServices provides the server-side implementation of the SubjectAreaDefinition Open Metadata
+ * The SubjectAreaTermRESTServices provides the server-side implementation of the SubjectAreaDefinition Open Metadata
  * Access Service (OMAS) for Terms.  This interface provides term authoring interfaces for subject area experts.
  */
 
@@ -126,15 +123,6 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             {
                 SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_TERM_CREATE_WITHOUT_NAME;
                 String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
-                log.error(errorMessage);
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
-            }
-
-            // should we remove this restriction?
-            if (suppliedTerm.getProjects() != null && !suppliedTerm.getProjects().isEmpty())
-            {
-                SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_TERM_CREATE_WITH_PROJECTS;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName, suppliedTermName);
                 log.error(errorMessage);
                 throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
             }
@@ -308,82 +296,28 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         SubjectAreaOMASAPIResponse response =null;
         try
         {
-            // initialise omrs API helper with the right instance based on the server name
-            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
-            if (offset ==null) {
-                offset = new Integer(0);
-            }
-            if (pageSize == null) {
-                pageSize = new Integer(0);
-            }
-            if (sequencingProperty !=null) {
-                try {
-                    sequencingProperty = URLDecoder.decode(sequencingProperty,"UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    // TODO error
-                }
-            }
-            SequencingOrder omrsSequencingOrder =  SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
-            Set<Line> omrsTermRelationships = subjectAreaOmasREST.getGlossaryTermRelationships(
-                    userId,
-                    guid,
-                    null,
-                    offset,
-                    asOfTime,
-                    sequencingProperty,
-                    omrsSequencingOrder,
-                    pageSize);
-            List<Line> termRelationships = SubjectAreaUtils.convertOMRSLinesToOMASLines(omrsTermRelationships);
-            //TODO change the follow to a while loop . refactor to a method so it can be reused for find.
-
-            int sizeToGet = 0;
-            if (omrsTermRelationships.size() > termRelationships.size()) {
-                sizeToGet = omrsTermRelationships.size() - termRelationships.size();
+                // initialise omrs API helper with the right instance based on the server name
+                SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
+                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+                // check that the guid is that of a Glossary Tern by getting it by guid
+                subjectAreaOmasREST.getGlossaryTermById(userId, guid);
+                response = getRelationshipsFromGuid(serverName,userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            } catch (MetadataServerUncontactableException e) {
+                OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+            } catch (UserNotAuthorizedException e) {
+                OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+            } catch (InvalidParameterException e) {
+                response = OMASExceptionToResponse.convertInvalidParameterException(e);
+            } catch (UnrecognizedGUIDException e) {
+                response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
             }
 
-            while (sizeToGet >0) {
-
-                // there are more relationships we need to get
-                omrsTermRelationships = subjectAreaOmasREST.getGlossaryTermRelationships(
-                        userId,
-                        guid,
-                        null,
-                        offset + sizeToGet,
-                        asOfTime,
-                        sequencingProperty,
-                        omrsSequencingOrder,
-                        sizeToGet);
-                if (omrsTermRelationships != null) {
-                    sizeToGet = getSizeToGet(omrsTermRelationships, termRelationships);
-                    offset = +sizeToGet;
-                }
+            if (log.isDebugEnabled())
+            {
+                log.debug("<== successful method : " + methodName + ",userId=" + userId + ", Response=" + response);
             }
-            response =new TermRelationshipsResponse(termRelationships);
-        } catch (InvalidParameterException e)
-        {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        } catch (UserNotAuthorizedException e)
-        {
-            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-        } catch (MetadataServerUncontactableException e)
-        {
-            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-        } catch (UnrecognizedGUIDException e)
-        {
-            response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
-        } catch (FunctionNotSupportedException e)
-        {
-            //should not occur as it is issued when a type guid is supplied - we supply null. TODO appropriate error/log
-        }
+            return response;
 
-
-        if (log.isDebugEnabled())
-        {
-            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", Response=" + response);
-        }
-        return response;
     }
     /**
      * Find Term
@@ -455,22 +389,6 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", Response=" + response);
         }
         return response;
-
-
-    }
-
-
-    private int getSizeToGet(Set<Line> omrsTermRelationships, List<Line> termRelationships) {
-        int sizeToGet =0;
-        List<Line> moreTermRelationships = SubjectAreaUtils.convertOMRSLinesToOMASLines(omrsTermRelationships);
-        if ( moreTermRelationships !=null && moreTermRelationships.size() >0) {
-            for (Line moreTermRelationship : moreTermRelationships) {
-                termRelationships.add(moreTermRelationship);
-            }
-            sizeToGet = omrsTermRelationships.size() - moreTermRelationships.size();
-
-        }
-        return sizeToGet;
     }
 
     /**
