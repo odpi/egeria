@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.events;
 
+
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,32 +18,50 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
-public class SemanticAssignment extends InformationViewHeader{
+public class DataViewColumnSource extends Source {
 
-    private DatabaseColumn databaseColumn;
-    private BusinessTerm businessTerm;
+    private String id;
+    private String name;
+    private DataViewSource dataViewSource;
 
-    public BusinessTerm getBusinessTerm() {
-        return businessTerm;
+
+    public String getId() {
+        return id;
     }
 
-    public void setBusinessTerm(BusinessTerm businessTerm) {
-        this.businessTerm = businessTerm;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public DatabaseColumn getDatabaseColumn() {
-        return databaseColumn;
+    public String getName() {
+        return name;
     }
 
-    public void setDatabaseColumn(DatabaseColumn databaseColumn) {
-        this.databaseColumn = databaseColumn;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public DataViewSource getDataViewSource() {
+        return dataViewSource;
+    }
+
+    public void setDataViewSource(DataViewSource dataViewSource) {
+        this.dataViewSource = dataViewSource;
     }
 
     @Override
     public String toString() {
-        return "SemanticAssignment{" +
-                "businessTerm=" + businessTerm +
-                ", databaseColumn=" + databaseColumn +
+        return "{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", dataViewSource=" + dataViewSource +
                 '}';
     }
+
+    @Override
+    public String buildQualifiedName() {
+        return "";
+    }
+
+
 }
