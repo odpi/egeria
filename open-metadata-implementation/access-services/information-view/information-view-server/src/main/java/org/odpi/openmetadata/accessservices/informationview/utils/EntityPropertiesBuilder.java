@@ -6,6 +6,7 @@ package org.odpi.openmetadata.accessservices.informationview.utils;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 
+
 public class EntityPropertiesBuilder {
 
     private InstanceProperties instanceProperties;
@@ -52,6 +53,8 @@ public class EntityPropertiesBuilder {
         instanceProperties.setProperty(key, EntityPropertiesUtils.createPrimitiveDatePropertyValue(timestamp));
         return this;
     }
+
+
 
     /**
      * Returns the instance properties object

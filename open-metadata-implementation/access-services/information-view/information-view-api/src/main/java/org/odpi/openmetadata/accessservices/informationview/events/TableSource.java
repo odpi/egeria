@@ -13,11 +13,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TableSource extends Source {
+public class TableSource extends DatabaseSource {
 
     private String tableName;
     private String schemaName;
-    private String databaseName;
+    private String tableGuid;
 
     public String getTableName() {
         return tableName;
@@ -35,22 +35,16 @@ public class TableSource extends Source {
         this.schemaName = schemaName;
     }
 
-    public String getDatabaseName() {
-        return databaseName;
+    public String getTableGuid() {
+        return tableGuid;
     }
 
-    public void setDatabaseName(String databaseName) {
-        this.databaseName = databaseName;
+    public void setTableGuid(String tableGuid) {
+        this.tableGuid = tableGuid;
     }
 
-    @Override
-    public String toString() {
-        return "TableSource{" +
-                "tableName='" + tableName + '\'' +
-                ", schemaName='" + schemaName + '\'' +
-                ", databaseName='" + databaseName + '\'' +
-                '}';
-    }
+
+
 
     @Override
     public String buildQualifiedName() {
