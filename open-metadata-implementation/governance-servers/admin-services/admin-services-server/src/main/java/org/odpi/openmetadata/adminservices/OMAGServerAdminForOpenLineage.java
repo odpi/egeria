@@ -17,7 +17,7 @@ import java.util.UUID;
 public class OMAGServerAdminForOpenLineage {
 
     private final OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
-    private static final String defaultInTopicName = "omas.open-metadata.access-services.AssetLineage.outTopic";
+    private static final String defaultALOutTopicName = "omas.open-metadata.access-services.AssetLineage.outTopic";
 
 
     public VoidResponse enableOpenLineageService(String userId, String serverName) {
@@ -58,12 +58,12 @@ public class OMAGServerAdminForOpenLineage {
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
-            openLineageConfig.setALOutTopicConnection(
+            openLineageConfig.setAssetLineageOutTopicConnection(
                     connectorConfigurationFactory.getDefaultEventBusConnection(
-                            defaultInTopicName,
+                            defaultALOutTopicName,
                             eventBusConfig.getConnectorProvider(),
                             eventBusConfig.getTopicURLRoot() + ".server",
-                            openLineageConfig.getALOutTopicName(),
+                            openLineageConfig.getAssetLineageOutTopicName(),
                             UUID.randomUUID().toString(),
                             eventBusConfig.getAdditionalProperties()));
 
