@@ -1,7 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.informationview.contentmanager;
+package org.odpi.openmetadata.accessservices.informationview.reports;
 
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityWrapper;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.ReportCreationException;
@@ -11,6 +13,7 @@ import org.odpi.openmetadata.accessservices.informationview.utils.EntityProperti
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,16 +25,22 @@ public class ReportHandler {
     private static final Logger log = LoggerFactory.getLogger(ReportHandler.class);
     private ReportCreator reportCreator;
     private ReportUpdater reportUpdater;
-    private EntitiesCreatorHelper entitiesCreatorHelper;
+    private org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao omEntityDao;
     private OMRSAuditLog auditLog;
 
-    public ReportHandler(EntitiesCreatorHelper entitiesCreatorHelper, LookupHelper lookupHelper, OMRSAuditLog auditLog) {
-        reportCreator = new ReportCreator(entitiesCreatorHelper, lookupHelper, auditLog);
-        reportUpdater = new ReportUpdater(entitiesCreatorHelper, lookupHelper, auditLog);
-        this.entitiesCreatorHelper = entitiesCreatorHelper;
+    public ReportHandler(OMEntityDao omEntityDao, LookupHelper lookupHelper, OMRSRepositoryHelper repositoryHelper, OMRSAuditLog auditLog) {
+        reportCreator = new ReportCreator(omEntityDao, lookupHelper, repositoryHelper, auditLog);
+        reportUpdater = new ReportUpdater(omEntityDao, lookupHelper, repositoryHelper, auditLog);
+        this.omEntityDao = omEntityDao;
         this.auditLog = auditLog;
     }
 
+
+    /**
+     *
+     * @param payload - object describing the report
+     * @throws ReportCreationException
+     */
     public void submitReportModel(ReportRequestBody payload) throws ReportCreationException {
 
         try {
@@ -42,7 +51,7 @@ public class ReportHandler {
                 networkAddress = networkAddress + ":" + url.getPort();
             }
 
-            String qualifiedNameForReport = networkAddress + "." + payload.getId();
+            String qualifiedNameForReport = networkAddress + BasicOperation.SEPARATOR + payload.getId();
             InstanceProperties reportProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForReport)
                     .withStringProperty(Constants.NAME, payload.getReportName())
@@ -55,14 +64,14 @@ public class ReportHandler {
                     .build();
 
 
-            EntityDetailWrapper reportWrapper = entitiesCreatorHelper.createOrUpdateEntity(Constants.DEPLOYED_REPORT,
+            OMEntityWrapper reportWrapper = omEntityDao.createOrUpdateEntity(Constants.DEPLOYED_REPORT,
                     qualifiedNameForReport,
                     reportProperties,
                     null,
                     true);
 
 
-            if (reportWrapper.getEntityStatus().equals(EntityDetailWrapper.EntityStatus.NEW)) {
+            if (reportWrapper.getEntityStatus().equals(OMEntityWrapper.EntityStatus.NEW)) {
                 reportCreator.createReport(payload, reportWrapper.getEntityDetail());
             } else {
                 reportUpdater.updateReport(payload, reportWrapper.getEntityDetail());
