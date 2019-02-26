@@ -16,7 +16,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Retenti
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.GovernanceActions;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 
@@ -35,13 +35,14 @@ public class TermFVT
     private SubjectAreaTerm subjectAreaTerm = null;
     private GlossaryFVT glossaryFVT =null;
     private String serverName = null;
+    private String userId =null;
 
     public static void main(String args[])
     {
         try
         {
             String url = RunAllFVT.getUrl(args);
-            runit(url);
+            runWith2Servers(url);
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
@@ -51,19 +52,25 @@ public class TermFVT
         }
 
     }
-    public TermFVT(String url,String serverName) throws InvalidParameterException
+    public TermFVT(String url,String serverName,String userId) throws InvalidParameterException
     {
         subjectAreaTerm = new SubjectAreaImpl(serverName,url).getSubjectAreaTerm();
         System.out.println("Create a glossary");
-        glossaryFVT = new GlossaryFVT(url,serverName);
+        glossaryFVT = new GlossaryFVT(url,serverName,userId);
         this.serverName=serverName;
+        this.userId=userId;
     }
-    public static void runit(String url) throws SubjectAreaCheckedExceptionBase
+    public static void runWith2Servers(String url) throws SubjectAreaCheckedExceptionBase
     {
-        TermFVT fvt =new TermFVT(url,FVTConstants.SERVER_NAME1);
+        TermFVT fvt =new TermFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
         fvt.run();
-        TermFVT fvt2 =new TermFVT(url,FVTConstants.SERVER_NAME2);
+        TermFVT fvt2 =new TermFVT(url,FVTConstants.SERVER_NAME2,FVTConstants.USERID);
         fvt2.run();
+    }
+
+    public static void runIt(String url, String serverName, String userId) throws SubjectAreaCheckedExceptionBase {
+        TermFVT fvt =new TermFVT(url,serverName,userId);
+        fvt.run();
     }
 
     public void run() throws SubjectAreaCheckedExceptionBase
@@ -80,20 +87,26 @@ public class TermFVT
 
         Term termForUpdate = new Term();
         termForUpdate.setName(DEFAULT_TEST_TERM_NAME_UPDATED);
-        System.out.println("Get the term1");
+        System.out.println("Get term1");
         String guid = term1.getSystemAttributes().getGUID();
         Term gotTerm = getTermByGUID(guid);
         FVTUtils.validateNode(gotTerm);
-        System.out.println("Update the term1");
+        System.out.println("Update term1");
         Term updatedTerm = updateTerm(guid, termForUpdate);
         FVTUtils.validateNode(updatedTerm);
-        System.out.println("Get the term1 again");
+        System.out.println("Get term1 again");
         gotTerm = getTermByGUID(guid);
         FVTUtils.validateNode(gotTerm);
-        System.out.println("Delete the term1");
+        System.out.println("Delete term1");
+        gotTerm = deleteTerm(guid);
+        System.out.println("Restore term1");
+        FVTUtils.validateNode(gotTerm);
+        gotTerm = restoreTerm(guid);
+        FVTUtils.validateNode(gotTerm);
+        System.out.println("Delete term1 again");
         gotTerm = deleteTerm(guid);
         FVTUtils.validateNode(gotTerm);
-        System.out.println("Purge a term1");
+        System.out.println("Purge term1");
         purgeTerm(guid);
         System.out.println("Create term3 with governance actions");
         GovernanceActions governanceActions = createGovernanceActions();
@@ -174,7 +187,7 @@ public class TermFVT
     }
 
     private Term issueCreateTerm(Term term) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException {
-        Term newTerm = subjectAreaTerm.createTerm(serverName,FVTConstants.USERID, term);
+        Term newTerm = subjectAreaTerm.createTerm(serverName,this.userId, term);
         if (newTerm != null)
         {
             System.out.println("Created Term " + newTerm.getName() + " with guid " + newTerm.getSystemAttributes().getGUID());
@@ -239,7 +252,7 @@ public class TermFVT
 
     public Term getTermByGUID(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Term term = subjectAreaTerm.getTermByGuid(serverName,FVTConstants.USERID, guid);
+        Term term = subjectAreaTerm.getTermByGuid(serverName,this.userId, guid);
         if (term != null)
         {
             System.out.println("Got Term " + term.getName() + " with guid " + term.getSystemAttributes().getGUID() + " and status " + term.getSystemAttributes().getStatus());
@@ -250,7 +263,7 @@ public class TermFVT
     {
         List<Term> terms = subjectAreaTerm.findTerm(
                 serverName,
-                FVTConstants.USERID,
+                this.userId,
                 criteria,
                 null,
         0,
@@ -262,12 +275,21 @@ public class TermFVT
 
     public Term updateTerm(String guid, Term term) throws SubjectAreaCheckedExceptionBase
     {
-        Term updatedTerm = subjectAreaTerm.updateTerm(serverName,FVTConstants.USERID, guid, term);
+        Term updatedTerm = subjectAreaTerm.updateTerm(serverName,this.userId, guid, term);
         if (updatedTerm != null)
         {
             System.out.println("Updated Term name to " + updatedTerm.getName());
         }
         return updatedTerm;
+    }
+    public Term restoreTerm(String guid) throws SubjectAreaCheckedExceptionBase
+    {
+        Term restoredTerm = subjectAreaTerm.restoreTerm(serverName,this.userId, guid);
+        if (restoredTerm != null)
+        {
+            System.out.println("Restored Term " + restoredTerm.getName());
+        }
+        return restoredTerm;
     }
     public Term updateTermToFuture(String guid, Term term) throws SubjectAreaCheckedExceptionBase
     {
@@ -276,7 +298,7 @@ public class TermFVT
        term.setEffectiveFromTime(new Date(now+6*1000*60*60*24));
        term.setEffectiveToTime(new Date(now+7*1000*60*60*24));
 
-        Term updatedTerm = subjectAreaTerm.updateTerm(serverName,FVTConstants.USERID, guid, term);
+        Term updatedTerm = subjectAreaTerm.updateTerm(serverName,this.userId, guid, term);
         if (updatedTerm != null)
         {
             System.out.println("Updated Term name to " + updatedTerm.getName());
@@ -286,7 +308,7 @@ public class TermFVT
 
     public Term deleteTerm(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Term deletedTerm = subjectAreaTerm.deleteTerm(serverName,FVTConstants.USERID, guid);
+        Term deletedTerm = subjectAreaTerm.deleteTerm(serverName,this.userId, guid);
         if (deletedTerm != null)
         {
             System.out.println("Deleted Term name is " + deletedTerm.getName());
@@ -296,12 +318,12 @@ public class TermFVT
 
     public void purgeTerm(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        subjectAreaTerm.purgeTerm(serverName,FVTConstants.USERID, guid);
+        subjectAreaTerm.purgeTerm(serverName,this.userId, guid);
         System.out.println("Purge succeeded");
     }
 
     public List<Line> getTermRelationships(Term term) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
-        return subjectAreaTerm.getTermRelationships(serverName,FVTConstants.USERID,
+        return subjectAreaTerm.getTermRelationships(serverName,this.userId,
                 term.getSystemAttributes().getGUID(),
                 null,
                 0,
@@ -309,13 +331,14 @@ public class TermFVT
                 null,
                 null);
     }
-    public List<Line> getTermRelationships(Term term, Date asOfTime, int offset, int pageSize, SequencingOrder sequenceOrder,String sequencingProperty) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
-        return subjectAreaTerm.getTermRelationships(serverName,FVTConstants.USERID,
+
+    public List<Line> getTermRelationships(Term term, Date asOfTime, int offset, int pageSize, SequencingOrder sequenceOrder, String sequenceProperty) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
+        return subjectAreaTerm.getTermRelationships(serverName,this.userId,
                 term.getSystemAttributes().getGUID(),
                 asOfTime,
                 offset,
                 pageSize,
                 sequenceOrder,
-                sequencingProperty);
+                sequenceProperty);
     }
 }

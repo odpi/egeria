@@ -482,7 +482,9 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
 
 
     /**
-     * Call disconnect on all registered connectors and stop calling them.  The OMRS is about to shutdown.
+     * The OMRS is about to shutdown.
+     * Call disconnect on all registered remote connectors and stop calling them.
+     * There is no need to disconnect the local connector - that is handled by the EnterpriseConnectorManager
      */
     public void disconnectAllConnectors()
     {
@@ -497,10 +499,9 @@ public class EnterpriseOMRSRepositoryConnector extends OMRSRepositoryConnector i
              */
         }
 
-        if (localConnector != null)
-        {
-            this.disconnectConnector(localConnector);
-        }
+        /*
+         * Need to disconnect the remote connectors
+         */
 
         if (remoteCohortConnectors != null)
         {

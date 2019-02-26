@@ -6,8 +6,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
@@ -18,7 +18,6 @@ import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidato
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 
@@ -153,6 +152,52 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
         return glossary;
+    }
+    /**
+     * Get Glossary relationships
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the glossary to get
+     * @param guid   guid of the glossary to get
+     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
+     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     *                 beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize the maximum number of elements that can be returned on this request.
+     *                 0 means there is not limit to the page size
+     * @param sequencingOrder the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @return the relationships associated with the requested Glossary guid
+     *
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException   Function not supported
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    public List<Line> getGlossaryRelationships(String serverName, String userId, String guid,
+                                           Date asOfTime,
+                                           int offset,
+                                           int pageSize,
+                                           org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                           String sequencingProperty) throws
+            UserNotAuthorizedException,
+            InvalidParameterException,
+            FunctionNotSupportedException,
+            UnexpectedResponseException,
+            MetadataServerUncontactableException {
+        final String methodName = "getGlossaryRelationships";
+        if (log.isDebugEnabled()) {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+        }
+        List<Line> relationships = getRelationships(BASE_URL,serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        if (log.isDebugEnabled()) {
+            log.debug("<== successful method : " + methodName + ",userId="+userId );
+        }
+        return relationships;
     }
 
     /**
@@ -402,7 +447,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
         InputValidator.validateUserIdNotNull(className,methodName,userId);
         InputValidator.validateGUIDNotNull(className,methodName,guid,"guid");
 
-        final String urlTemplate = this.omasServerURL +BASE_URL+"/%s?isPurge=false";
+        final String urlTemplate = this.omasServerURL +BASE_URL+"/%s?isPurge=true";
         String url = String.format(urlTemplate,serverName,userId,guid);
 
         SubjectAreaOMASAPIResponse restResponse = RestCaller.issueDelete(className,methodName,url);
@@ -410,8 +455,6 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
         DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
         DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
         DetectUtils.detectAndThrowGUIDNotPurgedException(methodName,restResponse);
-
-        Glossary glossary = DetectUtils.detectAndReturnGlossary(methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }

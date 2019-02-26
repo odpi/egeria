@@ -10,7 +10,7 @@
     <parent>
         <artifactId>repository-services-connectors</artifactId>
         <groupId>org.odpi.egeria</groupId>
-        <version>0.3-SNAPSHOT</version>
+        <version>1.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
@@ -29,7 +29,6 @@
         <module>graph-repository-connector</module>
         <module>inmemory-repository-connector</module>
         <module>omrs-rest-repository-connector</module>
-        <module>igc-rest-client-library</module>
         <module>ibm-igc-repository-connector</module>
     </modules>
 

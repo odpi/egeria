@@ -141,9 +141,8 @@ public class OMRSConfigurationFactory
 
         localRepositoryConfig.setMetadataCollectionId(UUID.randomUUID().toString());
         localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getDefaultLocalRepositoryLocalConnection());
-        localRepositoryConfig.setLocalRepositoryRemoteConnection(connectorConfigurationFactory.getDefaultLocalRepositoryRemoteConnection(
-                localServerName,
-                localServerURL));
+        localRepositoryConfig.setLocalRepositoryRemoteConnection(connectorConfigurationFactory.getDefaultLocalRepositoryRemoteConnection(localServerName,
+                                                                                                                                         localServerURL));
         localRepositoryConfig.setEventsToSaveRule(this.getDefaultEventsToSaveRule());
         localRepositoryConfig.setSelectedTypesToSave(this.getDefaultSelectedTypesToSave());
         localRepositoryConfig.setEventsToSendRule(this.getDefaultEventsToSendRule());

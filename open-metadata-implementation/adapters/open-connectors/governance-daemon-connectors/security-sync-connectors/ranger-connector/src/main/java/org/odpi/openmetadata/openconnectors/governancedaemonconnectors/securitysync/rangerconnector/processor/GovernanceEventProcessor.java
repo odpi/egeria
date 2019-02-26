@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Context;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassification;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
+import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListAPIResponse;
 import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.auditlog.RangerConnectorAuditCode;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.*;
@@ -37,27 +38,105 @@ public class GovernanceEventProcessor {
         this.securitySyncConfig = securitySyncConfig;
     }
 
+    public void processExistingGovernedAssetsFromRepository() {
+        logProcessing("processExistingGovernedAssetsFromRepository", RangerConnectorAuditCode.CLASSIFIED_GOVERNED_ASSET_INITIAL_LOAD);
+        GovernedAssetListAPIResponse governedAssetResponse = getGovernedAssets();
+        if(governedAssetResponse == null || governedAssetResponse.getRelatedHTTPCode() != 200){
+            return;
+        }
+        List<GovernedAsset> governedAssets = governedAssetResponse.getGovernedAssetList();
+
+        Map<String, RangerTag> rangerTagMap = new HashMap<>();
+        Map<Long, RangerTag> tags = new HashMap<>();
+        Long resourceIndex = 0L;
+        Long tagIndex = 0L;
+
+        List<RangerServiceResource> resources = new ArrayList<>();
+        Map<Long, List<Long>> resourceToTagIds = new HashMap<>();
+
+        for (GovernedAsset governedAsset : governedAssets) {
+
+            if (governedAsset.getAssignedGovernanceClassifications().isEmpty()) {
+                continue;
+            }
+
+            GovernanceClassification classification = governedAsset.getAssignedGovernanceClassifications().get(0);
+            String tagName = classification.getAttributes().get(LEVEL);
+            RangerTag rangerTag;
+            Long tagNo = tagIndex;
+            if (rangerTagMap.containsKey(tagName)) {
+                rangerTag = rangerTagMap.get(tagName);
+                for (Map.Entry<Long, RangerTag> rangerTagEntry : tags.entrySet()) {
+                    if(rangerTagEntry.getValue().equals(rangerTag)){
+                        tagNo = rangerTagEntry.getKey();
+                    }
+                }
+            } else {
+                rangerTag = buildTag(classification);
+                rangerTagMap.put(tagName, rangerTag);
+                tags.put(tagIndex++, rangerTag);
+            }
+
+            List<RangerServiceResource> rangerServiceResources = new ArrayList<>(governedAsset.getContexts().size());
+            for (Context context : governedAsset.getContexts()) {
+                Map<String, RangerPolicyResource> resourceMap = getRangerPolicyResourceMap(context);
+                RangerServiceResource serviceResource = getRangerServiceResource(resourceMap, governedAsset.getGuid(), resourceIndex++);
+                rangerServiceResources.add(serviceResource);
+            }
+
+            resources.addAll(rangerServiceResources);
+
+            for(RangerServiceResource resource :  rangerServiceResources){
+                Map<Long, List<Long>> map = new HashMap<>(1);
+                map.put(resource.getId(), Collections.singletonList(tagNo));
+                resourceToTagIds.putAll(map);
+            }
+        }
+
+        RangerResource rangerResource = buildRangerResource(resources, tags, resourceToTagIds);
+        mapResourcesToTagsInRangerServer(rangerResource);
+    }
+
+    private Map<Long, RangerTagDef> createRangerTagDef() {
+        Map<Long, RangerTagDef>     tagDefinitions = new HashMap<>();
+        RangerTagDef rangerTagDef = new RangerTagDef();
+        rangerTagDef.setId(1L);
+        rangerTagDef.setCreatedBy(RANGER_CONNECTOR);
+        rangerTagDef.setCreateTime(new Date());
+        rangerTagDef.setName(CONFIDENTIALITY);
+
+        tagDefinitions.put(1L, rangerTagDef);
+        return tagDefinitions;
+    }
+
     public void processClassifiedGovernedAssetEvent(GovernedAsset governedAsset) {
+        logProcessing("processClassifiedGovernedAssetEvent", RangerConnectorAuditCode.CLASSIFIED_GOVERNED_ASSET_EVENT_RECEIVED);
 
-        logProcessing("processClassifiedGovernedAssetEvent", RangerConnectorAuditCode.CLASSIFIED_GOVERNED_ASSET_EVENT_REVEICED);
-
-        Map<Long, RangerTag> tags = buildTags(governedAsset.getAssignedGovernanceClassifications());
-        List<RangerServiceResource> rangerServiceResources = getRangerServiceResources(governedAsset);
-        Map<Long, List<Long>> resourceToTagIds = mapResources(tags, rangerServiceResources);
-
-        RangerResource rangerResource = buildRangerResource(rangerServiceResources, tags, resourceToTagIds);
+        RangerResource rangerResource = processGovernedAsset(governedAsset);
         mapResourcesToTagsInRangerServer(rangerResource);
     }
 
     public void processReClassifiedGovernedAssetEvent(GovernedAsset governedAsset) {
+        logProcessing("processReClassifiedGovernedAssetEvent", RangerConnectorAuditCode.RE_CLASSIFIED_GOVERNED_ASSET_EVENT_RECEIVED);
 
+        if (governedAsset == null) {
+            return;
+        }
         RangerServiceResource resource = getResourceFromRanger(governedAsset.getGuid());
+        if (resource == null) {
+            return;
+
+        }
         ResourceTagMapper resourceTagMapper = getExistingTagIdAssociatedWithTheResource(resource.getId());
         List<RangerTag> allTags = getAllTags();
 
 
-        if(resourceTagMapper != null){
+        if (resourceTagMapper != null) {
             deleteMappingBetweenTagAndResource(resourceTagMapper);
+        }
+
+        if (governedAsset.getAssignedGovernanceClassifications() == null || governedAsset.getAssignedGovernanceClassifications().isEmpty()) {
+            return;
         }
 
         GovernanceClassification classification = governedAsset.getAssignedGovernanceClassifications().get(0);
@@ -67,40 +146,43 @@ public class GovernanceEventProcessor {
 
         String newTagGuid = classification.getAttributes().get(LEVEL);
         RangerTag existingTag = existingTag(allTags, newTagGuid);
-        if(existingTag == null){
+
+        if (existingTag == null) {
             RangerTag rangerTag = buildTag(classification);
             createNewTag(rangerTag);
         }
 
         createMappingBetweenTagAndResource(newTagGuid, resource.getGuid());
-        logProcessing("processReClassifiedGovernedAssetEvent", RangerConnectorAuditCode.RE_CLASSIFIED_GOVERNED_ASSET_EVENT_REVEICED);
+    }
+
+    private RangerResource processGovernedAsset(GovernedAsset governedAsset) {
+        Map<Long, RangerTag> tags = buildTags(governedAsset.getAssignedGovernanceClassifications());
+        List<RangerServiceResource> rangerServiceResources = getRangerServiceResources(0L, governedAsset);
+        Map<Long, List<Long>> resourceToTagIds = mapResources(tags, rangerServiceResources);
+
+        return buildRangerResource(rangerServiceResources, tags, resourceToTagIds);
     }
 
     private Map<Long, List<Long>> mapResources(Map<Long, RangerTag> tags, List<RangerServiceResource> rangerServiceResources) {
         Map<Long, List<Long>> resourceToTagIds = new HashMap<>();
-        for(RangerServiceResource rangerServiceResource :  rangerServiceResources){
-            resourceToTagIds.putAll(mapResourcesToTags(rangerServiceResource, tags));
+        List<Long> tagList = new ArrayList<>(tags.keySet());
+
+        for (RangerServiceResource rangerServiceResource : rangerServiceResources) {
+            resourceToTagIds.putAll(mapResourcesToTags(rangerServiceResource.getId(), tagList));
         }
+
         return resourceToTagIds;
     }
 
-    private List<RangerServiceResource> getRangerServiceResources(GovernedAsset governedAsset) {
+    private List<RangerServiceResource> getRangerServiceResources(Long resourceId, GovernedAsset governedAsset) {
         List<RangerServiceResource> rangerServiceResources = new ArrayList<>(governedAsset.getContexts().size());
-        Long resourceId = 0L;
-        for(Context context : governedAsset.getContexts()){
+
+        for (Context context : governedAsset.getContexts()) {
             Map<String, RangerPolicyResource> resourceMap = getRangerPolicyResourceMap(context);
             RangerServiceResource serviceResource = getRangerServiceResource(resourceMap, governedAsset.getGuid(), resourceId++);
             rangerServiceResources.add(serviceResource);
         }
         return rangerServiceResources;
-    }
-
-    private String getTagGuid(List<RangerTag> allTags, Long tagAssociated) {
-        Optional<RangerTag> any = allTags.stream().filter(tag -> tag.getId().equals(tagAssociated)).findAny();
-        if(any.isPresent()){
-            return any.get().getGuid();
-        }
-        return null;
     }
 
     private void createNewTag(RangerTag rangerTag) {
@@ -110,10 +192,8 @@ public class GovernanceEventProcessor {
         HttpEntity<String> entity = new HttpEntity<>(body, getHttpHeaders());
 
         try {
-            String rangerBaseURL = securitySyncConfig.getSecurityServerURL();
-            String createTagURL = MessageFormat.format("{0}/service/tags/", rangerBaseURL);
-            HttpEntity<String> response = restTemplate.exchange(createTagURL, HttpMethod.POST, entity, String.class);
-            log.info(((ResponseEntity<String>) response).getStatusCode().toString());
+            String createTagURL = getRangerURL("{0}/service/tags/");
+            restTemplate.exchange(createTagURL, HttpMethod.POST, entity, String.class);
         } catch (HttpStatusCodeException exception) {
             log.error(exception.getMessage());
         }
@@ -145,7 +225,7 @@ public class GovernanceEventProcessor {
     private RangerTag buildTag(GovernanceClassification classification) {
         RangerTag tag = new RangerTag();
 
-        tag.setCreatedBy(SECURITY_SYNC);
+        tag.setCreatedBy(RANGER_CONNECTOR);
         tag.setType(CONFIDENTIALITY);
         if (classification.getAttributes().containsKey(LEVEL)) {
             tag.setGuid(classification.getAttributes().get(LEVEL));
@@ -172,28 +252,28 @@ public class GovernanceEventProcessor {
 
     private RangerPolicyResource getListOfPossibleValuesOfElements(String value) {
         RangerPolicyResource resourceValue = new RangerPolicyResource();
-
-        List<String> possibleValues = new ArrayList<>(1);
-        possibleValues.add(value);
-        resourceValue.setValues(possibleValues);
-
+        resourceValue.setValues(Collections.singletonList(value));
         return resourceValue;
     }
 
-    private Map<Long, List<Long>> mapResourcesToTags(RangerServiceResource rangerServiceResource, Map<Long, RangerTag> tags) {
-
+    private Map<Long, List<Long>> mapResourcesToTags(Long rangerServiceResourceId, List<Long> tagList) {
         Map<Long, List<Long>> resourceToTagIds = new HashMap<>();
-        final Long resourceId = rangerServiceResource.getId();
-        List<Long> tagList = new ArrayList<>(tags.keySet());
 
-        resourceToTagIds.put(resourceId, tagList);
+        resourceToTagIds.put(rangerServiceResourceId, tagList);
+
         return resourceToTagIds;
     }
 
-    private RangerResource buildRangerResource(List<RangerServiceResource> rangerServiceResource, Map<Long, RangerTag> tags, Map<Long, List<Long>> resourceToTagIds) {
+    private RangerResource buildRangerResource(List<RangerServiceResource> rangerServiceResource,
+                                               Map<Long, RangerTag> tags,
+                                               Map<Long, List<Long>> resourceToTagIds) {
         RangerResource rangerResource = new RangerResource();
 
         rangerResource.setTags(tags);
+
+        Map<Long, RangerTagDef> rangerTagDef = createRangerTagDef();
+        rangerResource.setTagDefinitions(rangerTagDef);
+
         rangerResource.setServiceResources(rangerServiceResource);
         rangerResource.setResourceToTagIds(resourceToTagIds);
         rangerResource.setOp(ADD_OR_UPDATE);
@@ -209,7 +289,7 @@ public class GovernanceEventProcessor {
         serviceResource.setId(resourceId);
         serviceResource.setGuid(guid);
         serviceResource.setServiceName(DEFAULT_SCHEMA_NAME);
-        serviceResource.setCreatedBy(SECURITY_SYNC);
+        serviceResource.setCreatedBy(RANGER_CONNECTOR);
         serviceResource.setResourceElements(resourceElements);
 
         return serviceResource;
@@ -221,9 +301,8 @@ public class GovernanceEventProcessor {
         HttpEntity<String> entity = new HttpEntity<>(body, getHttpHeaders());
 
         try {
-            String url = getRangerURL();
-            HttpEntity<String> response = restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
-            log.info(((ResponseEntity<String>) response).getStatusCode().toString());
+            String url = getRangerURL(SERVICE_TAGS_IMPORT_SERVICE_TAGS);
+            restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
         } catch (HttpStatusCodeException exception) {
             log.error(exception.getMessage());
         }
@@ -243,16 +322,16 @@ public class GovernanceEventProcessor {
         return null;
     }
 
-    private RangerServiceResource getResourceFromRanger(String resourceGuid){
+    private RangerServiceResource getResourceFromRanger(String resourceGuid) {
         String rangerBaseURL = securitySyncConfig.getSecurityServerURL();
-        String resourceURL =  MessageFormat.format("{0}/service/tags/resource/guid/{1}", rangerBaseURL, resourceGuid);
+        String resourceURL = MessageFormat.format(SERVICE_TAGS_RESOURCE_BY_GUID, rangerBaseURL, resourceGuid);
 
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
 
         try {
             ResponseEntity<String> result = restTemplate.exchange(resourceURL, HttpMethod.GET, entity, String.class);
-            return (RangerServiceResource)mapToObject(result, RangerServiceResource.class);
+            return (RangerServiceResource) mapToObject(result, RangerServiceResource.class);
         } catch (HttpStatusCodeException exception) {
             log.error(exception.getMessage());
         }
@@ -261,80 +340,43 @@ public class GovernanceEventProcessor {
 
     private ResourceTagMapper getExistingTagIdAssociatedWithTheResource(Long id) {
         List<ResourceTagMapper> mapper = getMappedResources();
-        Optional<ResourceTagMapper> mappedResource = mapper.stream().filter(resourceTagMapper -> resourceTagMapper.getResourceId().equals(id)).findFirst();
-        if(mappedResource.isPresent()){
-            return mappedResource.get();
+        if (mapper == null) {
+            return null;
         }
-        return null;
+
+        Optional<ResourceTagMapper> mappedResource = mapper.stream().filter(resourceTagMapper -> resourceTagMapper.getResourceId().equals(id)).findFirst();
+        return mappedResource.orElse(null);
     }
 
     private RangerTag existingTag(List<RangerTag> rangerTags, String tagGuid) {
         Optional<RangerTag> any = rangerTags.stream().filter(tag -> tag.getGuid().equals(tagGuid)).findAny();
-        if(any.isPresent()){
-            return any.get();
-        }
-        return null;
+        return any.orElse(null);
     }
 
     private void deleteMappingBetweenTagAndResource(ResourceTagMapper resourceTagMapper) {
         String rangerBaseURL = securitySyncConfig.getSecurityServerURL();
-        String deleteAssociationURL =  MessageFormat.format("{0}/service/tags/tagresourcemap/{1}", rangerBaseURL,resourceTagMapper.getGuid());
+        String deleteAssociationURL = MessageFormat.format("{0}/service/tags/tagresourcemap/{1}", rangerBaseURL, resourceTagMapper.getGuid());
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = getHttpHeaders();
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         try {
-           //restTemplate.exchange(deleteAssociationURL, HttpMethod.DELETE, entity, Void.class,1);
-           restTemplate.delete(deleteAssociationURL, HttpMethod.DELETE, entity);
+            restTemplate.delete(deleteAssociationURL, HttpMethod.DELETE, entity);
         } catch (HttpStatusCodeException exception) {
             log.error(exception.getMessage());
         }
-    }
-
-    private List<RangerTag> getAllTags() {
-        String rangerBaseURL = securitySyncConfig.getSecurityServerURL();
-        String allMappedResources =  MessageFormat.format("{0}/service/tags/tags", rangerBaseURL);
-
-        RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
-
-        try {
-            ResponseEntity<List<RangerTag>> response = restTemplate.exchange(allMappedResources, HttpMethod.GET, entity, new ParameterizedTypeReference<List<RangerTag>>(){});
-            List<RangerTag> responseBody = response.getBody();
-            return responseBody;
-        } catch (HttpStatusCodeException exception) {
-            log.error(exception.getMessage());
-        }
-        return null;
     }
 
     private ResourceTagMapper createMappingBetweenTagAndResource(String tagGuid, String resourceGuid) {
         String rangerBaseURL = securitySyncConfig.getSecurityServerURL();
-        String createAssociation =  MessageFormat.format("{0}/service/tags/tagresourcemaps?tag-guid={1}&resource-guid={2}", rangerBaseURL,tagGuid, resourceGuid);
+        String createAssociation = MessageFormat.format("{0}/service/tags/tagresourcemaps?tag-guid={1}&resource-guid={2}", rangerBaseURL, tagGuid, resourceGuid);
 
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
         try {
-            ResponseEntity<String> result =  restTemplate.exchange(createAssociation, HttpMethod.POST, entity, String.class);
+            ResponseEntity<String> result = restTemplate.exchange(createAssociation, HttpMethod.POST, entity, String.class);
             return (ResourceTagMapper) mapToObject(result, ResourceTagMapper.class);
-        } catch (HttpStatusCodeException exception) {
-            log.error(exception.getMessage());
-        }
-        return null;
-    }
-
-    private List<ResourceTagMapper> getMappedResources(){
-        String rangerBaseURL = securitySyncConfig.getSecurityServerURL();
-        String allMappedResources =  MessageFormat.format("{0}/service/tags/tagresourcemaps", rangerBaseURL);
-
-        RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
-
-        try {
-            ResponseEntity<List<ResourceTagMapper>> response = restTemplate.exchange(allMappedResources, HttpMethod.GET, entity, new ParameterizedTypeReference<List<ResourceTagMapper>>(){});
-            List<ResourceTagMapper> list =  response.getBody();
-            return list;
         } catch (HttpStatusCodeException exception) {
             log.error(exception.getMessage());
         }
@@ -346,20 +388,74 @@ public class GovernanceEventProcessor {
         return gson.toJson(resource);
     }
 
-    private String getRangerURL() {
+    private String getRangerURL(String s) {
         String rangerBaseURL = securitySyncConfig.getSecurityServerURL();
-        return MessageFormat.format("{0}/service/tags/importservicetags", rangerBaseURL);
+        return MessageFormat.format(s, rangerBaseURL);
     }
 
     private HttpHeaders getHttpHeaders() {
-        HttpHeaders headers = new HttpHeaders();
-
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        List<MediaType> accept = new ArrayList<>(1);
-        accept.add(MediaType.APPLICATION_JSON);
-        headers.setAccept(accept);
+        HttpHeaders headers = getBasicHTTPHeaders();
         headers.set("Authorization", securitySyncConfig.getSecurityServerAuthorization());
-
         return headers;
+    }
+
+    private HttpHeaders getBasicHTTPHeaders() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
+        return headers;
+    }
+
+    private List<RangerTag> getAllTags() {
+        String allMappedResources = getRangerURL(SERVICE_ALL_TAGS);
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
+
+        try {
+            ResponseEntity<List<RangerTag>> response = restTemplate.exchange(allMappedResources, HttpMethod.GET, entity, new ParameterizedTypeReference<List<RangerTag>>(){});
+            return response.getBody();
+        } catch (HttpStatusCodeException exception) {
+            log.error(exception.getMessage());
+        }
+        return Collections.emptyList();
+    }
+
+    private List<ResourceTagMapper> getMappedResources() {
+        String allMappedResources = getRangerURL(SERVICE_TAGS_TAG_RESOURCE_MAPS);
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
+
+        try {
+            ResponseEntity<List<ResourceTagMapper>> response = restTemplate.exchange(allMappedResources, HttpMethod.GET, entity, new ParameterizedTypeReference<List<ResourceTagMapper>>(){});
+            return response.getBody();
+        } catch (HttpStatusCodeException exception) {
+            log.error(exception.getMessage());
+        }
+        return Collections.emptyList();
+    }
+
+    private GovernedAssetListAPIResponse getGovernedAssets() {
+        String governanceEngineURL = getGovernanceEngineURL(GOVERNED_ASSETS);
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+
+        try {
+
+            ResponseEntity<String> result = restTemplate.exchange(governanceEngineURL, HttpMethod.GET, entity, String.class);
+            return (GovernedAssetListAPIResponse) mapToObject(result, GovernedAssetListAPIResponse.class);
+        } catch (HttpStatusCodeException exception) {
+            log.error(exception.getMessage());
+        }
+        return null;
+    }
+
+    private String getGovernanceEngineURL(String endpoint) {
+        String geBaseURL = securitySyncConfig.getGovernanceEngineServerURL();
+        return MessageFormat.format(endpoint, geBaseURL, CONFIDENTIALITY);
     }
 }

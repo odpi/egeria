@@ -4,8 +4,7 @@ package org.odpi.openmetadata.accessservices.subjectarea;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 
 import java.util.Date;
 import java.util.List;
@@ -38,7 +37,7 @@ public interface SubjectAreaGlossary
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public Glossary createGlossary(String serverName, String userId, Glossary suppliedGlossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException ;
+     Glossary createGlossary(String serverName, String userId, Glossary suppliedGlossary) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException ;
     /**
      * Get a glossary by guid.
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -57,8 +56,43 @@ public interface SubjectAreaGlossary
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public  Glossary getGlossaryByGuid(String serverName, String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException ;
-
+      Glossary getGlossaryByGuid(String serverName, String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException ;
+    /**
+     * Get Glossary relationships
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the glossary to get
+     * @param guid   guid of the glossary to get
+     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
+     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     *                 beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize the maximum number of elements that can be returned on this request.
+     *                 0 means there is not limit to the page size
+     * @param sequencingOrder the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @return the relationships associated with the requested Glossary guid
+     *
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException   Function not supported
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+     List<Line> getGlossaryRelationships(String serverName, String userId, String guid,
+                                               Date asOfTime,
+                                               int offset,
+                                               int pageSize,
+                                               org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                               String sequencingProperty) throws
+            UserNotAuthorizedException,
+            InvalidParameterException,
+            FunctionNotSupportedException,
+            UnexpectedResponseException,
+            MetadataServerUncontactableException;
     /**
      * Find Glossary
      *
@@ -117,7 +151,7 @@ public interface SubjectAreaGlossary
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public Glossary replaceGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary) throws
+     Glossary replaceGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary) throws
                                                                                                               UnexpectedResponseException,
                                                                                                               UserNotAuthorizedException,
                                                                                                               InvalidParameterException,
@@ -144,7 +178,7 @@ public interface SubjectAreaGlossary
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public Glossary updateGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary) throws UnexpectedResponseException,
+     Glossary updateGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary) throws UnexpectedResponseException,
                                                                                                                     UserNotAuthorizedException,
                                                                                                                     InvalidParameterException,
                                                                                                                     MetadataServerUncontactableException ;
@@ -171,7 +205,7 @@ public interface SubjectAreaGlossary
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server     */
 
-    public Glossary deleteGlossary(String serverName, String userId,String guid) throws InvalidParameterException,
+     Glossary deleteGlossary(String serverName, String userId,String guid) throws InvalidParameterException,
                                                                                         MetadataServerUncontactableException,
                                                                                         UserNotAuthorizedException,
                                                                                         UnrecognizedGUIDException,
@@ -199,7 +233,7 @@ public interface SubjectAreaGlossary
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public  void purgeGlossary(String serverName, String userId,String guid) throws InvalidParameterException,
+      void purgeGlossary(String serverName, String userId,String guid) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     MetadataServerUncontactableException,
                                                                                     UnrecognizedGUIDException,
@@ -221,7 +255,7 @@ public interface SubjectAreaGlossary
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
-    public  Glossary restoreGlossary(String serverName, String userId,String guid) throws InvalidParameterException,
+      Glossary restoreGlossary(String serverName, String userId,String guid) throws InvalidParameterException,
             UserNotAuthorizedException,
             MetadataServerUncontactableException,
             UnrecognizedGUIDException,

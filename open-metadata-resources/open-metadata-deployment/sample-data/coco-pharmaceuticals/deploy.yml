@@ -24,3 +24,7 @@
 
     - name: load sample metadata
       include_tasks: "metadata/{{ egeria_samples_metadata_backend }}/load.yml"
+      when: >
+        ('ibm-information-server-repo' in group_names)
+        or ('ibm-information-server-engine' in group_names)
+        or ('ibm-information-server-domain' in group_names)

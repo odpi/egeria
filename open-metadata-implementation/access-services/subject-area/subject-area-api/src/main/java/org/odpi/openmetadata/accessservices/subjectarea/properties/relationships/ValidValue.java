@@ -17,8 +17,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 //omrs
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 //omrs beans
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.LineType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 
 /**
  * Link between glossary terms where one defines one of the data values for the another.
@@ -80,7 +80,7 @@ public class ValidValue extends Line {
            lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-           lineType = LineType.Other;
+           lineType = LineType.Unknown;
         }
         entity1Name = "validValueFor";
         entity1Type = "GlossaryTerm";
@@ -102,7 +102,7 @@ public class ValidValue extends Line {
            lineType = LineType.valueOf(name);
         }
         catch (IllegalArgumentException e) {
-           lineType = LineType.Other;
+           lineType = LineType.Unknown;
         }
     }
     /**

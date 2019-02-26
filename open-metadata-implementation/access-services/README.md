@@ -38,14 +38,11 @@ involved in reviewing and crowd-sourcing knowledge about the data assets and the
   The Connected Asset OMAS implements the open metadata ConnectedAssetProperties API for an OCF connector.
 An OCF connector is a connector that supports the [Open Connector Framework (OCF)](../frameworks/open-connector-framework).
 
-* **[data-infrastructure](data-infrastructure)** - manage metadata about deployed infrastructure.
-
-  The Data Infrastructure OMAS provides support for the design and planning of the information infrastructure
-that supports the data assets.  This includes the development of system blueprints that link down to the metadata
-about real infrastructure components.
-This metadata helps in the linkage between information governance metadata
-and IT infrastructure management (ITIL) metadata typically stored in a
-Configuration Management Database (CMDB).
+* **[data-engine](data-engine)** - exchange metadata with a data processing engine.
+                                   
+  The Data Engine OMAS provides APIs and events for a data movement/processing
+engine to record the changes it is making the the data landscape. 
+This information forms a key part of asset lineage.
 
 * **[data-platform](data-platform)** - exchange metadata with a data platform.
 
@@ -59,10 +56,10 @@ in their organization.
 This includes managing privacy impact assessments and reviews of software services
 that use personal data as they move through their development, deployment and use.
 
-* **[data-process](data-process)** - exchange metadata with a data processing engine.
+* **[data-process](data-process)** - exchange metadata about processes.
 
-  The Information Process OMAS provides the ability to manage process metadata that is used to provide design metadata.
-It is used by data engineering tools such as ETL design tools.
+  The Process Design OMAS provides the ability to manage process flow metadata.
+It is used by business process modelling tools.
 
 * **[data-science](data-science)** - manage metadata for analytics.
 
@@ -107,6 +104,15 @@ It is designed for governance and CDO tools.
 
   The Information View OMAS provides information on existing assets plus the ability to define views over these assets.
 This OMAS is used by BI reporting tools and virtualization/federation tools to configure their engines.
+
+* **[it-infrastructure](it-infrastructure)** - manage metadata about deployed infrastructure.
+
+  The IT Infrastructure OMAS provides support for the design and planning of the information infrastructure
+that supports the data assets.  This includes the development of system blueprints that link down to the metadata
+about real infrastructure components.
+This metadata helps in the linkage between information governance metadata
+and IT infrastructure management (ITIL) metadata typically stored in a
+Configuration Management Database (CMDB).
 
 * **[project-management](project-management)** - manage definitions of projects for metadata
 management and governance.

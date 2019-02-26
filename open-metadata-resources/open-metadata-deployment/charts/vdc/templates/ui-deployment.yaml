@@ -1,0 +1,46 @@
+# <!-- SPDX-License-Identifier: Apache-2.0 -->
+# Copyright Contributors to the Egeria project.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  name: {{ include "myapp.fullname" . }}-ui-deployment
+  labels:
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: ui-service
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "myapp.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: ui-service
+
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/name: {{ include "myapp.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: ui-service
+
+    spec:
+      containers:
+      - image: "{{ .Values.image.ui.repository }}:{{ .Values.image.ui.tag }}"
+        ImagePullPolicy: IfNotPresent
+        name: {{ include "myapp.fullname" . }}-ui
+        ports:
+        - containerPort: 8443
+        command: [ "/bin/bash" ]
+        args: [ "-c", "cd  /root/egeria/open-metadata-implementation/user-interfaces/access-services-user-interface/target/ && java -jar access-services-user-interface-1.1-SNAPSHOT.jar" ]
+        restartPolicy: Always
+        envFrom:
+        - configMapRef:
+           name: {{ include "myapp.fullname" . }}-configmap
+        resources: {}
+status: {}

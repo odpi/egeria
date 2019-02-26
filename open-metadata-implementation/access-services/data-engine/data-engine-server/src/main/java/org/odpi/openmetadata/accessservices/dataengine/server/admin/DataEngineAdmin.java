@@ -32,7 +32,6 @@ public class DataEngineAdmin implements AccessServiceAdmin {
     public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
                            OMRSTopicConnector enterpriseOMRSTopicConnector, OMRSRepositoryConnector repositoryConnector,
                            OMRSAuditLog auditLog, String serverUserName) {
-
         final String actionDescription = "initialize";
 
         DataEngineAuditCode auditCode;

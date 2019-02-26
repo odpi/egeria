@@ -20,6 +20,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Antonym.Antonym;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermAnchor.TermAnchor;
+import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermHASARelationship.TermHASARelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermISATypeOFRelationship.TermISATypeOFRelationship;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermTYPEDBYRelationship.TermTYPEDBYRelationship;
@@ -28,7 +29,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.
 import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ValidValue.ValidValue;
 import org.odpi.openmetadata.accessservices.subjectarea.generated.server.SubjectAreaBeansToAccessOMRS;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
@@ -387,13 +388,28 @@ public class SubjectAreaUtils {
                 case DELETED:
                     status = Status.DELETED;
                     break;
+                case DRAFT:
+                    status = Status.DRAFT;
+                    break;
+                case UNKNOWN:
+                    status = Status.UNKNOWN;
+                    break;
+                case PREPARED:
+                    status = Status.PREPARED;
+                    break;
+                case PROPOSED:
+                    status = Status.PROPOSED;
+                    break;
+                case APPROVED:
+                    status = Status.APPROVED;
+                    break;
             }
 
         }
         return status;
     }
 
-    public static InstanceStatus convertStatusToStatusInstance(Status status) {
+    public static InstanceStatus convertStatusToInstanceStatus(Status status) {
         InstanceStatus instanceStatus = null;
         if (status == null) {
             //default to ACTIVE
@@ -405,6 +421,21 @@ public class SubjectAreaUtils {
                     break;
                 case DELETED:
                     instanceStatus = InstanceStatus.DELETED;
+                    break;
+                case DRAFT:
+                    instanceStatus = InstanceStatus.DRAFT;
+                    break;
+                case UNKNOWN:
+                    instanceStatus = InstanceStatus.UNKNOWN;
+                    break;
+                case PREPARED:
+                    instanceStatus = InstanceStatus.PREPARED;
+                    break;
+                case PROPOSED:
+                    instanceStatus = InstanceStatus.PROPOSED;
+                    break;
+                case APPROVED:
+                    instanceStatus = InstanceStatus.APPROVED;
                     break;
             }
         }
@@ -466,18 +497,20 @@ public class SubjectAreaUtils {
                     // TODO
                 break;
                         // term to asset
-                case "SemanticAssignmentRelationship":
+                case "SemanticAssignment":
                     omasLine =SemanticAssignmentMapper.mapOMRSRelationshipBeanToSemanticAssignment((SemanticAssignment) omrsLine);
                 break;
                         // category to term
-                case "TermCategorizationRelationship":
-                    // TODO
+                case "TermCategorization":
+                   omasLine = TermCategorizationMapper.mapOMRSRelationshipBeanToTermCategorization((TermCategorization) omrsLine);
                 break;
+                // Term to glossary
                 case "TermAnchor":
                     omasLine =TermAnchorMapper.mapOMRSRelationshipBeanToTermAnchor((TermAnchor) omrsLine);
                     break;
+                // Category to glossary
                 case "CategoryAnchor":
-                    // TODO
+                    omasLine = CategoryAnchorMapper.mapOMRSRelationshipBeanToCategoryAnchor((CategoryAnchor) omrsLine);
                     break;
             }
             if (omasLine!=null) {
@@ -514,5 +547,4 @@ public class SubjectAreaUtils {
         }
         return  omrsSequencingOrder;
     }
-
 }

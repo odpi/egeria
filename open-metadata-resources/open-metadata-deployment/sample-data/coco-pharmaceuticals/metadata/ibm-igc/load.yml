@@ -45,11 +45,11 @@
     rest_mappings:
       - { type: "host", property: "name", from: "ENG.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
       - { type: "host_(engine)", property: "name", from: "ENG.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
-      - { type: "host", property: "name", from: "DB.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
-      - { type: "host_(engine)", property: "name", from: "DB.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+      - { type: "host", property: "name", from: "DB.INFOSVR.VAGRANT.IBM.COM", to: "{{ egeria_samples_db_host_remote | upper }}" }
+      - { type: "host_(engine)", property: "name", from: "DB.INFOSVR.VAGRANT.IBM.COM", to: "{{ egeria_samples_db_host_remote | upper }}" }
       - { type: "data_file", property: "path", from: "/data/files/CocoPharma", to: "{{ egeria_samples_cocopharma_targets.files }}" }
     iaxml_mappings:
-      - { type: "DataSource", attr: "host", from: "DB.INFOSVR.VAGRANT.IBM.COM", to: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+      - { type: "DataSource", attr: "host", from: "DB.INFOSVR.VAGRANT.IBM.COM", to: "{{ egeria_samples_db_host_remote | upper }}" }
 
 - name: harvest file metadata via IBM Metadata Asset Manager
   include_role:
@@ -76,14 +76,14 @@
         description: "Import area for CocoPharma {{ db_name }} sample database"
         metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
         dcn:
-          name: CocoPharma_{{ db_name }}
+          name: CocoPharma_{{ db_name }}_{{ egeria_samples_cocopharma_db_type }}
           description: "CocoPharma DB2 connection"
           database: "{{ db_name | upper }}"
           username: "{{ ibm_infosvr_users.db2inst1 }}"
           password: "{{ ibm_infosvr_upwds.db2inst1 }}"
         assets_to_import:
             - "database[{{ db_name | upper }}]"
-        hostname: "{{ groups['egeria-samples-db-host'][0] | upper }}"
+        hostname: "{{ egeria_samples_db_host_remote | upper }}"
         database_name: "{{ db_name | upper }}"
   with_items: "{{ egeria_samples_cocopharma_databases }}"
   when: (egeria_samples_cocopharma_db_type == 'ibm-db2')
@@ -99,21 +99,22 @@
         description: ODBC database connection for CocoPharma {{ db_name }} sample database
         type: postgres
         database: "{{ db_name | upper }}"
-        host: "{{ groups['egeria-samples-db-host'][0] | upper }}"
+        host: "{{ egeria_samples_db_host_remote | upper }}"
+        port: "{{ egeria_samples_db_port_remote }}"
     import_areas:
       - name: CocoPharma_{{ db_name }}
         type: ODBCConnector
         description: "Import area for CocoPharma {{ db_name }} sample database"
         metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
         dcn:
-          name: CocoPharma_{{ db_name }}
+          name: CocoPharma_{{ db_name }}_{{ egeria_samples_cocopharma_db_type }}
           description: "CocoPharma PostgreSQL connection"
           data_source: "CocoPharma_{{ db_name | upper }}"
-          username: "{{ egeria_samples_credentials.db_owner }}"
-          password: "{{ egeria_samples_credentials.db_passwd }}"
+          username: "{{ egeria_samples_db_credentials.owner }}"
+          password: "{{ egeria_samples_db_credentials.passwd }}"
         assets_to_import:
           - "schema[{{ db_name | upper }}|public]"
-        hostname: "{{ groups['egeria-samples-db-host'][0] | upper }}"
+        hostname: "{{ egeria_samples_db_host_remote | upper }}"
         database_name: "{{ db_name | upper }}"
   with_items: "{{ egeria_samples_cocopharma_databases }}"
   when: (egeria_samples_cocopharma_db_type == 'postgresql')
@@ -154,21 +155,22 @@
         description: ODBC database connection for CocoPharma {{ db_name }} sample database
         type: mysql_open
         database: "{{ db_name | upper }}"
-        host: "{{ groups['egeria-samples-db-host'][0] | upper }}"
+        host: "{{ egeria_samples_db_host_remote | upper }}"
+        port: "{{ egeria_samples_db_port_remote }}"
     import_areas:
       - name: CocoPharma_{{ db_name }}
         type: ODBCConnector
         description: "Import area for CocoPharma {{ db_name }} sample database"
         metadata_interchange_server: "{{ groups['ibm-information-server-engine'][0] | lower }}"
         dcn:
-          name: CocoPharma_{{ db_name }}
+          name: CocoPharma_{{ db_name }}_{{ egeria_samples_cocopharma_db_type }}
           description: "CocoPharma MariaDB connection"
           data_source: "CocoPharma_{{ db_name | upper }}"
-          username: "{{ egeria_samples_credentials.db_owner }}"
-          password: "{{ egeria_samples_credentials.db_passwd }}"
+          username: "{{ egeria_samples_db_credentials.owner }}"
+          password: "{{ egeria_samples_db_credentials.passwd }}"
         assets_to_import:
           - "schema[{{ db_name | upper }}|{{ db_name | upper }}]"
-        hostname: "{{ groups['egeria-samples-db-host'][0] | upper }}"
+        hostname: "{{ egeria_samples_db_host_remote | upper }}"
         database_name: "{{ db_name | upper }}"
   with_items: "{{ egeria_samples_cocopharma_databases }}"
   when: (egeria_samples_cocopharma_db_type == 'mariadb')
@@ -228,37 +230,37 @@
         - number_of: term
           meeting_all_conditions:
             - { property: "parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
-          is: 52
+          is: 49
         - number_of: database_column
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "COMPDIR" }
-            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
           is: 13
         - number_of: database_column
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "EMPLOYEE" }
-            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
           is: 11
         - number_of: database_column
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "EMPLSANL" }
-            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
           is: 22
         - number_of: database_column
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "LOCATION" }
-            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
           is: 9
         - number_of: database_column
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "PATIENT" }
-            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
           is: 8
         - number_of: database_column
           meeting_all_conditions:
-            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
             - { property: "assigned_to_terms.parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
-          is: 61
+          is: 55
         - number_of: data_file_field
           meeting_all_conditions:
             - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
@@ -269,7 +271,7 @@
             - { property: "data_file_record.data_file.host.name", operator: "=", value: "{{ groups['ibm-information-server-engine'][0] | upper }}" }
             - { property: "data_file_record.data_file.path", operator: "=", value: "{{ egeria_samples_cocopharma_targets.files }}" }
             - { property: "assigned_to_terms.parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
-          is: 61
+          is: 55
 
 - name: remove cached files
   file:
@@ -415,9 +417,9 @@
     name: IBM.infosvr-metadata-asset-manager
   vars:
     discover_sources:
-      - dcn: CocoPharma_{{ db_name }}
+      - dcn: CocoPharma_{{ db_name }}_{{ egeria_samples_cocopharma_db_type }}
         project: CocoPharma
-        target_host: "{{ groups['egeria-samples-db-host'][0] | upper }}"
+        target_host: "{{ egeria_samples_db_host_remote | upper }}"
         steps:
           - import
           - columnAnalysis
@@ -428,6 +430,6 @@
           rootAssets: schema[{{ db_name | upper }}|{{ egeria_samples_db_schema }}]
           Asset_description_already_exists: Replace_existing_description
   with_items: "{{ egeria_samples_cocopharma_databases }}"
-  when: ('ibm-information-server-engine' in group_names) and (egeria_samples_cocopharma_db_type == 'ibm-db2')
+  when: ('ibm-information-server-engine' in group_names)
   loop_control:
     loop_var: db_name

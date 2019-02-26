@@ -7,8 +7,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
@@ -19,22 +17,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 /**
  * OMAGServerConfig provides the properties used to initialize an open metadata and governance (OMAG) server.
  *
- * The OMAG server configuration has the following properties:
+ * The OMAG server configuration has the following basic properties, plus configuration for the subsystems
+ * that should be activated in the OMAG Server:
  * <ul>
  *     <li>
  *         localServerId - Unique identifier for this server.
+ *
+ *         By default, this is initialized to a randomly generated Universal Unique identifier (UUID).
  *     </li>
  *     <li>
  *         localServerName - meaningful name for the server for use in messages and UIs.
- *         Ideally this value is unique to aid administrators in understanding the behavior of the local
- *         server/repository in the open metadata cluster.
+ *         Ideally this value is unique to aid administrators in understanding the source of messages and events
+ *         from the server.
  *
- *         The default value is "Default Server".
+ *         This value is set to the server name assigned when the configuration is created.
  *     </li>
  *     <li>
- *         localServerType - descriptive type name for the local server.  Again this is useful information for the
- *         administrator to understand which vendor implementation, or version of the vendor implementation, is
- *         in operation.
+ *         localServerType - descriptive type name for the server.  Again this is useful information for the
+ *         administrator to understand the role of the server.
  *
  *         The default value is "Open Metadata and Governance Server".
  *     </li>
@@ -46,10 +46,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *         The default value is null.
  *     </li>
  *     <li>
- *         localServerURL - network address of the server (typically URL and port number).
+ *         localServerURL - network address of the OMAG server platform where this server runs
+ *         (typically host and port number but may also include the initial part of the URL before "open-metadata").
+ *
+ *         The default value is "http://localhost:8080".
  *     </li>
  *     <li>
  *         localServerUserId - UserId to use for server initiated REST calls.
+ *
+ *         The default is "OMAGServer".
+ *     </li>
+ *     <li>
+ *         maxPageSize - the maximum page size that can be set on requests to the server.
+ *
+ *         The default value is 1000.
  *     </li>
  * </ul>
  */
@@ -84,13 +94,12 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private DiscoveryEngineConfig     discoveryEngineConfig     = null;
     private StewardshipServicesConfig stewardshipServicesConfig = null;
     private SecuritySyncConfig        securitySyncConfig        = null;
-    private VirtualizerConfig         virtualizerConfig         = null;
+    private List<String>              auditTrail                = null;
+    private VirtualizationConfig virtualizationConfig = null;
 
 
     /**
-     * Default constructor used to set all properties to their default value.  This means the server can connect to the
-     * cluster (assuming the default topic name is used by the cluster) and replicate metadata, but it will not be
-     * remotely callable through an OMRS connector.
+     * Default constructor.
      */
     public OMAGServerConfig()
     {
@@ -120,7 +129,8 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             discoveryEngineConfig = template.getDiscoveryEngineConfig();
             stewardshipServicesConfig = template.getStewardshipServicesConfig();
             securitySyncConfig = template.getSecuritySyncConfig();
-            virtualizerConfig = template.getVirtualizerConfig();
+            auditTrail = template.getAuditTrail();
+            virtualizationConfig = template.getVirtualizationConfig();
         }
     }
 
@@ -411,23 +421,47 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         this.securitySyncConfig = securitySyncConfig;
     }
 
+
+    /**
+     * Return the list of audit log entries associated with this config file.
+     * The audit log simply keep track of the changed to the configuration.
+     *
+     * @return list of audit messages
+     */
+    public List<String> getAuditTrail()
+    {
+        return auditTrail;
+    }
+
+
+    /**
+     * Set up the audit log messages.
+     *
+     * @param auditTrail list of audit messages
+     */
+    public void setAuditTrail(List<String> auditTrail)
+    {
+        this.auditTrail = auditTrail;
+    }
+
     /**
      * Return the configuration for the virtualization services.
      *
-     * @return VirtualizerConfig properties
+     * @return VirtualizationConfig properties
      */
-    public VirtualizerConfig getVirtualizerConfig() {
-        return virtualizerConfig;
+    public VirtualizationConfig getVirtualizationConfig() {
+        return virtualizationConfig;
     }
 
     /**
      * Set up the configuration for the virtualization services.
      *
-     * @param virtualizerConfig properties
+     * @param virtualizationConfig properties
      */
-    public void setVirtualizerConfig(VirtualizerConfig virtualizerConfig) {
-        this.virtualizerConfig = virtualizerConfig;
+    public void setVirtualizationConfig(VirtualizationConfig virtualizationConfig) {
+        this.virtualizationConfig = virtualizationConfig;
     }
+
 
     /**
      * Standard toString method.
@@ -451,7 +485,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 ", discoveryEngineConfig=" + discoveryEngineConfig +
                 ", stewardshipServicesConfig=" + stewardshipServicesConfig +
                 ", securitySyncConfig=" + securitySyncConfig +
-                ", virtualizerConfig" + virtualizerConfig +
+                ", auditTrail=" + auditTrail +
                 '}';
     }
 
@@ -487,7 +521,8 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 Objects.equals(getDiscoveryEngineConfig(), that.getDiscoveryEngineConfig()) &&
                 Objects.equals(getStewardshipServicesConfig(), that.getStewardshipServicesConfig()) &&
                 Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
-                Objects.equals(getVirtualizerConfig(), that.getVirtualizerConfig());
+                Objects.equals(getVirtualizationConfig(), that.getVirtualizationConfig()) &&
+                Objects.equals(getAuditTrail(), that.getAuditTrail());
     }
 
 
@@ -502,6 +537,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         return Objects.hash(getLocalServerId(), getLocalServerName(), getLocalServerType(), getOrganizationName(),
                             getLocalServerURL(), getLocalServerUserId(), getMaxPageSize(), getEventBusConfig(),
                             getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryEngineConfig(),
-                            getStewardshipServicesConfig(), getSecuritySyncConfig(), getVirtualizerConfig());
+                            getStewardshipServicesConfig(), getSecuritySyncConfig(), getAuditTrail(), getVirtualizationConfig());
     }
 }

@@ -15,8 +15,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.line.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.node.NodeType;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
@@ -91,7 +91,6 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> ClassificationException              Error processing a classification</li>
-     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> StatusNotSupportedException          A status value is not supported</li>
      * </ul>
      */
@@ -131,22 +130,12 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
                 log.error(errorMessage);
                 throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
             }
-            // should we remove this restriction?
-            if (suppliedCategory.getProjects() != null && !suppliedCategory.getProjects().isEmpty())
-            {
-                SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_WITH_PROJECTS;
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName, suppliedCategoryName);
-                log.error(errorMessage);
-                throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
-            }
             GlossarySummary suppliedGlossary = suppliedCategory.getGlossary();
             SubjectAreaOMASAPIResponse glossaryResponse = RestValidator.validateGlossarySummaryDuringCreation(serverName, userId, methodName, suppliedGlossary, glossaryRESTServices);
             if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Category.Glossary))
             {
                 // store the associated glossary
                 associatedGlossary = ((GlossaryResponse) glossaryResponse).getGlossary();
-                checkSiblingCategoryNames(userId, methodName, suppliedCategoryName, suppliedCategoryParentGuid, SubjectAreaErrorCode.GLOSSARY_CATEGORY_CREATE_FAILED_CATEGORY_NAME_ALREADY_USED);
-
                 GlossaryCategory newGlossaryCategory = subjectAreaOmasREST .createGlossaryCategory(userId, glossaryCategory);
                 categoryGuid = newGlossaryCategory.getSystemAttributes().getGUID();
                 // Knit the Category to the supplied glossary
@@ -193,9 +182,6 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
         } catch (UnrecognizedGUIDException e)
         {
             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
-        } catch (FunctionNotSupportedException e)
-        {
-            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
 
         if (response == null)
@@ -386,6 +372,68 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
         } catch (FunctionNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
+        }
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", Response=" + response);
+        }
+        return response;
+    }
+    /*
+     * Get Category relationships
+     *
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the term to get
+     * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
+     * @param offset  the starting element number for this set of results.  This is used when retrieving elements
+     *                 beyond the first page of results. Zero means the results start from the first element.
+     * @param pageSize the maximum number of elements that can be returned on this request.
+     *                 0 means there is not limit to the page size
+     * @param sequencingOrder the sequencing order for the results.
+     * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @return the relationships associated with the requested Category guid
+     *
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException   Function not supported
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    public  SubjectAreaOMASAPIResponse getCategoryRelationships(String serverName, String userId,String guid,
+                                                            Date asOfTime,
+                                                            Integer offset,
+                                                            Integer pageSize,
+                                                            org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                                            String sequencingProperty
+    ) {
+        final String methodName = "getCategoryRelationships";
+        if (log.isDebugEnabled())
+        {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+        }
+
+        SubjectAreaOMASAPIResponse response =null;
+        try {
+            // initialise omrs API helper with the right instance based on the server name
+            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
+            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+            // check that the guid is that of a Glossary by getting the guid
+            subjectAreaOmasREST.getGlossaryCategoryById(userId, guid);
+            response = getRelationshipsFromGuid(serverName,userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+        } catch (MetadataServerUncontactableException e) {
+            OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+        } catch (UserNotAuthorizedException e) {
+            OMASExceptionToResponse.convertUserNotAuthorizedException(e);
+        } catch (InvalidParameterException e) {
+            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch (UnrecognizedGUIDException e) {
+            response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
         }
 
         if (log.isDebugEnabled())

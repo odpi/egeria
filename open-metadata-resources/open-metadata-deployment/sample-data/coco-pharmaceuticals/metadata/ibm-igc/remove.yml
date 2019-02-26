@@ -31,7 +31,7 @@
     type: database_table
     conditions:
       - { property: "database_schema.database.name", operator: "=", value: "{{ db_name | upper }}" }
-      - { property: "database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+      - { property: "database_schema.database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
   with_items: "{{ egeria_samples_cocopharma_databases }}"
   loop_control:
     loop_var: db_name
@@ -41,7 +41,7 @@
     type: database_schema
     conditions:
       - { property: "database.name", operator: "=", value: "{{ db_name | upper }}" }
-      - { property: "database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+      - { property: "database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
   with_items: "{{ egeria_samples_cocopharma_databases }}"
   loop_control:
     loop_var: db_name
@@ -51,7 +51,7 @@
     type: database
     conditions:
       - { property: "name", operator: "=", value: "{{ db_name | upper }}" }
-      - { property: "host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+      - { property: "host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
   with_items: "{{ egeria_samples_cocopharma_databases }}"
   loop_control:
     loop_var: db_name
@@ -146,27 +146,27 @@
         - number_of: database_column
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "COMPDIR" }
-            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
           is: 0
         - number_of: database_column
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "EMPLOYEE" }
-            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
           is: 0
         - number_of: database_column
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "EMPLSANL" }
-            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
           is: 0
         - number_of: database_column
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "LOCATION" }
-            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
           is: 0
         - number_of: database_column
           meeting_all_conditions:
             - { property: "database_table_or_view.database_schema.database.name", operator: "=", value: "PATIENT" }
-            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ groups['egeria-samples-db-host'][0] | upper }}" }
+            - { property: "database_table_or_view.database_schema.database.host.name", operator: "=", value: "{{ egeria_samples_db_host_remote | upper }}" }
           is: 0
         - number_of: data_file_field
           meeting_all_conditions:
@@ -203,7 +203,7 @@
   with_items: "{{ egeria_samples_cocopharma_users }}"
   when: >
     __cocopharma_existing_users is defined
-    and __cocopharma_existing_users.stdout.find(item.username) == -1
+    and __cocopharma_existing_users.stdout.find(item.username) != -1
     and ('ibm-information-server-engine' in group_names)
   loop_control:
     label: "{{ item.username }}"
@@ -230,7 +230,7 @@
     create: yes
   when: >
     __cocopharma_existing_groups is defined
-    and __cocopharma_existing_groups.stdout.find(item.id) == -1
+    and __cocopharma_existing_groups.stdout.find(item.id) != -1
     and ('ibm-information-server-engine' in group_names)
   with_items: "{{ egeria_samples_cocopharma_groups }}"
   loop_control:
@@ -254,6 +254,19 @@
     state: absent
   when: ('ibm-information-server-engine' in group_names)
 
+- name: list Metadata Asset Manager import areas
+  shell: >
+    {{ ibm_infosvr_locations.linux }}/ASBNode/bin/imam.sh
+    -u {{ ibm_infosvr_users.isadmin }}
+    -w {{ ibm_infosvr_upwds.isadmin }}
+    -a list
+    --type area
+    -nof
+  args:
+    executable: /bin/bash
+  when: ('ibm-information-server-engine' in group_names)
+  register: __cocopharma_existing_import_areas
+
 - name: remove Metadata Asset Manager file import area
   shell: >
     {{ ibm_infosvr_locations.linux }}/ASBNode/bin/imam.sh
@@ -264,7 +277,9 @@
     --type area
   args:
     executable: /bin/bash
-  when: ('ibm-information-server-engine' in group_names)
+  when: >
+    ('ibm-information-server-engine' in group_names)
+    and __cocopharma_existing_import_areas.stdout.find('CocoPharma_SampleFiles') != -1
 
 - name: remove Metadata Asset Manager database import areas
   shell: >
@@ -276,7 +291,9 @@
     --type area
   args:
     executable: /bin/bash
-  when: ('ibm-information-server-engine' in group_names)
+  when: >
+    ('ibm-information-server-engine' in group_names)
+    and __cocopharma_existing_import_areas.stdout.find(item) != -1
   with_items: "{{ egeria_samples_cocopharma_databases }}"
 
 - name: remote database catalog status
@@ -299,7 +316,7 @@
   args:
     executable: /bin/bash
   become: yes
-  become_user: "{{ egeria_samples_credentials.db_owner }}"
+  become_user: "{{ egeria_samples_db_credentials.owner }}"
   when: >
     ('ibm-information-server-engine' in group_names)
     and (egeria_samples_cocopharma_db_type == 'ibm-db2')

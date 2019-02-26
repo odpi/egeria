@@ -1,0 +1,375 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project.  -->
+
+<assembly xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+          xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+    <formats>
+        <format>tar.gz</format>
+        <format>dir</format>
+    </formats>
+    <id>distribution</id>
+    <baseDirectory>egeria-omag-${open-metadata.version}</baseDirectory>
+    <fileSets>
+
+        <!-- OMAG Server-->
+        <!-- Copy the Jars for the OMAG Server-->
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/governance-servers/server-chassis/server-chassis-spring/target</directory>
+            <outputDirectory>./server</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the properties for the OMAG Server-->
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/governance-servers/server-chassis/server-chassis-spring/src/main</directory>
+            <outputDirectory>./server</outputDirectory>
+            <includes>
+                <include>resources/*</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the documentation for the OMAG Server-->
+
+        <fileSet>
+            <directory>../docs/omag-server</directory>
+            <outputDirectory>./server</outputDirectory>
+            <includes>
+                <include>*.md</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- OMAG Clients-->
+        <!-- Copy the Jars for the OMAG Clients-->
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/asset-catalog/asset-catalog-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/asset-consumer/asset-consumer-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/asset-owner/asset-owner-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/community-profile/community-profile-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/community-profile/connected-asset-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/data-engine/data-engine-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/it-infrastructure/it-infrastructure-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/data-platform/data-platform-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/data-privacy/data-privacy-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/data-process/data-process-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/data-science/data-science-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/dev-ops/dev-ops-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/digital-architecture/digital-architecture-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/discovery-engine/discovery-engine-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/governance-engine/governance-engine-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/governance-program/governance-program-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/information-view/information-view-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/project-management/project-management-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/security-officer/security-officer-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/software-developer/software-developer-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/stewardship-action/stewardship-action-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/access-services/subject-area/subject-area-client/target/</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/governance-servers/admin-services/admin-services-client/target</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the documentation for the OMAG Clients-->
+
+        <fileSet>
+            <directory>docs/omag-client</directory>
+            <outputDirectory>./clients</outputDirectory>
+            <includes>
+                <include>*.md</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- OMAG User Interface-->
+        <!-- Copy the Jars for the OMAG User Interface-->
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/user-interfaces/access-services-user-interface/target</directory>
+            <outputDirectory>./user-interface</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the properties for the OMAG User Interface-->
+
+        <fileSet>
+            <directory>../../open-metadata-implementation/user-interfaces/access-services-user-interface/src/main</directory>
+            <outputDirectory>./user-interface</outputDirectory>
+            <includes>
+                <include>resources/**</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the documentation for the OMAG User Interface-->
+
+        <fileSet>
+            <directory>../docs/ui</directory>
+            <outputDirectory>./user-interface</outputDirectory>
+            <includes>
+                <include>*.md</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- OMAG Conformance Suite-->
+        <!-- Copy the Jars for the OMAG Conformance Suite-->
+
+        <fileSet>
+            <directory>../../open-metadata-conformance-suite/target/</directory>
+            <outputDirectory>./conformance-suite</outputDirectory>
+            <includes>
+                <include>*.jar</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the documentation for the OMAG Conformance Suite-->
+
+        <fileSet>
+            <directory>docs/conformance-suite</directory>
+            <outputDirectory>./conformance-suite</outputDirectory>
+            <includes>
+                <include>*.md</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+        <!-- Copy the license and notice for the whole package-->
+
+        <fileSet>
+            <directory>../..</directory>
+            <outputDirectory>.</outputDirectory>
+            <includes>
+                <include>NOTICE</include>
+                <include>LICENSE</include>
+            </includes>
+            <fileMode>0755</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+
+    </fileSets>
+</assembly>

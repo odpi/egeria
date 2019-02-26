@@ -9,11 +9,16 @@ import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySync
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public class OMAGServerSecuritySyncService {
 
     private OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
+    private OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
+
     private static final String defaultOutTopicName = "OutTopic";
     private static final String defaultInTopicName = "open-metadata.access-services.GovernanceEngine.outTopic";
 
@@ -27,31 +32,48 @@ public class OMAGServerSecuritySyncService {
         try {
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
+            List<String> configAuditLog = serverConfig.getAuditTrail();
+
+            if (configAuditLog == null) {
+                configAuditLog = new ArrayList<>();
+            }
+
+            if (securitySyncConfig == null) {
+                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for security sync services.");
+            } else {
+                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for security sync services.");
+            }
+
+            serverConfig.setAuditTrail(configAuditLog);
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
-            securitySyncConfig.setSecuritySyncInTopic(
-                    connectorConfigurationFactory.getDefaultEventBusConnection(
-                            defaultInTopicName,
-                            eventBusConfig.getConnectorProvider(),
-                            eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                            securitySyncConfig.getSecuritySyncInTopicName(),
-                            UUID.randomUUID().toString(),
-                            eventBusConfig.getAdditionalProperties()));
-            securitySyncConfig.setSecuritySyncOutTopic(
-                    connectorConfigurationFactory.getDefaultEventBusConnection(defaultOutTopicName,
-                            eventBusConfig.getConnectorProvider(),
-                            eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                            getOutputTopicName(securitySyncConfig.getSecurityServerType()),
-                            serverConfig.getLocalServerId(),
-                            eventBusConfig.getAdditionalProperties()));
+            if(securitySyncConfig != null && securitySyncConfig.getSecuritySyncInTopicName() != null) {
+                securitySyncConfig.setSecuritySyncInTopic(
+                        connectorConfigurationFactory.getDefaultEventBusConnection(
+                                defaultInTopicName,
+                                eventBusConfig.getConnectorProvider(),
+                                eventBusConfig.getTopicURLRoot() + ".server." + serverName,
+                                securitySyncConfig.getSecuritySyncInTopicName(),
+                                UUID.randomUUID().toString(),
+                                eventBusConfig.getAdditionalProperties()));
+            }
 
+            if(securitySyncConfig != null && securitySyncConfig.getSecurityServerType() != null) {
+                securitySyncConfig.setSecuritySyncOutTopic(
+                        connectorConfigurationFactory.getDefaultEventBusConnection(defaultOutTopicName,
+                                eventBusConfig.getConnectorProvider(),
+                                eventBusConfig.getTopicURLRoot() + ".server." + serverName,
+                                getOutputTopicName(securitySyncConfig.getSecurityServerType()),
+                                serverConfig.getLocalServerId(),
+                                eventBusConfig.getAdditionalProperties()));
+            }
 
             serverConfig.setSecuritySyncConfig(securitySyncConfig);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         } catch (OMAGInvalidParameterException e) {
-
+            errorHandler.captureInvalidParameterException(response, e);
         }
         return response;
     }
@@ -70,7 +92,7 @@ public class OMAGServerSecuritySyncService {
             SecuritySyncConfig securitySyncConfig = serverConfig.getSecuritySyncConfig();
             this.setSecuritySyncConfig(userId, serverName, securitySyncConfig);
         } catch (OMAGInvalidParameterException e) {
-            e.printStackTrace();
+            errorHandler.captureInvalidParameterException(response, e);
         }
         return response;
     }

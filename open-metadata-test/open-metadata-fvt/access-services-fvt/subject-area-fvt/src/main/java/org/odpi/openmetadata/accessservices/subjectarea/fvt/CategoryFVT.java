@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
@@ -29,6 +30,7 @@ public class CategoryFVT
     private SubjectAreaCategory subjectAreaCategory = null;
     private GlossaryFVT glossaryFVT =null;
     private String serverName = null;
+    private String userId = null;
 
     public static void main(String args[])
     {
@@ -37,7 +39,7 @@ public class CategoryFVT
         try
         {
             url = RunAllFVT.getUrl(args);
-           runit(url);
+            runWith2Servers(url);
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
@@ -47,18 +49,24 @@ public class CategoryFVT
         }
 
     }
-    public static void runit(String url) throws SubjectAreaCheckedExceptionBase
+    public static void runWith2Servers(String url) throws SubjectAreaCheckedExceptionBase
     {
-        CategoryFVT fvt =new CategoryFVT(url,FVTConstants.SERVER_NAME1);
+        CategoryFVT fvt =new CategoryFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
         fvt.run();
-        CategoryFVT fvt2 =new CategoryFVT(url,FVTConstants.SERVER_NAME2);
+        CategoryFVT fvt2 =new CategoryFVT(url,FVTConstants.SERVER_NAME2,FVTConstants.USERID);
         fvt2.run();
     }
-    public CategoryFVT(String url,String serverName) throws InvalidParameterException
+    public CategoryFVT(String url,String serverName,String userId) throws InvalidParameterException
     {
         subjectAreaCategory = new SubjectAreaImpl(serverName,url).getSubjectAreaCategory();
-        glossaryFVT = new GlossaryFVT(url,serverName);
+        glossaryFVT = new GlossaryFVT(url,serverName,userId);
         this.serverName=serverName;
+        this.userId=userId;
+    }
+
+    public static void runIt(String url, String serverName, String userId) throws SubjectAreaCheckedExceptionBase {
+       CategoryFVT fvt =new CategoryFVT(url,serverName,userId);
+       fvt.run();
     }
 
     public void run() throws SubjectAreaCheckedExceptionBase
@@ -67,22 +75,24 @@ public class CategoryFVT
         System.out.println("Create a glossary");
         Glossary glossary = glossaryFVT.createGlossary(serverName+" "+DEFAULT_TEST_GLOSSARY_NAME);
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
-        System.out.println("Create a category1 using glossary name");
+        System.out.println("Create a category1");
         Category category1 = createCategoryWithGlossaryGuid(serverName+" "+DEFAULT_TEST_CATEGORY_NAME,glossary.getSystemAttributes().getGUID());
-        System.out.println("Create a category2 using glossary guid");
+        System.out.println("Create a category2");
         Category category2 = createCategoryWithGlossaryGuid(serverName+" "+DEFAULT_TEST_CATEGORY_NAME2, glossary.getSystemAttributes().getGUID());
 
         FVTUtils.validateNode(category1);
         FVTUtils.validateNode(category2);
-        FVTUtils.validateNode(category2);
+
 
         Category categoryForUpdate = new Category();
         categoryForUpdate.setName(serverName+" "+DEFAULT_TEST_CATEGORY_NAME_UPDATED);
         System.out.println("Get the category1");
         String guid = category1.getSystemAttributes().getGUID();
         Category gotCategory = getCategoryByGUID(guid);
+        FVTUtils.validateNode(gotCategory);
         System.out.println("Update the category1");
         Category updatedCategory = updateCategory(guid, categoryForUpdate);
+        FVTUtils.validateNode(updatedCategory);
         System.out.println("Get the category1 again");
         gotCategory = getCategoryByGUID(guid);
         FVTUtils.validateNode(gotCategory);
@@ -96,12 +106,11 @@ public class CategoryFVT
         gotCategory = deleteCategory(guid);
         FVTUtils.validateNode(gotCategory);
         System.out.println("Purge a category1");
-
+        purgeCategory(gotCategory.getSystemAttributes().getGUID());
         // create category DEFAULT_TEST_CATEGORY_NAME3 with parent
         System.out.println("Create a category with a parent category");
         Category category3 = createCategoryWithParentGlossaryGuid(serverName, serverName + " " + DEFAULT_TEST_CATEGORY_NAME3,category2.getSystemAttributes().getGUID(), glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(category3);
-
 
         System.out.println("create categories to find");
         Category categoryForFind1 = getCategoryForInput("abc",glossaryGuid);
@@ -147,7 +156,7 @@ public class CategoryFVT
         CategorySummary parentCategory = new CategorySummary();
         parentCategory.setGuid(parentGuid);
         category.setParentCategory(parentCategory);
-        Category newCategory = subjectAreaCategory.createCategory(serverName,FVTConstants.USERID, category);
+        Category newCategory = subjectAreaCategory.createCategory(serverName,this.userId, category);
         FVTUtils.validateNode(newCategory);
 
         System.out.println("Created Category " + newCategory.getName() + " with glossaryGuid " + newCategory.getSystemAttributes().getGUID());
@@ -160,7 +169,7 @@ public class CategoryFVT
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setGuid(glossaryGuid);
         category.setGlossary(glossarySummary);
-        Category newCategory = subjectAreaCategory.createCategory(serverName,FVTConstants.USERID, category);
+        Category newCategory = subjectAreaCategory.createCategory(serverName,this.userId, category);
         FVTUtils.validateNode(newCategory);
         System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
         return newCategory;
@@ -173,7 +182,7 @@ public class CategoryFVT
     }
 
     private Category issueCreateCategory(Category category) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException, UnrecognizedGUIDException {
-        Category newCategory = subjectAreaCategory.createCategory(serverName,FVTConstants.USERID, category);
+        Category newCategory = subjectAreaCategory.createCategory(serverName,this.userId, category);
         if (newCategory != null)
         {
             System.out.println("Created Category " + newCategory.getName() + " with guid " + newCategory.getSystemAttributes().getGUID());
@@ -194,7 +203,7 @@ public class CategoryFVT
 
     public Category getCategoryByGUID(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Category category = subjectAreaCategory.getCategoryByGuid(serverName,FVTConstants.USERID, guid);
+        Category category = subjectAreaCategory.getCategoryByGuid(serverName,this.userId, guid);
         FVTUtils.validateNode(category);
         System.out.println("Got Category " + category.getName() + " with guid " + category.getSystemAttributes().getGUID() + " and status " + category.getSystemAttributes().getStatus());
         return category;
@@ -203,7 +212,7 @@ public class CategoryFVT
     {
         List<Category> categories = subjectAreaCategory.findCategory(
                 serverName,
-                FVTConstants.USERID,
+                this.userId,
                 criteria,
                 null,
                 0,
@@ -214,7 +223,7 @@ public class CategoryFVT
     }
     public Category updateCategory(String guid, Category category) throws SubjectAreaCheckedExceptionBase
     {
-        Category updatedCategory = subjectAreaCategory.updateCategory(serverName,FVTConstants.USERID, guid, category);
+        Category updatedCategory = subjectAreaCategory.updateCategory(serverName,this.userId, guid, category);
         FVTUtils.validateNode(updatedCategory);
         System.out.println("Updated Category name to " + updatedCategory.getName());
         return updatedCategory;
@@ -222,13 +231,13 @@ public class CategoryFVT
 
     public Category deleteCategory(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Category deletedCategory = subjectAreaCategory.deleteCategory(serverName,FVTConstants.USERID, guid);
+        Category deletedCategory = subjectAreaCategory.deleteCategory(serverName,this.userId, guid);
         System.out.println("Deleted Category name is " + deletedCategory.getName());
         return deletedCategory;
     }
     public Category restoreCategory(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        Category restoredCategory = subjectAreaCategory.restoreCategory(serverName,FVTConstants.USERID, guid);
+        Category restoredCategory = subjectAreaCategory.restoreCategory(serverName,this.userId, guid);
         FVTUtils.validateNode(restoredCategory);
         System.out.println("restored Category name is " + restoredCategory.getName());
         return restoredCategory;
@@ -236,7 +245,16 @@ public class CategoryFVT
 
     public void purgeCategory(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        subjectAreaCategory.purgeCategory(serverName,FVTConstants.USERID, guid);
+        subjectAreaCategory.purgeCategory(serverName,this.userId, guid);
         System.out.println("Purge succeeded");
+    }
+    public List<Line> getCategoryRelationships(Category category) throws UserNotAuthorizedException, UnexpectedResponseException, InvalidParameterException, FunctionNotSupportedException, MetadataServerUncontactableException {
+        return subjectAreaCategory.getCategoryRelationships(serverName,this.userId,
+                category.getSystemAttributes().getGUID(),
+                null,
+                0,
+                0,
+                null,
+                null);
     }
 }

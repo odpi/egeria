@@ -30,7 +30,7 @@ import java.util.List;
 import static org.testng.Assert.assertNotNull;
 
 
-@SpringBootTest
+//@SpringBootTest
 public class ViewsConstructorTest extends AbstractTestNGSpringContextTests {
     private static final String TESTIN = "json/testIn.json";
     private static final String DELETE = "json/delete.json";
@@ -65,7 +65,7 @@ public class ViewsConstructorTest extends AbstractTestNGSpringContextTests {
     public void tearDown() throws Exception {
     }
 
-    @Test
+//    @Test
     public void testNotifyIVOMAS() throws Exception {
 
         HashMap<String, String> createdViews = new HashMap<>();

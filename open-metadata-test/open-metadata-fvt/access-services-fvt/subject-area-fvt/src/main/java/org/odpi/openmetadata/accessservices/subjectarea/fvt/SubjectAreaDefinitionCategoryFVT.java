@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.fvt;
 
-import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaCategory;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
@@ -25,14 +24,17 @@ public class SubjectAreaDefinitionCategoryFVT
     private static final String DEFAULT_TEST_CATEGORY_NAME2 = "Test subject area definition B";
     private static final String DEFAULT_TEST_CATEGORY_NAME3 = "Test subject area definition C";
     private static SubjectAreaCategory subjectAreaCategory = null;
+    private GlossaryFVT glossaryFVT =null;
     private String url = null;
+    private String serverName = null;
+    private String userId = null;
 
     public static void main(String args[])
     {
-        try {
+        try
+        {
             String url = RunAllFVT.getUrl(args);
-            SubjectAreaDefinitionCategoryFVT subjectAreaDefinitionCategoryFVT =new SubjectAreaDefinitionCategoryFVT(url);
-            subjectAreaDefinitionCategoryFVT.run();
+            runWith2Servers(url);
         } catch (IOException e1)
         {
             System.out.println("Error getting user input");
@@ -41,27 +43,37 @@ public class SubjectAreaDefinitionCategoryFVT
             System.out.println("ERROR: " + e.getErrorMessage() + " Suggested action: " + e.getReportedUserAction());
         }
     }
-    public static void runit(String url) throws SubjectAreaCheckedExceptionBase
+    public static void runWith2Servers(String url) throws SubjectAreaCheckedExceptionBase
     {
-        SubjectAreaDefinitionCategoryFVT fvt =new SubjectAreaDefinitionCategoryFVT(url);
+        SubjectAreaDefinitionCategoryFVT fvt =new SubjectAreaDefinitionCategoryFVT(url,FVTConstants.SERVER_NAME1,FVTConstants.USERID);
         fvt.run();
+        SubjectAreaDefinitionCategoryFVT fvt2 =new SubjectAreaDefinitionCategoryFVT(url,FVTConstants.SERVER_NAME2,FVTConstants.USERID);
+        fvt2.run();
     }
-    public SubjectAreaDefinitionCategoryFVT(String url) throws InvalidParameterException
+    public SubjectAreaDefinitionCategoryFVT(String url,String serverName,String userId) throws InvalidParameterException
     {
-        subjectAreaCategory = new SubjectAreaImpl(FVTConstants.SERVER_NAME1,url).getSubjectAreaCategory();
+        subjectAreaCategory = new SubjectAreaImpl(serverName,url).getSubjectAreaCategory();
+        glossaryFVT = new GlossaryFVT(url,serverName,userId);
         this.url=url;
+        this.serverName = serverName;
+        this.userId=userId;
+    }
+
+    public static void runIt(String url, String serverName, String userId)  throws SubjectAreaCheckedExceptionBase{
+
+        SubjectAreaDefinitionCategoryFVT fvt =new SubjectAreaDefinitionCategoryFVT(url,serverName,userId);
+        fvt.run();
     }
 
     public void run() throws SubjectAreaCheckedExceptionBase
     {
         System.out.println("Create a glossary");
-        GlossaryFVT glossaryFVT = new GlossaryFVT(url,FVTConstants.SERVER_NAME1);
         Glossary glossary = glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
         FVTUtils.validateNode(glossary);
-        System.out.println("Create a subjectArea1  using glossary name");
+        System.out.println("Create a subjectArea1");
         SubjectAreaDefinition subjectArea1  = createSubjectAreaDefinitionWithGlossaryGuid(DEFAULT_TEST_CATEGORY_NAME, glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(subjectArea1);
-        System.out.println("Create a subjectArea2 using glossary guid");
+        System.out.println("Create a subjectArea2");
         SubjectAreaDefinition subjectArea2 = createSubjectAreaDefinitionWithGlossaryGuid(DEFAULT_TEST_CATEGORY_NAME2, glossary.getSystemAttributes().getGUID());
         FVTUtils.validateNode(subjectArea2);
         SubjectAreaDefinition subjectAreaForUpdate = new SubjectAreaDefinition();
@@ -108,7 +120,7 @@ public class SubjectAreaDefinitionCategoryFVT
         CategorySummary parentCategory = new CategorySummary();
         parentCategory.setGuid(parentGuid);
         subjectArea.setParentCategory(parentCategory);
-        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(FVTConstants.SERVER_NAME1,FVTConstants.USERID, subjectArea);
+        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(serverName,this.userId, subjectArea);
 
 
         if (newSubjectAreaDefinition != null)
@@ -125,7 +137,7 @@ public class SubjectAreaDefinitionCategoryFVT
         GlossarySummary glossarySummary = new GlossarySummary();
         glossarySummary.setGuid(glossaryGuid);
         subjectArea.setGlossary(glossarySummary);
-        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(FVTConstants.SERVER_NAME1,FVTConstants.USERID, subjectArea);
+        SubjectAreaDefinition newSubjectAreaDefinition = subjectAreaCategory.createSubjectAreaDefinition(serverName,this.userId, subjectArea);
         if (newSubjectAreaDefinition != null)
         {
             System.out.println("Created SubjectAreaDefinition " + newSubjectAreaDefinition.getName() + " with guid " + newSubjectAreaDefinition.getSystemAttributes().getGUID());
@@ -136,7 +148,7 @@ public class SubjectAreaDefinitionCategoryFVT
 
     public  SubjectAreaDefinition getSubjectAreaDefinitionByGUID(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        SubjectAreaDefinition subjectArea = subjectAreaCategory.getSubjectAreaDefinitionByGuid(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        SubjectAreaDefinition subjectArea = subjectAreaCategory.getSubjectAreaDefinitionByGuid(serverName,this.userId, guid);
         if (subjectArea != null)
         {
             System.out.println("Got SubjectAreaDefinition " + subjectArea.getName() + " with guid " + subjectArea.getSystemAttributes().getGUID() + " and status " + subjectArea.getSystemAttributes().getStatus());
@@ -146,7 +158,7 @@ public class SubjectAreaDefinitionCategoryFVT
 
     public SubjectAreaDefinition updateSubjectAreaDefinition(String guid, SubjectAreaDefinition subjectArea) throws SubjectAreaCheckedExceptionBase
     {
-        SubjectAreaDefinition updatedSubjectAreaDefinition = subjectAreaCategory.updateSubjectAreaDefinition(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid, subjectArea);
+        SubjectAreaDefinition updatedSubjectAreaDefinition = subjectAreaCategory.updateSubjectAreaDefinition(serverName,this.userId, guid, subjectArea);
         if (updatedSubjectAreaDefinition != null)
         {
             System.out.println("Updated SubjectAreaDefinition name to " + updatedSubjectAreaDefinition.getName());
@@ -156,7 +168,7 @@ public class SubjectAreaDefinitionCategoryFVT
 
     public SubjectAreaDefinition deleteSubjectAreaDefinition(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        SubjectAreaDefinition deletedSubjectAreaDefinition = subjectAreaCategory.deleteSubjectAreaDefinition(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        SubjectAreaDefinition deletedSubjectAreaDefinition = subjectAreaCategory.deleteSubjectAreaDefinition(serverName,this.userId, guid);
         if (deletedSubjectAreaDefinition != null)
         {
             System.out.println("Deleted SubjectAreaDefinition name is " + deletedSubjectAreaDefinition.getName());
@@ -166,12 +178,12 @@ public class SubjectAreaDefinitionCategoryFVT
 
     public void purgeSubjectAreaDefinition(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        subjectAreaCategory.purgeSubjectAreaDefinition(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        subjectAreaCategory.purgeSubjectAreaDefinition(serverName,this.userId, guid);
         System.out.println("Purge succeeded");
     }
     public SubjectAreaDefinition restoreSubjectAreaDefinition(String guid) throws SubjectAreaCheckedExceptionBase
     {
-        SubjectAreaDefinition restoredSubjectAreaDefinition = subjectAreaCategory.restoreSubjectAreaDefinition(FVTConstants.SERVER_NAME1,FVTConstants.USERID, guid);
+        SubjectAreaDefinition restoredSubjectAreaDefinition = subjectAreaCategory.restoreSubjectAreaDefinition(serverName,this.userId, guid);
         if (restoredSubjectAreaDefinition != null)
         {
             System.out.println("Deleted SubjectAreaDefinition name is " + restoredSubjectAreaDefinition.getName());

@@ -4,8 +4,11 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.governanceservers.discoveryengine.admin.DiscoveryEngineOperationalServices;
+import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.securitysyncservices.configuration.registration.SecuritySyncOperationalServices;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,10 +18,13 @@ import java.util.List;
  */
 public class OMAGOperationalServicesInstance
 {
-    private OMAGServerConfig         operationalConfiguration               = null;
-    private OMRSOperationalServices  operationalRepositoryServices          = null;
-    private List<AccessServiceAdmin> operationalAccessServiceAdminList      = new ArrayList<>();
-    private SecuritySyncOperationalServices securitySyncOperationalServices = null;
+    private OMAGServerConfig                   operationalConfiguration          = null;
+    private OMRSOperationalServices            operationalRepositoryServices     = null;
+    private List<AccessServiceAdmin>           operationalAccessServiceAdminList = new ArrayList<>();
+    private DiscoveryEngineOperationalServices operationalDiscoveryEngine        = null;
+    private StewardshipOperationalServices     operationalStewardshipServices    = null;
+    private SecuritySyncOperationalServices    operationalSecuritySyncServices   = null;
+    private VirtualizationOperationalServices  operationalVirtualizationServices = null;
 
     /**
      * Default constructor
@@ -94,23 +100,86 @@ public class OMAGOperationalServicesInstance
         this.operationalAccessServiceAdminList = operationalAccessServiceAdminList;
     }
 
+
+    /**
+     * Return the running instance of the discovery engine.
+     *
+     * @return DiscoveryEngineOperationalServices object
+     */
+    public DiscoveryEngineOperationalServices getOperationalDiscoveryEngine()
+    {
+        return operationalDiscoveryEngine;
+    }
+
+
+    /**
+     * Set up the running instance of the discovery engine.
+     *
+     * @param operationalDiscoveryEngine DiscoveryEngineOperationalServices object
+     */
+    public void setOperationalDiscoveryEngine(DiscoveryEngineOperationalServices operationalDiscoveryEngine)
+    {
+        this.operationalDiscoveryEngine = operationalDiscoveryEngine;
+    }
+
+
+    /**
+     * Return the running instance of the stewardship services.
+     *
+     * @return StewardshipOperationalServices object
+     */
+    public StewardshipOperationalServices getOperationalStewardshipServices()
+    {
+        return operationalStewardshipServices;
+    }
+
+
+    /**
+     * Set up running instance of the stewardship services.
+     *
+     * @param operationalStewardshipServices StewardshipOperationalServices object
+     */
+    public void setOperationalStewardshipServices(StewardshipOperationalServices operationalStewardshipServices)
+    {
+        this.operationalStewardshipServices = operationalStewardshipServices;
+    }
+
+
     /**
      * Return the running instance of the Security Sync
      *
      * @return SecuritySyncOperationalServices object
      */
-    public SecuritySyncOperationalServices getSecuritySyncOperationalServices()
+    public SecuritySyncOperationalServices getOperationalSecuritySyncServices()
     {
-        return securitySyncOperationalServices;
+        return operationalSecuritySyncServices;
     }
 
     /**
      * Set up the running instance of the Security Sync
      *
-     * @param securitySyncOperationalServices SecuritySyncOperationalServices object
+     * @param operationalSecuritySyncServices SecuritySyncOperationalServices object
      */
-    public void setSecuritySyncOperationalServices(SecuritySyncOperationalServices securitySyncOperationalServices)
+    public void setOperationalSecuritySyncServices(SecuritySyncOperationalServices operationalSecuritySyncServices)
     {
-        this.securitySyncOperationalServices = securitySyncOperationalServices;
+        this.operationalSecuritySyncServices = operationalSecuritySyncServices;
+    }
+
+    /**
+     * Return the running instance of Virtualizer
+     *
+     * @return VirtualizationOperationalServices object
+     */
+    public VirtualizationOperationalServices getOperationalVirtualizationServices() {
+        return operationalVirtualizationServices;
+    }
+
+    /**
+     * Set up the running instance of Virtualizer
+     *
+     * @param operationalVirtualizationServices VirtualizationOperationalServices object
+     */
+    public void setOperationalVirtualizationServices(VirtualizationOperationalServices operationalVirtualizationServices) {
+        this.operationalVirtualizationServices = operationalVirtualizationServices;
     }
 }
