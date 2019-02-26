@@ -25,8 +25,8 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
     private String openLineageName;
     private String openLineageDescription;
     private String lineageServerURL;
-    private String ALOutTopicName;
-    private Connection ALOutTopicConnection;
+    private String assetLineageOutTopicName;
+    private Connection assetLineageOutTopicConnection;
 
 
     /**
@@ -50,7 +50,8 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
             openLineageName = template.openLineageName;
             openLineageDescription = template.openLineageDescription;
             lineageServerURL = template.lineageServerURL;
-            ALOutTopicConnection = template.ALOutTopicConnection;
+            assetLineageOutTopicName = template.assetLineageOutTopicName;
+            assetLineageOutTopicConnection = template.assetLineageOutTopicConnection;
         }
     }
 
@@ -133,17 +134,17 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
      *
      * @return String Input Topic name
      */
-    public String getALOutTopicName() {
-        return ALOutTopicName;
+    public String getAssetLineageOutTopicName() {
+        return assetLineageOutTopicName;
     }
 
     /**
      * Set up the Open Lineage In Topic Name
      *
-     * @param ALOutTopicName String Open Lineage Name
+     * @param assetLineageOutTopicName String Open Lineage Name
      */
-    public void setALOutTopicName(String ALOutTopicName) {
-        this.ALOutTopicName = ALOutTopicName;
+    public void setAssetLineageOutTopicName(String assetLineageOutTopicName) {
+        this.assetLineageOutTopicName = assetLineageOutTopicName;
     }
 
     /**
@@ -153,17 +154,17 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
      *
      * @return  Connection for In Topic
      */
-    public Connection getALOutTopicConnection() {
-        return ALOutTopicConnection;
+    public Connection getAssetLineageOutTopicConnection() {
+        return assetLineageOutTopicConnection;
     }
 
     /**
      * Set up the OCF Connection for the Out Topic used to pass requests to this Open Lineage.
      *
-     * @param ALOutTopicConnection  Connection for In Topic
+     * @param assetLineageOutTopicConnection  Connection for In Topic
      */
-    public void setALOutTopicConnection(Connection ALOutTopicConnection) {
-        this.ALOutTopicConnection = ALOutTopicConnection;
+    public void setAssetLineageOutTopicConnection(Connection assetLineageOutTopicConnection) {
+        this.assetLineageOutTopicConnection = assetLineageOutTopicConnection;
     }
 
 
@@ -175,8 +176,8 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
                 ", openLineageName='" + openLineageName + '\'' +
                 ", openLineageDescription='" + openLineageDescription + '\'' +
                 ", lineageServerURL='" + lineageServerURL + '\'' +
-                ", ALOutTopicName='" + ALOutTopicName + '\'' +
-                ", ALOutTopicConnection=" + ALOutTopicConnection +
+                ", assetLineageOutTopicName='" + assetLineageOutTopicName + '\'' +
+                ", assetLineageOutTopicConnection=" + assetLineageOutTopicConnection +
                 '}';
     }
 
@@ -199,8 +200,8 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
                 Objects.equals(getOpenLineageName(), that.getOpenLineageName()) &&
                 Objects.equals(getOpenLineageDescription(), that.getOpenLineageDescription()) &&
                 Objects.equals(getLineageServerURL(), that.getLineageServerURL()) &&
-                Objects.equals(getALOutTopicConnection(), that.getALOutTopicConnection()) &&
-                Objects.equals(getALOutTopicName(), that.getALOutTopicName());
+                Objects.equals(getAssetLineageOutTopicConnection(), that.getAssetLineageOutTopicConnection()) &&
+                Objects.equals(getAssetLineageOutTopicName(), that.getAssetLineageOutTopicName());
     }
 
     /**
@@ -211,7 +212,7 @@ public class OpenLineageConfig extends AdminServicesConfigHeader {
     @Override
     public int hashCode() {
         return Objects.hash(getOpenLineageId(), getOpenLineageName(),
-                getOpenLineageDescription(),  getLineageServerURL(), getALOutTopicConnection(),
-                getALOutTopicName());
+                getOpenLineageDescription(),  getLineageServerURL(), getAssetLineageOutTopicConnection(),
+                getAssetLineageOutTopicName());
     }
 }

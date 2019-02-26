@@ -35,7 +35,7 @@ public class OpenLineageOperationalServices {
     private int maxPageSize;
 
     private OMRSAuditLog auditLog;
-    private OpenMetadataTopicConnector ALOutTopicConnector;
+    private OpenMetadataTopicConnector assetLineageOutTopicConnector;
 
 
     /**
@@ -79,15 +79,15 @@ public class OpenLineageOperationalServices {
 
             this.auditLog = auditLog;
 
-            Connection ALOutTopicConnection = openLineageConfig.getALOutTopicConnection();
-            String ALOutTopicName = getTopicName(ALOutTopicConnection);
+            Connection assetLineageOutTopicConnection = openLineageConfig.getAssetLineageOutTopicConnection();
+            String ALOutTopicName = getTopicName(assetLineageOutTopicConnection);
 
-            ALOutTopicConnector = initializeOpenLineageTopicConnector(ALOutTopicConnection);
+            assetLineageOutTopicConnector = initializeOpenLineageTopicConnector(assetLineageOutTopicConnection);
 
-            if (ALOutTopicConnector != null) {
+            if (assetLineageOutTopicConnector != null) {
                 OpenMetadataTopicListener ALOutTopicListener = new ALOutTopicListener(auditLog);
-                this.ALOutTopicConnector.registerListener(ALOutTopicListener);
-                startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, ALOutTopicName, ALOutTopicConnector);
+                this.assetLineageOutTopicConnector.registerListener(ALOutTopicListener);
+                startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, ALOutTopicName, assetLineageOutTopicConnector);
             }
 
             auditCode = OpenLineageAuditCode.SERVICE_INITIALIZED;
