@@ -2,10 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.server.spring;
 
-import org.odpi.openmetadata.accessservices.dataengine.rest.DeployedAPIRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.GUIDResponse;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.*;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRestServices;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -80,5 +77,21 @@ public class DataEngineResource {
                                    @RequestBody PortRequestBody portRequestBody) {
 
         return restAPI.createPort(userId, serverName, portRequestBody);
+    }
+    /**
+     * Add ports to an existing Process entity.
+     *
+     * @param serverName      name of server instance to call
+     * @param userId          the name of the calling user
+     * @param portListRequestBody guid of ports and process
+     *
+     * @return unique identifier of the updated process
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/add-ports-to-process")
+    public GUIDResponse addPortsToProcess(@PathVariable("userId") String userId,
+                                   @PathVariable("serverName") String serverName,
+                                   @RequestBody PortListRequestBody portListRequestBody) {
+
+        return restAPI.addPortsToProcess(userId, serverName, portListRequestBody);
     }
 }

@@ -4,10 +4,7 @@ package org.odpi.openmetadata.accessservices.dataengine.server.service;
 
 import org.odpi.openmetadata.accessservices.dataengine.exception.PropertyServerException;
 import org.odpi.openmetadata.accessservices.dataengine.exception.UserNotAuthorizedException;
-import org.odpi.openmetadata.accessservices.dataengine.rest.DeployedAPIRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.GUIDResponse;
-import org.odpi.openmetadata.accessservices.dataengine.rest.PortRequestBody;
-import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.*;
 import org.odpi.openmetadata.accessservices.dataengine.server.util.DataEngineErrorHandler;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
@@ -35,7 +32,7 @@ public class DataEngineRestServices {
     }
 
     /**
-     * Create the process with input/output relationships
+     * Create the process with ProcessPort relationships
      *
      * @param serverName         name of server instance to call
      * @param userId             the name of the calling user
@@ -63,12 +60,12 @@ public class DataEngineRestServices {
             List<String> zoneMembership = processRequestBody.getZoneMembership();
             String parentProcessGuid = processRequestBody.getParentProcessGuid();
             String displayName = processRequestBody.getDisplayName();
-            String portGuid = processRequestBody.getPortGuid();
+            List<String> ports = processRequestBody.getPorts();
 
             String processGuid = processHandler.createProcess(userId, processName, description, latestChange,
                     zoneMembership, displayName, parentProcessGuid);
 
-            processHandler.addProcessPortRelationship(userId, processGuid, portGuid);
+            processHandler.addProcessPortRelationships(userId, processGuid, ports);
 
             response.setGuid(processGuid);
 
@@ -171,6 +168,46 @@ public class DataEngineRestServices {
                 EntityNotKnownException | FunctionNotSupportedException e) {
             exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
 
+        } catch (UserNotAuthorizedException |
+                PropertyServerException e) {
+            exceptionUtil.captureDataEngineException(response, e);
+        }
+        return response;
+    }
+
+    /**
+     * Creates ProcessPort relationships for an existing Process.
+     *
+     * @param serverName      name of server instance to call
+     * @param userId          the name of the calling user
+     * @param portListRequestBody guids of ports and process
+     *
+     * @return the unique identifier (guid) of the updated process entity
+     */
+    public GUIDResponse addPortsToProcess(String userId, String serverName, PortListRequestBody portListRequestBody) {
+        log.debug("Calling method: " + "adPortsToProcess");
+
+        GUIDResponse response = new GUIDResponse();
+
+        try {
+            ProcessHandler processHandler = new ProcessHandler(instanceHandler.getAccessServiceName(),
+                    instanceHandler.getRepositoryConnector(serverName),
+                    instanceHandler.getMetadataCollection(serverName));
+
+            if (portListRequestBody == null) {
+                return null;
+            }
+
+            String processGuid = portListRequestBody.getProcessGuid();
+            List<String> ports = portListRequestBody.getPorts();
+
+            processHandler.addProcessPortRelationships(userId, processGuid, ports);
+
+            response.setGuid(processGuid);
+        } catch (TypeErrorException | StatusNotSupportedException | InvalidParameterException | PropertyErrorException |
+                RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException |
+                EntityNotKnownException | FunctionNotSupportedException e) {
+            exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
         } catch (UserNotAuthorizedException |
                 PropertyServerException e) {
             exceptionUtil.captureDataEngineException(response, e);
