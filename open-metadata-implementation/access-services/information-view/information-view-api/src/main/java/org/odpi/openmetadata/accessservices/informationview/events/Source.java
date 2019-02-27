@@ -30,7 +30,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = DatabaseColumnSource.class, name = "DatabaseColumnSource"),
         @JsonSubTypes.Type(value = ReportColumnSource.class, name = "ReportColumnSource"),
         @JsonSubTypes.Type(value = ReportSection.class, name = "ReportSection"),
-        @JsonSubTypes.Type(value = ReportSectionSource.class, name = "ReportSectionSource")})
+        @JsonSubTypes.Type(value = ReportSectionSource.class, name = "ReportSectionSource"),
+        @JsonSubTypes.Type(value = DataViewSource.class, name = "DataViewSource"),
+        @JsonSubTypes.Type(value = DataViewColumnSource.class, name = "DataViewColumnSource")})
 @JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "@id")
 @JsonIdentityReference
 public abstract class Source {
