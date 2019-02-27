@@ -36,8 +36,17 @@ spec:
         name: {{ include "myapp.fullname" . }}-egeria
         ports:
         - containerPort: 8080
+        - containerPort: 5005
         resources: {}
         restartPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: {{ include "myapp.fullname" . }}-configmap
+        env:
+          - name: JAVA_DEBUG
+            value: {{ if .Values.debug.egeriaJVM }} true
+                  {{ else }}
+                  {{ end }}
       - image: "{{ .Values.image.egeriainit.repository }}:{{ .Values.image.egeriainit.tag }}"
         name: {{ include "myapp.fullname" . }}-egeriainit
         ImagePullPolicy: "{{ .Values.image.egeriainit.pullPolicy }}"
