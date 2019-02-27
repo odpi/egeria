@@ -60,6 +60,15 @@ igc:
       user: isadmin
       pass: isadmin
 
+# Debug support for Egeria - set to true to enable JVM debug for Egeria images on port 5005
+debug:
+    egeriaJVM: false
+
+# Logging level - affects all spring components by setting LOG_LEVEL_ROOT. Default to no DEBUG - Auditlog only
+logging:
+    level: NONE
+
+
 # The following section defines all of the DOCKER images being used by this
 # chart. Normally they should be left as is, but are exposed here in case the
 # user wishes to extend.
