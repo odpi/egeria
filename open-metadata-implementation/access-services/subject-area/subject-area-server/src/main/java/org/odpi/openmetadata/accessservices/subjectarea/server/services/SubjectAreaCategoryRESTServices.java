@@ -41,8 +41,8 @@ import java.util.Set;
 
 
 /**
- * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectAreaDefinition Open Metadata
- * Assess Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
+ * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
+ * Access Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
  */
 
 public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesInstance
@@ -92,6 +92,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> ClassificationException              Error processing a classification</li>
      * <li> StatusNotSupportedException          A status value is not supported</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
 
@@ -182,6 +183,9 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
         } catch (UnrecognizedGUIDException e)
         {
             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
 
         if (response == null)
@@ -299,8 +303,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
         } catch (UnrecognizedGUIDException e) {
             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
         } catch (FunctionNotSupportedException e) {
-            // this should not occur because we did not specify the asOfTime parameter.
-            // TODO error message and change to an acceptable error
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
 
         if (log.isDebugEnabled()) {
@@ -327,7 +330,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
+
      * </ul>
      */
     public  SubjectAreaOMASAPIResponse findCategory(String serverName, String userId,
@@ -395,14 +398,12 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return the relationships associated with the requested Category guid
      *
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException   Function not supported
-     *
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException one of the parameters is null or invalid.</li>
+     * <li> FunctionNotSupportedException   Function not supported.</li>
+     * </ul>
      */
 
     public  SubjectAreaOMASAPIResponse getCategoryRelationships(String serverName, String userId,String guid,
@@ -460,6 +461,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateCategory(String serverName, String userId, String guid, Category suppliedCategory, boolean isReplace) {
@@ -547,6 +549,9 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
         } catch (UnrecognizedGUIDException e)
         {
             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
 
         if (log.isDebugEnabled()) {
@@ -576,7 +581,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the category was not deleted.</li>
@@ -667,11 +672,13 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * @param suppliedCategoryName non-null category name
      * @param suppliedCategoryParentGuid parent category guid. Do nothing if null.
      * @param errorCode error code to use if there is an existing sibling category with the same name.
+     *
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
+     * @throws FunctionNotSupportedException        Function not supported.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
      * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
+     *
      */
     public void checkSiblingCategoryNames(String userId, String methodName, String suppliedCategoryName, String suppliedCategoryParentGuid, SubjectAreaErrorCode errorCode) throws UserNotAuthorizedException,
             InvalidParameterException,
@@ -726,7 +733,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
