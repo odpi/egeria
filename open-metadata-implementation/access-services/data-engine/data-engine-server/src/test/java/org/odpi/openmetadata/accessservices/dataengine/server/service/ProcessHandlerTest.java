@@ -20,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.testng.collections.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -93,13 +94,13 @@ class ProcessHandlerTest {
     }
 
     @Test
-    void testProcessPortRelationship() throws StatusNotSupportedException, UserNotAuthorizedException,
+    void testAddPortsToProcess() throws StatusNotSupportedException, UserNotAuthorizedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, InvalidParameterException,
             FunctionNotSupportedException, RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
 
         mockSkeletonRelationship("ProcessPort");
 
-        processHandler.addProcessPortRelationship(USER_ID, ENTITY_GUID, PORT_GUID);
+        processHandler.addProcessPortRelationships(USER_ID, ENTITY_GUID, Collections.singletonList(PORT_GUID));
 
         verify(metadataCollection, times(1)).addRelationship(USER_ID, TYPE_DEF_GUID,
                 null, ENTITY_GUID, PORT_GUID, InstanceStatus.ACTIVE);
@@ -109,7 +110,7 @@ class ProcessHandlerTest {
     void testAddInputRelationshipsThrowsUserNotAuthorizedException() {
 
         Throwable thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                processHandler.addProcessPortRelationship(null, ENTITY_GUID, PORT_GUID));
+                processHandler.addProcessPortRelationships(null, ENTITY_GUID, Collections.singletonList(PORT_GUID)));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-400-001"));
     }

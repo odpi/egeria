@@ -2,12 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataengine.rest;
 
+import java.util.List;
 import java.util.Objects;
 
 public class ProcessRequestBody extends AssetRequestBody {
     private String displayName;
     private String parentProcessGuid;
-    private String portGuid;
+    private List<String> ports;
 
     public String getDisplayName() {
         return displayName;
@@ -17,8 +18,8 @@ public class ProcessRequestBody extends AssetRequestBody {
         return parentProcessGuid;
     }
 
-    public String getPortGuid() {
-        return portGuid;
+    public List<String> getPorts() {
+        return ports;
     }
 
     /**
@@ -42,12 +43,12 @@ public class ProcessRequestBody extends AssetRequestBody {
         ProcessRequestBody that = (ProcessRequestBody) o;
         return Objects.equals(displayName, that.displayName) &&
                 Objects.equals(parentProcessGuid, that.parentProcessGuid) &&
-                Objects.equals(portGuid, that.portGuid);
+                Objects.equals(ports, that.ports);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), displayName, parentProcessGuid, portGuid);
+        return Objects.hash(super.hashCode(), displayName, parentProcessGuid, ports);
     }
 }
 

@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.dataengine.rest.DeployedAPIRequestBody;
+import org.odpi.openmetadata.accessservices.dataengine.rest.PortListRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.PortRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.rest.ProcessRequestBody;
 import org.odpi.openmetadata.accessservices.dataengine.server.service.DataEngineRestServices;
@@ -55,5 +56,14 @@ class DataEngineResourceTest {
         dataEngineResource.createDeployedAPI(USER, SERVER_NAME, deployedAPIRequestBody);
 
         verify(dataEngineRestServices, times(1)).createDeployedAPI(USER, SERVER_NAME, deployedAPIRequestBody);
+    }
+
+    @Test
+    void testAddPortsToProcess() {
+        PortListRequestBody portListRequestBody = new PortListRequestBody();
+
+        dataEngineResource.addPortsToProcess(USER, SERVER_NAME, portListRequestBody);
+
+        verify(dataEngineRestServices, times(1)).addPortsToProcess(USER, SERVER_NAME, portListRequestBody);
     }
 }

@@ -10,6 +10,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -95,11 +96,11 @@ class ProcessHandler {
 
 
     /**
-     * Create a ProcessPort relationship between a Process asset and the corresponding Port
+     * Create ProcessPort relationships between a Process asset and the corresponding Ports
      *
      * @param userId      the name of the calling user
      * @param processGuid the unique identifier of the process
-     * @param portGuid     the unique identifier of the port
+     * @param ports       list of port unique identifiers
      *
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws TypeErrorException unknown or invalid type
@@ -112,18 +113,23 @@ class ProcessHandler {
      * @throws EntityNotKnownException the entity instance is not known in the metadata collection
      * @throws FunctionNotSupportedException the repository does not support this call
      */
-    void addProcessPortRelationship(String userId, String processGuid, String portGuid) throws
-                                                                                       UserNotAuthorizedException,
-                                                                                       TypeErrorException,
-                                                                                       StatusNotSupportedException,
-                                                                                       FunctionNotSupportedException,
-                                                                                       org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-                                                                                       EntityNotKnownException,
-                                                                                       InvalidParameterException,
-                                                                                       RepositoryErrorException,
-                                                                                       PropertyErrorException {
+    void addProcessPortRelationships(String userId, String processGuid, List<String> ports) throws
+                                                                                            UserNotAuthorizedException,
+                                                                                            TypeErrorException,
+                                                                                            StatusNotSupportedException,
+                                                                                            FunctionNotSupportedException,
+                                                                                            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+                                                                                            EntityNotKnownException,
+                                                                                            InvalidParameterException,
+                                                                                            RepositoryErrorException,
+                                                                                            PropertyErrorException {
+        if (CollectionUtils.isEmpty(ports)) {
+            return;
+        }
         errorHandler.validateUserId(userId, "addInputRelationship");
 
-        entitiesCreatorHelper.addRelationship(userId, PROCESS_PORT_RELATIONSHIP_TYPE_NAME, processGuid, portGuid);
+        for (String portGuid : ports) {
+            entitiesCreatorHelper.addRelationship(userId, PROCESS_PORT_RELATIONSHIP_TYPE_NAME, processGuid, portGuid);
+        }
     }
 }
