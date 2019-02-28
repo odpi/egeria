@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * TheSubjectAreaTermRESTServices provides the server-side implementation of the SubjectAreaDefinition Open Metadata
+ * TheSubjectAreaTermRESTServices provides the server-side implementation of the SubjectArea Open Metadata
  * Access Service (OMAS) for Terms.  This interface provides relationship authoring interfaces for subject area experts.
  */
 
@@ -54,12 +54,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created TermHASARelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createTermHASARelationship(String serverName, String userId, TermHASARelationship termHASARelationship)
@@ -94,6 +95,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
+
         }
         if (log.isDebugEnabled())
         {
@@ -167,12 +172,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created TermHASARelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateTermHASARelationship(String serverName, String userId, TermHASARelationship termHASARelationship, boolean isReplace)
@@ -234,6 +240,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -254,7 +263,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
@@ -306,6 +315,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (GUIDNotPurgedException e)
         {
             response = OMASExceptionToResponse.convertGUIDNotPurgedException(e);
+            
         }
 
         if (log.isDebugEnabled())
@@ -327,9 +337,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -369,7 +379,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (GUIDNotDeletedException e)
         {
             response = OMASExceptionToResponse.convertGUIDNotDeletedException(e);
-        }
+        } 
 
         if (log.isDebugEnabled())
         {
@@ -388,12 +398,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created Related Term relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createRelatedTerm(String serverName, String userId, RelatedTerm relatedTermRelationship)
@@ -431,6 +442,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -502,12 +516,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created RelatedTerm
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateRelatedTerm(String serverName, String userId, RelatedTerm relatedTermRelationship, boolean isReplace)
@@ -573,6 +588,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
+
         }
 
         if (log.isDebugEnabled())
@@ -594,9 +613,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -668,9 +687,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -729,12 +748,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created synonym relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function is not supported.                 
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createSynonym(String serverName, String userId, Synonym synonym)
@@ -771,6 +791,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -842,12 +865,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created SynonymRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> FunctionNotSupportedException        Function is not supported.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateSynonymRelationship(String serverName, String userId, Synonym termCategorizationRelationship, boolean isReplace)
@@ -912,6 +936,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -932,9 +959,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function is not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1006,9 +1033,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function is not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1065,12 +1092,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created antonymRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function is not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createAntonym(String serverName, String userId, Antonym antonymRelationship)
@@ -1105,6 +1133,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -1176,12 +1207,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created AntonymRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function is not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateAntonymRelationship(String serverName, String userId, Antonym antonymRelationship, boolean isReplace)
@@ -1246,6 +1278,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -1266,9 +1301,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function is not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1334,7 +1369,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-    * @param guid       guid of the relationship to restore
+     * @param guid       guid of the relationship to restore
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -1342,8 +1377,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
+     * <li> FunctionNotSupportedException        Function is not supported.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
@@ -1399,12 +1435,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created translationRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function is not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createTranslation(String serverName, String userId, Translation translationRelationship)
@@ -1443,6 +1480,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -1514,12 +1554,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created TranslationRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function is not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateTranslationRelationship(String serverName, String userId, Translation translationRelationship, boolean isReplace)
@@ -1584,6 +1625,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -1604,9 +1648,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function is not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1677,9 +1721,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -1737,12 +1781,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created usedInContextRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function is not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createUsedInContext(String serverName, String userId, UsedInContext usedInContextRelationship)
@@ -1780,6 +1825,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -1852,12 +1900,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created UsedInContextRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateUsedInContextRelationship(String serverName, String userId, UsedInContext usedInContextRelationship, boolean isReplace)
@@ -1923,6 +1971,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -1943,9 +1994,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -2016,9 +2067,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -2076,12 +2127,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created preferredTermRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createPreferredTerm(String serverName, String userId, PreferredTerm preferredTermRelationship)
@@ -2120,6 +2172,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -2192,13 +2247,14 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created PreferredTermRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
      * <li> FunctionNotSupportedException        Function not supported
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updatePreferredTermRelationship(String serverName, String userId, PreferredTerm preferredTermRelationship, boolean isReplace)
@@ -2263,6 +2319,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -2283,9 +2342,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -2331,7 +2390,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (RelationshipNotDeletedException e)
         {
             response = OMASExceptionToResponse.convertRelationshipNotDeletedException(e);
-       } catch (FunctionNotSupportedException e)
+        } catch (FunctionNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         } catch (GUIDNotPurgedException e)
@@ -2350,15 +2409,15 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-    * @param guid       guid of the relationship to restore
+     * @param guid       guid of the relationship to restore
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -2416,12 +2475,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created validValueRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createValidValue(String serverName, String userId, ValidValue validValueRelationship)
@@ -2459,6 +2519,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
 
         if (log.isDebugEnabled())
@@ -2531,12 +2594,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created ValidValueRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateValidValueRelationship(String serverName, String userId, ValidValue validValueRelationship, boolean isReplace)
@@ -2602,6 +2666,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -2622,9 +2689,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -2695,9 +2762,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -2755,12 +2822,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created replacementTermRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createReplacementTerm(String serverName, String userId, ReplacementTerm replacementTermRelationship)
@@ -2798,6 +2866,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
 
         if (log.isDebugEnabled())
@@ -2867,15 +2938,16 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId                      userId under which the request is performed
      * @param replacementTermRelationship the ReplacementTerm relationship
      * @param isReplace                   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created ReplacementTermRelationship
+     * @return response, when successful contains the updated ReplacementTermRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateReplacementTermRelationship(String serverName, String userId, ReplacementTerm replacementTermRelationship, boolean isReplace)
@@ -2941,6 +3013,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -2961,9 +3036,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -3028,7 +3103,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-    * @param guid       guid of the relationship to restore
+     * @param guid       guid of the relationship to restore
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
@@ -3036,9 +3111,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreReplacementTerm(String serverName, String userId, String guid)
@@ -3094,12 +3170,12 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created termTYPEDBYRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createTermTYPEDBYRelationship(String serverName, String userId, TermTYPEDBYRelationship termTYPEDBYRelationship)
@@ -3135,6 +3211,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -3203,15 +3282,16 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId                              userId under which the request is performed
      * @param termTYPEDBYRelationshipRelationship the TermTYPEDBYRelationship relationship
      * @param isReplace                           flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created TermTYPEDBYRelationshipRelationship
+     * @return response, when successful contains the updated TermTYPEDBYRelationshipRelationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
-     * <li> ClassificationException              Error processing a classification</li>
-     * <li> StatusNotSupportedException          A status value is not supported</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateTermTYPEDBYRelationship(String serverName, String userId, TermTYPEDBYRelationship termTYPEDBYRelationshipRelationship, boolean isReplace)
@@ -3274,6 +3354,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -3294,9 +3377,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -3361,15 +3444,15 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-    * @param guid       guid of the relationship to restore
+     * @param guid       guid of the relationship to restore
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -3427,12 +3510,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created iSARelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createISARelationship(String serverName, String userId, ISARelationship iSARelationship)
@@ -3470,6 +3554,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -3538,15 +3625,16 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId                      userId under which the request is performed
      * @param iSARelationshipRelationship the ISARelationship relationship
      * @param isReplace                   flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created ISARelationshipRelationship
+     * @return response, when successful contains the updated ISARelationshipRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateISARelationship(String serverName, String userId, ISARelationship iSARelationshipRelationship, boolean isReplace)
@@ -3612,6 +3700,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -3632,9 +3723,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -3705,9 +3796,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -3765,12 +3856,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created termISATypeOFRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createTermISATypeOFRelationship(String serverName, String userId, TermISATypeOFRelationship termISATypeOFRelationship)
@@ -3808,6 +3900,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -3876,15 +3971,16 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId                                userId under which the request is performed
      * @param termISATypeOFRelationshipRelationship the TermISATypeOFRelationship relationship
      * @param isReplace                             flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created TermISATypeOFRelationshipRelationship
+     * @return response, when successful contains the updated TermISATypeOFRelationshipRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateTermISATypeOFRelationship(String serverName, String userId, TermISATypeOFRelationship termISATypeOFRelationshipRelationship, boolean isReplace)
@@ -3946,6 +4042,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -3968,7 +4067,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -4033,15 +4132,15 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * Restore allows the deleted relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-    * @param guid       guid of the relationship to restore
+     * @param guid       guid of the relationship to restore
      * @return response which when successful contains the restored relationship
      * when not successful the following Exception responses can occur
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -4100,12 +4199,13 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @return response, when successful contains the created termCategorizationRelationship relationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createTermCategorization(String serverName, String userId, TermCategorizationRelationship  termCategorizationRelationship)
@@ -4142,6 +4242,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -4208,15 +4311,16 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * @param userId               userId under which the request is performed
      * @param termCategorizationRelationship   the is-a-type-of relationship
      * @param isReplace    flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @return response, when successful contains the created ISARelationshipRelationship
+     * @return response, when successful contains the updated ISARelationshipRelationship
      * when not successful the following Exception responses can occur
      * <ul>
-     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     * <li> InvalidParameterException            one of the parameters is null or invalid.
-     * <li> UnrecognizedGUIDException            the supplied guid was not recognised
-     * <li> ClassificationException              Error processing a classification
-     * <li> StatusNotSupportedException          A status value is not supported
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(String serverName,String userId,TermCategorizationRelationship termCategorizationRelationship, Boolean isReplace) {
@@ -4268,6 +4372,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
         } catch (StatusNotSupportedException e)
         {
             response = OMASExceptionToResponse.convertStatusNotSupportedException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -4289,9 +4396,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
@@ -4351,7 +4458,7 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li> 
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreTermCategorizationRelationship( String serverName,  String userId, String guid)
