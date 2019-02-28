@@ -29,11 +29,11 @@ ENV		 dadir			 /opt/${build}-admin
 
 # Note - assumes maven-3 versions only
 ARG		 mavenver		 
-ENV		 mavenver		 ${mavenver:-3.5.4}
+ENV		 mavenver		 ${mavenver:-3.6.0}
 ARG		 dockerizever		 
 ENV		 dockerizever		 ${dockerizever:-0.6.1}
 ARG		 solrver		 
-ENV		 solrver		 ${solrver:-7.5.0}
+ENV		 solrver		 ${solrver:-7.7.0}
 
 # Let's start with some core packages we need
 RUN apt-get update && apt-get install -y wget libmysql-java python openjdk-8-jdk maven git iputils-ping net-tools vim lsof apt-utils build-essential lsb-core lsb-release
