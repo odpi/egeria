@@ -8,11 +8,11 @@ RUN mkdir -p /home/node/monitor/node_modules && chown -R node:node /home/node/mo
 
 WORKDIR /home/node/monitor
 
-COPY package*.json ./
+COPY dist/package*.json ./
 
 RUN npm install
 
-COPY . .
+COPY dist/* ./
 
 COPY --chown=node:node . .
 
