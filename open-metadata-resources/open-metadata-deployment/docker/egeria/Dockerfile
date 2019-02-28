@@ -42,11 +42,10 @@ RUN if [ ! -z "$pr" ] ; then git pr $pr ; fi
 
 RUN mvn clean install -DskipTests
 
-# Launch the omag server in it's built & packaged location
-WORKDIR /root/egeria/open-metadata-distribution/open-metadata-assemblies/target/egeria-1.1-SNAPSHOT-omag-server/servers/omag-server-1.1-SNAPSHOT
-
 # Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug
-EXPOSE 8080,5005
-ENV JAVA_TOOL_OPTIONS=${JAVA_DEBUG:+"-agentlib:jdwp=transport=dt_socket,address=*:5005,server=y,suspend=n"}
-# The container will run the server chassis on startup -
-CMD ["/bin/bash", "-c", "java -jar server-chassis-spring-1.1-SNAPSHOT.jar"]
+EXPOSE 5005
+EXPOSE 8080
+
+COPY dist/docker-entrypoint.sh /root
+CMD java -jar /root/egeria/open-metadata-distribution/open-metadata-assemblies/target/egeria-1.1-SNAPSHOT-omag-server/servers/omag-server-1.1-SNAPSHOT/server-chassis-spring-1.1-SNAPSHOT.jar
+ENTRYPOINT ["/root/docker-entrypoint.sh"]
