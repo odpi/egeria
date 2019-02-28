@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.informationview.contentmanager;
+package org.odpi.openmetadata.accessservices.informationview.reports;
 
 
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityWrapper;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
@@ -13,21 +15,9 @@ import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -42,15 +32,22 @@ public class ReportUpdater extends ReportBasicOperation {
 
     private static final Logger log = LoggerFactory.getLogger(ReportUpdater.class);
 
-    public ReportUpdater(EntitiesCreatorHelper entitiesCreatorHelper, LookupHelper lookupHelper, OMRSAuditLog auditLog) {
-        super(entitiesCreatorHelper, lookupHelper, auditLog);
+
+    public ReportUpdater(OMEntityDao omEntityDao, LookupHelper lookupHelper, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
+        super(omEntityDao, lookupHelper, helper, auditLog);
     }
 
+    /**
+     *
+     * @param payload  - object describing the report
+     * @param reportEntity - entity describing the report
+     * @throws Exception
+     */
     public void updateReport(ReportRequestBody payload, EntityDetail reportEntity) throws Exception {
         String qualifiedNameForComplexSchemaType = EntityPropertiesUtils.getStringValueForProperty(reportEntity.getProperties(), Constants.QUALIFIED_NAME) + Constants.TYPE_SUFFIX;
 
-        List<Relationship> relationships = entitiesCreatorHelper.getRelationships(Constants.ASSET_SCHEMA_TYPE, reportEntity.getGUID());
-        //ASSET Schema type relationship can have 1 at max for report
+        List<Relationship> relationships = omEntityDao.getRelationships(Constants.ASSET_SCHEMA_TYPE, reportEntity.getGUID());
+        //ASSET Schema type relationship can have 1 at max for reports
         Relationship schemaTypeRelationship = relationships != null && !relationships.isEmpty() ? relationships.get(0) : null;
         InstanceProperties complexSchemaTypeProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
@@ -64,7 +61,7 @@ public class ReportUpdater extends ReportBasicOperation {
             if (EntityPropertiesUtils.matchExactlyInstanceProperties(proxyProperties, complexSchemaTypeProperties)) {
                 log.info("Entity {} already exists", qualifiedNameForComplexSchemaType);
             } else {
-                entitiesCreatorHelper.purgeEntity(schemaTypeRelationship.getEntityTwoProxy());
+                omEntityDao.purgeEntity(schemaTypeRelationship.getEntityTwoProxy());
                 schemaTypeEntity = addReportSchemaType(reportEntity, qualifiedNameForComplexSchemaType, complexSchemaTypeProperties);
                 schemaTypeGuid = schemaTypeEntity.getGUID();
             }
@@ -78,24 +75,37 @@ public class ReportUpdater extends ReportBasicOperation {
 
     }
 
+    /**
+     *
+     * @param qualifiedNameForParent - qualified name of the parent element
+     * @param parentGuid - guid of the parent element
+     * @param reportElements - elements describing the report
+     * @throws Exception
+     */
     private void createOrUpdateElements(String qualifiedNameForParent, String parentGuid, List<ReportElement> reportElements) throws Exception {
-        List<Relationship> relationships = entitiesCreatorHelper.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
+        List<Relationship> relationships = omEntityDao.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
         List<EntityDetail> matchingEntities = filterMatchingEntities(relationships, reportElements);
         if (reportElements != null && !reportElements.isEmpty()) {
             reportElements.forEach(e -> createOrUpdateReportElement(qualifiedNameForParent, parentGuid, matchingEntities, e));
         }
     }
 
-
+    /**
+     *
+     * @param relationships - list of existing relationships linking to report elements
+     * @param reportElements - list of report elements
+     * @return - list of entities matching the report elements
+     * @throws Exception
+     */
     private List<EntityDetail> filterMatchingEntities(List<Relationship> relationships, List<ReportElement> reportElements) throws Exception {
         List<EntityDetail> matchingEntities = new ArrayList<>();
         if (relationships != null && !relationships.isEmpty()) {
             for (Relationship relationship : relationships) {
                 String entity2Guid = relationship.getEntityTwoProxy().getGUID();
-                EntityDetail entity = entitiesCreatorHelper.getEntityByGuid(entity2Guid);
+                EntityDetail entity = omEntityDao.getEntityByGuid(entity2Guid);
                 if (isReportElementDeleted(reportElements, entity.getProperties())) {
-                    entitiesCreatorHelper.purgeRelationship(relationship);
-                    entitiesCreatorHelper.purgeEntity(relationship.getEntityTwoProxy());//TODO purge also type entity
+                    omEntityDao.purgeRelationship(relationship);
+                    deleteSection(entity);
                 } else {
                     matchingEntities.add(entity);
                 }
@@ -104,12 +114,54 @@ public class ReportUpdater extends ReportBasicOperation {
         return matchingEntities;
     }
 
+    /**
+     *
+     * @param entity - entity describing the section that no longer exists
+     * @throws RepositoryErrorException
+     * @throws UserNotAuthorizedException
+     * @throws InvalidParameterException
+     * @throws RelationshipNotDeletedException
+     * @throws RelationshipNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws EntityNotKnownException
+     * @throws EntityNotDeletedException
+     */
+    private void deleteSection(EntitySummary entity) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, RelationshipNotDeletedException, RelationshipNotKnownException, FunctionNotSupportedException, EntityNotKnownException, EntityNotDeletedException {
+
+        List<Relationship> typeRelationships = omEntityDao.getRelationships(Constants.COMPLEX_SCHEMA_TYPE, entity.getGUID());
+         if(typeRelationships != null && !typeRelationships.isEmpty()){
+             EntityProxy typeProxy = typeRelationships.get(0).getEntityOneProxy();
+                 List<Relationship> childrenRelationships = omEntityDao.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, typeProxy.getGUID());
+                 if(childrenRelationships != null && !childrenRelationships.isEmpty()){
+                     for(Relationship relationship : childrenRelationships)
+                     deleteSection(relationship.getEntityTwoProxy());
+                 }
+                 omEntityDao.purgeEntity(typeProxy);
+         }
+        omEntityDao.purgeEntity(entity);
+
+
+    }
+
+    /**
+     *
+     * @param reportElements - list of defined report elements
+     * @param properties - properties of the report element to be checked
+     * @return
+     */
     private boolean isReportElementDeleted(List<ReportElement> reportElements, InstanceProperties properties) {
         String elementName = EntityPropertiesUtils.getStringValueForProperty(properties, Constants.NAME);
         return reportElements != null && !reportElements.isEmpty() && reportElements.stream().noneMatch((e -> e.getName().equals(elementName)));
     }
 
 
+    /**
+     *
+     * @param qualifiedNameForParent qualified name for the parent
+     * @param parentGuid guid of the report element
+     * @param existingElements entities already defined
+     * @param element element in the report
+     */
     private void createOrUpdateReportElement(String qualifiedNameForParent, String parentGuid, List<EntityDetail> existingElements, ReportElement element) {
         try {
             if (element instanceof ReportSection) {
@@ -118,20 +170,27 @@ public class ReportUpdater extends ReportBasicOperation {
                 createOrUpdateReportColumn(qualifiedNameForParent, parentGuid, (ReportColumn) element, existingElements);
             }
         } catch (Exception e) {
-            log.error("Exception creating report element", e);
             throw new RuntimeException(e);//TODO throw specific exception
         }
     }
 
 
+    /**
+     *
+     * @param qualifiedNameForParent qualified name for the parent
+     * @param parentGuid guid of the report element
+     * @param reportSection section in the report
+     * @param existingElements entities already defined
+     * @throws Exception
+     */
     private void createOrUpdateReportSection(String qualifiedNameForParent, String parentGuid, ReportSection reportSection, List<EntityDetail> existingElements) throws Exception {
 
-        EntityDetail matchingSection = findMatchingEntityForSection(reportSection, existingElements);
+        EntityDetail matchingSection = findMatchingEntityForElements(reportSection, existingElements);
         if (matchingSection != null) {
             List<Relationship> sectionTypeRelationships;
             String sectionTypeGuid;
             String qualifiedNameForSection = EntityPropertiesUtils.getStringValueForProperty(matchingSection.getProperties(), Constants.QUALIFIED_NAME);
-            sectionTypeRelationships = entitiesCreatorHelper.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, matchingSection.getGUID());
+            sectionTypeRelationships = omEntityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, matchingSection.getGUID());
             if (sectionTypeRelationships == null || sectionTypeRelationships.isEmpty()) {
                 EntityDetail schemaType = addSchemaType(qualifiedNameForSection, matchingSection, Constants.DOCUMENT_SCHEMA_TYPE);
                 sectionTypeGuid = schemaType.getGUID();
@@ -141,16 +200,22 @@ public class ReportUpdater extends ReportBasicOperation {
             createOrUpdateElements(qualifiedNameForSection, sectionTypeGuid, reportSection.getElements());
         } else {
             EntityDetail sectionTypeEntity = addSectionAndSectionType(qualifiedNameForParent, parentGuid, reportSection);
-            String qualifiedNameForSection = qualifiedNameForParent + "." + reportSection.getName();
+            String qualifiedNameForSection = qualifiedNameForParent + SEPARATOR + reportSection.getName();
             createOrUpdateElements(qualifiedNameForSection, sectionTypeEntity.getGUID(), reportSection.getElements());
         }
     }
 
 
-    private EntityDetail findMatchingEntityForSection(ReportSection reportSection, List<EntityDetail> existingElements) {
-        List<EntityDetail> matchingSections = existingElements.stream().filter(e -> EntityPropertiesUtils.getStringValueForProperty(e.getProperties(), Constants.NAME).contains(reportSection.getName())).collect(Collectors.toList());
-        if (matchingSections != null && !matchingSections.isEmpty()) {
-            return matchingSections.get(0);
+    /**
+     *
+     * @param reportElement
+     * @param existingElements
+     * @return
+     */
+    private EntityDetail findMatchingEntityForElements(ReportElement reportElement, List<EntityDetail> existingElements) {
+        List<EntityDetail> matchingElements = existingElements.stream().filter(e -> EntityPropertiesUtils.getStringValueForProperty(e.getProperties(), Constants.NAME).contains(reportElement.getName())).collect(Collectors.toList());
+        if (matchingElements != null && !matchingElements.isEmpty()) {
+            return matchingElements.get(0);
         }
         return null;
     }
@@ -158,7 +223,7 @@ public class ReportUpdater extends ReportBasicOperation {
 
     private void createOrUpdateReportColumn(String parentQualifiedName, String parentGuid, ReportColumn reportColumn, List<EntityDetail> existingElements) throws Exception {
 
-        EntityDetail matchingColumn = findMatchingColumn(reportColumn, existingElements);
+        EntityDetail matchingColumn = findMatchingEntityForElements(reportColumn, existingElements);
         List<Relationship> columnType;
         if (matchingColumn != null) {
             String qualifiedNameForColumn = EntityPropertiesUtils.getStringValueForProperty(matchingColumn.getProperties(), Constants.QUALIFIED_NAME);
@@ -169,11 +234,11 @@ public class ReportUpdater extends ReportBasicOperation {
                     .withStringProperty(Constants.FORMULA, reportColumn.getFormula())
                     .build();
 
-            EntityDetailWrapper wrapper = entitiesCreatorHelper.createOrUpdateEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedNameForColumn, columnProperties, null, true);
+            OMEntityWrapper wrapper = omEntityDao.createOrUpdateEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedNameForColumn, columnProperties, null, true);
             createOrUpdateSemanticAssignment(reportColumn, wrapper.getEntityDetail().getGUID());
             createOrUpdateSchemaQueryImplementation(reportColumn, wrapper.getEntityDetail().getGUID());
 
-            columnType = entitiesCreatorHelper.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, matchingColumn.getGUID());
+            columnType = omEntityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, matchingColumn.getGUID());
             if (columnType == null || columnType.isEmpty()) {
                 addSchemaType(qualifiedNameForColumn, wrapper.getEntityDetail(), Constants.SCHEMA_TYPE);
             }
@@ -185,15 +250,15 @@ public class ReportUpdater extends ReportBasicOperation {
 
     private void createOrUpdateSchemaQueryImplementation(ReportColumn reportColumn, String columnGuid) throws Exception {
 
-        List<Relationship> relationships = entitiesCreatorHelper.getRelationships(Constants.SCHEMA_QUERY_IMPLEMENTATION, columnGuid);
+        List<Relationship> relationships = omEntityDao.getRelationships(Constants.SCHEMA_QUERY_IMPLEMENTATION, columnGuid);
         List<String> relationshipsToRemove = new ArrayList<>();
         if (relationships != null && !relationships.isEmpty()) {
             relationshipsToRemove = relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
         }
         for (Source source : reportColumn.getSources()) {
-            String sourceColumnGuid = getSourceGuid(source);
+            String sourceColumnGuid = entityReferenceResolver.getSourceGuid(source);
             if (!StringUtils.isEmpty(sourceColumnGuid)) {
-                log.info("source {} for report column {} found.", source, reportColumn.getName());
+                log.info("source {} for reports column {} found.", source, reportColumn.getName());
                 if (relationshipsToRemove != null && relationshipsToRemove.contains(sourceColumnGuid)) {
                     log.info("Relationship already exists and is valid");
                     relationshipsToRemove.remove(sourceColumnGuid);
@@ -201,7 +266,7 @@ public class ReportUpdater extends ReportBasicOperation {
                     InstanceProperties schemaQueryImplProperties = new EntityPropertiesBuilder()
                             .withStringProperty(Constants.QUERY, "")
                             .build();
-                    entitiesCreatorHelper.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
+                    omEntityDao.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
                             columnGuid,
                             sourceColumnGuid,
                             Constants.INFORMATION_VIEW_OMAS_NAME,
@@ -214,19 +279,30 @@ public class ReportUpdater extends ReportBasicOperation {
             if (relationships != null && !relationships.isEmpty() && relationshipsToRemove != null && !relationshipsToRemove.isEmpty()) {
                 for (Relationship relationship : relationships) {
                     if (relationshipsToRemove.contains(relationship.getGUID())) {
-                        entitiesCreatorHelper.purgeRelationship(relationship);
+                        omEntityDao.purgeRelationship(relationship);
                     }
                 }
             }
         }
     }
 
-    private void createOrUpdateSemanticAssignment(ReportColumn reportColumn, String columnGuid) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, RelationshipNotKnownException, RelationshipNotDeletedException, StatusNotSupportedException, TypeDefNotKnownException {
-        List<Relationship> existingAssignments = entitiesCreatorHelper.getRelationships(Constants.SEMANTIC_ASSIGNMENT, columnGuid);
+    private void createOrUpdateSemanticAssignment(ReportColumn reportColumn, String columnGuid) throws UserNotAuthorizedException,
+                                                                                                       EntityNotKnownException,
+                                                                                                       FunctionNotSupportedException,
+                                                                                                       InvalidParameterException,
+                                                                                                       RepositoryErrorException,
+                                                                                                       PropertyErrorException,
+                                                                                                       TypeErrorException,
+                                                                                                       PagingErrorException,
+                                                                                                       RelationshipNotKnownException,
+                                                                                                       RelationshipNotDeletedException,
+                                                                                                       StatusNotSupportedException,
+                                                                                                       TypeDefNotKnownException {
+        List<Relationship> existingAssignments = omEntityDao.getRelationships(Constants.SEMANTIC_ASSIGNMENT, columnGuid);
         if (reportColumn.getBusinessTerm() == null) {
             deleteRelationships(existingAssignments);
         } else {
-            String businessTermAssignedToColumnGuid = findAssignedBusinessTermGuid(reportColumn);
+            String businessTermAssignedToColumnGuid = entityReferenceResolver.getBusinessTermGuid(reportColumn.getBusinessTerm());
             List<Relationship> matchingRelationship = new ArrayList<>();
             if (existingAssignments != null && !existingAssignments.isEmpty()) {
                 matchingRelationship = existingAssignments.stream().filter(e -> e.getEntityTwoProxy().getGUID().equals(businessTermAssignedToColumnGuid)).collect(Collectors.toList());
@@ -234,22 +310,14 @@ public class ReportUpdater extends ReportBasicOperation {
             }
 
             if ((matchingRelationship == null || matchingRelationship.isEmpty()) && !StringUtils.isEmpty(businessTermAssignedToColumnGuid)) {
-                entitiesCreatorHelper.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
-                        columnGuid,
-                        businessTermAssignedToColumnGuid,
-                        Constants.INFORMATION_VIEW_OMAS_NAME,
-                        new InstanceProperties());
+                omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
+                                            columnGuid,
+                                            businessTermAssignedToColumnGuid,
+                                            Constants.INFORMATION_VIEW_OMAS_NAME,
+                                            new InstanceProperties());
             }
         }
     }
 
-
-    private EntityDetail findMatchingColumn(ReportColumn reportColumn, List<EntityDetail> existingElements) {
-        List<EntityDetail> matchingColumns = existingElements.stream().filter(e -> EntityPropertiesUtils.getStringValueForProperty(e.getProperties(), Constants.NAME).contains(reportColumn.getName())).collect(Collectors.toList());
-        if (matchingColumns != null && !matchingColumns.isEmpty()) {
-            return matchingColumns.get(0);
-        }
-        return null;
-    }
 
 }

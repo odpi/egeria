@@ -41,14 +41,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class EntitiesCreatorHelper {
+public class OMEntityDao {
 
-    private static final Logger log = LoggerFactory.getLogger(EntitiesCreatorHelper.class);
-    private static final Integer PAGE_SIZE = 0;
-    private OMRSRepositoryConnector enterpriseConnector;
-    private OMRSAuditLog auditLog;
+    private static final Logger log = LoggerFactory.getLogger(OMEntityDao.class);
+    private static final Integer PAGE_SIZE = 100;
+    private final OMRSRepositoryConnector enterpriseConnector;
+    private final OMRSAuditLog auditLog;
 
-    public EntitiesCreatorHelper(OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog) {
+    public OMEntityDao(OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog) {
         this.enterpriseConnector = enterpriseConnector;
         this.auditLog = auditLog;
     }
@@ -168,38 +168,55 @@ public class EntitiesCreatorHelper {
      * @param qualifiedName qualified name property of the entity to be retrieved
      * @return the existing entity with the given qualified name or null if it doesn't exist
      */
-    public EntityDetail getEntity(String typeName, String qualifiedName)  {
+    public EntityDetail getEntity(String typeName, String qualifiedName) throws PagingErrorException,
+                                                                                UserNotAuthorizedException,
+                                                                                FunctionNotSupportedException,
+                                                                                InvalidParameterException,
+                                                                                RepositoryErrorException,
+                                                                                PropertyErrorException,
+                                                                                TypeErrorException {
         InstanceProperties matchProperties = buildMatchingInstanceProperties(Constants.QUALIFIED_NAME, qualifiedName);
+        List<EntityDetail> existingEntities;
+        existingEntities = findEntities(matchProperties, typeName);
+        return checkEntities(existingEntities, qualifiedName);
+    }
+
+    public List<EntityDetail> findEntities(InstanceProperties matchProperties, String typeName) throws
+                                                                                                PagingErrorException,
+                                                                                                UserNotAuthorizedException,
+                                                                                                FunctionNotSupportedException,
+                                                                                                InvalidParameterException,
+                                                                                                RepositoryErrorException,
+                                                                                                PropertyErrorException,
+                                                                                                TypeErrorException {
         TypeDef typeDef = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.USER_ID, typeName);
         List<EntityDetail> existingEntities;
         try {
-            existingEntities = enterpriseConnector.getMetadataCollection()
-                    .findEntitiesByProperty(Constants.USER_ID,
-                            typeDef.getGUID(),
-                            matchProperties,
-                            MatchCriteria.ALL,
-                            0,
-                            Collections.singletonList(InstanceStatus.ACTIVE),
-                            null,
-                            null,
-                            null,
-                            SequencingOrder.ANY,
-                            PAGE_SIZE);
-            return checkEntities(existingEntities, qualifiedName);
-        } catch (Exception e) {
+            existingEntities = enterpriseConnector.getMetadataCollection().findEntitiesByProperty(Constants.USER_ID,
+                                                                                                    typeDef.getGUID(),
+                                                                                                    matchProperties,
+                                                                                                    MatchCriteria.ALL,
+                                                                                                    0,
+                                                                                                    Collections.singletonList(InstanceStatus.ACTIVE),
+                                                                                                    null,
+                                                                                                    null,
+                                                                                                    null,
+                                                                                                    SequencingOrder.ANY,
+                                                                                                    PAGE_SIZE);
+        } catch (InvalidParameterException | PropertyErrorException | TypeErrorException | FunctionNotSupportedException | UserNotAuthorizedException | RepositoryErrorException e) {
             InformationViewErrorCode auditCode = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
             auditLog.logException("getEntity",
                     auditCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage("qualifiedName: " + qualifiedName, e.getMessage()),
-                    "entity with properties{" + matchProperties + "}",
+                    auditCode.getFormattedErrorMessage("matchProperties: " + matchProperties, e.getMessage()),
+                    "entity with properties {" + matchProperties + "}",
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
                     e);
 
-            return null;
+            throw e;
         }
-
+        return existingEntities;
     }
 
 
@@ -349,7 +366,7 @@ public class EntitiesCreatorHelper {
                                   InstanceProperties properties,
                                   List<Classification> classifications) throws InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeErrorException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException {
 
-        EntityDetailWrapper wrapper = createOrUpdateEntity(typeName,
+        OMEntityWrapper wrapper = createOrUpdateEntity(typeName,
                 qualifiedName,
                 properties,
                 classifications,
@@ -357,27 +374,31 @@ public class EntitiesCreatorHelper {
         return wrapper != null ? wrapper.getEntityDetail() : null;
     }
 
-    public EntityDetailWrapper createOrUpdateEntity(String typeName,
-                                                    String qualifiedName,
-                                                    InstanceProperties properties,
-                                                    List<Classification> classifications,
-                                                    boolean update) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, ClassificationErrorException, StatusNotSupportedException, EntityNotKnownException {
+    public OMEntityWrapper createOrUpdateEntity(String typeName,
+                                                String qualifiedName,
+                                                InstanceProperties properties,
+                                                List<Classification> classifications,
+                                                boolean update) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, ClassificationErrorException, StatusNotSupportedException, EntityNotKnownException {
         EntityDetail entityDetail;
-        EntityDetailWrapper wrapper;
+        OMEntityWrapper wrapper;
         entityDetail = getEntity(typeName, qualifiedName);
         if (entityDetail == null) {
             entityDetail = addEntity("", Constants.USER_ID, typeName, properties, classifications, Constants.INFORMATION_VIEW_OMAS_NAME);
             log.info("Entity with qualified name {} added", qualifiedName);
-            log.info("Entity: {}", entityDetail);
-            wrapper = new EntityDetailWrapper(entityDetail, EntityDetailWrapper.EntityStatus.NEW);
+            log.debug("Entity: {}", entityDetail);
+            wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.NEW);
         } else {
             log.info("Entity with qualified name {} already exists", qualifiedName);
-            log.info("Entity: {}", entityDetail);
+            log.debug("Entity: {}", entityDetail);
             if (update && !EntityPropertiesUtils.matchExactlyInstanceProperties(entityDetail.getProperties(), properties)) {//TODO should add validation
                 log.info("Updating entity with qualified name {} ", qualifiedName);
                 entityDetail = updateEntity(entityDetail, Constants.USER_ID, properties);
+                wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.UPDATED);
             }
-            wrapper = new EntityDetailWrapper(entityDetail, EntityDetailWrapper.EntityStatus.UPDATED);
+            else{
+                wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.EXISTING);
+            }
+
         }
 
         return wrapper;
@@ -420,10 +441,10 @@ public class EntitiesCreatorHelper {
         if (relationship == null) {
             relationship = addRelationship("", relationshipType, properties, guid1, guid2);
             log.info("Relationship {} added between: {} and {}", relationshipType, guid1, guid2);
-            log.info("Relationship: {}", relationship);
+            log.debug("Relationship: {}", relationship);
         } else {
             log.info("Relationship {} already exists between: {} and {}", relationshipType, guid1, guid2);
-            log.info("Relationship: {}", relationship);
+            log.debug("Relationship: {}", relationship);
         }
 
         return relationship;
