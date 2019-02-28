@@ -146,6 +146,7 @@ public interface SubjectAreaGlossary
      *
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException         Function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -155,6 +156,7 @@ public interface SubjectAreaGlossary
                                                                                                               UnexpectedResponseException,
                                                                                                               UserNotAuthorizedException,
                                                                                                               InvalidParameterException,
+                                                                                                              FunctionNotSupportedException,
                                                                                                               MetadataServerUncontactableException ;
     /**
      * Update a Glossary. This means to update the glossary with any non-null attributes from the supplied glossary.
@@ -173,6 +175,7 @@ public interface SubjectAreaGlossary
      * when not successful the following Exceptions can occur
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws FunctionNotSupportedException        Function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -181,6 +184,7 @@ public interface SubjectAreaGlossary
      Glossary updateGlossary(String serverName, String userId, String guid, Glossary suppliedGlossary) throws UnexpectedResponseException,
                                                                                                                     UserNotAuthorizedException,
                                                                                                                     InvalidParameterException,
+                                                                                                                    FunctionNotSupportedException,
                                                                                                                     MetadataServerUncontactableException ;
 
     /**
@@ -227,6 +231,7 @@ public interface SubjectAreaGlossary
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws GUIDNotPurgedException a hard delete was issued but the glossary was not purged
+     * @throws FunctionNotSupportedException Function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -238,7 +243,8 @@ public interface SubjectAreaGlossary
                                                                                     MetadataServerUncontactableException,
                                                                                     UnrecognizedGUIDException,
                                                                                     GUIDNotPurgedException,
-                                                                                    UnexpectedResponseException ;
+                                                                                    UnexpectedResponseException,
+                                                                                    FunctionNotSupportedException ;
     /**
      * Restore a Glossary
      *

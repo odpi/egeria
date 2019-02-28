@@ -71,7 +71,7 @@ public class TermAnchorRelationship extends Line {
 
     private void initialise()
     {
-       name = "TermAnchorRelationship";
+       name = "TermAnchor";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);
@@ -93,7 +93,7 @@ public class TermAnchorRelationship extends Line {
 
     public TermAnchorRelationship(Relationship omrsRelationship) {
         super(omrsRelationship);
-        name = "TermAnchorRelationship";
+        name = "TermAnchor";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);

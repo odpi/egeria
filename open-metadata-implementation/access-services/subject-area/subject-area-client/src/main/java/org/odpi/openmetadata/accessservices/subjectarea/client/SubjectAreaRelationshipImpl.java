@@ -3627,7 +3627,7 @@ public class SubjectAreaRelationshipImpl implements SubjectAreaRelationship
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId userId under which the request is performed
-     * @param baseUrl baseUrl to build the rest call on
+     * @param baseUrl omasServerUrl to build the rest call on
      * @param requestBody requestBody String representation of the relationship
      * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
      * @return the updated term.
