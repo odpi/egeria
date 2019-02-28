@@ -171,7 +171,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
             FunctionNotSupportedException,
             UnexpectedResponseException,
             MetadataServerUncontactableException {
-        final String methodName = "getTermRelationships";
+        final String methodName = "getRelationships";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
@@ -324,17 +324,18 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws GUIDNotPurgedException a hard delete was issued but the term was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * @throws FunctionNotSupportedException Function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server     */
+     */
 
     public  void purgeTerm(String serverName, String userId,String guid) throws InvalidParameterException,
                                                                                 UserNotAuthorizedException,
                                                                                 MetadataServerUncontactableException,
                                                                                 GUIDNotPurgedException,
                                                                                 UnrecognizedGUIDException,
-                                                                                UnexpectedResponseException {
+                                                                                FunctionNotSupportedException {
         final String methodName = "purgeTerm";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
@@ -350,6 +351,7 @@ public class SubjectAreaTermImpl extends SubjectAreaBaseImpl implements org.odpi
         DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
         DetectUtils.detectAndThrowGUIDNotPurgedException(methodName,restResponse);
         DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
