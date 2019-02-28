@@ -1,33 +1,47 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.subjectarea.server.spring;
+package org.odpi.openmetadata.userinterface.accessservices.api;
 
 
+import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
+import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaGlossaryRESTServices;
-import org.odpi.openmetadata.accessservices.subjectarea.server.services.SubjectAreaRESTServicesInstance;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
+import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
+import org.odpi.openmetadata.userinterface.accessservices.domain.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
-
+import java.util.List;
 
 /**
- * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
- * Access Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
+ * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectAreaDefinition Open Metadata
+ * Assess Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
  */
 @RestController
-@RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
-public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInstance
+@RequestMapping("/api/subject-area/glossaries")
+public class SubjectAreaGlossaryController
 {
-    private SubjectAreaGlossaryRESTServices restAPI = new SubjectAreaGlossaryRESTServices();
+    private final SubjectArea subjectArea;
+    private static String className = SubjectAreaGlossaryController.class.getName();
+    private static final Logger LOG = LoggerFactory.getLogger(className);
+    private final SubjectAreaGlossary subjectAreaGlossary;
+    private final String user = "demo";
 
     /**
      * Default constructor
+     * @param subjectArea main client object for the Subject Area OMAS
      */
-    public SubjectAreaGlossaryRESTResource() {
+    public SubjectAreaGlossaryController(SubjectArea subjectArea) {
 
+        this.subjectArea = subjectArea;
+        this.subjectAreaGlossary = subjectArea.getSubjectAreaGlossary();
     }
 
     /**
@@ -41,28 +55,50 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      *     <li>TaxonomyAndCanonicalGlossary to create a glossary that is both a taxonomy and a canonical glosary </li>
      *     <li>Glossary to create a glossary that is not a taxonomy or a canonical glossary</li>
      * </ul>
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
      * @param suppliedGlossary Glossary to create
+     * @param model Spring model containing attributes including the http session attributes.
      * @return response, when successful contains the created glossary.
      * when not successful the following Exception responses can occur
-     *  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     *  MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     *  InvalidParameterException            one of the parameters is null or invalid.
-     *  UnrecognizedGUIDException            the supplied guid was not recognised
-     *  ClassificationException              Error processing a classification
-     *  StatusNotSupportedException          A status value is not supported
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/glossaries")
-    public SubjectAreaOMASAPIResponse createGlossary(@PathVariable String serverName,@PathVariable String userId, @RequestBody Glossary suppliedGlossary) {
-        return restAPI.createGlossary(serverName, userId,suppliedGlossary);
+    @RequestMapping(method = RequestMethod.POST)
+    public SubjectAreaOMASAPIResponse createGlossary( @RequestBody Glossary suppliedGlossary,ModelMap model) {
+        String serverName = subjectArea.getServerName();
+        String userId = getUser(model);
+        SubjectAreaOMASAPIResponse response=null;
+        try {
+            Glossary glossary = this.subjectAreaGlossary.createGlossary(serverName, userId,suppliedGlossary);
+            GlossaryResponse glossaryResponse = new GlossaryResponse();
+            glossaryResponse.setGlossary(glossary);
+            response = glossaryResponse;
+        } catch (SubjectAreaCheckedExceptionBase e) {
+            response = DetectUtils.getResponseFromException(e);
+        }
+        return  response;
+    }
+
+    private String getUser(ModelMap model) {
+        //TODO error instead of defaulting.
+        String userId = "demo";
+        // the ModelMap contains attributes, this should include the session attributes.
+        User user = (User) model.get("user");
+        if (user !=null) {
+            userId = user.getName();
+        }
+        return userId;
     }
 
     /**
      * Get a glossary.
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId userId under which the request is performed
      * @param guid guid of the glossary to get
+     * @param model Spring model containing attributes including the http session attributes.
      * @return response which when successful contains the glossary with the requested guid
      *  when not successful the following Exception responses can occur
      * <ul>
@@ -74,15 +110,24 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> FunctionNotSupportedException   Function not supported</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries/{guid}")
-    public  SubjectAreaOMASAPIResponse getGlossary(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid) {
-            return restAPI.getGlossaryByGuid(serverName, userId,guid);
+    @RequestMapping(method = RequestMethod.GET, path = "/{guid}")
+    public  SubjectAreaOMASAPIResponse getGlossary(@PathVariable String guid,ModelMap model) {
+        String serverName = subjectArea.getServerName();
+        String userId = getUser(model);
+        SubjectAreaOMASAPIResponse response=null;
+        try {
+            Glossary glossary = this.subjectAreaGlossary.getGlossaryByGuid(serverName, userId,guid);
+            GlossaryResponse glossaryResponse = new GlossaryResponse();
+            glossaryResponse.setGlossary(glossary);
+            response = glossaryResponse;
+        } catch (SubjectAreaCheckedExceptionBase e) {
+            response = DetectUtils.getResponseFromException(e);
+        }
+        return  response;
     }
     /**
      * Find Glossary
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
      * @param searchCriteria String expression matching Glossary property values .
      * @param asOfTime the glossaries returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
@@ -91,31 +136,42 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      *                 0 means there is no limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param model Spring model containing attributes including the http session attributes.
      * @return A list of glossaries meeting the search Criteria
      *
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries")
-    public  SubjectAreaOMASAPIResponse findGlossary(@PathVariable String serverName, @PathVariable String userId,
+    @RequestMapping(method = RequestMethod.GET, path = "/")
+    public  SubjectAreaOMASAPIResponse findGlossary(
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
                                                 @RequestParam(value = "offset", required=false) Integer offset,
                                                 @RequestParam(value = "pageSize", required=false) Integer pageSize,
                                                 @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
-                                                @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty
+                                                @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
+                                                ModelMap model
     )  {
-        return restAPI.findGlossary(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+        String serverName = subjectArea.getServerName();
+        String userId = getUser(model);
+        SubjectAreaOMASAPIResponse response;
+        try {
+            List<Glossary> glossaries = this.subjectAreaGlossary.findGlossary(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            GlossariesResponse glossariesResponse = new GlossariesResponse();
+            glossariesResponse.setGlossaries(glossaries);
+            response = glossariesResponse;
+        } catch (SubjectAreaCheckedExceptionBase e) {
+            response = DetectUtils.getResponseFromException(e);
+        }
+        return  response;
     }
     /*
      * Get Glossary relationships
      *
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the glossary to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
@@ -124,6 +180,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
+     * @param model Spring model containing attributes including the http session attributes.
      * @return a response which when successful contains the glossary relationships
      * when not successful the following Exception responses can occur
      * <ul>
@@ -133,18 +190,31 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-
-
-    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/glossaries/{guid}/relationships")
-    public  SubjectAreaOMASAPIResponse getGlossaryRelationships(@PathVariable String serverName, @PathVariable String userId,
+    @RequestMapping(method = RequestMethod.GET, path = "/{guid}/relationships")
+    public  SubjectAreaOMASAPIResponse getGlossaryRelationships(
                                                             @PathVariable String guid,
                                                             @RequestParam(value = "asOfTime", required=false) Date asOfTime,
                                                             @RequestParam(value = "offset", required=false) Integer offset,
                                                             @RequestParam(value = "pageSize", required=false) Integer pageSize,
                                                             @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
-                                                            @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty
+                                                            @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
+                                                            ModelMap model
+    
     ) {
-        return restAPI.getGlossaryRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+
+        String serverName = subjectArea.getServerName();
+        String userId = getUser(model);
+        SubjectAreaOMASAPIResponse response;
+        try {
+            List<Line> relationships = this.subjectAreaGlossary.getGlossaryRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            RelationshipsResponse relationshipsResponse = new RelationshipsResponse();
+            relationshipsResponse.setRelationships(relationships);
+            response = relationshipsResponse;
+        } catch (SubjectAreaCheckedExceptionBase e) {
+            response = DetectUtils.getResponseFromException(e);
+        }
+        return  response;
+
     }
 
     /**
@@ -156,11 +226,10 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * qualified names to mismatch the Glossary name.
      * Status is not updated using this call.
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId           unique identifier for requesting user, under which the request is performed
      * @param guid             guid of the glossary to update
      * @param glossary         glossary to update
      * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
+     * @param model Spring model containing attributes including the http session attributes.
      * @return a response which when successful contains the updated glossary
      * when not successful the following Exception responses can occur
      * <ul>
@@ -171,9 +240,29 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/glossaries/{guid}")
-    public  SubjectAreaOMASAPIResponse updateGlossary(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid,@RequestBody Glossary glossary,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
-        return restAPI.updateGlossary(serverName, userId,guid,glossary,isReplace);
+    @RequestMapping(method = RequestMethod.PUT, path = "/{guid}")
+    public  SubjectAreaOMASAPIResponse updateGlossary(
+                                                      @PathVariable String guid,
+                                                      @RequestBody Glossary glossary,
+                                                      @RequestParam(value = "isReplace", required=false) Boolean isReplace,
+                                                      ModelMap model) {
+        String serverName = subjectArea.getServerName();
+        String userId = getUser(model);
+        SubjectAreaOMASAPIResponse response=null;
+        try {
+            Glossary updatedGlossary;
+            if (isReplace) {
+                updatedGlossary = this.subjectAreaGlossary.replaceGlossary(serverName, userId, guid, glossary);
+            } else {
+                updatedGlossary = this.subjectAreaGlossary.updateGlossary(serverName, userId, guid, glossary);
+            }
+            GlossaryResponse glossaryResponse = new GlossaryResponse();
+            glossaryResponse.setGlossary(updatedGlossary);
+            response = glossaryResponse;
+        } catch (SubjectAreaCheckedExceptionBase e) {
+            response = DetectUtils.getResponseFromException(e);
+        }
+        return  response;
     }
 
     /**
@@ -189,10 +278,9 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * A hard delete means that the glossary will not exist after the operation.
      * when not successful the following Exceptions can occur
      *
-     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId  unique identifier for requesting user, under which the request is performed
      * @param guid    guid of the glossary to be deleted.
      * @param isPurge true indicates a hard delete, false is a soft delete.
+     * @param model Spring model containing attributes including the http session attributes.
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -205,21 +293,37 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> GUIDNotPurgedException               a hard delete was issued but the glossary was not purged</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/glossaries/{guid}")
-    public  SubjectAreaOMASAPIResponse deleteGlossary(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge)  {
+    @RequestMapping(method = RequestMethod.DELETE, path = "/{guid}")
+    public  SubjectAreaOMASAPIResponse deleteGlossary(@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge, ModelMap model)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
         }
-        return restAPI.deleteGlossary(serverName, userId,guid,isPurge);
+        String serverName = subjectArea.getServerName();
+        String userId = getUser(model);
+        SubjectAreaOMASAPIResponse response=null;
+        try {
+            if (isPurge) {
+                this.subjectAreaGlossary.purgeGlossary(serverName,userId,guid);
+                response = new VoidResponse();
+            } else {
+                Glossary glossary = this.subjectAreaGlossary.deleteGlossary(serverName, userId,guid);
+                GlossaryResponse glossaryResponse = new GlossaryResponse();
+                glossaryResponse.setGlossary(glossary);
+                response = glossaryResponse;
+            }
+
+        } catch (SubjectAreaCheckedExceptionBase e) {
+            response = DetectUtils.getResponseFromException(e);
+        }
+        return  response;
     }
     /**
      * Restore a Glossary
      *
      * Restore allows the deleted Glossary to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
-     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
-     * @param userId     unique identifier for requesting user, under which the request is performed
      * @param guid       guid of the glossary to restore
+     * @param model Spring model containing attributes including the http session attributes.
      * @return response which when successful contains the restored glossary
      * when not successful the following Exception responses can occur
      * <ul>
@@ -230,9 +334,20 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/glossaries/{guid}")
-    public SubjectAreaOMASAPIResponse restoreGlossary(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)
+    @RequestMapping(method = RequestMethod.POST, path = "/{guid}")
+    public SubjectAreaOMASAPIResponse restoreGlossary(@PathVariable String guid, ModelMap model)
     {
-        return restAPI.restoreGlossary(serverName, userId,guid);
+        String serverName = subjectArea.getServerName();
+        String userId = getUser(model);
+        SubjectAreaOMASAPIResponse response=null;
+        try {
+            Glossary glossary = this.subjectAreaGlossary.restoreGlossary(serverName, userId,guid);
+            GlossaryResponse glossaryResponse = new GlossaryResponse();
+            glossaryResponse.setGlossary(glossary);
+            response = glossaryResponse;
+        } catch (SubjectAreaCheckedExceptionBase e) {
+            response = DetectUtils.getResponseFromException(e);
+        }
+        return  response;
     }
 }

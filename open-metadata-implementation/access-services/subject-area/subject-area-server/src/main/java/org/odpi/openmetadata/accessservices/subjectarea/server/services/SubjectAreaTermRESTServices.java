@@ -34,7 +34,7 @@ import java.util.Set;
 
 
 /**
- * The SubjectAreaTermRESTServices provides the server-side implementation of the SubjectAreaDefinition Open Metadata
+ * The SubjectAreaTermRESTServices provides the server-side implementation of the SubjectArea Open Metadata
  * Access Service (OMAS) for Terms.  This interface provides term authoring interfaces for subject area experts.
  */
 
@@ -165,6 +165,9 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         } catch (UnrecognizedGUIDException e)
         {
             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled())
         {
@@ -286,7 +289,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                                                            org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
                                                            String sequencingProperty
     ) {
-        final String methodName = "getTermRelationships";
+        final String methodName = "getRelationships";
         if (log.isDebugEnabled())
         {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
@@ -543,7 +546,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         } catch (InvalidParameterException e)
         {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        }  catch (MetadataServerUncontactableException e)
+        } catch (MetadataServerUncontactableException e)
         {
             response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
         } catch (UserNotAuthorizedException e)
@@ -554,6 +557,9 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
         } catch (ClassificationException e) {
             response = OMASExceptionToResponse.convertClassificationException(e);
+        } catch (FunctionNotSupportedException e)
+        {
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
 
         if (log.isDebugEnabled())
