@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.publisher;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.assetlineage.contentmanager.ColumnContextEventBuilder;
+import org.odpi.openmetadata.accessservices.assetlineage.contentmanager.LineageEventBuilder;
 import org.odpi.openmetadata.accessservices.assetlineage.events.*;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.utils.Constants;
@@ -23,9 +23,6 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcesso
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static org.odpi.openmetadata.accessservices.assetlineage.utils.Constants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.utils.Constants.SEMANTIC_ASSIGNMENT;
 
@@ -36,14 +33,14 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private OpenMetadataTopic assetLineageTopicConnector;
     private OMRSAuditLog auditLog;
-    private ColumnContextEventBuilder columnContextEventBuilder;
+    private LineageEventBuilder lineageEventBuilder;
 
     public EventPublisher(OpenMetadataTopic assetLineageTopicConnector,
-                          ColumnContextEventBuilder columnContextEventBuilder,
+                          LineageEventBuilder lineageEventBuilder,
                           OMRSAuditLog auditLog) {
         this.assetLineageTopicConnector = assetLineageTopicConnector;
         this.auditLog = auditLog;
-        this.columnContextEventBuilder = columnContextEventBuilder;
+        this.lineageEventBuilder = lineageEventBuilder;
     }
 
 
@@ -63,7 +60,6 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
         newEntityEvent.setType(entity.getType());
         newEntityEvent.setGuid(entity.getGUID());
         sendEvent(newEntityEvent);
-
     }
 
     public void processUpdatedEntityEvent(String sourceName,
@@ -243,7 +239,7 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
     private void publishSemanticAssignment(Relationship relationship) throws Exception {
         SemanticAssignment semanticAssignment = new SemanticAssignment();
         EntityDetail businessTerm = retrieveReferencedEntity(relationship.getEntityTwoProxy().getGUID());
-        semanticAssignment.setBusinessTerm(columnContextEventBuilder.buildBusinessTerm(businessTerm));
+        semanticAssignment.setBusinessTerm(lineageEventBuilder.buildBusinessTerm(businessTerm));
 
         DatabaseColumn databaseColumn = new DatabaseColumn();
         EntityDetail columnEntity = retrieveReferencedEntity(relationship.getEntityOneProxy().getGUID());
@@ -255,9 +251,10 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
         sendEvent(semanticAssignment);
     }
 
+
     public EntityDetail retrieveReferencedEntity(String guid) throws Exception {
         try {
-            EntityDetail entity = columnContextEventBuilder.getEntity(guid);
+            EntityDetail entity = lineageEventBuilder.getEntity(guid);
             if (entity != null) {
                 return entity;
             } else {

@@ -35,7 +35,7 @@ public enum OpenLineageAuditCode {
     SERVICE_SHUTDOWN("OPEN-LINEAGE-0004",
             OMRSAuditLogRecordSeverity.INFO,
             "The Open Lineage Services  is shutting down server instance {0}",
-            "The local server has requested shut down of an Open Lineage Services  server instance.",
+            "The local server has requested shut down of an Open Lineage Services server instance.",
             "No action is required.  This is part of the normal operation of the server."),
 
     ERROR_INITIALIZING_CONNECTION("OPEN-LINEAGE-0005",
