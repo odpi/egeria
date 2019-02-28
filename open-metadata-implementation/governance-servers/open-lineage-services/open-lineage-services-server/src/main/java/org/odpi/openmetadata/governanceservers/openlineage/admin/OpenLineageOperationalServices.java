@@ -10,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.governanceservers.openlineage.connectors.GremlinConnector;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
@@ -90,6 +91,8 @@ public class OpenLineageOperationalServices {
                 startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, ALOutTopicName, assetLineageOutTopicConnector);
             }
 
+            GremlinConnector gremlinConnector = new GremlinConnector();
+
             auditCode = OpenLineageAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
                     auditCode.getLogMessageId(),
@@ -100,6 +103,7 @@ public class OpenLineageOperationalServices {
                     auditCode.getUserAction());
         }
     }
+
 
     private String getTopicName(Connection connection) {
         String topicName = null;
