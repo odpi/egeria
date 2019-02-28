@@ -26,6 +26,7 @@
         <module>open-metadata-samples</module>
         <module>open-metadata-demos</module>
         <module>open-metadata-tutorials</module>
+        <module>open-metadata-deployment</module>
     </modules>
 
 

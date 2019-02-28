@@ -104,7 +104,7 @@ public class ViewsConstructor {
     private InformationViewEvent createInformationViewEvent(String viewType, String tableName, TableContextEvent tableContextEvent) {
 
         InformationViewEvent view = addConnectionDetailsAndTableContext(new InformationViewEvent(), tableName);
-
+        view.setOriginalTableSource(tableContextEvent.getTableSource());
         List<DerivedColumn> derivedColumn = new ArrayList<>();
         for (DatabaseColumn databaseColumn : tableContextEvent.getTableColumns()) {
             if (databaseColumn.getBusinessTerm() != null) {
