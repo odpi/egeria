@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 /**
  * RelationshipsResponse is the response structure used on the Subject Area OMAS REST API calls that returns a list of
- * relationships associated with a Term in a response.
+ * relationships in a response.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -39,21 +39,21 @@ public class RelationshipsResponse extends SubjectAreaOMASAPIResponse
 
 
     /**
-     * Return the term relationships
+     * Return the relationships
      *
-     * @return term relationships
+     * @return relationships
      */
-    public List<Line>  getTermRelationships()
+    public List<Line> getRelationships()
     {
         return relationships;
     }
 
     /**
-     * Set up the term relationships
+     * Set up the relationships
      *
-     * @param relationships - term relationships
+     * @param relationships relationships associated with this response
      */
-    public void setTermRelationships(List<Line>  relationships)
+    public void setRelationships(List<Line>  relationships)
     {
         this.relationships = relationships;
     }
@@ -62,8 +62,8 @@ public class RelationshipsResponse extends SubjectAreaOMASAPIResponse
     @Override
     public String toString()
     {
-        return "TermRelationship Response{" +
-                "termRelationship=" + relationships +
+        return "Relationship Response{" +
+                "relationship=" + relationships +
                 ", relatedHTTPCode=" + relatedHTTPCode +
                 '}';
     }

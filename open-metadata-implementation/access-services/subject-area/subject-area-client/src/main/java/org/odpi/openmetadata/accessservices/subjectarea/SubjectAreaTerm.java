@@ -195,7 +195,7 @@ import java.util.List;
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws GUIDNotPurgedException a hard delete was issued but the term was not purged
      * @throws UnrecognizedGUIDException            the supplied guid was not recognised
-     *
+     * @throws FunctionNotSupportedException   Function not supported
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server     */
@@ -204,6 +204,7 @@ import java.util.List;
                                                                                 UserNotAuthorizedException,
                                                                                 MetadataServerUncontactableException,
                                                                                 GUIDNotPurgedException,
+                                                                                FunctionNotSupportedException,
                                                                                 UnrecognizedGUIDException,
                                                                                 UnexpectedResponseException;
     /**
