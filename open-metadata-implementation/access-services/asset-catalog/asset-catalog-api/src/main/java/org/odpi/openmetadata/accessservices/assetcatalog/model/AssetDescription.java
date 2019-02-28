@@ -29,7 +29,6 @@ public class AssetDescription extends Asset implements Serializable {
     private Map<String, Object> properties;
     private List<Classification> classifications;
     private List<Relationship> relationships;
-    private List<Context> contexts;
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -75,11 +74,4 @@ public class AssetDescription extends Asset implements Serializable {
         this.relationships = relationships;
     }
 
-    public List<Context> getContexts() {
-        return contexts;
-    }
-
-    public void setContexts(List<Context> contexts) {
-        this.contexts = contexts;
-    }
 }
