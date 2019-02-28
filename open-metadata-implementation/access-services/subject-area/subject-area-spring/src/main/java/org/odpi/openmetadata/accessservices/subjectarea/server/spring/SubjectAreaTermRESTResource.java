@@ -15,8 +15,8 @@ import java.util.Date;
 
 
 /**
- * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectAreaDefinition Open Metadata
- * Assess Service (OMAS).  This interface provides term authoring interfaces for subject area experts.
+ * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
+ * Access Service (OMAS).  This interface provides term authoring interfaces for subject area experts.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")
@@ -76,7 +76,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/terms/{guid}")
     public  SubjectAreaOMASAPIResponse getTermByGuid(@PathVariable String serverName, @PathVariable String userId, @PathVariable String guid) {
-        return restAPI.getTermByGuid(serverName, userId,guid);
+        return restAPI.getTermByGuid(serverName, userId, guid);
     }
     /**
      * Find Term
@@ -109,7 +109,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
                                                 @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
                                                 @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty
     )  {
-        return restAPI.findTerm(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+        return restAPI.findTerm(serverName, userId, searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /*
@@ -145,7 +145,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
                                                             @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
                                                             @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty
                                                             ) {
-        return restAPI.getTermRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+        return restAPI.getTermRelationships(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
@@ -169,7 +169,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
      */
     @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/terms/{guid}")
     public SubjectAreaOMASAPIResponse updateTerm(@PathVariable String serverName, @PathVariable String userId,@PathVariable String guid,@RequestBody Term suppliedTerm, @RequestParam(value = "isReplace", required=false) Boolean isReplace) {
-        return restAPI.updateTerm(serverName, userId,guid,suppliedTerm,isReplace);
+        return restAPI.updateTerm(serverName, userId, guid, suppliedTerm, isReplace);
     }
     /**
      * Delete a Term instance
@@ -204,7 +204,7 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
             // default to soft delete if isPurge is not specified.
             isPurge = false;
         }
-        return restAPI.deleteTerm(serverName, userId,guid,isPurge);
+        return restAPI.deleteTerm(serverName, userId, guid, isPurge);
     }
     /**
      * Restore a Term
@@ -226,6 +226,6 @@ public class SubjectAreaTermRESTResource extends SubjectAreaRESTServicesInstance
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/terms/{guid}")
     public SubjectAreaOMASAPIResponse restoreTerm( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
-        return restAPI.restoreTerm(serverName,userId,guid);
+        return restAPI.restoreTerm(serverName, userId, guid);
     }
 }
