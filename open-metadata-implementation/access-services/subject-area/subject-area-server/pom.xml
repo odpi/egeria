@@ -38,6 +38,11 @@
             <artifactId>subject-area-tools</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>subject-area-server</artifactId>
+            <version>0.2-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
