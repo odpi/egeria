@@ -32,12 +32,21 @@ spec:
     spec:
       containers:
       - image: "{{ .Values.image.egeria.repository }}:{{ .Values.image.egeria.tag }}"
-        ImagePullPolicy: Always
+        ImagePullPolicy: "{{ .Values.image.egeria.pullPolicy }}"
         name: {{ include "myapp.fullname" . }}-egeria
         ports:
         - containerPort: 8080
+        - containerPort: 5005
         resources: {}
         restartPolicy: Always
+        envFrom:
+        - configMapRef:
+            name: {{ include "myapp.fullname" . }}-configmap
+        env:
+        {{ if .Values.debug.egeriaJVM }} 
+        - name: JAVA_DEBUG
+          value:  "true"
+        {{ end }}
       - image: "{{ .Values.image.egeriainit.repository }}:{{ .Values.image.egeriainit.tag }}"
         name: {{ include "myapp.fullname" . }}-egeriainit
         ImagePullPolicy: "{{ .Values.image.egeriainit.pullPolicy }}"

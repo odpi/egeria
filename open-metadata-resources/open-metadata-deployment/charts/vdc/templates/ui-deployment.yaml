@@ -31,8 +31,8 @@ spec:
 
     spec:
       containers:
-      - image: "{{ .Values.image.ui.repository }}:{{ .Values.image.ui.tag }}"
-        ImagePullPolicy: IfNotPresent
+      - image: "{{ .Values.image.egeria.repository }}:{{ .Values.image.egeria.tag }}"
+        ImagePullPolicy: {{ .Values.image.egeria.pullPolicy }}
         name: {{ include "myapp.fullname" . }}-ui
         ports:
         - containerPort: 8443
