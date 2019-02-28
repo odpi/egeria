@@ -60,6 +60,15 @@ igc:
       user: isadmin
       pass: isadmin
 
+# Debug support for Egeria - set to true to enable JVM debug for Egeria images on port 5005
+debug:
+    egeriaJVM: false
+
+# Logging level - affects all spring components by setting LOG_LEVEL_ROOT. Default to no DEBUG - Auditlog only
+logging:
+    level: NONE
+
+
 # The following section defines all of the DOCKER images being used by this
 # chart. Normally they should be left as is, but are exposed here in case the
 # user wishes to extend.
@@ -79,7 +88,7 @@ image:
   mariadb:
     repository: mariadb
     tag: latest
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   egeria:
     repository: planetf1/egeria-egeriavdc
@@ -98,11 +107,6 @@ image:
 
   atlasinit:
     repository: planetf1/atlas-init-egeria
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
-
-  igcproxy:
-    repository: planetf1/egeria-egeriavdc
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
 
@@ -128,11 +132,6 @@ image:
 
   postgresql:
     repository: planetf1/postgresql-egeriavdc
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
-
-  ui:
-    repository: planetf1/egeria-egeriavdc
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
 

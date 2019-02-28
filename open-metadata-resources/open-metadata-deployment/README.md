@@ -12,7 +12,7 @@ Currently the focus is on Helm charts to facilitate deployment to Kubernetes clu
 
 Docker images are created independently from this project and hosted on docker hub.
 
-Helm charts will be reused from other helm repos when available
+Helm charts will be reused from other helm repos when available.
 
 ## Kubernetes install
 
