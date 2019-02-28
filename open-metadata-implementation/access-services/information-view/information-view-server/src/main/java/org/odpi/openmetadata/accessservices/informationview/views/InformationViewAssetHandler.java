@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.views;
 
+import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.accessservices.informationview.views.beans.InformationViewAsset;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.InformationViewEvent;
@@ -30,7 +31,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
     public InformationViewAsset call() throws TypeErrorException, InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, TypeDefNotKnownException {
         InformationViewAsset informationViewAsset = new InformationViewAsset();
 
-        String qualifiedNameForSoftwareServer = event.getTableSource().getNetworkAddress().split(":")[0];
+        String qualifiedNameForSoftwareServer = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER, event.getTableSource().getNetworkAddress().split(":")[0]);
         InstanceProperties softwareServerProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSoftwareServer)
                 .withStringProperty(Constants.NAME, qualifiedNameForSoftwareServer)
@@ -41,7 +42,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 qualifiedNameForSoftwareServer, softwareServerProperties, classificationList);
         informationViewAsset.setSoftwareServerEntity(softwareServerEntity);
 
-        String qualifiedNameForEndpoint = event.getTableSource().getProtocol() + event.getTableSource().getNetworkAddress() ;
+        String qualifiedNameForEndpoint = QualifiedNameUtils.buildQualifiedName("", Constants.ENDPOINT, event.getTableSource().getProtocol() + event.getTableSource().getNetworkAddress()) ;
         InstanceProperties endpointProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForEndpoint)
                 .withStringProperty(Constants.NAME, qualifiedNameForEndpoint)
@@ -59,7 +60,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 Constants.INFORMATION_VIEW_OMAS_NAME,
                 new InstanceProperties());
 
-        String qualifiedNameForConnection = qualifiedNameForEndpoint + "." + event.getTableSource().getUser();
+        String qualifiedNameForConnection = QualifiedNameUtils.buildQualifiedName(qualifiedNameForEndpoint, Constants.CONNECTION, event.getTableSource().getUser());
         InstanceProperties connectionProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForConnection)
                 .withStringProperty(Constants.DESCRIPTION, "Connection to " + qualifiedNameForConnection)
@@ -75,13 +76,13 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 new InstanceProperties());
 
 
-        String qualifiedNameForConnectorType = event.getTableSource().getConnectorProviderName();
+        String qualifiedNameForConnectorType = QualifiedNameUtils.buildQualifiedName("", Constants.CONNECTION_CONNECTOR_TYPE, event.getTableSource().getConnectorProviderName());
         InstanceProperties connectorTypeProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForConnectorType)
                 .withStringProperty(Constants.CONNECTOR_PROVIDER_CLASSNAME, event.getTableSource().getConnectorProviderName())
                 .build();
         EntityDetail connectorTypeEntity = omEntityDao.addEntity(Constants.CONNECTOR_TYPE,
-                qualifiedNameForConnectorType, connectorTypeProperties);
+                                                                    qualifiedNameForConnectorType, connectorTypeProperties);
         informationViewAsset.setConnectorTypeEntity(connectorTypeEntity);
 
         omEntityDao.addRelationship(Constants.CONNECTION_CONNECTOR_TYPE,
@@ -90,13 +91,12 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 Constants.INFORMATION_VIEW_OMAS_NAME,
                 new InstanceProperties());
 
-        String qualifiedNameForDataStore = qualifiedNameForConnection + "." + event.getTableSource().getDatabaseName();
+        String qualifiedNameForDataStore =  QualifiedNameUtils.buildQualifiedName(qualifiedNameForSoftwareServer, Constants.DATA_STORE, event.getTableSource().getDatabaseName());
         InstanceProperties dataStoreProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataStore)
                 .withStringProperty(Constants.NAME, event.getTableSource().getDatabaseName())
                 .build();
-        EntityDetail dataStore = omEntityDao.addEntity(Constants.DATA_STORE,
-                qualifiedNameForDataStore, dataStoreProperties);
+        EntityDetail dataStore = omEntityDao.addEntity(Constants.DATA_STORE, qualifiedNameForDataStore, dataStoreProperties);
         informationViewAsset.setDataStore(dataStore);
 
         omEntityDao.addRelationship(Constants.CONNECTION_TO_ASSET,
@@ -105,7 +105,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 Constants.INFORMATION_VIEW_OMAS_NAME,
                 new InstanceProperties());
 
-        String qualifiedNameForInformationView = qualifiedNameForDataStore + "." + event.getTableSource().getSchemaName();
+        String qualifiedNameForInformationView = QualifiedNameUtils.buildQualifiedName(qualifiedNameForDataStore, Constants.INFORMATION_VIEW, event.getTableSource().getSchemaName());
         InstanceProperties ivProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForInformationView)
                 .withStringProperty(Constants.NAME, event.getTableSource().getSchemaName())

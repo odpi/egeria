@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
+import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -38,11 +39,9 @@ public abstract class ReportBasicOperation extends BasicOperation{
     private static final Logger log = LoggerFactory.getLogger(ReportBasicOperation.class);
 
     protected final EntityReferenceResolver entityReferenceResolver;
-    private LookupHelper lookupHelper;
 
     public ReportBasicOperation(OMEntityDao omEntityDao, LookupHelper lookupHelper, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
         super(omEntityDao, helper, auditLog);
-        this.lookupHelper = lookupHelper;
         this.entityReferenceResolver = new EntityReferenceResolver(lookupHelper, omEntityDao);
     }
 
@@ -98,8 +97,7 @@ public abstract class ReportBasicOperation extends BasicOperation{
      */
     private void addReportSection(String qualifiedNameForParent, String parentGuid, ReportSection reportSection) throws InvalidParameterException, PropertyErrorException, TypeDefNotKnownException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
         EntityDetail typeEntity = addSectionAndSectionType(qualifiedNameForParent, parentGuid, reportSection);
-        String qualifiedNameForSection = EntityPropertiesUtils.getStringValueForProperty(typeEntity.getProperties(), Constants.QUALIFIED_NAME);
-        qualifiedNameForSection = qualifiedNameForSection.substring(0, qualifiedNameForSection.lastIndexOf(Constants.TYPE_SUFFIX));
+        String qualifiedNameForSection = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, Constants.DOCUMENT_SCHEMA_ATTRIBUTE, reportSection.getName());
         addElements(qualifiedNameForSection, typeEntity.getGUID(), reportSection.getElements());
     }
 
@@ -124,7 +122,7 @@ public abstract class ReportBasicOperation extends BasicOperation{
      */
     protected EntityDetail addSectionAndSectionType(String qualifiedNameForParent, String parentGuid, ReportSection reportSection) throws InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, RepositoryErrorException, TypeDefNotKnownException {
 
-        String qualifiedNameForSection = qualifiedNameForParent + SEPARATOR + reportSection.getName();
+        String qualifiedNameForSection = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, Constants.DOCUMENT_SCHEMA_ATTRIBUTE, reportSection.getName());
         InstanceProperties sectionProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSection)
                 .withStringProperty(Constants.ATTRIBUTE_NAME, reportSection.getName())
@@ -140,8 +138,8 @@ public abstract class ReportBasicOperation extends BasicOperation{
                                             Constants.INFORMATION_VIEW_OMAS_NAME,
                                             new InstanceProperties());
 
-
-        return addSchemaType(qualifiedNameForSection, sectionEntity, Constants.DOCUMENT_SCHEMA_TYPE);
+        String qualifiedNameForSectionType = buildQualifiedNameForSchemaType(qualifiedNameForParent, Constants.DOCUMENT_SCHEMA_TYPE, reportSection);
+        return addSchemaType(qualifiedNameForSectionType, sectionEntity, Constants.DOCUMENT_SCHEMA_TYPE);
     }
 
 
@@ -165,7 +163,7 @@ public abstract class ReportBasicOperation extends BasicOperation{
      */
     protected EntityDetail addReportColumn(String qualifiedNameForParent, String parentGuid, ReportColumn reportColumn) throws InvalidParameterException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
 
-        String qualifiedNameForColumn = qualifiedNameForParent + SEPARATOR + reportColumn.getName();
+        String qualifiedNameForColumn = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, Constants.DERIVED_SCHEMA_ATTRIBUTE, reportColumn.getName());
 
         InstanceProperties columnProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
@@ -184,14 +182,21 @@ public abstract class ReportBasicOperation extends BasicOperation{
 
         addBusinessTerm(reportColumn, derivedColumnEntity);
         addQueryTargets(reportColumn, derivedColumnEntity);
-        addSchemaType(qualifiedNameForColumn, derivedColumnEntity, Constants.SCHEMA_TYPE);
+        String schemaType = Constants.SCHEMA_TYPE;
+        String qualifiedNameForColumnType = buildQualifiedNameForSchemaType(qualifiedNameForParent, schemaType, reportColumn);
+
+        addSchemaType(qualifiedNameForColumnType, derivedColumnEntity, Constants.SCHEMA_TYPE);
 
         return derivedColumnEntity;
     }
 
+    private String buildQualifiedNameForSchemaType(String qualifiedNameForParent, String schemaType, ReportElement element) {
+        return QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, schemaType, element.getName() + Constants.TYPE_SUFFIX);
+    }
+
     /**
      *
-     * @param qualifiedNameOfSchemaAttribute qualified name for the schema attribute
+     * @param qualifiedNameForType qualified name for the schema attribute
      * @param schemaAttributeEntity entity describing the schema entity
      * @param schemaAttributeTypeName typename for the schema type
      * @return
@@ -207,8 +212,8 @@ public abstract class ReportBasicOperation extends BasicOperation{
      * @throws RepositoryErrorException
      * @throws ClassificationErrorException
      */
-    protected EntityDetail addSchemaType(String qualifiedNameOfSchemaAttribute, EntityDetail schemaAttributeEntity, String schemaAttributeTypeName) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
-        String qualifiedNameForType = qualifiedNameOfSchemaAttribute + Constants.TYPE_SUFFIX;
+    protected EntityDetail addSchemaType(String qualifiedNameForType, EntityDetail schemaAttributeEntity, String schemaAttributeTypeName) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
+
 
         InstanceProperties typeProperties = new EntityPropertiesBuilder()
                                                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForType)
