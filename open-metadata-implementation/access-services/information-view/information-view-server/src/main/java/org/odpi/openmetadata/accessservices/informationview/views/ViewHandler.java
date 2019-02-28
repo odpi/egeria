@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.informationview.events.DerivedColumn
 import org.odpi.openmetadata.accessservices.informationview.events.InformationViewEvent;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
+import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.accessservices.informationview.views.beans.View;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -48,7 +49,7 @@ public class ViewHandler implements Callable<View> {
             deleteView(event);
         } else {
             String qualifiedNameForInformationView = getQualifiedNameForInformationView();
-            String qualifiedNameForTableType = qualifiedNameForInformationView + "." + event.getTableSource().getTableName() + Constants.TYPE_SUFFIX;
+            String qualifiedNameForTableType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForInformationView, Constants.RELATIONAL_TABLE_TYPE,event.getTableSource().getTableName() + Constants.TYPE_SUFFIX);
             InstanceProperties tableTypeProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForTableType)
                     .withStringProperty(Constants.DISPLAY_NAME, event.getTableSource().getTableName() + Constants.TYPE_SUFFIX)
@@ -62,7 +63,7 @@ public class ViewHandler implements Callable<View> {
                     null,
                     false);
 
-            String qualifiedNameForTable = qualifiedNameForInformationView + "." + event.getTableSource().getTableName();
+            String qualifiedNameForTable = QualifiedNameUtils.buildQualifiedName(qualifiedNameForInformationView, Constants.RELATIONAL_TABLE, event.getTableSource().getTableName());
             InstanceProperties tableProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForTable)
                     .withStringProperty(Constants.ATTRIBUTE_NAME, event.getTableSource().getTableName())
@@ -108,7 +109,9 @@ public class ViewHandler implements Callable<View> {
     }
 
     private String getQualifiedNameForInformationView() {
-        return event.getTableSource().getProtocol() + event.getTableSource().getNetworkAddress() + "." + event.getTableSource().getDatabaseName() + "." + event.getTableSource().getSchemaName();
+        String endpointQualifiedName = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER, event.getTableSource().getNetworkAddress().split(":")[0]);
+        String databaseQualifiedName = QualifiedNameUtils.buildQualifiedName(endpointQualifiedName, Constants.DATA_STORE, event.getTableSource().getDatabaseName());
+        return QualifiedNameUtils.buildQualifiedName(databaseQualifiedName, Constants.INFORMATION_VIEW, event.getTableSource().getSchemaName());
     }
 
     private void deleteView(InformationViewEvent event) throws UserNotAuthorizedException,
@@ -120,8 +123,8 @@ public class ViewHandler implements Callable<View> {
                                                                TypeErrorException,
                                                                PropertyErrorException,
                                                                PagingErrorException {
-        String informationViewQualifiedName = getQualifiedNameForInformationView();
-        String qualifiedNameForTableType = informationViewQualifiedName + "." + event.getTableSource().getTableName() + Constants.TYPE_SUFFIX;
+        String qualifiedNameForInformationView = getQualifiedNameForInformationView();
+        String qualifiedNameForTableType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForInformationView, Constants.RELATIONAL_TABLE_TYPE,event.getTableSource().getTableName() + Constants.TYPE_SUFFIX);
         EntityDetail tableTypeEntity = omEntityDao.getEntity(Constants.RELATIONAL_TABLE_TYPE,
                 qualifiedNameForTableType);
 
@@ -131,7 +134,7 @@ public class ViewHandler implements Callable<View> {
             omEntityDao.purgeEntity(tableTypeEntity);
         }
 
-        String qualifiedNameForTable = informationViewQualifiedName + "." + event.getTableSource().getTableName();
+        String qualifiedNameForTable =  QualifiedNameUtils.buildQualifiedName( qualifiedNameForInformationView , Constants.RELATIONAL_TABLE,  event.getTableSource().getTableName());
         EntityDetail tableEntity = omEntityDao.getEntity(Constants.RELATIONAL_TABLE,
                                                         qualifiedNameForTable);
         if (tableEntity != null) {
@@ -157,7 +160,7 @@ public class ViewHandler implements Callable<View> {
     private EntityDetail addDerivedColumn(EntityDetail tableTypeEntity, String qualifiedNameForTable, DerivedColumn derivedColumn) {
 
         try {
-            String qualifiedNameColumnType = qualifiedNameForTable + "." + derivedColumn.getName() + Constants.TYPE_SUFFIX;
+            String qualifiedNameColumnType =  QualifiedNameUtils.buildQualifiedName( qualifiedNameForTable , Constants.RELATIONAL_COLUMN_TYPE, derivedColumn.getName() + Constants.TYPE_SUFFIX);
             InstanceProperties columnTypeProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameColumnType)
                     .withStringProperty(Constants.DISPLAY_NAME, derivedColumn.getName() + Constants.TYPE_SUFFIX)
@@ -170,7 +173,7 @@ public class ViewHandler implements Callable<View> {
                     qualifiedNameColumnType,
                     columnTypeProperties);
 
-            String qualifiedNameForColumn = qualifiedNameForTable + "." + derivedColumn.getName();
+            String qualifiedNameForColumn = QualifiedNameUtils.buildQualifiedName( qualifiedNameForTable , Constants.DERIVED_RELATIONAL_COLUMN, derivedColumn.getName());
             InstanceProperties columnProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
                     .withStringProperty(Constants.ATTRIBUTE_NAME, derivedColumn.getName())
