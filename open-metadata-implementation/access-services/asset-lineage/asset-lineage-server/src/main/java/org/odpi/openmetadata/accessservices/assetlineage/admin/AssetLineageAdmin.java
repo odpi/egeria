@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.admin;
 
 
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
-import org.odpi.openmetadata.accessservices.assetlineage.contentmanager.ColumnContextEventBuilder;
+import org.odpi.openmetadata.accessservices.assetlineage.contentmanager.LineageEventBuilder;
 import org.odpi.openmetadata.accessservices.assetlineage.publisher.EventPublisher;
 import org.odpi.openmetadata.accessservices.assetlineage.listeners.AssetLineageEnterpriseOmrsEventListener;
 import org.odpi.openmetadata.accessservices.assetlineage.listeners.AssetLineageInTopicListener;
@@ -87,8 +87,8 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
-            ColumnContextEventBuilder columnContextEventBuilder = new ColumnContextEventBuilder(enterpriseConnector);
-            EventPublisher eventPublisher = new EventPublisher(assetLineageOutTopicConnector, columnContextEventBuilder, auditLog);
+            LineageEventBuilder lineageEventBuilder = new LineageEventBuilder(enterpriseConnector);
+            EventPublisher eventPublisher = new EventPublisher(assetLineageOutTopicConnector, lineageEventBuilder, auditLog);
             AssetLineageEnterpriseOmrsEventListener assetLineageEnterpriseOmrsEventListener = new AssetLineageEnterpriseOmrsEventListener(eventPublisher, auditLog);
             enterpriseOMRSTopicConnector.registerListener(assetLineageEnterpriseOmrsEventListener);
         }

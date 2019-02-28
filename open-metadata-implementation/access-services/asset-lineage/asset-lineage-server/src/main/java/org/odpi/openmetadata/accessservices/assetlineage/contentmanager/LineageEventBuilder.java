@@ -12,19 +12,17 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * ColumnContextEventBuilder loads the full context for a column from a relational table
- */
-public class ColumnContextEventBuilder {
 
-    private static final Logger log = LoggerFactory.getLogger(ColumnContextEventBuilder.class);
+public class LineageEventBuilder {
+
+    private static final Logger log = LoggerFactory.getLogger(LineageEventBuilder.class);
 
     private OMRSRepositoryConnector enterpriseConnector;
 
     /**
      * @param enterpriseConnector - combined connector for all repositories
      */
-    public ColumnContextEventBuilder(OMRSRepositoryConnector enterpriseConnector) {
+    public LineageEventBuilder(OMRSRepositoryConnector enterpriseConnector) {
         this.enterpriseConnector = enterpriseConnector;
     }
 
