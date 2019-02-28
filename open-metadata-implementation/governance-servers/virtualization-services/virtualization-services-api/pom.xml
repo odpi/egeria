@@ -31,7 +31,7 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-apis</artifactId>
-            <version>1.1-SNAPSHOT</version>
+            <version>${open-metadata.version}</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

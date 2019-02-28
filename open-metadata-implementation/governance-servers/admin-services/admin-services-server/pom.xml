@@ -63,7 +63,7 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>virtualization-services-server</artifactId>
-            <version>0.3-SNAPSHOT</version>
+            <version>${open-metadata.version}</version>
             <scope>compile</scope>
         </dependency>
 
