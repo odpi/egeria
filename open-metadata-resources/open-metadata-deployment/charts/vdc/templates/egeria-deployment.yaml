@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - image: "{{ .Values.image.egeria.repository }}:{{ .Values.image.egeria.tag }}"
-        ImagePullPolicy: "{{ .Values.image.egeria.pullPolicy }}"
+        imagePullPolicy: "{{ .Values.image.egeria.pullPolicy }}"
         name: {{ include "myapp.fullname" . }}-egeria
         ports:
         - containerPort: 8080
@@ -49,7 +49,7 @@ spec:
         {{ end }}
       - image: "{{ .Values.image.egeriainit.repository }}:{{ .Values.image.egeriainit.tag }}"
         name: {{ include "myapp.fullname" . }}-egeriainit
-        ImagePullPolicy: "{{ .Values.image.egeriainit.pullPolicy }}"
+        imagePullPolicy: "{{ .Values.image.egeriainit.pullPolicy }}"
         envFrom:
         - configMapRef:
            name: {{ include "myapp.fullname" . }}-configmap
