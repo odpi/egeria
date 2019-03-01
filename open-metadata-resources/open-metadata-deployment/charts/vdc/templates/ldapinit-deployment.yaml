@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - image: "{{ .Values.image.ldapinit.repository }}:{{ .Values.image.ldapinit.tag }}"
-        ImagePullPolicy: Always
+        ImagePullPolicy: "{{ .Values.image.ldapinit.pullPolicy }}"
         name: {{ include "myapp.fullname" . }}-ldapinit
         resources: {}
         envFrom:

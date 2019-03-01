@@ -37,7 +37,7 @@ spec:
           - "{{ .Values.igc.hostname }}"
       containers:
       - image: "{{ .Values.image.postgresql.repository }}:{{ .Values.image.postgresql.tag }}"
-        ImagePullPolicy: Always
+        ImagePullPolicy: "{{ .Values.image.postgresql.pullPolicy }}"
         name: {{ include "myapp.fullname" . }}-postgresql
         env:
           - name: POSTGRESQL_PASSWORD
