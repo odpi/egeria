@@ -15,6 +15,7 @@ RUN mvn clean install -DskipTests
 
 FROM openjdk:8-jre-alpine
 COPY --from=build /root/egeria/open-metadata-distribution/open-metadata-assemblies/target/egeria-*-omag-server/servers/omag-server-*/server-chassis-spring-*.jar /server-chassis-spring.jar
+COPY --from=build /root/egeria/open-metadata-implementation/user-interfaces/access-services-user-interface/target/access-services-user-interface-*.jar /access-services-user-interface.jar
 RUN apk add bash
 COPY dist/entrypoint.sh /entrypoint.sh
 # Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug
