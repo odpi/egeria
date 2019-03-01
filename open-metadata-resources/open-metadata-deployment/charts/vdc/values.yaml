@@ -105,6 +105,13 @@ image:
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
 
+  # NOTE: this image is only used if the ibmigc.external is set to false; otherwise it is ignored and
+  # the k8s-external, pre-existing environment defined under ibmigc... is used
+  ibmigc:
+    repository: localhost:5000/ibm/infosvr
+    tag: v11.7.0.2
+    pullPolicy: IfNotPresent
+
   configure:
     repository: localhost:5000/odpi/egeria-configure
     tag: 1.1-SNAPSHOT
