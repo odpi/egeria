@@ -61,7 +61,7 @@ logging:
 # user wishes to extend.
 image:
   ranger:
-    repository: planetf1/ranger-admin-egeriavdc
+    repository: localhost:5000/odpi/ranger-admin-egeriavdc
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
 
@@ -76,7 +76,7 @@ image:
     pullPolicy: Always
 
   gaian:
-    repository: planetf1/gaian-egeriavdc
+    repository: localhost:5000/odpi/gaian-egeriavdc
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
 
@@ -86,7 +86,7 @@ image:
     pullPolicy: Always
 
   kafkamonitor:
-    repository: planetf1/kafka-monitor-egeriavdc
+    repository: localhost:5000/odpi/kafka-monitor-egeriavdc
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
 
@@ -96,12 +96,12 @@ image:
     pullPolicy: IfNotPresent
 
   omrsmonitor:
-    repository: planetf1/omrsmonitor-egeriavdc
+    repository: localhost:5000/odpi/omrsmonitor-egeriavdc
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
 
   ldapinit:
-    repository: planetf1/ldap-init-egeriavdc
+    repository: localhost:5000/odpi/ldap-init-egeriavdc
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
 
