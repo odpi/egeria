@@ -107,7 +107,7 @@ image:
 
   configure:
     repository: localhost:5000/odpi/egeria-configure
-    tag: latest
+    tag: 1.1-SNAPSHOT
     pullPolicy: IfNotPresent
 
   nameOverride: ""
