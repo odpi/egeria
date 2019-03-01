@@ -32,7 +32,7 @@ spec:
       containers:
       - name: {{ .Chart.Name }}-ranger
         image: "{{ .Values.image.ranger.repository }}:{{ .Values.image.ranger.tag }}"
-        ImagePullPolicy: "{{ .Values.image.ranger.pullPolicy }}"
+        imagePullPolicy: "{{ .Values.image.ranger.pullPolicy }}"
         ports:
         - containerPort: 6080
         - containerPort: 6182
@@ -44,7 +44,7 @@ spec:
         - name: MYSQL_ROOT_PASSWORD
           value: admin999
         image: "{{ .Values.image.mariadb.repository }}:{{ .Values.image.mariadb.tag }}"
-        ImagePullPolicy: "{{ .Values.image.mariadb.pullPolicy }}"
+        imagePullPolicy: "{{ .Values.image.mariadb.pullPolicy }}"
         name: {{ .Chart.Name }}-mariadb
         ports:
         - containerPort: 3306
