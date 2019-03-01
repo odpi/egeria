@@ -356,7 +356,7 @@ public class Converter {
                 for (Map.Entry<String, InstancePropertyValue> property : instanceProperties.entrySet()) {
                     if (property.getValue() != null) {
                         String propertyValue = getStringForPropertyValue(property.getValue());
-                        if (!propertyValue.equals("")) {
+                        if (propertyValue != null) {
                             attributes.put(property.getKey(), propertyValue);
                         }
                     }
@@ -370,9 +370,15 @@ public class Converter {
     private String getStringForPropertyValue(InstancePropertyValue ipv) {
 
         if (ipv instanceof PrimitivePropertyValue) {
-            PrimitiveDefCategory primtype =
-                    ((PrimitivePropertyValue) ipv).getPrimitiveDefCategory();
-            switch (primtype) {
+            PrimitiveDefCategory primitiveDefCategory = ((PrimitivePropertyValue) ipv).getPrimitiveDefCategory();
+            if(primitiveDefCategory == null){
+                return null;
+            }
+            if(((PrimitivePropertyValue) ipv).getPrimitiveValue() == null){
+                return null;
+            }
+
+            switch (primitiveDefCategory) {
                 case OM_PRIMITIVE_TYPE_STRING:
                     return (String) ((PrimitivePropertyValue) ipv).getPrimitiveValue();
                 case OM_PRIMITIVE_TYPE_INT:
@@ -389,13 +395,13 @@ public class Converter {
                     return ((PrimitivePropertyValue) ipv).getPrimitiveValue().toString();
                 case OM_PRIMITIVE_TYPE_UNKNOWN:
                 default:
-                    return "";
+                    return null;
             }
         } else {
             if (ipv instanceof EnumPropertyValue) {
                 return ((EnumPropertyValue) ipv).getSymbolicName();
             } else {
-                return "";
+                return null;
             }
         }
     }
