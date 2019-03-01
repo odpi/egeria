@@ -36,8 +36,8 @@ spec:
         hostnames:
         - "{{ .Values.igc.hostname }}"
       containers:
-      - image: "{{ .Values.image.igcproxy.repository }}:{{ .Values.image.igcproxy.tag }}"
-        ImagePullPolicy: Always
+      - image: "{{ .Values.image.egeria.repository }}:{{ .Values.image.egeria.tag }}"
+        ImagePullPolicy: "{{ .Values.image.egeria.pullPolicy }}"
         name: {{ include "myapp.fullname" . }}-igcproxy
         envFrom:
         - configMapRef:

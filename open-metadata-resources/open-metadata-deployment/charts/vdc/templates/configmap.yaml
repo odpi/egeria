@@ -26,7 +26,7 @@ data:
   IGC_USER: {{ .Values.igc.auth.app.user }}
   IGC_PASSWORD: {{ .Values.igc.auth.app.pass }}
   STRICT_SSL: "false"
-  LOGGING_LEVEL_ROOT: INFO
+  LOGGING_LEVEL_ROOT: {{ .Values.logging.level }}
   POSTGRESQL_SERVER: {{ include "myapp.fullname" . }}-postgresql-service.default.svc.cluster.local
   POSTGRESQL_SERVICE_PORT: "5432"
   POSTGRESQL_SERVER_EXT: "{{ .Values.service.externalip }}"
