@@ -1,7 +1,6 @@
 #!/bin/bash
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
-
 set -e
 
 # Set java debug if JAVA_DEBUG is set
