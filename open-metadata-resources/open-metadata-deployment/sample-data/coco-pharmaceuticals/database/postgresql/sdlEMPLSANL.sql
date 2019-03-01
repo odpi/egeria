@@ -1,11 +1,8 @@
 -- SPDX-License-Identifier: Apache-2.0
 -- Copyright Contributors to the ODPi Egeria project.
-create database "EmpSalaryAnalysisDatabase"  encoding 'UTF8';
+\c "EMPLSANL";
 
-\c "EmpSalaryAnalysisDatabase";
-
-drop table IF EXISTS "EmpSalaryAnalysis" ;
-CREATE TABLE "EmpSalaryAnalysis" (
+CREATE TABLE IF NOT EXISTS "EMPSALARYANALYSIS" (
   "HDR" INT NOT NULL,
   "RECTYPE" INT NOT NULL,
   "SERVICE" INT NOT NULL,
@@ -28,8 +25,8 @@ CREATE TABLE "EmpSalaryAnalysis" (
   "STATE" VARCHAR(40) NOT NULL,
   "TAX" INT NOT NULL,
   "TAXP" INT NOT NULL
+);
 
+delete from "EMPSALARYANALYSIS";
 
-) ;
-
-\copy "EmpSalaryAnalysis"  from '../EmpSalaryAnalysisDatabase-EmpSalaryAnalysis.csv' with csv header DELIMITER ';' ;
+\copy "EMPSALARYANALYSIS" from '../../data-files/EmplSAnl-EmpSalaryAnalysis.csv' with csv header DELIMITER ';';
