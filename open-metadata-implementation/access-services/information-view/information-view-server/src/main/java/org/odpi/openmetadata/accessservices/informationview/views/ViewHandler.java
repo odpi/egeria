@@ -48,7 +48,7 @@ public class ViewHandler implements Callable<View> {
             log.info("Delete existing view as event received has no derived columns");
             deleteView(event);
         } else {
-            String qualifiedNameForInformationView = getQualifiedNameForInformationView();
+            String qualifiedNameForInformationView = QualifiedNameUtils.buildQualifiedNameForInformationView(event.getTableSource().getNetworkAddress().split(":")[0], event.getTableSource().getDatabaseName(), event.getTableSource().getSchemaName());
             String qualifiedNameForTableType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForInformationView, Constants.RELATIONAL_TABLE_TYPE,event.getTableSource().getTableName() + Constants.TYPE_SUFFIX);
             InstanceProperties tableTypeProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForTableType)
@@ -108,11 +108,6 @@ public class ViewHandler implements Callable<View> {
         return OMEntityWrapper.EntityStatus.EXISTING.equals(tableTypeEntityWrapper.getEntityStatus()) || OMEntityWrapper.EntityStatus.UPDATED.equals(tableTypeEntityWrapper.getEntityStatus());
     }
 
-    private String getQualifiedNameForInformationView() {
-        String endpointQualifiedName = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER, event.getTableSource().getNetworkAddress().split(":")[0]);
-        String databaseQualifiedName = QualifiedNameUtils.buildQualifiedName(endpointQualifiedName, Constants.DATA_STORE, event.getTableSource().getDatabaseName());
-        return QualifiedNameUtils.buildQualifiedName(databaseQualifiedName, Constants.INFORMATION_VIEW, event.getTableSource().getSchemaName());
-    }
 
     private void deleteView(InformationViewEvent event) throws UserNotAuthorizedException,
                                                                EntityNotKnownException,
@@ -123,10 +118,9 @@ public class ViewHandler implements Callable<View> {
                                                                TypeErrorException,
                                                                PropertyErrorException,
                                                                PagingErrorException {
-        String qualifiedNameForInformationView = getQualifiedNameForInformationView();
+        String qualifiedNameForInformationView = QualifiedNameUtils.buildQualifiedNameForInformationView(event.getTableSource().getNetworkAddress().split(":")[0], event.getTableSource().getDatabaseName(), event.getTableSource().getSchemaName());
         String qualifiedNameForTableType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForInformationView, Constants.RELATIONAL_TABLE_TYPE,event.getTableSource().getTableName() + Constants.TYPE_SUFFIX);
-        EntityDetail tableTypeEntity = omEntityDao.getEntity(Constants.RELATIONAL_TABLE_TYPE,
-                qualifiedNameForTableType);
+        EntityDetail tableTypeEntity = omEntityDao.getEntity(Constants.RELATIONAL_TABLE_TYPE, qualifiedNameForTableType);
 
         if (tableTypeEntity != null) {
             List<Relationship> derivedColumns = omEntityDao.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, tableTypeEntity.getGUID());

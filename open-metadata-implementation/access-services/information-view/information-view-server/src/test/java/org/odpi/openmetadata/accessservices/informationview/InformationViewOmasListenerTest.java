@@ -77,7 +77,7 @@ public class InformationViewOmasListenerTest {
     private static final String CONNECTOR_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.GaianConnectorProvider_type";
     private static final String DATABASE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.databaseTest";
     private static final String INFORMATION_VIEW_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(InformationView)=schema";
-    private static final String DB_SCHEMA_TYPE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(InformationView)=schema_type";
+    private static final String DB_SCHEMA_TYPE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(RelationalDBSchemaType)=schema_type";
     private static final String TABLE_TYPE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(InformationView)=schema::(RelationalTableType)=customer_table_type";
     private static final String TABLE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(InformationView)=schema::(RelationalTable)=customer_table";
     private static final String DERIVED_COLUMN_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(InformationView)=schema::(RelationalTable)=customer_table::(DerivedRelationalColumn)=client_name";

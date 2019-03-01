@@ -20,4 +20,19 @@ public class QualifiedNameUtils {
             return OPEN_BRACKET + typeName + CLOSE_BRACKET + EQUALS + value;
         }
     }
+
+
+    public static String buildQualifiedNameForInformationView(String hostAddress, String databaseName, String schemaName){
+            String endpointQualifiedName = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER, hostAddress);
+            String databaseQualifiedName = QualifiedNameUtils.buildQualifiedName(endpointQualifiedName, Constants.DATA_STORE, databaseName);
+            return QualifiedNameUtils.buildQualifiedName(databaseQualifiedName, Constants.INFORMATION_VIEW, schemaName);
+    }
+
+
+    public static String buildQualifiedNameForRelationalDbSchemaType(String hostAddress, String databaseName, String schemaName){
+            String endpointQualifiedName = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER, hostAddress);
+            String databaseQualifiedName = QualifiedNameUtils.buildQualifiedName(endpointQualifiedName, Constants.DATA_STORE, databaseName);
+            return QualifiedNameUtils.buildQualifiedName(databaseQualifiedName, Constants.RELATIONAL_DB_SCHEMA_TYPE, schemaName + Constants.TYPE_SUFFIX);
+    }
+
 }
