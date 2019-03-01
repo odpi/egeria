@@ -40,10 +40,6 @@ public class Classification implements Serializable {
 
     private Map<String, Object> properties;
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
     public String getName() {
         return name;
     }
