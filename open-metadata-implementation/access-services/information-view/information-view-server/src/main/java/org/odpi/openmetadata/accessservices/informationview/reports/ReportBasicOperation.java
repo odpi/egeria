@@ -182,8 +182,7 @@ public abstract class ReportBasicOperation extends BasicOperation{
 
         addBusinessTerm(reportColumn, derivedColumnEntity);
         addQueryTargets(reportColumn, derivedColumnEntity);
-        String schemaType = Constants.SCHEMA_TYPE;
-        String qualifiedNameForColumnType = buildQualifiedNameForSchemaType(qualifiedNameForParent, schemaType, reportColumn);
+        String qualifiedNameForColumnType = buildQualifiedNameForSchemaType(qualifiedNameForParent, Constants.SCHEMA_TYPE, reportColumn);
 
         addSchemaType(qualifiedNameForColumnType, derivedColumnEntity, Constants.SCHEMA_TYPE);
 
