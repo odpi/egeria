@@ -11,10 +11,11 @@ repositories.
 
 Docker images are not built by default. They can be built manually or via specific jenkins jobs.
 
-To build:
+To build, run the following *from within this same directory* (running it at the root level of the
+project will needlessly build the entire Egeria project first):
 
 ```bash
-$ mvn -Ddocker -Ddocker.repo=odpi -Ddocker.registry=registry-1.docker.io clean deploy
+$ mvn -Ddocker -Ddocker.repo=odpi -Ddocker.registry=localhost:5000 clean install
 ```
 
 In this example:
@@ -26,7 +27,10 @@ In this example:
     There is no default and if this is not supplied the build will exit with an error.
 - `deploy` is needed since the pushing of images is currently bound to this stage of the maven lifecycle.
 - The `-Ddocker.registry=` can be used to specify an alternative container registry. For example, a local or
-    corporate registry, or perhaps a public cloud service. Use the value in the example above for the public docker hub.
+    corporate registry, or perhaps a public cloud service. The value in the example above uses a
+    [local Docker registry](https://docs.docker.com/registry/deploying/); you could also use `registry-1.docker.io`
+    for the public docker hub when you also change the `docker.repo` setting to a resource to which you have write
+    access.
 
 ## Limitations
 
