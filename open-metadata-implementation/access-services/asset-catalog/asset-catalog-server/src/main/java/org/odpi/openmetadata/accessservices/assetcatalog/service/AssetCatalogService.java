@@ -53,10 +53,7 @@ public class AssetCatalogService {
             EntitySummary entitySummary = getEntitySummary(serverName, userId, assetId);
             AssetDescription assetDescription = converter.getAssetDescription(entitySummary);
 
-            List<AssetDescription> assets = new ArrayList<>(1);
-            assets.add(assetDescription);
-
-            response.setAssetDescriptionList(assets);
+            response.setAssetDescriptionList(Collections.singletonList(assetDescription));
         } catch (UserNotAuthorizedException
                 | EntityNotKnownException
                 | InvalidParameterException
@@ -74,13 +71,9 @@ public class AssetCatalogService {
 
         try {
             EntityDetail entityDetail = getEntityDetails(serverName, userId, assetId);
-
             AssetDescription assetDescription = converter.getAssetDescription(entityDetail);
 
-            List<AssetDescription> assets = new ArrayList<>(1);
-            assets.add(assetDescription);
-
-            response.setAssetDescriptionList(assets);
+            response.setAssetDescriptionList(Collections.singletonList(assetDescription));
         } catch (UserNotAuthorizedException
                 | EntityProxyOnlyException
                 | EntityNotKnownException
@@ -293,10 +286,7 @@ public class AssetCatalogService {
             exceptionUtil.captureAssetCatalogExeption(response, e);
         }
 
-        ArrayList<AssetDescription> assets = new ArrayList<>(1);
-        assets.add(assetDescription);
-
-        response.setAssetDescriptionList(assets);
+        response.setAssetDescriptionList(Collections.singletonList(assetDescription));
         return response;
     }
 
@@ -637,14 +627,11 @@ public class AssetCatalogService {
     private List<Relationship> getRelationshipByType(OMRSMetadataCollection metadataCollection, String userId, String entityGUID, String relationshipType) throws UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, TypeDefNotKnownException {
         String typeGuid = getTypeName(userId, relationshipType, metadataCollection);
 
-        List<InstanceStatus> instanceStatuses = new ArrayList<>(1);
-        instanceStatuses.add(InstanceStatus.ACTIVE);
-
         List<Relationship> relationshipsForEntity = metadataCollection.getRelationshipsForEntity(userId,
                 entityGUID,
                 typeGuid,
                 0,
-                instanceStatuses,
+                Collections.singletonList(InstanceStatus.ACTIVE),
                 null,
                 null,
                 SequencingOrder.ANY,

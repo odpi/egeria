@@ -23,32 +23,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class AssetDescription extends Asset implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    private String displayName;
-    private String url;
 
     private Map<String, Object> properties;
     private List<Classification> classifications;
     private List<Relationship> relationships;
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
-
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 
     public Map<String, Object> getProperties() {
         return properties;
