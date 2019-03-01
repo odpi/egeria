@@ -3,12 +3,12 @@
 package org.odpi.openmetadata.accessservices.subjectarea;
 
 /**
- * The SubjectAreaDefinition Open Metadata Access Service (OMAS).
+ * The SubjectArea Open Metadata Access Service (OMAS).
  */
 public interface SubjectArea
 {
     /**
-     * Get the subject area API class
+     * Get the subject area glossary API class - use this class to issue glossary calls.
      * @return subject area glossary API class
      */
    SubjectAreaGlossary getSubjectAreaGlossary();
@@ -32,4 +32,14 @@ public interface SubjectArea
      * @return subject area graph API class
      */
    SubjectAreaGraph getSubjectAreaGraph();
+    /**
+     * Server Name under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @return serverName name of the server
+     */
+    String getServerName();
+    /**
+     * Base url used to issue Rest calls
+     * @return base url
+     */
+    String getOmasServerUrl();
 }
