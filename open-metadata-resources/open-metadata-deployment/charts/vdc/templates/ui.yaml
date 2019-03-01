@@ -58,20 +58,20 @@ spec:
 
     spec:
       containers:
-      - name: ui
-        image: "{{ .Values.image.egeria.repository }}:{{ .Values.image.egeria.tag }}"
-        imagePullPolicy: {{ .Values.image.egeria.pullPolicy }}
-        ports:
-          - containerPort: 8443
-        command:
-          - "/bin/bash"
-          - "-c"
-          - "java -jar /access-services-user-interface.jar"
-        restartPolicy: Always
-        envFrom:
-          - configMapRef:
-              name: {{ include "myapp.fullname" . }}-configmap
-        resources: {}
+        - name: ui
+          image: "{{ .Values.image.egeria.repository }}:{{ .Values.image.egeria.tag }}"
+          imagePullPolicy: {{ .Values.image.egeria.pullPolicy }}
+          ports:
+            - containerPort: 8443
+          command:
+            - "/bin/bash"
+            - "-c"
+            - "java -jar /access-services-user-interface.jar"
+          envFrom:
+            - configMapRef:
+                name: {{ include "myapp.fullname" . }}-configmap
+          resources: {}
+      restartPolicy: Always
 
 status: {}
 ...
