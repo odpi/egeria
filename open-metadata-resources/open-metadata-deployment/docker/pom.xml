@@ -24,6 +24,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>atlas</module>
+        <module>configure</module>
         <module>egeria</module>
         <module>gaian</module>
         <module>kafka-monitor</module>
