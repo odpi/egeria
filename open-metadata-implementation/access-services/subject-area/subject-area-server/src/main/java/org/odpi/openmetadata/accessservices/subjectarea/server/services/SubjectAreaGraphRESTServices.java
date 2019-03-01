@@ -22,8 +22,8 @@ import java.util.stream.Collectors;
 
 
 /**
- * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectAreaDefinition Open Metadata
- * Assess Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
+ * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
+ * Access Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
  */
 
 public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstance
