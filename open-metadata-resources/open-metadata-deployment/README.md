@@ -81,11 +81,11 @@ metadata across multiple repositories (Apache Atlas and IBM IGC) to control acce
 
 ### Downloading the chart's dependencies
 
-Start by downloading the chart's dependencies. To do this, change into the `vdc` subdirectory
-within the `charts` directory referenced as the starting point above and run the following:
+Start by downloading the chart's dependencies. To do this, from the `open-metadata-resources/open-metadata-deployment`
+directory referenced as the starting point above, run the following:
 
 ```bash
-$ helm dependency update
+$ helm dependency update vdc
 Hang tight while we grab the latest from your chart repositories...
 ...Unable to get an update from the "local" chart repository (http://127.0.0.1:8879/charts):
 	Get http://127.0.0.1:8879/charts/index.yaml: dial tcp 127.0.0.1:8879: connect: connection refused
@@ -100,122 +100,77 @@ Deleting outdated charts
 
 ### Configuring environment-specific values
 
-Create a simple YAML file (eg. `vars.yml`) specific to your environment conditions with the following values:
+By default, the chart will deploy everything it requires into your k8s cluster, including Zookeeper, Kafka, etc. You
+may already have such components available, however, that you want to re-use. You can therefore override these so that
+they are not deployed as part of the cluster but simply re-use your existing resources.
+
+To simplify various configuration scenarios, our suggestion would be to put each of these options into its own separate
+YAML file: you can then run the helm installation step passing multiple such files to suit your specific configuration
+requirements.
+
+#### Apache Kafka
+
+The following properties will disable the internally-deployed Kafka (and Zookeeper) components, and instead make use of
+a pre-existing environment:
 
 ```yaml
-igc:
-  host: 192.168.1.200
-  hostname: infosvr.vagrant.ibm.com
-  webport: 9446
-  auth:
-    os:
-      user: vagrant
-      pass: something
-    app:
-      user: isadmin
-      pass: isadmin
-service:
-  externalip: 192.168.1.175
+kafka:
+  internal:
+    enabled: false
+  external:
+    hostname: "my.host.somewhere.com"
+    ip: "1.2.3.4"
+    port: "9092"
 ```
 
-These values capture the following:
+When `kafka.internal.enabled` is set to `true` (as it is by default), the options under `external` are simply ignored.
 
-- `igc.host`: the hostname or IP address of your pre-existing IBM InfoSphere Information Governance Catalog environment's
-    domain (services) tier
-- `igc.hostname`: the hostname of your pre-existing IBM InfoSphere Information Governance Catalog environment's domain
-    (services) tier
-- `igc.webport`: the port on which the domain (services) tier console (and API) is available
-- `igc.auth.os.user`: the OS-level user through which to access your pre-existing IGC environment
-- `igc.auth.os.pass`: the password for the OS-level user on the pre-existing IGC environment
-- `igc.auth.app.user`: the application-level user through which to access the pre-existing IGC environment
-    (typically `isadmin`)
-- `igc.auth.app.pass`: the password for the application-level user on the pre-existing IGC environment
-- `service.externalip`: the hostname or IP address of your kubernetes worker nodes (for NodePort services)
+#### IBM IGC
 
-(The two IP addresses / hosts must be network-accessible to each other, but could be on the same private network as in
-the example above.)
+Because it is licensed commercial software, by default IBM InfoSphere Information Governance Catalog ("IGC") is not
+used as part of the demonstration (ie. it's configuration is disabled). To make use of it, you will need to have a
+pre-existing environment, or have your own (experimental, unsupported) container available with IGC running within it.
+
+These options can then be used to make use of such an environment as part of your setup:
+
+```yaml
+ibmigc:
+  enabled: true
+  internal:
+    enabled: false
+  external:
+    hostname: "infosvr.vagrant.ibm.com"
+    ip: "1.2.3.4"
+    port: "9446"
+```
+
+Crucially, the `igc.enabled` setting must be set to `true` (by default it is `false`, causing IGC configuration to be
+disabled). The remaining options are similar to those for Kafka: setting `igc.internal.enabled` to `true` will make use
+of a container (you specify the image name and repository for this in `vdc/templates/values.yaml`), or if set to `false`
+you use the further variables under `igc.external` to define the network location of your pre-existing IGC environment.
+
+Also check the settings in `vdc/templates/configmap.yaml` to ensure they are set to match your environment.
 
 ### Deploying the demonstration
 
-Navigate back up to the `charts` directory, and run the following command (providing the name of the file you configured
-in the step immediately above, and any unique name you like for the `--name` parameter):
+Run the following command (providing zero or more of the files you configured in the step immediately above, and any
+unique name you like for the `--name` parameter):
 
 ```bash
-$ helm install vdc -f vars.yml --name local
-2019/02/08 09:57:36 Warning: Building values map for chart 'cp-kafka'. Skipped value (map[]) for 'image', as it is not a table.
-NAME:   local
-E0208 09:57:37.967114   82959 portforward.go:303] error copying from remote stream to local connection: readfrom tcp4 127.0.0.1:51672->127.0.0.1:51674: write tcp4 127.0.0.1:51672->127.0.0.1:51674: write: broken pipe
-LAST DEPLOYED: Fri Feb  8 09:57:36 2019
-NAMESPACE: default
-STATUS: DEPLOYED
+$ helm install vdc [-f kafka.yml -f igc.yml ...] --name local
+```
 
-RESOURCES:
-==> v1beta1/PodDisruptionBudget
-NAME                    MIN AVAILABLE  MAX UNAVAILABLE  ALLOWED DISRUPTIONS  AGE
-local-cp-zookeeper-pdb  N/A            1                0                    1s
+This can take some time to run, as the command will not return until:
 
-==> v1/Secret
-NAME            TYPE    DATA  AGE
-local-openldap  Opaque  2     1s
+- All required docker images have been pulled from their repositories (some of which are large, so depending on network
+    connectivity, etc this can take considerable time the very first time it is run)
+- The k8s Job constructs have completed (or timed out) in initializing the various components
 
-==> v1/ConfigMap
-NAME                              DATA  AGE
-local-cp-kafka-jmx-configmap      1     1s
-local-cp-zookeeper-jmx-configmap  1     1s
-local-openldap-env                6     1s
-local-vdc-configmap               28    1s
+You may therefore want to open a second window (or run this command in the background) and something like the following
+to monitor the progress of the install (automatically refreshing the status every second):
 
-==> v1/Service
-NAME                           TYPE       CLUSTER-IP      EXTERNAL-IP  PORT(S)                                                                     AGE
-local-cp-kafka-headless        ClusterIP  None            <none>       9092/TCP                                                                    1s
-local-cp-kafka                 ClusterIP  10.106.142.155  <none>       9092/TCP                                                                    1s
-local-cp-zookeeper-headless    ClusterIP  None            <none>       2888/TCP,3888/TCP                                                           1s
-local-cp-zookeeper             ClusterIP  10.109.88.78    <none>       2181/TCP                                                                    1s
-local-openldap                 ClusterIP  10.97.145.22    <none>       389/TCP,636/TCP                                                             1s
-local-vdc-atlas-service        NodePort   10.107.206.23   <none>       21000:31000/TCP                                                             1s
-local-vdc-egeria-service       NodePort   10.103.23.234   <none>       8080:30080/TCP                                                              1s
-local-vdc-gaian-service        NodePort   10.99.183.202   <none>       6414:30414/TCP                                                              1s
-local-vdc-igcproxy-service     NodePort   10.96.13.54     <none>       8080:30081/TCP                                                              1s
-local-vdc-omrsmonitor-service  NodePort   10.96.170.162   <none>       58080:31080/TCP                                                             1s
-local-vdc-postgresql-service   NodePort   10.103.139.227  <none>       5432:30432/TCP,22:30471/TCP                                                 1s
-local-vdc-ranger-service       NodePort   10.97.32.163    <none>       6080:32080/TCP,6182:30182/TCP,6083:31682/TCP,6183:32006/TCP,3306:31734/TCP  1s
-local-vdc-ui-service           NodePort   10.97.225.131   <none>       8443:30443/TCP                                                              1s
-
-==> v1beta2/Deployment
-NAME            DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
-local-openldap  1        1        1           0          1s
-
-==> v1/Deployment
-NAME                                DESIRED  CURRENT  UP-TO-DATE  AVAILABLE  AGE
-local-vdc-atlas-deployment          1        1        1           0          1s
-local-vdc-egeria-deployment         1        1        1           0          1s
-local-vdc-gaian-deployment          1        1        1           0          1s
-local-vdc-igcproxy-deployment       1        0        0           0          1s
-local-vdc-kafka-monitor-deployment  1        1        1           0          1s
-local-vdc-omrsmonitor-deployment    1        1        1           0          1s
-local-vdc-postgresql-deployment     1        0        0           0          1s
-local-vdc-rangeradmin               1        0        0           0          1s
-local-vdc-ui-deployment             1        0        0           0          1s
-
-==> v1beta1/StatefulSet
-NAME                DESIRED  CURRENT  AGE
-local-cp-kafka      3        1        1s
-local-cp-zookeeper  3        1        1s
-
-==> v1/Pod(related)
-NAME                                                READY  STATUS             RESTARTS  AGE
-local-openldap-55c8cf6cc-tncd7                      0/1    ContainerCreating  0         1s
-local-vdc-atlas-deployment-6b78d7b8d4-qbxf4         0/2    ContainerCreating  0         1s
-local-vdc-egeria-deployment-5cf76f8555-86fqp        0/2    ContainerCreating  0         1s
-local-vdc-gaian-deployment-677d59fbb5-rtcht         0/1    ContainerCreating  0         1s
-local-vdc-igcproxy-deployment-57b675dbc5-7jt2d      0/2    ContainerCreating  0         1s
-local-vdc-kafka-monitor-deployment-cdfdc5975-5cf46  0/1    ContainerCreating  0         1s
-local-vdc-omrsmonitor-deployment-696dd5d778-9wdx4   0/1    Pending            0         1s
-local-vdc-postgresql-deployment-6969bddc64-scvhw    0/2    Pending            0         0s
-local-vdc-rangeradmin-c68dc7c4b-8kw98               0/2    Pending            0         0s
-local-vdc-ui-deployment-699b56b8ff-6b24d            0/1    Pending            0         0s
-local-cp-kafka-0                                    0/2    Pending            0         1s
-local-cp-zookeeper-0                                0/2    Pending            0         0s
+```bash
+$ watch -n 1 "kubectl get pods"
 ```
 
 Note that the value you provide for the `--name` parameter becomes a meaningful prefix to the various components you
@@ -241,7 +196,7 @@ local-vdc-egeria-service        NodePort    10.103.23.234    <none>        8080:
 local-vdc-gaian-service         NodePort    10.99.183.202    <none>        6414:30414/TCP                                                               42s
 local-vdc-igcproxy-service      NodePort    10.96.13.54      <none>        8080:30081/TCP                                                               42s
 local-vdc-omrsmonitor-service   NodePort    10.96.170.162    <none>        58080:31080/TCP                                                              42s
-local-vdc-postgresql-service    NodePort    10.103.139.227   <none>        5432:30432/TCP,22:30471/TCP                                                  42s
+local-vdc-postgresql-service    NodePort    10.103.139.227   <none>        5432:30432/TCP                                                               42s
 local-vdc-ranger-service        NodePort    10.97.32.163     <none>        6080:32080/TCP,6182:30182/TCP,6083:31682/TCP,6183:32006/TCP,3306:31734/TCP   42s
 local-vdc-ui-service            NodePort    10.97.225.131    <none>        8443:30443/TCP                                                               42s
 ```
