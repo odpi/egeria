@@ -74,7 +74,7 @@ spec:
               value:  "true"
             {{ end }}
           resources: {}
-          restartPolicy: Always
+      restartPolicy: Always
 
 status: {}
 ...
