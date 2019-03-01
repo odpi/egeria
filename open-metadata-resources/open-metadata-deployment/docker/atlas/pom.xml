@@ -41,7 +41,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>${docker.repo}/atlas-1773-egeria</repository>
+                    <repository>${docker.repo}/apache-atlas</repository>
                     <tag>${project.version}</tag>
                     <buildArgs>
                     </buildArgs>

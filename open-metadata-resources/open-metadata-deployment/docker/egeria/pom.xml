@@ -41,7 +41,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <repository>${docker.repo}/egeria-egeriavdc</repository>
+                    <repository>${docker.repo}/egeria</repository>
                     <tag>${project.version}</tag>
                     <buildArgs>
                     </buildArgs>
