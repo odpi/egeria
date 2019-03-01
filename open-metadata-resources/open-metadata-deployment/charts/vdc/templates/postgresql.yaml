@@ -67,7 +67,7 @@ spec:
           ports:
             - containerPort: 5432
           resources: {}
-          restartPolicy: Always
+      restartPolicy: Always
 
 status: {}
 ...
