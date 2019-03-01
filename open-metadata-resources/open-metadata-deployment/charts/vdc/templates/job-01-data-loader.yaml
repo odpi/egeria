@@ -33,10 +33,10 @@ spec:
                 cd /samples &&
                 git init egeria &&
                 cd egeria &&
-                git remote add origin https://github.com/cmgrote/egeria.git &&
+                git remote add origin https://github.com/odpi/egeria.git &&
                 git config core.sparsecheckout true &&
                 echo 'open-metadata-resources/open-metadata-deployment/sample-data/*' >> .git/info/sparse-checkout &&
-                git pull --depth=1 origin containers
+                git pull --depth=1 origin master
           volumeMounts:
             - mountPath: /samples
               name: samples-volume
