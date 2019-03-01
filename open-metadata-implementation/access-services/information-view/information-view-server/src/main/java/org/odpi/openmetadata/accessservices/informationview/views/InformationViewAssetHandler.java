@@ -28,9 +28,39 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
     }
 
 
-    public InformationViewAsset call() throws TypeErrorException, InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, TypeDefNotKnownException {
-        InformationViewAsset informationViewAsset = new InformationViewAsset();
+    public InformationViewAsset call() throws TypeErrorException, InvalidParameterException,
+                                              StatusNotSupportedException, PropertyErrorException,
+                                              EntityNotKnownException, FunctionNotSupportedException,
+                                              PagingErrorException, ClassificationErrorException,
+                                              UserNotAuthorizedException, RepositoryErrorException,
+                                              TypeDefNotKnownException {
 
+        String qualifiedNameForRelationalDbSchemaType =
+                QualifiedNameUtils.buildQualifiedNameForRelationalDbSchemaType(event.getTableSource().getNetworkAddress().split(":")[0], event.getTableSource().getDatabaseName(), event.getTableSource().getSchemaName());
+        EntityDetail relationalDbSchemaType = omEntityDao.getEntity(Constants.RELATIONAL_DB_SCHEMA_TYPE,
+                qualifiedNameForRelationalDbSchemaType);
+
+        if (relationalDbSchemaType == null) {
+            return createInformationView();
+        }
+        InformationViewAsset informationViewAsset = new InformationViewAsset();
+        informationViewAsset.setRelationalDbSchemaType(relationalDbSchemaType);
+        return informationViewAsset;
+
+    }
+
+    private InformationViewAsset createInformationView() throws TypeErrorException,
+                                                                InvalidParameterException,
+                                                                StatusNotSupportedException,
+                                                                PropertyErrorException,
+                                                                EntityNotKnownException,
+                                                                FunctionNotSupportedException,
+                                                                PagingErrorException,
+                                                                ClassificationErrorException,
+                                                                UserNotAuthorizedException,
+                                                                RepositoryErrorException,
+                                                                TypeDefNotKnownException {
+        InformationViewAsset informationViewAsset = new InformationViewAsset();
         String qualifiedNameForSoftwareServer = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER, event.getTableSource().getNetworkAddress().split(":")[0]);
         InstanceProperties softwareServerProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSoftwareServer)
@@ -122,7 +152,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 Constants.INFORMATION_VIEW_OMAS_NAME,
                 new InstanceProperties());
 
-        String qualifiedNameForDbSchemaType = qualifiedNameForInformationView +  Constants.TYPE_SUFFIX;
+        String qualifiedNameForDbSchemaType = QualifiedNameUtils.buildQualifiedName(qualifiedNameForDataStore, Constants.RELATIONAL_DB_SCHEMA_TYPE, event.getTableSource().getSchemaName() + Constants.TYPE_SUFFIX);
         InstanceProperties dbSchemaTypeProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDbSchemaType)
                 .withStringProperty(Constants.DISPLAY_NAME, event.getTableSource().getSchemaName() + Constants.TYPE_SUFFIX)
@@ -140,7 +170,6 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 relationalDbSchemaType.getGUID(),
                 Constants.INFORMATION_VIEW_OMAS_NAME,
                 new InstanceProperties());
-
         return informationViewAsset;
     }
 
