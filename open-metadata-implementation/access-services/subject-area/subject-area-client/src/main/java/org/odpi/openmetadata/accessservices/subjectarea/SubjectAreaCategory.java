@@ -54,7 +54,9 @@ public interface SubjectAreaCategory
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-      Category getCategoryByGuid(String serverName, String userId, String guid) throws MetadataServerUncontactableException, UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnexpectedResponseException ;
+      Category getCategoryByGuid(String serverName, String userId, String guid) throws MetadataServerUncontactableException,
+              UnrecognizedGUIDException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException,
+              UnexpectedResponseException;
     /**
      * Replace a Category. This means to override all the existing attributes with the supplied attributes.
      * <p>
@@ -98,7 +100,7 @@ public interface SubjectAreaCategory
      * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
      * @throws FunctionNotSupportedException        Function not supported
      * @throws InvalidParameterException            one of the parameters is null or invalid.
-     *
+     * @throws FunctionNotSupportedException   Function not supported
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -108,7 +110,7 @@ public interface SubjectAreaCategory
                                                                                                                     FunctionNotSupportedException,
                                                                                                                     InvalidParameterException,
                                                                                                                     MetadataServerUncontactableException ;
-       /**
+     /**
      * Delete a Category instance
      *
      * A delete (also known as a soft delete) means that the category instance will exist in a deleted state in the repository after the delete operation. This means
@@ -123,7 +125,7 @@ public interface SubjectAreaCategory
      * @throws FunctionNotSupportedException   Function not supported this indicates that a soft delete was issued but the repository does not support it.
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws EntityNotDeletedException a delete was issued but the category was not deleted.
-     *
+      * @throws FunctionNotSupportedException   Function not supported
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
@@ -148,6 +150,7 @@ public interface SubjectAreaCategory
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws GUIDNotPurgedException a hard delete was issued but the category was not purged
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws FunctionNotSupportedException Function not supported.
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
@@ -157,6 +160,7 @@ public interface SubjectAreaCategory
       void purgeCategory(String serverName, String userId,String guid) throws InvalidParameterException,
                                                                                     UserNotAuthorizedException,
                                                                                     MetadataServerUncontactableException,
+                                                                                    FunctionNotSupportedException,
                                                                                     GUIDNotPurgedException,
                                                                                     UnrecognizedGUIDException,
                                                                                     UnexpectedResponseException;
@@ -388,17 +392,19 @@ public interface SubjectAreaCategory
      * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws GUIDNotPurgedException a hard delete was issued but the subjectAreaDefinition was not purged
      * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     * @throws FunctionNotSupportedException Function not supported
      *
      * Client library Exceptions
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-      void purgeSubjectAreaDefinition(String serverName, String userId,String guid)  throws InvalidParameterException,
+    void purgeSubjectAreaDefinition(String serverName, String userId,String guid)  throws InvalidParameterException,
             UserNotAuthorizedException,
             MetadataServerUncontactableException,
             GUIDNotPurgedException,
             UnrecognizedGUIDException,
+            FunctionNotSupportedException,
             UnexpectedResponseException;
     /**
      * Restore a SubjectAreaDefinition
