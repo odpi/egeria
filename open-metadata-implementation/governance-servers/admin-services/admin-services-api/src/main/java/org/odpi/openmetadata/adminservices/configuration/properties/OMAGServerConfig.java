@@ -95,7 +95,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private StewardshipServicesConfig stewardshipServicesConfig = null;
     private SecuritySyncConfig        securitySyncConfig        = null;
     private List<String>              auditTrail                = null;
-    private VirtualizationConfig virtualizationConfig = null;
+    private VirtualizationConfig      virtualizationConfig      = null;
 
 
     /**

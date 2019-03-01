@@ -47,9 +47,6 @@ public class KafkaVirtualiser{
     @Autowired
     private GaianQueryConstructor gaianQueryConstructor;
 
-    //TODO: Load the Access Service Configuration from somewhere
-    private AccessServiceConfig virtualiserKafkaConfig;
-
     private KafkaOpenMetadataTopicConnector inTopicKafkaConnector;
     private KafkaOpenMetadataTopicConnector outTopicKafkaConnector;
 
@@ -77,54 +74,5 @@ public class KafkaVirtualiser{
         thread.start();
 
     }
-
-    @PostConstruct
-    public void initializeKafkaConnector() {
-        final String actionDescription = "initialize in and out topic Kafka connectors";
-        try {
-            inTopicKafkaConnector = initializeTopicConnector(virtualiserKafkaConfig.getAccessServiceInTopic());
-            inTopicKafkaConnector.start();
-        } catch (ConnectorCheckedException e){
-            logger.error("Cannot initialize the in-topic connector", e);
-        } catch (NullPointerException e) {
-            logger.error("Configuration is invalid!", e);
-        }
-
-        try {
-            outTopicKafkaConnector = initializeTopicConnector(virtualiserKafkaConfig.getAccessServiceOutTopic());
-            outTopicKafkaConnector.start();
-        } catch (ConnectorCheckedException e){
-            logger.error("Cannot initialize the out-topic connector", e);
-        } catch (NullPointerException e) {
-            logger.error("Configuration is invalid!", e);
-        }
-    }
-
-    private KafkaOpenMetadataTopicConnector initializeTopicConnector(Connection topicConnection) {
-        if (topicConnection != null){
-            try {
-                ConnectorBroker connectorBroker = new ConnectorBroker();
-                KafkaOpenMetadataTopicConnector topicConnector = (KafkaOpenMetadataTopicConnector) connectorBroker.getConnector(topicConnection);
-                return topicConnector;
-            } catch (Throwable error) {
-                String methodName = "getTopicConnector";
-                OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
-                String errorMessage = errorCode.getErrorMessageId()
-                        + errorCode.getFormattedErrorMessage("getTopicConnector");
-
-                throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction(),
-                        error);
-
-            }
-        }
-        return null;
-    }
-
-
 
 }
