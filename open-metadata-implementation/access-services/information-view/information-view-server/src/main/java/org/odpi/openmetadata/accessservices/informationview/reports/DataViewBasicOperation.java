@@ -89,9 +89,8 @@ public abstract class DataViewBasicOperation extends BasicOperation{
      */
     private void addDataViewTable(String qualifiedNameForParent, String parentGuid, DataViewTable dataViewTable) throws InvalidParameterException, PropertyErrorException, TypeDefNotKnownException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
 
-        String normalizedId = dataViewTable.getId().replace(".", ":");
-        normalizedId = normalizedId.replace("_", ":");
-        String qualifiedNameForDataViewTable = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.SCHEMA_ATTRIBUTE, normalizedId);
+
+        String qualifiedNameForDataViewTable = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.SCHEMA_ATTRIBUTE,  dataViewTable.getId());
         InstanceProperties sectionProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataViewTable)
                 .withStringProperty(Constants.ATTRIBUTE_NAME, dataViewTable.getName())
@@ -103,7 +102,7 @@ public abstract class DataViewBasicOperation extends BasicOperation{
         EntityDetail dataViewTableEntity = createSchemaType(Constants.SCHEMA_ATTRIBUTE,
                 qualifiedNameForDataViewTable, sectionProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
 
-        String qualifiedNameForDataViewTableType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.COMPLEX_SCHEMA_TYPE, normalizedId + Constants.TYPE_SUFFIX);
+        String qualifiedNameForDataViewTableType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.COMPLEX_SCHEMA_TYPE,  dataViewTable.getId() + Constants.TYPE_SUFFIX);
         EntityDetail schemaTypeEntity = addSchemaType(qualifiedNameForDataViewTableType, dataViewTableEntity, Constants.COMPLEX_SCHEMA_TYPE, null);
         addElements(qualifiedNameForParent, schemaTypeEntity.getGUID(), dataViewTable.getElements());
     }
@@ -129,9 +128,8 @@ public abstract class DataViewBasicOperation extends BasicOperation{
      */
     protected EntityDetail addDataViewColumn(String parentQualifiedName, String parentGuid, DataViewColumn dataViewColumn) throws InvalidParameterException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
 
-        String normalizedId = dataViewColumn.getId().replace(".", ":");
-        normalizedId = normalizedId.replace("_", ":");
-        String qualifiedNameForColumn = QualifiedNameUtils.buildQualifiedName(parentQualifiedName, Constants.DERIVED_SCHEMA_ATTRIBUTE,  normalizedId);
+
+        String qualifiedNameForColumn = QualifiedNameUtils.buildQualifiedName(parentQualifiedName, Constants.DERIVED_SCHEMA_ATTRIBUTE,  dataViewColumn.getId());
 
 
         InstanceProperties columnProperties = new EntityPropertiesBuilder()
@@ -153,7 +151,7 @@ public abstract class DataViewBasicOperation extends BasicOperation{
         InstanceProperties typeProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.DATA_TYPE, dataViewColumn.getDataType())
                 .build();
-        String qualifiedNameForColumnType = QualifiedNameUtils.buildQualifiedName(parentQualifiedName, Constants.PRIMITIVE_SCHEMA_TYPE,normalizedId +Constants.TYPE_SUFFIX );
+        String qualifiedNameForColumnType = QualifiedNameUtils.buildQualifiedName(parentQualifiedName, Constants.PRIMITIVE_SCHEMA_TYPE,dataViewColumn.getId() + Constants.TYPE_SUFFIX );
         addSchemaType(qualifiedNameForColumnType, dataViewColumnEntity, Constants.PRIMITIVE_SCHEMA_TYPE, typeProperties);
 
         return dataViewColumnEntity;
