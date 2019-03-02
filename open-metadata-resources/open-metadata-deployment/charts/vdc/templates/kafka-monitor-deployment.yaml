@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - image: "{{ .Values.image.kafkamonitor.repository }}:{{ .Values.image.kafkamonitor.tag }}"
-        ImagePullPolicy: "{{ .Values.image.kafkamonitor.pullPolicy }}"
+        imagePullPolicy: "{{ .Values.image.kafkamonitor.pullPolicy }}"
         name: {{ include "myapp.fullname" . }}-kafka-monitor
         resources: {}
         envFrom:
