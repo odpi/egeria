@@ -25,19 +25,13 @@ public class GremlinConnector {
 
     private static final Logger log = LoggerFactory.getLogger(GremlinConnector.class);
 
-    @Value("classpath:conf//janusgraph-berkeleyje-lucene.properties")
-    Resource resourceFile;
-
-    private String storageDirectory ;
-
     public GremlinConnector(){
 
-        log.error(this.getClass().getClassLoader().getResource("application.properties").getFile());
+        String porpertiesFile = this.getClass().getClassLoader().getResource("janusgraph-berkeleyje-lucene.properties").getFile();
 
-
-
-        JanusGraph graph = JanusGraphFactory.open("application2.properties");
+        JanusGraph graph = JanusGraphFactory.open(porpertiesFile);
         GraphTraversalSource g = graph.traversal();
+
         if (g.V().count().next() == 0) {
             // load the schema and graph data
             GraphOfTheGodsFactory.load(graph);

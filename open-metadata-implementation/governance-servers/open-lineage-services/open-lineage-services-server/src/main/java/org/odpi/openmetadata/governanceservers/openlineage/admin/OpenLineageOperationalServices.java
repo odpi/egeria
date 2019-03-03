@@ -2,15 +2,15 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.admin;
 
-import auditlog.OpenLineageAuditCode;
-import listeners.ALOutTopicListener;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.connectors.GremlinConnector;
+import org.odpi.openmetadata.governanceservers.openlineage.listeners.ALOutTopicListener;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;

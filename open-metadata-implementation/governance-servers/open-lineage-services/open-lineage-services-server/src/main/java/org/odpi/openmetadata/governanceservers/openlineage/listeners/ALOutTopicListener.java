@@ -1,12 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package listeners;
+package org.odpi.openmetadata.governanceservers.openlineage.listeners;
 
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
-import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,14 +12,13 @@ import org.slf4j.LoggerFactory;
 public class ALOutTopicListener implements OpenMetadataTopicListener {
 
     private static final Logger log = LoggerFactory.getLogger(ALOutTopicListener.class);
-    private OMRSInstanceEventProcessor instanceEventProcessor;
 
     private final OMRSAuditLog auditLog;
 
-    public ALOutTopicListener(OMRSInstanceEventProcessor instanceEventProcessor, OMRSAuditLog auditLog) {
+    public ALOutTopicListener(OMRSAuditLog auditLog) {
 
         this.auditLog = auditLog;
-        this.instanceEventProcessor = instanceEventProcessor;
+
     }
 
     /**
@@ -30,7 +27,8 @@ public class ALOutTopicListener implements OpenMetadataTopicListener {
      */
     @Override
     public void processEvent(String eventAsString) {
-        log.info("Event received by Open Lineage Sevices");
+
+        log.info(eventAsString);
     }
 
 
