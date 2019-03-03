@@ -458,7 +458,7 @@ public class Reference extends ObjectPrinter {
     public Identity getIdentity(IGCRestClient igcrest) {
         if (this.identity == null) {
             this.populateContext(igcrest);
-            this.identity = new Identity(this._context, this.getType(), this.getName());
+            this.identity = new Identity(this._context, this.getType(), this.getName(), this.getId());
         }
         return this.identity;
     }
