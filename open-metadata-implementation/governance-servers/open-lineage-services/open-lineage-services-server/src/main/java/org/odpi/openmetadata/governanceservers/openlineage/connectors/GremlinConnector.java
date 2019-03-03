@@ -10,6 +10,7 @@ import org.janusgraph.core.JanusGraphFactory;
 import org.janusgraph.core.attribute.Geo;
 import org.janusgraph.core.attribute.Geoshape;
 import org.janusgraph.example.GraphOfTheGodsFactory;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,5 +41,9 @@ public class GremlinConnector {
         log.info(saturnProps.toString());
         List<Edge> places = g.E().has("place", Geo.geoWithin(Geoshape.circle(37.97, 23.72, 50))).toList();
         log.info(places.toString());
+    }
+
+    public void addOmrsInstanceEvent(OMRSInstanceEvent omrsInstanceEvent) {
+        log.info(omrsInstanceEvent.getEntity().getProperties().getInstanceProperties().get("qualifiedName").toString());
     }
 }

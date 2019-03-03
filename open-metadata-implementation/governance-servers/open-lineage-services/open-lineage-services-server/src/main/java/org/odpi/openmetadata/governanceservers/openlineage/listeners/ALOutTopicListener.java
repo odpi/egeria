@@ -3,15 +3,13 @@
 package org.odpi.openmetadata.governanceservers.openlineage.listeners;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.governanceservers.openlineage.events.NewEntityEvent;
-import org.odpi.openmetadata.governanceservers.openlineage.events.OpenLineageEvent;
-import org.odpi.openmetadata.governanceservers.openlineage.events.OpenLineageHeader;
+import org.odpi.openmetadata.governanceservers.openlineage.connectors.GremlinConnector;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
+import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,9 +19,11 @@ public class ALOutTopicListener implements OpenMetadataTopicListener {
     private static final Logger log = LoggerFactory.getLogger(ALOutTopicListener.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final OMRSAuditLog auditLog;
+    private GremlinConnector gremlinConnector;
 
-    public ALOutTopicListener(OMRSAuditLog auditLog) {
+    public ALOutTopicListener(GremlinConnector gremlinBuilder, OMRSAuditLog auditLog) {
 
+        this.gremlinConnector = gremlinBuilder;
         this.auditLog = auditLog;
 
     }
@@ -34,11 +34,11 @@ public class ALOutTopicListener implements OpenMetadataTopicListener {
      */
     @Override
     public void processEvent(String eventAsString) {
-
-        OMRSInstanceEvent event = null;
+        OMRSEventV1 event = null;
         try {
-            event = OBJECT_MAPPER.readValue(eventAsString, OMRSInstanceEvent.class);
+            event = OBJECT_MAPPER.readValue(eventAsString, OMRSEventV1.class);
         } catch (Exception e) {
+            e.printStackTrace();
             OpenLineageErrorCode auditCode = OpenLineageErrorCode.PARSE_EVENT;
 
             auditLog.logException("processEvent",
@@ -54,7 +54,8 @@ public class ALOutTopicListener implements OpenMetadataTopicListener {
         if (event != null) {
             try {
                 log.info("Started processing OpenLineageEvent");
-                event.getEntity().getProperties().getInstanceProperties().get("qualifiedName");
+                OMRSInstanceEvent omrsInstanceEvent = new OMRSInstanceEvent(event);
+                gremlinConnector.addOmrsInstanceEvent(omrsInstanceEvent);
             } catch (Exception e) {
                 log.error("Exception processing event from in topic", e);
                 OpenLineageErrorCode auditCode = OpenLineageErrorCode.PROCESS_EVENT_EXCEPTION;

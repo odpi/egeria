@@ -37,6 +37,7 @@ public class OpenLineageOperationalServices {
 
     private OMRSAuditLog auditLog;
     private OpenMetadataTopicConnector assetLineageOutTopicConnector;
+    private GremlinConnector gremlinConnector;
 
 
     /**
@@ -79,6 +80,7 @@ public class OpenLineageOperationalServices {
 
 
             this.auditLog = auditLog;
+            this.gremlinConnector = new GremlinConnector();
 
             Connection assetLineageOutTopicConnection = openLineageConfig.getAssetLineageOutTopicConnection();
             String ALOutTopicName = getTopicName(assetLineageOutTopicConnection);
@@ -86,12 +88,11 @@ public class OpenLineageOperationalServices {
             assetLineageOutTopicConnector = initializeOpenLineageTopicConnector(assetLineageOutTopicConnection);
 
             if (assetLineageOutTopicConnector != null) {
-                OpenMetadataTopicListener ALOutTopicListener = new ALOutTopicListener(auditLog);
+                OpenMetadataTopicListener ALOutTopicListener = new ALOutTopicListener(gremlinConnector, auditLog);
                 this.assetLineageOutTopicConnector.registerListener(ALOutTopicListener);
                 startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, ALOutTopicName, assetLineageOutTopicConnector);
             }
 
-            GremlinConnector gremlinConnector = new GremlinConnector();
 
             auditCode = OpenLineageAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
