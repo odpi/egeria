@@ -6,7 +6,6 @@ import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicConnector;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
@@ -46,9 +45,6 @@ public class KafkaVirtualiser{
 
     @Autowired
     private GaianQueryConstructor gaianQueryConstructor;
-
-    private KafkaOpenMetadataTopicConnector inTopicKafkaConnector;
-    private KafkaOpenMetadataTopicConnector outTopicKafkaConnector;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 

@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - image: "{{ .Values.image.gaian.repository }}:{{ .Values.image.gaian.tag }}"
-        ImagePullPolicy: "{{ .Values.image.gaian.pullPolicy }}"
+        imagePullPolicy: "{{ .Values.image.gaian.pullPolicy }}"
         name: {{ .Chart.Name }}-gaian
         ports:
         - containerPort: 6414
