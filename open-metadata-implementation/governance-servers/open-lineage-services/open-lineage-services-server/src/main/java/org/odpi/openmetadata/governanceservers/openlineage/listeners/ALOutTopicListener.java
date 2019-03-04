@@ -9,6 +9,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
 import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,8 +56,16 @@ public class ALOutTopicListener implements OpenMetadataTopicListener {
             try {
                 log.info("Started processing OpenLineageEvent");
                 OMRSInstanceEvent omrsInstanceEvent = new OMRSInstanceEvent(event);
-                gremlinConnector.addOmrsInstanceEvent(omrsInstanceEvent);
-            } catch (Exception e) {
+                OMRSInstanceEventType instanceEventType = omrsInstanceEvent.getInstanceEventType();
+                switch (instanceEventType) {
+                    case NEW_ENTITY_EVENT:
+                        gremlinConnector.addNewEntity(omrsInstanceEvent);
+                        break;
+                    case NEW_RELATIONSHIP_EVENT:
+                        gremlinConnector.addNewRelationship(omrsInstanceEvent);
+                        break;
+                }
+            }catch (Exception e) {
                 log.error("Exception processing event from in topic", e);
                 OpenLineageErrorCode auditCode = OpenLineageErrorCode.PROCESS_EVENT_EXCEPTION;
 

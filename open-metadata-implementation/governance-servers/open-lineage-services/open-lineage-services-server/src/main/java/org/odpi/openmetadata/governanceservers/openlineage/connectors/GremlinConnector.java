@@ -3,47 +3,68 @@
 package org.odpi.openmetadata.governanceservers.openlineage.connectors;
 
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
-import org.apache.tinkerpop.gremlin.structure.Edge;
+import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.janusgraph.core.JanusGraph;
-import org.janusgraph.core.JanusGraphFactory;
-import org.janusgraph.core.attribute.Geo;
-import org.janusgraph.core.attribute.Geoshape;
-import org.janusgraph.example.GraphOfTheGodsFactory;
+import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
+import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.env.Environment;
 
-import javax.annotation.Resource;
-import java.io.File;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
 
 public class GremlinConnector {
 
 
     private static final Logger log = LoggerFactory.getLogger(GremlinConnector.class);
+    private Graph graph;
+    private GraphTraversalSource g;
 
-    public GremlinConnector(){
-
-        String porpertiesFile = this.getClass().getClassLoader().getResource("janusgraph-berkeleyje-lucene.properties").getFile();
-
-        JanusGraph graph = JanusGraphFactory.open(porpertiesFile);
-        GraphTraversalSource g = graph.traversal();
-
-        if (g.V().count().next() == 0) {
-            // load the schema and graph data
-            GraphOfTheGodsFactory.load(graph);
-        }
-        Map<Object, Object> saturnProps = g.V().has("name", "saturn").valueMap(true).next();
-        log.info(saturnProps.toString());
-        List<Edge> places = g.E().has("place", Geo.geoWithin(Geoshape.circle(37.97, 23.72, 50))).toList();
-        log.info(places.toString());
+    public GremlinConnector() {
+        this.graph = TinkerGraph.open();
+        this.g = graph.traversal();
     }
 
-    public void addOmrsInstanceEvent(OMRSInstanceEvent omrsInstanceEvent) {
-        log.info(omrsInstanceEvent.getEntity().getProperties().getInstanceProperties().get("qualifiedName").toString());
+    public void addNewEntity(OMRSInstanceEvent omrsInstanceEvent) {
+        InstancePropertyValue instancePropertyValue = omrsInstanceEvent.getEntity().getProperties().getInstanceProperties().get("qualifiedName");
+        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) instancePropertyValue;
+        String qualifiedName = primitivePropertyValue.getPrimitiveValue().toString();
+
+        String GUID = omrsInstanceEvent.getEntity().getGUID();
+
+        Vertex v1 = g.addV(GUID).next();
+        v1.property("qualifiedName", qualifiedName);
+        v1 = g.V().hasLabel(GUID).next();
+
+    }
+
+    public void addNewRelationship(OMRSInstanceEvent omrsInstanceEvent) {
+        EntityProxy proxy1 = omrsInstanceEvent.getRelationship().getEntityOneProxy();
+        EntityProxy proxy2 = omrsInstanceEvent.getRelationship().getEntityTwoProxy();
+
+        String GUID1 = proxy1.getGUID();
+        String GUID2 = proxy2.getGUID();
+
+        Vertex v1 = g.V().hasLabel(GUID1).next();
+        Vertex v2 = g.V().hasLabel(GUID2).next();
+        v1.addEdge("Semantic Relationship", v2);
+
+        File file = new File("lineageGraph.txt");
+
+        FileOutputStream fos = null;
+
+        try {
+            fos = new FileOutputStream(file, true);
+            try {
+                GraphSONWriter.build().create().writeGraph(fos, graph);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
