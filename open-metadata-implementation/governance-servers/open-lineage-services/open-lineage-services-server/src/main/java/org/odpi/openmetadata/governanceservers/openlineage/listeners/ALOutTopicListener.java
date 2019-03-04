@@ -64,6 +64,12 @@ public class ALOutTopicListener implements OpenMetadataTopicListener {
                     case NEW_RELATIONSHIP_EVENT:
                         gremlinConnector.addNewRelationship(omrsInstanceEvent);
                         break;
+                    case UPDATED_ENTITY_EVENT:
+                        gremlinConnector.exportGraph();
+                        break;
+                    case UPDATED_RELATIONSHIP_EVENT:
+                        gremlinConnector.exportGraph();
+                        break;
                 }
             }catch (Exception e) {
                 log.error("Exception processing event from in topic", e);
