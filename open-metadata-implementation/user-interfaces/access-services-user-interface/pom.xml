@@ -167,14 +167,12 @@
             <id>user-interface</id>
             <activation>
                 <!--
-                IMPORTANT!!!
-                activation with jdk is used because setting activeByDefault true is ignored if other profile is activated
-                https://issues.apache.org/jira/browse/MNG-3229
-
-                To deactivate this profile, use:
-                mvn clean install -P !user-interface
-                -->
-                <jdk>[1.8,*)</jdk>
+                To skip UI (deactivate this profile) specify the skipUI system property
+                mvn clean install -DskipUI
+		-->
+                <property>
+	            <name>!skipUI</name>
+		</property>
             </activation>
             <build>
                 <plugins>
