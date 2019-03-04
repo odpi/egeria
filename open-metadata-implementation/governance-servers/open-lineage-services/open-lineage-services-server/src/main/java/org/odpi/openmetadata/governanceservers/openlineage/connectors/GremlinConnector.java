@@ -5,6 +5,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.connectors;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSource;
 import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
+import org.apache.tinkerpop.gremlin.structure.io.graphml.GraphMLWriter;
 import org.apache.tinkerpop.gremlin.structure.io.graphson.GraphSONWriter;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -34,9 +35,11 @@ public class GremlinConnector {
         String qualifiedName = primitivePropertyValue.getPrimitiveValue().toString();
 
         String GUID = omrsInstanceEvent.getEntity().getGUID();
+        String typeDefName = omrsInstanceEvent.getEntity().getType().getTypeDefName();
 
         Vertex v1 = g.addV(GUID).next();
         v1.property("qualifiedName", qualifiedName);
+        v1.property("typeDefName", typeDefName);
         v1 = g.V().hasLabel(GUID).next();
 
     }
@@ -48,18 +51,26 @@ public class GremlinConnector {
         String GUID1 = proxy1.getGUID();
         String GUID2 = proxy2.getGUID();
 
+        log.info(GUID1);
+        log.info(GUID2);
+
         Vertex v1 = g.V().hasLabel(GUID1).next();
         Vertex v2 = g.V().hasLabel(GUID2).next();
-        v1.addEdge("Semantic Relationship", v2);
 
-        File file = new File("lineageGraph.txt");
+
+        v1.addEdge("Business Term", v2);
+    }
+
+    public void exportGraph() {
+        File file = new File("lineageGraph.graphml");
 
         FileOutputStream fos = null;
 
         try {
             fos = new FileOutputStream(file, true);
             try {
-                GraphSONWriter.build().create().writeGraph(fos, graph);
+                GraphMLWriter.build().create().writeGraph(fos, graph);
+                log.info("Graph saved to lineageGraph.graphml");
             } catch (IOException e) {
                 e.printStackTrace();
             }
