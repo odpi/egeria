@@ -92,13 +92,44 @@ public class Identity {
      */
     public String getRid() { return this.rid; }
 
+    /**
+     * Indicates whether the asset type requires its Repository ID (RID) in order to be unique. In other words, the name
+     * and context of the asset type are insufficient to make the identity unique.
+     *
+     * @param assetType the IGC asset type to check
+     * @return boolean
+     */
+    private static final boolean requiresRidToBeUnique(String assetType) {
+        return (assetType.equals("data_connection"));
+    }
+
+    /**
+     * Composes a unique identity string from the provided parameters.
+     *
+     * @param sb the object into which to compose the string
+     * @param type the IGC asset type
+     * @param name the name of the IGC asset
+     * @param id the Repository ID (RID) of the IGC asset
+     */
+    private static final void composeString(StringBuilder sb, String type, String name, String id) {
+        sb.append("(");
+        sb.append(type);
+        sb.append(")=");
+        sb.append(name);
+        if (requiresRidToBeUnique(type)) {
+            sb.append("_");
+            sb.append(id);
+        }
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (Reference ref : context) {
-            sb.append("(" + ref.getType() + ")=" + ref.getName() + "::");
+            composeString(sb, ref.getType(), ref.getName(), ref.getId());
+            sb.append("::");
         }
-        sb.append("(" + assetType + ")=" + assetName);
+        composeString(sb, assetType, assetName, rid);
         return sb.toString();
     }
 
