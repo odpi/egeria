@@ -41,15 +41,10 @@ spec:
             - mountPath: /samples
               name: samples-volume
         - name: wait-for-db
-          image: busybox
-          command:
-            - "sh"
-            - "-c"
-            - >
-                until nslookup {{ include "myapp.fullname" . }}-postgresql-service; do
-                echo waiting for {{ include "myapp.fullname" . }}-postgresql-service;
-                sleep 2;
-                done;
+          image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
+          env:
+            - name: SERVICE
+              value: {{ include "myapp.fullname" . }}-postgresql-service
       containers:
         - name: db-clients
           image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
