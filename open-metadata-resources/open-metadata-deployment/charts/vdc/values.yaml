@@ -15,7 +15,7 @@ service:
   # well be non standard and services will be at http://<external address of a workernode>:<randomport>
   # Review output from 'kubectl get services' to see the external port used
   type: NodePort
-  externalName:  default.svc.cluster.local
+  externalName: default.svc.cluster.local
 
   loadbalancer:
     enabled: false
@@ -35,6 +35,7 @@ service:
   nodeport:
     egeria: 30080
     atlas: 31000
+    ibmigc: 32446
     igcproxy: 30081
     gaian: 30414
     postgresql: 30432
@@ -46,42 +47,21 @@ service:
     externalip: 10.10.1.30
     # KAFKA is not exposed externally (issues in chart, complexity)
 
-# IGC configuration
-igc:
-  host: 158.176.66.119
-  hostname: igc.openmetadata.ibmcloud.com
-  webport: 9446
-  kafkaport: 59092
-  auth:
-    os:
-      user: ibm
-      pass: letme1n2
-    app:
-      user: isadmin
-      pass: isadmin
-
 # Debug support for Egeria - set to true to enable JVM debug for Egeria images on port 5005
 debug:
-    egeriaJVM: false
+  egeriaJVM: false
 
 # Logging level - affects all spring components by setting LOG_LEVEL_ROOT. Default to no DEBUG - Auditlog only
 logging:
-    level: NONE
+  level: NONE
 
 
 # The following section defines all of the DOCKER images being used by this
 # chart. Normally they should be left as is, but are exposed here in case the
 # user wishes to extend.
-
-# Images ending -init are typically containers that perform configuration,
-# often in the same container as the component they are configuring
-
-# Note that sometimes the same docker image is used for multiple purposes - for example
-# Both the Egeria UI, and Egeria core use the same docker image -- for now
-
 image:
   ranger:
-    repository: planetf1/ranger-admin-egeriavdc
+    repository: localhost:5000/odpi/ranger-admin-egeriavdc
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
 
@@ -91,74 +71,95 @@ image:
     pullPolicy: Always
 
   egeria:
-    repository: planetf1/egeria-egeriavdc
+    repository: localhost:5000/odpi/egeria
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
 
   gaian:
-    repository: planetf1/gaian-egeriavdc
+    repository: localhost:5000/odpi/gaian-egeriavdc
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
 
   atlas:
-    repository: planetf1/atlas-1773-egeria
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
-
-  atlasinit:
-    repository: planetf1/atlas-init-egeria
+    repository: localhost:5000/odpi/apache-atlas
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
 
   kafkamonitor:
-    repository: planetf1/kafka-monitor-egeriavdc
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
-
-  egeriainit:
-    repository: planetf1/egeria-init-egeria
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
-
-  igcproxyinit:
-    repository: planetf1/igcproxy-init-egeriavdc
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
-
-  postgresqlinit:
-    repository: planetf1/postgresql-init-egeria
+    repository: localhost:5000/odpi/kafka-monitor-egeriavdc
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
 
   postgresql:
-    repository: planetf1/postgresql-egeriavdc
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
+    repository: postgres
+    tag: alpine
+    pullPolicy: IfNotPresent
 
   omrsmonitor:
-    repository: planetf1/omrsmonitor-egeriavdc
+    repository: localhost:5000/odpi/omrsmonitor-egeriavdc
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
 
   ldapinit:
-    repository: planetf1/ldap-init-egeriavdc
+    repository: localhost:5000/odpi/ldap-init-egeriavdc
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
+
+  # NOTE: this image is only used if the ibmigc.external is set to false; otherwise it is ignored and
+  # the k8s-external, pre-existing environment defined under ibmigc... is used
+  ibmigc:
+    repository: localhost:5000/ibm/infosvr
+    tag: v11.7.0.2
+    pullPolicy: IfNotPresent
+
+  configure:
+    repository: localhost:5000/odpi/egeria-configure
+    tag: 1.1-SNAPSHOT
+    pullPolicy: IfNotPresent
 
   nameOverride: ""
   fullnameOverride: ""
 
-postgres:
-  password: passw0rd
-
-# Egeria depends on kafka, but it is not exposed externally
-# The sample also requires auto topic creation
+# Whether to use a k8s cluster-internal Kafka or an external one -- if using internal,
+# see 'cp-kafka' below for config options
 kafka:
+  internal:
+    enabled: true
   external:
-    enabled: false
-    type: NodePort
+    hostname: ""
+    ip: ""
+    port: ""
+
+# The demo can use an IBM IGC environment.
+# Set external to "true" to use a pre-existing IBM IGC environment (outside your k8s cluster),
+# in which case, also provide the hostname, IP address and port number for the domain tier
+# NOTE: remember to also update the IBMIGC_ENDPOINT and IBMIGC_KAFKA_ENDPOINT in configmap!
+ibmigc:
+  enabled: false
+  internal:
+    enabled: true
+  external:
+    hostname: ""
+    ip: ""
+    port: ""
+
+# When using the k8s-internal Kafka (from Confluent), enable auto-topic creation
+# (for full options, see: https://github.com/confluentinc/cp-helm-charts/tree/master/charts/cp-kafka)
+cp-kafka:
+  brokers: 1
   configurationOverrides:
     auto.create.topics.enable: true
+  prometheus:
+    jmx:
+      enabled: false
+
+# When using the k8s-internal Kafka (from Confluent), configure Zookeeper options
+# (for full options, see: https://github.com/confluentinc/cp-helm-charts/tree/master/charts/cp-zookeeper)
+cp-zookeeper:
+  servers: 1
+  prometheus:
+    jmx:
+      enabled: false
 
 # For the Confluent kafka chart there are many additional components
 # that we don't need -- so they are removed here

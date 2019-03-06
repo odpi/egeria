@@ -7,16 +7,21 @@ The Coco Pharmaceuticals samples follow the examples outlined in the Egeria tuto
 are based on the description of the imaginary company and its employees in the
 [ODPi Data Governance Project](https://odpi.github.io/data-governance/).
 
-The samples themselves are provided as a set of Ansible playbooks for automating the load
-and verification across the various components involved.
+The samples themselves broadly fit into two categories:
+
+- data: provided as both sample files and database tables
+- metadata: provided as archives that can be loaded into one or more metadata repositories
 
 ## Requirements
 
+The simplest way to deploy the samples is as part of the complete kubernetes-based demo environment,
+based on the provided Helm charts under [open-metadata-deployment](../../README.md).
+
+Alternatively, if you want to make use of a pre-existing IBM InfoSphere Information Governance Catalog
+repository, you will need:
+
 - Ansible v2.4.x (ideally the latest v2.7.x+)
-
-When making use of the IBM Information Governance Catalog ("IGC"), you will also need:
-
-- Network access to an IBM Information Server environment
+- Network access to the IBM Information Server environment
 - Inventory group names setup the same as `IBM.infosvr` role
 - Following Ansible roles installed:
   - [IBM.infosvr](https://galaxy.ansible.com/IBM/infosvr)
@@ -25,14 +30,16 @@ When making use of the IBM Information Governance Catalog ("IGC"), you will also
 
 ## Included samples
 
-Includes the following sample content:
+Data:
+
+- 5 databases, loadable to either PostgreSQL, MariaDB, or IBM DB2
+- 8 sample files (semi-colon separated CSV)
+
+Metadata:
 
 - Glossary categories
 - Glossary terms
 - Term-to-term relationships
-- Sample data files
-- Sample databases, supporting a variety of database options
-- Sample data within the database(s)
 - Relationships between terms and file fields
 - Relationships between terms and database columns
 
@@ -45,17 +52,53 @@ IBM Information Governance Catalog-specific:
 
 ## Loading the samples to your environment
 
+### Data
+
+When deploying the demo kubernetes setup, the provided sample data will be loaded to the database automatically
+(postgresql by default) as part of the setup.
+
+If you are using an external or pre-existing database, you'll need to first setup an inventory file (see instructions
+below under Metadata), and also configure your settings in the `defaults/main.yml` file. You can then use the provided
+`deploy-data.yml` playbook to deploy the sample data (using Ansible):
+
+```bash
+$ ansible-playbook -i hosts deploy-data.yml
+```
+
+### Metadata
+
+When using a pre-built IBM InfoSphere Information Server container, the playbooks are built-in to the container during
+its startup, to avoid any need for SSH or other utilities to provide remote access to the container itself. The sample
+playbooks and artifacts are all placed under
+`/samples/egeria/open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals`, pulled directly
+from the `master` branch of the Egeria GitHub repository.
+
+For installing against your own pre-existing IBM InfoSphere Information Server environment, simply use the provided
+playbooks within these directories from your own locally-cloned repository.
+
 See `defaults/main.yml` for the default locations and names of the physical assets (database and files).
-These can either be overridden directly in this file, or by using any of Ansible's mechanisms for 
-overriding variables.
+These are probably most easily overridden directly in this file; alternatively, you can override them directly in the
+playbook command as in the example of overriding `egeria_samples_db_host_remote` below (which is the one variable you
+will almost certainly need to override, with the name of the postgresql service within your cluster).
 
 Running the playbook is as simple as:
 
 ```bash
-ansible-playbook [-i hosts] deploy.yml
+$ ansible-playbook [-i hosts] deploy-metadata.yml -e egeria_samples_db_host_remote="<helmName>-vdc-postgresql-service"
 ```
 
-Where the inventory provided should contain at a minimum the following group names:
+When running inside a container, the connectivity should already be preset globally so there is no need to specify an
+inventory file. You simply need to get inside your container to run the playbook by running a command like the
+following (the first to get the unique name of your pod, the second to get a command-line within it):
+
+```bash
+$ kubectl get pods | grep 'ibm-igc'
+local-vdc-ibm-igc-65c4f66888-k6q2n      1/1       Running   0          25m
+$ kubectl exec -it local-vdc-ibm-igc-65c4f66888-k6q2n /bin/bash
+```
+
+For deploying to a pre-existing Information Server environment, the inventory provided (via `-i hosts`)
+should contain at a minimum the following group names:
 
 - `egeria-samples-db-host` group, defining the host containing the database into which the sample data should be loaded.
 - `egeria-samples-files-host` group, defining the host where the sample data files should be loaded.
@@ -82,7 +125,7 @@ to repeat the load process if you so desire.
 Run the removal playbook as follows:
 
 ```bash
-ansible-playbook [-i hosts] remove.yml
+ansible-playbook [-i hosts] remove-metadata.yml -e egeria_samples_db_host_remote="<helmName>-vdc-postgresql-service"
 ```
 
 Where the inventory provided is as described above for loading.
@@ -97,6 +140,15 @@ be deleted from IBM Metadata Asset Manager. This requires a manual configuration
 1. Open the "Import Settings" under Navigation.
 1. Tick the box next to "Allow users to delete import areas in which imports were shared to the repository".
 1. Click the "Save" button.
+
+Alternatively, if you *really* want to start with the same base metadata environment, and you're making use of
+containers, you could also simply delete the pod running the repository and let it get re-created fresh:
+
+```bash
+$ kubectl get pods | grep 'ibm-igc'
+local-vdc-ibm-igc-65c4f66888-k6q2n      1/1       Running   0          25m
+$ kubectl delete pod local-vdc-ibm-igc-65c4f66888-k6q2n
+```
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
