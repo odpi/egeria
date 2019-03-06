@@ -21,25 +21,33 @@ spec:
     spec:
       restartPolicy: OnFailure
       volumes:
-        - name: samples-volume
+{{ if .Values.localRepo.use }}
+        - name: egeria-volume
+          hostPath:
+            path: {{ .Values.localRepo.location }}
+            type: Directory
+{{ else }}
+        - name: egeria-volume
           emptyDir: {}
+{{ end }}
       initContainers:
+{{ if (not .Values.localRepo.use) }}
         - name: init-git
           image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
           command:
             - "/bin/bash"
             - "-c"
             - >
-                cd /samples &&
-                git init egeria &&
-                cd egeria &&
+                cd /egeria &&
+                git init . &&
                 git remote add origin https://github.com/odpi/egeria.git &&
                 git config core.sparsecheckout true &&
                 echo 'open-metadata-resources/open-metadata-deployment/sample-data/*' >> .git/info/sparse-checkout &&
                 git pull --depth=1 origin master
           volumeMounts:
-            - mountPath: /samples
-              name: samples-volume
+            - mountPath: /egeria
+              name: egeria-volume
+{{ end }}
         - name: wait-for-db
           image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
           env:
@@ -62,7 +70,7 @@ spec:
             - "/bin/bash"
             - "-c"
             - >
-                cd /samples/egeria/open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/database/postgresql &&
+                cd /egeria/open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/database/postgresql &&
                 createdb --encoding=UTF8 COMPDIR &&
                 createdb --encoding=UTF8 EMPLOYEE &&
                 createdb --encoding=UTF8 EMPLSANL &&
@@ -74,5 +82,6 @@ spec:
                 psql -f sdlLOCATION.sql &&
                 psql -f sdlPATIENT.sql
           volumeMounts:
-            - mountPath: /samples
-              name: samples-volume
+            - mountPath: /egeria
+              name: egeria-volume
+              readOnly: true
