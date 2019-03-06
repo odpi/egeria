@@ -35,7 +35,7 @@
 
     <!-- Default docker registry to use -->
     <properties>
-        <docker.registry>${docker.registry}</docker.registry>
+        <docker.registry>registry-1.docker.io</docker.registry>
         <docker.namespace>${docker.repo}</docker.namespace>
         <dockerfile.build.noCache>true</dockerfile.build.noCache>
     </properties>
