@@ -8,7 +8,6 @@ member: uid=Zach_Now,ou=People,dc=example,dc=org
 member: uid=Steve_Starter,ou=People,dc=example,dc=org
 member: uid=Terri_Daring,ou=People,dc=example,dc=org
 
-
 dn: cn=Data Steward,ou=groups,dc=example,dc=org
 objectclass: groupofnames
 member: uid=Tanya_Tidy,ou=People,dc=example,dc=org
@@ -16,7 +15,6 @@ member: uid=Tanya_Tidy,ou=People,dc=example,dc=org
 dn: cn=IT Project Leader,ou=groups,dc=example,dc=org
 objectclass: groupofnames
 member: uid=Polly_Tasker,ou=People,dc=example,dc=org
-
 
 dn: cn=Lead Researcher,ou=groups,dc=example,dc=org
 objectclass: groupofnames
@@ -44,7 +42,7 @@ member: uid=Sally_Counter,ou=People,dc=example,dc=org
 
 dn: cn=DataStage Specialist,ou=groups,dc=example,dc=org
 objectclass: groupofnames
-member: uid=Lemmie_Stage,People,dc=example,dc=org
+member: uid=Lemmie_Stage,ou=People,dc=example,dc=org
 
 dn: cn=Information Architect,ou=groups,dc=example,dc=org
 objectclass: groupofnames
