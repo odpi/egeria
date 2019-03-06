@@ -80,14 +80,15 @@ public class AssetLineageEnterpriseOmrsEventListener implements OMRSTopicListene
                         break;
 
                     case UPDATED_ENTITY_EVENT:
-                        instanceEventProcessor.processUpdatedEntityEvent(
-                                "EnterpriseOMRSTopic",
-                                instanceEventOriginator.getMetadataCollectionId(),
-                                instanceEventOriginator.getServerName(),
-                                instanceEventOriginator.getServerType(),
-                                instanceEventOriginator.getOrganizationName(),
-                                instanceEvent.getOriginalEntity(),
-                                instanceEvent.getEntity());
+//                        instanceEventProcessor.processUpdatedEntityEvent(
+//                                "EnterpriseOMRSTopic",
+//                                instanceEventOriginator.getMetadataCollectionId(),
+//                                instanceEventOriginator.getServerName(),
+//                                instanceEventOriginator.getServerType(),
+//                                instanceEventOriginator.getOrganizationName(),
+//                                instanceEvent.getOriginalEntity(),
+//                                instanceEvent.getEntity());
+                        instanceEventProcessor.sendInstanceEvent("EnterpriseOMRSTopic", instanceEvent);
                         break;
 
                     case UPDATED_RELATIONSHIP_EVENT:

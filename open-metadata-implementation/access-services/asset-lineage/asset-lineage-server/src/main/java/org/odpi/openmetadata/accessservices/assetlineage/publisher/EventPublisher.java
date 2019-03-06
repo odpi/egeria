@@ -47,14 +47,11 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
     @Override
     public void sendInstanceEvent(String sourceName, OMRSInstanceEvent instanceEvent) {
         String actionDescription = "Send New Event";
-        boolean successFlag = false;
-
         log.info("Sending event to asset lineage out topic");
         log.debug("event: ", instanceEvent);
 
         try {
             assetLineageTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(instanceEvent.getOMRSEventV1()));
-            successFlag = true;
 
         } catch (Throwable error) {
             log.error("Exception publishing event", error);
@@ -68,9 +65,7 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
                     error);
-
         }
-
     }
 
     public void processNewEntityEvent(String sourceName,

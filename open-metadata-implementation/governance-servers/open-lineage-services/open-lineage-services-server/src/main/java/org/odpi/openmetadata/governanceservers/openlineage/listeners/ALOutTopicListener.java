@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.listeners;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.governanceservers.openlineage.connectors.GremlinConnector;
+import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphConstructor;
 import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
@@ -20,14 +20,15 @@ public class ALOutTopicListener implements OpenMetadataTopicListener {
     private static final Logger log = LoggerFactory.getLogger(ALOutTopicListener.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final OMRSAuditLog auditLog;
-    private GremlinConnector gremlinConnector;
+    private GraphConstructor graphConstructor;
 
-    public ALOutTopicListener(GremlinConnector gremlinBuilder, OMRSAuditLog auditLog) {
+    public ALOutTopicListener(GraphConstructor gremlinBuilder, OMRSAuditLog auditLog) {
 
-        this.gremlinConnector = gremlinBuilder;
+        this.graphConstructor = gremlinBuilder;
         this.auditLog = auditLog;
 
     }
+
 
     /**
      * @param eventAsString contains all the information needed to build asset lineage like connection details, database
@@ -59,16 +60,14 @@ public class ALOutTopicListener implements OpenMetadataTopicListener {
                 OMRSInstanceEventType instanceEventType = omrsInstanceEvent.getInstanceEventType();
                 switch (instanceEventType) {
                     case NEW_ENTITY_EVENT:
-                        gremlinConnector.addNewEntity(omrsInstanceEvent);
+                        graphConstructor.addNewEntity(omrsInstanceEvent);
                         break;
                     case NEW_RELATIONSHIP_EVENT:
-                        gremlinConnector.addNewRelationship(omrsInstanceEvent);
+                        graphConstructor.addNewRelationship(omrsInstanceEvent);
                         break;
                     case UPDATED_ENTITY_EVENT:
-                        gremlinConnector.exportGraph();
                         break;
                     case UPDATED_RELATIONSHIP_EVENT:
-                        gremlinConnector.exportGraph();
                         break;
                 }
             }catch (Exception e) {

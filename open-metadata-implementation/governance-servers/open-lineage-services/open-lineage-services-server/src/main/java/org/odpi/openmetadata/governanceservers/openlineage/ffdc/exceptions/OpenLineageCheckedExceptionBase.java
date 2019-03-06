@@ -30,7 +30,7 @@ public class OpenLineageCheckedExceptionBase extends Exception {
     }
 
     /**
-     * This is the  constructor used for creating a AssetLineageCheckedException that resulted from a previous error.
+     * This is the  constructor used for creating a OpenLineageCheckedException that resulted from a previous error.
      *
      * @param className         - name of class reporting error
      * @param actionDescription - description of function it was performing when error detected
