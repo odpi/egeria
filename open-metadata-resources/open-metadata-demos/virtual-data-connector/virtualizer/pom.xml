@@ -14,15 +14,6 @@
         <groupId>org.odpi.egeria</groupId>
         <version>1.1-SNAPSHOT</version>
     </parent>
-
-   <properties>
-       <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-       <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-       <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
-       <sonar.language>java</sonar.language>
-       <derby.version>10.8.3.0</derby.version>
-   </properties>
-
     <packaging>jar</packaging>
 
     <dependencies>
@@ -47,12 +38,6 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
             <version>${jackson.version}</version>
         </dependency>
 
