@@ -2,14 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.openlineage.admin;
 
-import auditlog.OpenLineageAuditCode;
-import listeners.ALOutTopicListener;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
+import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
+import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphConstructor;
+import org.odpi.openmetadata.governanceservers.openlineage.listeners.ALOutTopicListener;
+import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServicesInstance;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
@@ -36,6 +38,8 @@ public class OpenLineageOperationalServices {
 
     private OMRSAuditLog auditLog;
     private OpenMetadataTopicConnector assetLineageOutTopicConnector;
+    private GraphConstructor graphConstructor;
+    private OpenLineageServicesInstance instance;
 
 
     /**
@@ -78,6 +82,7 @@ public class OpenLineageOperationalServices {
 
 
             this.auditLog = auditLog;
+            this.graphConstructor = new GraphConstructor();
 
             Connection assetLineageOutTopicConnection = openLineageConfig.getAssetLineageOutTopicConnection();
             String ALOutTopicName = getTopicName(assetLineageOutTopicConnection);
@@ -85,10 +90,12 @@ public class OpenLineageOperationalServices {
             assetLineageOutTopicConnector = initializeOpenLineageTopicConnector(assetLineageOutTopicConnection);
 
             if (assetLineageOutTopicConnector != null) {
-                OpenMetadataTopicListener ALOutTopicListener = new ALOutTopicListener(auditLog);
+                OpenMetadataTopicListener ALOutTopicListener = new ALOutTopicListener(graphConstructor, auditLog);
                 this.assetLineageOutTopicConnector.registerListener(ALOutTopicListener);
                 startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, ALOutTopicName, assetLineageOutTopicConnector);
             }
+
+            this.instance = new OpenLineageServicesInstance(graphConstructor, localServerName);
 
             auditCode = OpenLineageAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
@@ -100,6 +107,7 @@ public class OpenLineageOperationalServices {
                     auditCode.getUserAction());
         }
     }
+
 
     private String getTopicName(Connection connection) {
         String topicName = null;
@@ -218,6 +226,29 @@ public class OpenLineageOperationalServices {
      * @return boolean indicated whether the disconnect was successful.
      */
     public boolean disconnect(boolean permanent) {
-        return false;
+
+        try {
+            assetLineageOutTopicConnector.disconnect();
+        } catch (ConnectorCheckedException e) {
+            log.error("Error disconnecting Asset Lineage Out Topic Connector");
+            return false;
+        }
+
+        if (instance != null) {
+            instance.shutdown();
+        }
+
+        final String actionDescription = "shutdown";
+        OpenLineageAuditCode auditCode;
+
+        auditCode = OpenLineageAuditCode.SERVICE_SHUTDOWN;
+        auditLog.logRecord(actionDescription,
+                auditCode.getLogMessageId(),
+                auditCode.getSeverity(),
+                auditCode.getFormattedLogMessage(localServerName),
+                null,
+                auditCode.getSystemAction(),
+                auditCode.getUserAction());
+        return true;
     }
 }
