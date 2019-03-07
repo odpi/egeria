@@ -4,7 +4,7 @@
 FROM alpine:3.9
 
 # Install utilities we will use to configure containers
-RUN apk add bash curl git jq postgresql-client mariadb-client && apk update && apk upgrade
+RUN apk add bash curl git jq openldap-clients postgresql-client mariadb-client && apk update && apk upgrade
 COPY dist/check-availability.sh /check-availability.sh
 
 ENV CACERT /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
