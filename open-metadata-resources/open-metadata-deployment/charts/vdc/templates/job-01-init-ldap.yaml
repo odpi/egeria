@@ -3,7 +3,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "myapp.fullname" . }}-job-01-data-loader
+  name: {{ include "myapp.fullname" . }}-job-01-init-ldap
   labels:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/instance: {{ .Release.Name }}
@@ -48,39 +48,25 @@ spec:
             - mountPath: /egeria
               name: egeria-volume
 {{ end }}
-        - name: wait-for-db
+        - name: wait-for-ldap
           image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
           env:
             - name: SERVICE
-              value: {{ include "myapp.fullname" . }}-postgresql-service
+              value: {{ .Release.Name }}-openldap
       containers:
-        - name: db-clients
+        - name: initialize
           image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
-          env:
-            - name: PGPASSWORD
-              valueFrom:
-                configMapKeyRef:
-                  name: {{ include "myapp.fullname" . }}-configmap
-                  key: POSTGRESQL_PASSWORD
-            - name: PGHOST
-              value: {{ include "myapp.fullname" . }}-postgresql-service
-            - name: PGUSER
-              value: postgres
+          envFrom:
+            - configMapRef:
+                name: {{ include "myapp.fullname" . }}-configmap
           command:
             - "/bin/bash"
             - "-c"
             - >
-                cd /egeria/open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/database/postgresql &&
-                createdb --encoding=UTF8 COMPDIR &&
-                createdb --encoding=UTF8 EMPLOYEE &&
-                createdb --encoding=UTF8 EMPLSANL &&
-                createdb --encoding=UTF8 LOCATION &&
-                createdb --encoding=UTF8 PATIENT &&
-                psql -f sdlCOMPDIR.sql &&
-                psql -f sdlEMPLOYEE.sql &&
-                psql -f sdlEMPLSANL.sql &&
-                psql -f sdlLOCATION.sql &&
-                psql -f sdlPATIENT.sql
+                cd /egeria/open-metadata-resources/open-metadata-deployment/sample-data/coco-pharmaceuticals/ldap &&
+                for ldif in *.ldif;
+                do ldapadd -x -w ${LDAP_PASS} -D"${LDAP_USER}" -h ${LDAP_SERVER} -v -c -p $LDAP_PORT -f ${ldif};
+                done
           volumeMounts:
             - mountPath: /egeria
               name: egeria-volume
