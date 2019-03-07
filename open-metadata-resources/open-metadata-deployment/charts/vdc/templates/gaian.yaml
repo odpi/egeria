@@ -9,35 +9,34 @@ metadata:
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: ui-service
+    app.kubernetes.io/component: gaian-service
 
-  name: {{ include "myapp.fullname" . }}-ui-service
+  name: {{ include "myapp.fullname" . }}-gaian-service
 
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - name: "ui"
-      port: 8443
-      nodePort: {{ .Values.service.nodeport.ui }}
-      targetPort: 8443
+    - port: 6414
+      targetPort: 6414
+      nodePort: {{ .Values.service.nodeport.gaian }}
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/component: ui-service
+    app.kubernetes.io/component: gaian-service
 ...
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
-  name: {{ include "myapp.fullname" . }}-ui
+  name: {{ include "myapp.fullname" . }}-gaian-deployment
   labels:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: ui-service
+    app.kubernetes.io/component: gaian-service
 
 spec:
   replicas: 1
@@ -45,7 +44,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "myapp.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-      app.kubernetes.io/component: ui-service
+      app.kubernetes.io/component: gaian-service
 
   strategy: {}
   template:
@@ -54,26 +53,18 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "myapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/component: ui-service
+        app.kubernetes.io/component: gaian-service
 
     spec:
       containers:
-        - name: ui
-          image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ .Values.image.egeria.repository }}\
-                  :{{ .Values.image.egeria.tag | default .Values.imageDefaults.tag }}"
-          imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
-          ports:
-            - containerPort: 8443
-          command:
-            - "/bin/bash"
-            - "-c"
-            - "java -jar /access-services-user-interface.jar"
-          envFrom:
-            - configMapRef:
-                name: {{ include "myapp.fullname" . }}-configmap
-          resources: {}
+      - name: {{ .Chart.Name }}-gaian
+        image: "{{ if (.Values.image.gaian.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.gaian.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                {{ .Values.image.gaian.repository }}\
+                :{{ .Values.image.gaian.tag | default .Values.imageDefaults.tag }}"
+        imagePullPolicy: {{ .Values.image.gaian.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+        ports:
+        - containerPort: 6414
+        resources: {}
       restartPolicy: Always
-
 status: {}
 ...

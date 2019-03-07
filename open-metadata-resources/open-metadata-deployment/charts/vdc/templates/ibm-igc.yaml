@@ -73,7 +73,10 @@ spec:
         - name: regcred
       initContainers:
         - name: init-git
-          image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ .Values.image.configure.repository }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           command:
             - "/bin/bash"
             - "-c"
@@ -89,8 +92,10 @@ spec:
               name: samples-volume
       containers:
         - name: proxy
-          image: "{{ .Values.image.egeria.repository }}:{{ .Values.image.egeria.tag }}"
-          imagePullPolicy: {{ .Values.image.egeria.pullPolicy }}
+          image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ .Values.image.egeria.repository }}\
+                  :{{ .Values.image.egeria.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
@@ -107,8 +112,10 @@ spec:
             failureThreshold: 6
           resources: {}
         - name: ibm-igc
-          image: "{{ .Values.image.ibmigc.repository }}:{{ .Values.image.ibmigc.tag }}"
-          imagePullPolicy: {{ .Values.image.ibmigc.pullPolicy }}
+          image: "{{ if (.Values.image.ibmigc.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.ibmigc.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ .Values.image.ibmigc.repository }}\
+                  :{{ .Values.image.ibmigc.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.ibmigc.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           ports:
             - containerPort: 9446
             - containerPort: 52181
@@ -147,8 +154,10 @@ spec:
             - {{ .Values.ibmigc.external.hostname }}
       containers:
         - name: proxy
-          image: "{{ .Values.image.egeria.repository }}:{{ .Values.image.egeria.tag }}"
-          imagePullPolicy: {{ .Values.image.egeria.pullPolicy }}
+          image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ .Values.image.egeria.repository }}\
+                  :{{ .Values.image.egeria.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
