@@ -302,7 +302,7 @@
     executable: /bin/bash
   when: >
     ('ibm-information-server-engine' in group_names)
-    and __cocopharma_existing_import_areas.stdout.find(item) != -1
+    and __cocopharma_existing_import_areas.stdout.find('CocoPharma_'~item) != -1
   with_items: "{{ egeria_samples_cocopharma_databases }}"
 
 - name: remote database catalog status
