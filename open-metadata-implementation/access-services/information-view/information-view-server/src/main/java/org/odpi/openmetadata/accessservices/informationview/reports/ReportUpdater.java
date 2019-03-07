@@ -14,6 +14,7 @@ import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
+import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -44,7 +45,7 @@ public class ReportUpdater extends ReportBasicOperation {
      * @throws Exception
      */
     public void updateReport(ReportRequestBody payload, EntityDetail reportEntity) throws Exception {
-        String qualifiedNameForComplexSchemaType = EntityPropertiesUtils.getStringValueForProperty(reportEntity.getProperties(), Constants.QUALIFIED_NAME) + Constants.TYPE_SUFFIX;
+        String qualifiedNameForComplexSchemaType = QualifiedNameUtils.buildQualifiedName("", Constants.ASSET_SCHEMA_TYPE, payload.getId()  + Constants.TYPE_SUFFIX);
 
         List<Relationship> relationships = omEntityDao.getRelationships(Constants.ASSET_SCHEMA_TYPE, reportEntity.getGUID());
         //ASSET Schema type relationship can have 1 at max for reports
@@ -190,9 +191,10 @@ public class ReportUpdater extends ReportBasicOperation {
             List<Relationship> sectionTypeRelationships;
             String sectionTypeGuid;
             String qualifiedNameForSection = EntityPropertiesUtils.getStringValueForProperty(matchingSection.getProperties(), Constants.QUALIFIED_NAME);
+            String qualifiedNameForSectionType = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, Constants.DOCUMENT_SCHEMA_TYPE, reportSection.getName() + Constants.TYPE_SUFFIX);
             sectionTypeRelationships = omEntityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, matchingSection.getGUID());
             if (sectionTypeRelationships == null || sectionTypeRelationships.isEmpty()) {
-                EntityDetail schemaType = addSchemaType(qualifiedNameForSection, matchingSection, Constants.DOCUMENT_SCHEMA_TYPE);
+                EntityDetail schemaType = addSchemaType(qualifiedNameForSectionType, matchingSection, Constants.DOCUMENT_SCHEMA_TYPE);
                 sectionTypeGuid = schemaType.getGUID();
             } else {
                 sectionTypeGuid = sectionTypeRelationships.get(0).getEntityTwoProxy().getGUID();
@@ -200,7 +202,7 @@ public class ReportUpdater extends ReportBasicOperation {
             createOrUpdateElements(qualifiedNameForSection, sectionTypeGuid, reportSection.getElements());
         } else {
             EntityDetail sectionTypeEntity = addSectionAndSectionType(qualifiedNameForParent, parentGuid, reportSection);
-            String qualifiedNameForSection = qualifiedNameForParent + SEPARATOR + reportSection.getName();
+            String qualifiedNameForSection = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent,Constants.DOCUMENT_SCHEMA_ATTRIBUTE, reportSection.getName());
             createOrUpdateElements(qualifiedNameForSection, sectionTypeEntity.getGUID(), reportSection.getElements());
         }
     }
@@ -228,6 +230,7 @@ public class ReportUpdater extends ReportBasicOperation {
         if (matchingColumn != null) {
             String qualifiedNameForColumn = EntityPropertiesUtils.getStringValueForProperty(matchingColumn.getProperties(), Constants.QUALIFIED_NAME);
 
+
             InstanceProperties columnProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
                     .withStringProperty(Constants.ATTRIBUTE_NAME, reportColumn.getName())
@@ -240,7 +243,8 @@ public class ReportUpdater extends ReportBasicOperation {
 
             columnType = omEntityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, matchingColumn.getGUID());
             if (columnType == null || columnType.isEmpty()) {
-                addSchemaType(qualifiedNameForColumn, wrapper.getEntityDetail(), Constants.SCHEMA_TYPE);
+                String qualifiedNameForColumnType = QualifiedNameUtils.buildQualifiedName(parentQualifiedName, Constants.SCHEMA_TYPE, reportColumn.getName());
+                addSchemaType(qualifiedNameForColumnType, wrapper.getEntityDetail(), Constants.SCHEMA_TYPE);
             }
         } else {
             addReportColumn(parentQualifiedName, parentGuid, reportColumn);
