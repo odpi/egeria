@@ -100,11 +100,6 @@ image:
     tag: 1.1-SNAPSHOT
     pullPolicy: Always
 
-  ldapinit:
-    repository: localhost:5000/odpi/ldap-init-egeriavdc
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
-
   # NOTE: this image is only used if the ibmigc.external is set to false; otherwise it is ignored and
   # the k8s-external, pre-existing environment defined under ibmigc... is used
   ibmigc:
@@ -119,6 +114,12 @@ image:
 
   nameOverride: ""
   fullnameOverride: ""
+
+# Set 'use' to true to use your local repository rather than Egeria's (remote) master git repository
+# (When set to true, also provide the absolute path to your local repository)
+localRepo:
+  use: true
+  location: /Users/cgrote/Developer/git-repos/forks/odpi/egeria
 
 # Whether to use a k8s cluster-internal Kafka or an external one -- if using internal,
 # see 'cp-kafka' below for config options
