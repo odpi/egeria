@@ -101,6 +101,15 @@
   register: __egeria_samples_ia_projects
   when: ('ibm-information-server-domain' in group_names)
 
+- name: check for project in XML
+  xml:
+    xmlstring: "{{ __egeria_samples_ia_projects.content }}"
+    xpath: /iaapi:Projects/Project[@name='CocoPharma']
+    namespaces:
+      iaapi: http://www.ibm.com/investigate/api/iaapi
+    count: yes
+  register: __egeria_samples_ia_project_matches
+
 - name: remove Information Analyzer project
   uri:
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports.console }}\
@@ -113,7 +122,7 @@
     validate_certs: no
     timeout: 10
   when: >
-    __egeria_samples_ia_projects.content.find('CocoPharma') != -1
+    __egeria_samples_ia_project_matches.count > 0
     and ('ibm-information-server-domain' in group_names)
 
 - import_role: name=IBM.infosvr-import-export
