@@ -1,0 +1,64 @@
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "myapp.fullname" . }}-job-02-init-egeria
+  labels:
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    helm.sh/chart: {{ include "myapp.chart" . }}
+    app.kubernetes.io/name: {{ include "myapp.name" . }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/name: {{ include "myapp.name" . }}
+    spec:
+      restartPolicy: OnFailure
+      initContainers:
+        - name: wait-for-egeria
+          image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
+          env:
+            - name: SERVICE
+              value: {{ include "myapp.fullname" . }}-egeria-service
+{{ if .Values.kafka.internal.enabled }}
+        - name: wait-for-kafka
+          image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
+          env:
+            - name: SERVICE
+              value: {{ .Release.Name }}-cp-kafka
+{{ end }}
+      containers:
+        - name: initialize
+          image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
+          envFrom:
+            - configMapRef:
+                name: {{ include "myapp.fullname" . }}-configmap
+          command:
+            - "/bin/bash"
+            - "-c"
+            - >
+                curl -f --verbose --basic admin:admin -X POST
+                --header "Content-Type: application/json"
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/event-bus
+                --data '{"producer": {"bootstrap.servers":"'"${KAFKA_ENDPOINT}"'"}, "consumer": {"bootstrap.servers":"'"${KAFKA_ENDPOINT}"'"} }'
+                &&
+                curl -f --verbose --basic admin:admin -X POST
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/access-services?serviceMode=ENABLED
+                &&
+                curl -f --verbose --basic admin:admin -X POST
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-url-root?url=${EGERIA_ENDPOINT}
+                &&
+                curl -f --verbose --basic admin:admin -X POST
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/local-repository/mode/in-memory-repository
+                &&
+                curl -f --verbose --basic admin:admin -X POST
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/cohorts/${EGERIA_COHORT}
+                &&
+                curl -f --verbose --basic admin:admin -X POST --max-time 900
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/instance
