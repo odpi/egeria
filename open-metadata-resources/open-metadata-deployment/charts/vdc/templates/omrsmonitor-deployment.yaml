@@ -37,8 +37,8 @@ spec:
         ports:
         - containerPort: 58080
         resources: {}
-        restartPolicy: Always
         envFrom:
           - configMapRef:
               name: {{ include "myapp.fullname" . }}-configmap
+      restartPolicy: Always
 status: {}
