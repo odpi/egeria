@@ -2,29 +2,5 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the ODPi Egeria project.
 
-- name: load CocoPharmaceutical samples
-  hosts: all
-  any_errors_fatal: true
-  vars_files:
-    - defaults/main.yml
-    - vars/users.yml
-    - vars/databases.yml
-  tasks:
-    - name: load sample data files
-      include_tasks: data-files/load.yml
-      when: ('egeria-samples-files-host' in group_names) or ('egeria-samples-db-host' in group_names)
-
-    - name: create sample databases
-      include_tasks: "database/{{ egeria_samples_cocopharma_db_type }}/create-databases.yml"
-      when: ('egeria-samples-db-host' in group_names)
-
-    - name: load sample data to databases
-      include_tasks: "database/{{ egeria_samples_cocopharma_db_type }}/load.yml"
-      when: ('egeria-samples-db-host' in group_names)
-
-    - name: load sample metadata
-      include_tasks: "metadata/{{ egeria_samples_metadata_backend }}/load.yml"
-      when: >
-        ('ibm-information-server-repo' in group_names)
-        or ('ibm-information-server-engine' in group_names)
-        or ('ibm-information-server-domain' in group_names)
+- import_playbook: deploy-data.yml
+- import_playbook: deploy-metadata.yml
