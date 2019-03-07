@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.informationview.events.DataViewReque
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
+import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -31,8 +32,7 @@ public class DataViewCreator extends DataViewBasicOperation{
      * @throws Exception
      */
     public void createDataView(DataViewRequestBody requestBody, EntityDetail dataViewEntity) throws Exception {
-            String qualifiedNameForDataView = EntityPropertiesUtils.getStringValueForProperty(dataViewEntity.getProperties(), Constants.QUALIFIED_NAME);
-            String qualifiedNameForComplexSchemaType = qualifiedNameForDataView + Constants.TYPE_SUFFIX;
+            String qualifiedNameForComplexSchemaType = QualifiedNameUtils.buildQualifiedName(requestBody.getEndpointAddress(), Constants.COMPLEX_SCHEMA_TYPE, requestBody.getId() + Constants.TYPE_SUFFIX);
             InstanceProperties complexSchemaTypeProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
                     .build();
@@ -45,6 +45,7 @@ public class DataViewCreator extends DataViewBasicOperation{
                     complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(),
                     Constants.INFORMATION_VIEW_OMAS_NAME,
                     new InstanceProperties());
+            String qualifiedNameForDataView = EntityPropertiesUtils.getStringValueForProperty(dataViewEntity.getProperties(), Constants.QUALIFIED_NAME);
             addElements(qualifiedNameForDataView, complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), requestBody.getElements());
 
 
