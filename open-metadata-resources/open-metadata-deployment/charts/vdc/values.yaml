@@ -57,8 +57,8 @@ logging:
 
 imageDefaults:
   registry: "localhost:5000"
-  tag: "1.1-SNAPSHOT"
-  pullPolicy: Always
+  tag: latest
+  pullPolicy: IfNotPresent
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
 # but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
@@ -72,8 +72,6 @@ image:
   mariadb:
     registry: "docker.io/library"
     repository: mariadb
-    tag: latest
-    pullPolicy: IfNotPresent
 
   egeria:
     repository: odpi/egeria
@@ -91,7 +89,6 @@ image:
     registry: "docker.io/library"
     repository: postgres
     tag: alpine
-    pullPolicy: IfNotPresent
 
   omrsmonitor:
     repository: odpi/omrsmonitor-egeriavdc
@@ -101,7 +98,6 @@ image:
   ibmigc:
     repository: ibm/infosvr
     tag: v11.7.0.2
-    pullPolicy: IfNotPresent
 
   configure:
     repository: odpi/egeria-configure
@@ -112,8 +108,8 @@ image:
 # Set 'use' to true to use your local repository rather than Egeria's (remote) master git repository
 # (When set to true, also provide the absolute path to your local repository)
 localRepo:
-  use: true
-  location: /Users/cgrote/Developer/git-repos/forks/odpi/egeria
+  use: false
+  location: /some/where/egeria
 
 # Whether to use a k8s cluster-internal Kafka or an external one -- if using internal,
 # see 'cp-kafka' below for config options
