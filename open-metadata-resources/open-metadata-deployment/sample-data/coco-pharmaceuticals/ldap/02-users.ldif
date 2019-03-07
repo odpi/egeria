@@ -23,7 +23,6 @@ sn: Starter
 uid: Steve_Starter
 userPassword: password
 
-
 dn: uid=Terri_Daring,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
@@ -45,7 +44,6 @@ gn: Tanya
 sn: Tidy
 uid: Tanya_Tidy
 userPassword: password
-
 
 dn: uid=Polly_Tasker,ou=People,dc=example,dc=org
 objectclass: top
@@ -91,7 +89,6 @@ sn: Padlock
 uid: Ivor_Padlock
 userPassword: password
 
-
 dn: uid=Bob_Nitter,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
@@ -114,7 +111,6 @@ sn: Broker
 uid: Faith_Broker
 userPassword: password
 
-
 dn: uid=Sally_Counter,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
@@ -125,7 +121,6 @@ gn: Sally
 sn: Counter
 uid: Sally_Counter
 userPassword: password
-
 
 dn: uid=Lemmie_Stage,ou=People,dc=example,dc=org
 objectclass: top
@@ -138,7 +133,6 @@ sn: Stage
 uid: Lemmie_Stage
 userPassword: password
 
-
 dn: uid=Erin_Overview,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
@@ -149,7 +143,6 @@ gn: Erin_Overview
 sn: Erin_Overview
 uid: Erin_Overview
 userPassword: password
-
 
 dn: uid=Harry_Hopeful,ou=People,dc=example,dc=org
 objectclass: top
@@ -162,7 +155,6 @@ sn: Hopeful
 uid: Harry_Hopeful
 userPassword: password
 
-
 dn: uid=Gary_Geeke,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
@@ -173,7 +165,6 @@ gn: Gary
 sn: Geeke
 uid: Gary_Geeke
 userPassword: password
-
 
 dn: uid=Reggie_Mint,ou=People,dc=example,dc=org
 objectclass: top
@@ -186,7 +177,6 @@ sn: Reggie_Mint
 uid: Reggie_Mint
 userPassword: password
 
-
 dn: uid=Peter_Profile,ou=People,dc=example,dc=org
 objectclass: top
 objectclass: person
@@ -197,7 +187,6 @@ gn: Peter
 sn: Profile
 uid: Peter_Profile
 userPassword: password
-
 
 dn: uid=Tom_Tally,ou=People,dc=example,dc=org
 objectclass: top
