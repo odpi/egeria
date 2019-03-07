@@ -55,62 +55,56 @@ debug:
 logging:
   level: NONE
 
+imageDefaults:
+  registry: "localhost:5000"
+  tag: "1.1-SNAPSHOT"
+  pullPolicy: Always
 
-# The following section defines all of the DOCKER images being used by this
-# chart. Normally they should be left as is, but are exposed here in case the
-# user wishes to extend.
+# The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
+# but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
+# these can be individually overridden for each image, if desired, by providing a subkey for 'registry', 'tag' or
+# 'pullPolicy' with the value to use for the override (if you want to use the public Docker registry, use
+# 'docker.io/library' as the registry override).
 image:
   ranger:
-    repository: localhost:5000/odpi/ranger-admin-egeriavdc
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
+    repository: odpi/ranger-admin-egeriavdc
 
   mariadb:
+    registry: "docker.io/library"
     repository: mariadb
     tag: latest
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
 
   egeria:
-    repository: localhost:5000/odpi/egeria
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
+    repository: odpi/egeria
 
   gaian:
-    repository: localhost:5000/odpi/gaian-egeriavdc
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
+    repository: odpi/gaian-egeriavdc
 
   atlas:
-    repository: localhost:5000/odpi/apache-atlas
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
+    repository: odpi/apache-atlas
 
   kafkamonitor:
-    repository: localhost:5000/odpi/kafka-monitor-egeriavdc
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
+    repository: odpi/kafka-monitor-egeriavdc
 
   postgresql:
+    registry: "docker.io/library"
     repository: postgres
     tag: alpine
     pullPolicy: IfNotPresent
 
   omrsmonitor:
-    repository: localhost:5000/odpi/omrsmonitor-egeriavdc
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
+    repository: odpi/omrsmonitor-egeriavdc
 
   # NOTE: this image is only used if the ibmigc.external is set to false; otherwise it is ignored and
   # the k8s-external, pre-existing environment defined under ibmigc... is used
   ibmigc:
-    repository: localhost:5000/ibm/infosvr
+    repository: ibm/infosvr
     tag: v11.7.0.2
     pullPolicy: IfNotPresent
 
   configure:
-    repository: localhost:5000/odpi/egeria-configure
-    tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    repository: odpi/egeria-configure
 
   nameOverride: ""
   fullnameOverride: ""

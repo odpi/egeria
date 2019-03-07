@@ -54,8 +54,10 @@ spec:
     spec:
       containers:
         - name: egeria
-          image: "{{ .Values.image.egeria.repository }}:{{ .Values.image.egeria.tag }}"
-          imagePullPolicy: {{ .Values.image.egeria.pullPolicy }}
+          image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ .Values.image.egeria.repository }}\
+                  :{{ .Values.image.egeria.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           ports:
             - containerPort: 8080
             - containerPort: 5005
