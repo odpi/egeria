@@ -67,8 +67,15 @@ spec:
 # playbooks for loading sample metadata at runtime within the IGC container
       hostname: infosvr
       volumes:
-        - name: samples-volume
+{{ if .Values.localRepo.use }}
+        - name: egeria-volume
+          hostPath:
+            path: {{ .Values.localRepo.location }}
+            type: Directory
+{{ else }}
+        - name: egeria-volume
           emptyDir: {}
+{{ end }}
       imagePullSecrets:
         - name: regcred
       initContainers:
@@ -81,15 +88,15 @@ spec:
             - "/bin/bash"
             - "-c"
             - >
-                cd /samples && git init egeria &&
-                cd egeria &&
+                cd /egeria &&
+                git init . &&
                 git remote add origin https://github.com/odpi/egeria.git &&
                 git config core.sparsecheckout true &&
                 echo 'open-metadata-resources/open-metadata-deployment/sample-data/*' >> .git/info/sparse-checkout &&
                 git pull --depth=1 origin master
           volumeMounts:
-            - mountPath: /samples
-              name: samples-volume
+            - mountPath: /egeria
+              name: egeria-volume
       containers:
         - name: proxy
           image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
@@ -142,8 +149,8 @@ spec:
             capabilities:
               add: ["IPC_OWNER"]
           volumeMounts:
-            - mountPath: /samples
-              name: samples-volume
+            - mountPath: /egeria
+              name: egeria-volume
 #      hostIPC: true   # try without this setting to reduce potential risks to host system
 {{ else }}
 # When re-using a pre-existing IGC environment, only run the IGC proxy here, while ensuring the IP and hostname of
