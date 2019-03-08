@@ -56,7 +56,8 @@ logging:
   level: NONE
 
 imageDefaults:
-  registry: "localhost:5000"
+  registry: docker.io
+  repository: planetf1
   tag: latest
   pullPolicy: IfNotPresent
 
@@ -67,40 +68,42 @@ imageDefaults:
 # 'docker.io/library' as the registry override).
 image:
   ranger:
-    repository: odpi/ranger-admin-egeriavdc
+    name: ranger-admin-egeriavdc
 
   mariadb:
-    registry: "docker.io/library"
-    repository: mariadb
+    repository: library
+    name: mariadb
 
   egeria:
-    repository: odpi/egeria
+    name: egeria
 
   gaian:
-    repository: odpi/gaian-egeriavdc
+    name: gaian-egeriavdc
 
   atlas:
-    repository: odpi/apache-atlas
+    name: apache-atlas
 
   kafkamonitor:
-    repository: odpi/kafka-monitor-egeriavdc
+    name: kafka-monitor-egeriavdc
 
   postgresql:
-    registry: "docker.io/library"
-    repository: postgres
+    repository: library
+    name: postgres
     tag: alpine
 
   omrsmonitor:
-    repository: odpi/omrsmonitor-egeriavdc
+    name: omrsmonitor-egeriavdc
 
   # NOTE: this image is only used if the ibmigc.external is set to false; otherwise it is ignored and
   # the k8s-external, pre-existing environment defined under ibmigc... is used
   ibmigc:
-    repository: ibm/infosvr
+    registry: "localhost:5000"
+    repository: ibm
+    name: infosvr
     tag: v11.7.0.2
 
   configure:
-    repository: odpi/egeria-configure
+    name: egeria-configure
 
   nameOverride: ""
   fullnameOverride: ""
