@@ -71,7 +71,8 @@ spec:
       containers:
         - name: {{ .Chart.Name }}-ranger
           image: "{{ if (.Values.image.ranger.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.ranger.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ .Values.image.ranger.repository }}\
+                  {{ if (.Values.image.ranger.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.ranger.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ .Values.image.ranger.name }}\
                   :{{ .Values.image.ranger.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.ranger.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           ports:
@@ -83,7 +84,8 @@ spec:
           resources: {}
         - name: {{ .Chart.Name }}-mariadb
           image: "{{ if (.Values.image.mariadb.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.mariadb.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ .Values.image.mariadb.repository }}\
+                  {{ if (.Values.image.mariadb.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.mariadb.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ .Values.image.mariadb.name }}\
                   :{{ .Values.image.mariadb.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.mariadb.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           env:
