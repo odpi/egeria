@@ -10,13 +10,13 @@ import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationView
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.DataViewCreationException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
+import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 public class DataViewHandler {
 
@@ -45,12 +45,7 @@ public class DataViewHandler {
 
         log.info("Creating data view based on payload {}", requestBody);
         try {
-            String qualifiedNameForDataView;
-            if (StringUtils.isEmpty(requestBody.getEndpointAddress())) {
-                qualifiedNameForDataView = requestBody.getId();
-            } else {
-                qualifiedNameForDataView = requestBody.getEndpointAddress() + ":" + requestBody.getId();
-            }
+            String qualifiedNameForDataView = QualifiedNameUtils.buildQualifiedName(requestBody.getEndpointAddress(), Constants.INFORMATION_VIEW, requestBody.getId());
             InstanceProperties dataViewProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataView)
                     .withStringProperty(Constants.NAME, requestBody.getName())
