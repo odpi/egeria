@@ -33,7 +33,8 @@ spec:
       containers:
         - name: {{ include "myapp.fullname" . }}-kafka-monitor
           image: "{{ if (.Values.image.kafkamonitor.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.kafkamonitor.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ .Values.image.kafkamonitor.repository }}\
+                  {{ if (.Values.image.kafkamonitor.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.kafkamonitor.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ .Values.image.kafkamonitor.name }}\
                   :{{ .Values.image.kafkamonitor.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.kafkamonitor.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           resources: {}
