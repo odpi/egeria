@@ -33,7 +33,10 @@ spec:
       initContainers:
 {{ if (not .Values.localRepo.use) }}
         - name: init-git
-          image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ .Values.image.configure.repository }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           command:
             - "/bin/bash"
             - "-c"
@@ -49,13 +52,19 @@ spec:
               name: egeria-volume
 {{ end }}
         - name: wait-for-db
-          image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ .Values.image.configure.repository }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           env:
             - name: SERVICE
               value: {{ include "myapp.fullname" . }}-postgresql-service
       containers:
         - name: db-clients
-          image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ .Values.image.configure.repository }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           env:
             - name: PGPASSWORD
               valueFrom:
