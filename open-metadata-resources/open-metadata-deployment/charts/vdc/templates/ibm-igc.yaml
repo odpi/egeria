@@ -67,30 +67,44 @@ spec:
 # playbooks for loading sample metadata at runtime within the IGC container
       hostname: infosvr
       volumes:
-        - name: samples-volume
+{{ if .Values.localRepo.use }}
+        - name: egeria-volume
+          hostPath:
+            path: {{ .Values.localRepo.location }}
+            type: Directory
+{{ else }}
+        - name: egeria-volume
           emptyDir: {}
+{{ end }}
       imagePullSecrets:
         - name: regcred
       initContainers:
         - name: init-git
-          image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.configure.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           command:
             - "/bin/bash"
             - "-c"
             - >
-                cd /samples && git init egeria &&
-                cd egeria &&
+                cd /egeria &&
+                git init . &&
                 git remote add origin https://github.com/odpi/egeria.git &&
                 git config core.sparsecheckout true &&
                 echo 'open-metadata-resources/open-metadata-deployment/sample-data/*' >> .git/info/sparse-checkout &&
                 git pull --depth=1 origin master
           volumeMounts:
-            - mountPath: /samples
-              name: samples-volume
+            - mountPath: /egeria
+              name: egeria-volume
       containers:
         - name: proxy
-          image: "{{ .Values.image.egeria.repository }}:{{ .Values.image.egeria.tag }}"
-          imagePullPolicy: {{ .Values.image.egeria.pullPolicy }}
+          image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.egeria.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.egeria.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ .Values.image.egeria.name }}\
+                  :{{ .Values.image.egeria.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
@@ -107,8 +121,11 @@ spec:
             failureThreshold: 6
           resources: {}
         - name: ibm-igc
-          image: "{{ .Values.image.ibmigc.repository }}:{{ .Values.image.ibmigc.tag }}"
-          imagePullPolicy: {{ .Values.image.ibmigc.pullPolicy }}
+          image: "{{ if (.Values.image.ibmigc.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.ibmigc.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.ibmigc.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.ibmigc.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ .Values.image.ibmigc.name }}\
+                  :{{ .Values.image.ibmigc.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.ibmigc.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           ports:
             - containerPort: 9446
             - containerPort: 52181
@@ -135,8 +152,8 @@ spec:
             capabilities:
               add: ["IPC_OWNER"]
           volumeMounts:
-            - mountPath: /samples
-              name: samples-volume
+            - mountPath: /egeria
+              name: egeria-volume
 #      hostIPC: true   # try without this setting to reduce potential risks to host system
 {{ else }}
 # When re-using a pre-existing IGC environment, only run the IGC proxy here, while ensuring the IP and hostname of
@@ -147,8 +164,11 @@ spec:
             - {{ .Values.ibmigc.external.hostname }}
       containers:
         - name: proxy
-          image: "{{ .Values.image.egeria.repository }}:{{ .Values.image.egeria.tag }}"
-          imagePullPolicy: {{ .Values.image.egeria.pullPolicy }}
+          image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.egeria.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.egeria.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ .Values.image.egeria.name }}\
+                  :{{ .Values.image.egeria.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
