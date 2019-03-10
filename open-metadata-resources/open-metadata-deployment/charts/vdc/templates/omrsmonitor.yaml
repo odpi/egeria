@@ -9,35 +9,34 @@ metadata:
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: ui-service
+    app.kubernetes.io/component: omrsmonitor-service
 
-  name: {{ include "myapp.fullname" . }}-ui-service
+  name: {{ include "myapp.fullname" . }}-omrsmonitor-service
 
 spec:
   type: {{ .Values.service.type }}
   ports:
-    - name: "ui"
-      port: 8443
-      nodePort: {{ .Values.service.nodeport.ui }}
-      targetPort: 8443
+    - port: 58080
+      targetPort: 58080
+      nodePort: {{ .Values.service.nodeport.omrsmonitor }}
 
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/component: ui-service
+    app.kubernetes.io/component: omrsmonitor-service
 ...
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
-  name: {{ include "myapp.fullname" . }}-ui
+  name: {{ include "myapp.fullname" . }}-omrsmonitor
   labels:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     helm.sh/chart: {{ include "myapp.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: ui-service
+    app.kubernetes.io/component: omrsmonitor-service
 
 spec:
   replicas: 1
@@ -45,7 +44,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: {{ include "myapp.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
-      app.kubernetes.io/component: ui-service
+      app.kubernetes.io/component: omrsmonitor-service
 
   strategy: {}
   template:
@@ -54,27 +53,22 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "myapp.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/component: ui-service
+        app.kubernetes.io/component: omrsmonitor-service
 
     spec:
       containers:
-        - name: ui
-          image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.egeria.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.egeria.repository | default .Values.imageDefaults.repository }}/{{ end }}\
-                  {{ .Values.image.egeria.name }}\
-                  :{{ .Values.image.egeria.tag | default .Values.imageDefaults.tag }}"
-          imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+        - name: {{ include "myapp.fullname" . }}-omrsmonitor
+          image: "{{ if (.Values.image.omrsmonitor.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.omrsmonitor.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.omrsmonitor.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.omrsmonitor.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ .Values.image.omrsmonitor.name }}\
+                  :{{ .Values.image.omrsmonitor.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.omrsmonitor.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           ports:
-            - containerPort: 8443
-          command:
-            - "/bin/bash"
-            - "-c"
-            - "java -jar /access-services-user-interface.jar"
+            - containerPort: 58080
+          resources: {}
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
-          resources: {}
       restartPolicy: Always
-
 status: {}
 ...
