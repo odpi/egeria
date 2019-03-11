@@ -10,7 +10,7 @@ Most of the interaction is done through BI and virtualization tools.
 There are 2 ways to interact with Information View OMAS:
 
 * [topic](/java-events) for receiving events  
-* REST API to create 
+* REST API to create information views and reports
 
 
 
