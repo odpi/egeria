@@ -23,13 +23,21 @@ spec:
       initContainers:
 {{ if .Values.kafka.internal.enabled }}
         - name: wait-for-kafka
-          image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.configure.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           env:
             - name: SERVICE
               value: {{ .Release.Name }}-cp-kafka
 {{ end }}
         - name: wait-for-atlas
-          image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.configure.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           command:
             - "/bin/bash"
             - "-c"
@@ -40,7 +48,11 @@ spec:
                 done;
       containers:
         - name: initialize
-          image: "{{ .Values.image.configure.repository }}:{{ .Values.image.configure.tag }}"
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.configure.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap

@@ -55,62 +55,55 @@ debug:
 logging:
   level: NONE
 
+imageDefaults:
+  registry: docker.io
+  repository: planetf1
+  tag: latest
+  pullPolicy: IfNotPresent
 
-# The following section defines all of the DOCKER images being used by this
-# chart. Normally they should be left as is, but are exposed here in case the
-# user wishes to extend.
+# The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
+# but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
+# these can be individually overridden for each image, if desired, by providing a subkey for 'registry', 'tag' or
+# 'pullPolicy' with the value to use for the override (if you want to use the public Docker registry, use
+# 'docker.io/library' as the registry override).
 image:
   ranger:
-    repository: localhost:5000/odpi/ranger-admin-egeriavdc
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
+    name: ranger-admin-egeriavdc
 
   mariadb:
-    repository: mariadb
-    tag: latest
-    pullPolicy: Always
+    repository: library
+    name: mariadb
 
   egeria:
-    repository: localhost:5000/odpi/egeria
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
+    name: egeria
 
   gaian:
-    repository: localhost:5000/odpi/gaian-egeriavdc
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
+    name: gaian-egeriavdc
 
   atlas:
-    repository: localhost:5000/odpi/apache-atlas
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
+    name: apache-atlas
 
   kafkamonitor:
-    repository: localhost:5000/odpi/kafka-monitor-egeriavdc
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
+    name: kafka-monitor-egeriavdc
 
   postgresql:
-    repository: postgres
+    repository: library
+    name: postgres
     tag: alpine
-    pullPolicy: IfNotPresent
 
   omrsmonitor:
-    repository: localhost:5000/odpi/omrsmonitor-egeriavdc
-    tag: 1.1-SNAPSHOT
-    pullPolicy: Always
+    name: omrsmonitor-egeriavdc
 
   # NOTE: this image is only used if the ibmigc.external is set to false; otherwise it is ignored and
   # the k8s-external, pre-existing environment defined under ibmigc... is used
   ibmigc:
-    repository: localhost:5000/ibm/infosvr
+    registry: "localhost:5000"
+    repository: ibm
+    name: infosvr
     tag: v11.7.0.2
-    pullPolicy: IfNotPresent
 
   configure:
-    repository: localhost:5000/odpi/egeria-configure
-    tag: 1.1-SNAPSHOT
-    pullPolicy: IfNotPresent
+    name: egeria-configure
 
   nameOverride: ""
   fullnameOverride: ""
@@ -118,8 +111,8 @@ image:
 # Set 'use' to true to use your local repository rather than Egeria's (remote) master git repository
 # (When set to true, also provide the absolute path to your local repository)
 localRepo:
-  use: true
-  location: /Users/cgrote/Developer/git-repos/forks/odpi/egeria
+  use: false
+  location: /some/where/egeria
 
 # Whether to use a k8s cluster-internal Kafka or an external one -- if using internal,
 # see 'cp-kafka' below for config options
