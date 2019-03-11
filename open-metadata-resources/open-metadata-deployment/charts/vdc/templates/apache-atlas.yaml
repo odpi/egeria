@@ -54,8 +54,11 @@ spec:
     spec:
       containers:
         - name: apache-atlas
-          image: "{{ .Values.image.atlas.repository }}:{{ .Values.image.atlas.tag }}"
-          imagePullPolicy: {{ .Values.image.atlas.pullPolicy }}
+          image: "{{ if (.Values.image.atlas.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.atlas.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.atlas.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.atlas.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ .Values.image.atlas.name }}\
+                  :{{ .Values.image.atlas.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.atlas.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           ports:
             - containerPort: 21000
           livenessProbe:

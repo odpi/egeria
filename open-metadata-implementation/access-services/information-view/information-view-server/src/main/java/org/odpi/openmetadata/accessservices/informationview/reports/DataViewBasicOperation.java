@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.informationview.events.DataViewTable
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
+import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -21,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -89,9 +89,8 @@ public abstract class DataViewBasicOperation extends BasicOperation{
      */
     private void addDataViewTable(String qualifiedNameForParent, String parentGuid, DataViewTable dataViewTable) throws InvalidParameterException, PropertyErrorException, TypeDefNotKnownException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
 
-        String normalizedId = dataViewTable.getId().replace(".", ":");
-        normalizedId = normalizedId.replace("_", ":");
-        String qualifiedNameForDataViewTable = qualifiedNameForParent + ":" + normalizedId;
+
+        String qualifiedNameForDataViewTable = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.SCHEMA_ATTRIBUTE,  dataViewTable.getId());
         InstanceProperties sectionProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataViewTable)
                 .withStringProperty(Constants.ATTRIBUTE_NAME, dataViewTable.getName())
@@ -103,8 +102,8 @@ public abstract class DataViewBasicOperation extends BasicOperation{
         EntityDetail dataViewTableEntity = createSchemaType(Constants.SCHEMA_ATTRIBUTE,
                 qualifiedNameForDataViewTable, sectionProperties, Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
 
-
-        EntityDetail schemaTypeEntity = addSchemaType(qualifiedNameForDataViewTable, dataViewTableEntity, Constants.COMPLEX_SCHEMA_TYPE, null);
+        String qualifiedNameForDataViewTableType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForParent, Constants.COMPLEX_SCHEMA_TYPE,  dataViewTable.getId() + Constants.TYPE_SUFFIX);
+        EntityDetail schemaTypeEntity = addSchemaType(qualifiedNameForDataViewTableType, dataViewTableEntity, Constants.COMPLEX_SCHEMA_TYPE, null);
         addElements(qualifiedNameForParent, schemaTypeEntity.getGUID(), dataViewTable.getElements());
     }
 
@@ -129,9 +128,8 @@ public abstract class DataViewBasicOperation extends BasicOperation{
      */
     protected EntityDetail addDataViewColumn(String parentQualifiedName, String parentGuid, DataViewColumn dataViewColumn) throws InvalidParameterException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
 
-        String normalizedId = dataViewColumn.getId().replace(".", ":");
-        normalizedId = normalizedId.replace("_", ":");
-        String qualifiedNameForColumn = parentQualifiedName + ":" + normalizedId;
+
+        String qualifiedNameForColumn = QualifiedNameUtils.buildQualifiedName(parentQualifiedName, Constants.DERIVED_SCHEMA_ATTRIBUTE,  dataViewColumn.getId());
 
 
         InstanceProperties columnProperties = new EntityPropertiesBuilder()
@@ -153,7 +151,8 @@ public abstract class DataViewBasicOperation extends BasicOperation{
         InstanceProperties typeProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.DATA_TYPE, dataViewColumn.getDataType())
                 .build();
-        addSchemaType(qualifiedNameForColumn, dataViewColumnEntity, Constants.PRIMITIVE_SCHEMA_TYPE, typeProperties);
+        String qualifiedNameForColumnType = QualifiedNameUtils.buildQualifiedName(parentQualifiedName, Constants.PRIMITIVE_SCHEMA_TYPE,dataViewColumn.getId() + Constants.TYPE_SUFFIX );
+        addSchemaType(qualifiedNameForColumnType, dataViewColumnEntity, Constants.PRIMITIVE_SCHEMA_TYPE, typeProperties);
 
         return dataViewColumnEntity;
     }
@@ -161,7 +160,7 @@ public abstract class DataViewBasicOperation extends BasicOperation{
 
     /**
      *
-     * @param qualifiedNameOfSchemaAttribute qualified name of the schema attribute
+     * @param qualifiedNameForType qualified name of the schema attribute
      * @param schemaAttributeEntity schema attribute entity
      * @param schemaAttributeType schema attribute type entity
      * @param properties properties for the type entity
@@ -178,9 +177,7 @@ public abstract class DataViewBasicOperation extends BasicOperation{
      * @throws RepositoryErrorException
      * @throws ClassificationErrorException
      */
-    protected EntityDetail addSchemaType(String qualifiedNameOfSchemaAttribute, EntityDetail schemaAttributeEntity, String schemaAttributeType, InstanceProperties properties) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
-        String qualifiedNameForType = qualifiedNameOfSchemaAttribute + Constants.TYPE_SUFFIX;
-
+    protected EntityDetail addSchemaType(String qualifiedNameForType, EntityDetail schemaAttributeEntity, String schemaAttributeType, InstanceProperties properties) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
 
         InstanceProperties typeProperties;
         if (properties != null) {
