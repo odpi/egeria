@@ -10,7 +10,7 @@ egeria_samples_cocopharma_targets:
 
 # Type of database to load sample data into (for options, see the sub-directory names under 'database' directory of
 # these coco-pharmaceuticals samples)
-egeria_samples_cocopharma_db_type: ibm-db2
+egeria_samples_cocopharma_db_type: postgresql
 
 # Type of metadata repository to load sample data into (for options, see the sub-directory names under 'metadata'
 # directory of these coco-pharmaceuticals samples)
@@ -22,9 +22,9 @@ egeria_samples_metadata_backend: ibm-igc
 #  - postgresql => db => postgres / postgres
 #  - mariadb => db => root / root
 egeria_samples_db_credentials:
-  owner: db2inst1
-  group: db2iadm1
-  passwd: db2inst1
+  owner: postgres
+  group: postgres
+  passwd: passw0rd
 
 # Name of OS-level users and groups who should own the samples that are being loaded as files
 # Defaults:
@@ -38,9 +38,9 @@ egeria_samples_metadata_credentials:
 #  - ibm-db2 => "{{ egeria_samples_db_credentials.owner | upper }}"
 #  - postgresql => public
 #  - mariadb => not used, can be any value
-egeria_samples_db_schema: "{{ egeria_samples_db_credentials.owner | upper }}"
+egeria_samples_db_schema: public
 
 # Hostname and port for remote access to the samples database (by default same as what's used in inventory, but may need
 # to be changed if eg. deploying into k8s and exposing via an external service)
-egeria_samples_db_host_remote: "{{ groups['egeria-samples-db-host'][0] }}"
-egeria_samples_db_port_remote: 50000
+egeria_samples_db_host_remote: "vdc-postgresql-service"
+egeria_samples_db_port_remote: 5432
