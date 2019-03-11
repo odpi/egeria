@@ -205,3 +205,23 @@ without needing to know the multiple commands this actually requires through kub
 
 (Note that you need to use the `--purge` option to purge the chart if you intend to use the same name at some point in
 the future.)
+
+### Removing Jobs
+
+You may run into circumstances where the `Job`s used for initial setup have been left behind: typically this is because
+there was either some error during their execution (in which case they are left behind so their logs can be reviewed),
+or there was a timeout during the Helm deployment (which prevents Helm from cleaning them up itself).
+
+Regardless, you can manually review the `Job`s still in your cluster using the following command:
+
+```bash
+$ kubectl get jobs
+```
+
+Note that the `Job`s themselves have fairly static names (like `Service`s), though their temporal `Pod`s will have
+unique names like any other `Pod`. To review the logs of a job, simply use the same logging you would for a pod
+(`kubectl logs -f <podName>`). However, to delete the `Job` you will need to use the job name from the command above:
+
+```bash
+$ kubectl delete job <jobName>
+```
