@@ -24,10 +24,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -248,30 +244,27 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
                                             Relationship relationship) {
 
        //It should handle only semantic assignments for relational columns
-       if( !(relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT) && relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN))){
-           log.info("Event is ignored as the relationship is not a semantic assignment for a column");
-           return;
-       }
+        if (!(relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT) && relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN))) {
+            log.info("Event is ignored as the relationship is not a semantic assignment for a column");
 
-       try{
-           publishSemanticAssignment(relationship);
-       }
-       catch (Exception e) {
-
-           log.error("Exception building events", e);
-           InformationViewErrorCode auditCode = InformationViewErrorCode.PUBLISH_EVENT_EXCEPTION;
-
-           auditLog.logException("processNewRelationshipEvent",
-                   auditCode.getErrorMessageId(),
-                   OMRSAuditLogRecordSeverity.EXCEPTION,
-                   auditCode.getFormattedErrorMessage(SemanticAssignment.class.getName(), e.getMessage()),
-                   e.getMessage(),
-                   auditCode.getSystemAction(),
-                   auditCode.getUserAction(),
-                   e);
-       }
-
-        publishColumnContextEvent(relationship.getEntityOneProxy().getGUID());
+        } else {
+            log.info("Processing semantic assignment relationship event for a column");
+            try {
+                publishSemanticAssignment(relationship);
+            } catch (Exception e) {
+                log.error("Exception building events", e);
+                InformationViewErrorCode auditCode = InformationViewErrorCode.PUBLISH_EVENT_EXCEPTION;
+                auditLog.logException("processNewRelationshipEvent",
+                        auditCode.getErrorMessageId(),
+                        OMRSAuditLogRecordSeverity.EXCEPTION,
+                        auditCode.getFormattedErrorMessage(SemanticAssignment.class.getName(), e.getMessage()),
+                        e.getMessage(),
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction(),
+                        e);
+            }
+            publishColumnContextEvent(relationship.getEntityOneProxy().getGUID());
+        }
     }
 
     private void publishColumnContextEvent(String guid) {
@@ -279,7 +272,6 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
         try {
             events = columnContextEventBuilder.buildEvents(guid);
         } catch (Exception e) {
-
             log.error("Exception building events", e);
             InformationViewErrorCode auditCode = InformationViewErrorCode.BUILD_COLUMN_CONTEXT_EXCEPTION;
 
@@ -361,12 +353,24 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
                                                 String originatorOrganizationName,
                                                 Relationship relationship) {
 
-        if( !(relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT) && relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN))){
+        if (!(relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT) && relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN))) {
             log.info("Event is ignored as the relationship is not a delete of semantic assignment for a column");
-            return;
+        } else {
+            log.info("Processing delete of semantic assignment for a column");
+            publishColumnContextEvent(relationship.getEntityOneProxy().getGUID());
         }
+    }
 
-        publishColumnContextEvent(relationship.getEntityOneProxy().getGUID());
+    @Override
+    public void processDeletePurgedRelationshipEvent(String sourceName, String originatorMetadataCollectionId,
+                                                     String originatorServerName, String originatorServerType,
+                                                     String originatorOrganizationName, Relationship relationship) {
+        if (!(relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT) && relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN))) {
+            log.info("Event is ignored as the relationship is not a delete-purge of semantic assignment for a column");
+        } else {
+            log.info("Processing delete-purge of semantic assignment for a column");
+            publishColumnContextEvent(relationship.getEntityOneProxy().getGUID());
+        }
     }
 
     public void processPurgedRelationshipEvent(String sourceName,
@@ -377,23 +381,7 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
                                                String typeDefGUID,
                                                String typeDefName,
                                                String instanceGUID) {
-        if (typeDefName.equals(SEMANTIC_ASSIGNMENT)) {
-            log.info("Event is a semantic assignment");
-            Relationship relationship;
-            try {
-                relationship = columnContextEventBuilder.getRelationship(instanceGUID);
-                if (!relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN)) {
-                    log.info("Event is ignored as the relationship is not a delete of semantic assignment for a column");
-                } else {
-                    publishColumnContextEvent(relationship.getEntityOneProxy().getGUID());
-                }
-            } catch (RepositoryErrorException | InvalidParameterException | RelationshipNotKnownException | UserNotAuthorizedException e) {
-                log.error("Unable to load relationship", e);
-            }
-        } else {
-            log.info("Event is ignored as the relationship is not a delete of semantic assignment for a column");
-            return;
-        }
+
     }
 
     public void processRestoredRelationshipEvent(String sourceName,

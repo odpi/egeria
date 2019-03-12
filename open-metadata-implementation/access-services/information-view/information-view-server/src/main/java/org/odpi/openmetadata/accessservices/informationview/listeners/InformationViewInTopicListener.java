@@ -74,7 +74,7 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                 Future<View> viewCreationFuture = executor.submit(viewsBuilder);
                 InformationViewAsset informationViewAsset = informationViewFuture.get();
                 View view = viewCreationFuture.get();
-
+                executor.shutdown();
                 if(view.getViewEntity() != null) {
                     omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
                             informationViewAsset.getRelationalDbSchemaType().getGUID(),
