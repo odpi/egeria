@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project
 
-FROM ubuntu:18.04
+FROM ubuntu:18.04 AS build
 
 LABEL org.label-schema.name = "AtlasForEgeriaVDC"
 LABEL org.label-schema.description="Atlas service to support Egeria VDC demos" 
@@ -17,7 +17,6 @@ RUN apt-get update && apt-get install -y git python openjdk-8-jdk maven wget ine
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 
 # Install Maven.
-
 ENV MAVEN_HOME /usr/share/maven
 
 # Add Java and Maven to the path.
@@ -25,11 +24,6 @@ ENV PATH /usr/java/bin:/usr/local/apache-maven/bin:/usr/local/sbin:/usr/local/bi
 
 # Working directory
 WORKDIR /root
-
-# Download kafka for debugging
-RUN wget http://mirror.ox.ac.uk/sites/rsync.apache.org/kafka/2.1.0/kafka_2.12-2.1.0.tgz
-RUN gunzip -c kafka_2.12-2.1.0.tgz | tar -xvf -
-
 
 # Pull down Atlas and build it into /root/atlas-bin.
 RUN git clone https://github.com/grahamwallis/atlas -b master
@@ -48,14 +42,19 @@ RUN mvn clean install -DskipTests -Pdist,embedded-hbase-solr -f ./atlas/pom.xml
 RUN mkdir -p atlas-bin
 RUN tar xzf /root/atlas/distro/target/*bin.tar.gz --strip-components 1 -C /root/atlas-bin
 
+FROM openjdk:8-jdk-alpine
+
+RUN apk add python bash
+COPY --from=build /root/atlas-bin/ /root/atlas-bin/
+WORKDIR /root/atlas-bin/conf
+RUN sed -i "s|^atlas.graph.storage.lock.wait-time=10000|atlas.graph.storage.lock.wait-time=100|g" atlas-application.properties
+RUN echo "atlas.notification.relationships.enabled=true" >> atlas-application.properties
+
 # Set env variables, add it to the path, and start Atlas.
+ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
 ENV MANAGE_LOCAL_SOLR true
 ENV MANAGE_LOCAL_HBASE true
 ENV PATH /root/atlas-bin/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 EXPOSE 21000
-WORKDIR /root/atlas-bin/conf
-RUN sed -i "s|^atlas.graph.storage.lock.wait-time=10000|atlas.graph.storage.lock.wait-time=100|g" atlas-application.properties
-RUN echo "atlas.notification.relationships.enabled=true" >> atlas-application.properties
-
 ENTRYPOINT ["/bin/bash", "-c", "/root/atlas-bin/bin/atlas_start.py; tail -fF /root/atlas-bin/logs/application.log"]
