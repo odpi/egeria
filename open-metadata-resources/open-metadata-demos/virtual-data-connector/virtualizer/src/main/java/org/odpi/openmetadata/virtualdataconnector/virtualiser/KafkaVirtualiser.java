@@ -2,21 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.virtualdataconnector.virtualiser;
 
+import org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian.GaianQueryConstructor;
+import org.odpi.openmetadata.virtualdataconnector.virtualiser.kafka.KafkaVirtualiserConsumer;
+import org.odpi.openmetadata.virtualdataconnector.virtualiser.views.ViewsConstructor;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
-import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
-import org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian.GaianQueryConstructor;
-import org.odpi.openmetadata.virtualdataconnector.virtualiser.kafka.KafkaVirtualiserConsumer;
-import org.odpi.openmetadata.virtualdataconnector.virtualiser.views.ViewsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -46,8 +38,6 @@ public class KafkaVirtualiser{
     @Autowired
     private GaianQueryConstructor gaianQueryConstructor;
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-
 
     /**
      * use Kafka consumer to listen to Information View Out Topic
@@ -70,5 +60,7 @@ public class KafkaVirtualiser{
         thread.start();
 
     }
+
+
 
 }

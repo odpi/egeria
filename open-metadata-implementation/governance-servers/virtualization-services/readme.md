@@ -11,22 +11,17 @@ Virtualizer has three main functions:
 
 ## OMAG server configuration
 
-Virtualizer is now running as a service for [OMAG Application Platform](../server-chassis). In this case, the service should be configured and initialized by the restful APIs provided by the platform.
+Virtualizer is now running as a service for [OMAG Server Platform](../server-chassis). In this case, the service should be configured and initialized by the restful APIs provided by the platform.
 
 Here are the steps to run Vitualizer
-- Start Server Chassis
-- Configure the server URL with an HTTP **POST**
-```
-{{url-virtualizer}}/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/server-url-root?url={{url-virtualizer}}
-```
+- Start [OMAG Server Platform](../../../open-metadata-resources/open-metadata-tutorials/omag-server-tutorial)
+
 - Configure event bus
 
 **POST** following JSON object 
 ````json
 {"consumer": {
-	"bootstrap.servers" :  "{{kafka-server-address}}",
-	"key.deserializer": "org.apache.kafka.common.serialization.StringDeserializer",
-	"value.deserializer": "org.apache.kafka.common.serialization.StringDeserializer"
+	"bootstrap.servers" :  "{{kafka-server-address}}"
 },
 "producer": {
 	"bootstrap.servers" :  "{{kafka-server-address}}",
@@ -37,14 +32,7 @@ Here are the steps to run Vitualizer
 ````
 to the following address
 ```
-{{url-virtualizer}}/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/event-bus?connectorProvider=org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider&topicURLRoot={{topic-root}}
-```
-
-- Set up cohort
-
-**POST** to the following address
-```
-{{url-virtualizer}}/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/cohorts/{{cohort-name}}
+{{url-virtualizer}}/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/event-bus?topicURLRoot={{topic-root}}
 ```
 
 - Set up virtualizer configuration
@@ -53,7 +41,7 @@ to the following address
 ````json
 {
 	"class": "VirtualizationConfig",
-	"virtualizationProvider": "GaianDB",
+	"virtualizationProvider": "{{connector-class-name}}",
 	"ivInTopicName": "{{iv-in-topic-name}}",
 	"ivOutTopicName": "{{iv-out-topic-name}}"
 }
@@ -63,14 +51,7 @@ to the following address
 {{url-virtualizer}}/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/virtualization-service/configuration
 ```
 
-- Register Virtualizer in the OMAG Application Platform
-
-**POST** to the following address
-```
-{{url-virtualizer}}/open-metadata/admin-services/users/{{user-name}}/servers/{{server-name}}/virtualization-service
-```
-
-- Start the instance of the OMAG services
+- Start the instance of the OMAG Server
 
 **POST** to the following address
 ```
