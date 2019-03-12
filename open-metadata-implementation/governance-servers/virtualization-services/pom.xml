@@ -23,7 +23,6 @@
     <modules>
         <module>virtualization-services-api</module>
         <module>virtualization-services-server</module>
-        <module>virtualization-services-spring</module>
     </modules>
 
     

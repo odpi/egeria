@@ -53,6 +53,11 @@ public class VirtualizationOperationalServices {
         this.localServerURL = localServerURL;
     }
 
+    /**
+     * Initialize the virtualization server
+     * @param virtualizationConfig Virtualization server configuration.
+     * @param auditLog Audition Log instance.
+     */
     public void initialize(VirtualizationConfig virtualizationConfig, OMRSAuditLog auditLog) {
 
         if (virtualizationConfig != null) {
