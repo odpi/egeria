@@ -27,7 +27,7 @@ import java.util.Map;
  */
 public class OMAGServerAdminServices
 {
-    private OMAGServerAdminStoreServices   configStore  = new OMAGServerAdminStoreServices();
+    private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
 
     /*
@@ -362,6 +362,9 @@ public class OMAGServerAdminServices
             serverConfig.setAuditTrail(configAuditLog);
             serverConfig.setEventBusConfig(eventBusConfig);
 
+            /*
+             * Save the config away
+             */
             configStore.saveServerConfig(serverName, methodName, serverConfig);
 
         }
@@ -818,7 +821,7 @@ public class OMAGServerAdminServices
             OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
             LocalRepositoryConfig localRepositoryConfig
                     = configurationFactory.getRepositoryIBMIGCRepositoryConfig(serverConfig.getLocalServerName(),
-                                                                               serverConfig.getLocalServerURL());
+                    serverConfig.getLocalServerURL());
 
             /*
              * Set up the repository proxy connection in the local repository config
@@ -870,10 +873,10 @@ public class OMAGServerAdminServices
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
             this.setIBMIGCConnection(userId,
-                                     serverName,
-                                     connectorConfigurationFactory.getIBMIGCRepositoryConnection(serverName,
-                                                                                                 serverConfig.getLocalServerURL(),
-                                                                                                 additionalProperties));
+                    serverName,
+                    connectorConfigurationFactory.getIBMIGCRepositoryConnection(serverName,
+                            serverConfig.getLocalServerURL(),
+                            additionalProperties));
 
         }
         catch (OMAGInvalidParameterException  error)
@@ -1644,6 +1647,64 @@ public class OMAGServerAdminServices
         return response;
     }
 
+
+    /**
+     * Set up the connector to the virtualisation solution.
+     * The resulting connector will be used in Virualiser to connect to the virtualisation tool.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName local server name.
+     * @param connectorProvider  connector provider for the virtualisation solution.
+     * @param additionalProperties  property name/value pairs used to configure the connection to the the virtualisation solution
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command
+     * OMAGInvalidParameterException invalid serverName parameter.
+     */
+//    public VoidResponse setVirtualization(String              userId,
+//                                          String              serverName,
+//                                          String              connectorProvider,
+//                                          Map<String, Object> additionalProperties)
+//    {
+//        final String methodName = "setVirtualization";
+//
+//        VoidResponse response = new VoidResponse();
+//
+//        try
+//        {
+//            /*
+//             * Validate and set up the userName and server name.
+//             */
+//            errorHandler.validateServerName(serverName, methodName);
+//            errorHandler.validateUserId(userId, serverName, methodName);
+//
+//            /*
+//             * Retrieve the existing configuration and validate it is ok to set up event bus.
+//             */
+//            OMAGServerConfig serverConfig   = configStore.getServerConfig(serverName, methodName);
+//            VirtualizationConfig virtualizerConfig = new VirtualizationConfig();
+//
+//            virtualizerConfig.setConnectorProvider(connectorProvider);
+//            virtualizerConfig.setAdditionalProperties(additionalProperties);
+//
+//            serverConfig.setVirtualizationConfig(virtualizerConfig);
+//
+//            /*
+//             * Save the config away
+//             */
+//            configStore.saveServerConfig(serverName, methodName, serverConfig);
+//
+//        }
+//        catch (OMAGInvalidParameterException  error)
+//        {
+//            errorHandler.captureInvalidParameterException(response, error);
+//        }
+//        catch (OMAGNotAuthorizedException  error)
+//        {
+//            errorHandler.captureNotAuthorizedException(response, error);
+//        }
+//
+//        return response;
+//    }
 
 
 

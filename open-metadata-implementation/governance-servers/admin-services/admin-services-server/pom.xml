@@ -60,6 +60,12 @@
             <version>${open-metadata.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>virtualization-services-server</artifactId>
+            <version>${open-metadata.version}</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 
