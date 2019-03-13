@@ -1,31 +1,29 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <!-- SPDX-License-Identifier: Apache-2.0 -->
-<!-- Copyright Contributors to the ODPi Egeria project. -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
     <parent>
-        <artifactId>open-metadata-resources</artifactId>
+        <artifactId>governance-servers</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.1-SNAPSHOT</version>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Open Metadata Demos</name>
+    <name>Virtualization Services</name>
     <description>
-        Code, resources and scripts to support an open metadata demo.
+        The virtualization services manage the data exchange between virtualization solutions and information view OMAS.
     </description>
 
-    <artifactId>open-metadata-demos</artifactId>
+    <artifactId>virtualization-services</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>in-memory-repository-demo</module>
-        <module>virtualizer-deprecated</module>
+        <module>virtualization-services-api</module>
+        <module>virtualization-services-server</module>
     </modules>
 
-
+    
 </project>
