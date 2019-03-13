@@ -9,6 +9,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOper
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.securitysyncservices.configuration.registration.SecuritySyncOperationalServices;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,14 +17,17 @@ import java.util.List;
 /**
  * OMAGOperationalServicesInstance provides the references to the active services for an instance of an OMAG Server.
  */
-public class OMAGOperationalServicesInstance {
-    private OMAGServerConfig operationalConfiguration = null;
-    private OMRSOperationalServices operationalRepositoryServices = null;
-    private List<AccessServiceAdmin> operationalAccessServiceAdminList = new ArrayList<>();
-    private DiscoveryEngineOperationalServices operationalDiscoveryEngine = null;
+
+public class OMAGOperationalServicesInstance
+{
+    private OMAGServerConfig                   operationalConfiguration          = null;
+    private OMRSOperationalServices            operationalRepositoryServices     = null;
+    private List<AccessServiceAdmin>           operationalAccessServiceAdminList = new ArrayList<>();
+    private DiscoveryEngineOperationalServices operationalDiscoveryEngine        = null;
     private OpenLineageOperationalServices openLineageOperationalServices = null;
-    private StewardshipOperationalServices operationalStewardshipServices = null;
-    private SecuritySyncOperationalServices operationalSecuritySyncServices = null;
+    private StewardshipOperationalServices     operationalStewardshipServices    = null;
+    private SecuritySyncOperationalServices    operationalSecuritySyncServices   = null;
+    private VirtualizationOperationalServices  operationalVirtualizationServices = null;
 
     /**
      * Default constructor
@@ -168,5 +172,23 @@ public class OMAGOperationalServicesInstance {
      */
     public void setOperationalSecuritySyncServices(SecuritySyncOperationalServices operationalSecuritySyncServices) {
         this.operationalSecuritySyncServices = operationalSecuritySyncServices;
+    }
+
+    /**
+     * Return the running instance of Virtualizer
+     *
+     * @return VirtualizationOperationalServices object
+     */
+    public VirtualizationOperationalServices getOperationalVirtualizationServices() {
+        return operationalVirtualizationServices;
+    }
+
+    /**
+     * Set up the running instance of Virtualizer
+     *
+     * @param operationalVirtualizationServices VirtualizationOperationalServices object
+     */
+    public void setOperationalVirtualizationServices(VirtualizationOperationalServices operationalVirtualizationServices) {
+        this.operationalVirtualizationServices = operationalVirtualizationServices;
     }
 }
