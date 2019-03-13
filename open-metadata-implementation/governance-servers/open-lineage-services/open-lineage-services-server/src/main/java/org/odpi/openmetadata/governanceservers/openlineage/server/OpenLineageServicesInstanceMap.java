@@ -14,7 +14,7 @@ import java.util.Map;
  */
 public class OpenLineageServicesInstanceMap
 {
-    private static  Map<String, OpenLineageServicesInstance>   instanceMap = new HashMap<>();
+    private static  Map<String, OpenLineageServicesInstance>  instanceMap = new HashMap<>();
 
 
     /**
@@ -38,11 +38,10 @@ public class OpenLineageServicesInstanceMap
      */
     private static synchronized OpenLineageServicesInstance getInstanceForJVM(String    serverName)
     {
-        OpenLineageServicesInstance   instance = instanceMap.get(serverName);
+        OpenLineageServicesInstance instance = instanceMap.get(serverName);
 
         return instance;
     }
-
 
     /**
      * Remove the instance for this server.
@@ -56,21 +55,12 @@ public class OpenLineageServicesInstanceMap
 
 
     /**
-     * Constructor
-     */
-    public OpenLineageServicesInstanceMap()
-    {
-    }
-
-
-    /**
      * Return the instance for this server.
      *
      * @param serverName name of the server
      * @return OMRSRepositoryServicesInstance object
      */
-    public OpenLineageServicesInstance getInstance(String    serverName)
-    {
+    public OpenLineageServicesInstance getInstance(String serverName) {
         return OpenLineageServicesInstanceMap.getInstanceForJVM(serverName);
     }
 }

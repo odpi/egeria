@@ -7,7 +7,7 @@ public class Constants {
 
 
     public static final String ASSET_LINEAGE_OMAS_NAME = "AssetLineageOmas";
-    public static final String ASSET_LINEAGE = "AssetLineage";
+    public static final String ASSET_LINEAGE = "AssetLineageException";
     public static final String RELATIONAL_TABLE = "RelationalTable";
     public static final String RELATIONAL_COLUMN = "RelationalColumn";
     public static final String BUSINESS_TERM = "GlossaryTerm";

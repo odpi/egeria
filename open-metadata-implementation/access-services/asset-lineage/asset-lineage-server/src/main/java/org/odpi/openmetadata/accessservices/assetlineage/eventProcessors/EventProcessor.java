@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
 
-package org.odpi.openmetadata.accessservices.assetlineage.publisher;
+package org.odpi.openmetadata.accessservices.assetlineage.eventProcessors;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,16 +26,15 @@ import org.slf4j.LoggerFactory;
 import static org.odpi.openmetadata.accessservices.assetlineage.utils.Constants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.assetlineage.utils.Constants.SEMANTIC_ASSIGNMENT;
 
+public class EventProcessor extends OMRSInstanceEventProcessor {
 
-public class EventPublisher extends OMRSInstanceEventProcessor {
-
-    private static final Logger log = LoggerFactory.getLogger(EventPublisher.class);
+    private static final Logger log = LoggerFactory.getLogger(EventProcessor.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private OpenMetadataTopic assetLineageTopicConnector;
     private OMRSAuditLog auditLog;
     private LineageEventBuilder lineageEventBuilder;
 
-    public EventPublisher(OpenMetadataTopic assetLineageTopicConnector,
+    public EventProcessor(OpenMetadataTopic assetLineageTopicConnector,
                           LineageEventBuilder lineageEventBuilder,
                           OMRSAuditLog auditLog) {
         this.assetLineageTopicConnector = assetLineageTopicConnector;
@@ -79,6 +78,7 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
         newEntityEvent.setType(entity.getType());
         newEntityEvent.setGuid(entity.getGUID());
         sendEvent(newEntityEvent);
+
     }
 
     public void processUpdatedEntityEvent(String sourceName,
