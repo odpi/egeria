@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.informationview.events.DerivedColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
+import org.odpi.openmetadata.accessservices.informationview.events.*;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.ffdc.VirtualiserCheckedException;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.ffdc.VirtualiserErrorCode;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian.GaianQueryConstructor;
