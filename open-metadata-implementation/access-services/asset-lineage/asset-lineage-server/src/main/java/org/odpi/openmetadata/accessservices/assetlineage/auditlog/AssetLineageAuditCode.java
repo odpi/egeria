@@ -59,7 +59,13 @@ public enum AssetLineageAuditCode {
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the connection to topic {0} in the Asset Lineage Open Metadata Access Service (OMAS) instance for server {1} ",
             "The connection to asset lineage topic could not be initialized.",
-            "Review the exception and resolve the configuration. ")
+            "Review the exception and resolve the configuration. "),
+
+    SERVICE_INSTANCE_FAILURE("OMAS-ASSET-LINEAGE-0009",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Asset Lineage Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
+            "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
+            "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
     ;
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineageAuditCode.class);

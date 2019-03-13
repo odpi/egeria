@@ -5,11 +5,10 @@ package org.odpi.openmetadata.accessservices.assetlineage.admin;
 
 
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
-import org.odpi.openmetadata.accessservices.assetlineage.contentmanager.LineageEventBuilder;
-import org.odpi.openmetadata.accessservices.assetlineage.publisher.EventPublisher;
+import org.odpi.openmetadata.accessservices.assetlineage.eventProcessors.EventProcessor;
 import org.odpi.openmetadata.accessservices.assetlineage.listeners.AssetLineageEnterpriseOmrsEventListener;
 import org.odpi.openmetadata.accessservices.assetlineage.listeners.AssetLineageInTopicListener;
-import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageServicesInstance;
+import org.odpi.openmetadata.accessservices.assetlineage.service.AssetLineageServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -27,7 +26,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 
 public class AssetLineageAdmin implements AccessServiceAdmin {
 
@@ -49,37 +47,66 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
     @Override
-    public void initialize(AccessServiceConfig accessServiceConfigurationProperties, OMRSTopicConnector enterpriseOMRSTopicConnector, OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog, String serverUserName) throws OMAGConfigurationErrorException {
+    public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
+                           OMRSTopicConnector enterpriseOMRSTopicConnector,
+                           OMRSRepositoryConnector enterpriseConnector,
+                           OMRSAuditLog auditLog, String serverUserName) throws OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
         AssetLineageAuditCode auditCode;
 
-        auditCode = AssetLineageAuditCode.SERVICE_INITIALIZING;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
+        try {
+            auditCode = AssetLineageAuditCode.SERVICE_INITIALIZING;
+            auditLog.logRecord(actionDescription,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
+
+            this.auditLog = auditLog;
+
+            if (enterpriseConnector != null) {
+                serverName = enterpriseConnector.getServerName();
+            }
+
+            Connection inTopicConnection = accessServiceConfigurationProperties.getAccessServiceInTopic();
+            String inTopicName = getTopicName(inTopicConnection);
+
+            Connection outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
+            String outTopicName = getTopicName(outTopicConnection);
+
+            assetLineageInTopicConnector = initializeAssetLineageTopicConnector(inTopicConnection);
+            OpenMetadataTopicConnector assetLineageOutTopicConnector = initializeAssetLineageTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
+
+            if (enterpriseOMRSTopicConnector != null) {
+                auditCode = AssetLineageAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
+                auditLog.logRecord(actionDescription,
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(serverName),
+                        null,
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction());
+                EventProcessor eventProcessor = new EventProcessor(assetLineageOutTopicConnector, auditLog);
+                AssetLineageEnterpriseOmrsEventListener assetLineageEnterpriseOmrsEventListener = new AssetLineageEnterpriseOmrsEventListener(eventProcessor, auditLog);
+                enterpriseOMRSTopicConnector.registerListener(assetLineageEnterpriseOmrsEventListener);
+            }
 
 
-        this.auditLog = auditLog;
+            if (assetLineageInTopicConnector != null) {
+                OpenMetadataTopicListener assetLineageInTopicListener = new AssetLineageInTopicListener(auditLog);
+                this.assetLineageInTopicConnector.registerListener(assetLineageInTopicListener);
+                startConnector(AssetLineageAuditCode.SERVICE_REGISTERED_WITH_AL_IN_TOPIC, actionDescription, inTopicName, assetLineageInTopicConnector);
+            }
 
-        if (enterpriseConnector != null) {
-            serverName = enterpriseConnector.getServerName();
-        }
+            if (assetLineageOutTopicConnector != null) {
+                startConnector(AssetLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, outTopicName, assetLineageOutTopicConnector);
+            }
 
-        Connection inTopicConnection = accessServiceConfigurationProperties.getAccessServiceInTopic();
-        String inTopicName = getTopicName(inTopicConnection);
+            this.instance = new AssetLineageServicesInstance(enterpriseConnector);
 
-        Connection outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
-        String outTopicName = getTopicName(outTopicConnection);
-
-        assetLineageInTopicConnector = initializeAssetLineageTopicConnector(inTopicConnection);
-        OpenMetadataTopicConnector assetLineageOutTopicConnector = initializeAssetLineageTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
-
-        if (enterpriseOMRSTopicConnector != null) {
-            auditCode = AssetLineageAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
+            auditCode = AssetLineageAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
@@ -87,31 +114,16 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
-            LineageEventBuilder lineageEventBuilder = new LineageEventBuilder(enterpriseConnector);
-            EventPublisher eventPublisher = new EventPublisher(assetLineageOutTopicConnector, lineageEventBuilder, auditLog);
-            AssetLineageEnterpriseOmrsEventListener assetLineageEnterpriseOmrsEventListener = new AssetLineageEnterpriseOmrsEventListener(eventPublisher, auditLog);
-            enterpriseOMRSTopicConnector.registerListener(assetLineageEnterpriseOmrsEventListener);
+        } catch (Exception error) {
+            auditCode = AssetLineageAuditCode.SERVICE_INSTANCE_FAILURE;
+            auditLog.logRecord(actionDescription,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(error.getMessage()),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
         }
-
-
-        if (assetLineageInTopicConnector != null) {
-            OpenMetadataTopicListener assetLineageInTopicListener = new AssetLineageInTopicListener(auditLog);
-            this.assetLineageInTopicConnector.registerListener(assetLineageInTopicListener);
-            startConnector(AssetLineageAuditCode.SERVICE_REGISTERED_WITH_AL_IN_TOPIC, actionDescription, inTopicName, assetLineageInTopicConnector);
-        }
-
-        if (assetLineageOutTopicConnector != null) {
-            startConnector(AssetLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, outTopicName, assetLineageOutTopicConnector);
-        }
-
-        auditCode = AssetLineageAuditCode.SERVICE_INITIALIZED;
-        auditLog.logRecord(actionDescription,
-                auditCode.getLogMessageId(),
-                auditCode.getSeverity(),
-                auditCode.getFormattedLogMessage(serverName),
-                null,
-                auditCode.getSystemAction(),
-                auditCode.getUserAction());
     }
 
     private void startConnector(AssetLineageAuditCode auditCode, String actionDescription, String topicName, OpenMetadataTopicConnector topicConnector) throws OMAGConfigurationErrorException {
@@ -123,7 +135,6 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
                 null,
                 auditCode.getSystemAction(),
                 auditCode.getUserAction());
-
 
         try {
             topicConnector.start();
@@ -187,7 +198,6 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
 
     }
 
-
     /**
      * Returns the connector created from topic connection properties
      *
@@ -224,7 +234,6 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
 
         }
     }
-
 
     /**
      * Shutdown the access service.

@@ -1555,6 +1555,30 @@ public class AssetCatalogService {
     }
 
 
+    private void buildContextForAsset(String userId, AssetElement assetElement,  Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail) throws InvalidParameterException, TypeDefNotKnownException, PropertyErrorException, EntityProxyOnlyException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, TypeErrorException, RepositoryErrorException {
+        Optional<TypeDef> isComplexSchemaType = isComplexSchemaType(entityDetail.getType().getTypeDefName());
+
+        if (isComplexSchemaType.isPresent()) {
+            setAssetDetails(userId, assetElement, knownAssetConnection, entityDetail);
+            return;
+        } else {
+            List<EntityDetail> attributeForSchemas = getTheEndsRelationship(userId, entityDetail.getGUID(), ATTRIBUTE_FOR_SCHEMA);
+            for(EntityDetail attributeForSchema : attributeForSchemas){
+                Element element = buildElement(attributeForSchema);
+                addElement(assetElement, element);
+                if (isComplexSchemaType(attributeForSchema.getType().getTypeDefName()).isPresent()) {
+                    setAssetDetails(userId, assetElement, knownAssetConnection, attributeForSchema);
+                    return;
+                } else {
+                    List<EntityDetail> schemaAttributeTypeEntities = getTheEndsRelationship(userId, attributeForSchema.getGUID(), SCHEMA_ATTRIBUTE_TYPE);
+                    getSubElements(assetElement, schemaAttributeTypeEntities);
+                    for(EntityDetail schema : schemaAttributeTypeEntities){
+                        buildContextForAsset(userId, assetElement, knownAssetConnection, schema);
+                    }
+                }
+            }
+        }
+    }
 
     public AssetResponse searchAssetsGeneric(String serverName, String userId, String searchCriteria, SearchParameters searchParameters) {
         AssetResponse response = new AssetResponse();
@@ -1626,30 +1650,6 @@ public class AssetCatalogService {
     }
 
 
-    private void buildContextForAsset(String userId, AssetElement assetElement,  Map<String, List<Connection>> knownAssetConnection, EntityDetail entityDetail) throws InvalidParameterException, TypeDefNotKnownException, PropertyErrorException, EntityProxyOnlyException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, TypeErrorException, RepositoryErrorException {
-        Optional<TypeDef> isComplexSchemaType = isComplexSchemaType(entityDetail.getType().getTypeDefName());
-
-        if (isComplexSchemaType.isPresent()) {
-            setAssetDetails(userId, assetElement, knownAssetConnection, entityDetail);
-            return;
-        } else {
-            List<EntityDetail> attributeForSchemas = getTheEndsRelationship(userId, entityDetail.getGUID(), ATTRIBUTE_FOR_SCHEMA);
-            for(EntityDetail attributeForSchema : attributeForSchemas){
-                Element element = buildElement(attributeForSchema);
-                addElement(assetElement, element);
-                if (isComplexSchemaType(attributeForSchema.getType().getTypeDefName()).isPresent()) {
-                    setAssetDetails(userId, assetElement, knownAssetConnection, attributeForSchema);
-                    return;
-                } else {
-                    List<EntityDetail> schemaAttributeTypeEntities = getTheEndsRelationship(userId, attributeForSchema.getGUID(), SCHEMA_ATTRIBUTE_TYPE);
-                    getSubElements(assetElement, schemaAttributeTypeEntities);
-                    for(EntityDetail schema : schemaAttributeTypeEntities){
-                        buildContextForAsset(userId, assetElement, knownAssetConnection, schema);
-                    }
-                }
-            }
-        }
-    }
 
     private void addElement(AssetElement assetElement, Element element) {
         if (assetElement.getContext() != null) {
