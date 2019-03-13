@@ -19,6 +19,7 @@ import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.Steward
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.securitysyncservices.configuration.registration.SecuritySyncOperationalServices;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -141,12 +142,14 @@ public class OMAGServerOperationalServices
             DiscoveryEngineConfig     discoveryEngineConfig     = configuration.getDiscoveryEngineConfig();
             SecuritySyncConfig        securitySyncConfig        = configuration.getSecuritySyncConfig();
             StewardshipServicesConfig stewardshipServicesConfig = configuration.getStewardshipServicesConfig();
+            VirtualizationConfig      virtualizationConfig      = configuration.getVirtualizationConfig();
 
             if ((repositoryServicesConfig == null) &&
                 (accessServiceConfigList == null) &&
                 (discoveryEngineConfig == null) &&
                 (securitySyncConfig == null) &&
-                (stewardshipServicesConfig == null))
+                (stewardshipServicesConfig == null) &&
+                (virtualizationConfig == null))
             {
                 OMAGErrorCode errorCode    = OMAGErrorCode.EMPTY_CONFIGURATION;
                 String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
@@ -352,6 +355,28 @@ public class OMAGServerOperationalServices
 
 
             /*
+             * Initialize the Virtualization Services.
+             */
+            if (virtualizationConfig != null) {
+                VirtualizationOperationalServices operationalVirtualizationServices = new VirtualizationOperationalServices(configuration.getLocalServerName(),
+                                                                                                                            configuration.getLocalServerType(),
+                                                                                                                            configuration.getOrganizationName(),
+                                                                                                                            configuration.getLocalServerUserId(),
+                                                                                                                            configuration.getLocalServerURL());
+
+                instance.setOperationalVirtualizationServices(operationalVirtualizationServices);
+                operationalVirtualizationServices.initialize(virtualizationConfig,
+                                                             operationalRepositoryServices.getAuditLog(
+                                                                     GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceCode(),
+                                                                     GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceName(),
+                                                                     GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceDescription(),
+                                                                     GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceWiki()));
+
+                activatedServiceList.add(GovernanceServersDescription.VIRTUALIZATION_SERVICES.getServiceName());
+            }
+
+
+            /*
              * Initialize the Stewardship Services.  This is a governance daemon for running automated stewardship actions.
              */
             if (stewardshipServicesConfig != null)
@@ -427,6 +452,14 @@ public class OMAGServerOperationalServices
         if (instance.getOperationalSecuritySyncServices() != null)
         {
             instance.getOperationalSecuritySyncServices().disconnect(permanentDeactivation);
+        }
+
+
+        /*
+         * Shutdown the virtualizer
+         */
+        if (instance.getOperationalVirtualizationServices() != null){
+            instance.getOperationalVirtualizationServices().disconnect(permanentDeactivation);
         }
 
 
