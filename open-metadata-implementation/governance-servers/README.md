@@ -27,6 +27,8 @@ let stewards decide which Request for Actions should be actioned.
 When a Request for Action is actioned, the stewardship services initiate the
 requested remediation.
 
+* **[virtualization-services](virtualization-services)** - Propagate the Out Topic of Information View OMAS, build queries to data virtualization solutions and generate corresponding In Topic for IV OMAS.
+
 
 
 
