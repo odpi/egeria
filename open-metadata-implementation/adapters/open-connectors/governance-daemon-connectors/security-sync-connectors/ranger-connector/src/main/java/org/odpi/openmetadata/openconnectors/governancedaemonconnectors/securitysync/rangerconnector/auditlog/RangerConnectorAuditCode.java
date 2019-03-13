@@ -18,19 +18,7 @@ public enum RangerConnectorAuditCode {
     SERVICE_SHUTDOWN("RANGER-CONNECTOR-0003",
             "The Ranger Connector is shutting down its instance for server {0}",
             "The local server has requested shut down of a Ranger Connector instance.",
-            "No action is required.  This is part of the normal operation of the service."),
-    CLASSIFIED_GOVERNED_ASSET_INITIAL_LOAD("RANGER-CONNECTOR-0004",
-            "The Ranger Connector exchange the classified governed asset from Open Metadata Repository with configured Security Sync Server",
-            "The Ranger Connector instance synchronize the Ranger Server with the repository for initial loading of existing governed assets",
-            "No action is required.  This is part of the normal flow of the initial load."),
-    CLASSIFIED_GOVERNED_ASSET_EVENT_RECEIVED("RANGER-CONNECTOR-0005",
-            "The Ranger Connector received a new event for classified governed asset",
-            "The Ranger Connector instance should synchronize the Ranger Server instance with the repository.",
-            "No action is required.  This is part of the normal flow."),
-    RE_CLASSIFIED_GOVERNED_ASSET_EVENT_RECEIVED("RANGER-CONNECTOR-0006",
-            "The Ranger Connector received a new event for re-classified governed asset",
-            "The Ranger Connector instance should synchronize the Ranger Server instance with the repository.",
-            "No action is required.  This is part of the normal flow.");
+            "No action is required.  This is part of the normal operation of the service.");
 
     private String logMessageId;
     private String logMessage;
