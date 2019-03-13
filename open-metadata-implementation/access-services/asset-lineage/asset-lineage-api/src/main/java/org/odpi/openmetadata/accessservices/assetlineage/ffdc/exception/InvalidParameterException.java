@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.assetlineage.exception;
+package org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception;
 
 /**
  * The InvalidParameterException is thrown by the Asset Lineage OMAS when a parameter passed on a request is
