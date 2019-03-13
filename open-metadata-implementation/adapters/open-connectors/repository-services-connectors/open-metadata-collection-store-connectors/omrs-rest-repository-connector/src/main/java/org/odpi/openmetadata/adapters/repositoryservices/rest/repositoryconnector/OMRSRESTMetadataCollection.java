@@ -96,9 +96,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
         try
         {
-            RestTemplate restTemplate = new RestTemplate();
-
-            restResult = restTemplate.getForObject(restURLRoot + urlTemplate, MetadataCollectionIdResponse.class);
+            restResult = RestCaller.getForObject(restURLRoot + urlTemplate, MetadataCollectionIdResponse.class);
         }
         catch (Throwable error)
         {
@@ -3835,7 +3833,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate  restTemplate  = new RestTemplate();
 
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
+            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -3879,7 +3877,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate  restTemplate  = new RestTemplate();
 
-            restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
+            restResult = RestCaller.getForObject(urlTemplate, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -3925,7 +3923,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate  restTemplate  = new RestTemplate();
 
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
+            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -3971,7 +3969,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate  restTemplate  = new RestTemplate();
 
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
+            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -4015,7 +4013,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate  restTemplate  = new RestTemplate();
 
-            restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
+            restResult = RestCaller.getForObject(urlTemplate, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -4059,9 +4057,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
          */
         try
         {
-            RestTemplate  restTemplate  = new RestTemplate();
-
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
+            restResult =  RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -4103,9 +4099,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
          */
         try
         {
-            RestTemplate  restTemplate  = new RestTemplate();
-
-            restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
+            restResult = RestCaller.getForObject(urlTemplate, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -4149,7 +4143,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate  restTemplate  = new RestTemplate();
 
-            restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
+            restResult = RestCaller.getForObject(urlTemplate, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -4195,7 +4189,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate  restTemplate  = new RestTemplate();
 
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
+            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -4242,7 +4236,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate  restTemplate  = new RestTemplate();
 
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
+            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -4288,7 +4282,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate  restTemplate  = new RestTemplate();
 
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
+            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -4333,7 +4327,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate  restTemplate  = new RestTemplate();
 
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
+            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -4377,7 +4371,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate  restTemplate  = new RestTemplate();
 
-            restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
+            restResult = RestCaller.getForObject(urlTemplate, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -4421,7 +4415,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate restTemplate = new RestTemplate();
 
-            restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
+            restResult = RestCaller.getForObject(urlTemplate, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -4467,7 +4461,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate restTemplate = new RestTemplate();
 
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
+            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -4511,7 +4505,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate restTemplate = new RestTemplate();
 
-            restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
+            restResult = RestCaller.getForObject(urlTemplate, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -4557,7 +4551,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate restTemplate = new RestTemplate();
 
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
+            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
         }
         catch (Throwable error)
         {
@@ -4603,7 +4597,7 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         {
             RestTemplate restTemplate = new RestTemplate();
 
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
+            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
         }
         catch (Throwable error)
         {

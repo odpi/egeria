@@ -10,8 +10,6 @@ public class OpenLineageServicesInstance
     private String serverName;
     private GraphConstructor graphConstructor;
 
-
-
     public OpenLineageServicesInstance(GraphConstructor graphConstructor,
                                        String serverName)  {
         this.graphConstructor = graphConstructor;
