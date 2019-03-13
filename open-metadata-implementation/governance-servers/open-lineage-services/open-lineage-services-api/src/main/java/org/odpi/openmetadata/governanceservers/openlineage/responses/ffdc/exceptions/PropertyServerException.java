@@ -5,7 +5,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.excep
  * The PropertyServerException is thrown by the Information View OMAS when it is not able to communicate with the
  * property server.
  */
-public class PropertyServerException extends OpenLineageExceptionBase {
+public class PropertyServerException extends OpenLineageException {
     /**
      * This is the typical constructor used for creating a PropertyServerException.
      *

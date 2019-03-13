@@ -4,7 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphConstructor;
-import org.odpi.openmetadata.governanceservers.openlineage.ffdc.OpenLineageErrorCode;
+import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.PropertyServerException;
 
 
