@@ -43,12 +43,8 @@ public enum GovernanceServersDescription implements Serializable
         serviceDescriptionList.add(GovernanceServersDescription.DISCOVERY_ENGINE_SERVICES);
         serviceDescriptionList.add(GovernanceServersDescription.SECURITY_SYNC_SERVICES);
         serviceDescriptionList.add(GovernanceServersDescription.STEWARDSHIP_SERVICES);
-<<<<<<< HEAD
         serviceDescriptionList.add(GovernanceServersDescription.OPEN_LINEAGE_SERVICES);
-=======
         serviceDescriptionList.add(GovernanceServersDescription.VIRTUALIZATION_SERVICES);
->>>>>>> 19b37682606f1bd8f7622982ddeacca983f928b1
-
         return serviceDescriptionList;
     }
 
