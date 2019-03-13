@@ -95,6 +95,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private StewardshipServicesConfig stewardshipServicesConfig = null;
     private SecuritySyncConfig        securitySyncConfig        = null;
     private List<String>              auditTrail                = null;
+    private VirtualizationConfig      virtualizationConfig      = null;
 
 
     /**
@@ -129,6 +130,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             stewardshipServicesConfig = template.getStewardshipServicesConfig();
             securitySyncConfig = template.getSecuritySyncConfig();
             auditTrail = template.getAuditTrail();
+            virtualizationConfig = template.getVirtualizationConfig();
         }
     }
 
@@ -442,6 +444,24 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         this.auditTrail = auditTrail;
     }
 
+    /**
+     * Return the configuration for the virtualization services.
+     *
+     * @return VirtualizationConfig properties
+     */
+    public VirtualizationConfig getVirtualizationConfig() {
+        return virtualizationConfig;
+    }
+
+    /**
+     * Set up the configuration for the virtualization services.
+     *
+     * @param virtualizationConfig properties
+     */
+    public void setVirtualizationConfig(VirtualizationConfig virtualizationConfig) {
+        this.virtualizationConfig = virtualizationConfig;
+    }
+
 
     /**
      * Standard toString method.
@@ -501,6 +521,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 Objects.equals(getDiscoveryEngineConfig(), that.getDiscoveryEngineConfig()) &&
                 Objects.equals(getStewardshipServicesConfig(), that.getStewardshipServicesConfig()) &&
                 Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
+                Objects.equals(getVirtualizationConfig(), that.getVirtualizationConfig()) &&
                 Objects.equals(getAuditTrail(), that.getAuditTrail());
     }
 
@@ -516,6 +537,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         return Objects.hash(getLocalServerId(), getLocalServerName(), getLocalServerType(), getOrganizationName(),
                             getLocalServerURL(), getLocalServerUserId(), getMaxPageSize(), getEventBusConfig(),
                             getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryEngineConfig(),
-                            getStewardshipServicesConfig(), getSecuritySyncConfig(), getAuditTrail());
+                            getStewardshipServicesConfig(), getSecuritySyncConfig(), getAuditTrail(), getVirtualizationConfig());
     }
 }
