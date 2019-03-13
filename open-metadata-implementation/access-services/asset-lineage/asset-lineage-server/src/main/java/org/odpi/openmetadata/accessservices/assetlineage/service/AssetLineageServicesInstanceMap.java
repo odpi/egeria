@@ -1,20 +1,20 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.openlineage.server;
+package org.odpi.openmetadata.accessservices.assetlineage.service;
 
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * OpenLineageServicesInstanceMap provides the mapping for inbound REST requests to the appropriate instances
+ * AssetLineageServicesInstanceMap provides the mapping for inbound REST requests to the appropriate instances
  * for the requested server.  The map is maintained in a static so it is scoped to the class loader.
  *
  * Instances of this class call the synchronized static methods to work with the map.
  */
-public class OpenLineageServicesInstanceMap
+public class AssetLineageServicesInstanceMap
 {
-    private static  Map<String, OpenLineageServicesInstance>  instanceMap = new HashMap<>();
+    private static  Map<String, AssetLineageServicesInstance>   instanceMap = new HashMap<>();
 
 
     /**
@@ -24,7 +24,7 @@ public class OpenLineageServicesInstanceMap
      * @param instance instance object
      */
     static synchronized void  setNewInstanceForJVM(String                            serverName,
-                                                   OpenLineageServicesInstance   instance)
+                                                   AssetLineageServicesInstance   instance)
     {
         instanceMap.put(serverName, instance);
     }
@@ -36,12 +36,13 @@ public class OpenLineageServicesInstanceMap
      * @param serverName name of the server
      * @return OMRSRepositoryServicesInstance object
      */
-    private static synchronized OpenLineageServicesInstance getInstanceForJVM(String    serverName)
+    private static synchronized AssetLineageServicesInstance getInstanceForJVM(String    serverName)
     {
-        OpenLineageServicesInstance instance = instanceMap.get(serverName);
+        AssetLineageServicesInstance   instance = instanceMap.get(serverName);
 
         return instance;
     }
+
 
     /**
      * Remove the instance for this server.
@@ -55,12 +56,21 @@ public class OpenLineageServicesInstanceMap
 
 
     /**
+     * Constructor
+     */
+    public AssetLineageServicesInstanceMap()
+    {
+    }
+
+
+    /**
      * Return the instance for this server.
      *
      * @param serverName name of the server
      * @return OMRSRepositoryServicesInstance object
      */
-    public OpenLineageServicesInstance getInstance(String serverName) {
-        return OpenLineageServicesInstanceMap.getInstanceForJVM(serverName);
+    public AssetLineageServicesInstance getInstance(String    serverName)
+    {
+        return AssetLineageServicesInstanceMap.getInstanceForJVM(serverName);
     }
 }
