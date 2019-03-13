@@ -1,12 +1,11 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.assetlineage.exception;
+package org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception;
 
 /**
- * The RelationshipNotFoundException is thrown by the Asset Lineage OMAS when the relationship passed on a request
- * is not found in the repository
+ * The PropertyServerException is thrown by the Asset Lineage OMAS when it is not able to communicate with the
+ * property server.
  */
-public class RelationshipNotFoundException extends AssetLineageException {
-
+public class PropertyServerException extends AssetLineageException {
     /**
      * This is the typical constructor used for creating a PropertyServerException.
      *
@@ -17,12 +16,12 @@ public class RelationshipNotFoundException extends AssetLineageException {
      * @param systemAction      actions of the system as a result of the error
      * @param userAction        instructions for correcting the error
      */
-    public RelationshipNotFoundException(int httpCode,
-                                         String className,
-                                         String actionDescription,
-                                         String errorMessage,
-                                         String systemAction,
-                                         String userAction) {
+    public PropertyServerException(int httpCode,
+                                   String className,
+                                   String actionDescription,
+                                   String errorMessage,
+                                   String systemAction,
+                                   String userAction) {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
     }
 
@@ -38,7 +37,7 @@ public class RelationshipNotFoundException extends AssetLineageException {
      * @param userAction        instructions for correcting the error
      * @param caughtError       the error that resulted in this exception.
      */
-    public RelationshipNotFoundException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError) {
+    public PropertyServerException(int httpCode, String className, String actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError) {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }
 }

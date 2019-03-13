@@ -9,7 +9,7 @@ import org.odpi.openmetadata.accessservices.assetlineage.contentmanager.LineageE
 import org.odpi.openmetadata.accessservices.assetlineage.eventProcessors.EventProcessor;
 import org.odpi.openmetadata.accessservices.assetlineage.listeners.AssetLineageEnterpriseOmrsEventListener;
 import org.odpi.openmetadata.accessservices.assetlineage.listeners.AssetLineageInTopicListener;
-import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageServicesInstance;
+import org.odpi.openmetadata.accessservices.assetlineage.service.AssetLineageServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
@@ -49,7 +49,10 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
     @Override
-    public void initialize(AccessServiceConfig accessServiceConfigurationProperties, OMRSTopicConnector enterpriseOMRSTopicConnector, OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog, String serverUserName) throws OMAGConfigurationErrorException {
+    public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
+                           OMRSTopicConnector enterpriseOMRSTopicConnector,
+                           OMRSRepositoryConnector enterpriseConnector,
+                           OMRSAuditLog auditLog, String serverUserName) throws OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
         AssetLineageAuditCode auditCode;
 

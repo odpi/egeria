@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.assetlineage.exception;
+package org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception;
 
 /**
  * AssetLineageException provides a checked exception for reporting errors found when using

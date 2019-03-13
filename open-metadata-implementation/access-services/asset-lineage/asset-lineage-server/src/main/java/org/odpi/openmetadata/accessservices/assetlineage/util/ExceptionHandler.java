@@ -1,7 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
-import org.odpi.openmetadata.accessservices.assetlineage.exception.AssetLineageException;
+import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.AssetLineageException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.rest.responses.AssetLineageOMASAPIResponse;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSCheckedExceptionBase;
 
