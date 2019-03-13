@@ -5,12 +5,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>virtualizer</artifactId>
-    <name>Virtualizer</name>
+    <artifactId>virtualizer-to-be-deprecated</artifactId>
+    <name>Virtualizer to be deprecated</name>
     <description>Virtualizer updates Gaian and communicates with Information View OMAS</description>
 
     <parent>
-        <artifactId>virtual-data-demos</artifactId>
+        <artifactId>open-metadata-demos</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.1-SNAPSHOT</version>
     </parent>

@@ -24,6 +24,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>in-memory-repository-demo</module>
+        <module>virtualizer-to-be-deprecated</module>
     </modules>
 
 
