@@ -24,16 +24,11 @@
     <packaging>pom</packaging>
     <modules>
         <module>atlas</module>
-        <module>atlas-init</module>
+        <module>configure</module>
         <module>egeria</module>
-        <module>egeria-init</module>
         <module>gaian</module>
-        <module>igcconnect-init</module>
         <module>kafka-monitor</module>
-        <module>ldap-init</module>
         <module>omrs-monitor</module>
-        <module>postgreSQL</module>
-        <module>postgreSQL-init</module>
         <module>ranger</module>
     </modules>
 
@@ -58,6 +53,10 @@
                         </goals>
                         <configuration>
                             <rules>
+                                <requireProperty>
+                                    <property>docker.registry</property>
+                                    <message>You must specify a docker registry to use via '-Ddocker.registry=xxxxx!</message>
+                                </requireProperty>
                                 <requireProperty>
                                     <property>docker.repo</property>
                                     <message>You must specify a docker repository to use via '-Ddocker.repo=xxxxx!</message>
