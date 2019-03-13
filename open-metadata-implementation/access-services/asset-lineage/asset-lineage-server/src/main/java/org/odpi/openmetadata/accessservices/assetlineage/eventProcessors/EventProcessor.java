@@ -5,11 +5,8 @@ package org.odpi.openmetadata.accessservices.assetlineage.eventProcessors;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.assetlineage.contentmanager.LineageEventBuilder;
-import org.odpi.openmetadata.accessservices.assetlineage.events.*;
+import org.odpi.openmetadata.accessservices.assetlineage.events.AssetLineageHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
-import org.odpi.openmetadata.accessservices.assetlineage.utils.Constants;
-import org.odpi.openmetadata.accessservices.assetlineage.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
@@ -23,23 +20,18 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcesso
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.utils.Constants.RELATIONAL_COLUMN;
-import static org.odpi.openmetadata.accessservices.assetlineage.utils.Constants.SEMANTIC_ASSIGNMENT;
-
 public class EventProcessor extends OMRSInstanceEventProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(EventProcessor.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private OpenMetadataTopic assetLineageTopicConnector;
     private OMRSAuditLog auditLog;
-    private LineageEventBuilder lineageEventBuilder;
+
 
     public EventProcessor(OpenMetadataTopic assetLineageTopicConnector,
-                          LineageEventBuilder lineageEventBuilder,
                           OMRSAuditLog auditLog) {
         this.assetLineageTopicConnector = assetLineageTopicConnector;
         this.auditLog = auditLog;
-        this.lineageEventBuilder = lineageEventBuilder;
     }
 
 
@@ -73,12 +65,6 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                       String originatorServerType,
                                       String originatorOrganizationName,
                                       EntityDetail entity) {
-        NewEntityEvent newEntityEvent = new NewEntityEvent();
-        newEntityEvent.setNewProperties(entity.getProperties());
-        newEntityEvent.setType(entity.getType());
-        newEntityEvent.setGuid(entity.getGUID());
-        sendEvent(newEntityEvent);
-
     }
 
     public void processUpdatedEntityEvent(String sourceName,
@@ -88,14 +74,6 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                           String originatorOrganizationName,
                                           EntityDetail oldEntity,
                                           EntityDetail entity) {
-        UpdatedEntityEvent updatedEntityEvent = new UpdatedEntityEvent();
-        updatedEntityEvent.setNewProperties(entity.getProperties());
-        if(oldEntity != null) {
-            updatedEntityEvent.setOldProperties(oldEntity.getProperties());
-        }
-        updatedEntityEvent.setType(entity.getType());
-        updatedEntityEvent.setGuid(entity.getGUID());
-        sendEvent(updatedEntityEvent);
     }
 
     public void processUndoneEntityEvent(String sourceName,
@@ -231,68 +209,6 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                             String originatorServerType,
                                             String originatorOrganizationName,
                                             Relationship relationship) {
-        //It should handle only semantic assignments for relational columns
-        if (!(relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT) && relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN))) {
-            log.info("Event is ignored as the relationship is not a semantic assignment for a column");
-            return;
-        }
-
-        try {
-            publishSemanticAssignment(relationship);
-        } catch (Exception e) {
-
-            log.error("Exception building events", e);
-            AssetLineageErrorCode auditCode = AssetLineageErrorCode.PUBLISH_EVENT_EXCEPTION;
-
-            auditLog.logException("processNewRelationshipEvent",
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(SemanticAssignment.class.getName(), e.getMessage()),
-                    e.getMessage(),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e);
-        }
-    }
-
-    private void publishSemanticAssignment(Relationship relationship) throws Exception {
-        SemanticAssignment semanticAssignment = new SemanticAssignment();
-        EntityDetail businessTerm = retrieveReferencedEntity(relationship.getEntityTwoProxy().getGUID());
-        semanticAssignment.setBusinessTerm(lineageEventBuilder.buildBusinessTerm(businessTerm));
-
-        DatabaseColumn databaseColumn = new DatabaseColumn();
-        EntityDetail columnEntity = retrieveReferencedEntity(relationship.getEntityOneProxy().getGUID());
-        databaseColumn.setGuid(columnEntity.getGUID());
-        databaseColumn.setName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.NAME));
-        databaseColumn.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(columnEntity.getProperties(), Constants.QUALIFIED_NAME));
-
-        semanticAssignment.setDatabaseColumn(databaseColumn);
-        sendEvent(semanticAssignment);
-    }
-
-
-    public EntityDetail retrieveReferencedEntity(String guid) throws Exception {
-        try {
-            EntityDetail entity = lineageEventBuilder.getEntity(guid);
-            if (entity != null) {
-                return entity;
-            } else {
-                log.error("Entity with guid {} not found", guid);
-                throw new Exception(String.format("Entity with guid %s not found", guid));
-            }
-        } catch (Exception e) {
-            AssetLineageErrorCode auditCode = AssetLineageErrorCode.GET_ENTITY_EXCEPTION;
-            auditLog.logException("retrieveReferencedEntity",
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage("guid: " + guid),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    "",
-                    e);
-
-            throw new Exception(e);
-        }
     }
 
 
