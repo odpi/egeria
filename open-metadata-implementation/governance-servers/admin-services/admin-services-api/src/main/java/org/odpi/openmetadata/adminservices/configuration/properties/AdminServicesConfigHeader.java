@@ -30,7 +30,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         @JsonSubTypes.Type(value = OMAGServerConfig.class, name = "OMAGServerConfig"),
         @JsonSubTypes.Type(value = RepositoryServicesConfig.class, name = "RepositoryServicesConfig"),
         @JsonSubTypes.Type(value = SecuritySyncConfig.class, name = "SecuritySyncConfig"),
-        @JsonSubTypes.Type(value = StewardshipServicesConfig.class, name = "StewardshipServicesConfig")
+        @JsonSubTypes.Type(value = StewardshipServicesConfig.class, name = "StewardshipServicesConfig"),
+        @JsonSubTypes.Type(value = VirtualizationConfig.class, name = "VirtualizationConfig")
 })
 public class AdminServicesConfigHeader implements Serializable
 {

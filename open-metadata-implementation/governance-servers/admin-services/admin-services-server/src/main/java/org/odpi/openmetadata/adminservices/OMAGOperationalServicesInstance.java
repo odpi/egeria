@@ -8,6 +8,7 @@ import org.odpi.openmetadata.governanceservers.discoveryengine.admin.DiscoveryEn
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.securitysyncservices.configuration.registration.SecuritySyncOperationalServices;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class OMAGOperationalServicesInstance
     private DiscoveryEngineOperationalServices operationalDiscoveryEngine        = null;
     private StewardshipOperationalServices     operationalStewardshipServices    = null;
     private SecuritySyncOperationalServices    operationalSecuritySyncServices   = null;
+    private VirtualizationOperationalServices  operationalVirtualizationServices = null;
 
     /**
      * Default constructor
@@ -161,5 +163,23 @@ public class OMAGOperationalServicesInstance
     public void setOperationalSecuritySyncServices(SecuritySyncOperationalServices operationalSecuritySyncServices)
     {
         this.operationalSecuritySyncServices = operationalSecuritySyncServices;
+    }
+
+    /**
+     * Return the running instance of Virtualizer
+     *
+     * @return VirtualizationOperationalServices object
+     */
+    public VirtualizationOperationalServices getOperationalVirtualizationServices() {
+        return operationalVirtualizationServices;
+    }
+
+    /**
+     * Set up the running instance of Virtualizer
+     *
+     * @param operationalVirtualizationServices VirtualizationOperationalServices object
+     */
+    public void setOperationalVirtualizationServices(VirtualizationOperationalServices operationalVirtualizationServices) {
+        this.operationalVirtualizationServices = operationalVirtualizationServices;
     }
 }
