@@ -23,8 +23,8 @@
     <artifactId>open-metadata-demos</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>virtual-data-connector</module>
         <module>in-memory-repository-demo</module>
+        <module>virtualizer-deprecated</module>
     </modules>
 
 
