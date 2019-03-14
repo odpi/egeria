@@ -489,23 +489,4 @@ public class ColumnContextBuilder {
         return businessTerm;
     }
 
-
-    /**
-     *
-     * @param guid of the entity to retrieve
-     * @return
-     * @throws RepositoryErrorException
-     * @throws UserNotAuthorizedException
-     * @throws EntityProxyOnlyException
-     * @throws InvalidParameterException
-     * @throws EntityNotKnownException
-     */
-    public EntityDetail getEntity(String guid) throws RepositoryErrorException,
-                                                      UserNotAuthorizedException,
-                                                      EntityProxyOnlyException,
-                                                      InvalidParameterException,
-                                                      EntityNotKnownException {
-        return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);
-    }
-
 }

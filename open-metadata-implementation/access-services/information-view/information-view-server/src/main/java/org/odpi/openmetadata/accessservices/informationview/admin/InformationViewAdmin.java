@@ -91,8 +91,8 @@ public class InformationViewAdmin implements AccessServiceAdmin {
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
-            ColumnContextBuilder columnContextBuilder = new ColumnContextBuilder(enterpriseConnector);
-            eventPublisher = new EventPublisher(informationViewOutTopicConnector, columnContextBuilder, auditLog);
+
+            eventPublisher = new EventPublisher(informationViewOutTopicConnector, enterpriseConnector, auditLog);
             InformationViewEnterpriseOmrsEventListener informationViewEnterpriseOmrsEventListener = new InformationViewEnterpriseOmrsEventListener(eventPublisher, auditLog);
             enterpriseOMRSTopicConnector.registerListener(informationViewEnterpriseOmrsEventListener);
         }
