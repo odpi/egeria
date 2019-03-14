@@ -18,22 +18,20 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 // Used to store the governance classification, including a definition of optional attributes
 public class GovernanceClassificationDef extends GovernanceClassificationBase {
 
-    // Additional Attributes of a Tag Definition
-    private Map<String,String> AttributeDefinitions;  // key-value pair of attribute definitions (name, type)
-
-    /**
-     *
-     * @param attributeDefinitions - String Map of attribute names, types
-     */
-    public void setAttributeDefinitions(Map <String,String> attributeDefinitions) {
-        this.AttributeDefinitions = attributeDefinitions;
-    }
+    private Map<String, String> attributeDefinitions;
 
     /**
      * @return attributeDefinitions - String Map of attribute names, types
      */
-    public Map<String,String> getAttributeDefinitions() {
-        return AttributeDefinitions;
+    public Map<String, String> getAttributeDefinitions() {
+        return attributeDefinitions;
+    }
+
+    /**
+     * @param attributeDefinitions - String Map of attribute names, types
+     */
+    public void setAttributeDefinitions(Map<String, String> attributeDefinitions) {
+        this.attributeDefinitions = attributeDefinitions;
     }
 
 }
