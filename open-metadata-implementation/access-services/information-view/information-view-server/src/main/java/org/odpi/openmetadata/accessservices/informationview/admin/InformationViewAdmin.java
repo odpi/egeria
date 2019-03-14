@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.informationview.admin;
 
 
 import org.odpi.openmetadata.accessservices.informationview.auditlog.InformationViewAuditCode;
-import org.odpi.openmetadata.accessservices.informationview.views.ColumnContextEventBuilder;
+import org.odpi.openmetadata.accessservices.informationview.views.ColumnContextBuilder;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
@@ -37,6 +37,7 @@ public class InformationViewAdmin implements AccessServiceAdmin {
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewAdmin.class);
     private OpenMetadataTopicConnector informationViewInTopicConnector;
+    private OpenMetadataTopicConnector informationViewOutTopicConnector;
     private OMRSAuditLog auditLog;
     private String serverName = null;
     private InformationViewServicesInstance instance = null;
@@ -74,17 +75,11 @@ public class InformationViewAdmin implements AccessServiceAdmin {
             serverName = enterpriseConnector.getServerName();
         }
 
-        Connection  inTopicConnection = accessServiceConfigurationProperties.getAccessServiceInTopic();
-        String inTopicName = getTopicName(inTopicConnection);
-
-        Connection  outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
-        String outTopicName = getTopicName(outTopicConnection);
-
-        informationViewInTopicConnector = initializeInformationViewTopicConnector(inTopicConnection);
-        OpenMetadataTopicConnector informationViewOutTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
-
+        String inTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceInTopic());
+        String outTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceOutTopic());
+        informationViewInTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceInTopic());
+        informationViewOutTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
         OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, auditLog);
-
 
         EventPublisher eventPublisher = null;
         if (enterpriseOMRSTopicConnector != null) {
@@ -96,8 +91,8 @@ public class InformationViewAdmin implements AccessServiceAdmin {
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
-            ColumnContextEventBuilder columnContextEventBuilder = new ColumnContextEventBuilder(enterpriseConnector);
-            eventPublisher = new EventPublisher(informationViewOutTopicConnector, columnContextEventBuilder, auditLog);
+            ColumnContextBuilder columnContextBuilder = new ColumnContextBuilder(enterpriseConnector);
+            eventPublisher = new EventPublisher(informationViewOutTopicConnector, columnContextBuilder, auditLog);
             InformationViewEnterpriseOmrsEventListener informationViewEnterpriseOmrsEventListener = new InformationViewEnterpriseOmrsEventListener(eventPublisher, auditLog);
             enterpriseOMRSTopicConnector.registerListener(informationViewEnterpriseOmrsEventListener);
         }
@@ -247,6 +242,11 @@ public class InformationViewAdmin implements AccessServiceAdmin {
     public void shutdown() {
         try {
             informationViewInTopicConnector.disconnect();
+        } catch (ConnectorCheckedException e) {
+            log.error("Error disconnecting information view topic connector");
+        }
+        try {
+            informationViewOutTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {
             log.error("Error disconnecting information view topic connector");
         }
