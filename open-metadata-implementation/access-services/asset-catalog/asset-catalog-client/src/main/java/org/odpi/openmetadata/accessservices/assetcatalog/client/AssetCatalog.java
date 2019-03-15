@@ -166,71 +166,6 @@ public class AssetCatalog implements AssetCatalogInterface {
     }
 
     /**
-     * Fetch the assets that match the properties
-     *
-     * @param userId        the unique identifier for the user
-     * @param propertyValue the property value searched
-     * @return a list of assets that match the properties
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public AssetDescriptionResponse getAssetsByProperty(String userId, String propertyValue) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getAssetsByProperty";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, propertyValue);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/assets-by-property/{2}";
-        final SearchParameters requestBody = getSearchParameters();
-
-        return callPostAssetDescriptionResponse(url, requestBody, serverName, userId, propertyValue);
-    }
-
-    /**
-     * Fetch the assets that match the classification name
-     *
-     * @param userId             the unique identifier for the user
-     * @param classificationName the name of the classification
-     * @return a list of assets that match the classification name
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public AssetDescriptionResponse getAssetsByClassificationName(String userId, String classificationName) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getAssetsByClassificationName";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, classificationName);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/assets-by-classification-name/{2}";
-        final SearchParameters requestBody = getSearchParameters();
-
-        return callPostAssetDescriptionResponse(url, requestBody, serverName, userId, classificationName);
-    }
-
-    /**
-     * Return a sub-graph of relationships that connect two assets
-     *
-     * @param userId       the unique identifier for the user
-     * @param startAssetId the starting asset identifier of the query
-     * @param endAssetId   the ending asset identifier of the query
-     * @return a list of relationships that connects the assets
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public RelationshipsResponse getLinkingRelationships(String userId, String startAssetId, String endAssetId) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getLinkingRelationships";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, startAssetId);
-        validateParameter(methodName, endAssetId);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/assets-linking-relationships/from/{2}/to/{3}";
-        final SearchParameters requestBody = getSearchParameters();
-
-        return callPostRelationshipsResponse(url, requestBody, serverName, userId, startAssetId, endAssetId);
-    }
-
-    /**
      * Returns a sub-graph of intermediate assets that connected two assets
      *
      * @param userId       the unique identifier for the user
@@ -370,27 +305,6 @@ public class AssetCatalog implements AssetCatalogInterface {
 
         String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/relationships/{2}";
         return callGetRelationshipsResponse(url, serverName, userId, relationshipId);
-    }
-
-    /**
-     * Fetch relationship details based on property name
-     *
-     * @param userId       String unique identifier for the user
-     * @param propertyName String that it is used to identify the relationship label
-     * @return a list of relationships that have the property specified
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    @Override
-    public RelationshipsResponse getRelationshipByLabel(String userId, String propertyName) throws PropertyServerException, InvalidParameterException {
-        String methodName = "getRelationshipByLabel";
-        doBasicChecks(methodName, userId);
-        validateParameter(methodName, propertyName);
-
-        String url = "/servers/{0}/open-metadata/access-services/asset-catalog/users/{1}/relationships/property-name/{2}";
-        final SearchParameters requestBody = getSearchParameters();
-
-        return callPostRelationshipsResponse(url, requestBody, serverName, userId, propertyName);
     }
 
     /**

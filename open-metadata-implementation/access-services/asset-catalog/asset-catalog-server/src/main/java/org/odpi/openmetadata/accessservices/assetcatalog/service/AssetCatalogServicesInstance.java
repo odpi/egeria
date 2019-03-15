@@ -111,14 +111,6 @@ public class AssetCatalogServicesInstance {
         }
     }
 
-    /**
-     *
-     * @return
-     */
-    public OMRSRepositoryHelper getRepositoryHelper() {
-        return repositoryConnector.getRepositoryHelper();
-    }
-
 
     /**
      * Unregister this instance from the instance map.

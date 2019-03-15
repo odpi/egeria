@@ -6,11 +6,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.body.SearchP
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogRelationshipService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * The AssetCatalogRelationshipResource provides the server-side implementation of the Asset Catalog Open Metadata
@@ -40,31 +36,10 @@ public class AssetCatalogRelationshipResource {
     }
 
     /**
-     * Fetch relationship details based on property name
-     *
-     * @param serverName         unique identifier for requested server.
-     * @param userId           String unique identifier for the user
-     * @param propertyName     String that it is used to identify the relationship label
-     * @param searchParameters constrains to make the assets's search results more precise
-     * @return a list of relationships that have the property specified
-     */
-    @RequestMapping(method = RequestMethod.POST,
-            path = "/property-name/{propertyName}",
-            produces = org.springframework.http.MediaType.APPLICATION_JSON_VALUE)
-    public RelationshipsResponse getRelationshipByLabel(
-            @PathVariable("serverName") String serverName,
-            @PathVariable("userId") String userId,
-            @PathVariable("propertyName") String propertyName,
-            @RequestBody SearchParameters searchParameters) {
-        return relationshipService.getRelationshipByProperty(serverName, userId, propertyName,
-                searchParameters);
-    }
-
-    /**
      * Return a list of relationships that match the search criteria.
      *
      * @param serverName         unique identifier for requested server.
-     * @param userId             Unique identifier for the user
+     * @param userId             Unique identifier for the user;
      * @param relationshipTypeId Limit the result set to only include the specified types for relationships
      * @param criteria           String for searching the relationship
      * @param searchParameters constrains to make the assets's search results more precise
