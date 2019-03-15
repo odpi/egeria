@@ -28,6 +28,7 @@
         <module>admin-services</module>
         <module>stewardship-services</module>
         <module>server-chassis</module>
+        <module>virtualization-services</module>
     </modules>
 
 </project>
