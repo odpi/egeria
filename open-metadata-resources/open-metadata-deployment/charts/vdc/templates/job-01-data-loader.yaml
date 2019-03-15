@@ -34,7 +34,7 @@ spec:
 {{ if (not .Values.localRepo.use) }}
         - name: init-git
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.configure.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.configure.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.configure.name }}\
                   :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
@@ -54,7 +54,7 @@ spec:
 {{ end }}
         - name: wait-for-db
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.configure.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.configure.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.configure.name }}\
                   :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
@@ -64,7 +64,7 @@ spec:
       containers:
         - name: db-clients
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.configure.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.configure.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.configure.name }}\
                   :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}

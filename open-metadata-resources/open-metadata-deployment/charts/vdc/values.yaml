@@ -55,15 +55,15 @@ logging:
 
 imageDefaults:
   registry: docker.io
-  repository: planetf1
+  namespace: planetf1
   tag: latest
   pullPolicy: IfNotPresent
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
 # but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
-# these can be individually overridden for each image, if desired, by providing a subkey for 'registry', 'tag' or
+# these can be individually overridden for each image, if desired, by providing a subkey for 'namespace', 'tag' or
 # 'pullPolicy' with the value to use for the override (if you want to use the public Docker registry, use
-# 'docker.io/library' as the registry override).
+# 'docker.io/library' as the registry override, and set namespace to be your user or organization id).
 #
 #  To build from egeria source - (example)
 #  mvn clean install -Ddocker -Ddocker.registry=localhost:5000 -Ddocker.repo=odpi
@@ -72,7 +72,7 @@ image:
     name: ranger-admin-egeriavdc
 
   mariadb:
-    repository: library
+    namespace: library
     name: mariadb
 
   egeria:
@@ -85,7 +85,7 @@ image:
     name: apache-atlas
 
   postgresql:
-    repository: library
+    namespace: library
     name: postgres
     tag: alpine
 
@@ -96,7 +96,7 @@ image:
   # the k8s-external, pre-existing environment defined under ibmigc... is used
   ibmigc:
     registry: "localhost:5000"
-    repository: ibm
+    namespace: ibm
     name: infosvr
     tag: v11.7.0.2
 

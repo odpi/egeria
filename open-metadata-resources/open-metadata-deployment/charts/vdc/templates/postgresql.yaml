@@ -55,7 +55,7 @@ spec:
       containers:
         - name: postgresql
           image: "{{ if (.Values.image.postgresql.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.postgresql.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.postgresql.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.postgresql.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ if (.Values.image.postgresql.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.postgresql.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.postgresql.name }}\
                   :{{ .Values.image.postgresql.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.postgresql.pullPolicy | default .Values.imageDefaults.pullPolicy }}
