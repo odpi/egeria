@@ -83,9 +83,6 @@ image:
   atlas:
     name: apache-atlas
 
-  kafkamonitor:
-    name: kafka-monitor-egeriavdc
-
   postgresql:
     repository: library
     name: postgres
@@ -117,12 +114,21 @@ localRepo:
 # Whether to use a k8s cluster-internal Kafka or an external one -- if using internal,
 # see 'cp-kafka' below for config options
 kafka:
+  # prefix for all topic names used in Egeria - whether internal or external kafka 
+  # Note that in many cases production kafka will require all topics to be created manually
+  topicroot: egeria
   internal:
     enabled: true
   external:
-    hostname: ""
-    ip: ""
-    port: ""
+    enabled: false
+    # Only 'IBMEventStreams' currently supported
+    provider: none
+    # k8s secret that needs defining externally with 'username' and 'password'
+    # For IBMEventStreams you can also set 'username' to 'token' and set 'password' to <APIKEY>
+    secret: auth-vdc-kafka
+    # Comma seperated list of brokers (typically 5 for event streams)
+    brokers: ""
+
 
 # The demo can use an IBM IGC environment.
 # Set external to "true" to use a pre-existing IBM IGC environment (outside your k8s cluster),
@@ -131,11 +137,14 @@ kafka:
 ibmigc:
   enabled: false
   internal:
-    enabled: true
+    enabled: false
   external:
+    enabled: false
     hostname: ""
     ip: ""
-    port: ""
+    ports:
+      https: "9446"
+      broker: "59092"
 
 # When using the k8s-internal Kafka (from Confluent), enable auto-topic creation
 # (for full options, see: https://github.com/confluentinc/cp-helm-charts/tree/master/charts/cp-kafka)

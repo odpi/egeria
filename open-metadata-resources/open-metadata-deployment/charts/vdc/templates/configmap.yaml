@@ -18,12 +18,14 @@ data:
 {{ if .Values.kafka.internal.enabled }}
   KAFKA_ENDPOINT: {{ .Release.Name }}-cp-kafka:9092
 {{ else }}
-  KAFKA_ENDPOINT: {{ .Values.kafka.external.hostname }}:{{ .Values.kafka.external.port }}
+  # If using external kafka this is typically a comma seperated list of brokers
+  # It is also likely insufficient to connect without additional authentication information
+  KAFKA_ENDPOINT: {{ .Values.kafka.external.brokers }}
 {{ end }}
   EGERIA_USER: myuser
   EGERIA_COHORT: coco
   EGERIA_SERVER: myserver
-  KAFKA_TOPIC: open-metadata.repository-services.cohort.coco.OMRSTopic
+  KAFKA_TOPIC: {{ .Values.kafka.topicroot}}.open-metadata.repository-services.cohort.coco.OMRSTopic
   # Used by IGC/Postgres & initialization
   STRICT_SSL: "false"
   LOGGING_LEVEL_ROOT: {{ .Values.logging.level }}
@@ -34,8 +36,8 @@ data:
   IBMIGC_ENDPOINT: https://infosvr:9446
   IBMIGC_KAFKA_ENDPOINT: infosvr:59092
 {{ else }}
-  IBMIGC_ENDPOINT: https://{{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.port }}
-  IBMIGC_KAFKA_ENDPOINT: {{ .Values.ibmigc.external.hostname }}:59092
+  IBMIGC_ENDPOINT: https://{{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.https }}
+  IBMIGC_KAFKA_ENDPOINT: {{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.broker }}
 {{ end }}
   IBMIGC_AUTH: aXNhZG1pbjppc2FkbWlu
   # Used by User Interface
