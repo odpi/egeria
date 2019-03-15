@@ -63,7 +63,7 @@ spec:
             - "-c"
 {{ if (not .Values.ibmigc.internal.enabled) }}
             - >
-                until $(curl -s -f -k --connect-timeout 5 --url https://{{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.port }}/ibm/iis/launchpad); do
+                until $(curl -s -f -k --connect-timeout 5 --url https://{{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.https }}/ibm/iis/launchpad); do
                 echo waiting for {{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.port }} to be accessible;
                 sleep 2;
                 done;

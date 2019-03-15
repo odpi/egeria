@@ -39,7 +39,7 @@ data:
   IBMIGC_ENDPOINT: https://{{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.https }}
   IBMIGC_KAFKA_ENDPOINT: {{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.broker }}
 {{ end }}
-  IBMIGC_AUTH: aXNhZG1pbjppc2FkbWlu
+  IBMIGC_AUTH: {{ .Values.ibmigc.cred }}
   # Used by User Interface
   OMAS_SERVER_URL: http://{{ include "myapp.fullname" . }}-egeria-service:8080
   OMAS_SERVER_NAME: myserver
