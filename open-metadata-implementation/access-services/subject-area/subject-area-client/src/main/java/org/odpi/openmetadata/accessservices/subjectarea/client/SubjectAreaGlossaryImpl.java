@@ -439,7 +439,8 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
                                                                                     MetadataServerUncontactableException,
                                                                                     UnrecognizedGUIDException,
                                                                                     GUIDNotPurgedException,
-                                                                                    UnexpectedResponseException {
+                                                                                    UnexpectedResponseException,
+                                                                                    FunctionNotSupportedException {
         final String methodName = "purgeGlossary";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
@@ -455,6 +456,7 @@ public class SubjectAreaGlossaryImpl extends SubjectAreaBaseImpl implements org.
         DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
         DetectUtils.detectAndThrowUnrecognizedGUIDException(methodName,restResponse);
         DetectUtils.detectAndThrowGUIDNotPurgedException(methodName,restResponse);
+        DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }
