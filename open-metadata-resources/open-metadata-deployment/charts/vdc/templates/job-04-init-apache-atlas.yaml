@@ -56,6 +56,8 @@ spec:
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
+          env:
+            {{ include "vdc.template.kafkaext.secret" . | nindent 12}}
           command:
             - "/bin/bash"
             - "-c"
@@ -63,7 +65,11 @@ spec:
                 curl -f --verbose --anyauth --user admin:admin -X POST
                 --header "Content-Type: application/json"
                 ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/event-bus
+                {{ if .Values.kafka.internal.enabled }}
                 --data '{"producer": {"bootstrap.servers":"'"${KAFKA_ENDPOINT}"'"}, "consumer": {"bootstrap.servers":"'"${KAFKA_ENDPOINT}"'"} }'
+{{ else }}
+                {{ include "vdc.template.kafkaext.eventbus" . | nindent 16 }}
+{{ end }}
                 &&
                 curl -f --verbose --anyauth --user admin:admin -X POST
                 ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/atlas-repository
