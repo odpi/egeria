@@ -32,6 +32,7 @@ public class Asset implements Serializable {
     private Status status;
     private String typeDefName;
     private String typeDefDescription;
+    private String url;
 
     /**
      * Return the asset unique identifier
@@ -229,5 +230,13 @@ public class Asset implements Serializable {
      */
     public void setTypeDefDescription(String typeDefDescription) {
         this.typeDefDescription = typeDefDescription;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
