@@ -19,7 +19,7 @@ service:
     enabled: false
     iptype: public
     publicip: <undefined>
-  # Currently IBMCloud is the only supported setting, and enabled additional Ingress rules. Comment out for other platforms
+  # Currently IBMCloud is the only supported setting, and enabled additional Ingress rules. Comment out for other platforms.
 
   ingress:
     # Update this with your own domain
