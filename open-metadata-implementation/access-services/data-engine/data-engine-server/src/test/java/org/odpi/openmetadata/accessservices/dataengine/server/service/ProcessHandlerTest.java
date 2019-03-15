@@ -44,7 +44,6 @@ class ProcessHandlerTest {
     private static final String LATEST_CHANGE = "latestChange";
     private static final String PROCESS_NAME = "processName";
     private static final List<String> ZONE_MEMBERSHIP = Collections.singletonList("zone");
-    private static final String PARENT_PROCESS_ID = "parentProcessId";
     private static final String ENTITY_GUID = "entityGuid";
     private static final String PORT_GUID = "portGuid";
 
@@ -78,7 +77,7 @@ class ProcessHandlerTest {
         mockCreatedEntity();
 
         String createdEntityGuid = processHandler.createProcess(USER_ID, PROCESS_NAME, DESCRIPTION, LATEST_CHANGE,
-                ZONE_MEMBERSHIP, DISPLAY_NAME, PARENT_PROCESS_ID);
+                ZONE_MEMBERSHIP, DISPLAY_NAME);
 
         assertEquals(ENTITY_GUID, createdEntityGuid);
     }
@@ -88,7 +87,7 @@ class ProcessHandlerTest {
 
         Throwable thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 processHandler.createProcess(null, PROCESS_NAME, DESCRIPTION, LATEST_CHANGE, ZONE_MEMBERSHIP,
-                        DISPLAY_NAME, PARENT_PROCESS_ID));
+                        DISPLAY_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-400-001"));
     }

@@ -34,8 +34,28 @@ class DataEngineResourceTest {
     @Test
     void testCreateProcess() {
         ProcessRequestBody processRequestBody = new ProcessRequestBody();
-
         dataEngineResource.createProcess(USER, SERVER_NAME, processRequestBody);
+
+        verify(dataEngineRestServices, times(1)).createProcess(USER, SERVER_NAME, processRequestBody);
+    }
+    @Test
+    void testCreateProcessWithPorts() {
+        ProcessRequestBody processRequestBody = new ProcessRequestBody();
+        dataEngineResource.createProcessWithPorts(USER, SERVER_NAME, processRequestBody);
+
+        verify(dataEngineRestServices, times(1)).createProcess(USER, SERVER_NAME, processRequestBody);
+    }
+    @Test
+    void testCreateProcessWithDeployedApis() {
+        ProcessRequestBody processRequestBody = new ProcessRequestBody();
+        dataEngineResource.createProcessWithDeployedApis(USER, SERVER_NAME, processRequestBody);
+
+        verify(dataEngineRestServices, times(1)).createProcess(USER, SERVER_NAME, processRequestBody);
+    }
+    @Test
+    void testCreateProcessWithAssets() {
+        ProcessRequestBody processRequestBody = new ProcessRequestBody();
+        dataEngineResource.createProcessWithDeployedApis(USER, SERVER_NAME, processRequestBody);
 
         verify(dataEngineRestServices, times(1)).createProcess(USER, SERVER_NAME, processRequestBody);
     }
@@ -43,7 +63,6 @@ class DataEngineResourceTest {
     @Test
     void testCreatePort() {
         PortRequestBody portRequestBody = new PortRequestBody();
-
         dataEngineResource.createPort(USER, SERVER_NAME, portRequestBody);
 
         verify(dataEngineRestServices, times(1)).createPort(USER, SERVER_NAME, portRequestBody);
@@ -52,7 +71,6 @@ class DataEngineResourceTest {
     @Test
     void testCreateDeployedAPI() {
         DeployedAPIRequestBody deployedAPIRequestBody = new DeployedAPIRequestBody();
-
         dataEngineResource.createDeployedAPI(USER, SERVER_NAME, deployedAPIRequestBody);
 
         verify(dataEngineRestServices, times(1)).createDeployedAPI(USER, SERVER_NAME, deployedAPIRequestBody);
@@ -61,9 +79,9 @@ class DataEngineResourceTest {
     @Test
     void testAddPortsToProcess() {
         PortListRequestBody portListRequestBody = new PortListRequestBody();
+        String processGuid = "processGuid";
+        dataEngineResource.addPortsToProcess(USER, SERVER_NAME, processGuid, portListRequestBody);
 
-        dataEngineResource.addPortsToProcess(USER, SERVER_NAME, portListRequestBody);
-
-        verify(dataEngineRestServices, times(1)).addPortsToProcess(USER, SERVER_NAME, portListRequestBody);
+        verify(dataEngineRestServices, times(1)).addPortsToProcess(USER, SERVER_NAME, processGuid,  portListRequestBody);
     }
 }

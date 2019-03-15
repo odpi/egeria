@@ -21,7 +21,6 @@ import java.util.List;
 class ProcessHandler {
     private static final String PROCESS_TYPE_NAME = "Process";
     private static final String DISPLAY_NAME_PROPERTY_NAME = "displayName";
-    private static final String PARENT_PROCESS_GUID_PROPERTY_NAME = "parentProcessGuid";
     private static final String PROCESS_PORT_RELATIONSHIP_TYPE_NAME = "ProcessPort";
 
     private DataEngineErrorHandler errorHandler;
@@ -49,13 +48,12 @@ class ProcessHandler {
     /**
      * Create the process
      *
-     * @param userId            the name of the calling user
-     * @param processName       the name of the process
-     * @param description       the description of the process
-     * @param latestChange      the description for the latest change done for the asset
-     * @param zoneMembership    the list of zones of the process
-     * @param displayName       the display name of the process
-     * @param parentProcessGuid the parent process Guid, null if no parent present
+     * @param userId         the name of the calling user
+     * @param processName    the name of the process
+     * @param description    the description of the process
+     * @param latestChange   the description for the latest change done for the asset
+     * @param zoneMembership the list of zones of the process
+     * @param displayName    the display name of the process
      *
      * @return the guid of the created process
      *
@@ -71,19 +69,18 @@ class ProcessHandler {
      * @throws FunctionNotSupportedException the repository does not support this call
      */
     String createProcess(String userId, String processName, String description, String latestChange,
-                         List<String> zoneMembership, String displayName, String parentProcessGuid) throws
-                                                                                                    UserNotAuthorizedException,
-                                                                                                    TypeErrorException,
-                                                                                                    ClassificationErrorException,
-                                                                                                    StatusNotSupportedException,
-                                                                                                    org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
-                                                                                                    InvalidParameterException,
-                                                                                                    RepositoryErrorException,
-                                                                                                    PropertyErrorException,
-                                                                                                    FunctionNotSupportedException {
+                         List<String> zoneMembership, String displayName) throws
+                                                                          UserNotAuthorizedException,
+                                                                          TypeErrorException,
+                                                                          ClassificationErrorException,
+                                                                          StatusNotSupportedException,
+                                                                          org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException,
+                                                                          InvalidParameterException,
+                                                                          RepositoryErrorException,
+                                                                          PropertyErrorException,
+                                                                          FunctionNotSupportedException {
 
         final String methodName = "createProcess";
-
         errorHandler.validateUserId(userId, methodName);
 
         InstanceProperties instanceProperties = entitiesCreatorHelper.createAssetInstanceProperties(userId, processName,

@@ -6,12 +6,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class PortListRequestBody extends DataEngineOMASAPIRequestBody {
-    private String processGuid;
     private List<String> ports;
-
-    public String getProcessGuid() {
-        return processGuid;
-    }
 
     public List<String> getPorts() {
         return ports;
@@ -20,7 +15,6 @@ public class PortListRequestBody extends DataEngineOMASAPIRequestBody {
     @Override
     public String toString() {
         return "PortListRequestBody{" +
-                "processGuid='" + processGuid + '\'' +
                 ", ports=" + ports +
                 '}';
     }
@@ -30,12 +24,11 @@ public class PortListRequestBody extends DataEngineOMASAPIRequestBody {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PortListRequestBody that = (PortListRequestBody) o;
-        return Objects.equals(processGuid, that.processGuid) &&
-                Objects.equals(ports, that.ports);
+        return Objects.equals(ports, that.ports);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(processGuid, ports);
+        return Objects.hash(ports);
     }
 }
