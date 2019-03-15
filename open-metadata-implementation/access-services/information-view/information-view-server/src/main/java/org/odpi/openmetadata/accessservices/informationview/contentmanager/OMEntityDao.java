@@ -206,7 +206,7 @@ public class OMEntityDao {
                                                                                                     PAGE_SIZE);
         } catch (InvalidParameterException | PropertyErrorException | TypeErrorException | FunctionNotSupportedException | UserNotAuthorizedException | RepositoryErrorException e) {
             InformationViewErrorCode auditCode = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
-            auditLog.logException("getEntity",
+            auditLog.logException("retrieveEntity",
                     auditCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
                     auditCode.getFormattedErrorMessage("matchProperties: " + matchProperties, e.getMessage()),

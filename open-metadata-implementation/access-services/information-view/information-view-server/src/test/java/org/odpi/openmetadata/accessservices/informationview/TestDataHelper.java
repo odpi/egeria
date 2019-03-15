@@ -353,26 +353,26 @@ public class TestDataHelper {
     }
 
 
-    public Relationship createRelationshipDataContentForDataSet(String guid1, String guid2) {
-        return createRelationship(Constants.DATA_CONTENT_FOR_DATASET, guid1, guid2);
+    public Relationship createRelationshipDataContentForDataSet(String dataSetGuid, String assetGuid) {
+        return createRelationship(Constants.DATA_CONTENT_FOR_DATASET, assetGuid, dataSetGuid);
 
     }
 
-    public Relationship createRelationshipToParentSchemaType(String guid1, String guid2) {
-        return createRelationship(Constants.ATTRIBUTE_FOR_SCHEMA, guid1, guid2);
+    public Relationship createRelationshipToParentSchemaType(String schemaAttributeGuid, String schemaTypeGuid) {
+        return createRelationship(Constants.ATTRIBUTE_FOR_SCHEMA, schemaTypeGuid, schemaAttributeGuid);
     }
 
 
-    public Relationship createRelationshipToSchemaType(String guid1, String guid2) {
-        return createRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE, guid1, guid2);
+    public Relationship createRelationshipToSchemaType(String schemaAttributeGuid, String schemaTypeGuid) {
+        return createRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE, schemaAttributeGuid, schemaTypeGuid);
     }
 
-    public Relationship createRelationshipConnectionToAsset(String guid1, String guid2) {
-        return createRelationship(Constants.CONNECTION_TO_ASSET, guid1, guid2);
+    public Relationship createRelationshipConnectionToAsset(String assetGuid, String connectionGuid) {
+        return createRelationship(Constants.CONNECTION_TO_ASSET, connectionGuid, assetGuid);
     }
 
-    public Relationship createRelationshipAssetSchemaType(String guid1, String guid2) {
-        return createRelationship(Constants.ASSET_SCHEMA_TYPE, guid1, guid2);
+    public Relationship createRelationshipAssetSchemaType(String assetSchemaTypeGuid, String assetGuid) {
+        return createRelationship(Constants.ASSET_SCHEMA_TYPE,  assetGuid, assetSchemaTypeGuid);
     }
 
 
