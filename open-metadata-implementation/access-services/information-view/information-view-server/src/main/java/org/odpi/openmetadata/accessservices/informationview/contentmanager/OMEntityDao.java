@@ -192,6 +192,7 @@ public class OMEntityDao {
         TypeDef typeDef = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.USER_ID, typeName);
         List<EntityDetail> existingEntities;
         try {
+            log.info("Retrieving entities of type {} with properties {}", typeDef.getName(),  matchProperties);
             existingEntities = enterpriseConnector.getMetadataCollection().findEntitiesByProperty(Constants.USER_ID,
                                                                                                     typeDef.getGUID(),
                                                                                                     matchProperties,
@@ -205,7 +206,7 @@ public class OMEntityDao {
                                                                                                     PAGE_SIZE);
         } catch (InvalidParameterException | PropertyErrorException | TypeErrorException | FunctionNotSupportedException | UserNotAuthorizedException | RepositoryErrorException e) {
             InformationViewErrorCode auditCode = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
-            auditLog.logException("getEntity",
+            auditLog.logException("retrieveEntity",
                     auditCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
                     auditCode.getFormattedErrorMessage("matchProperties: " + matchProperties, e.getMessage()),
@@ -280,6 +281,7 @@ public class OMEntityDao {
                 .getTypeDefByName(Constants.USER_ID, relationshipType)
                 .getGUID();
         try {
+            log.info("Retrieving relationships of type {} for entity {}", relationshipType,  guid2);
             relationships = enterpriseConnector.getMetadataCollection()
                     .getRelationshipsForEntity(Constants.USER_ID,
                             guid2,

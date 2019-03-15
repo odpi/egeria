@@ -17603,7 +17603,7 @@ public class OpenMetadataTypesArchive
         final String attribute4Description     = "Initial value for the attribute (overriding the default value of its type.";
         final String attribute4DescriptionGUID = null;
         final String attribute5Name            = "id";
-        final String attribute5Description     = "Id of dataview element.";
+        final String attribute5Description     = "Id of schema element.";
         final String attribute5DescriptionGUID = null;
         final String attribute6Name            = "description";
         final String attribute6Description     = "Description of the column.";
