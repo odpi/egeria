@@ -34,6 +34,7 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
     private OMRSAuditLog auditLog;
     private String serverName;
     private AssetLineageServicesInstance instance;
+    private String serverUserName;
 
 
     /**
@@ -50,9 +51,10 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
     public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
                            OMRSTopicConnector enterpriseOMRSTopicConnector,
                            OMRSRepositoryConnector enterpriseConnector,
-                           OMRSAuditLog auditLog, String serverUserName) throws OMAGConfigurationErrorException {
+                           OMRSAuditLog auditLog, String serverUserName){
         final String actionDescription = "initialize";
         AssetLineageAuditCode auditCode;
+        this.serverUserName = serverUserName;
 
         try {
             auditCode = AssetLineageAuditCode.SERVICE_INITIALIZING;
@@ -88,7 +90,7 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
                         null,
                         auditCode.getSystemAction(),
                         auditCode.getUserAction());
-                EventProcessor eventProcessor = new EventProcessor(assetLineageOutTopicConnector, auditLog);
+                EventProcessor eventProcessor = new EventProcessor(this.serverName, this.serverUserName, assetLineageOutTopicConnector, auditLog);
                 AssetLineageEnterpriseOmrsEventListener assetLineageEnterpriseOmrsEventListener = new AssetLineageEnterpriseOmrsEventListener(eventProcessor, auditLog);
                 enterpriseOMRSTopicConnector.registerListener(assetLineageEnterpriseOmrsEventListener);
             }
