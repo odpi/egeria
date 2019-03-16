@@ -7,6 +7,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.eventProcessors;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.events.AssetLineageHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
+import org.odpi.openmetadata.accessservices.assetlineage.service.AssetContext;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
@@ -65,6 +66,10 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                       String originatorServerType,
                                       String originatorOrganizationName,
                                       EntityDetail entity) {
+
+        AssetContext assetContext = new AssetContext();
+
+
     }
 
     public void processUpdatedEntityEvent(String sourceName,
