@@ -27,9 +27,6 @@ public class Connection implements Serializable {
     private String qualifiedName;
     protected Map<String, Object> securedProperties = null;
 
-    private Connector connector;
-    private Endpoint endpoint;
-
     public Connection(){}
 
     public Connection(String guid, String qualifiedName) {
@@ -75,21 +72,5 @@ public class Connection implements Serializable {
 
     public void setSecuredProperties(Map<String, Object> securedProperties) {
         this.securedProperties = securedProperties;
-    }
-
-    public Connector getConnector() {
-        return connector;
-    }
-
-    public void setConnector(Connector connector) {
-        this.connector = connector;
-    }
-
-    public Endpoint getEndpoint() {
-        return endpoint;
-    }
-
-    public void setEndpoint(Endpoint endpoint) {
-        this.endpoint = endpoint;
     }
 }
