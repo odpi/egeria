@@ -11,11 +11,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.Cl
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.service.AssetCatalogService;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -117,44 +113,6 @@ public class AssetCatalogEntityResource {
                                                             @PathVariable("assetId") String assetId,
                                                             @RequestBody SearchParameters searchParameters) {
         return assetService.getClassificationByAssetGUID(serverName, userId, assetId, searchParameters);
-    }
-
-    /**
-     * Fetch the assets that match the properties
-     *
-     * @param serverName       unique identifier for requested server.
-     * @param userId           the unique identifier for the user
-     * @param propertyValue    the property value searched
-     * @param searchParameters constrains to make the assets's search results more precise
-     * @return AssetDescriptionResponse a list of assets that match the properties
-     */
-    @RequestMapping(method = RequestMethod.POST,
-            path = "/assets-by-property/{propertyValue}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse getAssetsByProperty(@PathVariable("serverName") String serverName,
-                                                        @PathVariable("userId") String userId,
-                                                        @PathVariable("propertyValue") String propertyValue,
-                                                        @RequestBody SearchParameters searchParameters) {
-        return assetService.getAssetsByProperty(serverName, userId, propertyValue, searchParameters);
-    }
-
-    /**
-     * Fetch the assets that match the classification name
-     *
-     * @param serverName         unique identifier for requested server.
-     * @param userId             the unique identifier for the user
-     * @param classificationName the name of the classification
-     * @param searchParameters   constrains to make the assets's search results more precise
-     * @return a list of assets that match the classification name
-     */
-    @RequestMapping(method = RequestMethod.POST,
-            path = "/assets-by-classification-name/{classificationName}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse getAssetsByClassificationName(@PathVariable("serverName") String serverName,
-                                                                  @PathVariable("userId") String userId,
-                                                                  @PathVariable("classificationName") String classificationName,
-                                                                  @RequestBody SearchParameters searchParameters) {
-        return assetService.getAssetsByClassificationName(serverName, userId, classificationName, searchParameters);
     }
 
     /**
@@ -288,44 +246,6 @@ public class AssetCatalogEntityResource {
                                                        @PathVariable("userId") String userId,
                                                        @RequestBody SearchParameters searchParameters) throws NotImplementedException {
         return assetService.getLastUpdatedAssets(serverName, userId, searchParameters);
-    }
-
-    /**
-     * Return a list of assets (details and connections) matching the search criteria
-     *
-     * @param serverName       unique identifier for requested server.
-     * @param userId           the unique identifier for the user
-     * @param searchCriteria   a string expression of the characteristics of the required assets
-     * @param searchParameters constrains to make the assets's search results more precise
-     * @return list of properties used to narrow the search
-     */
-    @RequestMapping(method = RequestMethod.POST,
-            path = "/search-asset/{searchCriteria}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse searchAssets(@PathVariable("serverName") String serverName,
-                                                 @PathVariable("userId") String userId,
-                                                 @PathVariable("searchCriteria") String searchCriteria,
-                                                 @RequestBody SearchParameters searchParameters) {
-        return assetService.searchAssets(serverName, userId, searchCriteria, searchParameters);
-    }
-
-    /**
-     * Return a list of assets matching the search criteria.
-     *
-     * @param serverName       unique identifier for requested server.
-     * @param userId           the unique identifier for the user
-     * @param searchCriteria   a string expression of the characteristics of the required assets
-     * @param searchParameters constrains to make the assets's search results more precise
-     * @return list of properties used to narrow the search
-     */
-    @RequestMapping(method = RequestMethod.POST,
-            path = "/search/asset-property/{searchCriteria}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public AssetDescriptionResponse searchAssetsByPropertyValue(@PathVariable("serverName") String serverName,
-                                                                @PathVariable("userId") String userId,
-                                                                @PathVariable("searchCriteria") String searchCriteria,
-                                                                @RequestBody SearchParameters searchParameters) {
-        return assetService.searchAssetsByPropertyValue(serverName, userId, searchCriteria, searchParameters);
     }
 
     /**
