@@ -14,7 +14,8 @@ metadata:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
   annotations:
     "helm.sh/hook": post-install
-    "helm.sh/hook-delete-policy": hook-succeeded
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation"
 spec:
   template:
     metadata:
@@ -63,7 +64,7 @@ spec:
             - "-c"
 {{ if (not .Values.ibmigc.internal.enabled) }}
             - >
-                until $(curl -s -f -k --connect-timeout 5 --url https://{{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.port }}/ibm/iis/launchpad); do
+                until $(curl -s -f -k --connect-timeout 5 --url https://{{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.https }}/ibm/iis/launchpad); do
                 echo waiting for {{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.port }} to be accessible;
                 sleep 2;
                 done;
