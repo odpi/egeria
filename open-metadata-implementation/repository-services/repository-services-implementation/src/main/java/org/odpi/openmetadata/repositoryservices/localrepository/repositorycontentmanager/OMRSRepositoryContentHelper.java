@@ -2661,7 +2661,7 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
             }
 
             ArrayPropertyValue arrayPropertyValue = new ArrayPropertyValue();
-
+            arrayPropertyValue.setArrayCount(propertyValues.size());
             int count = 0;
             for(String propertyValue : propertyValues){
                 PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
@@ -2671,7 +2671,6 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                 primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
                 arrayPropertyValue.setArrayValue(count++, primitivePropertyValue);
             }
-            arrayPropertyValue.setArrayCount(propertyValues.size());
             resultingProperties.setProperty(propertyName, arrayPropertyValue);
             return resultingProperties;
         } else {
