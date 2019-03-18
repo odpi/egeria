@@ -129,11 +129,12 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             
             	
                 	
-            	if (! pollRequired && connector.getNumberOfUnprocessedEvents() > defaultMaxQueueSize) {
+            	int nUnprocessedEvents = connector.getNumberOfUnprocessedEvents();
+            	if (! pollRequired && nUnprocessedEvents > defaultMaxQueueSize) {
             		//The connector queue is too big.  Wait until the size goes down until
             		//polling again.  If we let the events just accumulate, we will
             		//eventually run out of memory if the consumer cannot keep up.
-            		log.warn("Skipping Kafka polling since unprocessed message queue size {} is greater than {}", connector.getNumberOfUnprocessedEvents(), defaultMaxQueueSize);
+            		log.warn("Skipping Kafka polling since unprocessed message queue size {} is greater than {}", nUnprocessedEvents, defaultMaxQueueSize);
             		awaitNextPollingTime();
             		continue;
             	
