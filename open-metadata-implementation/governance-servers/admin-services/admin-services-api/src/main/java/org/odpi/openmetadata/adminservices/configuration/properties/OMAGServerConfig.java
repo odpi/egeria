@@ -92,6 +92,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private List<AccessServiceConfig> accessServicesConfig      = null;
     private RepositoryServicesConfig  repositoryServicesConfig  = null;
     private DiscoveryEngineConfig     discoveryEngineConfig     = null;
+    private OpenLineageConfig         openLineageConfig         = null;
     private StewardshipServicesConfig stewardshipServicesConfig = null;
     private SecuritySyncConfig        securitySyncConfig        = null;
     private List<String>              auditTrail                = null;
@@ -127,6 +128,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             accessServicesConfig = template.getAccessServicesConfig();
             repositoryServicesConfig = template.getRepositoryServicesConfig();
             discoveryEngineConfig = template.getDiscoveryEngineConfig();
+            openLineageConfig = template.getOpenLineageConfig();
             stewardshipServicesConfig = template.getStewardshipServicesConfig();
             securitySyncConfig = template.getSecuritySyncConfig();
             auditTrail = template.getAuditTrail();
@@ -377,6 +379,27 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
         this.discoveryEngineConfig = discoveryEngineConfig;
     }
 
+    /**
+     * Return the configuration for open lineage services.
+     *
+     * @return OpenLineageConfig properties
+     */
+    public OpenLineageConfig getOpenLineageConfig()
+    {
+        return openLineageConfig;
+    }
+
+
+    /**
+     * Set up the configuration for open lineage services.
+     *
+     * @param openLineageConfig OpenLineageConfig properties
+     */
+    public void setOpenLineageConfig(OpenLineageConfig openLineageConfig)
+    {
+        this.openLineageConfig = openLineageConfig;
+    }
+
 
     /**
      * Return the configuration for the stewardship services in a server.
@@ -483,6 +506,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 ", accessServicesConfig=" + accessServicesConfig +
                 ", repositoryServicesConfig=" + repositoryServicesConfig +
                 ", discoveryEngineConfig=" + discoveryEngineConfig +
+                ", openLineageConfig=" + openLineageConfig +
                 ", stewardshipServicesConfig=" + stewardshipServicesConfig +
                 ", securitySyncConfig=" + securitySyncConfig +
                 ", auditTrail=" + auditTrail +
@@ -519,6 +543,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 Objects.equals(getAccessServicesConfig(), that.getAccessServicesConfig()) &&
                 Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
                 Objects.equals(getDiscoveryEngineConfig(), that.getDiscoveryEngineConfig()) &&
+                Objects.equals(getOpenLineageConfig(), that.getOpenLineageConfig()) &&
                 Objects.equals(getStewardshipServicesConfig(), that.getStewardshipServicesConfig()) &&
                 Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
                 Objects.equals(getVirtualizationConfig(), that.getVirtualizationConfig()) &&
