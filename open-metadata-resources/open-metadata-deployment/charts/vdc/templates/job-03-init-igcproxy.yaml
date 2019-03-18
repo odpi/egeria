@@ -14,7 +14,8 @@ metadata:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
   annotations:
     "helm.sh/hook": post-install
-    "helm.sh/hook-delete-policy": hook-succeeded
+    "helm.sh/hook-weight": "0"
+    "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation"
 spec:
   template:
     metadata:
