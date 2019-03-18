@@ -17,11 +17,11 @@ public enum GovernanceServersDescription implements Serializable
                                               "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/security-sync-services/"),
     STEWARDSHIP_SERVICES             (2002,   "Stewardship Services", "Run automated stewardship actions",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/stewardship-services/"),
-
-
-
+    OPEN_LINEAGE_SERVICES            (2003,   "Open Lineage Services", "Store and query asset lineage",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/open-lineage-services/"),
     VIRTUALIZATION_SERVICES          (2004,   "Virtualization Services", "Run virtualization services",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/governance-servers/virtualization-services/");
+
 
     private static final long     serialVersionUID    = 1L;
 
@@ -43,8 +43,8 @@ public enum GovernanceServersDescription implements Serializable
         serviceDescriptionList.add(GovernanceServersDescription.DISCOVERY_ENGINE_SERVICES);
         serviceDescriptionList.add(GovernanceServersDescription.SECURITY_SYNC_SERVICES);
         serviceDescriptionList.add(GovernanceServersDescription.STEWARDSHIP_SERVICES);
+        serviceDescriptionList.add(GovernanceServersDescription.OPEN_LINEAGE_SERVICES);
         serviceDescriptionList.add(GovernanceServersDescription.VIRTUALIZATION_SERVICES);
-
         return serviceDescriptionList;
     }
 
