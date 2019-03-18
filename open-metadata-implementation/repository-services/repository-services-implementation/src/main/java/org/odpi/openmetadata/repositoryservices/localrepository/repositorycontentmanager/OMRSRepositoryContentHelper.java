@@ -2648,6 +2648,41 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
     }
 
 
+
+    public InstanceProperties addStringArrayPropertyToInstance(String sourceName, InstanceProperties properties, String propertyName, List<String> propertyValues, String methodName) {
+        if (propertyValues != null) {
+            log.debug("Adding property " + propertyName + " for " + methodName);
+            InstanceProperties resultingProperties;
+            if (properties == null) {
+                log.debug("First property");
+                resultingProperties = new InstanceProperties();
+            } else {
+                resultingProperties = properties;
+            }
+
+            ArrayPropertyValue arrayPropertyValue = new ArrayPropertyValue();
+
+            int count = 0;
+            for(String propertyValue : propertyValues){
+                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                primitivePropertyValue.setPrimitiveValue(propertyValue);
+                primitivePropertyValue.setTypeName(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getName());
+                primitivePropertyValue.setTypeGUID(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING.getGUID());
+                arrayPropertyValue.setArrayValue(count++, primitivePropertyValue);
+            }
+            arrayPropertyValue.setArrayCount(propertyValues.size());
+            resultingProperties.setProperty(propertyName, arrayPropertyValue);
+            return resultingProperties;
+        } else {
+            log.debug("Null property");
+            return properties;
+        }
+    }
+
+
+
+
     /**
      * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
      * property in the instances properties.   If the instance properties object

@@ -42,13 +42,15 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
     private ColumnContextBuilder columnContextBuilder;
     private OMRSRepositoryHelper helper;
     private OMRSAuditLog auditLog;
+    private List<String> zones;
 
 
-    public EventPublisher(OpenMetadataTopicConnector informationViewOutTopicConnector, OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog) {
+    public EventPublisher(OpenMetadataTopicConnector informationViewOutTopicConnector, OMRSRepositoryConnector enterpriseConnector, List<String> zones, OMRSAuditLog auditLog) {
         this.columnContextBuilder = new ColumnContextBuilder(enterpriseConnector);
         this.informationViewOutTopicConnector = informationViewOutTopicConnector;
         this.enterpriseConnector  = enterpriseConnector;
         this.helper = enterpriseConnector.getRepositoryHelper();
+        this.zones = zones;
         this.auditLog = auditLog;
     }
 

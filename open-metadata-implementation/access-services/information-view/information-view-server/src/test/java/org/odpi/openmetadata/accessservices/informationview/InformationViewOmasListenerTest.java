@@ -32,11 +32,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper;
 import org.odpi.openmetadata.repositoryservices.rest.properties.TypeLimitedFindRequest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
@@ -115,7 +117,7 @@ public class InformationViewOmasListenerTest {
     @Mock
     private EntityDetail businessTerm;
     @Mock
-    private OMRSRepositoryHelper helper;
+    private OMRSRepositoryContentHelper helper;
     @Mock
     private EventPublisher eventPublisher;
 
@@ -139,10 +141,33 @@ public class InformationViewOmasListenerTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, auditLog);
-        listener = new InformationViewInTopicListener(omEntityDao, eventPublisher,enterpriseConnector.getRepositoryHelper(), auditLog);
+        OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, Collections.EMPTY_LIST, auditLog);
+        listener = new InformationViewInTopicListener(omEntityDao, eventPublisher,enterpriseConnector.getRepositoryHelper(), Collections.emptyList(), auditLog);
         when(enterpriseConnector.getMetadataCollection()).thenReturn(omrsMetadataCollection);
         when(enterpriseConnector.getRepositoryHelper()).thenReturn(helper);
+        when(helper.getStringProperty(eq(Constants.INFORMATION_VIEW_OMAS_NAME),
+                                    any(String.class),
+                                    any(InstanceProperties.class),
+                                    any(String.class))).thenCallRealMethod();
+        when(helper.getBooleanProperty(eq(Constants.INFORMATION_VIEW_OMAS_NAME),
+                                    any(String.class),
+                                    any(InstanceProperties.class),
+                                    any(String.class))).thenCallRealMethod();
+        when(helper.getIntProperty(eq(Constants.INFORMATION_VIEW_OMAS_NAME),
+                                any(String.class),
+                                any(InstanceProperties.class),
+                                any(String.class))).thenCallRealMethod();
+        when(helper.getStringArrayProperty(eq(Constants.INFORMATION_VIEW_OMAS_NAME),
+                                        any(String.class),
+                                        any(InstanceProperties.class),
+                                        any(String.class))).thenCallRealMethod();
+
+
+        when(helper.addStringArrayPropertyToInstance(eq(Constants.INFORMATION_VIEW_OMAS_NAME),
+                                        any(InstanceProperties.class),
+                                        any(String.class),
+                                        anyList(),
+                                        any(String.class))).thenCallRealMethod();
 
         testDataHelper = new TestDataHelper();
         buildInstanceTypes();
@@ -164,7 +189,7 @@ public class InformationViewOmasListenerTest {
         when(mockType.getTypeDefGUID()).thenReturn(classificationTypeGuid);
         when(skeletonClassification.getType()).thenReturn(mockType);
         when(skeletonClassification.getStatus()).thenReturn(InstanceStatus.ACTIVE);
-        when(helper.getSkeletonClassification("",
+        when(helper.getSkeletonClassification(Constants.INFORMATION_VIEW_OMAS_NAME,
                 Constants.USER_ID,
                 classificationTypeName,
                 entityTypeName))
@@ -219,7 +244,7 @@ public class InformationViewOmasListenerTest {
         when(mockType.getTypeDefGUID()).thenReturn(typeGuid);
         when(skeletonRelationship.getType()).thenReturn(mockType);
         when(skeletonRelationship.getStatus()).thenReturn(InstanceStatus.ACTIVE);
-        when(helper.getSkeletonRelationship("",
+        when(helper.getSkeletonRelationship(Constants.INFORMATION_VIEW_OMAS_NAME,
                 "",
                 InstanceProvenanceType.LOCAL_COHORT,
                 Constants.USER_ID,
