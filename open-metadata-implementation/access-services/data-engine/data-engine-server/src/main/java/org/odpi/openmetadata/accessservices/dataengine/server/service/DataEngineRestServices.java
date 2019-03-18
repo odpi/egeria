@@ -21,6 +21,7 @@ import java.util.List;
 public class DataEngineRestServices {
 
     private static final Logger log = LoggerFactory.getLogger(DataEngineRestServices.class);
+    private final String DEBUG_LOG_MESSAGE = "Calling method: %s";
 
     private DataEngineErrorHandler exceptionUtil;
     private DataEngineInstanceHandler instanceHandler;
@@ -43,7 +44,7 @@ public class DataEngineRestServices {
      * @return the unique identifier (guid) of the created process
      */
     public GUIDResponse createProcess(String userId, String serverName, ProcessRequestBody processRequestBody) {
-        log.debug("Calling method: createProcess");
+        log.debug(String.format(DEBUG_LOG_MESSAGE, "createProcess"));
 
         if (processRequestBody == null) {
             return null;
@@ -99,7 +100,7 @@ public class DataEngineRestServices {
      */
     public GUIDResponse createDeployedAPI(String userId, String serverName,
                                           DeployedAPIRequestBody deployedAPIRequestBody) {
-        log.debug("Calling method: createDeployedAPI");
+        log.debug(String.format(DEBUG_LOG_MESSAGE, "createDeployedAPI"));
 
         if (deployedAPIRequestBody == null) {
             return null;
@@ -146,7 +147,7 @@ public class DataEngineRestServices {
      * @return the unique identifier (guid) of the created port
      */
     public GUIDResponse createPort(String userId, String serverName, PortRequestBody portRequestBody) {
-        log.debug("Calling method: createPort");
+        log.debug(String.format(DEBUG_LOG_MESSAGE, "createPort"));
 
         if (portRequestBody == null) {
             return null;
@@ -187,8 +188,7 @@ public class DataEngineRestServices {
      */
     public GUIDResponse addPortsToProcess(String userId, String serverName, String processGuid,
                                           PortListRequestBody portListRequestBody) {
-        log.debug("Calling method: " + "adPortsToProcess");
-
+        log.debug(String.format(DEBUG_LOG_MESSAGE, "adPortsToProcess"));
         if (portListRequestBody == null) {
             return null;
         }
@@ -274,7 +274,7 @@ public class DataEngineRestServices {
                 instanceHandler.getMetadataCollection(serverName));
 
         for (String deployedApi : deployedApis) {
-            String portGuid = portHandler.createPort(userId,  " Port for " + deployedApi);
+            String portGuid = portHandler.createPort(userId, " Port for " + deployedApi);
             portHandler.addPortInterfaceRelationship(userId, portGuid, deployedApi);
             createdPorts.add(portGuid);
         }
