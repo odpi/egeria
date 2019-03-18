@@ -86,7 +86,7 @@ public abstract class EntityLookup<T extends Source> {
         InstanceProperties entityProperties = entityDetail.getProperties();
         for (Map.Entry<String, InstancePropertyValue> property : matchingProperties.getInstanceProperties().entrySet()) {
 
-            String actualValue = enterpriseConnector.getRepositoryHelper().getStringProperty("", property.getKey(), entityProperties, "matchProperties");//TODO only string supported for now
+            String actualValue = enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, property.getKey(), entityProperties, "matchProperties");//TODO only string supported for now
             if (!((PrimitivePropertyValue)property.getValue()).getPrimitiveValue().equals(actualValue)) {
                 return false;
             }

@@ -32,6 +32,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class InformationViewAdmin implements AccessServiceAdmin {
 
@@ -79,7 +82,8 @@ public class InformationViewAdmin implements AccessServiceAdmin {
         String outTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceOutTopic());
         informationViewInTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceInTopic());
         informationViewOutTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
-        OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, auditLog);
+        List<String> supportedZones = new ArrayList<>();
+        OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, supportedZones, auditLog);
 
         EventPublisher eventPublisher = null;
         if (enterpriseOMRSTopicConnector != null) {
@@ -92,15 +96,14 @@ public class InformationViewAdmin implements AccessServiceAdmin {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
-            eventPublisher = new EventPublisher(informationViewOutTopicConnector, enterpriseConnector, auditLog);
+            eventPublisher = new EventPublisher(informationViewOutTopicConnector, enterpriseConnector, supportedZones, auditLog);
             InformationViewEnterpriseOmrsEventListener informationViewEnterpriseOmrsEventListener = new InformationViewEnterpriseOmrsEventListener(eventPublisher, auditLog);
             enterpriseOMRSTopicConnector.registerListener(informationViewEnterpriseOmrsEventListener);
         }
 
 
         if (informationViewInTopicConnector != null) {
-            OpenMetadataTopicListener informationViewInTopicListener = new InformationViewInTopicListener(omEntityDao, eventPublisher, enterpriseConnector.getRepositoryHelper(),
-                    auditLog);
+            OpenMetadataTopicListener informationViewInTopicListener = new InformationViewInTopicListener(omEntityDao, eventPublisher, enterpriseConnector.getRepositoryHelper(), supportedZones, auditLog);
             this.informationViewInTopicConnector.registerListener(informationViewInTopicListener);
             startConnector(InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_IN_TOPIC, actionDescription, inTopicName, informationViewInTopicConnector);
         }
