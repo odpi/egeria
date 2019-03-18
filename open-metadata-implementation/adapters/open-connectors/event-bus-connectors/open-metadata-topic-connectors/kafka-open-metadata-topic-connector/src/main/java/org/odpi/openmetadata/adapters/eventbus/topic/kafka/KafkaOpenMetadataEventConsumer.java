@@ -87,7 +87,6 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
         
-        //Kafka 10.0.0 does not have the property 
         maxMsBetweenPolls = new KafkaConfigurationWrapper(consumerProperties).getMaxPollIntervalMs();
     }
 
