@@ -8,10 +8,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConfigurationWrapper;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
@@ -88,9 +88,11 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
         
-        maxMsBetweenPolls = new ConsumerConfig(consumerProperties).getInt(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG);
+        //Kafka 10.0.0 does not have the property 
+        maxMsBetweenPolls = new KafkaConfigurationWrapper(consumerProperties).getMaxPollIntervalMs();
     }
 
+  
 
     /**
      * The server is shutting down.
@@ -124,7 +126,8 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             {
             	//if we are close to the timeout, force a poll to avoid having the consumer
             	//be marked as dead because we have not polled often enough
-            	boolean pollRequired = maxNextPollTimestampToAvoidConsumerTimeout > System.currentTimeMillis();
+            	boolean pollRequired = System.currentTimeMillis() > maxNextPollTimestampToAvoidConsumerTimeout;
+            
             	
                 	
             	if (! pollRequired && connector.getNumberOfUnprocessedEvents() > defaultMaxQueueSize) {
