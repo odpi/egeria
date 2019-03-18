@@ -54,8 +54,6 @@ public class AssetLineageEnterpriseOmrsEventListener implements OMRSTopicListene
 
             if ((instanceEventType != null) && (instanceEventOriginator != null)) {
                 switch (instanceEventType) {
-
-
                     case NEW_ENTITY_EVENT:
                         instanceEventProcessor.processNewEntityEvent(
                                 "EnterpriseOMRSTopic",
@@ -78,35 +76,16 @@ public class AssetLineageEnterpriseOmrsEventListener implements OMRSTopicListene
                         break;
 
                     case NEW_RELATIONSHIP_EVENT:
-//                        instanceEventProcessor.processNewRelationshipEvent(
-//                                "EnterpriseOMRSTopic",
-//                                instanceEventOriginator.getMetadataCollectionId(),
-//                                instanceEventOriginator.getServerName(),
-//                                instanceEventOriginator.getServerType(),
-//                                instanceEventOriginator.getOrganizationName(),
-//                                instanceEvent.getRelationship());
-                    instanceEventProcessor.sendInstanceEvent("EnterpriseOMRSTopic", instanceEvent);
-                    break;
-
+                        instanceEventProcessor.sendInstanceEvent("EnterpriseOMRSTopic", instanceEvent);
+                        break;
 
                     case UPDATED_RELATIONSHIP_EVENT:
-//                        instanceEventProcessor.processUpdatedRelationshipEvent(
-//                                "EnterpriseOMRSTopic",
-//                                instanceEventOriginator.getMetadataCollectionId(),
-//                                instanceEventOriginator.getServerName(),
-//                                instanceEventOriginator.getServerType(),
-//                                instanceEventOriginator.getOrganizationName(),
-//                                instanceEvent.getOriginalRelationship(),
-//                                instanceEvent.getRelationship());
+
                         instanceEventProcessor.sendInstanceEvent("EnterpriseOMRSTopic", instanceEvent);
                         break;
                 }
-            } else {
-                log.debug("Ignored instance event - null type");
             }
+
         }
-
-
     }
-
 }
