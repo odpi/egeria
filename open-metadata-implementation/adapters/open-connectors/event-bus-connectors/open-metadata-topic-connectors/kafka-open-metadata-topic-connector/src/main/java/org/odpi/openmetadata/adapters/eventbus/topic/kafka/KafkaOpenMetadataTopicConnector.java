@@ -243,7 +243,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
         if ((incomingEventsList != null) && (!incomingEventsList.isEmpty()))
         {
-            log.debug("checking for events {0}" + incomingEventsList);
+            log.debug("Checking for events.  Number of found events: {0}", incomingEventsList.size());
             newEvents = new ArrayList<>(incomingEventsList);
 
             // empty incomingEventsList otherwise same events will be sent again
