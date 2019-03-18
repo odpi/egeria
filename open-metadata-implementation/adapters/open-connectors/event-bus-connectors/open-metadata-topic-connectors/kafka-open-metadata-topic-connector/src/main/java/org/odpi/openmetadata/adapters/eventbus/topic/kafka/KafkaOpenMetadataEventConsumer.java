@@ -30,6 +30,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 
     private static final long recoverySleepTimeSec = 10L;
     private static final long defaultPollTimeout   = 1000;
+    private static final long defaultMaxQueueSize = 100;
 
     private              KafkaConsumer<String, String>   consumer;
     private              String                          topicToSubscribe;
@@ -103,6 +104,21 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         {
             try
             {
+            	//TBD - Does the kafka configuration need to be adjusted to prevent the consumer
+            	//from being declared "dead" if the polling does not occur often enough?  There is a Kafka
+            	//setting "max.poll.interval.ms" that may have some bearing on this.  The default value
+            	//of this setting is Integer.MAX_VALUE, so unless we are overriding that property
+            	//we *should* be ok.            	
+            	if (connector.getNumberOfUnprocessedEvents() > defaultMaxQueueSize) {
+            		//The connector queue is too big.  Wait until the size goes down until
+            		//polling again.  If we let the events just accumulate, we will
+            		//eventually run out of memory if the consumer cannot keep up.
+            		log.warn("Skipping Kafka polling since unprocessed message queue size {} is greater than {}", connector.getNumberOfUnprocessedEvents(), defaultMaxQueueSize);
+            		awaitNextPollingTime();
+            		continue;
+            	
+            	}
+            	
                 ConsumerRecords<String, String> records = consumer.poll(defaultPollTimeout);
 
                 log.debug("Found records: " + records.count());
@@ -172,14 +188,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             }
             finally
             {
-                try
-                {
-                    Thread.sleep(1000);
-                }
-                catch (InterruptedException e)
-                {
-                    log.error(String.format("Interruption error: %s", e.getMessage()), e);
-                }
+                awaitNextPollingTime();
             }
         }
 
@@ -196,6 +205,18 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             consumer = null;
         }
     }
+
+
+	private void awaitNextPollingTime() {
+		try
+		{
+		    Thread.sleep(1000);
+		}
+		catch (InterruptedException e)
+		{
+		    log.error(String.format("Interruption error: %s", e.getMessage()), e);
+		}
+	}
 
 
     protected void recoverAfterError()
