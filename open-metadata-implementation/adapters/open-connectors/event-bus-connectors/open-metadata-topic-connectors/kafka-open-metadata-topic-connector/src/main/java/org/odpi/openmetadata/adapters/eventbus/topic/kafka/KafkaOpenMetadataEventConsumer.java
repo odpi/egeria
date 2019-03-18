@@ -2,8 +2,13 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -39,7 +44,14 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
     private              KafkaOpenMetadataTopicConnector connector;
 
     private Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
-
+    private long maxNextPollTimestampToAvoidConsumerTimeout = 0;
+    private final long maxMsBetweenPolls;
+    
+    
+    //If we get within 30 seconds of the consumer timeout, force a poll so that
+    //we do not exceed the timeout
+    private final long consumerTimeoutSafetyWindowMs = 30000;
+    
     private Boolean running = true;
 
     /**
@@ -75,6 +87,8 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
+        
+        maxMsBetweenPolls = new ConsumerConfig(consumerProperties).getInt(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG);
     }
 
 
@@ -91,6 +105,10 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
     }
 
 
+    private void updateNextMaxPollTimestamp() {
+    	maxNextPollTimestampToAvoidConsumerTimeout = System.currentTimeMillis() + maxMsBetweenPolls - consumerTimeoutSafetyWindowMs;
+    	
+    }
     /**
      * This is the method that provides the behaviour of the thread.
      */
@@ -104,12 +122,12 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         {
             try
             {
-            	//TBD - Does the kafka configuration need to be adjusted to prevent the consumer
-            	//from being declared "dead" if the polling does not occur often enough?  There is a Kafka
-            	//setting "max.poll.interval.ms" that may have some bearing on this.  The default value
-            	//of this setting is Integer.MAX_VALUE, so unless we are overriding that property
-            	//we *should* be ok.            	
-            	if (connector.getNumberOfUnprocessedEvents() > defaultMaxQueueSize) {
+            	//if we are close to the timeout, force a poll to avoid having the consumer
+            	//be marked as dead because we have not polled often enough
+            	boolean pollRequired = maxNextPollTimestampToAvoidConsumerTimeout > System.currentTimeMillis();
+            	
+                	
+            	if (! pollRequired && connector.getNumberOfUnprocessedEvents() > defaultMaxQueueSize) {
             		//The connector queue is too big.  Wait until the size goes down until
             		//polling again.  If we let the events just accumulate, we will
             		//eventually run out of memory if the consumer cannot keep up.
@@ -118,9 +136,9 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             		continue;
             	
             	}
-            	
+            	updateNextMaxPollTimestamp();
                 ConsumerRecords<String, String> records = consumer.poll(defaultPollTimeout);
-
+                
                 log.debug("Found records: " + records.count());
                 for (ConsumerRecord<String, String> record : records)
                 {
