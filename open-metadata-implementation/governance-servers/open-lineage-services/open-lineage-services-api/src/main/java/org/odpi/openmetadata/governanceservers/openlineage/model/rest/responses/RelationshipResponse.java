@@ -4,7 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.model.rest.responses
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetlineage.model.Relationship;
+import org.odpi.openmetadata.governanceservers.openlineage.model.Relationship;
 
 import java.io.Serializable;
 

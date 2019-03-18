@@ -4,6 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.listeners;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphConstructor;
+import org.odpi.openmetadata.governanceservers.openlineage.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
@@ -36,55 +37,26 @@ public class ALOutTopicListener implements OpenMetadataTopicListener {
      */
     @Override
     public void processEvent(String eventAsString) {
-        OMRSEventV1 event = null;
         try {
-            event = OBJECT_MAPPER.readValue(eventAsString, OMRSEventV1.class);
-        } catch (Exception e) {
-            e.printStackTrace();
-            OpenLineageErrorCode auditCode = OpenLineageErrorCode.PARSE_EVENT;
-
-            auditLog.logException("processEvent",
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getErrorMessage(),
-                    "event {" + eventAsString + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e);
-
-        }
-        if (event != null) {
-            try {
-                log.info("Started processing OpenLineageEvent");
-                OMRSInstanceEvent omrsInstanceEvent = new OMRSInstanceEvent(event);
-                OMRSInstanceEventType instanceEventType = omrsInstanceEvent.getInstanceEventType();
-                switch (instanceEventType) {
-                    case NEW_ENTITY_EVENT:
-                        graphConstructor.addNewEntity(omrsInstanceEvent);
-                        break;
-                    case NEW_RELATIONSHIP_EVENT:
-                        graphConstructor.addNewRelationship(omrsInstanceEvent);
-                        break;
-                    case UPDATED_ENTITY_EVENT:
-                        break;
-                    case UPDATED_RELATIONSHIP_EVENT:
-                        break;
-                }
-            }catch (Exception e) {
-                log.error("Exception processing event from in topic", e);
-                OpenLineageErrorCode auditCode = OpenLineageErrorCode.PROCESS_EVENT_EXCEPTION;
-
-                auditLog.logException("processEvent",
-                        auditCode.getErrorMessageId(),
-                        OMRSAuditLogRecordSeverity.EXCEPTION,
-                        auditCode.getFormattedErrorMessage(eventAsString, e.getMessage()),
-                        e.getMessage(),
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction(),
-                        e);
+            OMRSEventV1 event = OBJECT_MAPPER.readValue(eventAsString, OMRSEventV1.class);
+            log.info("Started processing OpenLineageEvent");
+            OMRSInstanceEvent omrsInstanceEvent = new OMRSInstanceEvent(event);
+            OMRSInstanceEventType instanceEventType = omrsInstanceEvent.getInstanceEventType();
+            switch (instanceEventType) {
+                case NEW_RELATIONSHIP_EVENT:
+                    graphConstructor.addNewRelationship(omrsInstanceEvent);
+                    break;
+                case UPDATED_RELATIONSHIP_EVENT:
+                    break;
             }
-
+        } catch (Exception e) {
+        }
+        try {
+            AssetResponse event = OBJECT_MAPPER.readValue(eventAsString, AssetResponse.class);
+            log.info("Started processing OpenLineageEvent");
+        } catch (Exception e) {
         }
 
     }
+
 }
