@@ -73,6 +73,16 @@
             </roles>
             <organization>IBM Corporation</organization>
         </developer>
+        <developer>
+            <id>guy-ackermans</id>
+            <name>Guy Ackermans</name>
+            <email>guy.ackermans92@gmail.com</email>
+            <timezone>Europe/Amsterdam</timezone>
+            <roles>
+                <role>maintainer</role>
+            </roles>
+            <organization>ING</organization>
+        </developer>
     </developers>
 
     <!-- POM packaging means that this module has sub-modules -->
