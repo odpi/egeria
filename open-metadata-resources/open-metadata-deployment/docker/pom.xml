@@ -27,7 +27,6 @@
         <module>configure</module>
         <module>egeria</module>
         <module>gaian</module>
-        <module>kafka-monitor</module>
         <module>omrs-monitor</module>
         <module>ranger</module>
     </modules>
