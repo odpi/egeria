@@ -24,7 +24,7 @@ public class OMAGOperationalServicesInstance
     private OMRSOperationalServices            operationalRepositoryServices     = null;
     private List<AccessServiceAdmin>           operationalAccessServiceAdminList = new ArrayList<>();
     private DiscoveryEngineOperationalServices operationalDiscoveryEngine        = null;
-    private OpenLineageOperationalServices openLineageOperationalServices = null;
+    private OpenLineageOperationalServices     openLineageOperationalServices    = null;
     private StewardshipOperationalServices     operationalStewardshipServices    = null;
     private SecuritySyncOperationalServices    operationalSecuritySyncServices   = null;
     private VirtualizationOperationalServices  operationalVirtualizationServices = null;

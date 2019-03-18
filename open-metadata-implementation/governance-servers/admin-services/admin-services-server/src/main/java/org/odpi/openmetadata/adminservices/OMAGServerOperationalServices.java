@@ -141,7 +141,7 @@ public class OMAGServerOperationalServices
             RepositoryServicesConfig  repositoryServicesConfig  = configuration.getRepositoryServicesConfig();
             List<AccessServiceConfig> accessServiceConfigList   = configuration.getAccessServicesConfig();
             DiscoveryEngineConfig     discoveryEngineConfig     = configuration.getDiscoveryEngineConfig();
-            OpenLineageConfig        openLineageConfig        = configuration.getOpenLineageConfig();
+            OpenLineageConfig         openLineageConfig         = configuration.getOpenLineageConfig();
             SecuritySyncConfig        securitySyncConfig        = configuration.getSecuritySyncConfig();
             StewardshipServicesConfig stewardshipServicesConfig = configuration.getStewardshipServicesConfig();
             VirtualizationConfig      virtualizationConfig      = configuration.getVirtualizationConfig();
