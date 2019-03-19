@@ -26,8 +26,6 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     
     private Properties consumerEgeriaProperties = new Properties();
     private Properties consumerProperties = new Properties();
-    
-    private static final String CONSUMER_EGERIA_PROPERTY_PREFIX = "egeria.";
 
     private KafkaOpenMetadataEventConsumer consumer = null;
     private KafkaOpenMetadataEventProducer producer = null;
