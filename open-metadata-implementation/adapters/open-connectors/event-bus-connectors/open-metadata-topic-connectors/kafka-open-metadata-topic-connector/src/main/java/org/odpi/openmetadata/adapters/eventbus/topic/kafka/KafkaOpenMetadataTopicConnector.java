@@ -21,8 +21,13 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 {
     private static final Logger       log      = LoggerFactory.getLogger(KafkaOpenMetadataTopicConnector.class);
 
+    
     private Properties producerProperties = new Properties();
+    
+    private Properties consumerEgeriaProperties = new Properties();
     private Properties consumerProperties = new Properties();
+    
+    private static final String CONSUMER_EGERIA_PROPERTY_PREFIX = "egeria.";
 
     private KafkaOpenMetadataEventConsumer consumer = null;
     private KafkaOpenMetadataEventProducer producer = null;
@@ -167,7 +172,16 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 propertiesMap = (Map<String, Object>)propertiesObject;
                 for (Map.Entry<String, Object> entry : propertiesMap.entrySet())
                 {
-                    consumerProperties.setProperty(entry.getKey(), (String) entry.getValue());
+            		//separate out egeria consumer properties from properties that should
+                	//be forwarded to Kafka
+                	if (entry.getKey().startsWith(actionDescription)) {
+                		consumerEgeriaProperties.setProperty(entry.getKey(), (String)entry.getValue());
+                		
+                	}
+                	else {
+                		consumerProperties.setProperty(entry.getKey(), (String) entry.getValue());
+                
+                	}
                 }
             }
         }
@@ -199,8 +213,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         Thread                         producerThread;
 
         this.initializeTopic();
-
-        consumer = new KafkaOpenMetadataEventConsumer(topicName, serverId, consumerProperties, this, auditLog);
+        
+        KafkaOpenMetadataEventConsumerConfiguration consumerConfig = new KafkaOpenMetadataEventConsumerConfiguration(consumerEgeriaProperties);
+        consumer = new KafkaOpenMetadataEventConsumer(topicName, serverId, consumerConfig, consumerProperties, this, auditLog);
         consumerThread = new Thread(consumer, threadHeader + "Consumer-" + topicName);
         consumerThread.start();
 
