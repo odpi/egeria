@@ -915,8 +915,6 @@ public class AssetCatalogService {
         return response;
     }
 
-
-
     public AssetResponse searchAssetsGeneric(String serverName, String userId, String searchCriteria, SearchParameters searchParameters) {
         AssetResponse response = new AssetResponse();
 
@@ -1010,6 +1008,7 @@ public class AssetCatalogService {
             }
         }
     }
+
 
     private void addElement(AssetElement assetElement, Element element) {
         if (assetElement.getContext() != null) {
