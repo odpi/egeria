@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.listeners;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphConstructor;
 import org.odpi.openmetadata.governanceservers.openlineage.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
@@ -49,12 +50,39 @@ public class ALOutTopicListener implements OpenMetadataTopicListener {
                 case UPDATED_RELATIONSHIP_EVENT:
                     break;
             }
-        } catch (Exception e) {
+        } catch (InvalidTypeIdException e) {
+            //Do nothing since it may be an AssetResponse event instead.
+        }
+        catch (Exception e){
+            log.error("Exception processing event from Asset Lineage OMAS Out topic", e);
+            OpenLineageErrorCode auditCode = OpenLineageErrorCode.PROCESS_EVENT_EXCEPTION;
+
+            auditLog.logException("processEvent",
+                    auditCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    auditCode.getFormattedErrorMessage(eventAsString, e.getMessage()),
+                    e.getMessage(),
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction(),
+                    e);
         }
         try {
             AssetResponse event = OBJECT_MAPPER.readValue(eventAsString, AssetResponse.class);
             log.info("Started processing OpenLineageEvent");
-        } catch (Exception e) {
+            graphConstructor.addAsset(event);
+        }
+        catch (Exception e){
+            log.error("Exception processing event from in topic", e);
+            OpenLineageErrorCode auditCode = OpenLineageErrorCode.PROCESS_EVENT_EXCEPTION;
+
+            auditLog.logException("processEvent",
+                    auditCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    auditCode.getFormattedErrorMessage(eventAsString, e.getMessage()),
+                    e.getMessage(),
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction(),
+                    e);
         }
 
     }
