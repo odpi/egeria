@@ -2,7 +2,7 @@
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 **Chart for full VDC stack**
 
-This helm chart will deploy the following components
+This helm chart will deploy the following components:
 * Apache Kafka
 * An egeria Cohort with the following participants, all connected to the Kafka event bus & configured to exchange events & interoperate
     * Egeria

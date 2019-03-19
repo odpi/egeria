@@ -81,7 +81,7 @@ spec:
       initContainers:
         - name: init-git
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.configure.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.configure.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.configure.name }}\
                   :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
@@ -101,7 +101,7 @@ spec:
       containers:
         - name: proxy
           image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.egeria.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.egeria.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ if (.Values.image.egeria.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.egeria.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.egeria.name }}\
                   :{{ .Values.image.egeria.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
@@ -122,7 +122,7 @@ spec:
           resources: {}
         - name: ibm-igc
           image: "{{ if (.Values.image.ibmigc.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.ibmigc.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.ibmigc.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.ibmigc.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ if (.Values.image.ibmigc.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.ibmigc.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.ibmigc.name }}\
                   :{{ .Values.image.ibmigc.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.ibmigc.pullPolicy | default .Values.imageDefaults.pullPolicy }}
@@ -165,7 +165,7 @@ spec:
       containers:
         - name: proxy
           image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.egeria.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.egeria.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ if (.Values.image.egeria.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.egeria.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.egeria.name }}\
                   :{{ .Values.image.egeria.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
