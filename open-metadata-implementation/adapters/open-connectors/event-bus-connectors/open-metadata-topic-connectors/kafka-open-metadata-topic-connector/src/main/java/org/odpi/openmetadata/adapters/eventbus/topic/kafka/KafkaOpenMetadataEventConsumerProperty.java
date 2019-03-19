@@ -17,8 +17,8 @@ public enum KafkaOpenMetadataEventConsumerProperty {
 	 * poll for messages within some configured maximum poll interval. To make sure
 	 * this happens, when we are deciding whether or not to poll Kafka we need to
 	 * see how close we are to the time when we will exceed that maximum poll
-	 * interval. If we are close enough, then we force a poll rather. This parameter
-	 * controls how close to the timeout we need to do be in order to force a poll.
+	 * interval. If we are close enough, then we force a poll to avoid having the consumer die. 
+	 * This parameter controls how close to the timeout we need to do be in order to force a poll.
 	 * 
 	 * The value provided as a number of milliseconds.
 	 */
@@ -31,7 +31,7 @@ public enum KafkaOpenMetadataEventConsumerProperty {
 	POLL_TIMEOUT("poll_timeout_ms", "1000"),
 	
 	/**
-	 * The amount of time to sleep after we encounter a Kafka error, in second
+	 * The amount of time to sleep after we encounter a Kafka error, in seconds
 	 */
 	RECOVERY_SLEEP_TIME("recovery_sleep_time_sec", "10");
 
