@@ -10,7 +10,7 @@ public enum KafkaOpenMetadataEventConsumerProperty {
 	 * size is reached, we will not poll for additional events unless a poll is
 	 * required to prevent Kafka from treating the consumer as dead.
 	 */
-	MAX_QUEUE_SIZE("egeria.kafka.consumer.max.queue.size", "100"),
+	MAX_QUEUE_SIZE("event_bus_max_queue_size", "100"),
 	
 	/**
 	 * In order to ensure that Kafka does not treat our consumer as dead, we need to
@@ -22,18 +22,18 @@ public enum KafkaOpenMetadataEventConsumerProperty {
 	 * 
 	 * The value provided as a number of milliseconds.
 	 */
-	CONSUMER_TIMEOUT_PREVENTION_SAFETY_WINDOW_MS("egeria.kafka.consumer.timeout.prevention.safety.window.ms", "30000"),
+	CONSUMER_TIMEOUT_PREVENTION_SAFETY_WINDOW_MS("timeout_prevention_safety_window_ms", "30000"),
 	
 	/**
 	 * This specifies the poll timeout (in ms) that we provide to kafka when we poll for
 	 * messages.
 	 */
-	POLL_TIMEOUT("egeria.kafka.consumer.poll.timeout.ms", "1000"),
+	POLL_TIMEOUT("poll_timeout_ms", "1000"),
 	
 	/**
 	 * The amount of time to sleep after we encounter a Kafka error, in second
 	 */
-	RECOVERY_SLEEP_TIME("egeria.kafka.consumer.recovery.sleep.time.sec", "10");
+	RECOVERY_SLEEP_TIME("recovery_sleep_time_sec", "10");
 
 	private String propertyName;
 	private String defaultValue;
