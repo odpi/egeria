@@ -243,7 +243,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
         if ((incomingEventsList != null) && (!incomingEventsList.isEmpty()))
         {
-            log.debug("checking for events {0}" + incomingEventsList);
+            log.debug("Checking for events.  Number of found events: {0}", incomingEventsList.size());
             newEvents = new ArrayList<>(incomingEventsList);
 
             // empty incomingEventsList otherwise same events will be sent again
@@ -346,5 +346,14 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         }
 
         return printableProperties;
+    }
+    
+    /**
+     * Gets the number of events that have not been processed yet.
+     * 
+     * @return
+     */
+    public int getNumberOfUnprocessedEvents() {
+    	return incomingEventsList.size();
     }
 }
