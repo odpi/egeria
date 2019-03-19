@@ -154,36 +154,15 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         try
         {
             Object              propertiesObject;
-            Map<String, Object> propertiesMap;
 
             propertiesObject = additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.producerPropertyName);
-            if (propertiesObject != null)
-            {
-                propertiesMap = (Map<String, Object>)propertiesObject;
-                for (Map.Entry<String, Object> entry : propertiesMap.entrySet())
-                {
-                    producerProperties.setProperty(entry.getKey(), (String) entry.getValue());
-                }
-            }
+            copyProperties(propertiesObject, producerProperties);
 
             propertiesObject = additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.consumerPropertyName);
-            if (propertiesObject != null)
-            {
-                propertiesMap = (Map<String, Object>)propertiesObject;
-                for (Map.Entry<String, Object> entry : propertiesMap.entrySet())
-                {
-            		//separate out egeria consumer properties from properties that should
-                	//be forwarded to Kafka
-                	if (entry.getKey().startsWith(actionDescription)) {
-                		consumerEgeriaProperties.setProperty(entry.getKey(), (String)entry.getValue());
-                		
-                	}
-                	else {
-                		consumerProperties.setProperty(entry.getKey(), (String) entry.getValue());
-                
-                	}
-                }
-            }
+            copyProperties(propertiesObject, consumerProperties);
+            
+            propertiesObject = additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.egeriaConsumerPropertyName);
+            copyProperties(propertiesObject, consumerEgeriaProperties);
         }
         catch (Throwable   error)
         {
@@ -198,6 +177,18 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         }
     }
 
+
+	private void copyProperties(Object propertiesObject, Properties target) {
+		Map<String, Object> propertiesMap;
+		if (propertiesObject != null)
+		{
+		    propertiesMap = (Map<String, Object>)propertiesObject;
+		    for (Map.Entry<String, Object> entry : propertiesMap.entrySet())
+		    {
+		        target.setProperty(entry.getKey(), (String) entry.getValue());
+		    }
+		}
+	}
 
     /**
      * Indicates that the connector is completely configured and can begin processing.
