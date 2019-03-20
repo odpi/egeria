@@ -64,7 +64,7 @@ public enum InformationViewAuditCode {
             OMRSAuditLogRecordSeverity.INFO,
             "The Information View Open Metadata Access Service (OMAS) is supporting the following governance zones {0}",
             "The access service was passed a list of governance zones in the SupportedZones property of the access services options.  " +
-                    "This means it is only providing access to the Assets from these zone(s).",
+                    "This means it is only providing access to the Assets from these zone(s) and the new Assets will be visible only for these zone(s)",
             "No action is required.  This is part of the normal operation of the service."),
     BAD_CONFIG("OMAS-INFORMATION-VIEW-0010",
             OMRSAuditLogRecordSeverity.ERROR,
@@ -75,7 +75,7 @@ public enum InformationViewAuditCode {
             OMRSAuditLogRecordSeverity.INFO,
             "The Information View Open Metadata Access Service (OMAS) is supporting all governance zones",
             "The access service has not been passed a list of governance zones in the SupportedZones property of the access services options.  " +
-                    "This means it is providing access to all Assets irrespective of the zone(s) they are located in.",
+                    "This means it is providing access to all Assets irrespective of the zone(s) they are located in and the created Assets can be accessed from any zone",
             "No action is required.  This is part of the normal operation of the service.")
     ;
 
