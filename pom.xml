@@ -73,6 +73,16 @@
             </roles>
             <organization>IBM Corporation</organization>
         </developer>
+        <developer>
+            <id>guy-ackermans</id>
+            <name>Guy Ackermans</name>
+            <email>guy.ackermans92@gmail.com</email>
+            <timezone>Europe/Amsterdam</timezone>
+            <roles>
+                <role>maintainer</role>
+            </roles>
+            <organization>ING</organization>
+        </developer>
     </developers>
 
     <!-- POM packaging means that this module has sub-modules -->
@@ -118,6 +128,7 @@
         <mockito.version>2.23.4</mockito.version>
         <maven-javadoc-plugin.version>3.0.1</maven-javadoc-plugin.version>
         <maven-clean-plugin.version>3.1.0</maven-clean-plugin.version>
+        <derby.version>10.14.2.0</derby.version>
         <surefire.plugin.version>3.0.0-M1</surefire.plugin.version>
         <maven-download.version>1.4.1</maven-download.version>
         <maven-antrun.version>1.8</maven-antrun.version>
