@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.informationview.admin;
 
 
 import org.odpi.openmetadata.accessservices.informationview.auditlog.InformationViewAuditCode;
-import org.odpi.openmetadata.accessservices.informationview.views.ColumnContextBuilder;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 public class InformationViewAdmin implements AccessServiceAdmin {
@@ -82,7 +83,7 @@ public class InformationViewAdmin implements AccessServiceAdmin {
         String outTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceOutTopic());
         informationViewInTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceInTopic());
         informationViewOutTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
-        List<String> supportedZones = new ArrayList<>();
+        List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions());
         OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, supportedZones, auditLog);
 
         EventPublisher eventPublisher = null;
@@ -237,6 +238,79 @@ public class InformationViewAdmin implements AccessServiceAdmin {
 
         }
     }
+
+
+    private List<String> extractSupportedZones(Map<String, Object> accessServiceOptions) throws OMAGConfigurationErrorException
+    {
+        final String           methodName = "extractSupportedZones";
+        InformationViewAuditCode auditCode;
+
+        if (accessServiceOptions == null)
+        {
+            return null;
+        }
+        else
+        {
+            Object   zoneListObject = accessServiceOptions.get(supportedZonesPropertyName);
+
+            if (zoneListObject == null)
+            {
+                auditCode = InformationViewAuditCode.ALL_ZONES;
+                auditLog.logRecord(methodName,
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(),
+                        null,
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction());
+                return null;
+            }
+            else
+            {
+                try
+                {
+                    List<String>  zoneList =  (List<String>)zoneListObject;
+
+                    auditCode = InformationViewAuditCode.SUPPORTED_ZONES;
+                    auditLog.logRecord(methodName,
+                            auditCode.getLogMessageId(),
+                            auditCode.getSeverity(),
+                            auditCode.getFormattedLogMessage(zoneList.toString()),
+                            null,
+                            auditCode.getSystemAction(),
+                            auditCode.getUserAction());
+
+                    return zoneList;
+                }
+                catch (Throwable error)
+                {
+                    auditCode = InformationViewAuditCode.BAD_CONFIG;
+                    auditLog.logRecord(methodName,
+                            auditCode.getLogMessageId(),
+                            auditCode.getSeverity(),
+                            auditCode.getFormattedLogMessage(zoneListObject.toString(), supportedZonesPropertyName),
+                            null,
+                            auditCode.getSystemAction(),
+                            auditCode.getUserAction());
+
+                    InformationViewErrorCode errorCode    = InformationViewErrorCode.BAD_CONFIG;
+                    String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(zoneListObject.toString(),
+                            supportedZonesPropertyName,
+                            error.getClass().getName(),
+                            error.getMessage());
+
+                    throw new OMAGConfigurationErrorException(errorCode.getHttpErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction(),
+                            error);
+                }
+            }
+        }
+    }
+
 
 
     /**
