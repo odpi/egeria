@@ -44,6 +44,8 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
         }
         if (event != null) {
             try {
+                log.info("Started processing DataPlatformEvent");
+               // DataPlatformEventHandlder
             } catch (Exception e) {
                 log.error("Exception processing event from in topic", e);
                 DataPlatformErrorCode auditCode = DataPlatformErrorCode.PROCESS_EVENT_EXCEPTION;
