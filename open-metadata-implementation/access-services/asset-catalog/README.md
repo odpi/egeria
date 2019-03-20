@@ -32,3 +32,10 @@ The module structure for the Asset Catalog OMAS is as follows:
 * [asset-catalog-server](asset-catalog-server) supports in implementation of the access service and its related event management.
 * [asset-catalog-spring](asset-catalog-spring) supports the REST API using the [Spring]__(../../../developer-resources/Spring.md)__ libraries.
 
+###Search solution
+The search will return Assets and Glossary terms that match the search criteria.
+As the asset search is to be performed against on one or more repositories Elasticsearch will be used. 
+The search will be performed using name/displayNamer, descriptions and qualified name of the asset and/or Glossary terms.
+Initial indexing will be performed by the Asset Catalog OMAS according to supported zones of the instance.
+The search result will contain: guid, name (name or displayName), description, qualifiedName, classifications, zoneMembership.
+    
