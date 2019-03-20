@@ -30,16 +30,6 @@ be available through the the open metadata repositories.
 This metadata is returned by the 
 **[Connected Asset OMAS](../../../open-metadata-implementation/access-services/connected-asset/README.md)**.
 
-###Search solution
-The search will return Assets and Glossary terms that match the search criteria.
-As the asset search is to be performed against on one or more repositories Elasticsearch will be used. 
-The search will be performed using name/displayNamer, descriptions and qualified name of the asset and/or Glossary terms.
-Initial indexing will be performed by the **[Asset Catalog OMAS](../../../open-metadata-implementation/access-services/asset-asset/README.md)** according to supported zones of the instance.
-The search result will contain: guid, name (name or displayName), description, qualifiedName, classifications, zoneMembership.
-    
-![Figure 2: Search engine integration](docs/egeria-asset-search.png)
-> Figure 2: Search engine integration
-
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
