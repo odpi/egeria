@@ -59,7 +59,7 @@ spec:
       containers:
       - name: {{ .Chart.Name }}-gaian
         image: "{{ if (.Values.image.gaian.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.gaian.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                {{ if (.Values.image.gaian.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.gaian.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                {{ if (.Values.image.gaian.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.gaian.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                 {{ .Values.image.gaian.name }}\
                 :{{ .Values.image.gaian.tag | default .Values.imageDefaults.tag }}"
         imagePullPolicy: {{ .Values.image.gaian.pullPolicy | default .Values.imageDefaults.pullPolicy }}
