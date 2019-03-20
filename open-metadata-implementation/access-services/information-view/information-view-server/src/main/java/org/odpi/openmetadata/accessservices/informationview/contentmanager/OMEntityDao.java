@@ -86,7 +86,7 @@ public class OMEntityDao {
                                                                                 userName,
                                                                                 typeName);
             entity.setClassifications(classifications);
-            if(zoneRestricted){
+            if(zoneRestricted && supportedZones != null && !supportedZones.isEmpty()){
                 instanceProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, instanceProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "addEntity");
             }
             return enterpriseConnector.getMetadataCollection().addEntity(userName,
@@ -474,7 +474,7 @@ public class OMEntityDao {
     private InstanceProperties buildMatchingInstanceProperties(String key, String value, boolean zoneRestricted) {
         InstanceProperties instanceProperties = new InstanceProperties();
         instanceProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, instanceProperties, key, value, "buildMatchingInstanceProperties");
-        if(zoneRestricted){
+        if(zoneRestricted && supportedZones != null && !supportedZones.isEmpty()){
             instanceProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, instanceProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "buildMatchingInstanceProperties");
         }
 
