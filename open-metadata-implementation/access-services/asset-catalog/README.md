@@ -34,7 +34,7 @@ The module structure for the Asset Catalog OMAS is as follows:
 
 ###Search solution
 The search will return Assets and Glossary terms that match the search criteria.
-As the asset search is to be performed against on one or more repositories Elasticsearch will be used. 
+As the asset search is to be performed against on one or more repositories search engine will be used. 
 The search will be performed using name/displayNamer, descriptions and qualified name of the asset and/or Glossary terms.
 Initial indexing will be performed by the Asset Catalog OMAS according to supported zones of the instance.
 The search result will contain: guid, name (name or displayName), description, qualifiedName, classifications, zoneMembership.
