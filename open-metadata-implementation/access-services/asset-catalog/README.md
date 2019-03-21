@@ -39,3 +39,5 @@ The search will be performed using name/displayNamer, descriptions and qualified
 Initial indexing will be performed by the Asset Catalog OMAS according to supported zones of the instance.
 The search result will contain: guid, name (name or displayName), description, qualifiedName, classifications, zoneMembership.
     
+![Figure 1: Search](docs/egeria-asset-search.png)
+> Figure 1:Integration of search engine
