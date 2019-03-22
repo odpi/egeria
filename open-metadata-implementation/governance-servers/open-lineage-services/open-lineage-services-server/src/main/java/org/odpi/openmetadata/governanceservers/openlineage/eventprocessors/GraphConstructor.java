@@ -50,27 +50,27 @@ public class GraphConstructor {
 
         //TODO Relationships should be obtained from the Asset Lineage Out event instead
 
-        Vertex relationalColumnVertex = addNode(relationalColumn);
-        Vertex databaseVertex = addNode(database);
-        Vertex relationalTableTypeVertex = addNode(relationalTableType);
-        Vertex relationalTableVertex = addNode(relationalTable);
-        Vertex relationalDBSchemaTypeVertex = addNode(relationalDBSchemaType);
-        Vertex deployedDatabaseSchemaVertex = addNode(deployedDatabaseSchema);
+        Vertex relationalColumnVertex = addVertex(relationalColumn);
+        Vertex databaseVertex = addVertex(database);
+        Vertex relationalTableTypeVertex = addVertex(relationalTableType);
+        Vertex relationalTableVertex = addVertex(relationalTable);
+        Vertex relationalDBSchemaTypeVertex = addVertex(relationalDBSchemaType);
+        Vertex deployedDatabaseSchemaVertex = addVertex(deployedDatabaseSchema);
 
         addEdge(DATA_CONTENT_FOR_DATA_SET, databaseVertex, deployedDatabaseSchemaVertex);
         addEdge(ASSET_SCHEMA_TYPE, deployedDatabaseSchemaVertex, relationalDBSchemaTypeVertex);
         addEdge(ATTRIBUTE_FOR_SCHEMA, relationalDBSchemaTypeVertex, relationalTableVertex);
         addEdge(SCHEMA_ATTRIBUTE_TYPE, relationalTableVertex, relationalTableTypeVertex);
         addEdge(ATTRIBUTE_FOR_SCHEMA, relationalTableTypeVertex, relationalColumnVertex);
-
-        //addConnection(connection);
     }
+
+
 
     private void addEdge(String relationship, Vertex v1, Vertex v2) {
         v1.addEdge(relationship, v2);
     }
 
-    private Vertex addNode(Element assetElement) {
+    private Vertex addVertex(Element assetElement) {
         String GUID = assetElement.getGuid();
         String type = assetElement.getType();
         String qualifiedName = assetElement.getQualifiedName();
