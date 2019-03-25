@@ -37,10 +37,12 @@ spec:
             backend:
               servicePort: 21000
               serviceName: {{ include "myapp.fullname" . }}-atlas-service
+{{ if .Values.kafka.internal.enabled }}
           - path: /kafka
             backend:
               servicePort: 9082
               serviceName: {{ include "myapp.fullname" . }}-cp-kafka
+{{ end }}
           - path: /ldap
             backend:
               servicePort: 389

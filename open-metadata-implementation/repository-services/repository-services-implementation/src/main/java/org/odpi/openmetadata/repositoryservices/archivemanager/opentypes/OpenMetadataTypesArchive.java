@@ -10104,7 +10104,67 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addRelationshipDef(getPortWireRelationship());
         this.archiveBuilder.addRelationshipDef(getPortInterfaceRelationship());
         this.archiveBuilder.addRelationshipDef(getAssetWireRelationship());
+        this.archiveBuilder.addRelationshipDef(getParentPortRelationship());
+    }
 
+    /**
+     * The PortInterface relationship describes a nested relationship between two ports.
+     * @return PortInterface RelationshipDef
+     */
+    private RelationshipDef getParentPortRelationship() {
+            /*
+             * Build the relationship
+             */
+            final String guid            = "UzK6vHfH-JC46-vXYi-qKZE-v0bbM58nQGPX";
+            final String name            = "ParentPort";
+            final String description     = "A nested relationship between two ports";
+            final String descriptionGUID = null;
+
+            final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+            RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                    name,
+                    null,
+                    description,
+                    descriptionGUID,
+                    classificationPropagationRule);
+
+            RelationshipEndDef relationshipEndDef;
+
+            /*
+             * Set up end 1.
+             */
+            final String                     end1EntityType               = "Port";
+            final String                     end1AttributeName            = "consumingPort";
+            final String                     end1AttributeDescription     = "Parent Port";
+            final String                     end1AttributeDescriptionGUID = null;
+            final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+            relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                    end1AttributeName,
+                    end1AttributeDescription,
+                    end1AttributeDescriptionGUID,
+                    end1Cardinality);
+            relationshipDef.setEndDef1(relationshipEndDef);
+
+            /*
+             * Set up end 2.
+             */
+            final String                     end2EntityType               = "Port";
+            final String                     end2AttributeName            = "subPort";
+            final String                     end2AttributeDescription     = "Sub Port";
+            final String                     end2AttributeDescriptionGUID = null;
+            final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+            relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                    end2AttributeName,
+                    end2AttributeDescription,
+                    end2AttributeDescriptionGUID,
+                    end2Cardinality);
+            relationshipDef.setEndDef2(relationshipEndDef);
+
+
+            return relationshipDef;
     }
 
     /**
@@ -10153,8 +10213,8 @@ public class OpenMetadataTypesArchive
          * Set up end 2.
          */
         final String                     end2EntityType               = "Port";
-        final String                     end2AttributeName            = "ports";
-        final String                     end2AttributeDescription     = "Ports to the process";
+        final String                     end2AttributeName            = "port";
+        final String                     end2AttributeDescription     = "Port to the process";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
