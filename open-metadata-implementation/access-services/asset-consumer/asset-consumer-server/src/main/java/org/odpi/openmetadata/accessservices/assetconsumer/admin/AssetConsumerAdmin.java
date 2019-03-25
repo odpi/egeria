@@ -62,7 +62,6 @@ public class AssetConsumerAdmin implements AccessServiceAdmin
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
 
-
         try
         {
             this.auditLog = auditLog;

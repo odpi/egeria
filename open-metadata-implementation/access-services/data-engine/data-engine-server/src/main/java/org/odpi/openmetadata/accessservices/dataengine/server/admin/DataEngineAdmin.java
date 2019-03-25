@@ -51,7 +51,7 @@ public class DataEngineAdmin implements AccessServiceAdmin {
                     auditCode.getFormattedLogMessage(serverName), null, auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
-        } catch (Throwable error) {
+        } catch (Exception error) {
             auditCode = DataEngineAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logRecord(actionDescription, auditCode.getLogMessageId(), auditCode.getSeverity(),
                     auditCode.getFormattedLogMessage(error.getMessage()), null,
