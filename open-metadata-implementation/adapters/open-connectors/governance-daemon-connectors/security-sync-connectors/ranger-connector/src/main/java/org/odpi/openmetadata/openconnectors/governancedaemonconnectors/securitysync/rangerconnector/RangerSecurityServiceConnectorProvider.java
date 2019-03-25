@@ -5,7 +5,7 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.security
 import org.odpi.openmetadata.frameworks.connectors.ConnectorProviderBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 
-public class RangerConnectorProvider extends ConnectorProviderBase {
+public class RangerSecurityServiceConnectorProvider extends ConnectorProviderBase {
 
     static final String connectorTypeGUID = "XiFfC6pr-n0er-JWJ8-NGmi-rnZEoJ0c1wlm";
     static final String connectorTypeName = "Ranger Security Server Connector";
@@ -15,8 +15,8 @@ public class RangerConnectorProvider extends ConnectorProviderBase {
      * Constructor used to initialize the ConnectorProviderBase with the Java class name of the specific
      * registry store implementation.
      */
-    public RangerConnectorProvider() {
-        Class connectorClass = RangerConnectorProvider.class;
+    public RangerSecurityServiceConnectorProvider() {
+        Class connectorClass = RangerSecurityServiceConnectorProvider.class;
         super.setConnectorClassName(connectorClass.getName());
 
         ConnectorType connectorType = new ConnectorType();

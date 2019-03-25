@@ -4,7 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices;
 
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.console.ConsoleAuditLogStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerConnectorProvider;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnectorProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.adapters.adminservices.configurationstore.file.FileBasedServerConfigStoreProvider;
@@ -938,7 +938,7 @@ public class ConnectorConfigurationFactory
         connection.setQualifiedName(connectionName);
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
-        connection.setConnectorType(getConnectorType(RangerConnectorProvider.class.getName()));
+        connection.setConnectorType(getConnectorType(RangerSecurityServiceConnectorProvider.class.getName()));
         connection.setAdditionalProperties(additionalProperties);
         return connection;
     }

@@ -4,7 +4,7 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.security
 
 import java.text.MessageFormat;
 
-public enum RangerConnectorAuditCode {
+public enum RangerSecurityServiceConnectorAuditCode {
 
     SERVICE_INITIALIZING("RANGER-CONNECTOR-0001",
             "The Ranger Connector is initializing a new server instance",
@@ -39,8 +39,8 @@ public enum RangerConnectorAuditCode {
      * @param systemAction - description of the action taken by the system when the condition happened
      * @param userAction   - instructions for resolving the situation, if any
      */
-    RangerConnectorAuditCode(String messageId, String message,
-                             String systemAction, String userAction) {
+    RangerSecurityServiceConnectorAuditCode(String messageId, String message,
+                                            String systemAction, String userAction) {
         this.logMessageId = messageId;
         this.logMessage = message;
         this.systemAction = systemAction;

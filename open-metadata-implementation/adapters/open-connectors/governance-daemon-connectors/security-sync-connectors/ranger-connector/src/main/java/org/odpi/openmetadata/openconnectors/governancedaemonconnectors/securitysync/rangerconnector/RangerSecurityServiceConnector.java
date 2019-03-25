@@ -24,12 +24,12 @@ import java.util.*;
 
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.*;
 
-public class RangerConnector extends ConnectorBase implements RangerStore {
+public class RangerSecurityServiceConnector extends ConnectorBase implements SecurityServiceConnector {
 
-    private static final Logger log = LoggerFactory.getLogger(RangerConnector.class);
+    private static final Logger log = LoggerFactory.getLogger(RangerSecurityServiceConnector.class);
     private Connection connection;
 
-    public RangerConnector(Connection securityServerConnection) {
+    public RangerSecurityServiceConnector(Connection securityServerConnection) {
         this.connection = securityServerConnection;
     }
 
