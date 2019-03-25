@@ -59,7 +59,7 @@ spec:
       containers:
         - name: {{ include "myapp.fullname" . }}-omrsmonitor
           image: "{{ if (.Values.image.omrsmonitor.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.omrsmonitor.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.omrsmonitor.repository | default .Values.imageDefaults.repository) }}{{ .Values.image.omrsmonitor.repository | default .Values.imageDefaults.repository }}/{{ end }}\
+                  {{ if (.Values.image.omrsmonitor.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.omrsmonitor.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.omrsmonitor.name }}\
                   :{{ .Values.image.omrsmonitor.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.omrsmonitor.pullPolicy | default .Values.imageDefaults.pullPolicy }}
