@@ -6,7 +6,7 @@ import org.odpi.openmetadata.accessservices.dataengine.exception.UserNotAuthoriz
 import org.odpi.openmetadata.accessservices.dataengine.server.util.DataEngineErrorHandler;
 import org.odpi.openmetadata.accessservices.dataengine.server.util.EntitiesCreatorHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;

@@ -19,7 +19,7 @@ service:
     enabled: false
     iptype: public
     publicip: <undefined>
-  # Currently IBMCloud is the only supported setting, and enabled additional Ingress rules. Comment out for other platforms
+  # Currently IBMCloud is the only supported setting, and enabled additional Ingress rules. Comment out for other platforms.
 
   ingress:
     # Update this with your own domain
@@ -55,15 +55,15 @@ logging:
 
 imageDefaults:
   registry: docker.io
-  repository: planetf1
+  namespace: planetf1
   tag: latest
   pullPolicy: IfNotPresent
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
 # but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
-# these can be individually overridden for each image, if desired, by providing a subkey for 'registry', 'tag' or
+# these can be individually overridden for each image, if desired, by providing a subkey for 'namespace', 'tag' or
 # 'pullPolicy' with the value to use for the override (if you want to use the public Docker registry, use
-# 'docker.io/library' as the registry override).
+# 'docker.io/library' as the registry override, and set namespace to be your user or organization id).
 #
 #  To build from egeria source - (example)
 #  mvn clean install -Ddocker -Ddocker.registry=localhost:5000 -Ddocker.repo=odpi
@@ -72,7 +72,7 @@ image:
     name: ranger-admin-egeriavdc
 
   mariadb:
-    repository: library
+    namespace: library
     name: mariadb
 
   egeria:
@@ -84,11 +84,8 @@ image:
   atlas:
     name: apache-atlas
 
-  kafkamonitor:
-    name: kafka-monitor-egeriavdc
-
   postgresql:
-    repository: library
+    namespace: library
     name: postgres
     tag: alpine
 
@@ -99,7 +96,7 @@ image:
   # the k8s-external, pre-existing environment defined under ibmigc... is used
   ibmigc:
     registry: "localhost:5000"
-    repository: ibm
+    namespace: ibm
     name: infosvr
     tag: v11.7.0.2
 
@@ -118,12 +115,21 @@ localRepo:
 # Whether to use a k8s cluster-internal Kafka or an external one -- if using internal,
 # see 'cp-kafka' below for config options
 kafka:
+  # prefix for all topic names used in Egeria - whether internal or external kafka 
+  # Note that in many cases production kafka will require all topics to be created manually
+  topicroot: egeria
   internal:
     enabled: true
   external:
-    hostname: ""
-    ip: ""
-    port: ""
+    enabled: false
+    # Only 'IBMEventStreams' currently supported
+    provider: none
+    # k8s secret that needs defining externally with 'username' and 'password'
+    # For IBMEventStreams you can also set 'username' to 'token' and set 'password' to <APIKEY>
+    secret: auth-vdc-kafka
+    # Comma seperated list of brokers (typically 5 for event streams)
+    brokers: ""
+
 
 # The demo can use an IBM IGC environment.
 # Set external to "true" to use a pre-existing IBM IGC environment (outside your k8s cluster),
@@ -134,11 +140,12 @@ ibmigc:
   internal:
     enabled: false
   external:
+    enabled: false
     hostname: ""
     ip: ""
     ports:
-      https: ""
-      broker: ""
+      https: "9446"
+      broker: "59092"
 
 # When using the k8s-internal Kafka (from Confluent), enable auto-topic creation
 # (for full options, see: https://github.com/confluentinc/cp-helm-charts/tree/master/charts/cp-kafka)
