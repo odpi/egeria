@@ -8,7 +8,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Governa
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListAPIResponse;
 import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerConnector;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.RangerSecurityServiceConnector;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerServiceResource;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerTag;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.ResourceTagMapper;
@@ -33,12 +33,12 @@ public class GovernanceEventProcessor {
     private static final Logger log = LoggerFactory.getLogger(GovernanceEventProcessor.class);
     private OMRSAuditLog auditLog;
     private SecuritySyncConfig securitySyncConfig;
-    private RangerConnector rangerOpenConnector;
+    private RangerSecurityServiceConnector rangerOpenConnector;
 
     public GovernanceEventProcessor(SecuritySyncConfig securitySyncConfig, OMRSAuditLog auditLog) {
         this.auditLog = auditLog;
         this.securitySyncConfig = securitySyncConfig;
-        rangerOpenConnector = new RangerConnector(securitySyncConfig.getSecurityServerConnection());
+        rangerOpenConnector = new RangerSecurityServiceConnector(securitySyncConfig.getSecurityServerConnection());
     }
 
     public void processExistingGovernedAssetsFromRepository() {

@@ -9,7 +9,7 @@ import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitys
 
 import java.util.List;
 
-public interface RangerStore {
+public interface SecurityServiceConnector {
 
     void importTaggedResources(List<GovernedAsset> governedAssets);
 
