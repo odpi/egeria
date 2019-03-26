@@ -80,4 +80,5 @@ public class Constants {
     public static final String AGGREGATING_FUNCTION = "aggregatingFunction";
     public static final String COMMENT = "comment";
     public static final String PRIMITIVE_SCHEMA_TYPE = "PrimitiveSchemaType";
+    public static final String ZONE_MEMBERSHIP = "zoneMembership";
 }
