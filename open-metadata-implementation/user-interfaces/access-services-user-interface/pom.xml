@@ -164,7 +164,7 @@
                 <!--
                 To skip UI (deactivate this profile) specify the skipUI system property
                 mvn clean install -DskipUI
-		-->
+		        -->
                 <property>
 	            <name>!skipUI</name>
 		</property>
@@ -282,13 +282,13 @@
                 <artifactId>apache-rat-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>**/node/**</exclude>
+                        <exclude>**/tools/**</exclude>
                         <exclude>**/resources/public/**</exclude>
-                        <exclude>**/node_modules/**</exclude>
+                        <!--<exclude>**/node_modules/**</exclude>-->
                         <exclude>**/static/**</exclude>
                         <exclude>**/build/**</exclude>
-                        <exclude>**/src/*</exclude>
-                        <exclude>**/*.json</exclude>
+                        <!--<exclude>**/src/*</exclude>-->
+                        <!--<exclude>**/*.json</exclude>-->
                         <exclude>**/banner.txt</exclude>
                         <exclude>tools/polymer*</exclude>
                     </excludes>

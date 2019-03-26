@@ -30,9 +30,6 @@ be available through the the open metadata repositories.
 This metadata is returned by the 
 **[Connected Asset OMAS](../../../open-metadata-implementation/access-services/connected-asset/README.md)**.
 
-
-
-
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.
