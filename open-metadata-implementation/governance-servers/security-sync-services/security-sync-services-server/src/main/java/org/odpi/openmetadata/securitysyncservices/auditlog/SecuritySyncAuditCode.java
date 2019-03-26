@@ -10,16 +10,26 @@ public enum SecuritySyncAuditCode {
             "The Security Sync is initializing a new server instance",
             "The local server has started up a new instance of the Security Sync.",
             "No action is required.  This is part of the normal operation of the service."),
-
     SERVICE_INITIALIZED("SECURITY-SYNC-0002",
             "The Security Sync has initialized a new instance for server {0}",
             "The Security Sync has completed initialization of a new instance.",
             "No action is required.  This is part of the normal operation of the service."),
-
     SERVICE_SHUTDOWN("SECURITY-SYNC-0003",
             "The Security Sync is shutting down its instance for server {0}",
             "The local server has requested shut down of a Security Sync instance.",
-            "No action is required.  This is part of the normal operation of the service.");
+            "No action is required.  This is part of the normal operation of the service."),
+    CLASSIFIED_GOVERNED_ASSET_INITIAL_LOAD("RANGER-CONNECTOR-0004",
+            "The Ranger Connector exchange the classified governed asset from Open Metadata Repository with configured Security Sync Server",
+            "The Ranger Connector instance synchronize the Ranger Server with the repository for initial loading of existing governed assets",
+            "No action is required.  This is part of the normal flow of the initial load."),
+    CLASSIFIED_GOVERNED_ASSET_EVENT_RECEIVED("RANGER-CONNECTOR-0005",
+            "The Ranger Connector received a new event for classified governed asset",
+            "The Ranger Connector instance should synchronize the Ranger Server instance with the repository.",
+            "No action is required.  This is part of the normal flow."),
+    RE_CLASSIFIED_GOVERNED_ASSET_EVENT_RECEIVED("RANGER-CONNECTOR-0006",
+            "The Ranger Connector received a new event for re-classified governed asset",
+            "The Ranger Connector instance should synchronize the Ranger Server instance with the repository.",
+            "No action is required.  This is part of the normal flow.");
 
     private String logMessageId;
     private String logMessage;
