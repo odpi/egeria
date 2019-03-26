@@ -39,11 +39,9 @@ public class EntitiesCreatorHelper {
      */
     public EntitiesCreatorHelper(String serviceName, OMRSRepositoryHelper repositoryHelper,
                                  OMRSMetadataCollection metadataCollection) {
-
         this.serviceName = serviceName;
         this.repositoryHelper = repositoryHelper;
         this.metadataCollection = metadataCollection;
-
     }
 
     /**
@@ -176,13 +174,12 @@ public class EntitiesCreatorHelper {
         ArrayPropertyValue arrayPropertyValue = new ArrayPropertyValue();
         arrayPropertyValue.setArrayCount(zoneMembership.size());
 
-        for (String zone : zoneMembership) {
+        zoneMembership.forEach(zone -> {
             PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
             primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
             primitivePropertyValue.setPrimitiveValue(zone);
-
             arrayPropertyValue.setArrayValue(zoneMembership.indexOf(zone), primitivePropertyValue);
-        }
+        });
 
         properties.setProperty(ZONE_MEMBERSHIP_PROPERTY_NAME, arrayPropertyValue);
     }

@@ -18,6 +18,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 class PortHandler {
     private static final String PORT_TYPE_NAME = "Port";
     private static final String PORT_INTERFACE_RELATIONSHIP_TYPE_NAME = "PortInterface";
+    private static final String PARENT_PORT_RELATIONSHIP_TYPE_NAME = "ParentPort";
 
     private DataEngineErrorHandler errorHandler;
     private EntitiesCreatorHelper entitiesCreatorHelper;

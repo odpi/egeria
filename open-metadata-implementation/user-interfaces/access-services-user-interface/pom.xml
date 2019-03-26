@@ -290,6 +290,7 @@
                         <!--<exclude>**/src/*</exclude>-->
                         <!--<exclude>**/*.json</exclude>-->
                         <exclude>**/banner.txt</exclude>
+                        <exclude>tools/polymer*</exclude>
                     </excludes>
                 </configuration>
             </plugin>
