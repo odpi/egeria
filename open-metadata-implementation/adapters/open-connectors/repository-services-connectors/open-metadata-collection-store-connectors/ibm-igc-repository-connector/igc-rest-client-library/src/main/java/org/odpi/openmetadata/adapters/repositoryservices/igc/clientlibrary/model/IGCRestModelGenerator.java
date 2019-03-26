@@ -302,6 +302,8 @@ public class IGCRestModelGenerator {
                 fs.append(System.lineSeparator());
                 fs.append("import com.fasterxml.jackson.annotation.JsonIgnoreProperties;");
                 fs.append(System.lineSeparator());
+                fs.append("import javax.annotation.Generated;");
+                fs.append(System.lineSeparator());
 
                 if (!ALIAS_OBJECTS.containsKey(id)) {
                     fs.append("import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;");
@@ -320,6 +322,8 @@ public class IGCRestModelGenerator {
 
                 fs.append(System.lineSeparator());
                 fs.append(getClassHeading(name, id));
+                fs.append("@Generated(\"org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.IGCRestModelGenerator\")");
+                fs.append(System.lineSeparator());
                 fs.append("@JsonIgnoreProperties(ignoreUnknown=true)");
                 fs.append(System.lineSeparator());
 
