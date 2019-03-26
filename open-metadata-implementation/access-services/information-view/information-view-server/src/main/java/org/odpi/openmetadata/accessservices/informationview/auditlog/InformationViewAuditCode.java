@@ -59,7 +59,24 @@ public enum InformationViewAuditCode {
             OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the connection to topic {0} in the Information View Open Metadata Access Service (OMAS) instance for server {1} ",
             "The connection to information view topic could not be initialized.",
-            "Review the exception and resolve the configuration. ")
+            "Review the exception and resolve the configuration. "),
+    SUPPORTED_ZONES("OMAS-INFORMATION-VIEW-0009",
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Information View Open Metadata Access Service (OMAS) is supporting the following governance zones {0}",
+            "The access service was passed a list of governance zones in the SupportedZones property of the access services options.  " +
+                    "This means it is only providing access to the Assets from these zone(s) and the new Assets will be visible only for these zone(s)",
+            "No action is required.  This is part of the normal operation of the service."),
+    BAD_CONFIG("OMAS-INFORMATION-VIEW-0010",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Information View Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property",
+            "The access service has not been passed valid configuration.",
+            "Correct the configuration and restart the service."),
+    ALL_ZONES("OMAS-INFORMATION-VIEW-0011",
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Information View Open Metadata Access Service (OMAS) is supporting all governance zones",
+            "The access service has not been passed a list of governance zones in the SupportedZones property of the access services options.  " +
+                    "This means it is providing access to all Assets irrespective of the zone(s) they are located in and the created Assets can be accessed from any zone",
+            "No action is required.  This is part of the normal operation of the service.")
     ;
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewAuditCode.class);

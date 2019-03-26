@@ -7,7 +7,6 @@ import org.odpi.openmetadata.accessservices.informationview.events.*;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
-import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -129,14 +128,14 @@ public abstract class ReportBasicOperation extends BasicOperation{
                 .build();
         EntityDetail sectionEntity = omEntityDao.addEntity(Constants.DOCUMENT_SCHEMA_ATTRIBUTE,
                                                                     qualifiedNameForSection,
-                                                                    sectionProperties);
+                                                                    sectionProperties,
+                                                        false);
 
 
         omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
                                             parentGuid,
                                             sectionEntity.getGUID(),
-                                            Constants.INFORMATION_VIEW_OMAS_NAME,
-                                            new InstanceProperties());
+                new InstanceProperties());
 
         String qualifiedNameForSectionType = buildQualifiedNameForSchemaType(qualifiedNameForParent, Constants.DOCUMENT_SCHEMA_TYPE, reportSection);
         return addSchemaType(qualifiedNameForSectionType, sectionEntity, Constants.DOCUMENT_SCHEMA_TYPE);
@@ -171,13 +170,13 @@ public abstract class ReportBasicOperation extends BasicOperation{
                 .withStringProperty(Constants.FORMULA, reportColumn.getFormula())
                 .build();
         EntityDetail derivedColumnEntity = omEntityDao.addEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE,
-                qualifiedNameForColumn,
-                columnProperties);
+                                                                qualifiedNameForColumn,
+                                                                columnProperties,
+                                                    false);
 
         omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
                 parentGuid,
                 derivedColumnEntity.getGUID(),
-                Constants.INFORMATION_VIEW_OMAS_NAME,
                 new InstanceProperties());
 
         addBusinessTerm(reportColumn, derivedColumnEntity);
@@ -220,12 +219,12 @@ public abstract class ReportBasicOperation extends BasicOperation{
 
         EntityDetail schemaTypeEntity = omEntityDao.addEntity(schemaAttributeTypeName,
                                                                         qualifiedNameForType,
-                                                                        typeProperties);
+                                                                        typeProperties,
+                                                                        false);
 
         omEntityDao.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
                                             schemaAttributeEntity.getGUID(),
                                             schemaTypeEntity.getGUID(),
-                                            Constants.INFORMATION_VIEW_OMAS_NAME,
                                             new InstanceProperties());
         return schemaTypeEntity;
     }
@@ -251,8 +250,7 @@ public abstract class ReportBasicOperation extends BasicOperation{
                 omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
                                             derivedColumnEntity.getGUID(),
                                             businessTermGuid,
-                                            Constants.INFORMATION_VIEW_OMAS_NAME,
-                                            new InstanceProperties());
+                        new InstanceProperties());
             }
     }
 
@@ -284,7 +282,6 @@ public abstract class ReportBasicOperation extends BasicOperation{
                 omEntityDao.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
                                                     derivedColumnEntity.getGUID(),
                                                     sourceColumnGUID,
-                                                    Constants.INFORMATION_VIEW_OMAS_NAME,
                                                     schemaQueryImplProperties);
 
             } else {
@@ -319,13 +316,13 @@ public abstract class ReportBasicOperation extends BasicOperation{
         complexSchemaTypeEntity = omEntityDao.addEntity(Constants.COMPLEX_SCHEMA_TYPE,
                                                                   qualifiedNameForComplexSchemaType,
                                                                   complexSchemaTypeProperties,
-                                                       null);
+                                                       null,
+                                                    false);
 
         omEntityDao.addRelationship(Constants.ASSET_SCHEMA_TYPE,
                                                 reportEntity.getGUID(),
                                                 complexSchemaTypeEntity.getGUID(),
-                                                Constants.INFORMATION_VIEW_OMAS_NAME,
-                                                new InstanceProperties());
+                new InstanceProperties());
         return complexSchemaTypeEntity;
     }
 
