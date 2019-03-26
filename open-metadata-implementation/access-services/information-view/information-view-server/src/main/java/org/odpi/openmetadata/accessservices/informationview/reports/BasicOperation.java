@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.informationview.reports;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -63,12 +62,12 @@ public abstract class BasicOperation {
                                                                                TypeDefNotKnownException {
         EntityDetail schemaTypeEntity = omEntityDao.addEntity(schemaAttributeTypeName,
                 qualifiedNameForSchemaType,
-                schemaAttributeTypeProperties);
+                schemaAttributeTypeProperties,
+                false);
 
         omEntityDao.addRelationship(schemaTypeRelationshipName,
                 schemaAttributeGuid,
                 schemaTypeEntity.getGUID(),
-                Constants.INFORMATION_VIEW_OMAS_NAME,
                 new InstanceProperties());
         return schemaTypeEntity;
     }
