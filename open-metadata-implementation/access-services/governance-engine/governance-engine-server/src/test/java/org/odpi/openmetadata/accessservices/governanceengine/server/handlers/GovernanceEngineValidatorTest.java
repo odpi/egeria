@@ -18,47 +18,36 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernanceEngineValidator.validateGUID;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernanceEngineValidator.validateUserId;
 
 @SuiteDisplayName("Governance Engine Server GovernanceEngineValidator")
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
-
-
 public class GovernanceEngineValidatorTest {
 
+    private static final String defMethodName = "GovernanceEngineValidatorTest()";
+    private static final String emptyString = "";
+    private static final String defUserId = "ernie46";
+    private static final String defParameterName = "parm1";
+    
+    @InjectMocks
+    GovernanceEngineValidator validator;
     @Mock
     private OMRSRepositoryConnector omrsRepositoryConnector; // simple mock - we just need this to exist for our test class
     private Throwable thrown;
-    static final String defMethodName = "GovernanceEngineValidatorTest()";
-    static final String emptyString = "";
-    static final String defUserId = "ernie46";
-    static final String defParameterName = "parm1";
-    static final List<String> singleword = Arrays.asList("one");
-    static final List<String> multiword = Arrays.asList("one", "two", "three");
-    static final List<String> wordsonebad = Arrays.asList("one", null, "three");
-    static final List<String> emptyword = Arrays.asList("");
-
-    @InjectMocks
-    GovernanceEngineValidator validator;
-
 
     @Test
     @DisplayName("validateUserId - check null handled")
     void validateUserIdNull() {
-        thrown = assertThrows(InvalidParameterException.class, () ->
-        {
-            validator.validateUserId(null, defMethodName);
-        });
+        thrown = assertThrows(InvalidParameterException.class, () -> validateUserId(null, defMethodName));
         assertTrue(thrown.getMessage().contains("OMAS-GOVERNANCEENGINE-400-003"));
     }
 
     @Test
     @DisplayName("validateUserId - check empty string handled")
     void validateUserIdEmpty() {
-        thrown = assertThrows(InvalidParameterException.class, () ->
-        {
-            validator.validateUserId(emptyString, defMethodName);
-        });
+        thrown = assertThrows(InvalidParameterException.class, () -> validateUserId(emptyString, defMethodName));
         assertTrue(thrown.getMessage().contains("OMAS-GOVERNANCEENGINE-400-003"));
     }
 
@@ -66,29 +55,15 @@ public class GovernanceEngineValidatorTest {
     @DisplayName("validateUserId - check good userid passes")
     void validateUserIdGood() {
         try {
-            validator.validateUserId(defUserId, defMethodName);
+            validateUserId(defUserId, defMethodName);
         } catch (InvalidParameterException e) {
         }
-        ;
     }
 
     @Test
     @DisplayName("validateGuid - check null handled")
     void validateGuidNull() {
-        thrown = assertThrows(InvalidParameterException.class, () ->
-        {
-            validator.validateGUID(null, defParameterName, defMethodName);
-        });
-        assertTrue(thrown.getMessage().contains("OMAS-GOVERNANCEENGINE-400-004"));
-    }
-
-    @Test
-    @DisplayName("validateGuidId - check empty string handled")
-    void validateGuidEmpty() {
-        thrown = assertThrows(InvalidParameterException.class, () ->
-        {
-            validator.validateGUID(emptyString, defParameterName, defMethodName);
-        });
+        thrown = assertThrows(InvalidParameterException.class, () -> validateGUID(null, defParameterName, defMethodName));
         assertTrue(thrown.getMessage().contains("OMAS-GOVERNANCEENGINE-400-004"));
     }
 
@@ -96,10 +71,9 @@ public class GovernanceEngineValidatorTest {
     @DisplayName("validateGuid - check good guid passes")
     void validateGuidGood() {
         try {
-            validator.validateGUID(defUserId, defParameterName, defMethodName);
+            validateGUID(defUserId, defParameterName, defMethodName);
         } catch (InvalidParameterException e) {
         }
-        ;
     }
 
 
@@ -107,100 +81,9 @@ public class GovernanceEngineValidatorTest {
     @DisplayName("validateAssetType - check null handled")
     void validateAssetTypeNull() {
         try {
-            validator.validateGUID(null, defParameterName, defMethodName);
+            validateGUID(null, defParameterName, defMethodName);
         } catch (InvalidParameterException e) {
         }
-        ;
-    }
-
-    @Test
-    @DisplayName("validateAssetType - check null in multi values")
-    void validateAssetTypeOneNull() {
-        try {
-            validator.validateType(wordsonebad, defParameterName, defMethodName);
-        } catch (InvalidParameterException e) {
-        }
-        ;
-    }
-
-    @Test
-    @DisplayName("validateAssetType - check empty string handled")
-    void validateAssetTypeEmpty() {
-        try {
-            validator.validateType(emptyword, defParameterName, defMethodName);
-        } catch (InvalidParameterException e) {
-        }
-        ;
-    }
-
-    @Test
-    @DisplayName("validateAssetType - check single good value passes")
-    void validateAssetTypeGoodSingle() {
-        try {
-            validator.validateType(singleword, defParameterName, defMethodName);
-        } catch (InvalidParameterException e) {
-        }
-        ;
-    }
-
-    @Test
-    @DisplayName("validateAssetType - check multi good value passes")
-    void validateAssetTypeGoodMulti() {
-        try {
-            validator.validateType(multiword, defParameterName, defMethodName);
-        } catch (InvalidParameterException e) {
-        }
-        ;
-    }
-
-    @Test
-    @DisplayName("validateClassification - check null handled")
-    void validateClassificationNull() {
-        try {
-            validator.validateClassification(null, defParameterName, defMethodName);
-        } catch (InvalidParameterException e) {
-        }
-        ;
-    }
-
-    @Test
-    @DisplayName("validateClassification - check null in multi values")
-    void validateClassificationOneNull() {
-        try {
-            validator.validateClassification(wordsonebad, defParameterName, defMethodName);
-        } catch (InvalidParameterException e) {
-        }
-        ;
-    }
-
-    @Test
-    @DisplayName("validateClassification - check empty string handled")
-    void validateClassificationEmpty() {
-        try {
-            validator.validateClassification(emptyword, defParameterName, defMethodName);
-        } catch (InvalidParameterException e) {
-        }
-        ;
-    }
-
-    @Test
-    @DisplayName("validateClassification - check single good value passes")
-    void validateClassificationGoodSingle() {
-        try {
-            validator.validateType(singleword, defParameterName, defMethodName);
-        } catch (InvalidParameterException e) {
-        }
-        ;
-    }
-
-    @Test
-    @DisplayName("validateClassification - check multi good value passes")
-    void validateClassificationGoodMulti() {
-        try {
-            validator.validateClassification(multiword, defParameterName, defMethodName);
-        } catch (InvalidParameterException e) {
-        }
-        ;
     }
 
 }

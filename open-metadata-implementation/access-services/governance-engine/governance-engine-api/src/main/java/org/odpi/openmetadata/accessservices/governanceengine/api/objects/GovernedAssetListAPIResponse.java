@@ -11,7 +11,6 @@ import java.util.List;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
-
 /**
  * TagMapResponse is the response structure used on the Governance Engine OMAS REST API calls that returns a
  * TagMap object as a response.
@@ -28,7 +27,6 @@ public class GovernedAssetListAPIResponse extends GovernanceEngineOMASAPIRespons
      */
     public GovernedAssetListAPIResponse() {
     }
-
 
     /**
      * Return the Connection object.
@@ -47,7 +45,5 @@ public class GovernedAssetListAPIResponse extends GovernanceEngineOMASAPIRespons
     public void setGovernedAssetList(List<GovernedAsset> assetList) {
         this.assetList = assetList;
     }
-
-
 
 }
