@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.utils;
 
 import org.springframework.util.StringUtils;
@@ -23,7 +25,7 @@ public class QualifiedNameUtils {
     public static String buildQualifiedNameForInformationView(String hostAddress, String databaseName, String schemaName){
         String endpointQualifiedName = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER, hostAddress);
         String databaseQualifiedName = QualifiedNameUtils.buildQualifiedName(endpointQualifiedName, Constants.DATA_STORE, databaseName);
-        return QualifiedNameUtils.buildQualifiedName(databaseQualifiedName, Constants.INFORMATION_VIEW, schemaName);
+        return QualifiedNameUtils.buildQualifiedName(databaseQualifiedName, Constants.DATA_PLATFORM, schemaName);
     }
 
 
@@ -39,11 +41,10 @@ public class QualifiedNameUtils {
         if(!StringUtils.isEmpty(hostAddress)){
             endpointQualifiedName = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER, hostAddress);
         }
-        String informationViewQualifiedName = QualifiedNameUtils.buildQualifiedName(endpointQualifiedName, Constants.INFORMATION_VIEW, informationViewId);
+        String informationViewQualifiedName = QualifiedNameUtils.buildQualifiedName(endpointQualifiedName, Constants.DATA_PLATFORM, informationViewId);
         return QualifiedNameUtils.buildQualifiedName(informationViewQualifiedName, Constants.DERIVED_SCHEMA_ATTRIBUTE, columnName);
 
     }
-
 
 
 }

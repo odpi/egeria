@@ -1,5 +1,6 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.contentmanager;
-
 
 import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
@@ -393,8 +394,7 @@ public class OMEntityDao {
                 log.info("Updating entity with qualified name {} ", qualifiedName);
                 entityDetail = updateEntity(entityDetail, Constants.USER_ID, properties);
                 wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.UPDATED);
-            }
-            else{
+            } else{
                 wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.EXISTING);
             }
 
