@@ -30,6 +30,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     (Sourced from attribute description within Asset - model 0010)</li>
  *     <li>owner - name of the person or organization that owns the asset.
  *     (Sourced from attribute owner within Asset - model 0010)</li>
+ *     <li>ownerType - type of the person or organization that owns the asset.
+ *     (Sourced from attribute ownerType within Asset - model 0010)</li>
  *     <li>zoneMembership - name of the person or organization that owns the asset.
  *     (Sourced from attribute zoneMembership within Asset - model 0010)</li>
  *     <li>classifications - list of classifications assigned to the asset</li>
@@ -46,6 +48,7 @@ public class Asset extends Referenceable
     protected String             shortDescription   = null;
     protected String             description        = null;
     protected String             owner              = null;
+    protected OwnerType          ownerType          = null;
     protected List<String>       zoneMembership     = null;
 
 
@@ -72,6 +75,7 @@ public class Asset extends Referenceable
             shortDescription = templateAsset.getShortDescription();
             description = templateAsset.getDescription();
             owner = templateAsset.getOwner();
+            ownerType = templateAsset.getOwnerType();
             zoneMembership = templateAsset.getZoneMembership();
         }
     }
@@ -144,6 +148,7 @@ public class Asset extends Referenceable
         this.description = description;
     }
 
+
     /**
      * Returns the name of the owner for this asset.
      *
@@ -162,6 +167,28 @@ public class Asset extends Referenceable
     public void setOwner(String owner)
     {
         this.owner = owner;
+    }
+
+
+    /**
+     * Return the type of owner stored in the owner property.
+     *
+     * @return OwnerType enum
+     */
+    public OwnerType getOwnerType()
+    {
+        return ownerType;
+    }
+
+
+    /**
+     * Set up the owner type for this asset.
+     *
+     * @param ownerType OwnerType enum
+     */
+    public void setOwnerType(OwnerType ownerType)
+    {
+        this.ownerType = ownerType;
     }
 
 
@@ -212,6 +239,7 @@ public class Asset extends Referenceable
                 ", shortDescription='" + shortDescription + '\'' +
                 ", description='" + description + '\'' +
                 ", owner='" + owner + '\'' +
+                ", ownerType='" + ownerType + '\'' +
                 ", zoneMembership=" + zoneMembership +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
@@ -251,8 +279,10 @@ public class Asset extends Referenceable
                 Objects.equals(getShortDescription(), asset.getShortDescription()) &&
                 Objects.equals(getDescription(), asset.getDescription()) &&
                 Objects.equals(getOwner(), asset.getOwner()) &&
+                Objects.equals(getOwnerType(), asset.getOwnerType()) &&
                 Objects.equals(getZoneMembership(), asset.getZoneMembership());
     }
+
 
 
     /**
@@ -264,6 +294,6 @@ public class Asset extends Referenceable
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), getDisplayName(), getShortDescription(), getDescription(), getOwner(),
-                            getZoneMembership());
+                            getOwnerType(), getZoneMembership());
     }
 }

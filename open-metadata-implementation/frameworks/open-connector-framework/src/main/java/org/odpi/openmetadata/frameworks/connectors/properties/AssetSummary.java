@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -168,6 +169,17 @@ public class AssetSummary extends AssetDescriptor
     public String getOwner()
     {
         return assetBean.getOwner();
+    }
+
+
+    /**
+     * Return the type of owner stored in the owner property.
+     *
+     * @return OwnerType enum
+     */
+    public OwnerType getOwnerType()
+    {
+        return assetBean.getOwnerType();
     }
 
 
