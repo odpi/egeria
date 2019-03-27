@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.apache.kafka.clients.consumer;
 
 import java.util.Properties;
