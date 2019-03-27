@@ -1,4 +1,6 @@
-package org.odpi.openmetadata.accessservices.dataplatform.assets.datavirtualization;
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.accessservices.dataplatform.views.beans;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
