@@ -11,47 +11,19 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Governe
 import org.odpi.openmetadata.accessservices.governanceengine.server.processor.ContextBuilder;
 import org.odpi.openmetadata.accessservices.governanceengine.server.util.PropertyUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.CONFIDENCE;
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.CONFIDENTIALITY;
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.CRITICALITY;
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.DISPLAY_NAME;
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.GLOSSARY_TERM;
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.QUALIFIED_NAME;
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_COLUMN;
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_TABLE;
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RETENTION;
+import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.*;
 
 /**
  * ConnectionHandler retrieves Connection objects from the property handlers.  It runs handlers-side in the AssetConsumer
@@ -107,10 +79,7 @@ public class GovernedAssetHandler {
                                                  List<String> classification,
                                                  List<String> type) throws InvalidParameterException, EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException {
         final String methodName = "getGovernedAssets";
-        final String classificationParameter = "classification";
-
         GovernanceEngineValidator.validateUserId(userId, methodName);
-        GovernanceEngineValidator.validateClassification(classification, classificationParameter, methodName);
 
         if (classification == null) {
             List<String> classificationTypeDef = getClassificationsDef(userId);
@@ -150,13 +119,13 @@ public class GovernedAssetHandler {
 
         try {
             EntityDetail entityDetail = getEntityDetailById(userId, assetGuid);
-            if(entityDetail == null){
+            if (entityDetail == null) {
                 return null;
             }
             GovernedAsset governedAsset = getGovernedAsset(entityDetail);
 
-            if(entityDetail.getClassifications() != null && !entityDetail.getClassifications().isEmpty()){
-                List<GovernanceClassification> governanceClassifications =  getGovernanceClassifications(entityDetail.getClassifications());
+            if (entityDetail.getClassifications() != null && !entityDetail.getClassifications().isEmpty()) {
+                List<GovernanceClassification> governanceClassifications = getGovernanceClassifications(entityDetail.getClassifications());
                 governedAsset.setAssignedGovernanceClassifications(governanceClassifications);
             }
             return governedAsset;
@@ -182,11 +151,11 @@ public class GovernedAssetHandler {
     }
 
     public List<GovernanceClassification> getGovernanceClassifications(List<Classification> allClassifications) {
-        List<Classification> governedClassifications = filterGovernedClassifications(allClassifications);
+        List<Classification> classificationList = filterGovernedClassifications(allClassifications);
 
-        List<GovernanceClassification> classifications = new ArrayList<>(governedClassifications.size());
+        List<GovernanceClassification> classifications = new ArrayList<>(classificationList.size());
 
-        for (Classification classification : governedClassifications) {
+        for (Classification classification : classificationList) {
             classifications.add(getGovernanceClassification(classification));
         }
         return classifications;
@@ -351,7 +320,7 @@ public class GovernedAssetHandler {
         governedAsset.setGuid(entity.getGUID());
         governedAsset.setType(entity.getType().getTypeDefName());
         governedAsset.setFullQualifiedName(getResourceValue(entity, QUALIFIED_NAME));
-        log.info("Qualified name: " + getResourceValue(entity, QUALIFIED_NAME));
+        log.info("Qualified name: {}", getResourceValue(entity, QUALIFIED_NAME));
 
         governedAsset.setName(getResourceValue(entity, DISPLAY_NAME));
         governedAsset.setContexts(buildDatabaseContext(entity));

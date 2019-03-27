@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 
 /**
  * GovernanceEngineServicesInstance caches references to OMRS objects for a specific server.
@@ -36,7 +37,7 @@ public class GovernanceEngineServicesInstance {
                 this.metadataCollection = repositoryConnector.getMetadataCollection();
 
                 GovernanceEngineServicesInstanceMap.setNewInstanceForJVM(serverName, this);
-            } catch (Throwable error) {
+            } catch (RepositoryErrorException error) {
                 GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.OMRS_NOT_INITIALIZED;
                 String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
 
@@ -93,7 +94,7 @@ public class GovernanceEngineServicesInstance {
      *
      * @return String name
      */
-    public String getAccessServiceName() {
+    String getAccessServiceName() {
         return myDescription.getAccessServiceName();
     }
 
@@ -104,7 +105,7 @@ public class GovernanceEngineServicesInstance {
      * @return OMRSMetadataCollection object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public OMRSMetadataCollection getMetadataCollection() throws PropertyServerException {
+    OMRSMetadataCollection getMetadataCollection() throws PropertyServerException {
         final String methodName = "getMetadataCollection";
 
         if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive())) {
@@ -129,7 +130,7 @@ public class GovernanceEngineServicesInstance {
      * @return OMRSRepositoryConnector object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public OMRSRepositoryConnector getRepositoryConnector() throws PropertyServerException {
+    OMRSRepositoryConnector getRepositoryConnector() throws PropertyServerException {
         final String methodName = "getRepositoryConnector";
 
         if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive())) {
