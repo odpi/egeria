@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.testng.annotations.Test;
 
 import java.util.*;
@@ -57,6 +58,7 @@ public class TestAssetSummary
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setDisplayName("TestDisplayName");
         testObject.setOwner("TestOwner");
+        testObject.setOwnerType(OwnerType.PROFILE_ID);
         testObject.setShortDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
@@ -108,6 +110,7 @@ public class TestAssetSummary
         testObject.setQualifiedName("TestDifferentQualifiedName");
         testObject.setDisplayName("TestDisplayName");
         testObject.setOwner("TestOwner");
+        testObject.setOwnerType(OwnerType.PROFILE_ID);
         testObject.setShortDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
@@ -133,6 +136,7 @@ public class TestAssetSummary
         assertTrue(resultObject.getDescription().equals("TestDescription"));
         assertTrue(resultObject.getShortDescription().equals("TestShortDescription"));
         assertTrue(resultObject.getOwner().equals("TestOwner"));
+        assertTrue(resultObject.getOwnerType() == OwnerType.PROFILE_ID);
         assertTrue(resultObject.getZoneMembership() != null);
         assertTrue(resultObject.getExtendedProperties() == null);
         assertTrue(resultObject.getAdditionalProperties() == null);
@@ -156,6 +160,7 @@ public class TestAssetSummary
         assertTrue(nullObject.getDescription() == null);
         assertTrue(nullObject.getShortDescription() == null);
         assertTrue(nullObject.getOwner() == null);
+        assertTrue(nullObject.getOwnerType() == null);
         assertTrue(nullObject.getExtendedProperties() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
     }
