@@ -321,6 +321,7 @@
                         <exclude>**/dependency-reduced-pom.xml</exclude>
                         <exclude>**/.classpath</exclude>
                         <exclude>**/.project</exclude>
+                        <exclude>**/.settings/**</exclude>
                     </excludes>
                     <licenseFamilies>
                         <licenseFamily implementation="org.apache.rat.license.SimpleLicenseFamily">
