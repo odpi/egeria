@@ -8476,7 +8476,7 @@ public class OpenMetadataTypesArchive
         final String description     = "A packaged and deployed software component supporting a well-defined function.";
         final String descriptionGUID = null;
 
-        final String superTypeName = "Referenceable";
+        final String superTypeName = "Process";
 
         return archiveHelper.getDefaultEntityDef(guid,
                                                  name,
