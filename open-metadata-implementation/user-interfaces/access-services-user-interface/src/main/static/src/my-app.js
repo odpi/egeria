@@ -47,6 +47,8 @@ class MyApp extends PolymerElement {
           display: block;
         }
         
+        
+        
         app-drawer-layout:not([narrow]) [drawer-toggle] {
           display: none;
         }
@@ -89,7 +91,7 @@ class MyApp extends PolymerElement {
             <login-view id="loginView" token="{{token}}"></login-view>
         </template>
       
-        <template id="v" is="dom-if" if="[[token]]"  restamp="true">
+        <template is="dom-if" if="[[token]]"  restamp="true">
             <app-drawer-layout fullbleed="" narrow="{{narrow}}">
             <!-- Drawer content -->
             <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
@@ -109,7 +111,7 @@ class MyApp extends PolymerElement {
                     <app-toolbar>
                       <paper-icon-button icon="my-icons:menu" drawer-toggle=""></paper-icon-button>
                       <div main-title="">Asset Catalog search</div>
-                      <user-options></user-options>
+                      <user-options token="[[token]]"></user-options>
                     </app-toolbar>
                   </app-header>
         
@@ -144,6 +146,11 @@ class MyApp extends PolymerElement {
             pages: {
                 type: Array,
                 value: ['search', 'data', 'view2', 'view3']
+            },
+            feedback: {
+                type: Object,
+                notify: true,
+                observer: '_feedbackChanged'
             }
         };
     }
@@ -158,6 +165,7 @@ class MyApp extends PolymerElement {
         super.ready();
         this.addEventListener('logout', this._onLogout);
         this.addEventListener('open-page', this._onPageChanged);
+        this.addEventListener('show-feedback', this._onFeedbackChanged);
     }
 
     _routePageChanged(page) {
@@ -179,6 +187,11 @@ class MyApp extends PolymerElement {
             this.$.drawer.close();
 
         }
+    }
+
+    _onPageChanged(event) {
+        this.page = event.model.item.page;
+        console.log("_onPageChanged... " + this.page);
     }
 
     _onPageChanged(event) {

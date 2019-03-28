@@ -359,7 +359,7 @@ public class AssetCatalogEntityResource {
      * @return list of properties used to narrow the search
      */
     @RequestMapping(method = RequestMethod.POST,
-            path = "/find-asset/{searchCriteria}",
+            path = "/search/{searchCriteria}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public AssetResponse searchAssetsFirstLevel(@PathVariable("serverName") String serverName,
                                         @PathVariable("userId") String userId,

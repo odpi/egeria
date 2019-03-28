@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetcatalog;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.PropertyServerException;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
 
@@ -220,7 +221,7 @@ public interface AssetCatalogInterface {
     RelationshipsResponse searchForRelationships(String userId, String relationshipTypeId, String criteria) throws PropertyServerException, InvalidParameterException;
 
     /**
-     * Return a list of assets (details and connections) matching the search criteria
+     * Return a list of assets matching the search criteria
      *
      * @param userId         the unique identifier for the user
      * @param searchCriteria a string expression of the characteristics of the required assets
@@ -228,5 +229,5 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    AssetDescriptionResponse searchAssets(String userId, String searchCriteria) throws PropertyServerException, InvalidParameterException;
+    AssetResponse searchForAssets(String userId, String searchCriteria) throws PropertyServerException, InvalidParameterException;
 }
