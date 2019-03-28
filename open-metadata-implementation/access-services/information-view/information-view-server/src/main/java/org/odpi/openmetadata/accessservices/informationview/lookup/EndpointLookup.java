@@ -43,6 +43,8 @@ public class EndpointLookup extends EntityLookup<Source> {
         if(!StringUtils.isEmpty(source.getProtocol())){
             matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties, Constants.PROTOCOL, source.getProtocol(), "findEndpoint");
         }
+        //matchProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "addEntity");
+
         return matchProperties;
     }
 

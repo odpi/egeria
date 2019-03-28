@@ -15,10 +15,11 @@ import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.discoveryengine.admin.DiscoveryEngineOperationalServices;
+import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
-import org.odpi.openmetadata.securitysyncservices.configuration.registration.SecuritySyncOperationalServices;
+import org.odpi.openmetadata.securitysyncservices.registration.SecuritySyncOperationalServices;
 import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 
 import java.util.ArrayList;
@@ -140,6 +141,7 @@ public class OMAGServerOperationalServices
             RepositoryServicesConfig  repositoryServicesConfig  = configuration.getRepositoryServicesConfig();
             List<AccessServiceConfig> accessServiceConfigList   = configuration.getAccessServicesConfig();
             DiscoveryEngineConfig     discoveryEngineConfig     = configuration.getDiscoveryEngineConfig();
+            OpenLineageConfig         openLineageConfig         = configuration.getOpenLineageConfig();
             SecuritySyncConfig        securitySyncConfig        = configuration.getSecuritySyncConfig();
             StewardshipServicesConfig stewardshipServicesConfig = configuration.getStewardshipServicesConfig();
             VirtualizationConfig      virtualizationConfig      = configuration.getVirtualizationConfig();
@@ -147,6 +149,7 @@ public class OMAGServerOperationalServices
             if ((repositoryServicesConfig == null) &&
                 (accessServiceConfigList == null) &&
                 (discoveryEngineConfig == null) &&
+                (openLineageConfig == null) &&
                 (securitySyncConfig == null) &&
                 (stewardshipServicesConfig == null) &&
                 (virtualizationConfig == null))
@@ -332,6 +335,27 @@ public class OMAGServerOperationalServices
             }
 
             /*
+             * Initialize the Open Lineage Services.  This is a governance daemon for the storage and querying of asset lineage.
+             */
+            if (openLineageConfig != null)
+            {
+                OpenLineageOperationalServices openLineageOperationalServices = new OpenLineageOperationalServices(configuration.getLocalServerName(),
+                        configuration.getLocalServerType(),
+                        configuration.getOrganizationName(),
+                        configuration.getLocalServerUserId(),
+                        configuration.getLocalServerURL(),
+                        configuration.getMaxPageSize());
+                instance.setOpenLineageOperationalServices(openLineageOperationalServices);
+                openLineageOperationalServices.initialize(openLineageConfig,
+                        operationalRepositoryServices.getAuditLog(GovernanceServersDescription.OPEN_LINEAGE_SERVICES.getServiceCode(),
+                                GovernanceServersDescription.OPEN_LINEAGE_SERVICES.getServiceName(),
+                                GovernanceServersDescription.OPEN_LINEAGE_SERVICES.getServiceDescription(),
+                                GovernanceServersDescription.OPEN_LINEAGE_SERVICES.getServiceWiki()));
+
+                activatedServiceList.add(GovernanceServersDescription.OPEN_LINEAGE_SERVICES.getServiceName());
+            }
+
+            /*
              * Initialize the Security Sync Services.  This is a governance daemon for maintaining the configuration
              * in security oriented governance engines.
              */
@@ -352,6 +376,8 @@ public class OMAGServerOperationalServices
 
                 activatedServiceList.add(GovernanceServersDescription.SECURITY_SYNC_SERVICES.getServiceName());
             }
+
+
 
 
             /*

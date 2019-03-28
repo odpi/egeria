@@ -36,7 +36,7 @@ public class LookupBasedOnReportColumn implements LookupStrategy {
             return null;
         } else {
             String qualifiedName = buildQualifiedName((ReportColumnSource) source);
-            return omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedName);
+            return omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedName, false);
         }
     }
 

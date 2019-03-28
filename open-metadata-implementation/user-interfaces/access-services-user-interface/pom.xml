@@ -283,13 +283,13 @@
                 <artifactId>apache-rat-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>**/node/**</exclude>
+                        <exclude>**/tools/**</exclude>
                         <exclude>**/resources/public/**</exclude>
-                        <exclude>**/node_modules/**</exclude>
+                        <!--<exclude>**/node_modules/**</exclude>-->
                         <exclude>**/static/**</exclude>
                         <exclude>**/build/**</exclude>
-                        <exclude>**/src/*</exclude>
-                        <exclude>**/*.json</exclude>
+                        <!--<exclude>**/src/*</exclude>-->
+                        <!--<exclude>**/*.json</exclude>-->
                         <exclude>**/banner.txt</exclude>
                         <exclude>tools/polymer*</exclude>
                     </excludes>

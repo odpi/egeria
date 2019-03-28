@@ -37,13 +37,12 @@ public class ReportCreator extends ReportBasicOperation {
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
                 .build();
         OMEntityWrapper complexSchemaTypeEntityWrapper = omEntityDao.createOrUpdateEntity(Constants.COMPLEX_SCHEMA_TYPE,
-                qualifiedNameForComplexSchemaType, complexSchemaTypeProperties, null, true);
+                qualifiedNameForComplexSchemaType, complexSchemaTypeProperties, null, true, false);
 
         log.debug("Created report schema type {}", complexSchemaTypeEntityWrapper.getEntityDetail().getGUID());
         omEntityDao.addRelationship(Constants.ASSET_SCHEMA_TYPE,
                 reportEntity.getGUID(),
                 complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(),
-                Constants.INFORMATION_VIEW_OMAS_NAME,
                 new InstanceProperties());
 
         addElements(EntityPropertiesUtils.getStringValueForProperty(reportEntity.getProperties(), Constants.QUALIFIED_NAME), complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), payload.getReportElements());
