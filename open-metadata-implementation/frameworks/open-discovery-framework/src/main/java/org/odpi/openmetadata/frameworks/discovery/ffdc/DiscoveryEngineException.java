@@ -5,19 +5,18 @@ package org.odpi.openmetadata.frameworks.discovery.ffdc;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DiscoveryServiceException indicates there has been a problem running a discovery service.  The
+ * DiscoveryEngineException indicates there is a problem with a request to a specific discovery engine.  The
  * error codes and messages indicate the cause of the problem and guidance on finding a remedy.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DiscoveryServiceException extends ConnectorCheckedException
+public class DiscoveryEngineException extends ODFCheckedExceptionBase
 {
     /**
      * This is the typical constructor for creating the exception.  It captures the essential details
@@ -30,12 +29,12 @@ public class DiscoveryServiceException extends ConnectorCheckedException
      * @param systemAction actions of the system as a result of the error
      * @param userAction instructions for correcting the error
      */
-    public DiscoveryServiceException(int    httpCode,
-                                     String className,
-                                     String actionDescription,
-                                     String errorMessage,
-                                     String systemAction,
-                                     String userAction)
+    public DiscoveryEngineException(int    httpCode,
+                                    String className,
+                                    String actionDescription,
+                                    String errorMessage,
+                                    String systemAction,
+                                    String userAction)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
     }
@@ -54,13 +53,13 @@ public class DiscoveryServiceException extends ConnectorCheckedException
      * @param userAction instructions for correcting the error
      * @param caughtError the exception/error that caused this exception to be raised
      */
-    public DiscoveryServiceException(int       httpCode,
-                                     String    className,
-                                     String    actionDescription,
-                                     String    errorMessage,
-                                     String    systemAction,
-                                     String    userAction,
-                                     Throwable caughtError)
+    public DiscoveryEngineException(int       httpCode,
+                                    String    className,
+                                    String    actionDescription,
+                                    String    errorMessage,
+                                    String    systemAction,
+                                    String    userAction,
+                                    Throwable caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }

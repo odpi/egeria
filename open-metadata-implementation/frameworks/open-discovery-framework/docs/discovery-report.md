@@ -1,11 +1,10 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Discovery Context
+# Discovery Report
 
-The discovery context provides parameters used by
-a [discovery service](discovery-service.md) to locate
-and analyze an asset and then record the results.
+The discovery  report lists the [annotations](discovery-annotation.md) that were created during the execution of
+a [discovery pipeline](discovery-service.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

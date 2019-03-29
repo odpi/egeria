@@ -5,11 +5,9 @@ package org.odpi.openmetadata.frameworks.discovery.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,17 +17,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Annotation extends ElementHeader
 {
-    /*
-     * Details from the AnnotationReport entity
-     */
-    protected String              reportName         = null;
-    protected String              reportDescription  = null;
-    protected Date                creationDate       = null;
-    protected Map<String, Object> analysisParameters = null;
-
-    /*
-     * Details from the Annotation entity itself
-     */
     protected String           annotationType   = null;
     protected String           summary          = null;
     protected int              confidenceLevel  = 0;
@@ -37,20 +24,26 @@ public class Annotation extends ElementHeader
     protected String           explanation      = null;
     protected String           analysisStep     = null;
     protected String           jsonProperties   = null;
-    protected AnnotationStatus annotationStatus = null;
+
+    /*
+     * Details of Annotations attached to this Annotation
+     */
+    protected int              numAttachedAnnotations = 0;
 
     /*
      * Details from the latest AnnotationReview entity.
      */
-    protected Date             reviewDate    = null;
-    protected String           steward       = null;
-    protected String           reviewComment = null;
+    protected AnnotationStatus annotationStatus = null;
+    protected Date             reviewDate       = null;
+    protected String           steward          = null;
+    protected String           reviewComment    = null;
 
     /*
      * Additional properties added directly to the Annotation entity and supported by
      * the sub-types of Annotation.
      */
-    protected Map<String, Object>  additionalProperties = null;
+    protected Map<String, String>  additionalProperties = null;
+    protected Map<String, Object>  extendedProperties   = null;
 
 
     /**
@@ -65,119 +58,32 @@ public class Annotation extends ElementHeader
     /**
      * Copy/clone Constructor
      *
-     * @param templateAnnotation template object to copy.
+     * @param template template object to copy.
      */
-    public Annotation(Annotation templateAnnotation)
+    public Annotation(Annotation template)
     {
-        super(templateAnnotation);
+        super(template);
 
-        if (templateAnnotation != null)
+        if (template != null)
         {
-            this.reportName = templateAnnotation.getReportName();
-            this.reportDescription = templateAnnotation.getReportDescription();
-            this.creationDate = templateAnnotation.getCreationDate();
-            this.analysisParameters = templateAnnotation.getAnalysisParameters();
-            this.annotationType = templateAnnotation.getAnnotationType();
-            this.summary = templateAnnotation.getSummary();
-            this.confidenceLevel = templateAnnotation.getConfidenceLevel();
-            this.expression = templateAnnotation.getExpression();
-            this.explanation = templateAnnotation.getExplanation();
-            this.analysisStep = templateAnnotation.getAnalysisStep();
-            this.jsonProperties = templateAnnotation.getJsonProperties();
-            this.annotationStatus = templateAnnotation.getAnnotationStatus();
-            this.reviewDate = templateAnnotation.getReviewDate();
-            this.steward = templateAnnotation.getSteward();
-            this.reviewComment = templateAnnotation.getReviewComment();
-            this.additionalProperties = new HashMap<>(templateAnnotation.getAdditionalProperties());
+            this.annotationType = template.getAnnotationType();
+            this.summary = template.getSummary();
+            this.confidenceLevel = template.getConfidenceLevel();
+            this.expression = template.getExpression();
+            this.explanation = template.getExplanation();
+            this.analysisStep = template.getAnalysisStep();
+            this.jsonProperties = template.getJsonProperties();
+            this.numAttachedAnnotations = template.getNumAttachedAnnotations();
+            this.annotationStatus = template.getAnnotationStatus();
+            this.reviewDate = template.getReviewDate();
+            this.steward = template.getSteward();
+            this.reviewComment = template.getReviewComment();
+            this.additionalProperties = template.getAdditionalProperties();
+            this.extendedProperties = template.getExtendedProperties();
         }
     }
 
 
-    /**
-     * Return the name of the discovery analysis report that created this annotation.
-     *
-     * @return String report name
-     */
-    public String getReportName()
-    {
-        return reportName;
-    }
-
-
-    /**
-     * Set up the name of the discovery analysis report that created this annotation.
-     *
-     * @param reportName  String report name
-     */
-    public void setReportName(String reportName)
-    {
-        this.reportName = reportName;
-    }
-
-
-    /**
-     * Return the discovery analysis report description that this annotation is a part of.
-     *
-     * @return String report description
-     */
-    public String getReportDescription()
-    {
-        return reportDescription;
-    }
-
-
-    /**
-     * Set up the discovery analysis report description that this annotation is a part of.
-     *
-     * @param reportDescription String report description
-     */
-    public void setReportDescription(String reportDescription)
-    {
-        this.reportDescription = reportDescription;
-    }
-
-
-    /**
-     * Return the creation date for the annotation.  If this date is not known then null is returned.
-     *
-     * @return Date that the annotation was created.
-     */
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-
-    /**
-     * Set up the creation date for the annotation.  If this date is not known then null is returned.
-     *
-     * @param creationDate Date that the annotation was created.
-     */
-    public void setCreationDate(Date creationDate)
-    {
-        this.creationDate = creationDate;
-    }
-
-
-    /**
-     * Return the properties that hold the parameters used to drive the discovery service's analysis.
-     *
-     * @return AdditionalProperties object storing the analysis parameters
-     */
-    public Map<String, Object> getAnalysisParameters()
-    {
-        return analysisParameters;
-    }
-
-
-    /**
-     * Set up the properties that hold the parameters used to drive the discovery service's analysis.
-     *
-     * @param analysisParameters AdditionalProperties object storing the analysis parameters
-     */
-    public void setAnalysisParameters(Map<String, Object> analysisParameters)
-    {
-        this.analysisParameters = analysisParameters;
-    }
 
 
     /**
@@ -356,6 +262,28 @@ public class Annotation extends ElementHeader
 
 
     /**
+     * Return the number of annotations attached to the this annotation.  These generally add further information.
+     *
+     * @return number of annotations
+     */
+    public int getNumAttachedAnnotations()
+    {
+        return numAttachedAnnotations;
+    }
+
+
+    /**
+     * Set up the number of annotations attached to the this annotation.  These generally add further information.
+     *
+     * @param number number of annotations
+     */
+    public void setAttachedAnnotations(int number)
+    {
+        this.numAttachedAnnotations = number;
+    }
+
+
+    /**
      * Return the date that this annotation was reviewed.  If no review has taken place then this property is null.
      *
      * @return Date review date
@@ -424,9 +352,9 @@ public class Annotation extends ElementHeader
     /**
      * Return the additional properties for the Annotation.
      *
-     * @return AdditionalProperties additional properties object
+     * @return properties map
      */
-    public Map<String, Object> getAdditionalProperties()
+    public Map<String, String> getAdditionalProperties()
     {
         return additionalProperties;
     }
@@ -435,11 +363,33 @@ public class Annotation extends ElementHeader
     /**
      * Set up the additional properties for the Annotation.
      *
-     * @param additionalProperties additional properties object
+     * @param additionalProperties properties map
      */
-    public void setAdditionalProperties(Map<String, Object> additionalProperties)
+    public void setAdditionalProperties(Map<String, String> additionalProperties)
     {
         this.additionalProperties = additionalProperties;
+    }
+
+
+    /**
+     * Return the extended properties for the Annotation.  These are properties defined for a subtype.
+     *
+     * @return  properties map
+     */
+    public Map<String, Object> getExtendedProperties()
+    {
+        return extendedProperties;
+    }
+
+
+    /**
+     * Set up the extended properties for the Annotation.  These are properties defined for a subtype.
+     *
+     * @param extendedProperties properties map
+     */
+    public void setExtendedProperties(Map<String, Object> extendedProperties)
+    {
+        this.extendedProperties = extendedProperties;
     }
 
 
@@ -452,22 +402,20 @@ public class Annotation extends ElementHeader
     public String toString()
     {
         return "Annotation{" +
-                "reportName='" + reportName + '\'' +
-                ", reportDescription='" + reportDescription + '\'' +
-                ", creationDate=" + creationDate +
-                ", analysisParameters=" + analysisParameters +
-                ", annotationType='" + annotationType + '\'' +
+                "annotationType='" + annotationType + '\'' +
                 ", summary='" + summary + '\'' +
                 ", confidenceLevel=" + confidenceLevel +
                 ", expression='" + expression + '\'' +
                 ", explanation='" + explanation + '\'' +
                 ", analysisStep='" + analysisStep + '\'' +
                 ", jsonProperties='" + jsonProperties + '\'' +
+                ", numAttachedAnnotations=" + numAttachedAnnotations +
                 ", annotationStatus=" + annotationStatus +
                 ", reviewDate=" + reviewDate +
                 ", steward='" + steward + '\'' +
                 ", reviewComment='" + reviewComment + '\'' +
                 ", additionalProperties=" + additionalProperties +
+                ", extendedProperties=" + extendedProperties +
                 ", type=" + type +
                 ", guid='" + guid + '\'' +
                 ", url='" + url + '\'' +
@@ -489,7 +437,7 @@ public class Annotation extends ElementHeader
         {
             return true;
         }
-        if (!(objectToCompare instanceof Annotation))
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
         {
             return false;
         }
@@ -497,23 +445,35 @@ public class Annotation extends ElementHeader
         {
             return false;
         }
-        Annotation
-                that = (Annotation) objectToCompare;
+        Annotation that = (Annotation) objectToCompare;
         return getConfidenceLevel() == that.getConfidenceLevel() &&
-                Objects.equals(getReportName(), that.getReportName()) &&
-                Objects.equals(getReportDescription(), that.getReportDescription()) &&
-                Objects.equals(getCreationDate(), that.getCreationDate()) &&
-                Objects.equals(getAnalysisParameters(), that.getAnalysisParameters()) &&
                 Objects.equals(getAnnotationType(), that.getAnnotationType()) &&
                 Objects.equals(getSummary(), that.getSummary()) &&
                 Objects.equals(getExpression(), that.getExpression()) &&
                 Objects.equals(getExplanation(), that.getExplanation()) &&
                 Objects.equals(getAnalysisStep(), that.getAnalysisStep()) &&
                 Objects.equals(getJsonProperties(), that.getJsonProperties()) &&
+                getNumAttachedAnnotations() == that.getNumAttachedAnnotations() &&
                 getAnnotationStatus() == that.getAnnotationStatus() &&
                 Objects.equals(getReviewDate(), that.getReviewDate()) &&
                 Objects.equals(getSteward(), that.getSteward()) &&
                 Objects.equals(getReviewComment(), that.getReviewComment()) &&
-                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
+                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties()) &&
+                Objects.equals(getExtendedProperties(), that.getExtendedProperties());
+    }
+
+
+    /**
+     * Create a hash code for this element type.
+     *
+     * @return int hash code
+     */
+    @Override
+    public int hashCode()
+    {
+        return Objects.hash(super.hashCode(), getAnnotationType(), getSummary(), getConfidenceLevel(), getExpression(),
+                            getExplanation(), getAnalysisStep(), getJsonProperties(), getNumAttachedAnnotations(),
+                            getAnnotationStatus(), getReviewDate(), getSteward(), getReviewComment(),
+                            getAdditionalProperties(), getExtendedProperties());
     }
 }

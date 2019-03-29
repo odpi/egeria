@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.discoveryengine.properties;
+package org.odpi.openmetadata.frameworks.discovery.properties;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,10 +12,10 @@ import java.util.List;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Verify the OriginStatus enum contains unique ordinals, non-null names and descriptions and can be
+ * Verify the AnnotationStatus enum contains unique ordinals, non-null names and descriptions and can be
  * serialized to JSON and back again.
  */
-public class ElementOriginTest
+public class AnnotationStatusTest
 {
     private List<Integer> existingOrdinals = null;
 
@@ -44,38 +44,55 @@ public class ElementOriginTest
     /**
      * Validated the values of the enum.
      */
-    @Test public void testElementOriginValues()
+    @Test public void testAnnotationStatusValues()
     {
         existingOrdinals = new ArrayList<>();
 
-        ElementOrigin  testValue;
+        AnnotationStatus  testValue;
 
-        testValue = ElementOrigin.LOCAL_COHORT;
-
-        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
-        assertTrue(testValue.getName() != null);
-        assertTrue(testValue.getDescription() != null);
-
-        testValue = ElementOrigin.EXPORT_ARCHIVE;
+        testValue = AnnotationStatus.NEW_ANNOTATION;
 
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = ElementOrigin.CONTENT_PACK;
+        testValue = AnnotationStatus.REVIEWED_ANNOTATION;
 
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
-        testValue = ElementOrigin.DEREGISTERED_REPOSITORY;
+        testValue = AnnotationStatus.APPROVED_ANNOTATION;
 
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
         assertTrue(testValue.getDescription() != null);
 
+        testValue = AnnotationStatus.ACTIONED_ANNOTATION;
 
-        testValue = ElementOrigin.CONFIGURATION;
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = AnnotationStatus.INVALID_ANNOTATION;
+
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = AnnotationStatus.IGNORE_ANNOTATION;
+
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = AnnotationStatus.OTHER_STATUS;
+
+        assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
+        assertTrue(testValue.getName() != null);
+        assertTrue(testValue.getDescription() != null);
+
+        testValue = AnnotationStatus.UNKNOWN_STATUS;
 
         assertTrue(isUniqueOrdinal(testValue.getOrdinal()));
         assertTrue(testValue.getName() != null);
@@ -94,7 +111,7 @@ public class ElementOriginTest
 
         try
         {
-            jsonString = objectMapper.writeValueAsString(ElementOrigin.CONTENT_PACK);
+            jsonString = objectMapper.writeValueAsString(AnnotationStatus.ACTIONED_ANNOTATION);
         }
         catch (Throwable  exc)
         {
@@ -103,7 +120,7 @@ public class ElementOriginTest
 
         try
         {
-            assertTrue(objectMapper.readValue(jsonString, ElementOrigin.class) == ElementOrigin.CONTENT_PACK);
+            assertTrue(objectMapper.readValue(jsonString, AnnotationStatus.class) == AnnotationStatus.ACTIONED_ANNOTATION);
         }
         catch (Throwable  exc)
         {
@@ -117,6 +134,6 @@ public class ElementOriginTest
      */
     @Test public void testToString()
     {
-        assertTrue(ElementOrigin.CONFIGURATION.toString().contains("ElementOrigin"));
+        assertTrue(AnnotationStatus.INVALID_ANNOTATION.toString().contains("AnnotationStatus"));
     }
 }

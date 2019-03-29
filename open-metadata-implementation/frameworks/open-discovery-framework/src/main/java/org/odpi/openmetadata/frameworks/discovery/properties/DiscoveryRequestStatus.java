@@ -12,21 +12,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * An AnnotationStatus defines the current status for an annotation plus some default descriptive text.
+ * DiscoveryRequestStatus defines the current status for a discovery request made to a discovery engine.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public enum AnnotationStatus implements Serializable
+public enum DiscoveryRequestStatus implements Serializable
 {
-    NEW_ANNOTATION      (0,  "New",      "Annotation has been created but not reviewed"),
-    REVIEWED_ANNOTATION (1,  "Reviewed", "Annotation has been reviewed by no decision has been made"),
-    APPROVED_ANNOTATION (2,  "Approved", "Annotation has been approved"),
-    ACTIONED_ANNOTATION (3,  "Actioned", "Annotation has been approved and insight has been added to Asset's metadata"),
-    INVALID_ANNOTATION  (4,  "Invalid",  "Annotation has been reviewed and declared invalid"),
-    IGNORE_ANNOTATION   (5,  "Ignore",   "Annotation is invalid and should be ignored"),
-    OTHER_STATUS        (98, "Other",    "Annotation's status stored in additional properties"),
-    UNKNOWN_STATUS      (99, "Unknown",  "Annotation has not had a status assigned");
+    WAITING         (0,  "Waiting",    "Discovery request is waiting to execute"),
+    IN_PROGRESS     (1,  "In Progress","Discovery request is executing"),
+    FAILED          (2,  "Failed",     "Discovery request has failed"),
+    COMPLETED       (3,  "Completed",  "Discovery request has completed successfully"),
+    UNKNOWN_STATUS  (99, "Unknown",    "Discovery request status is unknown");
 
     private static final long     serialVersionUID = 1L;
 
@@ -38,7 +35,7 @@ public enum AnnotationStatus implements Serializable
     /**
      * Typical Constructor
      */
-    AnnotationStatus(int     statusCode, String   statusName,  String   statusDescription)
+    DiscoveryRequestStatus(int     statusCode, String   statusName, String   statusDescription)
     {
         /*
          * Save the values supplied
@@ -90,7 +87,7 @@ public enum AnnotationStatus implements Serializable
     @Override
     public String toString()
     {
-        return "AnnotationStatus{" +
+        return "DiscoveryRequestStatus{" +
                 "statusCode=" + statusCode +
                 ", statusName='" + statusName + '\'' +
                 ", statusDescription='" + statusDescription + '\'' +
