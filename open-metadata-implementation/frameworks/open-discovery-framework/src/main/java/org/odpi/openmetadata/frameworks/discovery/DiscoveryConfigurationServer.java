@@ -2,9 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.discovery;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
-import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryServerException;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryServiceProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.RegisteredDiscoveryService;
@@ -21,6 +22,7 @@ public abstract class DiscoveryConfigurationServer
     /**
      * Create a new discovery engine definition.
      *
+     * @param userId identifier of calling user
      * @param qualifiedName unique name for the discovery engine.
      * @param displayName display name for messages and user interfaces.
      * @param description description of the types of discovery services that wil be associated with
@@ -28,46 +30,61 @@ public abstract class DiscoveryConfigurationServer
      *
      * @return unique identifier (guid) of the discovery engine definition.  This is for use on other requests.
      *
-     * @throws DiscoveryServerException problem storing the discovery engine definition.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem storing the discovery engine definition.
      */
-    public abstract String  createDiscoveryEngine(String  qualifiedName, 
+    public abstract String  createDiscoveryEngine(String  userId,
+                                                  String  qualifiedName,
                                                   String  displayName, 
-                                                  String  description) throws DiscoveryServerException;
+                                                  String  description) throws UserNotAuthorizedException,
+                                                                              PropertyServerException;
 
 
     /**
      * Return the properties from a discovery engine definition.
      *
+     * @param userId identifier of calling user
      * @param guid unique identifier (guid) of the discovery engine definition.
      * @return properties from the discovery engine definition.
      *
-     * @throws DiscoveryServerException problem retrieving the discovery engine definition.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the discovery engine definition.
      */
-    public abstract DiscoveryEngineProperties getDiscoveryEngineByGUID(String    guid) throws DiscoveryServerException;
+    public abstract DiscoveryEngineProperties getDiscoveryEngineByGUID(String    userId,
+                                                                       String    guid) throws UserNotAuthorizedException,
+                                                                                              PropertyServerException;
 
 
     /**
      * Return the properties from a discovery engine definition.
      *
+     * @param userId identifier of calling user
      * @param name qualified name or display name (if unique).
      * @return properties from the discovery engine definition.
      *
-     * @throws DiscoveryServerException problem retrieving the discovery engine definition.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the discovery engine definition.
      */
-    public abstract DiscoveryEngineProperties getDiscoveryEngineByName(String    name) throws DiscoveryServerException;
+    public abstract DiscoveryEngineProperties getDiscoveryEngineByName(String    userId,
+                                                                       String    name) throws UserNotAuthorizedException,
+                                                                                              PropertyServerException;
 
 
     /**
      * Return the list of discovery engine definitions that are stored.
      *
+     * @param userId identifier of calling user
      * @param startingFrom initial position in the stored list.
      * @param maximumResults maximum number of definitions to return on this call.
      * @return list of discovery engine definitions.
      *
-     * @throws DiscoveryServerException problem retrieving the discovery engine definitions.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the discovery engine definitions.
      */
-    public abstract List<DiscoveryEngineProperties> getAllDiscoveryEngines(int     startingFrom,
-                                                                           int     maximumResults) throws DiscoveryServerException;
+    public abstract List<DiscoveryEngineProperties> getAllDiscoveryEngines(String  userId,
+                                                                           int     startingFrom,
+                                                                           int     maximumResults) throws UserNotAuthorizedException,
+                                                                                                          PropertyServerException;
 
 
     /**
@@ -75,6 +92,7 @@ public abstract class DiscoveryConfigurationServer
      * keep a property value the same, or use the new value.  Null means remove the property from
      * the definition.
      *
+     * @param userId identifier of calling user
      * @param guid unique identifier of the discovery engine - used to locate the definition.
      * @param qualifiedName new value for unique name of discovery engine.
      * @param displayName new value for the display name.
@@ -86,9 +104,11 @@ public abstract class DiscoveryConfigurationServer
      * @param additionalProperties additional properties for the discovery engine.
      * @param extendedProperties properties to populate the subtype of the discovery engine.
      *
-     * @throws DiscoveryServerException problem storing the discovery engine definition.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem storing the discovery engine definition.
      */
-    public abstract void    updateDiscoveryEngine(String                guid,
+    public abstract void    updateDiscoveryEngine(String                userId,
+                                                  String                guid,
                                                   String                qualifiedName,
                                                   String                displayName,
                                                   String                description,
@@ -97,83 +117,108 @@ public abstract class DiscoveryConfigurationServer
                                                   String                patchLevel,
                                                   String                source,
                                                   Map<String, String>   additionalProperties,
-                                                  Map<String, Object>   extendedProperties) throws DiscoveryServerException;
+                                                  Map<String, Object>   extendedProperties) throws UserNotAuthorizedException,
+                                                                                                   PropertyServerException;
 
 
     /**
      * Remove the properties of the discovery engine.  Both the guid and the qualified name is supplied
      * to validate that the correct discovery engine is being deleted.
      *
+     * @param userId identifier of calling user
      * @param guid unique identifier of the discovery engine - used to locate the definition.
      * @param qualifiedName unique name for the discovery engine.
-
-     * @throws DiscoveryServerException problem retrieving the discovery engine definition.
+     *
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the discovery engine definition.
      */
-    public abstract void    deleteDiscoveryEngine(String  guid,
-                                                  String  qualifiedName) throws DiscoveryServerException;
+    public abstract void    deleteDiscoveryEngine(String  userId,
+                                                  String  guid,
+                                                  String  qualifiedName) throws UserNotAuthorizedException,
+                                                                                PropertyServerException;
 
 
     /**
      * Create a discovery service definition.  The same discovery service can be associated with multiple
      * discovery engines.
      *
+     * @param userId identifier of calling user
      * @param qualifiedName  unique name for the discovery service.
      * @param displayName   display name for the discovery service.
      * @param connection   connection to instanciate the discovery service implementation.
      *
      * @return unique identifier of the discovery service.
-     * @throws DiscoveryServerException problem storing the discovery service definition.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem storing the discovery service definition.
      */
-    public abstract String  createDiscoveryService(String      qualifiedName,
+    public abstract String  createDiscoveryService(String      userId,
+                                                   String      qualifiedName,
                                                    String      displayName,
-                                                   Connection  connection) throws DiscoveryServerException;
+                                                   Connection  connection) throws UserNotAuthorizedException,
+                                                                                  PropertyServerException;
 
 
 
     /**
      * Return the properties from a discovery service definition.
      *
+     * @param userId identifier of calling user
      * @param guid unique identifier (guid) of the discovery service definition.
      * @return properties of the discovery service.
      *
-     * @throws DiscoveryServerException problem retrieving the discovery service definition.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the discovery service definition.
      */
-    public abstract DiscoveryServiceProperties getDiscoveryServiceByGUID(String    guid) throws DiscoveryServerException;
+    public abstract DiscoveryServiceProperties getDiscoveryServiceByGUID(String    userId,
+                                                                         String    guid) throws UserNotAuthorizedException,
+                                                                                                PropertyServerException;
 
 
     /**
      * Return the properties from a discovery service definition.
      *
+     * @param userId identifier of calling user
      * @param name qualified name or display name (if unique).
      * @return properties from the discovery engine definition.
      *
-     * @throws DiscoveryServerException problem retrieving the discovery engine definition.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the discovery engine definition.
      */
-    public abstract DiscoveryServiceProperties getDiscoveryServiceByName(String    name) throws DiscoveryServerException;
+    public abstract DiscoveryServiceProperties getDiscoveryServiceByName(String    userId,
+                                                                         String    name) throws UserNotAuthorizedException,
+                                                                                                PropertyServerException;
 
 
     /**
      * Return the list of discovery services definitions that are stored.
      *
+     * @param userId identifier of calling user
      * @param startingFrom initial position in the stored list.
      * @param maximumResults maximum number of definitions to return on this call.
      * @return list of discovery service definitions.
      *
-     * @throws DiscoveryServerException problem retrieving the discovery service definitions.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the discovery service definitions.
      */
-    public abstract List<DiscoveryServiceProperties> getAllDiscoveryServices(int     startingFrom,
-                                                                             int     maximumResults) throws DiscoveryServerException;
+    public abstract List<DiscoveryServiceProperties> getAllDiscoveryServices(String  userId,
+                                                                             int     startingFrom,
+                                                                             int     maximumResults) throws UserNotAuthorizedException,
+                                                                                                            PropertyServerException;
 
 
     /**
      * Return the list of discovery engines that a specific discovery service is registered with.
      *
+     * @param userId identifier of calling user
      * @param discoveryServiceGUID discovery service to search for.
      * @return list of discovery engine unique identifiers (guids)
      *
-     * @throws DiscoveryServerException problem retrieving the discovery service and/or discovery engine definitions.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
-    public abstract List<String>  getDiscoveryServiceRegistrations(String   discoveryServiceGUID) throws DiscoveryServerException;
+    public abstract List<String>  getDiscoveryServiceRegistrations(String   userId,
+                                                                   String   discoveryServiceGUID) throws UserNotAuthorizedException,
+                                                                                                         PropertyServerException;
 
 
     /**
@@ -181,6 +226,7 @@ public abstract class DiscoveryConfigurationServer
      * keep a property value the same, or use the new value.  Null means remove the property from
      * the definition.
      *
+     * @param userId identifier of calling user
      * @param guid unique identifier of the discovery service - used to locate the definition.
      * @param qualifiedName new value for unique name of discovery service.
      * @param displayName new value for the display name.
@@ -191,9 +237,11 @@ public abstract class DiscoveryConfigurationServer
      * @param additionalProperties additional properties for the discovery engine.
      * @param extendedProperties properties to populate the subtype of the discovery service.
      *
-     * @throws DiscoveryServerException problem storing the discovery service definition.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem storing the discovery service definition.
      */
-    public abstract void    updateDiscoveryService(String                guid,
+    public abstract void    updateDiscoveryService(String                userId,
+                                                   String                guid,
                                                    String                qualifiedName,
                                                    String                displayName,
                                                    String                description,
@@ -201,7 +249,8 @@ public abstract class DiscoveryConfigurationServer
                                                    OwnerType             ownerType,
                                                    List<String>          zoneMembership,
                                                    Map<String, String>   additionalProperties,
-                                                   Map<String, Object>   extendedProperties) throws DiscoveryServerException;
+                                                   Map<String, Object>   extendedProperties) throws UserNotAuthorizedException,
+                                                                                                    PropertyServerException;
 
 
     /**
@@ -209,66 +258,86 @@ public abstract class DiscoveryConfigurationServer
      * to validate that the correct discovery service is being deleted.  The discovery service is also
      * unregistered from its discovery engines.
      *
+     * @param userId identifier of calling user
      * @param guid unique identifier of the discovery service - used to locate the definition.
      * @param qualifiedName unique name for the discovery service.
-
-     * @throws DiscoveryServerException problem retrieving the discovery service definition.
+     *
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the discovery service definition.
      */
-    public abstract void    deleteDiscoveryService(String  guid,
-                                                   String  qualifiedName) throws DiscoveryServerException;
+    public abstract void    deleteDiscoveryService(String  userId,
+                                                   String  guid,
+                                                   String  qualifiedName) throws UserNotAuthorizedException,
+                                                                                 PropertyServerException;
 
 
     /**
      * Register a discovery service with a specific discovery engine.
      *
+     * @param userId identifier of calling user
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param discoveryServiceGUID unique identifier of the discovery service.
      * @param assetTypes list of asset types that this discovery service is able to process.
      *
-     * @throws DiscoveryServerException problem retrieving the discovery service and/or discovery engine definitions.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
-    public abstract void  registerDiscoveryServiceWithEngine(String        discoveryEngineGUID,
+    public abstract void  registerDiscoveryServiceWithEngine(String        userId,
+                                                             String        discoveryEngineGUID,
                                                              String        discoveryServiceGUID,
-                                                             List<String>  assetTypes) throws DiscoveryServerException;
+                                                             List<String>  assetTypes) throws UserNotAuthorizedException,
+                                                                                              PropertyServerException;
 
 
     /**
      * Retrieve a specific discovery service registered with a discovery engine.
      *
+     * @param userId identifier of calling user
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param discoveryServiceGUID unique identifier of the discovery service.
      *
      * @return details of the discovery service and the asset types it is registered for.
-     * @throws DiscoveryServerException problem retrieving the discovery service and/or discovery engine definitions.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
-    public abstract RegisteredDiscoveryService getRegisteredDiscoveryService(String  discoveryEngineGUID,
-                                                                             String  discoveryServiceGUID) throws DiscoveryServerException;
+    public abstract RegisteredDiscoveryService getRegisteredDiscoveryService(String  userId,
+                                                                             String  discoveryEngineGUID,
+                                                                             String  discoveryServiceGUID) throws UserNotAuthorizedException,
+                                                                                                                  PropertyServerException;
 
 
     /**
      * Retrieve the identifiers of the discovery services registered with a discovery engine.
      *
+     * @param userId identifier of calling user
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param startingFrom initial position in the stored list.
      * @param maximumResults maximum number of definitions to return on this call.
      *
      * @return list of unique identifiers
      *
-     * @throws DiscoveryServerException problem retrieving the discovery service and/or discovery engine definitions.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
-    public abstract List<String>  getRegisteredDiscoveryServices(String  discoveryEngineGUID,
+    public abstract List<String>  getRegisteredDiscoveryServices(String  userId,
+                                                                 String  discoveryEngineGUID,
                                                                  int     startingFrom,
-                                                                 int     maximumResults) throws DiscoveryServerException;
+                                                                 int     maximumResults) throws UserNotAuthorizedException,
+                                                                                                PropertyServerException;
 
 
     /**
      * Unregister a discovery service from the discovery engine.
      *
+     * @param userId identifier of calling user
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param discoveryServiceGUID unique identifier of the discovery service.
      *
-     * @throws DiscoveryServerException problem retrieving the discovery service and/or discovery engine definitions.
+     * @throws UserNotAuthorizedException user not authorized to issue this request.
+     * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
-    public abstract void  unregisterDiscoveryServiceFromEngine(String        discoveryEngineGUID,
-                                                               String        discoveryServiceGUID) throws DiscoveryServerException;
+    public abstract void  unregisterDiscoveryServiceFromEngine(String        userId,
+                                                               String        discoveryEngineGUID,
+                                                               String        discoveryServiceGUID) throws UserNotAuthorizedException,
+                                                                                                          PropertyServerException;
 }

@@ -14,7 +14,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedExcep
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.governanceservers.discoveryengine.admin.DiscoveryEngineOperationalServices;
+import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
@@ -140,7 +140,7 @@ public class OMAGServerOperationalServices
              */
             RepositoryServicesConfig  repositoryServicesConfig  = configuration.getRepositoryServicesConfig();
             List<AccessServiceConfig> accessServiceConfigList   = configuration.getAccessServicesConfig();
-            DiscoveryEngineConfig     discoveryEngineConfig     = configuration.getDiscoveryEngineConfig();
+            DiscoveryServerConfig     discoveryServerConfig     = configuration.getDiscoveryServerConfig();
             OpenLineageConfig         openLineageConfig         = configuration.getOpenLineageConfig();
             SecuritySyncConfig        securitySyncConfig        = configuration.getSecuritySyncConfig();
             StewardshipServicesConfig stewardshipServicesConfig = configuration.getStewardshipServicesConfig();
@@ -148,7 +148,7 @@ public class OMAGServerOperationalServices
 
             if ((repositoryServicesConfig == null) &&
                 (accessServiceConfigList == null) &&
-                (discoveryEngineConfig == null) &&
+                (discoveryServerConfig == null) &&
                 (openLineageConfig == null) &&
                 (securitySyncConfig == null) &&
                 (stewardshipServicesConfig == null) &&
@@ -317,14 +317,14 @@ public class OMAGServerOperationalServices
             /*
              * Initialize the Discovery Engine Services.  This is a governance daemon for running automated metadata discovery.
              */
-            if (discoveryEngineConfig != null)
+            if (discoveryServerConfig != null)
             {
-                DiscoveryEngineOperationalServices
-                        operationalDiscoveryEngine = new DiscoveryEngineOperationalServices(configuration.getLocalServerName(),
+                DiscoveryServerOperationalServices
+                        operationalDiscoveryServer = new DiscoveryServerOperationalServices(configuration.getLocalServerName(),
                                                                                             configuration.getLocalServerUserId(),
                                                                                             configuration.getMaxPageSize());
-                instance.setOperationalDiscoveryEngine(operationalDiscoveryEngine);
-                operationalDiscoveryEngine.initialize(discoveryEngineConfig,
+                instance.setOperationalDiscoveryServer(operationalDiscoveryServer);
+                operationalDiscoveryServer.initialize(discoveryServerConfig,
                                                       operationalRepositoryServices.getAuditLog(
                                                               GovernanceServersDescription.DISCOVERY_ENGINE_SERVICES.getServiceCode(),
                                                               GovernanceServersDescription.DISCOVERY_ENGINE_SERVICES.getServiceName(),
@@ -467,9 +467,9 @@ public class OMAGServerOperationalServices
         /*
          * Shutdown the discovery engine
          */
-        if (instance.getOperationalDiscoveryEngine() != null)
+        if (instance.getOperationalDiscoveryServer() != null)
         {
-            instance.getOperationalDiscoveryEngine().terminate(permanentDeactivation);
+            instance.getOperationalDiscoveryServer().terminate(permanentDeactivation);
         }
 
         /*

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.governanceservers.discoveryserver.server;
+package org.odpi.openmetadata.discoveryserver.server;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryServerConfig;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;

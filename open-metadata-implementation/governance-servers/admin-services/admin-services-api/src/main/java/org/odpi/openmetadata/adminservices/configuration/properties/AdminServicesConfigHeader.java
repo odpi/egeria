@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = AccessServiceConfig.class, name = "AccessServiceConfig"),
         @JsonSubTypes.Type(value = CohortConfig.class, name = "CohortConfig"),
-        @JsonSubTypes.Type(value = DiscoveryEngineConfig.class, name = "DiscoveryEngineConfig"),
+        @JsonSubTypes.Type(value = DiscoveryServerConfig.class, name = "DiscoveryServerConfig"),
         @JsonSubTypes.Type(value = OpenLineageConfig.class, name = "OpenLineageConfig"),
         @JsonSubTypes.Type(value = EnterpriseAccessConfig.class, name = "EnterpriseAccessConfig"),
         @JsonSubTypes.Type(value = EventBusConfig.class, name = "EventBusConfig"),

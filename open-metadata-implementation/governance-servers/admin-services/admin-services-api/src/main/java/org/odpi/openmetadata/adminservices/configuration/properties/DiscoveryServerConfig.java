@@ -6,32 +6,33 @@ package org.odpi.openmetadata.adminservices.configuration.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.util.List;
 import java.util.Objects;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * DiscoveryEngineConfig provides the properties to configure a discovery engine.
+ * DiscoveryServerConfig provides the properties to configure a discovery server.  The discovery service
+ * runs one of more discovery engines.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class DiscoveryEngineConfig extends AdminServicesConfigHeader
+public class DiscoveryServerConfig extends AdminServicesConfigHeader
 {
     /* Properties needed to call the access service REST APIs */
     private String        accessServiceRootURL     = null;
     private String        accessServiceServerName  = null;
 
-    /* Connection for topic that receives inbound requests */
-    private Connection    inboundRequestConnection = null;
+    /* List of discovery engines that run in this server */
+    private List<String>  discoveryEngineGUIDs = null;
 
     /**
      * Default constructor
      */
-    public DiscoveryEngineConfig()
+    public DiscoveryServerConfig()
     {
         super();
     }
@@ -42,7 +43,7 @@ public class DiscoveryEngineConfig extends AdminServicesConfigHeader
      *
      * @param template object to copy
      */
-    public DiscoveryEngineConfig(DiscoveryEngineConfig  template)
+    public DiscoveryServerConfig(DiscoveryServerConfig template)
     {
         super(template);
 
@@ -50,7 +51,7 @@ public class DiscoveryEngineConfig extends AdminServicesConfigHeader
         {
             accessServiceRootURL = template.getAccessServiceRootURL();
             accessServiceServerName = template.getAccessServiceServerName();
-            inboundRequestConnection = template.getInboundRequestConnection();
+            discoveryEngineGUIDs = template.getDiscoveryEngineGUIDs();
         }
     }
 
@@ -105,21 +106,21 @@ public class DiscoveryEngineConfig extends AdminServicesConfigHeader
      *
      * @return connection object
      */
-    public Connection getInboundRequestConnection()
+    public List<String> getDiscoveryEngineGUIDs()
     {
-        return inboundRequestConnection;
+        return discoveryEngineGUIDs;
     }
 
 
     /**
-     * Set up the connection used to access the topic that passes discovery requests to the discovery engine
-     * services.
+     * Set up the list of unique identifiers (guids) for the discovery engines that will run in this discovery
+     * server.
      *
-     * @param inboundRequestConnection connection object
+     * @param discoveryEngineGUIDs connection object
      */
-    public void setInboundRequestConnection(Connection inboundRequestConnection)
+    public void setDiscoveryEngineGUIDs(List<String> discoveryEngineGUIDs)
     {
-        this.inboundRequestConnection = inboundRequestConnection;
+        this.discoveryEngineGUIDs = discoveryEngineGUIDs;
     }
 
 
@@ -131,10 +132,10 @@ public class DiscoveryEngineConfig extends AdminServicesConfigHeader
     @Override
     public String toString()
     {
-        return "DiscoveryEngineConfig{" +
+        return "DiscoveryServerConfig{" +
                 "accessServiceRootURL='" + accessServiceRootURL + '\'' +
                 ", accessServiceServerName='" + accessServiceServerName + '\'' +
-                ", inboundRequestConnection=" + inboundRequestConnection +
+                ", discoveryEngineGUIDs=" + discoveryEngineGUIDs +
                 '}';
     }
 
@@ -156,10 +157,10 @@ public class DiscoveryEngineConfig extends AdminServicesConfigHeader
         {
             return false;
         }
-        DiscoveryEngineConfig that = (DiscoveryEngineConfig) objectToCompare;
+        DiscoveryServerConfig that = (DiscoveryServerConfig) objectToCompare;
         return Objects.equals(getAccessServiceRootURL(), that.getAccessServiceRootURL()) &&
                 Objects.equals(getAccessServiceServerName(), that.getAccessServiceServerName()) &&
-                Objects.equals(getInboundRequestConnection(), that.getInboundRequestConnection());
+                Objects.equals(getDiscoveryEngineGUIDs(), that.getDiscoveryEngineGUIDs());
     }
 
 
@@ -171,6 +172,6 @@ public class DiscoveryEngineConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(getAccessServiceRootURL(), getAccessServiceServerName(), getInboundRequestConnection());
+        return Objects.hash(getAccessServiceRootURL(), getAccessServiceServerName(), getDiscoveryEngineGUIDs());
     }
 }

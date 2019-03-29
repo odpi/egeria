@@ -4,7 +4,7 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
-import org.odpi.openmetadata.governanceservers.discoveryengine.admin.DiscoveryEngineOperationalServices;
+import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
@@ -23,7 +23,7 @@ public class OMAGOperationalServicesInstance
     private OMAGServerConfig                   operationalConfiguration          = null;
     private OMRSOperationalServices            operationalRepositoryServices     = null;
     private List<AccessServiceAdmin>           operationalAccessServiceAdminList = new ArrayList<>();
-    private DiscoveryEngineOperationalServices operationalDiscoveryEngine        = null;
+    private DiscoveryServerOperationalServices operationalDiscoveryServer        = null;
     private OpenLineageOperationalServices     openLineageOperationalServices    = null;
     private StewardshipOperationalServices     operationalStewardshipServices    = null;
     private SecuritySyncOperationalServices    operationalSecuritySyncServices   = null;
@@ -52,7 +52,8 @@ public class OMAGOperationalServicesInstance
      *
      * @param operationalConfiguration OMAGServerConfig object
      */
-    public void setOperationalConfiguration(OMAGServerConfig operationalConfiguration) {
+    public void setOperationalConfiguration(OMAGServerConfig operationalConfiguration)
+    {
         this.operationalConfiguration = operationalConfiguration;
     }
 
@@ -72,7 +73,8 @@ public class OMAGOperationalServicesInstance
      *
      * @param operationalRepositoryServices OMRSOperationalServices object
      */
-    public void setOperationalRepositoryServices(OMRSOperationalServices operationalRepositoryServices) {
+    public void setOperationalRepositoryServices(OMRSOperationalServices operationalRepositoryServices)
+    {
         this.operationalRepositoryServices = operationalRepositoryServices;
     }
 
@@ -92,7 +94,8 @@ public class OMAGOperationalServicesInstance
      *
      * @param operationalAccessServiceAdminList list of AccessServiceAdmin objects
      */
-    public void setOperationalAccessServiceAdminList(List<AccessServiceAdmin> operationalAccessServiceAdminList) {
+    public void setOperationalAccessServiceAdminList(List<AccessServiceAdmin> operationalAccessServiceAdminList)
+    {
         this.operationalAccessServiceAdminList = operationalAccessServiceAdminList;
     }
 
@@ -100,10 +103,10 @@ public class OMAGOperationalServicesInstance
     /**
      * Return the running instance of the discovery engine.
      *
-     * @return DiscoveryEngineOperationalServices object
+     * @return DiscoveryServerOperationalServices object
      */
-    public DiscoveryEngineOperationalServices getOperationalDiscoveryEngine() {
-        return operationalDiscoveryEngine;
+    public DiscoveryServerOperationalServices getOperationalDiscoveryServer() {
+        return operationalDiscoveryServer;
     }
 
 
@@ -112,14 +115,16 @@ public class OMAGOperationalServicesInstance
      *
      * @param openLineageOperationalServices OpenLineageOperationalServices object
      */
-    public void setOpenLineageOperationalServices(OpenLineageOperationalServices openLineageOperationalServices) {
+    public void setOpenLineageOperationalServices(OpenLineageOperationalServices openLineageOperationalServices)
+    {
         this.openLineageOperationalServices = openLineageOperationalServices;
     }
+
 
     /**
      * Return the running instance of the discovery engine.
      *
-     * @return DiscoveryEngineOperationalServices object
+     * @return DiscoveryServerOperationalServices object
      */
     public OpenLineageOperationalServices getOpenLineageOperationalServices() {
         return openLineageOperationalServices;
@@ -129,10 +134,11 @@ public class OMAGOperationalServicesInstance
     /**
      * Set up the running instance of the discovery engine.
      *
-     * @param operationalDiscoveryEngine DiscoveryEngineOperationalServices object
+     * @param operationalDiscoveryServer DiscoveryServerOperationalServices object
      */
-    public void setOperationalDiscoveryEngine(DiscoveryEngineOperationalServices operationalDiscoveryEngine) {
-        this.operationalDiscoveryEngine = operationalDiscoveryEngine;
+    public void setOperationalDiscoveryServer(DiscoveryServerOperationalServices operationalDiscoveryServer)
+    {
+        this.operationalDiscoveryServer = operationalDiscoveryServer;
     }
 
 
@@ -151,7 +157,8 @@ public class OMAGOperationalServicesInstance
      *
      * @param operationalStewardshipServices StewardshipOperationalServices object
      */
-    public void setOperationalStewardshipServices(StewardshipOperationalServices operationalStewardshipServices) {
+    public void setOperationalStewardshipServices(StewardshipOperationalServices operationalStewardshipServices)
+    {
         this.operationalStewardshipServices = operationalStewardshipServices;
     }
 
@@ -161,34 +168,41 @@ public class OMAGOperationalServicesInstance
      *
      * @return SecuritySyncOperationalServices object
      */
-    public SecuritySyncOperationalServices getOperationalSecuritySyncServices() {
+    public SecuritySyncOperationalServices getOperationalSecuritySyncServices()
+    {
         return operationalSecuritySyncServices;
     }
+
 
     /**
      * Set up the running instance of the Security Sync
      *
      * @param operationalSecuritySyncServices SecuritySyncOperationalServices object
      */
-    public void setOperationalSecuritySyncServices(SecuritySyncOperationalServices operationalSecuritySyncServices) {
+    public void setOperationalSecuritySyncServices(SecuritySyncOperationalServices operationalSecuritySyncServices)
+    {
         this.operationalSecuritySyncServices = operationalSecuritySyncServices;
     }
+
 
     /**
      * Return the running instance of Virtualizer
      *
      * @return VirtualizationOperationalServices object
      */
-    public VirtualizationOperationalServices getOperationalVirtualizationServices() {
+    public VirtualizationOperationalServices getOperationalVirtualizationServices()
+    {
         return operationalVirtualizationServices;
     }
+
 
     /**
      * Set up the running instance of Virtualizer
      *
      * @param operationalVirtualizationServices VirtualizationOperationalServices object
      */
-    public void setOperationalVirtualizationServices(VirtualizationOperationalServices operationalVirtualizationServices) {
+    public void setOperationalVirtualizationServices(VirtualizationOperationalServices operationalVirtualizationServices)
+    {
         this.operationalVirtualizationServices = operationalVirtualizationServices;
     }
 }

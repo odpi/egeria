@@ -2,23 +2,23 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices;
 
-import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryEngineConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 /**
- * OMAGServerConfigDiscoveryEngine supports the configuration requests for a discovery engine.
+ * OMAGServerConfigDiscoveryServer supports the configuration requests for a discovery server
+ * and the discovery engines that run inside of it.
  */
-public class OMAGServerConfigDiscoveryEngine
+public class OMAGServerConfigDiscoveryServer
 {
-    static final String serviceName    = "discovery engine services";
+    static final String serviceName    = "discovery server";
     static final String accessService  = "Discovery Engine OMAS";
 
     private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
@@ -74,16 +74,16 @@ public class OMAGServerConfigDiscoveryEngine
 
             serverConfig.setAuditTrail(configAuditLog);
 
-            DiscoveryEngineConfig discoveryEngineConfig = serverConfig.getDiscoveryEngineConfig();
+            DiscoveryServerConfig discoveryServerConfig = serverConfig.getDiscoveryServerConfig();
 
-            if (discoveryEngineConfig == null)
+            if (discoveryServerConfig == null)
             {
-                discoveryEngineConfig = new DiscoveryEngineConfig();
+                discoveryServerConfig = new DiscoveryServerConfig();
             }
 
-            discoveryEngineConfig.setAccessServiceRootURL(accessServiceRootURL);
+            discoveryServerConfig.setAccessServiceRootURL(accessServiceRootURL);
 
-            serverConfig.setDiscoveryEngineConfig(discoveryEngineConfig);
+            serverConfig.setDiscoveryServerConfig(discoveryServerConfig);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
@@ -149,16 +149,16 @@ public class OMAGServerConfigDiscoveryEngine
 
             serverConfig.setAuditTrail(configAuditLog);
 
-            DiscoveryEngineConfig discoveryEngineConfig = serverConfig.getDiscoveryEngineConfig();
+            DiscoveryServerConfig discoveryServerConfig = serverConfig.getDiscoveryServerConfig();
 
-            if (discoveryEngineConfig == null)
+            if (discoveryServerConfig == null)
             {
-                discoveryEngineConfig = new DiscoveryEngineConfig();
+                discoveryServerConfig = new DiscoveryServerConfig();
             }
 
-            discoveryEngineConfig.setAccessServiceRootURL(accessServiceServerName);
+            discoveryServerConfig.setAccessServiceRootURL(accessServiceServerName);
 
-            serverConfig.setDiscoveryEngineConfig(discoveryEngineConfig);
+            serverConfig.setDiscoveryServerConfig(discoveryServerConfig);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
@@ -174,19 +174,20 @@ public class OMAGServerConfigDiscoveryEngine
         return response;
     }
 
+
     /**
-     * Set up the server name of the access service.
+     * Set up the list of discovery engines that will run in this discovery server.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param connection  connection for topic.
+     * @param discoveryEngineGUIDs  discoveryEngineGUIDs describing which discovery engines fun in this server.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    public VoidResponse setInboundRequestConnection(String     userId,
-                                                    String     serverName,
-                                                    Connection connection)
+    public VoidResponse setDiscoveryEngines(String       userId,
+                                            String       serverName,
+                                            List<String> discoveryEngineGUIDs)
     {
         final String methodName = "setAccessServiceServerName";
 
@@ -206,27 +207,27 @@ public class OMAGServerConfigDiscoveryEngine
                 configAuditLog = new ArrayList<>();
             }
 
-            if (connection == null)
+            if (discoveryEngineGUIDs == null)
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " inbound request connection.");
+                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " inbound request discoveryEngineGUIDs.");
             }
             else
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " inbound request connection.");
+                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " inbound request discoveryEngineGUIDs.");
             }
 
             serverConfig.setAuditTrail(configAuditLog);
 
-            DiscoveryEngineConfig discoveryEngineConfig = serverConfig.getDiscoveryEngineConfig();
+            DiscoveryServerConfig discoveryServerConfig = serverConfig.getDiscoveryServerConfig();
 
-            if (discoveryEngineConfig == null)
+            if (discoveryServerConfig == null)
             {
-                discoveryEngineConfig = new DiscoveryEngineConfig();
+                discoveryServerConfig = new DiscoveryServerConfig();
             }
 
-            discoveryEngineConfig.setInboundRequestConnection(connection);
+            discoveryServerConfig.setDiscoveryEngineGUIDs(discoveryEngineGUIDs);
 
-            serverConfig.setDiscoveryEngineConfig(discoveryEngineConfig);
+            serverConfig.setDiscoveryServerConfig(discoveryServerConfig);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
@@ -273,7 +274,7 @@ public class OMAGServerConfigDiscoveryEngine
             configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + ".");
 
             serverConfig.setAuditTrail(configAuditLog);
-            serverConfig.setDiscoveryEngineConfig(null);
+            serverConfig.setDiscoveryServerConfig(null);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
