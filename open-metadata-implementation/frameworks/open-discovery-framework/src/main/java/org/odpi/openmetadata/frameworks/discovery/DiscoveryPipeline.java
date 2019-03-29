@@ -14,8 +14,6 @@ import java.util.List;
 /**
  * DiscoveryPipeline is a discovery service that is responsible for choreographing the discovery services
  * passed on initializeEmbeddedConnectors.
- *
- *
  */
 public class DiscoveryPipeline extends DiscoveryService implements VirtualConnectorExtension
 {
@@ -24,8 +22,7 @@ public class DiscoveryPipeline extends DiscoveryService implements VirtualConnec
 
 
     /**
-     * Set up the list of discovery services connectors that will be invoked as part of this
-     * discovery pipeline.
+     * Set up the list of discovery services connectors that will be invoked as part of this discovery pipeline.
      *
      * The connectors are initialized waiting to start.  After start() is called on the
      * discovery pipeline, it will choreograph the invocation of its embedded discovery services by calling
@@ -39,6 +36,15 @@ public class DiscoveryPipeline extends DiscoveryService implements VirtualConnec
     }
 
 
+    /**
+     * Retrieve and validate the list of embedded connectors and cast them to discovery service connector.
+     *
+     * @param embeddedConnectors list of supplied connector instances supplied by the Connector Broker.
+     *
+     * @return list of discovery service connectors
+     *
+     * @throws DiscoveryServiceException one of the embedded connectors is not a discovery service
+     */
     private List<DiscoveryService> getEmbeddedDiscoveryServices(List<Connector>  embeddedConnectors) throws DiscoveryServiceException
     {
         final String           methodName   = "getEmbeddedDiscoveryServices";
@@ -79,6 +85,7 @@ public class DiscoveryPipeline extends DiscoveryService implements VirtualConnec
 
         return discoveryServices;
     }
+
 
     /**
      * This implementation provides an inline sequential invocation of the supplied discovery services.

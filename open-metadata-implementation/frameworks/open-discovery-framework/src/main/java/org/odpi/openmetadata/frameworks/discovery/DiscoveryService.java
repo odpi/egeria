@@ -19,7 +19,7 @@ import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryContext;
  */
 public abstract class DiscoveryService extends ConnectorBase
 {
-    protected String           discoveryServiceName = null;
+    protected String           discoveryServiceName = "<Unknown>";
     protected DiscoveryContext discoveryContext = null;
 
 
@@ -34,6 +34,17 @@ public abstract class DiscoveryService extends ConnectorBase
     public synchronized void setDiscoveryContext(DiscoveryContext discoveryContext)
     {
         this.discoveryContext = discoveryContext;
+    }
+
+
+    /**
+     * Set up the discovery service name.  This is used in error messages.
+     *
+     * @param discoveryServiceName name of the discovery service
+     */
+    public void setDiscoveryServiceName(String discoveryServiceName)
+    {
+        this.discoveryServiceName = discoveryServiceName;
     }
 
 
@@ -56,11 +67,6 @@ public abstract class DiscoveryService extends ConnectorBase
     public void start() throws ConnectorCheckedException
     {
         super.start();
-
-        if (super.getConnection() != null)
-        {
-            discoveryServiceName = super.getConnection().getConnectionName();
-        }
 
         if (discoveryContext == null)
         {

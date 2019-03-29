@@ -16,6 +16,9 @@ discovered about the Asset, its structure and/or content.
 * [Discovery Pipeline](discovery-pipeline.md)
 * [Discovery Annotation](discovery-annotation.md)
 * [Discovery Context](discovery-context.md)
+* [Discovery Engine](discovery-engine.md)
+* [Discovery Server](discovery-server.md)
+* [Discovery Report](discovery-report.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

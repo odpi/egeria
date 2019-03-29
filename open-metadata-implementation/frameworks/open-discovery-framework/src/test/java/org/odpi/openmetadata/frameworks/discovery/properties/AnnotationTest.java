@@ -1,8 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.discoveryengine.properties;
+package org.odpi.openmetadata.frameworks.discovery.properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.PropertyBase;
 import org.testng.annotations.Test;
 
 import java.util.*;
@@ -15,12 +19,12 @@ import static org.testng.Assert.assertTrue;
  */
 public class AnnotationTest
 {
-    private ElementType          type            = new ElementType();
-    private Date                 creationDate    = new Date(27);
-    private Date                 reviewDate      = new Date(1234);
-    private List<Classification> classifications = new ArrayList<>();
-    private Map<String, Object>  analysisParameters = new HashMap<>();
-    private Map<String, Object>  additionalProperties = new HashMap<>();
+    private ElementType          type                 = new ElementType();
+    private Date                 creationDate         = new Date(27);
+    private Date                 reviewDate           = new Date(1234);
+    private List<Classification> classifications      = new ArrayList<>();
+    private Map<String, Object>  analysisParameters   = new HashMap<>();
+    private Map<String, String>  additionalProperties = new HashMap<>();
 
 
     /**
@@ -44,10 +48,6 @@ public class AnnotationTest
         testObject.setGUID("TestGUID");
         testObject.setURL("TestURL");
         testObject.setClassifications(classifications);
-        testObject.setReportName("TestReportName");
-        testObject.setReportDescription("TestReportDescription");
-        testObject.setCreationDate(creationDate);
-        testObject.setAnalysisParameters(analysisParameters);
         testObject.setAnnotationType("TestAnnotationType");
         testObject.setSummary("TestSummary");
         testObject.setConfidenceLevel(5);
@@ -77,10 +77,6 @@ public class AnnotationTest
         assertTrue(resultObject.getURL().equals("TestURL"));
         assertTrue(resultObject.getClassifications() == null);
 
-        assertTrue(resultObject.getReportName().equals("TestReportName"));
-        assertTrue(resultObject.getReportDescription().equals("TestReportDescription"));
-        assertTrue(resultObject.getCreationDate().equals(creationDate));
-        assertTrue(resultObject.getAnalysisParameters().equals(analysisParameters));
         assertTrue(resultObject.getAnnotationType().equals("TestAnnotationType"));
         assertTrue(resultObject.getSummary().equals("TestSummary"));
         assertTrue(resultObject.getConfidenceLevel() == 5);
@@ -108,10 +104,6 @@ public class AnnotationTest
         assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getClassifications() == null);
 
-        assertTrue(nullObject.getReportName() == null);
-        assertTrue(nullObject.getReportDescription() == null);
-        assertTrue(nullObject.getCreationDate() == null);
-        assertTrue(nullObject.getAnalysisParameters() == null);
         assertTrue(nullObject.getAnnotationType() == null);
         assertTrue(nullObject.getSummary() == null);
         assertTrue(nullObject.getConfidenceLevel() == 0);
@@ -132,10 +124,6 @@ public class AnnotationTest
         assertTrue(nullObject.getURL() == null);
         assertTrue(nullObject.getClassifications() == null);
 
-        assertTrue(nullObject.getReportName() == null);
-        assertTrue(nullObject.getReportDescription() == null);
-        assertTrue(nullObject.getCreationDate() == null);
-        assertTrue(nullObject.getAnalysisParameters() == null);
         assertTrue(nullObject.getAnnotationType() == null);
         assertTrue(nullObject.getSummary() == null);
         assertTrue(nullObject.getConfidenceLevel() == 0);
@@ -212,52 +200,6 @@ public class AnnotationTest
         try
         {
             validateResultObject(objectMapper.readValue(jsonString, Annotation.class));
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
-
-        /*
-         * Through superclass
-         */
-        ElementHeader  elementHeader = getTestObject();
-
-        try
-        {
-            jsonString = objectMapper.writeValueAsString(elementHeader);
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
-
-        try
-        {
-            validateResultObject((Annotation)objectMapper.readValue(jsonString, ElementHeader.class));
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
-
-        /*
-         * Through superclass
-         */
-        PropertyBase  propertyBase = getTestObject();
-
-        try
-        {
-            jsonString = objectMapper.writeValueAsString(propertyBase);
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
-
-        try
-        {
-            validateResultObject((Annotation)objectMapper.readValue(jsonString, PropertyBase.class));
         }
         catch (Throwable  exc)
         {
