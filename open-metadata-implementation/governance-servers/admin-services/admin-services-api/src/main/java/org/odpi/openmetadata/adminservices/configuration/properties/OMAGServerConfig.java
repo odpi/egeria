@@ -91,7 +91,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private EventBusConfig            eventBusConfig            = null;
     private List<AccessServiceConfig> accessServicesConfig      = null;
     private RepositoryServicesConfig  repositoryServicesConfig  = null;
-    private DiscoveryEngineConfig     discoveryEngineConfig     = null;
+    private DiscoveryServerConfig     discoveryServerConfig     = null;
     private OpenLineageConfig         openLineageConfig         = null;
     private StewardshipServicesConfig stewardshipServicesConfig = null;
     private SecuritySyncConfig        securitySyncConfig        = null;
@@ -127,7 +127,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             eventBusConfig = template.getEventBusConfig();
             accessServicesConfig = template.getAccessServicesConfig();
             repositoryServicesConfig = template.getRepositoryServicesConfig();
-            discoveryEngineConfig = template.getDiscoveryEngineConfig();
+            discoveryServerConfig = template.getDiscoveryServerConfig();
             openLineageConfig = template.getOpenLineageConfig();
             stewardshipServicesConfig = template.getStewardshipServicesConfig();
             securitySyncConfig = template.getSecuritySyncConfig();
@@ -359,24 +359,24 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the configuration for a discovery engine.
+     * Return the configuration for a discovery server.
      *
-     * @return DiscoveryEngineConfig properties
+     * @return DiscoveryServerConfig properties
      */
-    public DiscoveryEngineConfig getDiscoveryEngineConfig()
+    public DiscoveryServerConfig getDiscoveryServerConfig()
     {
-        return discoveryEngineConfig;
+        return discoveryServerConfig;
     }
 
 
     /**
-     * Set up the configuration for a discovery engine.
+     * Set up the configuration for a discovery server.
      *
-     * @param discoveryEngineConfig DiscoveryEngineConfig properties
+     * @param discoveryServerConfig DiscoveryServerConfig properties
      */
-    public void setDiscoveryEngineConfig(DiscoveryEngineConfig discoveryEngineConfig)
+    public void setDiscoveryServerConfig(DiscoveryServerConfig discoveryServerConfig)
     {
-        this.discoveryEngineConfig = discoveryEngineConfig;
+        this.discoveryServerConfig = discoveryServerConfig;
     }
 
     /**
@@ -446,6 +446,27 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Return the configuration for the virtualization services.
+     *
+     * @return VirtualizationConfig properties
+     */
+    public VirtualizationConfig getVirtualizationConfig() {
+        return virtualizationConfig;
+    }
+
+
+    /**
+     * Set up the configuration for the virtualization services.
+     *
+     * @param virtualizationConfig properties
+     */
+    public void setVirtualizationConfig(VirtualizationConfig virtualizationConfig)
+    {
+        this.virtualizationConfig = virtualizationConfig;
+    }
+
+
+    /**
      * Return the list of audit log entries associated with this config file.
      * The audit log simply keep track of the changed to the configuration.
      *
@@ -465,24 +486,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     public void setAuditTrail(List<String> auditTrail)
     {
         this.auditTrail = auditTrail;
-    }
-
-    /**
-     * Return the configuration for the virtualization services.
-     *
-     * @return VirtualizationConfig properties
-     */
-    public VirtualizationConfig getVirtualizationConfig() {
-        return virtualizationConfig;
-    }
-
-    /**
-     * Set up the configuration for the virtualization services.
-     *
-     * @param virtualizationConfig properties
-     */
-    public void setVirtualizationConfig(VirtualizationConfig virtualizationConfig) {
-        this.virtualizationConfig = virtualizationConfig;
     }
 
 
@@ -505,7 +508,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 ", eventBusConfig=" + eventBusConfig +
                 ", accessServicesConfig=" + accessServicesConfig +
                 ", repositoryServicesConfig=" + repositoryServicesConfig +
-                ", discoveryEngineConfig=" + discoveryEngineConfig +
+                ", discoveryServerConfig=" + discoveryServerConfig +
                 ", openLineageConfig=" + openLineageConfig +
                 ", stewardshipServicesConfig=" + stewardshipServicesConfig +
                 ", securitySyncConfig=" + securitySyncConfig +
@@ -542,7 +545,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 Objects.equals(getEventBusConfig(), that.getEventBusConfig()) &&
                 Objects.equals(getAccessServicesConfig(), that.getAccessServicesConfig()) &&
                 Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
-                Objects.equals(getDiscoveryEngineConfig(), that.getDiscoveryEngineConfig()) &&
+                Objects.equals(getDiscoveryServerConfig(), that.getDiscoveryServerConfig()) &&
                 Objects.equals(getOpenLineageConfig(), that.getOpenLineageConfig()) &&
                 Objects.equals(getStewardshipServicesConfig(), that.getStewardshipServicesConfig()) &&
                 Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
@@ -561,7 +564,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     {
         return Objects.hash(getLocalServerId(), getLocalServerName(), getLocalServerType(), getOrganizationName(),
                             getLocalServerURL(), getLocalServerUserId(), getMaxPageSize(), getEventBusConfig(),
-                            getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryEngineConfig(),
+                            getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryServerConfig(),
                             getStewardshipServicesConfig(), getSecuritySyncConfig(), getAuditTrail(), getVirtualizationConfig());
     }
 }
