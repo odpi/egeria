@@ -28,6 +28,8 @@ public class EventBusConfig extends AdminServicesConfigHeader
     private String              topicURLRoot            = null;
     private Map<String, Object> configurationProperties = null;
 
+    @Deprecated private Map<String, Object> additionalProperties    = null;
+
 
     /**
      * Default constructor
@@ -105,8 +107,31 @@ public class EventBusConfig extends AdminServicesConfigHeader
      *
      * @return map of name value pairs
      */
+    @Deprecated public Map<String, Object> getAdditionalProperties()
+    {
+        return getConfigurationProperties();
+    }
+
+
+    /**
+     * Set up the additional properties for the event bus connection.
+     *
+     * @param properties map of name value pairs
+     */
+    @Deprecated public void setAdditionalProperties(Map<String, Object> properties)
+    {
+        this.configurationProperties = properties;
+    }
+
+
+    /**
+     * Return the configuration properties for the event bus connection.
+     *
+     * @return map of name value pairs
+     */
     public Map<String, Object> getConfigurationProperties()
     {
+
         if (configurationProperties == null)
         {
             return null;
@@ -123,7 +148,7 @@ public class EventBusConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Set up the additional properties for the event bus connection.
+     * Set up the configuration properties for the event bus connection.
      *
      * @param configurationProperties map of name value pairs
      */
