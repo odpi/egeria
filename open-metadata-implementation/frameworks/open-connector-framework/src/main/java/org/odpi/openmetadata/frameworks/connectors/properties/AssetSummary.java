@@ -232,20 +232,11 @@ public class AssetSummary extends AssetDescriptor
      * Return the set of properties that are specific to the particular type of asset.  The caller is given their
      * own copy of the property object.  The properties are named entityName.attributeName. The values are all strings.
      *
-     * @return AdditionalProperties asset properties using the name of attributes from the model.
+     * @return  asset properties using the name of attributes from the model.
      */
-    public AdditionalProperties getExtendedProperties()
+    public Map<String, Object> getExtendedProperties()
     {
-        Map<String, Object>   assetProperties = assetBean.getExtendedProperties();
-
-        if (assetProperties == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new AdditionalProperties(this, assetProperties);
-        }
+        return assetBean.getExtendedProperties();
     }
 
 
@@ -256,7 +247,7 @@ public class AssetSummary extends AssetDescriptor
      */
     public AdditionalProperties getAdditionalProperties()
     {
-        Map<String, Object>   additionalProperties = assetBean.getAdditionalProperties();
+        Map<String, String>   additionalProperties = assetBean.getAdditionalProperties();
 
         if (additionalProperties == null)
         {

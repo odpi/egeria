@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -262,18 +263,9 @@ public class ConnectionProperties extends AssetReferenceable
      *
      * @return secured properties typically user credentials for the connection
      */
-    protected AdditionalProperties getSecuredProperties()
+    protected Map<String, Object> getSecuredProperties()
     {
-        Map<String, Object>   securedProperties = connectionBean.getSecuredProperties();
-
-        if (securedProperties == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new AdditionalProperties(super.getParentAsset(), securedProperties);
-        }
+        return connectionBean.getSecuredProperties();
     }
 
 

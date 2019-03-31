@@ -21,7 +21,7 @@ public class TestAsset
     private ElementType          type                 = new ElementType();
     private List<Classification> classifications      = new ArrayList<>();
     private List<String>         zoneMembership       = new ArrayList<>();
-    private Map<String, Object>  additionalProperties = new HashMap<>();
+    private Map<String, String>  additionalProperties = new HashMap<>();
     private Map<String, Object>  assetProperties      = new HashMap<>();
 
 

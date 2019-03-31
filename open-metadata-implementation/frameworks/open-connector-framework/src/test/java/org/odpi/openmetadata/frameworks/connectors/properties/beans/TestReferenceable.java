@@ -21,7 +21,7 @@ public class TestReferenceable
     private ElementType          type            = new ElementType();
     private List<Classification> classifications = new ArrayList<>();
     private List<Meaning>        meanings        = new ArrayList<>();
-    private Map<String, Object>  additionalProperties = new HashMap<>();
+    private Map<String, String>  additionalProperties = new HashMap<>();
 
 
     /**
@@ -129,7 +129,7 @@ public class TestReferenceable
      */
     @Test public void testAdditionalProperties()
     {
-        Map<String, Object>   propertyMap;
+        Map<String, String>   propertyMap;
         Asset                 testObject = new Asset();
 
         assertTrue(testObject.getAdditionalProperties() == null);
@@ -150,7 +150,7 @@ public class TestReferenceable
         testObject = new Asset();
         testObject.setAdditionalProperties(propertyMap);
 
-        Map<String, Object>   retrievedPropertyMap = testObject.getAdditionalProperties();
+        Map<String, String>   retrievedPropertyMap = testObject.getAdditionalProperties();
 
         assertTrue(retrievedPropertyMap != null);
         assertFalse(retrievedPropertyMap.isEmpty());

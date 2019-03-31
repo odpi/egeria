@@ -37,7 +37,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public abstract class SchemaElement extends Referenceable
 {
-    protected Map<String,Object> schemaProperties = null;
+    protected Map<String, Object> schemaProperties = null;
 
     /**
      * Default constructor
@@ -81,7 +81,7 @@ public abstract class SchemaElement extends Referenceable
      *
      * @param schemaProperties  properties map
      */
-    public void setSchemaProperties(Map<String,Object> schemaProperties)
+    public void setSchemaProperties(Map<String, Object> schemaProperties)
     {
         this.schemaProperties = schemaProperties;
     }

@@ -208,21 +208,21 @@ public class TestAssetSummary
 
         AssetSummary testObject = new AssetSummary(assetBean);
 
-        AdditionalProperties assetProperties = testObject.getExtendedProperties();
+        Map<String, Object> assetProperties = testObject.getExtendedProperties();
 
-        assertTrue(assetProperties.getPropertyNames() != null);
+        assertTrue(assetProperties.keySet() != null);
 
-        Iterator<String> iterator = assetProperties.getPropertyNames();
+        Iterator<String> iterator = assetProperties.keySet().iterator();
 
         String propertyName;
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property2"));
-        assertTrue(assetProperties.getProperty(propertyName).equals(new Integer(2)));
+        assertTrue(assetProperties.get(propertyName).equals(new Integer(2)));
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property1"));
-        assertTrue(assetProperties.getProperty(propertyName).equals("TestString"));
+        assertTrue(assetProperties.get(propertyName).equals("TestString"));
 
         try
         {
@@ -257,10 +257,10 @@ public class TestAssetSummary
      */
     @Test public void testAdditionalProperties()
     {
-        Map<String, Object>  propertyMap = new HashMap<>();
+        Map<String, String>  propertyMap = new HashMap<>();
 
         propertyMap.put("property1", "TestString");
-        propertyMap.put("property2", new Integer(2));
+        propertyMap.put("property2", "Two");
 
         Asset assetBean = new Asset();
         assetBean.setAdditionalProperties(propertyMap);
@@ -277,7 +277,7 @@ public class TestAssetSummary
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property2"));
-        assertTrue(additionalProperties.getProperty(propertyName).equals(new Integer(2)));
+        assertTrue(additionalProperties.getProperty(propertyName).equals("Two"));
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property1"));

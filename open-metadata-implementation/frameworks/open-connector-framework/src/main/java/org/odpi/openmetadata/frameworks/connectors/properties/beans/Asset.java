@@ -63,20 +63,20 @@ public class Asset extends Referenceable
     /**
      * Copy/clone constructor.  Note, this is a deep copy
      *
-     * @param templateAsset template values for asset summary
+     * @param template template values for asset summary
      */
-    public Asset(Asset templateAsset)
+    public Asset(Asset template)
     {
-        super(templateAsset);
+        super(template);
 
-        if (templateAsset != null)
+        if (template != null)
         {
-            displayName = templateAsset.getDisplayName();
-            shortDescription = templateAsset.getShortDescription();
-            description = templateAsset.getDescription();
-            owner = templateAsset.getOwner();
-            ownerType = templateAsset.getOwnerType();
-            zoneMembership = templateAsset.getZoneMembership();
+            displayName = template.getDisplayName();
+            shortDescription = template.getShortDescription();
+            description = template.getDescription();
+            owner = template.getOwner();
+            ownerType = template.getOwnerType();
+            zoneMembership = template.getZoneMembership();
         }
     }
 

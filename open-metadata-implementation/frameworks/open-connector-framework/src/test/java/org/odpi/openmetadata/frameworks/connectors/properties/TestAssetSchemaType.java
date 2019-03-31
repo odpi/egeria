@@ -20,7 +20,7 @@ public class TestAssetSchemaType
 {
     private ElementType          type                 = new ElementType();
     private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, Object>  additionalProperties = new HashMap<>();
+    private Map<String, String>  additionalProperties = new HashMap<>();
 
 
     /**
@@ -240,21 +240,21 @@ public class TestAssetSchemaType
 
         AssetSchemaType testObject = new AssetSchemaType(testBean);
 
-        AdditionalProperties schemaProperties = testObject.getSchemaProperties();
+        Map<String, Object> schemaProperties = testObject.getSchemaProperties();
 
-        assertTrue(schemaProperties.getPropertyNames() != null);
+        assertTrue(schemaProperties.keySet() != null);
 
-        Iterator<String> iterator = schemaProperties.getPropertyNames();
+        Iterator<String> iterator = schemaProperties.keySet().iterator();
 
         String propertyName;
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property2"));
-        assertTrue(schemaProperties.getProperty(propertyName).equals(new Integer(2)));
+        assertTrue(schemaProperties.get(propertyName).equals(new Integer(2)));
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property1"));
-        assertTrue(schemaProperties.getProperty(propertyName).equals("TestString"));
+        assertTrue(schemaProperties.get(propertyName).equals("TestString"));
 
         try
         {

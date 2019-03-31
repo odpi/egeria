@@ -246,23 +246,23 @@ public class ConnectorBroker
             AccessibleConnection accessibleConnection = new AccessibleConnection(embeddedConnection.getConnectionProperties());
             Connection           connectionBean       = accessibleConnection.getConnectionBean();
 
-            AdditionalProperties arguments            = embeddedConnection.getArguments();
+            Map<String, Object>  arguments            = embeddedConnection.getArguments();
 
             if (arguments != null)
             {
-                Map<String, Object>  additionalProperties = connectionBean.getAdditionalProperties();
+                Map<String, String>  additionalProperties = connectionBean.getAdditionalProperties();
                 if (additionalProperties == null)
                 {
                     additionalProperties = new HashMap<>();
                 }
 
-                Iterator<String>     argumentNames = arguments.getPropertyNames();
+                Iterator<String>     argumentNames = arguments.keySet().iterator();
 
                 while (argumentNames.hasNext())
                 {
                     String  argumentName = argumentNames.next();
 
-                    additionalProperties.put(argumentName, arguments.getProperty(argumentName));
+                    additionalProperties.put(argumentName, arguments.get(argumentName).toString());
                 }
 
                 if (additionalProperties.isEmpty())
