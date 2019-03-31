@@ -39,12 +39,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         })
 public class Referenceable extends ElementHeader
 {
-    /*
-     * Attributes of a Referenceable
-     */
     protected String              qualifiedName        = null;
     protected Map<String, String> additionalProperties = null;
-    protected Map<String, Object> extendedProperties   = null;
     protected List<Meaning>       meanings             = null;
 
     /**
@@ -69,7 +65,6 @@ public class Referenceable extends ElementHeader
         {
             qualifiedName = template.getQualifiedName();
             additionalProperties = template.getAdditionalProperties();
-            extendedProperties = template.getExtendedProperties();
             meanings = template.getMeanings();
         }
     }
@@ -127,38 +122,6 @@ public class Referenceable extends ElementHeader
         else
         {
             return new HashMap<>(additionalProperties);
-        }
-    }
-
-    /**
-     * Set up properties from subclasses properties.
-     *
-     * @param extendedProperties asset properties map
-     */
-    public void setExtendedProperties(Map<String, Object> extendedProperties)
-    {
-        this.extendedProperties = extendedProperties;
-    }
-
-
-    /**
-     * Return a copy of the properties from subclasses.  Null means no extended properties are available.
-     *
-     * @return asset property map
-     */
-    public Map<String, Object> getExtendedProperties()
-    {
-        if (extendedProperties == null)
-        {
-            return null;
-        }
-        else if (extendedProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(extendedProperties);
         }
     }
 
@@ -241,7 +204,6 @@ public class Referenceable extends ElementHeader
         Referenceable that = (Referenceable) objectToCompare;
         return Objects.equals(getQualifiedName(), that.getQualifiedName()) &&
                 Objects.equals(getAdditionalProperties(), that.getAdditionalProperties()) &&
-                Objects.equals(getExtendedProperties(), that.getExtendedProperties()) &&
                 Objects.equals(getMeanings(), that.getMeanings());
     }
 
@@ -257,7 +219,6 @@ public class Referenceable extends ElementHeader
         return Objects.hash(super.hashCode(),
                             getQualifiedName(),
                             getAdditionalProperties(),
-                            getExtendedProperties(),
                             getMeanings());
     }
 }

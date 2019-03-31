@@ -170,6 +170,7 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addCollectionDef(getMapStringBooleanCollectionDef());
         this.archiveBuilder.addCollectionDef(getMapStringIntCollectionDef());
         this.archiveBuilder.addCollectionDef(getMapStringLongCollectionDef());
+        this.archiveBuilder.addCollectionDef(getMapStringObjectCollectionDef());
         this.archiveBuilder.addCollectionDef(getArrayStringCollectionDef());
         this.archiveBuilder.addCollectionDef(getArrayIntCollectionDef());
 
@@ -249,6 +250,25 @@ public class OpenMetadataTypesArchive
                                                  descriptionGUID,
                                                  PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING,
                                                  PrimitiveDefCategory.OM_PRIMITIVE_TYPE_LONG);
+    }
+
+
+    /**
+     * Defines the {@code map<string,object>} type.
+     *
+     * @return CollectionDef for this type
+     */
+    private CollectionDef getMapStringObjectCollectionDef()
+    {
+        final String guid            = "8fa603dd-c2c5-43fc-8ff4-92141f2414ad";
+        final String description     = "A map from String to Object.";
+        final String descriptionGUID = null;
+
+        return archiveHelper.getMapCollectionDef(guid,
+                                                 description,
+                                                 descriptionGUID,
+                                                 PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING,
+                                                 PrimitiveDefCategory.OM_PRIMITIVE_TYPE_UNKNOWN);
     }
 
 
@@ -7755,6 +7775,9 @@ public class OpenMetadataTypesArchive
         final String attribute3Name            = "securedProperties";
         final String attribute3Description     = "Private properties accessible only to the connector.";
         final String attribute3DescriptionGUID = null;
+        final String attribute4Name            = "configurationProperties";
+        final String attribute4Description     = "Specific configuration properties for the underlying technology.";
+        final String attribute4DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -7767,6 +7790,10 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
                                                                     attribute3Description,
                                                                     attribute3DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getMapStringObjectTypeDefAttribute(attribute4Name,
+                                                                    attribute4Description,
+                                                                    attribute4DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
@@ -8051,7 +8078,7 @@ public class OpenMetadataTypesArchive
                                                            attribute1Description,
                                                            attribute1DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute2Name,
+        property = archiveHelper.getMapStringObjectTypeDefAttribute(attribute2Name,
                                                                     attribute2Description,
                                                                     attribute2DescriptionGUID);
         properties.add(property);

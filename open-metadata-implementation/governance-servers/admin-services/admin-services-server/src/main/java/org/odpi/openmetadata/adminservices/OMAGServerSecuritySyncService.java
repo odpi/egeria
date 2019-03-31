@@ -56,7 +56,7 @@ public class OMAGServerSecuritySyncService {
                                 eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                                 securitySyncConfig.getSecuritySyncInTopicName(),
                                 UUID.randomUUID().toString(),
-                                eventBusConfig.getAdditionalProperties()));
+                                eventBusConfig.getConfigurationProperties()));
             }
 
             if(securitySyncConfig != null && securitySyncConfig.getSecurityServerType() != null) {
@@ -66,7 +66,7 @@ public class OMAGServerSecuritySyncService {
                                 eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                                 getOutputTopicName(securitySyncConfig.getSecurityServerType()),
                                 serverConfig.getLocalServerId(),
-                                eventBusConfig.getAdditionalProperties()));
+                                eventBusConfig.getConfigurationProperties()));
             }
 
             serverConfig.setSecuritySyncConfig(securitySyncConfig);

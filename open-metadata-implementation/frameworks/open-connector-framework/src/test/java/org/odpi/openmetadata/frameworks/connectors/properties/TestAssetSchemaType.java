@@ -228,7 +228,7 @@ public class TestAssetSchemaType
     /**
      * Validate that schema properties are handled properly.
      */
-    @Test public void testSchemaProperties()
+    @Test public void testExtendedProperties()
     {
         Map<String, Object>  propertyMap = new HashMap<>();
 
@@ -236,11 +236,11 @@ public class TestAssetSchemaType
         propertyMap.put("property2", new Integer(2));
 
         SchemaType testBean = new SchemaType();
-        testBean.setSchemaProperties(propertyMap);
+        testBean.setExtendedProperties(propertyMap);
 
         AssetSchemaType testObject = new AssetSchemaType(testBean);
 
-        Map<String, Object> schemaProperties = testObject.getSchemaProperties();
+        Map<String, Object> schemaProperties = testObject.getExtendedProperties();
 
         assertTrue(schemaProperties.keySet() != null);
 
@@ -269,16 +269,16 @@ public class TestAssetSchemaType
         testBean = new SchemaType();
         testObject = new AssetSchemaType(testBean);
 
-        schemaProperties = testObject.getSchemaProperties();
+        schemaProperties = testObject.getExtendedProperties();
 
         assertTrue(schemaProperties == null);
 
         propertyMap = new HashMap<>();
         testBean = new SchemaType();
-        testBean.setSchemaProperties(propertyMap);
+        testBean.setExtendedProperties(propertyMap);
         testObject = new AssetSchemaType(testBean);
 
-        schemaProperties = testObject.getSchemaProperties();
+        schemaProperties = testObject.getExtendedProperties();
 
         assertTrue(schemaProperties == null);
     }

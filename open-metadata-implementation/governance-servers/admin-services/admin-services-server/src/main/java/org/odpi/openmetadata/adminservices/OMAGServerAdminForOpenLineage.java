@@ -65,7 +65,7 @@ public class OMAGServerAdminForOpenLineage {
                             eventBusConfig.getTopicURLRoot() + ".server",
                             openLineageConfig.getAssetLineageOutTopicName(),
                             UUID.randomUUID().toString(),
-                            eventBusConfig.getAdditionalProperties()));
+                            eventBusConfig.getConfigurationProperties()));
 
 
 

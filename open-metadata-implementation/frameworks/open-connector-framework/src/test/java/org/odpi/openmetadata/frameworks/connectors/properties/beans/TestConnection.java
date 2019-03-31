@@ -18,12 +18,13 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestConnection
 {
-    private ElementType          type                 = new ElementType();
-    private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, String>  additionalProperties = new HashMap<>();
-    private Map<String, Object>  securedProperties    = new HashMap<>();
-    private ConnectorType        connectorType        = new ConnectorType();
-    private Endpoint             endpoint             = new Endpoint();
+    private ElementType          type                    = new ElementType();
+    private List<Classification> classifications         = new ArrayList<>();
+    private Map<String, String>  additionalProperties    = new HashMap<>();
+    private Map<String, Object>  configurationProperties = new HashMap<>();
+    private Map<String, Object>  securedProperties       = new HashMap<>();
+    private ConnectorType        connectorType           = new ConnectorType();
+    private Endpoint             endpoint                = new Endpoint();
 
 
     /**
@@ -56,6 +57,7 @@ public class TestConnection
         testObject.setDescription("TestDescription");
         testObject.setConnectorType(connectorType);
         testObject.setEndpoint(endpoint);
+        testObject.setConfigurationProperties(configurationProperties);
         testObject.setSecuredProperties(securedProperties);
 
         return testObject;
@@ -81,6 +83,7 @@ public class TestConnection
         assertTrue(resultObject.getDescription().equals("TestDescription"));
         assertTrue(resultObject.getConnectorType().equals(connectorType));
         assertTrue(resultObject.getEndpoint().equals(endpoint));
+        assertTrue(resultObject.getConfigurationProperties() == null);
         assertTrue(resultObject.getSecuredProperties() == null);
     }
 
@@ -113,6 +116,7 @@ public class TestConnection
         assertTrue(nullObject.getDescription() == null);
         assertTrue(nullObject.getConnectorType() == null);
         assertTrue(nullObject.getEndpoint() == null);
+        assertTrue(nullObject.getConfigurationProperties() == null);
         assertTrue(nullObject.getSecuredProperties() == null);
 
         nullObject = new Connection(null);
@@ -129,12 +133,47 @@ public class TestConnection
         assertTrue(nullObject.getDescription() == null);
         assertTrue(nullObject.getConnectorType() == null);
         assertTrue(nullObject.getEndpoint() == null);
+        assertTrue(nullObject.getConfigurationProperties() == null);
         assertTrue(nullObject.getSecuredProperties() == null);
     }
 
 
     /**
-     * Validate that asset properties are managed properly
+     * Validate that configuration properties are managed properly
+     */
+    @Test public void testConfigurationProperties()
+    {
+        Map<String, Object> propertyMap;
+        Connection          testObject = new Connection();
+
+        assertTrue(testObject.getConfigurationProperties() == null);
+
+        propertyMap = null;
+        testObject = new Connection();
+        testObject.setConfigurationProperties(propertyMap);
+
+        assertTrue(testObject.getConfigurationProperties() == null);
+
+        propertyMap = new HashMap<>();
+        testObject = new Connection();
+        testObject.setConfigurationProperties(propertyMap);
+
+        assertTrue(testObject.getConfigurationProperties() == null);
+
+        propertyMap.put("propertyName", "propertyValue");
+        testObject = new Connection();
+        testObject.setConfigurationProperties(propertyMap);
+
+        Map<String, Object>   retrievedPropertyMap = testObject.getConfigurationProperties();
+
+        assertTrue(retrievedPropertyMap != null);
+        assertFalse(retrievedPropertyMap.isEmpty());
+        assertTrue("propertyValue".equals(retrievedPropertyMap.get("propertyName")));
+    }
+
+
+    /**
+     * Validate that secure properties are managed properly
      */
     @Test public void testSecuredProperties()
     {
