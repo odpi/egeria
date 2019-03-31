@@ -382,6 +382,7 @@
                         <exclude>**/banner.txt</exclude>
                         <exclude>**/*.json</exclude>
                         <exclude>**/*.patch</exclude>
+                        <exclude>**/*.drawio</exclude>
                         <exclude>**/*.log</exclude>
                         <exclude>**/*.csv</exclude>
                         <exclude>**/*.iml</exclude>
