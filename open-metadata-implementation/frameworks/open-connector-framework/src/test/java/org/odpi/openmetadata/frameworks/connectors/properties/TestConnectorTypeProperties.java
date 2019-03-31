@@ -15,11 +15,12 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestConnectorTypeProperties
 {
-    private ElementType          type                           = new ElementType();
-    private List<Classification> classifications                = new ArrayList<>();
-    private Map<String, String>  additionalProperties           = new HashMap<>();
-    private List<String>         recognizedAdditionalProperties = new ArrayList<>();
-    private List<String>         recognizedSecuredProperties    = new ArrayList<>();
+    private ElementType          type                              = new ElementType();
+    private List<Classification> classifications                   = new ArrayList<>();
+    private Map<String, String>  additionalProperties              = new HashMap<>();
+    private List<String>         recognizedAdditionalProperties    = new ArrayList<>();
+    private List<String>         recognizedSecuredProperties       = new ArrayList<>();
+    private List<String>         recognizedConfigurationProperties = new ArrayList<>();
 
 
 
@@ -30,6 +31,10 @@ public class TestConnectorTypeProperties
     public TestConnectorTypeProperties()
     {
         type.setElementTypeName("TestType");
+
+        recognizedAdditionalProperties.add("TestValue");
+        recognizedSecuredProperties.add("TestValue");
+        recognizedConfigurationProperties.add("TestValue");
     }
 
 
@@ -55,6 +60,7 @@ public class TestConnectorTypeProperties
         testObject.setConnectorProviderClassName("TestClassName");
         testObject.setRecognizedAdditionalProperties(recognizedAdditionalProperties);
         testObject.setRecognizedSecuredProperties(recognizedSecuredProperties);
+        testObject.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         return new ConnectorTypeProperties(testObject);
     }
@@ -82,6 +88,7 @@ public class TestConnectorTypeProperties
         testObject.setConnectorProviderClassName("TestClassName");
         testObject.setRecognizedAdditionalProperties(recognizedAdditionalProperties);
         testObject.setRecognizedSecuredProperties(recognizedSecuredProperties);
+        testObject.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         return new ConnectorTypeProperties(testObject);
     }
@@ -107,8 +114,9 @@ public class TestConnectorTypeProperties
         testObject.setDisplayName("TestDisplayName");
         testObject.setDescription("TestDifferentDescription");
         testObject.setConnectorProviderClassName("TestDifferentClassName");
-        testObject.setRecognizedAdditionalProperties(recognizedAdditionalProperties);
-        testObject.setRecognizedSecuredProperties(recognizedSecuredProperties);
+        testObject.setRecognizedAdditionalProperties(new ArrayList<>());
+        testObject.setRecognizedSecuredProperties(new ArrayList<>());
+        testObject.setRecognizedConfigurationProperties(new ArrayList<>());
 
         return new ConnectorTypeProperties(testObject);
     }
@@ -134,6 +142,7 @@ public class TestConnectorTypeProperties
         assertTrue(resultObject.getConnectorProviderClassName().equals("TestClassName"));
         assertTrue(resultObject.getRecognizedAdditionalProperties().equals(recognizedAdditionalProperties));
         assertTrue(resultObject.getRecognizedSecuredProperties().equals(recognizedSecuredProperties));
+        assertTrue(resultObject.getRecognizedConfigurationProperties().equals(recognizedConfigurationProperties));
     }
 
 
@@ -157,6 +166,7 @@ public class TestConnectorTypeProperties
         assertTrue(nullObject.getConnectorProviderClassName() == null);
         assertTrue(nullObject.getRecognizedAdditionalProperties() == null);
         assertTrue(nullObject.getRecognizedSecuredProperties() == null);
+        assertTrue(nullObject.getRecognizedConfigurationProperties() == null);
     }
 
 
@@ -204,6 +214,19 @@ public class TestConnectorTypeProperties
         validateNullObject(nullObject);
     }
 
+
+    /**
+     * Validate that an empty array is returned as null.
+     */
+    @Test public void testRecognizedList()
+    {
+        ConnectorTypeProperties connectorTypeProperties = getAnotherDifferentObject();
+
+        assertTrue(connectorTypeProperties.getRecognizedAdditionalProperties() == null);
+        assertTrue(connectorTypeProperties.getRecognizedSecuredProperties() == null);
+        assertTrue(connectorTypeProperties.getRecognizedConfigurationProperties() == null);
+
+    }
 
     /**
      * Validate that 2 different objects with the same content are evaluated as equal.
