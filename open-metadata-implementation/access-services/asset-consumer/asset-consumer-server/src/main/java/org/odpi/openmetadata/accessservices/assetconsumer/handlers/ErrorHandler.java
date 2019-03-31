@@ -285,7 +285,7 @@ class ErrorHandler
      * Throw an exception if the supplied userId is not authorized to perform a request
      *
      * @param userId  user name to validate
-     * @param methodName  name of the method making the call.
+     * @param methodName  name of the method making the call
      * @param serverName  name of this server
      * @param serviceName  name of this access service
      *
@@ -317,8 +317,8 @@ class ErrorHandler
     /**
      * Throw an exception if the supplied userId is not authorized to perform a request
      *
-     * @param error  caught exception
-     * @param methodName  name of the method making the call.
+     * @param error  caught exception.
+     * @param methodName  name of the method making the call
      * @param serverName  name of this server
      * @param serviceName  name of this access service
      *
@@ -351,6 +351,7 @@ class ErrorHandler
      *
      * @param error  caught exception
      * @param assetGUID  unique identifier for the requested asset
+     * @param assetTypeName expected type of asset
      * @param methodName  name of the method making the call
      * @param serverName name of this server
      * @param serviceName  name of this access service
@@ -359,6 +360,7 @@ class ErrorHandler
      */
     void handleUnknownAsset(Throwable  error,
                             String     assetGUID,
+                            String     assetTypeName,
                             String     methodName,
                             String     serverName,
                             String     serviceName) throws InvalidParameterException
@@ -366,6 +368,7 @@ class ErrorHandler
         AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.UNKNOWN_ASSET;
         String                 errorMessage = errorCode.getErrorMessageId()
                                             + errorCode.getFormattedErrorMessage(assetGUID,
+                                                                                 assetTypeName,
                                                                                  methodName,
                                                                                  serviceName,
                                                                                  serverName,
