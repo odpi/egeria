@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
+import org.odpi.openmetadata.frameworks.discovery.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryServiceProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.RegisteredDiscoveryService;
@@ -25,18 +26,20 @@ public abstract class DiscoveryConfigurationServer
      * @param userId identifier of calling user
      * @param qualifiedName unique name for the discovery engine.
      * @param displayName display name for messages and user interfaces.
-     * @param description description of the types of discovery services that wil be associated with
+     * @param description description of the types of discovery services that will be associated with
      *                    this discovery engine.
      *
      * @return unique identifier (guid) of the discovery engine definition.  This is for use on other requests.
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the discovery engine definition.
      */
     public abstract String  createDiscoveryEngine(String  userId,
                                                   String  qualifiedName,
                                                   String  displayName, 
-                                                  String  description) throws UserNotAuthorizedException,
+                                                  String  description) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
                                                                               PropertyServerException;
 
 
@@ -45,13 +48,16 @@ public abstract class DiscoveryConfigurationServer
      *
      * @param userId identifier of calling user
      * @param guid unique identifier (guid) of the discovery engine definition.
+     *
      * @return properties from the discovery engine definition.
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery engine definition.
      */
     public abstract DiscoveryEngineProperties getDiscoveryEngineByGUID(String    userId,
-                                                                       String    guid) throws UserNotAuthorizedException,
+                                                                       String    guid) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
                                                                                               PropertyServerException;
 
 
@@ -60,13 +66,16 @@ public abstract class DiscoveryConfigurationServer
      *
      * @param userId identifier of calling user
      * @param name qualified name or display name (if unique).
+     *
      * @return properties from the discovery engine definition.
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery engine definition.
      */
     public abstract DiscoveryEngineProperties getDiscoveryEngineByName(String    userId,
-                                                                       String    name) throws UserNotAuthorizedException,
+                                                                       String    name) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
                                                                                               PropertyServerException;
 
 
@@ -76,14 +85,17 @@ public abstract class DiscoveryConfigurationServer
      * @param userId identifier of calling user
      * @param startingFrom initial position in the stored list.
      * @param maximumResults maximum number of definitions to return on this call.
+     *
      * @return list of discovery engine definitions.
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery engine definitions.
      */
     public abstract List<DiscoveryEngineProperties> getAllDiscoveryEngines(String  userId,
                                                                            int     startingFrom,
-                                                                           int     maximumResults) throws UserNotAuthorizedException,
+                                                                           int     maximumResults) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
                                                                                                           PropertyServerException;
 
 
@@ -104,6 +116,7 @@ public abstract class DiscoveryConfigurationServer
      * @param additionalProperties additional properties for the discovery engine.
      * @param extendedProperties properties to populate the subtype of the discovery engine.
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the discovery engine definition.
      */
@@ -117,7 +130,8 @@ public abstract class DiscoveryConfigurationServer
                                                   String                patchLevel,
                                                   String                source,
                                                   Map<String, String>   additionalProperties,
-                                                  Map<String, Object>   extendedProperties) throws UserNotAuthorizedException,
+                                                  Map<String, Object>   extendedProperties) throws InvalidParameterException,
+                                                                                                   UserNotAuthorizedException,
                                                                                                    PropertyServerException;
 
 
@@ -129,12 +143,14 @@ public abstract class DiscoveryConfigurationServer
      * @param guid unique identifier of the discovery engine - used to locate the definition.
      * @param qualifiedName unique name for the discovery engine.
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery engine definition.
      */
     public abstract void    deleteDiscoveryEngine(String  userId,
                                                   String  guid,
-                                                  String  qualifiedName) throws UserNotAuthorizedException,
+                                                  String  qualifiedName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
                                                                                 PropertyServerException;
 
 
@@ -145,16 +161,21 @@ public abstract class DiscoveryConfigurationServer
      * @param userId identifier of calling user
      * @param qualifiedName  unique name for the discovery service.
      * @param displayName   display name for the discovery service.
+     * @param description  description of the analysis provided by the discovery service.
      * @param connection   connection to instanciate the discovery service implementation.
      *
      * @return unique identifier of the discovery service.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the discovery service definition.
      */
     public abstract String  createDiscoveryService(String      userId,
                                                    String      qualifiedName,
                                                    String      displayName,
-                                                   Connection  connection) throws UserNotAuthorizedException,
+                                                   String      description,
+                                                   Connection  connection) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
                                                                                   PropertyServerException;
 
 
@@ -164,13 +185,16 @@ public abstract class DiscoveryConfigurationServer
      *
      * @param userId identifier of calling user
      * @param guid unique identifier (guid) of the discovery service definition.
+     *
      * @return properties of the discovery service.
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service definition.
      */
     public abstract DiscoveryServiceProperties getDiscoveryServiceByGUID(String    userId,
-                                                                         String    guid) throws UserNotAuthorizedException,
+                                                                         String    guid) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
                                                                                                 PropertyServerException;
 
 
@@ -179,13 +203,16 @@ public abstract class DiscoveryConfigurationServer
      *
      * @param userId identifier of calling user
      * @param name qualified name or display name (if unique).
+     *
      * @return properties from the discovery engine definition.
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery engine definition.
      */
     public abstract DiscoveryServiceProperties getDiscoveryServiceByName(String    userId,
-                                                                         String    name) throws UserNotAuthorizedException,
+                                                                         String    name) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
                                                                                                 PropertyServerException;
 
 
@@ -195,14 +222,17 @@ public abstract class DiscoveryConfigurationServer
      * @param userId identifier of calling user
      * @param startingFrom initial position in the stored list.
      * @param maximumResults maximum number of definitions to return on this call.
+     *
      * @return list of discovery service definitions.
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service definitions.
      */
     public abstract List<DiscoveryServiceProperties> getAllDiscoveryServices(String  userId,
                                                                              int     startingFrom,
-                                                                             int     maximumResults) throws UserNotAuthorizedException,
+                                                                             int     maximumResults) throws InvalidParameterException,
+                                                                                                            UserNotAuthorizedException,
                                                                                                             PropertyServerException;
 
 
@@ -211,13 +241,16 @@ public abstract class DiscoveryConfigurationServer
      *
      * @param userId identifier of calling user
      * @param discoveryServiceGUID discovery service to search for.
+     *
      * @return list of discovery engine unique identifiers (guids)
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
     public abstract List<String>  getDiscoveryServiceRegistrations(String   userId,
-                                                                   String   discoveryServiceGUID) throws UserNotAuthorizedException,
+                                                                   String   discoveryServiceGUID) throws InvalidParameterException,
+                                                                                                         UserNotAuthorizedException,
                                                                                                          PropertyServerException;
 
 
@@ -230,13 +263,16 @@ public abstract class DiscoveryConfigurationServer
      * @param guid unique identifier of the discovery service - used to locate the definition.
      * @param qualifiedName new value for unique name of discovery service.
      * @param displayName new value for the display name.
+     * @param shortDescription new value for the short description.
      * @param description new value for the description.
      * @param owner new owner of the discovery service.
      * @param ownerType new type for the owner of the discovery service.
      * @param zoneMembership new list of zones for this discovery service.
+     * @param connection connection used to create an instance of this discovery service.
      * @param additionalProperties additional properties for the discovery engine.
      * @param extendedProperties properties to populate the subtype of the discovery service.
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem storing the discovery service definition.
      */
@@ -244,12 +280,15 @@ public abstract class DiscoveryConfigurationServer
                                                    String                guid,
                                                    String                qualifiedName,
                                                    String                displayName,
+                                                   String                shortDescription,
                                                    String                description,
                                                    String                owner,
                                                    OwnerType             ownerType,
                                                    List<String>          zoneMembership,
+                                                   Connection            connection,
                                                    Map<String, String>   additionalProperties,
-                                                   Map<String, Object>   extendedProperties) throws UserNotAuthorizedException,
+                                                   Map<String, Object>   extendedProperties) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
                                                                                                     PropertyServerException;
 
 
@@ -262,12 +301,14 @@ public abstract class DiscoveryConfigurationServer
      * @param guid unique identifier of the discovery service - used to locate the definition.
      * @param qualifiedName unique name for the discovery service.
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service definition.
      */
     public abstract void    deleteDiscoveryService(String  userId,
                                                    String  guid,
-                                                   String  qualifiedName) throws UserNotAuthorizedException,
+                                                   String  qualifiedName) throws InvalidParameterException,
+                                                                                 UserNotAuthorizedException,
                                                                                  PropertyServerException;
 
 
@@ -279,13 +320,15 @@ public abstract class DiscoveryConfigurationServer
      * @param discoveryServiceGUID unique identifier of the discovery service.
      * @param assetTypes list of asset types that this discovery service is able to process.
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
     public abstract void  registerDiscoveryServiceWithEngine(String        userId,
                                                              String        discoveryEngineGUID,
                                                              String        discoveryServiceGUID,
-                                                             List<String>  assetTypes) throws UserNotAuthorizedException,
+                                                             List<String>  assetTypes) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
                                                                                               PropertyServerException;
 
 
@@ -297,12 +340,15 @@ public abstract class DiscoveryConfigurationServer
      * @param discoveryServiceGUID unique identifier of the discovery service.
      *
      * @return details of the discovery service and the asset types it is registered for.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
     public abstract RegisteredDiscoveryService getRegisteredDiscoveryService(String  userId,
                                                                              String  discoveryEngineGUID,
-                                                                             String  discoveryServiceGUID) throws UserNotAuthorizedException,
+                                                                             String  discoveryServiceGUID) throws InvalidParameterException,
+                                                                                                                  UserNotAuthorizedException,
                                                                                                                   PropertyServerException;
 
 
@@ -316,13 +362,15 @@ public abstract class DiscoveryConfigurationServer
      *
      * @return list of unique identifiers
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
     public abstract List<String>  getRegisteredDiscoveryServices(String  userId,
                                                                  String  discoveryEngineGUID,
                                                                  int     startingFrom,
-                                                                 int     maximumResults) throws UserNotAuthorizedException,
+                                                                 int     maximumResults) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException,
                                                                                                 PropertyServerException;
 
 
@@ -333,11 +381,13 @@ public abstract class DiscoveryConfigurationServer
      * @param discoveryEngineGUID unique identifier of the discovery engine.
      * @param discoveryServiceGUID unique identifier of the discovery service.
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws PropertyServerException problem retrieving the discovery service and/or discovery engine definitions.
      */
     public abstract void  unregisterDiscoveryServiceFromEngine(String        userId,
                                                                String        discoveryEngineGUID,
-                                                               String        discoveryServiceGUID) throws UserNotAuthorizedException,
+                                                               String        discoveryServiceGUID) throws InvalidParameterException,
+                                                                                                          UserNotAuthorizedException,
                                                                                                           PropertyServerException;
 }
