@@ -54,10 +54,10 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode
              "Without these properties, the server is not able to send and receive events on the topic.",
              "This problem must be fixed before the server can exchange metadata.  The properties are supplied on the event bus admin command."),
 
-    UNABLE_TO_PARSE_ADDITIONAL_PROPERTIES("OCF-KAFKA-TOPIC-CONNECTOR-0006",
+    UNABLE_TO_PARSE_CONFIG_PROPERTIES("OCF-KAFKA-TOPIC-CONNECTOR-0006",
              OMRSAuditLogRecordSeverity.ERROR,
-             "The Apache Kafka connector for topic {0} has been set up with additional properties that produced the {1} exception when read.  This is the error message: {2}",
-             "An exception occurred reading the additional properties.  This means that the server is not able to send and receive events on the topic.",
+             "The Apache Kafka connector for topic {0} has been set up with configuration properties that produced the {1} exception when read.  This is the error message: {2}",
+             "An exception occurred reading the configuration properties.  This means that the server is not able to send and receive events on the topic.",
              "This problem must be fixed before the server can exchange metadata.  The properties are supplied on the event bus admin command."),
 
     NO_TOPIC_NAME("OCF-KAFKA-TOPIC-CONNECTOR-0007",
@@ -182,7 +182,6 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode
 
         return result;
     }
-
 
 
     /**

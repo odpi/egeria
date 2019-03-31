@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AdditionalProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 
 import java.util.*;
@@ -76,17 +75,17 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         {
             topicName = endpoint.getAddress();
 
-            AdditionalProperties additionalProperties = connectionProperties.getAdditionalProperties();
-            if (additionalProperties != null)
+            Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+            if (configurationProperties != null)
             {
-                this.initializeKafkaProperties(additionalProperties);
+                this.initializeKafkaProperties(configurationProperties);
 
                 /*
                  * The consumer group defines which list of events that this connector is processing.  A particular server
                  * wants to keep reading from the same list.  Thus it needs to be passed the group.id it used
                  * the last time it ran.  This is supplied in the connection object as the serverIdProperty.
                  */
-                serverId = (String) additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.serverIdPropertyName);
+                serverId = (String) configurationProperties.get(KafkaOpenMetadataTopicProvider.serverIdPropertyName);
                 consumerProperties.put("group.id", serverId);
 
                 if (auditLog != null)
@@ -139,9 +138,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      * This method overrides the initial values with properties configured on the event bus admin service.
      * For most environments, the only properties needed are the bootstrap servers.
      *
-     * @param additionalProperties additional properties from the connection.
+     * @param configurationProperties additional properties from the connection.
      */
-    private void  initializeKafkaProperties(AdditionalProperties additionalProperties)
+    private void  initializeKafkaProperties(Map<String, Object> configurationProperties)
     {
         final String           actionDescription = "initializeKafkaProperties";
         KafkaOpenMetadataTopicConnectorAuditCode auditCode;
@@ -151,7 +150,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
             Object              propertiesObject;
             Map<String, Object> propertiesMap;
 
-            propertiesObject = additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.producerPropertyName);
+            propertiesObject = configurationProperties.get(KafkaOpenMetadataTopicProvider.producerPropertyName);
             if (propertiesObject != null)
             {
                 propertiesMap = (Map<String, Object>)propertiesObject;
@@ -161,7 +160,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 }
             }
 
-            propertiesObject = additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.consumerPropertyName);
+            propertiesObject = configurationProperties.get(KafkaOpenMetadataTopicProvider.consumerPropertyName);
             if (propertiesObject != null)
             {
                 propertiesMap = (Map<String, Object>)propertiesObject;
@@ -173,7 +172,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         }
         catch (Throwable   error)
         {
-            auditCode = KafkaOpenMetadataTopicConnectorAuditCode.UNABLE_TO_PARSE_ADDITIONAL_PROPERTIES;
+            auditCode = KafkaOpenMetadataTopicConnectorAuditCode.UNABLE_TO_PARSE_CONFIG_PROPERTIES;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),

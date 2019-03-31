@@ -50,6 +50,9 @@ import java.util.Objects;
  *          additionalProperties - Any additional properties associated with the connection.
  *      </li>
  *      <li>
+ *          configurationProperties - Any specific configuration properties for the underlying technology.
+ *      </li>
+ *      <li>
  *          securedProperties - Protected properties for secure log on by connector to back end server.  These
  *          are protected properties that can only be retrieved by privileged connector code.
  *      </li>
@@ -253,6 +256,17 @@ public class ConnectionProperties extends AssetReferenceable
         {
             return new EndpointProperties(super.getParentAsset(), endpoint);
         }
+    }
+
+
+    /**
+     * Return a copy of the configuration properties.  Null means no properties are available.
+     *
+     * @return configuration properties for the underlying technology
+     */
+    public Map<String, Object> getConfigurationProperties()
+    {
+        return connectionBean.getConfigurationProperties();
     }
 
 

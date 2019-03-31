@@ -57,7 +57,7 @@ public class ConfigDefaultsResource
      * @param serverName local server name.
      * @param connectorProvider  connector provider for the event bus (if it is null then Kafka is assumed).
      * @param topicURLRoot the common root of the topics used by the open metadata server.
-     * @param additionalProperties  property name/value pairs used to configure the connection to the event bus connector
+     * @param configurationProperties  property name/value pairs used to configure the connection to the event bus connector
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
@@ -68,8 +68,8 @@ public class ConfigDefaultsResource
                                     @PathVariable                   String              serverName,
                                     @RequestParam(required = false) String              connectorProvider,
                                     @RequestParam(required = false) String              topicURLRoot,
-                                    @RequestBody(required = false)  Map<String, Object> additionalProperties)
+                                    @RequestBody(required = false)  Map<String, Object> configurationProperties)
     {
-        return adminAPI.setEventBus(userId, serverName, connectorProvider, topicURLRoot, additionalProperties);
+        return adminAPI.setEventBus(userId, serverName, connectorProvider, topicURLRoot, configurationProperties);
     }
 }

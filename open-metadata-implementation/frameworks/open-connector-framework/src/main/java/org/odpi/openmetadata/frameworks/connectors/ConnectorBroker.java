@@ -250,10 +250,10 @@ public class ConnectorBroker
 
             if (arguments != null)
             {
-                Map<String, String>  additionalProperties = connectionBean.getAdditionalProperties();
-                if (additionalProperties == null)
+                Map<String, Object>  configurationProperties = connectionBean.getConfigurationProperties();
+                if (configurationProperties == null)
                 {
-                    additionalProperties = new HashMap<>();
+                    configurationProperties = new HashMap<>();
                 }
 
                 Iterator<String>     argumentNames = arguments.keySet().iterator();
@@ -262,15 +262,15 @@ public class ConnectorBroker
                 {
                     String  argumentName = argumentNames.next();
 
-                    additionalProperties.put(argumentName, arguments.get(argumentName).toString());
+                    configurationProperties.put(argumentName, arguments.get(argumentName).toString());
                 }
 
-                if (additionalProperties.isEmpty())
+                if (configurationProperties.isEmpty())
                 {
-                    additionalProperties = null;
+                    configurationProperties = null;
                 }
 
-                connectionBean.setAdditionalProperties(additionalProperties);
+                connectionBean.setConfigurationProperties(configurationProperties);
             }
 
             connection = new ConnectionProperties(connectionBean);

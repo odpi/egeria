@@ -315,7 +315,7 @@ public class OMAGServerAdminServices
      * @param serverName local server name.
      * @param connectorProvider  connector provider for the event bus (if it is null then Kafka is assumed).
      * @param topicURLRoot the common root of the topics used by the open metadata server.
-     * @param additionalProperties  property name/value pairs used to configure the connection to the event bus connector
+     * @param configurationProperties  property name/value pairs used to configure the connection to the event bus connector
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException it is too late to configure the event bus - other configuration already exists or
@@ -325,7 +325,7 @@ public class OMAGServerAdminServices
                                     String              serverName,
                                     String              connectorProvider,
                                     String              topicURLRoot,
-                                    Map<String, Object> additionalProperties)
+                                    Map<String, Object> configurationProperties)
     {
         final String methodName = "setEventBus";
 
@@ -348,7 +348,7 @@ public class OMAGServerAdminServices
 
             eventBusConfig.setConnectorProvider(connectorProvider);
             eventBusConfig.setTopicURLRoot(topicURLRoot);
-            eventBusConfig.setAdditionalProperties(additionalProperties);
+            eventBusConfig.setConfigurationProperties(configurationProperties);
 
             List<String>  configAuditLog          = serverConfig.getAuditTrail();
 
@@ -636,7 +636,7 @@ public class OMAGServerAdminServices
                                                                                                   eventBusConfig.getConnectorProvider(),
                                                                                                   eventBusConfig.getTopicURLRoot(),
                                                                                                   serverConfig.getLocalServerId(),
-                                                                                                  eventBusConfig.getAdditionalProperties()));
+                                                                                                  eventBusConfig.getConfigurationProperties()));
         }
         catch (OMAGInvalidParameterException  error)
         {
@@ -849,7 +849,7 @@ public class OMAGServerAdminServices
      *
      * @param userId                    user that is issuing the request.
      * @param serverName                local server name.
-     * @param additionalProperties      additional parameters to pass to the repository connector
+     * @param configurationProperties      additional parameters to pass to the repository connector
      * @return void response or
      * OMAGNotAuthorizedException  the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or repositoryProxyConnection parameter or
@@ -857,7 +857,7 @@ public class OMAGServerAdminServices
      */
     public VoidResponse setIBMIGCConnection(String               userId,
                                             String               serverName,
-                                            Map<String, Object>  additionalProperties)
+                                            Map<String, Object>  configurationProperties)
     {
         final String methodName  = "setIBMIGCConnection";
 
@@ -873,10 +873,10 @@ public class OMAGServerAdminServices
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
             this.setIBMIGCConnection(userId,
-                    serverName,
-                    connectorConfigurationFactory.getIBMIGCRepositoryConnection(serverName,
-                            serverConfig.getLocalServerURL(),
-                            additionalProperties));
+                                     serverName,
+                                     connectorConfigurationFactory.getIBMIGCRepositoryConnection(serverName,
+                                                                                                 serverConfig.getLocalServerURL(),
+                                                                                                 configurationProperties));
 
         }
         catch (OMAGInvalidParameterException  error)
@@ -1120,7 +1120,7 @@ public class OMAGServerAdminServices
     public VoidResponse enableCohortRegistration(String               userId,
                                                  String               serverName,
                                                  String               cohortName,
-                                                 Map<String, Object>  additionalProperties)
+                                                 Map<String, Object>  configurationProperties)
     {
         final String methodName = "enableCohortRegistration";
 
@@ -1143,11 +1143,11 @@ public class OMAGServerAdminServices
 
             CohortConfig newCohortConfig = configurationFactory.getDefaultCohortConfig(serverConfig.getLocalServerName(),
                                                                                        cohortName,
-                                                                                       additionalProperties,
+                                                                                       configurationProperties,
                                                                                        eventBusConfig.getConnectorProvider(),
                                                                                        eventBusConfig.getTopicURLRoot(),
                                                                                        serverConfig.getLocalServerId(),
-                                                                                       eventBusConfig.getAdditionalProperties());
+                                                                                       eventBusConfig.getConfigurationProperties());
 
 
             this.setCohortConfig(userId, serverName, cohortName, newCohortConfig);
@@ -1684,7 +1684,7 @@ public class OMAGServerAdminServices
 //            VirtualizationConfig virtualizerConfig = new VirtualizationConfig();
 //
 //            virtualizerConfig.setConnectorProvider(connectorProvider);
-//            virtualizerConfig.setAdditionalProperties(additionalProperties);
+//            virtualizerConfig.setConfigurationProperties(additionalProperties);
 //
 //            serverConfig.setVirtualizationConfig(virtualizerConfig);
 //

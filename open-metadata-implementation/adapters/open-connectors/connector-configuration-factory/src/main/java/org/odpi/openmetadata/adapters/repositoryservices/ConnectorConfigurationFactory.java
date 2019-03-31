@@ -382,12 +382,12 @@ public class ConnectorConfigurationFactory
      *
      * @param serverName  name of the real repository server
      * @param url  location of the repository proxy
-     * @param additionalProperties name value pairs for the connection
+     * @param configurationProperties name value pairs for the connection
      * @return Connection object
      */
     public Connection getIBMIGCRepositoryConnection(String              serverName,
                                                     String              url,
-                                                    Map<String, Object> additionalProperties)
+                                                    Map<String, Object> configurationProperties)
     {
         // TODO: confirm whether these should be final GUIDs or randomly generated (like ProxyConnection below)?
         final String endpointGUID          = "94546575-45b5-4ece-9c05-7654b4a7cf7e";
@@ -416,7 +416,7 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setConnectorType(getConnectorType(IGCOMRSRepositoryConnectorProvider.class.getName()));
-        connection.setAdditionalProperties(additionalProperties);
+        connection.setConfigurationProperties(configurationProperties);
 
         return connection;
     }
@@ -428,13 +428,13 @@ public class ConnectorConfigurationFactory
      * @param serverName  name of the real repository server
      * @param connectorProviderClassName  class name of the connector provider
      * @param url  location of the repository proxy
-     * @param additionalProperties name value pairs for the connection
+     * @param configurationProperties name value pairs for the connection
      * @return Connection object
      */
     public Connection  getRepositoryProxyConnection(String              serverName,
                                                     String              connectorProviderClassName,
                                                     String              url,
-                                                    Map<String, Object> additionalProperties)
+                                                    Map<String, Object> configurationProperties)
     {
         final String endpointGUID             = UUID.randomUUID().toString();
         final String connectionGUID           = UUID.randomUUID().toString();
@@ -464,7 +464,7 @@ public class ConnectorConfigurationFactory
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(connectorProviderClassName));
-        connection.setAdditionalProperties(additionalProperties);
+        connection.setConfigurationProperties(configurationProperties);
 
         return connection;
     }
@@ -491,7 +491,7 @@ public class ConnectorConfigurationFactory
      * @param topicURLRoot  root URL of the topic - this is prepended to the topic name
      * @param topicName  name of the topic
      * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
-     * @param eventBusAdditionalProperties - additional properties for the event bus connection
+     * @param eventBusConfigurationProperties - additional properties for the event bus connection
      * @return List of EmbeddedConnection object
      */
     private List<EmbeddedConnection> getEmbeddedEventBusConnection(String              eventSource,
@@ -500,7 +500,7 @@ public class ConnectorConfigurationFactory
                                                                    String              topicURLRoot,
                                                                    String              topicName,
                                                                    String              serverId,
-                                                                   Map<String, Object> eventBusAdditionalProperties)
+                                                                   Map<String, Object> eventBusConfigurationProperties)
     {
         EmbeddedConnection     embeddedConnection = new EmbeddedConnection();
         Connection             connection         = this.getDefaultEventBusConnection(eventSource,
@@ -508,7 +508,7 @@ public class ConnectorConfigurationFactory
                                                                                       topicURLRoot,
                                                                                       topicName,
                                                                                       serverId,
-                                                                                      eventBusAdditionalProperties);
+                                                                                      eventBusConfigurationProperties);
 
         embeddedConnection.setDisplayName(eventSource);
         embeddedConnection.setArguments(arguments);
@@ -530,7 +530,7 @@ public class ConnectorConfigurationFactory
      * @param topicURLRoot  root URL of the topic - this is prepended to the topic name
      * @param topicName  name of the topic
      * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
-     * @param additionalProperties  additional properties for the connection
+     * @param configurationProperties  additional configuration properties for the connection
      * @return Connection object
      */
     public Connection getDefaultEventBusConnection(String               connectionName,
@@ -538,7 +538,7 @@ public class ConnectorConfigurationFactory
                                                    String               topicURLRoot,
                                                    String               topicName,
                                                    String               serverId,
-                                                   Map<String, Object>  additionalProperties)
+                                                   Map<String, Object>  configurationProperties)
     {
         Endpoint endpoint = null;
 
@@ -569,12 +569,12 @@ public class ConnectorConfigurationFactory
             connectorTypeJavaClassName = connectorProviderClassName;
         }
 
-        if (additionalProperties == null)
+        if (configurationProperties == null)
         {
-            additionalProperties = new HashMap<>();
+            configurationProperties = new HashMap<>();
         }
 
-        additionalProperties.put(KafkaOpenMetadataTopicProvider.serverIdPropertyName, serverId);
+        configurationProperties.put(KafkaOpenMetadataTopicProvider.serverIdPropertyName, serverId);
 
         Connection connection = new Connection();
 
@@ -585,7 +585,7 @@ public class ConnectorConfigurationFactory
         connection.setDescription(connectionName);
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(connectorTypeJavaClassName));
-        connection.setAdditionalProperties(additionalProperties);
+        connection.setConfigurationProperties(configurationProperties);
 
         return connection;
     }
@@ -595,19 +595,19 @@ public class ConnectorConfigurationFactory
      * Return the local repository event mapper for the graph repository.
      *
      * @param localServerName   name of the local server
-     * @param additionalProperties name value property pairs for the topic connection
+     * @param configurationProperties name value property pairs for the topic connection
      * @param eventBusConnectorProvider class name of the event bus connector's provider
      * @param topicURLRoot root name for the topic URL
      * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
-     * @param eventBusAdditionalProperties name value property pairs for the event bus connection
+     * @param eventBusConfigurationProperties name value property pairs for the event bus connection
      * @return Connection object
      */
     public Connection getLocalGraphRepositoryEventMapperConnection(String              localServerName,
-                                                                   Map<String, Object> additionalProperties,
+                                                                   Map<String, Object> configurationProperties,
                                                                    String              eventBusConnectorProvider,
                                                                    String              topicURLRoot,
                                                                    String              serverId,
-                                                                   Map<String, Object> eventBusAdditionalProperties)
+                                                                   Map<String, Object> eventBusConfigurationProperties)
     {
         final String connectionGUID    = "3cb6d03e-b4a7-4884-9fd9-277c77223236";
         final String connectionDescription = "OMRS default local graph event mapper connection.";
@@ -622,13 +622,14 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setConnectorType(getConnectorType(GraphOMRSRepositoryEventMapperProvider.class.getName()));
+        connection.setConfigurationProperties(configurationProperties);
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection("Local Repository Events",
-                                                                        additionalProperties,
+                                                                        null,
                                                                         eventBusConnectorProvider,
                                                                         topicURLRoot,
                                                                         defaultEventMapperTopicName,
                                                                         serverId,
-                                                                        eventBusAdditionalProperties));
+                                                                        eventBusConfigurationProperties));
 
         return connection;
     }
@@ -674,19 +675,19 @@ public class ConnectorConfigurationFactory
      * Return the connection for the OMRS topic for the named cohort.
      *
      * @param cohortName   name of the cohort
-     * @param additionalProperties name value property pairs for the topic connection
+     * @param configurationProperties name value property pairs for the topic connection
      * @param eventBusConnectorProvider class name of the event bus connector's provider
      * @param topicURLRoot root name for the topic URL
      * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
-     * @param eventBusAdditionalProperties name value property pairs for the event bus connection
+     * @param eventBusConfigurationProperties name value property pairs for the event bus connection
      * @return Connection object
      */
     public Connection getDefaultCohortOMRSTopicConnection(String              cohortName,
-                                                          Map<String, Object> additionalProperties,
+                                                          Map<String, Object> configurationProperties,
                                                           String              eventBusConnectorProvider,
                                                           String              topicURLRoot,
                                                           String              serverId,
-                                                          Map<String, Object> eventBusAdditionalProperties)
+                                                          Map<String, Object> eventBusConfigurationProperties)
     {
         final String connectionGUID    = "023bb1f3-03dd-47ae-b3bc-dce62e9c11cb";
         final String connectionDescription = "OMRS default cohort topic connection.";
@@ -702,13 +703,14 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setConnectorType(getConnectorType(OMRSTopicProvider.class.getName()));
+        connection.setConfigurationProperties(configurationProperties);
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection(cohortName + " OMRS Topic",
-                                                                        additionalProperties,
+                                                                        null,
                                                                         eventBusConnectorProvider,
                                                                         topicURLRoot,
                                                                         topicName,
                                                                         serverId,
-                                                                        eventBusAdditionalProperties));
+                                                                        eventBusConfigurationProperties));
 
         return connection;
     }
@@ -725,7 +727,7 @@ public class ConnectorConfigurationFactory
      */
     public Connection getRepositoryEventMapperConnection(String              serverName,
                                                          String              connectorProviderClassName,
-                                                         Map<String, Object> additionalProperties,
+                                                         Map<String, Object> configurationProperties,
                                                          String              eventSource)
     {
         final String endpointGUID             = UUID.randomUUID().toString();
@@ -755,7 +757,7 @@ public class ConnectorConfigurationFactory
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(connectorProviderClassName));
-        connection.setAdditionalProperties(additionalProperties);
+        connection.setConfigurationProperties(configurationProperties);
 
         return connection;
     }
