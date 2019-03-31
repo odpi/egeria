@@ -7838,6 +7838,9 @@ public class OpenMetadataTypesArchive
         final String attribute5Name            = "recognizedSecuredProperties";
         final String attribute5Description     = "List of secured connection property names supported by the connector implementation.";
         final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "recognizedConfigurationProperties";
+        final String attribute6Description     = "List of secured connection property names supported by the connector implementation.";
+        final String attribute6DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -7858,6 +7861,10 @@ public class OpenMetadataTypesArchive
         property = archiveHelper.getArrayStringTypeDefAttribute(attribute5Name,
                                                                 attribute5Description,
                                                                 attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getArrayStringTypeDefAttribute(attribute6Name,
+                                                                attribute6Description,
+                                                                attribute6DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
