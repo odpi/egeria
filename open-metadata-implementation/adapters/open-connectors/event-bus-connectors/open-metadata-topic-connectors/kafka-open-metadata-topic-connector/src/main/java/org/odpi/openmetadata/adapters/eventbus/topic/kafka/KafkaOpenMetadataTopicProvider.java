@@ -44,8 +44,9 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
         recognizedPropertyNames.add(producerPropertyName);
         recognizedPropertyNames.add(consumerPropertyName);
         recognizedPropertyNames.add(serverIdPropertyName);
+        recognizedPropertyNames.add(sleepTimeProperty);
 
-        connectorType.setRecognizedAdditionalProperties(recognizedPropertyNames);
+        connectorType.setRecognizedConfigurationProperties(recognizedPropertyNames);
 
         super.connectorTypeBean = connectorType;
     }
