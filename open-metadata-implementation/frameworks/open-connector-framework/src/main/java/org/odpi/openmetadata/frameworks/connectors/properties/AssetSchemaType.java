@@ -211,25 +211,16 @@ public class AssetSchemaType extends AssetSchemaElement
     /**
      * Return the properties that come from the technology-specific subtypes of SchemaElement.
      *
-     * @return AdditionalProperties object
+     * @return properties map
      */
-    public AdditionalProperties getSchemaProperties()
+    public Map<String, Object> getSchemaProperties()
     {
         if (schemaTypeBean == null)
         {
             return null;
         }
 
-        Map<String, Object> schemaProperties = this.getSchemaTypeBean().getSchemaProperties();
-
-        if (schemaProperties == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new AdditionalProperties(super.getParentAsset(), schemaProperties);
-        }
+       return this.getSchemaTypeBean().getSchemaProperties();
     }
 
 

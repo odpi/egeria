@@ -43,7 +43,7 @@ public class Referenceable extends ElementHeader
      * Attributes of a Referenceable
      */
     protected String              qualifiedName        = null;
-    protected Map<String, Object> additionalProperties = null;
+    protected Map<String, String> additionalProperties = null;
     protected Map<String, Object> extendedProperties   = null;
     protected List<Meaning>       meanings             = null;
 
@@ -103,7 +103,7 @@ public class Referenceable extends ElementHeader
      *
      * @param additionalProperties Additional properties object
      */
-    public void setAdditionalProperties(Map<String,Object> additionalProperties)
+    public void setAdditionalProperties(Map<String, String> additionalProperties)
     {
         this.additionalProperties = additionalProperties;
     }
@@ -114,7 +114,7 @@ public class Referenceable extends ElementHeader
      *
      * @return AdditionalProperties
      */
-    public Map<String,Object> getAdditionalProperties()
+    public Map<String, String> getAdditionalProperties()
     {
         if (additionalProperties == null)
         {
@@ -135,7 +135,7 @@ public class Referenceable extends ElementHeader
      *
      * @param extendedProperties asset properties map
      */
-    public void setExtendedProperties(Map<String,Object> extendedProperties)
+    public void setExtendedProperties(Map<String, Object> extendedProperties)
     {
         this.extendedProperties = extendedProperties;
     }
@@ -146,7 +146,7 @@ public class Referenceable extends ElementHeader
      *
      * @return asset property map
      */
-    public Map<String,Object> getExtendedProperties()
+    public Map<String, Object> getExtendedProperties()
     {
         if (extendedProperties == null)
         {
@@ -254,7 +254,10 @@ public class Referenceable extends ElementHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(super.hashCode(), getQualifiedName(), getAdditionalProperties(), getExtendedProperties(),
+        return Objects.hash(super.hashCode(),
+                            getQualifiedName(),
+                            getAdditionalProperties(),
+                            getExtendedProperties(),
                             getMeanings());
     }
 }
