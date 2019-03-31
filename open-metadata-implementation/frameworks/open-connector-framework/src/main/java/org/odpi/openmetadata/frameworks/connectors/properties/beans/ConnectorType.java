@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -61,11 +62,12 @@ public class ConnectorType extends Referenceable
     /*
      * Attributes of a connector type
      */
-    protected String       displayName                    = null;
-    protected String       description                    = null;
-    protected String       connectorProviderClassName     = null;
-    protected List<String> recognizedAdditionalProperties = null;
-    protected List<String> recognizedSecuredProperties    = null;
+    protected String       displayName                       = null;
+    protected String       description                       = null;
+    protected String       connectorProviderClassName        = null;
+    protected List<String> recognizedAdditionalProperties    = null;
+    protected List<String> recognizedConfigurationProperties = null;
+    protected List<String> recognizedSecuredProperties       = null;
 
 
     /**
@@ -109,19 +111,20 @@ public class ConnectorType extends Referenceable
     /**
      * Copy/clone constructor for a connectorType that is not connected to an asset (either directly or indirectly).
      *
-     * @param templateConnectorType template object to copy.
+     * @param template template object to copy.
      */
-    public ConnectorType(ConnectorType templateConnectorType)
+    public ConnectorType(ConnectorType template)
     {
-        super(templateConnectorType);
+        super(template);
 
-        if (templateConnectorType != null)
+        if (template != null)
         {
-            displayName = templateConnectorType.getDisplayName();
-            description = templateConnectorType.getDescription();
-            connectorProviderClassName = templateConnectorType.getConnectorProviderClassName();
-            recognizedAdditionalProperties = templateConnectorType.getRecognizedAdditionalProperties();
-            recognizedSecuredProperties = templateConnectorType.getRecognizedSecuredProperties();
+            displayName = template.getDisplayName();
+            description = template.getDescription();
+            connectorProviderClassName = template.getConnectorProviderClassName();
+            recognizedAdditionalProperties = template.getRecognizedAdditionalProperties();
+            recognizedConfigurationProperties = template.getRecognizedConfigurationProperties();
+            recognizedSecuredProperties = template.getRecognizedSecuredProperties();
         }
     }
 
@@ -215,7 +218,54 @@ public class ConnectorType extends Referenceable
      */
     public List<String> getRecognizedAdditionalProperties()
     {
-        return recognizedAdditionalProperties;
+        if (recognizedAdditionalProperties == null)
+        {
+            return null;
+        }
+        else if (recognizedAdditionalProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(recognizedAdditionalProperties);
+        }
+    }
+
+
+    /**
+     * Set up the list of property names that this connector/connector provider implementation looks for
+     * in the Connection object's configurationProperties.
+     *
+     * @param recognizedConfigurationProperties  list of property names
+     */
+    public void setRecognizedConfigurationProperties(List<String>   recognizedConfigurationProperties)
+    {
+
+        this.recognizedConfigurationProperties = recognizedConfigurationProperties;
+    }
+
+
+    /**
+     * Return the list of property names that this connector/connector provider implementation looks for
+     * in the Connection object's configurationProperties.
+     *
+     * @return list of property names
+     */
+    public List<String> getRecognizedConfigurationProperties()
+    {
+        if (recognizedConfigurationProperties == null)
+        {
+            return null;
+        }
+        else if (recognizedConfigurationProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(recognizedConfigurationProperties);
+        }
     }
 
 
@@ -239,7 +289,18 @@ public class ConnectorType extends Referenceable
      */
     public List<String> getRecognizedSecuredProperties()
     {
-        return recognizedSecuredProperties;
+        if (recognizedSecuredProperties == null)
+        {
+            return null;
+        }
+        else if (recognizedSecuredProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(recognizedSecuredProperties);
+        }
     }
 
 
@@ -257,6 +318,7 @@ public class ConnectorType extends Referenceable
                 ", connectorProviderClassName='" + connectorProviderClassName + '\'' +
                 ", recognizedAdditionalProperties=" + recognizedAdditionalProperties +
                 ", recognizedSecuredProperties=" + recognizedSecuredProperties +
+                ", recognizedConfigurationProperties=" + recognizedConfigurationProperties +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
                 ", type=" + type +
