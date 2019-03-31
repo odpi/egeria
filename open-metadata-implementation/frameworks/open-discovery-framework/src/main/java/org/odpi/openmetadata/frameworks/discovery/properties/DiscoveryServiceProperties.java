@@ -46,6 +46,11 @@ public class DiscoveryServiceProperties extends Asset
     public DiscoveryServiceProperties(DiscoveryServiceProperties  template)
     {
         super(template);
+
+        if (template != null)
+        {
+            connection = template.getConnection();
+        }
     }
 
 
