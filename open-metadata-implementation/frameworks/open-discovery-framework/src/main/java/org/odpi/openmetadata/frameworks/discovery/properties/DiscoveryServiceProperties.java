@@ -85,7 +85,8 @@ public class DiscoveryServiceProperties extends Asset
     public String toString()
     {
         return "DiscoveryServiceProperties{" +
-                "displayName='" + displayName + '\'' +
+                "connection=" + connection +
+                ", displayName='" + displayName + '\'' +
                 ", shortDescription='" + shortDescription + '\'' +
                 ", description='" + description + '\'' +
                 ", owner='" + owner + '\'' +
@@ -93,12 +94,12 @@ public class DiscoveryServiceProperties extends Asset
                 ", zoneMembership=" + zoneMembership +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", additionalProperties=" + additionalProperties +
-                ", extendedProperties=" + extendedProperties +
                 ", meanings=" + meanings +
                 ", type=" + type +
                 ", guid='" + guid + '\'' +
                 ", url='" + url + '\'' +
                 ", classifications=" + classifications +
+                ", extendedProperties=" + extendedProperties +
                 '}';
     }
 
