@@ -7,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -68,6 +66,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OMAGServerConfig extends AdminServicesConfigHeader
 {
+    public static final String         VERSION_ONE = "V1.0";
+    public static final String         VERSION_TWO = "V2.0";
+    public static final List<String>   COMPATIBLE_VERSIONS = new ArrayList<>(Arrays.asList(VERSION_TWO));
+
     /*
      * Default values used when the server configuration does not provide a value.
      */
@@ -77,6 +79,10 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private static final String  defaultLocalServerUserId                 = "OMAGServer";
     private static final int     defaultMaxPageSize                       = 1000;
 
+    /*
+     * Configuration document version number - if not in document then assume V1.0.
+     */
+    private String                    versionId                 = null;
 
     /*
      * Values in use by this server.
@@ -117,6 +123,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
         if (template != null)
         {
+            versionId = template.getVersionId();
             localServerId = template.getLocalServerId();
             localServerName = template.getLocalServerName();
             localServerType = template.getLocalServerType();
@@ -134,6 +141,28 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             auditTrail = template.getAuditTrail();
             virtualizationConfig = template.getVirtualizationConfig();
         }
+    }
+
+
+    /**
+     * Return the versionId of this document.
+     *
+     * @return string
+     */
+    public String getVersionId()
+    {
+        return versionId;
+    }
+
+
+    /**
+     * Set up the versionId of this document.
+     *
+     * @param versionId string
+     */
+    public void setVersionId(String versionId)
+    {
+        this.versionId = versionId;
     }
 
 
