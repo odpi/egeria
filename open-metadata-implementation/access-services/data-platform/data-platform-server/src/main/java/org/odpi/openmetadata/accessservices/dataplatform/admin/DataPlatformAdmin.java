@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.dataplatform.auditlog.DataPlatformAu
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.listeners.DataPlatformInTopicListener;
 import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
+import org.odpi.openmetadata.accessservices.dataplatform.listeners.InformationViewEventListener;
 import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformServicesInstance;
 import org.odpi.openmetadata.accessservices.dataplatform.listeners.DataPlatformEnterpriseOmrsEventListener;
 
@@ -32,6 +33,7 @@ public class DataPlatformAdmin implements AccessServiceAdmin {
 
     private static final Logger log = LoggerFactory.getLogger(DataPlatformAdmin.class);
     private OpenMetadataTopicConnector dataPlatformInTopicConnector;
+    private OpenMetadataTopicConnector dataPlatformOutTopicConnector;
     private OMRSAuditLog auditLog;
     private String serverName = null;
     private DataPlatformServicesInstance instance = null;
@@ -66,15 +68,11 @@ public class DataPlatformAdmin implements AccessServiceAdmin {
         if (enterpriseConnector != null) {
             serverName = enterpriseConnector.getServerName();
         }
+        String inTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceInTopic());
+        String outTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceOutTopic());
+        dataPlatformInTopicConnector = initializedataPlatformTopicConnector(accessServiceConfigurationProperties.getAccessServiceInTopic());
+        dataPlatformOutTopicConnector = initializedataPlatformTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
 
-        Connection inTopicConnection = accessServiceConfigurationProperties.getAccessServiceInTopic();
-        String inTopicName = getTopicName(inTopicConnection);
-
-        Connection outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
-        String outTopicName = getTopicName(outTopicConnection);
-
-        dataPlatformInTopicConnector = initializedataPlatformTopicConnector(inTopicConnection);
-        OpenMetadataTopicConnector dataPlatformOutTopicConnector = initializedataPlatformTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
 
         OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, auditLog);
         EventPublisher eventPublisher = null;
@@ -96,7 +94,7 @@ public class DataPlatformAdmin implements AccessServiceAdmin {
 
 
         if (dataPlatformInTopicConnector != null) {
-            OpenMetadataTopicListener dataPlatformInTopicListener = new DataPlatformInTopicListener(omEntityDao, auditLog, eventPublisher, enterpriseConnector.getRepositoryHelper());
+            OpenMetadataTopicListener dataPlatformInTopicListener = new InformationViewEventListener(omEntityDao, auditLog, eventPublisher, enterpriseConnector.getRepositoryHelper());
             this.dataPlatformInTopicConnector.registerListener(dataPlatformInTopicListener);
             startConnector(DataPlatformAuditCode.SERVICE_REGISTERED_WITH_AL_IN_TOPIC, actionDescription, inTopicName, dataPlatformInTopicConnector);
         }
@@ -129,7 +127,7 @@ public class DataPlatformAdmin implements AccessServiceAdmin {
         try {
             topicConnector.start();
         } catch (ConnectorCheckedException e) {
-            auditCode = DataPlatformAuditCode.ERROR_INITIALIZING_ASSET_LINEAGE_TOPIC_CONNECTION;
+            auditCode = DataPlatformAuditCode.ERROR_INITIALIZING_DATA_PLATFORM_TOPIC_CONNECTION;
             auditLog.logRecord(actionDescription,
                     auditCode.getLogMessageId(),
                     auditCode.getSeverity(),
@@ -234,7 +232,7 @@ public class DataPlatformAdmin implements AccessServiceAdmin {
         try {
             dataPlatformInTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {
-            log.error("Error disconnecting asset lineage topic connector");
+            log.error("Error disconnecting data platform topic connector");
         }
 
         if (instance != null) {
