@@ -111,11 +111,11 @@ public class PersonalProfileBuilder
 
         if ((additionalProperties != null) && (! additionalProperties.isEmpty()))
         {
-            properties = repositoryHelper.addMapPropertyToInstance(serviceName,
-                                                                   properties,
-                                                                   PersonalProfileMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
-                                                                   additionalProperties,
-                                                                   methodName);
+            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                         properties,
+                                                                         PersonalProfileMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                         additionalProperties,
+                                                                         methodName);
         }
 
         log.debug("Instance properties: " + properties.toString());
