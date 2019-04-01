@@ -129,8 +129,17 @@ public enum OMAGErrorCode
     NULL_FILE_NAME(400, "OMAG-ADMIN-400-021 ",
             "OMAG server {0} has been configured with a null file name for an Open Metadata Archive",
             "The system is unable to configure the local server to load this Open Metadata Archive file.",
-            "The file name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can load the open metadata archive.")
+            "The file name is supplied by the caller to the OMAG server. This call needs to be corrected before the server can load the open metadata archive."),
 
+    INCOMPATIBLE_CONFIG_FILE(400, "OMAG-ADMIN-400-022 ",
+            "The configuration document for OMAG server {0} is at version {1} which is not compatible with this OMAG Server Platform which supports versions {2}",
+            "The system is unable to configure the local server because it can not read the configuration document.",
+            "Migrate the configuration document to a compatible version (or delete and recreate it).  See https://egeria.odpi.org/open-metadata-implementation/governance-servers/admin-services/docs/user/migrating-configuration-documents.html"),
+
+    UNEXPECTED_EXCEPTION(500, "OMAG-ADMIN-500-001 ",
+            "Method {1} for OMAG server {0} returned an unexpected exception of {2} with message {3}",
+            "The system is unable to configure the local server.",
+            "This is likely to be either an operational or logic error. Look for other errors.  Validate the request.  If you are stuck, raise an issue.")
             ;
 
     private int    httpErrorCode;
