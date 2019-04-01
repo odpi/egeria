@@ -53,7 +53,7 @@ public enum DataPlatformAuditCode {
                                           "The connection could not be initialized.",
                                           "Review the exception and resolve the configuration. "),
 
-    ERROR_INITIALIZING_ASSET_LINEAGE_TOPIC_CONNECTION("OMAS-DATA-PLATFORM-0008",
+    ERROR_INITIALIZING_DATA_PLATFORM_TOPIC_CONNECTION("OMAS-DATA-PLATFORM-0008",
                                                       OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the connection to topic {0} in the Data Platform Open Metadata Access Service (OMAS) instance for server {1} ",
                                                               "The connection to Data Platform topic could not be initialized.",
