@@ -229,6 +229,17 @@ public class AssetSummary extends AssetDescriptor
 
 
     /**
+     * Return a short description of the last change to the asset.
+     *
+     * @return string description
+     */
+    public String getLatestChange()
+    {
+        return assetBean.getLatestChange();
+    }
+
+
+    /**
      * Return the set of properties that are specific to the particular type of asset.  The caller is given their
      * own copy of the property object.  The properties are named entityName.attributeName. The values are all strings.
      *

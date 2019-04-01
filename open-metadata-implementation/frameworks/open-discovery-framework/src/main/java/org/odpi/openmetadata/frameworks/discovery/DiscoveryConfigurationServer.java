@@ -268,6 +268,7 @@ public abstract class DiscoveryConfigurationServer
      * @param owner new owner of the discovery service.
      * @param ownerType new type for the owner of the discovery service.
      * @param zoneMembership new list of zones for this discovery service.
+     * @param latestChange short description of this update.
      * @param connection connection used to create an instance of this discovery service.
      * @param additionalProperties additional properties for the discovery engine.
      * @param extendedProperties properties to populate the subtype of the discovery service.
@@ -285,6 +286,7 @@ public abstract class DiscoveryConfigurationServer
                                                    String                owner,
                                                    OwnerType             ownerType,
                                                    List<String>          zoneMembership,
+                                                   String                latestChange,
                                                    Connection            connection,
                                                    Map<String, String>   additionalProperties,
                                                    Map<String, Object>   extendedProperties) throws InvalidParameterException,
