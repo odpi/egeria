@@ -620,6 +620,22 @@ public interface OMRSRepositoryHelper
 
 
     /**
+     * Locates and extracts a property from an instance that is of type map and then converts its values into a Java map.
+     * If the property is found, it is removed from the InstanceProperties structure.
+     * If the property is not a map property then a logic exception is thrown.
+     *
+     * @param sourceName source of call
+     * @param propertyName name of requested map property
+     * @param properties values of the property
+     * @param methodName method of caller
+     * @return map property value or null
+     */
+    Map<String, Object> removeMapFromProperty(String             sourceName,
+                                              String             propertyName,
+                                              InstanceProperties properties,
+                                              String             methodName);
+
+    /**
      * Convert an instance properties object into a map.
      *
      * @param instanceProperties packed properties
@@ -904,8 +920,27 @@ public interface OMRSRepositoryHelper
     InstanceProperties addMapPropertyToInstance(String              sourceName,
                                                 InstanceProperties  properties,
                                                 String              propertyName,
-                                                Map<String, String> mapValues,
+                                                Map<String, Object> mapValues,
                                                 String              methodName);
+
+
+    /**
+     * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
+     * property in the instances properties.   If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addStringMapPropertyToInstance(String              sourceName,
+                                                      InstanceProperties  properties,
+                                                      String              propertyName,
+                                                      Map<String, String> mapValues,
+                                                      String              methodName);
 
 
     /**
@@ -923,8 +958,31 @@ public interface OMRSRepositoryHelper
     InstanceProperties addPropertyMapToInstance(String              sourceName,
                                                 InstanceProperties  properties,
                                                 String              propertyName,
-                                                Map<String, String> mapValues,
+                                                Map<String, Object> mapValues,
                                                 String              methodName) throws InvalidParameterException;
+
+
+
+    /**
+     * Add the supplied property map to an instance properties object.  Each of the entries in the map is added
+     * as a separate property in instance properties.  If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param mapValues contents of the map
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    InstanceProperties addStringPropertyMapToInstance(String              sourceName,
+                                                      InstanceProperties  properties,
+                                                      String              propertyName,
+                                                      Map<String, String> mapValues,
+                                                      String              methodName) throws InvalidParameterException;
+
+
+
 
 
     /**
