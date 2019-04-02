@@ -19,17 +19,17 @@ public class GovernanceClassification extends GovernanceClassificationBase {
     private Map<String, String> attributes;
 
     /**
-     * @param attributes - key/value pairs for additional objects of Classification
-     */
-    public void setAttributes(Map<String, String> attributes) {
-        this.attributes = attributes;
-    }
-
-    /**
      * @return attributeValues - key/value pairs for additional objects of Classification
      */
     public Map<String, String> getAttributes() {
         return attributes;
+    }
+
+    /**
+     * @param attributes - key/value pairs for additional objects of Classification
+     */
+    public void setAttributes(Map<String, String> attributes) {
+        this.attributes = attributes;
     }
 
 }

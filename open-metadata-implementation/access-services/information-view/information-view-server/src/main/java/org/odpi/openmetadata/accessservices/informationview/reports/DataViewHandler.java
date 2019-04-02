@@ -62,7 +62,7 @@ public class DataViewHandler {
                                                                             qualifiedNameForDataView,
                                                                             dataViewProperties,
                                                                             null,
-                                                                            true);
+                                                                            true, true);
 
 
             dataViewCreator.createDataView(requestBody, dataViewWrapper.getEntityDetail());

@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
-
-
 /**
  * The RootClassificationNotFound is thrown by the Governance Engine OMAS when the root classification passed
  * is not valid.

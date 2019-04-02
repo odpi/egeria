@@ -61,6 +61,10 @@ public class ColumnContextBuilderTest {
                                                     any(String.class),
                                                     any(InstanceProperties.class),
                                                     any(String.class))).thenCallRealMethod();
+        when(omrsRepositoryHelper.getStringArrayProperty(eq(Constants.INFORMATION_VIEW_OMAS_NAME),
+                                                    any(String.class),
+                                                    any(InstanceProperties.class),
+                                                    any(String.class))).thenCallRealMethod();
         buildEntitiesAndRelationships();
         buildRelationshipsTypes();
         builder = new ColumnContextBuilder(omrsRepositoryConnector);

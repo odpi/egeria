@@ -12,7 +12,6 @@ import org.mockito.quality.Strictness;
 @SuiteDisplayName("Governance Engine Server GovernanceEngineValidator")
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.WARN)
-
 class GovernedAssetHandlerTest {
 
     @Test
