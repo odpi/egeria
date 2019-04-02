@@ -17,6 +17,12 @@ public class GovernanceEngineServicesInstanceMap {
 
 
     /**
+     * Constructor
+     */
+    public GovernanceEngineServicesInstanceMap() {
+    }
+
+    /**
      * Add a new server instance to the server map.
      *
      * @param serverName name of the server
@@ -27,7 +33,6 @@ public class GovernanceEngineServicesInstanceMap {
         instanceMap.put(serverName, instance);
     }
 
-
     /**
      * Return the instance for this server.
      *
@@ -35,11 +40,8 @@ public class GovernanceEngineServicesInstanceMap {
      * @return OMRSRepositoryServicesInstance object
      */
     private static synchronized GovernanceEngineServicesInstance getInstanceForJVM(String serverName) {
-        GovernanceEngineServicesInstance instance = instanceMap.get(serverName);
-
-        return instance;
+        return instanceMap.get(serverName);
     }
-
 
     /**
      * Remove the instance for this server.
@@ -49,14 +51,6 @@ public class GovernanceEngineServicesInstanceMap {
     static synchronized void removeInstanceForJVM(String serverName) {
         instanceMap.remove(serverName);
     }
-
-
-    /**
-     * Constructor
-     */
-    public GovernanceEngineServicesInstanceMap() {
-    }
-
 
     /**
      * Return the instance for this server.

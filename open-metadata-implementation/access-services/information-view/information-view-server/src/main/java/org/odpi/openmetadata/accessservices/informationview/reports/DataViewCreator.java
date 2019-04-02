@@ -37,13 +37,12 @@ public class DataViewCreator extends DataViewBasicOperation{
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
                     .build();
             OMEntityWrapper complexSchemaTypeEntityWrapper = omEntityDao.createOrUpdateEntity(Constants.COMPLEX_SCHEMA_TYPE,
-                    qualifiedNameForComplexSchemaType, complexSchemaTypeProperties, null, false);
+                    qualifiedNameForComplexSchemaType, complexSchemaTypeProperties, null, false, false);
 
             log.debug("Created data view schema type {}", complexSchemaTypeEntityWrapper.getEntityDetail().getGUID());
             omEntityDao.addRelationship(Constants.ASSET_SCHEMA_TYPE,
                     dataViewEntity.getGUID(),
                     complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(),
-                    Constants.INFORMATION_VIEW_OMAS_NAME,
                     new InstanceProperties());
             String qualifiedNameForDataView = EntityPropertiesUtils.getStringValueForProperty(dataViewEntity.getProperties(), Constants.QUALIFIED_NAME);
             addElements(qualifiedNameForDataView, complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), requestBody.getElements());

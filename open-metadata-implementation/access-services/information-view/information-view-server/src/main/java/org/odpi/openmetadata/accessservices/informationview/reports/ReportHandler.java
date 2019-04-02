@@ -68,6 +68,7 @@ public class ReportHandler {
                     qualifiedNameForReport,
                     reportProperties,
                     null,
+                    true,
                     true);
 
 

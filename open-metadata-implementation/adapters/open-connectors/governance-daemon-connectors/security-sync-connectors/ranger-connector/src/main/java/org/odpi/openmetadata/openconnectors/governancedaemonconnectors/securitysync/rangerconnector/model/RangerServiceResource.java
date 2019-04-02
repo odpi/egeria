@@ -47,6 +47,10 @@ public class RangerServiceResource {
         return createdBy;
     }
 
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
     public Date getCreateTime() {
         return createTime;
     }
@@ -77,10 +81,6 @@ public class RangerServiceResource {
 
     public void setResourceElements(Map<String, RangerPolicyResource> resourceElements) {
         this.resourceElements = resourceElements;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
     }
 
     public String getUpdatedBy() {
