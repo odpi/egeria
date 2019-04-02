@@ -29,7 +29,8 @@ public enum IGCVersionEnum implements Serializable {
     V11700   (11700000, "v11700", "binary_infoset_operation"),
     V11701   (11701000, "v11701", "analytics_project"),
     V11701SP1(11701100, "v11701sp1", "automation_rule"),
-    V11702   (11702000, "v11702", "lineage_container");
+    V11702   (11702000, "v11702", "lineage_container"),
+    V11710   (11710000, "v11710", "hbase_namespace");
 
     private static final long serialVersionUID = 1L;
 
