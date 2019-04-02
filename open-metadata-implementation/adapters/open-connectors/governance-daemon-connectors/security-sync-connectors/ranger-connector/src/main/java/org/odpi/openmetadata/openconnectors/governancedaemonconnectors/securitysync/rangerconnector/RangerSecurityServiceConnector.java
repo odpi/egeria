@@ -2,9 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Context;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassification;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
@@ -341,8 +341,13 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
     }
 
     private String getBody(Object resource) {
-        Gson gson = new Gson();
-        return gson.toJson(resource);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(resource);
+        } catch (JsonProcessingException e) {
+            log.error("error write json ");
+        }
+        return null;
     }
 
     private String getRangerURL(String s) {
