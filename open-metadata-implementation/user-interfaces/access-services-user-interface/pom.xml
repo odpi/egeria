@@ -250,7 +250,8 @@
                                     <outputDirectory>${basedir}/src/main/resources/public</outputDirectory>
                                     <resources>
                                         <resource>
-                                            <directory>${basedir}/src/main/static/build/es6-bundled</directory>
+                                            <directory>${basedir}/src/main/static/build/dev</directory>
+                                            <!--<directory>${basedir}/src/main/static/build/es6-bundled</directory>-->
                                             <filtering>true</filtering>
                                         </resource>
                                     </resources>
