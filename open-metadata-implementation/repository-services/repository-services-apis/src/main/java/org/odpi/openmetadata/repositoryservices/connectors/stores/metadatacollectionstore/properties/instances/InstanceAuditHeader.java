@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -94,6 +95,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
     private InstanceProvenanceType    instanceProvenanceType = null;
     private String                    metadataCollectionId   = null;
     private String                    metadataCollectionName = null;
+    private String                    replicatedBy           = null;
     private String                    instanceLicense        = null;
 
 
@@ -135,8 +137,11 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
         if (template != null)
         {
             this.type = template.getType();
-            this.metadataCollectionId = template.getMetadataCollectionId();
             this.instanceProvenanceType = template.getInstanceProvenanceType();
+            this.metadataCollectionId = template.getMetadataCollectionId();
+            this.metadataCollectionName = template.getMetadataCollectionName();
+            this.replicatedBy = template.getReplicatedBy();
+            this.instanceLicense = template.getInstanceLicense();
             this.createdBy = template.getCreatedBy();
             this.updatedBy = template.getUpdatedBy();
             this.maintainedBy = template.getMaintainedBy();
@@ -244,6 +249,34 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
 
 
     /**
+     * Return the metadata collection id of the cohort member responsible for replicating metadata
+     * owned by repositories (eg data tools/engines/platforms) from outside of the
+     * cohort or from an open metadata archive.  Null means the metadata is owned
+     * by a cohort member, or is not to be replicated.
+     *
+     * @return string metadata collection id
+     */
+    public String getReplicatedBy()
+    {
+        return replicatedBy;
+    }
+
+
+    /**
+     * Set up the metadata collection id of the cohort member responsible for replicating metadata
+     * owned by repositories (eg data tools/engines/platforms) from outside of the
+     * cohort or from an open metadata archive.  Null means the metadata is owned
+     * by a cohort member, or is not to be replicated.
+     *
+     * @param replicatedBy string metadata collection id
+     */
+    public void setReplicatedBy(String replicatedBy)
+    {
+        this.replicatedBy = replicatedBy;
+    }
+
+
+    /**
      * Return the license string for this instance - null means no restrictions.
      *
      * @return license string or null
@@ -320,7 +353,18 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
      */
     public List<String> getMaintainedBy()
     {
-        return maintainedBy;
+        if (maintainedBy == null)
+        {
+            return null;
+        }
+        else if (maintainedBy.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new ArrayList<>(maintainedBy);
+        }
     }
 
 
@@ -435,6 +479,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
                 ", instanceProvenanceType=" + instanceProvenanceType +
                 ", metadataCollectionId='" + metadataCollectionId + '\'' +
                 ", metadataCollectionName='" + metadataCollectionName + '\'' +
+                ", replicatedBy='" + replicatedBy + '\'' +
                 ", instanceLicense='" + instanceLicense + '\'' +
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
@@ -471,6 +516,7 @@ public abstract class InstanceAuditHeader extends InstanceElementHeader
                 getInstanceProvenanceType() == that.getInstanceProvenanceType() &&
                 Objects.equals(getMetadataCollectionId(), that.getMetadataCollectionId()) &&
                 Objects.equals(getMetadataCollectionName(), that.getMetadataCollectionName()) &&
+                Objects.equals(getReplicatedBy(), that.getReplicatedBy()) &&
                 Objects.equals(getInstanceLicense(), that.getInstanceLicense()) &&
                 Objects.equals(getCreatedBy(), that.getCreatedBy()) &&
                 Objects.equals(getUpdatedBy(), that.getUpdatedBy()) &&
