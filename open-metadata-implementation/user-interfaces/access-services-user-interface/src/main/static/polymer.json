@@ -12,24 +12,7 @@
     "node_modules/@webcomponents/webcomponentsjs/bundles/*.js"
   ],
   "builds": [
-    {
-      "name": "es6-bundled",
-      "browserCapabilities": [
-        "es2015"
-      ],
-      "js": {
-        "minify": true,
-        "transformModulesToAmd": true
-      },
-      "css": {
-        "minify": true
-      },
-      "html": {
-        "minify": true
-      },
-      "bundle": true,
-      "addServiceWorker": true
-    },
+
     {
       "name": "dev"
 
