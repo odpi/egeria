@@ -24,7 +24,6 @@ public class DatabaseContextHandler {
 
     private static final Logger log = LoggerFactory.getLogger(DatabaseContextHandler.class);
     private org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao omEntityDao;
-    private OMRSRepositoryConnector enterpriseConnector;
     private OMRSRepositoryHelper repositoryHelper;
     private OMRSAuditLog auditLog;
     private ColumnContextBuilder columnContextBuilder;
@@ -38,8 +37,7 @@ public class DatabaseContextHandler {
     }
 
     public List<DatabaseSource> getDataStores(int startFrom, int pageSize) {
-        InstanceProperties instanceProperties = omEntityDao.buildMatchingInstanceProperties(Collections.emptyMap(),
-                true);
+        InstanceProperties instanceProperties = omEntityDao.buildMatchingInstanceProperties(Collections.emptyMap(), true);
         try {
             List<EntityDetail> entities = omEntityDao.findEntities(instanceProperties, Constants.DATA_STORE, startFrom, pageSize);
             return getDatabaseSources(entities);
@@ -63,9 +61,10 @@ public class DatabaseContextHandler {
         EntityDetail table = getEntity(tableGuid , Constants.RELATIONAL_TABLE);
         try {
             List<Relationship> relationships = columnContextBuilder.getSchemaTypeRelationships(table, Constants.SCHEMA_ATTRIBUTE_TYPE, Constants.START_FROM, Constants.PAGE_SIZE);
-            if(relationships !=  null && !relationships.isEmpty()){
-                return columnContextBuilder.getTableContext(relationships.get(0).getEntityTwoProxy().getGUID(), Constants.START_FROM, Constants.PAGE_SIZE);
-            }else{
+            if (relationships != null && !relationships.isEmpty()) {
+                return columnContextBuilder.getTableContext(relationships.get(0).getEntityTwoProxy().getGUID(),
+                        Constants.START_FROM, Constants.PAGE_SIZE);
+            } else {
                 log.error("Table doesn't have any schema");//TODO throw specific exception
                 return null;
             }
@@ -97,14 +96,12 @@ public class DatabaseContextHandler {
         EntityDetail table = getEntity(tableGuid, Constants.RELATIONAL_TABLE);
         try {
             List<Relationship> relationships = columnContextBuilder.getSchemaTypeRelationships(table, Constants.SCHEMA_ATTRIBUTE_TYPE, Constants.START_FROM, Constants.PAGE_SIZE);
-
             if(relationships !=  null && !relationships.isEmpty()){
                 return columnContextBuilder.getTableColumns(relationships.get(0).getEntityTwoProxy().getGUID(), startFrom, pageSize);
             }else{
                 log.error("Table doesn't have any schema");// TODO throw specific exception
                 return null;
             }
-
         } catch (Exception e) {
             // TODO throw specific exception
             return null;
