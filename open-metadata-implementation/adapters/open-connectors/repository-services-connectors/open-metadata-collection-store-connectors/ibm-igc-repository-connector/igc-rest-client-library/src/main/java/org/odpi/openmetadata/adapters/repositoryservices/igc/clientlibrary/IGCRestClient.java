@@ -13,6 +13,7 @@ import java.util.zip.ZipOutputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -100,7 +101,6 @@ public class IGCRestClient {
         this.baseURL = baseURL;
         this.authorization = authorization;
         this.mapper = new ObjectMapper();
-        this.mapper.enableDefaultTyping();
         this.registeredPojosByType = new HashMap<>();
 
         log.debug("Constructing IGCRestClient...");
@@ -176,6 +176,7 @@ public class IGCRestClient {
         // If we have cookies already, and haven't been asked to force the login,
         // re-use these (to maintain the same session)
         if (cookies != null && !forceLogin) {
+            // TODO: identified as High issue on page 1122
             headers.addAll(HttpHeaders.COOKIE, cookies);
         } else { // otherwise re-authenticate by Basic authentication
             String auth = "Basic " + this.authorization;
@@ -802,7 +803,7 @@ public class IGCRestClient {
      * or if you are adding custom attributes to one of the native asset types, consider
      * directly extending that asset from model.generated.*
      * <br><br>
-     * To allow this dynamic registration to work, also ensure you have a 'public static String getIgcTypeId()'
+     * To allow this dynamic registration to work, also ensure you have a @JsonTypeName("...") annotation
      * in your class set to the type that the IGC REST API uses to refer to the asset (eg. for Term.class
      * it would be "term"). See the generated POJOs for examples.
      *
@@ -810,17 +811,14 @@ public class IGCRestClient {
      * @see #getPOJOForType(String)
      */
     public void registerPOJO(Class clazz) {
-        try {
-            // Every POJO should have a public static getIgcTypeId method giving its IGC asset type
-            Method getTypeId = clazz.getMethod("getIgcTypeId");
-            String typeId = (String) getTypeId.invoke(null);
-            this.mapper.registerSubtypes(new NamedType(clazz, typeId));
+        JsonTypeName typeName = (JsonTypeName) clazz.getAnnotation(JsonTypeName.class);
+        if (typeName != null) {
+            String typeId = typeName.value();
+            this.mapper.registerSubtypes(clazz);
             this.registeredPojosByType.put(typeId, clazz);
             log.debug("Registered IGC type {} to be handled by POJO: {}", typeId, clazz.getCanonicalName());
-        } catch (NoSuchMethodException e) {
-            log.error("Unable to find 'getIgcTypeId' method on class: {}", clazz.getCanonicalName(), e);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            log.error("Unable to access or invoke 'getIgcTypeId' method on class: {}", clazz.getCanonicalName(), e);
+        } else {
+            log.error("Unable to find JsonTypeName annotation to identify type in POJO: {}", clazz.getCanonicalName());
         }
     }
 
