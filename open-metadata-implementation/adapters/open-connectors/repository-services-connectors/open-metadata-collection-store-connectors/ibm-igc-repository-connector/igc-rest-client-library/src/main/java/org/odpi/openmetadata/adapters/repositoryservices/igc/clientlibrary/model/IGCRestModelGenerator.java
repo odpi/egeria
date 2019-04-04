@@ -333,6 +333,8 @@ public class IGCRestModelGenerator {
                 fs.append(System.lineSeparator());
                 fs.append("import com.fasterxml.jackson.annotation.JsonIgnoreProperties;");
                 fs.append(System.lineSeparator());
+                fs.append("import com.fasterxml.jackson.annotation.JsonTypeName;");
+                fs.append(System.lineSeparator());
                 fs.append("import javax.annotation.Generated;");
                 fs.append(System.lineSeparator());
 
@@ -357,6 +359,8 @@ public class IGCRestModelGenerator {
                 fs.append(System.lineSeparator());
                 fs.append("@JsonIgnoreProperties(ignoreUnknown=true)");
                 fs.append(System.lineSeparator());
+                fs.append("@JsonTypeName(\"" + id + "\")");
+                fs.append(System.lineSeparator());
 
                 if (ALIAS_OBJECTS.containsKey(id)) {
                     fs.append("public class " + className + " extends " + IGCRestConstants.getClassNameForAssetType(ALIAS_OBJECTS.get(id)) + " {");
@@ -366,8 +370,6 @@ public class IGCRestModelGenerator {
                     fs.append(System.lineSeparator() + System.lineSeparator());
                 }
 
-                fs.append("    public static String getIgcTypeId() { return \"" + id + "\"; }");
-                fs.append(System.lineSeparator());
                 fs.append("    public static String getIgcTypeDisplayName() { return \"" + name + "\"; }");
                 fs.append(System.lineSeparator());
                 fs.append(System.lineSeparator());

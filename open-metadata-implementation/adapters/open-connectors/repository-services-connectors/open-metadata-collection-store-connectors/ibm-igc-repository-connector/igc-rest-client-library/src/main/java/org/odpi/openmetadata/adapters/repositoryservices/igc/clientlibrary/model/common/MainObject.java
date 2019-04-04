@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -18,9 +19,9 @@ import java.util.List;
 @JsonSubTypes({
         @JsonSubTypes.Type(value = InformationAsset.class, name = "information_asset"),
 })
+@JsonTypeName("main_object")
 public class MainObject extends Reference {
 
-    public static String getIgcTypeId() { return "main_object"; }
     public static String getIgcTypeDisplayName() { return "Main Object"; }
 
     /**
