@@ -58,7 +58,6 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest{
         Collections.sort(columnNames);
         Collections.sort(expectedNames);
         assertEquals(expectedNames, columnNames);
-
     }
 
 }
