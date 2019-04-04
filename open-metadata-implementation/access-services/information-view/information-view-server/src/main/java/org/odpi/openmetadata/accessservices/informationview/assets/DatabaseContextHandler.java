@@ -50,7 +50,7 @@ public class DatabaseContextHandler {
     }
 
     public List<TableSource> getTables(String databaseGuid, int startFrom, int pageSize) {
-        EntityDetail database = getEntity(databaseGuid, "Exception retrieving database: ");
+        EntityDetail database = getEntity(databaseGuid);
         if (database == null  || !repositoryHelper.isTypeOf("getTables", database.getType().getTypeDefName(), Constants.DATA_STORE))
             return null;
         try {
@@ -63,7 +63,7 @@ public class DatabaseContextHandler {
     }
 
     public List<TableContextEvent> getTableContext(String tableGuid) {
-        EntityDetail table = getEntity(tableGuid, "Exception retrieving table: ");
+        EntityDetail table = getEntity(tableGuid);
         if (table == null || !repositoryHelper.isTypeOf("getTableContext", table.getType().getTypeDefName(), Constants.RELATIONAL_TABLE))
             return null;
         try {
@@ -99,7 +99,7 @@ public class DatabaseContextHandler {
     }
 
     public List<TableColumn> getTableColumns(String tableGuid, int startFrom, int pageSize) {
-        EntityDetail table = getEntity(tableGuid, "Exception retrieving table: ");
+        EntityDetail table = getEntity(tableGuid);
         if (table == null || !repositoryHelper.isTypeOf("getTableColumns", table.getType().getTypeDefName(), Constants.RELATIONAL_TABLE)) return null;
         try {
             List<Relationship> relationships = columnContextBuilder.getSchemaTypeRelationships(table, Constants.SCHEMA_ATTRIBUTE_TYPE, Constants.START_FROM, Constants.PAGE_SIZE);
@@ -112,21 +112,18 @@ public class DatabaseContextHandler {
             }
 
         } catch (Exception e) {
-            // throw e; TODO throw specific exception
+            // TODO throw specific exception
             return null;
         }
     }
 
-    private EntityDetail getEntity(String tableGuid, String s) {
-        EntityDetail table = null;
+    private EntityDetail getEntity(String guid) {
+        EntityDetail entityDetail = null;
         try {
-            table = omEntityDao.getEntityByGuid(tableGuid);
+            entityDetail = omEntityDao.getEntityByGuid(guid);
         } catch (Exception e) {
-            log.error(s, e);
+            log.error("Exception retrieving entity: ", e);
         }
-        if (table == null) {
-            return null;
-        }
-        return table;
+        return entityDetail;
     }
 }
