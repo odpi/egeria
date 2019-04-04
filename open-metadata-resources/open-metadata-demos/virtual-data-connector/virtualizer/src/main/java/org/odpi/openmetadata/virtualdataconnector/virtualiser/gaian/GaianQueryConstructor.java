@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian;
 
-import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumn;
+import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.ffdc.VirtualiserCheckedException;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.ffdc.VirtualiserErrorCode;
@@ -56,7 +56,7 @@ public class GaianQueryConstructor {
         try {
             executeQueryUtil.getConnection();
 
-            String gaianNodeName = tableContextEvent.getTableSource().getNetworkAddress().replace(".", "").toLowerCase();
+            String gaianNodeName = tableContextEvent.getTableSource().getDatabaseSource().getEndpointSource().getNetworkAddress().replace(".", "").toLowerCase();
             String technicalTableName = getLogicTableName(TECHNICAL_PREFIX, tableContextEvent, gaianNodeName);
             String businessTableName = getLogicTableName(BUSINESS_PREFIX, tableContextEvent, gaianNodeName);
             String logicalTableName = getLogicTableName(GENERAL, tableContextEvent, gaianNodeName);
@@ -95,12 +95,12 @@ public class GaianQueryConstructor {
             }
             updateColumnDataType(mappedColumns, backendTable);
 
-            String updatedTable = createTableDefinition(tableContextEvent.getTableSource().getDatabaseName(), businessTableName, (c -> c.getBusinessName()), mappedColumns, gaianNodeName, logicalTableName);
+            String updatedTable = createTableDefinition(tableContextEvent.getTableSource().getDatabaseSource().getName(), businessTableName, (c -> c.getBusinessName()), mappedColumns, gaianNodeName, logicalTableName);
             if (updatedTable != null) {
                 createdTables.put(BUSINESS_PREFIX, updatedTable);
             }
 
-            updatedTable = createTableDefinition(tableContextEvent.getTableSource().getDatabaseName(), technicalTableName, (c -> c.getTechnicalName()), mappedColumns, gaianNodeName,logicalTableName );
+            updatedTable = createTableDefinition(tableContextEvent.getTableSource().getDatabaseSource().getName(), technicalTableName, (c -> c.getTechnicalName()), mappedColumns, gaianNodeName,logicalTableName );
             if (updatedTable != null) {
                 createdTables.put(TECHNICAL_PREFIX, updatedTable);
             }
@@ -114,7 +114,7 @@ public class GaianQueryConstructor {
             VirtualiserErrorCode errorCode = VirtualiserErrorCode.NO_lOGICTABLE;
 
             String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(tableContextEvent.getTableSource().getTableName(), gaianNodeName);
+                    + errorCode.getFormattedErrorMessage(tableContextEvent.getTableSource().getName(), gaianNodeName);
 
 
             throw new VirtualiserCheckedException(errorCode.getHTTPErrorCode(),
@@ -165,8 +165,8 @@ public class GaianQueryConstructor {
     private List<MappedColumn> getMappedColumns(TableContextEvent tableContextEvent) {
 
         List<MappedColumn> mappedColumns = new ArrayList<>();
-        List<DatabaseColumn> databaseColumnList = tableContextEvent.getTableColumns();
-        for (DatabaseColumn databaseColumn : databaseColumnList) {
+        List<TableColumn> databaseColumnList = tableContextEvent.getTableColumns();
+        for (TableColumn databaseColumn : databaseColumnList) {
             if (databaseColumn.getBusinessTerm() != null) {
                 MappedColumn mappedColumn = new MappedColumn();
                 mappedColumn.setBusinessName(databaseColumn.getBusinessTerm().getName().replace(" ", "_"));
@@ -187,16 +187,16 @@ public class GaianQueryConstructor {
      */
     private String getLogicTableName(String type, TableContextEvent event, String gaianNodeName) {
 
-        String connectorProviderType = event.getTableSource().getConnectorProviderName().toLowerCase();
+        String connectorProviderType = event.getTableSource().getDatabaseSource().getEndpointSource().getConnectorProviderName().toLowerCase();
 
 
         String name;
         if (type.equals(GENERAL)) {
             //form Logical Table's name for the back-end Gaian
-            name = connectorProviderType + "_" + event.getTableSource().getDatabaseName() + "_" + event.getTableSource().getSchemaName() + "_" + event.getTableSource().getTableName();
+            name = connectorProviderType + "_" + event.getTableSource().getDatabaseSource().getName() + "_" + event.getTableSource().getSchemaName() + "_" + event.getTableSource().getName();
         } else {
             //form Logical Table's name for the front-end Gaian
-            name = type + "_" + gaianNodeName + "_" + connectorProviderType + "_" + event.getTableSource().getDatabaseName() + "_" + event.getTableSource().getSchemaName() + "_" + event.getTableSource().getTableName();
+            name = type + "_" + gaianNodeName + "_" + connectorProviderType + "_" + event.getTableSource().getDatabaseSource().getName() + "_" + event.getTableSource().getSchemaName() + "_" + event.getTableSource().getName();
         }
         return name.toUpperCase();
     }

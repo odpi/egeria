@@ -34,7 +34,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                                               PagingErrorException, ClassificationErrorException,
                                               UserNotAuthorizedException, RepositoryErrorException {
 
-        String qualifiedNameForRelationalDbSchemaType = QualifiedNameUtils.buildQualifiedNameForRelationalDbSchemaType(event.getTableSource().getNetworkAddress().split(":")[0], event.getTableSource().getDatabaseName(), event.getTableSource().getSchemaName());
+        String qualifiedNameForRelationalDbSchemaType = QualifiedNameUtils.buildQualifiedNameForRelationalDbSchemaType(event.getTableSource().getDatabaseSource().getEndpointSource().getNetworkAddress().split(":")[0], event.getTableSource().getDatabaseSource().getName(), event.getTableSource().getSchemaName());
         EntityDetail relationalDbSchemaType = omEntityDao.getEntity(Constants.RELATIONAL_DB_SCHEMA_TYPE, qualifiedNameForRelationalDbSchemaType, false);
 
         if (relationalDbSchemaType == null) {
@@ -57,7 +57,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                                                                 UserNotAuthorizedException,
                                                                 RepositoryErrorException {
         InformationViewAsset informationViewAsset = new InformationViewAsset();
-        String qualifiedNameForSoftwareServer = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER, event.getTableSource().getNetworkAddress().split(":")[0]);
+        String qualifiedNameForSoftwareServer = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER, event.getTableSource().getDatabaseSource().getEndpointSource().getNetworkAddress().split(":")[0]);
         InstanceProperties softwareServerProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSoftwareServer)
                 .withStringProperty(Constants.NAME, qualifiedNameForSoftwareServer)
@@ -68,12 +68,12 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 qualifiedNameForSoftwareServer, softwareServerProperties, classificationList, true);
         informationViewAsset.setSoftwareServerEntity(softwareServerEntity);
 
-        String qualifiedNameForEndpoint = QualifiedNameUtils.buildQualifiedName("", Constants.ENDPOINT, event.getTableSource().getProtocol() + event.getTableSource().getNetworkAddress()) ;
+        String qualifiedNameForEndpoint = QualifiedNameUtils.buildQualifiedName("", Constants.ENDPOINT, event.getTableSource().getDatabaseSource().getEndpointSource().getProtocol() + event.getTableSource().getDatabaseSource().getEndpointSource().getNetworkAddress()) ;
         InstanceProperties endpointProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForEndpoint)
                 .withStringProperty(Constants.NAME, qualifiedNameForEndpoint)
-                .withStringProperty(Constants.NETWORK_ADDRESS, event.getTableSource().getNetworkAddress() )
-                .withStringProperty(Constants.PROTOCOL, event.getTableSource().getProtocol())
+                .withStringProperty(Constants.NETWORK_ADDRESS, event.getTableSource().getDatabaseSource().getEndpointSource().getNetworkAddress() )
+                .withStringProperty(Constants.PROTOCOL, event.getTableSource().getDatabaseSource().getEndpointSource().getProtocol())
                 .build();
         EntityDetail endpointEntity = omEntityDao.addEntity(Constants.ENDPOINT,
                                                             qualifiedNameForEndpoint,
@@ -86,7 +86,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                                     endpointEntity.getGUID(),
                                     new InstanceProperties());
 
-        String qualifiedNameForConnection = QualifiedNameUtils.buildQualifiedName(qualifiedNameForEndpoint, Constants.CONNECTION, event.getTableSource().getUser());
+        String qualifiedNameForConnection = QualifiedNameUtils.buildQualifiedName(qualifiedNameForEndpoint, Constants.CONNECTION, event.getTableSource().getDatabaseSource().getEndpointSource().getUser());
         InstanceProperties connectionProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForConnection)
                 .withStringProperty(Constants.DESCRIPTION, "Connection to " + qualifiedNameForConnection)
@@ -101,10 +101,10 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 new InstanceProperties());
 
 
-        String qualifiedNameForConnectorType = QualifiedNameUtils.buildQualifiedName("", Constants.CONNECTION_CONNECTOR_TYPE, event.getTableSource().getConnectorProviderName());
+        String qualifiedNameForConnectorType = QualifiedNameUtils.buildQualifiedName("", Constants.CONNECTION_CONNECTOR_TYPE, event.getTableSource().getDatabaseSource().getEndpointSource().getConnectorProviderName());
         InstanceProperties connectorTypeProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForConnectorType)
-                .withStringProperty(Constants.CONNECTOR_PROVIDER_CLASSNAME, event.getTableSource().getConnectorProviderName())
+                .withStringProperty(Constants.CONNECTOR_PROVIDER_CLASSNAME, event.getTableSource().getDatabaseSource().getEndpointSource().getConnectorProviderName())
                 .build();
         EntityDetail connectorTypeEntity = omEntityDao.addEntity(Constants.CONNECTOR_TYPE,
                                                                     qualifiedNameForConnectorType, connectorTypeProperties, false);
@@ -115,10 +115,10 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 connectorTypeEntity.getGUID(),
                 new InstanceProperties());
 
-        String qualifiedNameForDataStore =  QualifiedNameUtils.buildQualifiedName(qualifiedNameForSoftwareServer, Constants.DATA_STORE, event.getTableSource().getDatabaseName());
+        String qualifiedNameForDataStore =  QualifiedNameUtils.buildQualifiedName(qualifiedNameForSoftwareServer, Constants.DATA_STORE, event.getTableSource().getDatabaseSource().getName());
         InstanceProperties dataStoreProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataStore)
-                .withStringProperty(Constants.NAME, event.getTableSource().getDatabaseName())
+                .withStringProperty(Constants.NAME, event.getTableSource().getDatabaseSource().getName())
                 .build();
         EntityDetail dataStore = omEntityDao.addEntity(Constants.DATA_STORE, qualifiedNameForDataStore, dataStoreProperties, true);
         informationViewAsset.setDataStore(dataStore);

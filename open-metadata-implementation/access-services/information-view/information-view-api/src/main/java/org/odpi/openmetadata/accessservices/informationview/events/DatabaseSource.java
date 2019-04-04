@@ -16,18 +16,31 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DatabaseSource extends Source{
 
-    private String databaseName;
+    private String name;
+    private EndpointSource endpointSource;
 
-    public String getDatabaseName() {
-        return databaseName;
+    public String getName() {
+        return name;
     }
 
-    public void setDatabaseName(String databaseName) {
-        this.databaseName = databaseName;
+    public void setName(String name) {
+        this.name = name;
     }
+
+    public EndpointSource getEndpointSource() {
+        return endpointSource;
+    }
+
+    public void setEndpointSource(EndpointSource endpointSource) {
+        this.endpointSource = endpointSource;
+    }
+
 
     @Override
-    public String buildQualifiedName() {
-        return this.getNetworkAddress() + "." + "Connection." + databaseName;
+    public String toString() {
+        return "{" +
+                "name='" + name + '\'' +
+                ", endpointSource=" + endpointSource +
+                '}';
     }
 }
