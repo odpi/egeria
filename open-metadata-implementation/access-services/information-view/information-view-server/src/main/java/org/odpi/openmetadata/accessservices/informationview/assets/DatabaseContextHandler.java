@@ -50,12 +50,9 @@ public class DatabaseContextHandler {
     }
 
     public List<TableSource> getTables(String databaseGuid, int startFrom, int pageSize) {
-        EntityDetail database = getEntity(databaseGuid);
-        if (database == null  || !repositoryHelper.isTypeOf("getTables", database.getType().getTypeDefName(), Constants.DATA_STORE))
-            return null;
+        EntityDetail database = getEntity(databaseGuid, Constants.DATA_STORE);
         try {
-            return columnContextBuilder.getTablesForDatabase(databaseGuid, startFrom, pageSize);
-
+            return columnContextBuilder.getTablesForDatabase(database.getGUID(), startFrom, pageSize);
         } catch (Exception e) {
             // throw e; TODO throw specific exception
             return null;
@@ -63,9 +60,7 @@ public class DatabaseContextHandler {
     }
 
     public List<TableContextEvent> getTableContext(String tableGuid) {
-        EntityDetail table = getEntity(tableGuid);
-        if (table == null || !repositoryHelper.isTypeOf("getTableContext", table.getType().getTypeDefName(), Constants.RELATIONAL_TABLE))
-            return null;
+        EntityDetail table = getEntity(tableGuid , Constants.RELATIONAL_TABLE);
         try {
             List<Relationship> relationships = columnContextBuilder.getSchemaTypeRelationships(table, Constants.SCHEMA_ATTRIBUTE_TYPE, Constants.START_FROM, Constants.PAGE_SIZE);
             if(relationships !=  null && !relationships.isEmpty()){
@@ -99,15 +94,14 @@ public class DatabaseContextHandler {
     }
 
     public List<TableColumn> getTableColumns(String tableGuid, int startFrom, int pageSize) {
-        EntityDetail table = getEntity(tableGuid);
-        if (table == null || !repositoryHelper.isTypeOf("getTableColumns", table.getType().getTypeDefName(), Constants.RELATIONAL_TABLE)) return null;
+        EntityDetail table = getEntity(tableGuid, Constants.RELATIONAL_TABLE);
         try {
             List<Relationship> relationships = columnContextBuilder.getSchemaTypeRelationships(table, Constants.SCHEMA_ATTRIBUTE_TYPE, Constants.START_FROM, Constants.PAGE_SIZE);
 
             if(relationships !=  null && !relationships.isEmpty()){
                 return columnContextBuilder.getTableColumns(relationships.get(0).getEntityTwoProxy().getGUID(), startFrom, pageSize);
             }else{
-                log.error("Table doesn't have any schema");//TODO throw specific exception
+                log.error("Table doesn't have any schema");// TODO throw specific exception
                 return null;
             }
 
@@ -117,13 +111,16 @@ public class DatabaseContextHandler {
         }
     }
 
-    private EntityDetail getEntity(String guid) {
+    private EntityDetail getEntity(String guid, String typeName) {
         EntityDetail entityDetail = null;
         try {
             entityDetail = omEntityDao.getEntityByGuid(guid);
         } catch (Exception e) {
             log.error("Exception retrieving entity: ", e);
         }
+        if (entityDetail == null || !repositoryHelper.isTypeOf("getEntity", entityDetail.getType().getTypeDefName(), typeName))
+            return null;// TODO throw specific exception
+
         return entityDetail;
     }
 }
