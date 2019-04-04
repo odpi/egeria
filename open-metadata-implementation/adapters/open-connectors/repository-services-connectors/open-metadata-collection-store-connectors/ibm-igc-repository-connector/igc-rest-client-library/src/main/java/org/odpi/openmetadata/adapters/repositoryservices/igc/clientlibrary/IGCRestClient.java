@@ -3,8 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +16,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Paging;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
@@ -98,6 +95,11 @@ public class IGCRestClient {
      */
     public IGCRestClient(String baseURL, String authorization) {
 
+        if (baseURL == null || !baseURL.startsWith("https://")) {
+            log.error("Cannot instantiate IGCRestClient -- baseURL must be https: {}", baseURL);
+            throw new NullPointerException();
+        }
+
         this.baseURL = baseURL;
         this.authorization = authorization;
         this.mapper = new ObjectMapper();
@@ -106,7 +108,7 @@ public class IGCRestClient {
         log.debug("Constructing IGCRestClient...");
 
         // Run a simple initial query to obtain a session and setup the cookies
-        if (this.baseURL != null && this.authorization != null) {
+        if (this.authorization != null) {
 
             IGCSearch igcSearch = new IGCSearch("category");
             igcSearch.addType("term");
@@ -146,7 +148,7 @@ public class IGCRestClient {
                 successfullyInitialised = true;
 
             } else {
-                log.error("Unable to construct IGCRestClient.");
+                log.error("Unable to construct IGCRestClient: no authorization provided.");
             }
 
         }
@@ -192,25 +194,25 @@ public class IGCRestClient {
      * and we are unable to open a new session with this attempt, will give up. If the alreadyTriedNewSession is false,
      * will attempt to re-send this request to open a new session precisely once before giving up.
      *
-     * @param endpoint the endpoint to which to send the request
+     * @param url the URL to which to send the request
      * @param method the HTTP method to use in sending the request
      * @param contentType the type of content to expect in the payload (if any)
      * @param payload the payload (if any) for the request
      * @param alreadyTriedNewSession indicates whether a new session was already attempted (true) or not (false)
      * @return {@code ResponseEntity<String>}
      */
-    private ResponseEntity<String> openNewSessionWithRequest(String endpoint,
+    private ResponseEntity<String> openNewSessionWithRequest(String url,
                                                              HttpMethod method,
                                                              MediaType contentType,
                                                              String payload,
                                                              boolean alreadyTriedNewSession) {
         if (alreadyTriedNewSession) {
-            log.error("Opening a new session already attempted without success -- giving up on {} to {} with {}", method, endpoint, payload);
+            log.error("Opening a new session already attempted without success -- giving up on {} to {} with {}", method, url, payload);
             return null;
         } else {
             // By removing cookies, we'll force a login
             this.cookies = null;
-            return makeRequest(endpoint, method, contentType, payload, true);
+            return makeRequest(url, method, contentType, payload, true);
         }
     }
 
@@ -351,7 +353,7 @@ public class IGCRestClient {
      * Internal utility for making potentially repeat requests (if session expires and needs to be re-opened),
      * to upload a file to a given endpoint.
      *
-     * @param endpoint the URL against which to POST the upload
+     * @param endpoint the REST resource against which to POST the upload
      * @param file the Spring FileSystemResource or ClassPathResource of the file to be uploaded
      * @param forceLogin a boolean indicating whether login should be forced (true) or session reused (false)
      * @return {@code ResponseEntity<String>}
@@ -369,7 +371,7 @@ public class IGCRestClient {
 
         try {
             response = new RestTemplate().exchange(
-                    endpoint,
+                    baseURL + endpoint,
                     method,
                     toSend,
                     String.class
@@ -378,7 +380,7 @@ public class IGCRestClient {
             log.warn("Request failed -- session may have expired, retrying...", e);
             // If the response was forbidden (fails with exception), the session may have expired -- create a new one
             response = openNewSessionWithUpload(
-                    endpoint,
+                    baseURL + endpoint,
                     method,
                     file,
                     forceLogin
@@ -394,7 +396,7 @@ public class IGCRestClient {
     /**
      * General utility for uploading binary files.
      *
-     * @param endpoint the URL against which to upload the file
+     * @param endpoint the REST resource against which to upload the file
      * @param method HttpMethod (POST, PUT, etc)
      * @param file the Spring FileSystemResource or ClassPathResource containing the file to be uploaded
      * @return boolean - indicates success (true) or failure (false)
@@ -407,14 +409,14 @@ public class IGCRestClient {
     /**
      * Internal utility for making potentially repeat requests (if session expires and needs to be re-opened).
      *
-     * @param endpoint the URL against which to make the request
+     * @param url the URL against which to make the request
      * @param method HttpMethod (GET, POST, etc)
      * @param contentType the type of content to expect in the payload (if any)
      * @param payload if POSTing some content, the JSON structure providing what should be POSTed
      * @param forceLogin a boolean indicating whether login should be forced (true) or session reused (false)
      * @return {@code ResponseEntity<String>}
      */
-    private ResponseEntity<String> makeRequest(String endpoint,
+    private ResponseEntity<String> makeRequest(String url,
                                                HttpMethod method,
                                                MediaType contentType,
                                                String payload,
@@ -429,9 +431,9 @@ public class IGCRestClient {
         }
         ResponseEntity<String> response = null;
         try {
-            log.debug("{}ing to {} with: {}", method, endpoint, payload);
+            log.debug("{}ing to {} with: {}", method, url, payload);
             response = new RestTemplate().exchange(
-                    endpoint,
+                    url,
                     method,
                     toSend,
                     String.class);
@@ -440,7 +442,7 @@ public class IGCRestClient {
             log.warn("Request failed -- session may have expired, retrying...", e);
             // If the response was forbidden (fails with exception), the session may have expired -- create a new one
             response = openNewSessionWithRequest(
-                    endpoint,
+                    url,
                     method,
                     contentType,
                     payload,
@@ -455,7 +457,7 @@ public class IGCRestClient {
     /**
      * General utility for making requests.
      *
-     * @param endpoint the URL against which to make the request
+     * @param endpoint the REST resource against which to make the request
      * @param method HttpMethod (GET, POST, etc)
      * @param contentType the type of content to expect in the payload (if any)
      * @param payload if POSTing some content, the JSON structure providing what should be POSTed
@@ -463,7 +465,7 @@ public class IGCRestClient {
      */
     public String makeRequest(String endpoint, HttpMethod method, MediaType contentType, String payload) {
         ResponseEntity<String> response = makeRequest(
-                endpoint,
+                baseURL + endpoint,
                 method,
                 contentType,
                 payload,
@@ -487,7 +489,7 @@ public class IGCRestClient {
      * @return ArrayNode the list of types supported by IGC, as a JSON structure
      */
     public List<Type> getTypes(ObjectMapper objectMapper) {
-        String response = makeRequest(baseURL + EP_TYPES, HttpMethod.GET, null,null);
+        String response = makeRequest(EP_TYPES, HttpMethod.GET, null,null);
         List<Type> alTypes = new ArrayList<>();
         try {
             alTypes = objectMapper.readValue(response, new TypeReference<List<Type>>(){});
@@ -507,7 +509,7 @@ public class IGCRestClient {
      * @return Reference - the IGC object representing the asset
      */
     public Reference getAssetById(String rid) {
-        return readJSONIntoPOJO(makeRequest(baseURL + EP_ASSET + "/" + rid, HttpMethod.GET, null,null));
+        return readJSONIntoPOJO(makeRequest(EP_ASSET + "/" + rid, HttpMethod.GET, null,null));
     }
 
     /**
@@ -553,7 +555,7 @@ public class IGCRestClient {
      * @return JsonNode - the first JSON page of results from the search
      */
     public String searchJson(IGCSearch igcSearch) {
-        return makeRequest(baseURL + EP_SEARCH, HttpMethod.POST, MediaType.APPLICATION_JSON, igcSearch.getQuery().toString());
+        return makeRequest(EP_SEARCH, HttpMethod.POST, MediaType.APPLICATION_JSON, igcSearch.getQuery().toString());
     }
 
     /**
@@ -581,7 +583,7 @@ public class IGCRestClient {
      * @return String - the JSON indicating the updated asset's RID and updates made
      */
     public String updateJson(String rid, JsonNode value) {
-        return makeRequest(baseURL + EP_ASSET + "/" + rid, HttpMethod.PUT, MediaType.APPLICATION_JSON, value.toString());
+        return makeRequest(EP_ASSET + "/" + rid, HttpMethod.PUT, MediaType.APPLICATION_JSON, value.toString());
     }
 
     /**
@@ -605,9 +607,9 @@ public class IGCRestClient {
         boolean success;
         List<String> existingBundles = getOpenIgcBundles();
         if (existingBundles.contains(name)) {
-            success = uploadFile(baseURL + EP_BUNDLES, HttpMethod.PUT, file);
+            success = uploadFile(EP_BUNDLES, HttpMethod.PUT, file);
         } else {
-            success = uploadFile(baseURL + EP_BUNDLES, HttpMethod.POST, file);
+            success = uploadFile(EP_BUNDLES, HttpMethod.POST, file);
         }
         return success;
     }
@@ -702,7 +704,7 @@ public class IGCRestClient {
      * @return {@code List<String>}
      */
     public List<String> getOpenIgcBundles() {
-        String bundles = makeRequest(baseURL + EP_BUNDLES, HttpMethod.GET, null,null);
+        String bundles = makeRequest(EP_BUNDLES, HttpMethod.GET, null,null);
         List<String> alBundles = new ArrayList<>();
         try {
             ArrayNode anBundles = mapper.readValue(bundles, ArrayNode.class);
@@ -722,7 +724,7 @@ public class IGCRestClient {
      * @return String - the JSON structure indicating the updated assets' RID(s)
      */
     public String upsertOpenIgcAsset(String assetXML) {
-        return makeRequest(baseURL + EP_BUNDLE_ASSETS, HttpMethod.POST, MediaType.APPLICATION_XML, assetXML);
+        return makeRequest(EP_BUNDLE_ASSETS, HttpMethod.POST, MediaType.APPLICATION_XML, assetXML);
     }
 
     /**
@@ -732,7 +734,7 @@ public class IGCRestClient {
      * @return boolean - true on success, false on failure
      */
     public boolean deleteOpenIgcAsset(String assetXML) {
-        return (makeRequest(baseURL + EP_BUNDLE_ASSETS, HttpMethod.DELETE, MediaType.APPLICATION_XML, assetXML) == null);
+        return (makeRequest(EP_BUNDLE_ASSETS, HttpMethod.DELETE, MediaType.APPLICATION_XML, assetXML) == null);
     }
 
     /**
@@ -751,7 +753,7 @@ public class IGCRestClient {
                 if (this.workflowEnabled && !sNextURL.contains("workflowMode=draft")) {
                     sNextURL += "&workflowMode=draft";
                 }
-                String nextPageBody = makeRequest(sNextURL, HttpMethod.GET, null, null);
+                String nextPageBody = makeRequest(sNextURL.substring(baseURL.length()), HttpMethod.GET, null, null);
                 // If the page is part of an ASSET retrieval, we need to strip off the attribute
                 // name of the relationship for proper multi-page composition
                 if (sNextURL.contains(EP_ASSET)) {
@@ -791,7 +793,7 @@ public class IGCRestClient {
      * Disconnect from IGC REST API and invalidate the session.
      */
     public void disconnect() {
-        makeRequest(baseURL + EP_LOGOUT, HttpMethod.GET, null,null);
+        makeRequest(EP_LOGOUT, HttpMethod.GET, null,null);
     }
 
     /**
