@@ -38,6 +38,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
     private String securitySyncOutTopicName;
     private Connection securitySyncOutTopic;
 
+    private Connection securityServerConnection;
     /**
      * Default constructor
      */
@@ -68,6 +69,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
             securitySyncInTopic = template.securitySyncInTopic;
 
             securitySyncOutTopic = template.securitySyncOutTopic;
+            securityServerConnection = template.securityServerConnection;
         }
     }
 
@@ -308,6 +310,24 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         this.securitySyncOutTopic = securitySyncOutTopic;
     }
 
+    /**
+     * Return the OCF Connection for the Security Server used to push the Security Tags.
+     *
+     * @return Connection for Security Server
+     */
+    public Connection getSecurityServerConnection() {
+        return securityServerConnection;
+    }
+
+    /**
+     * Set up the OCF Connection for the Security Server used to pass requests to this Security Sync.
+     *
+     * @param securityServerConnection Connection for Out Topic
+     */
+    public void setSecurityServerConnection(Connection securityServerConnection) {
+        this.securityServerConnection = securityServerConnection;
+    }
+
     @Override
     public String toString() {
         return "SecuritySyncConfig{" +
@@ -324,6 +344,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
                 ", securitySyncInTopic=" + securitySyncInTopic +
                 ", securitySyncOutTopicName='" + securitySyncOutTopicName + '\'' +
                 ", securitySyncOutTopic=" + securitySyncOutTopic +
+                ", securityServerConnection=" + securityServerConnection +
                 '}';
     }
 
@@ -353,6 +374,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
                 Objects.equals(getSecuritySyncInTopic(), that.getSecuritySyncInTopic()) &&
                 Objects.equals(getSecuritySyncOutTopic(), that.getSecuritySyncOutTopic()) &&
                 Objects.equals(getSecuritySyncInTopicName(), that.getSecuritySyncInTopicName()) &&
+                Objects.equals(getSecurityServerConnection(), that.getSecurityServerConnection()) &&
                 Objects.equals(getSecuritySyncOutTopicName(), that.getSecuritySyncOutTopicName());
     }
 
@@ -366,6 +388,6 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         return Objects.hash(getSecuritySyncId(), getSecuritySyncName(),
                 getSecuritySyncDescription(), getSecuritySyncWiki(), getSecurityServerURL(), getGovernanceEngineServerURL(),
                 getSecurityServerAuthorization(), getTagServiceName(), getSecuritySyncInTopic(),
-                getSecuritySyncOutTopic(), getSecuritySyncInTopicName(), getSecuritySyncOutTopicName());
+                getSecuritySyncOutTopic(), getSecuritySyncInTopicName(), getSecuritySyncOutTopicName(), getSecurityServerConnection());
     }
 }
