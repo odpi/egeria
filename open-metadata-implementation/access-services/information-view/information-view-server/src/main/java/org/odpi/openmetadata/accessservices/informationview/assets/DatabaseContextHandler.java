@@ -36,11 +36,11 @@ public class DatabaseContextHandler {
         this.columnContextBuilder = new ColumnContextBuilder(enterpriseConnector);
     }
 
-    public List<DatabaseSource> getDataStores(int startFrom, int pageSize) {
+    public List<DatabaseSource> getDatabases(int startFrom, int pageSize) {
         InstanceProperties instanceProperties = omEntityDao.buildMatchingInstanceProperties(Collections.emptyMap(), true);
         try {
             List<EntityDetail> entities = omEntityDao.findEntities(instanceProperties, Constants.DATA_STORE, startFrom, pageSize);
-            return getDatabaseSources(entities);
+            return buildDatabaseContext(entities);
         } catch (Exception e) {
             // throw e; TODO throw specific exception
             return null;
@@ -75,7 +75,7 @@ public class DatabaseContextHandler {
         }
     }
 
-    private List<DatabaseSource> getDatabaseSources(List<EntityDetail> entities) {
+    private List<DatabaseSource> buildDatabaseContext(List<EntityDetail> entities) {
         List<DatabaseSource> databaseSources = new ArrayList<>();
         if (entities != null && !entities.isEmpty()) {
             for (EntityDetail entityDetail : entities) {

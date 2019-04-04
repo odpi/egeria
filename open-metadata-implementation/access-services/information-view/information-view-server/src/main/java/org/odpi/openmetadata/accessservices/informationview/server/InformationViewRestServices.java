@@ -84,7 +84,7 @@ public class InformationViewRestServices {
         DatabaseListResponse response = new DatabaseListResponse();
         try {
             DatabaseContextHandler databaseContextHandler = instanceHandler.getAssetContextHandler(serverName);
-            List<DatabaseSource> databases = databaseContextHandler.getDataStores(startFrom, pageSize);
+            List<DatabaseSource> databases = databaseContextHandler.getDatabases(startFrom, pageSize);
             response.setDatabasesList(databases);
         }
         catch (  PropertyServerException e) {
