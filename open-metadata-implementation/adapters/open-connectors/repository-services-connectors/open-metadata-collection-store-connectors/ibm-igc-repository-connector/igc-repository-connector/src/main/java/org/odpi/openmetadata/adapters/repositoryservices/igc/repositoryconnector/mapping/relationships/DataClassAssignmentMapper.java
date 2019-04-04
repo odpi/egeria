@@ -259,7 +259,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                                     repositoryName,
                                     relationshipProperties,
                                     "valueFrequency",
-                                    (Long) valFreq,
+                                    ((Double) valFreq).longValue(),
                                     methodName
                             );
                         }
@@ -445,7 +445,7 @@ public class DataClassAssignmentMapper extends RelationshipMapping {
                                     repositoryName,
                                     relationshipProperties,
                                     "valueFrequency",
-                                    (Long) valFreq,
+                                    ((Double) valFreq).longValue(),
                                     methodName
                             );
                         }

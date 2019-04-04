@@ -24,10 +24,12 @@
     <packaging>pom</packaging>
     <modules>
         <module>discovery-engine-services</module>
+        <module>open-lineage-services</module>
         <module>security-sync-services</module>
         <module>admin-services</module>
         <module>stewardship-services</module>
         <module>server-chassis</module>
+        <module>virtualization-services</module>
     </modules>
 
 </project>
