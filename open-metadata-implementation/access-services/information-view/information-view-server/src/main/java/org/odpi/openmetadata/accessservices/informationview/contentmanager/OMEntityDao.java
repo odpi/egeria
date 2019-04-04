@@ -37,14 +37,13 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+
+import static org.odpi.openmetadata.accessservices.informationview.utils.Constants.PAGE_SIZE;
 
 public class OMEntityDao {
 
     private static final Logger log = LoggerFactory.getLogger(OMEntityDao.class);
-    private static final Integer PAGE_SIZE = 100;
     private final OMRSRepositoryConnector enterpriseConnector;
     private final OMRSAuditLog auditLog;
     private List<String> supportedZones;
@@ -179,13 +178,15 @@ public class OMEntityDao {
                                                                                                         RepositoryErrorException,
                                                                                                         PropertyErrorException,
                                                                                                         TypeErrorException {
-        InstanceProperties matchProperties = buildMatchingInstanceProperties(Constants.QUALIFIED_NAME, qualifiedName, zoneRestricted);
+        Map<String, String>  properties = new HashMap<>();
+        properties.put(Constants.QUALIFIED_NAME, qualifiedName);
+        InstanceProperties matchProperties = buildMatchingInstanceProperties(properties, zoneRestricted);
         List<EntityDetail> existingEntities;
-        existingEntities = findEntities(matchProperties, typeName);
+        existingEntities = findEntities(matchProperties, typeName, Constants.START_FROM, PAGE_SIZE);
         return checkEntities(existingEntities, qualifiedName);
     }
 
-    public List<EntityDetail> findEntities(InstanceProperties matchProperties, String typeName) throws
+    public List<EntityDetail> findEntities(InstanceProperties matchProperties, String typeName, int fromElement, int pageSize) throws
                                                                                                 PagingErrorException,
                                                                                                 UserNotAuthorizedException,
                                                                                                 FunctionNotSupportedException,
@@ -201,13 +202,13 @@ public class OMEntityDao {
                                                                                                     typeDef.getGUID(),
                                                                                                     matchProperties,
                                                                                                     MatchCriteria.ALL,
-                                                                                                    0,
+                                                                                                    fromElement,
                                                                                                     Collections.singletonList(InstanceStatus.ACTIVE),
                                                                                                     null,
                                                                                                     null,
                                                                                                     null,
                                                                                                     SequencingOrder.ANY,
-                                                                                                    PAGE_SIZE);
+                                                                                                    pageSize);
         } catch (InvalidParameterException | PropertyErrorException | TypeErrorException | FunctionNotSupportedException | UserNotAuthorizedException | RepositoryErrorException e) {
             InformationViewErrorCode auditCode = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
             auditLog.logException("retrieveEntity",
@@ -289,12 +290,12 @@ public class OMEntityDao {
             relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID,
                                                                                                     guid2,
                                                                                                     relationshipTypeGuid,
-                                                                                                    0,
+                                                                                                    Constants.START_FROM,
                                                                                                     Collections.singletonList(InstanceStatus.ACTIVE),
                                                                                                     null,
                                                                                                     null,
                                                                                                     null,
-                                                                                                    0);
+                                                                                                    PAGE_SIZE);
         } catch (Exception e) {
             InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
             auditLog.logException("getRelationships",
@@ -466,18 +467,20 @@ public class OMEntityDao {
     /**
      * Returns the properties object for the given pair of key - value that can be used for retrieving
      *
-     * @param key   - name of the property
-     * @param value - value of the property
+     * @param properties - all properties to use for matching
      * @param zoneRestricted
      * @return properties with the given key - value pair
      */
-    private InstanceProperties buildMatchingInstanceProperties(String key, String value, boolean zoneRestricted) {
+    public InstanceProperties buildMatchingInstanceProperties(Map<String, String> properties, boolean zoneRestricted) {
         InstanceProperties instanceProperties = new InstanceProperties();
-        instanceProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, instanceProperties, key, value, "buildMatchingInstanceProperties");
+        if(properties != null && properties.size() > 0) {
+            for(Map.Entry<String, String> entry :  properties.entrySet()){
+                instanceProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, instanceProperties, entry.getKey(), entry.getValue(), "buildMatchingInstanceProperties");
+            }
+        }
         if(zoneRestricted && supportedZones != null && !supportedZones.isEmpty()){
             instanceProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, instanceProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "buildMatchingInstanceProperties");
         }
-
 
         return instanceProperties;
     }

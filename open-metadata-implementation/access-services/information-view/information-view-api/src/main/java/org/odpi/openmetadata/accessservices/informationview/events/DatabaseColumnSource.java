@@ -37,42 +37,19 @@ public class DatabaseColumnSource extends Source {
         this.tableSource = tableSource;
     }
 
-    @Override
-    public String getProtocol() {
-        return tableSource != null ? tableSource.getProtocol() : super.getProtocol();
-    }
-
-    @Override
-    public String getNetworkAddress() {
-        return tableSource != null ? tableSource.getNetworkAddress() : super.getNetworkAddress();
-    }
-
-    @Override
-    public String getConnectorProviderName() {
-        return tableSource != null ? tableSource.getConnectorProviderName() : super.getConnectorProviderName();
-    }
 
     @Override
     public Map<String, String> getAdditionalProperties() {
         return tableSource != null ? tableSource.getAdditionalProperties() : super.getAdditionalProperties();
     }
 
-    @Override
-    public String getUser() {
-        return tableSource != null ? tableSource.getUser() : super.getUser();
-    }
-
 
     @Override
     public String toString() {
-        return "DatabaseColumnSource{" +
+        return "{" +
                 "name='" + name + '\'' +
                 ", tableSource=" + tableSource +
                 '}';
     }
 
-    @Override
-    public String buildQualifiedName() {
-        return tableSource != null ? tableSource.getQualifiedName() + "." + name : name;
-    }
 }

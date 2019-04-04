@@ -4,6 +4,7 @@
 package org.odpi.openmetadata.accessservices.informationview.admin;
 
 
+import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.informationview.auditlog.InformationViewAuditCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
@@ -32,7 +33,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -116,7 +116,8 @@ public class InformationViewAdmin implements AccessServiceAdmin {
         LookupHelper lookupHelper = new LookupHelper(enterpriseConnector, omEntityDao, auditLog);
         DataViewHandler dataViewHandler = new DataViewHandler(omEntityDao, enterpriseConnector.getRepositoryHelper(), auditLog);
         ReportHandler reportHandler = new ReportHandler(omEntityDao, lookupHelper, enterpriseConnector.getRepositoryHelper(), auditLog);
-        instance = new InformationViewServicesInstance(reportHandler, dataViewHandler, serverName);
+        DatabaseContextHandler databaseContextHandler = new DatabaseContextHandler(omEntityDao, enterpriseConnector, auditLog );
+        instance = new InformationViewServicesInstance(reportHandler, dataViewHandler, databaseContextHandler, serverName);
 
         auditCode = InformationViewAuditCode.SERVICE_INITIALIZED;
         auditLog.logRecord(actionDescription,

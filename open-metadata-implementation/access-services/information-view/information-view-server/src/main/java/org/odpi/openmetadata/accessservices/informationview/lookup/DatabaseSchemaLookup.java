@@ -33,7 +33,7 @@ public class DatabaseSchemaLookup extends EntityLookup<TableSource> {
 
     @Override
     public EntityDetail lookupEntity(TableSource source) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
-        EntityDetail database = parentChain.lookupEntity(source);
+        EntityDetail database = parentChain.lookupEntity(source.getDatabaseSource());
         if(database == null)
             return null;
         List<String> allSchemaGuids = getRelatedEntities(database.getGUID(), Constants.DATA_CONTENT_FOR_DATASET);

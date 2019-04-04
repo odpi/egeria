@@ -40,6 +40,6 @@ public class LookupBasedOnDataView implements LookupStrategy{
 
     private String buildQualifiedName(DataViewColumnSource source) {
         DataViewSource dataViewSource = source.getDataViewSource();
-        return  QualifiedNameUtils.buildQualifiedNameForDataViewColumn(dataViewSource.getNetworkAddress(), dataViewSource.getId(), source.getId() );
+        return  QualifiedNameUtils.buildQualifiedNameForDataViewColumn(dataViewSource.getEndpointSource().getNetworkAddress(), dataViewSource.getId(), source.getId() );
     }
 }
