@@ -590,6 +590,41 @@ public abstract class RelationshipMapping {
                                              Reference endTwo,
                                              String igcPropertyName,
                                              String relationshipLevelRid) {
+        return getRelationshipGUID(
+                relationshipMapping,
+                endOne,
+                endTwo,
+                igcPropertyName,
+                relationshipLevelRid,
+                false
+        );
+    }
+
+    /**
+     * Generates a unique relationship GUID based on the provided parameters. The method will check the provided
+     * candidate endpoints against the mapping provided to ensure that they are appropriately matched to endpoint 1
+     * and endpoint 2 of the OMRS relationship. (Therefore endOne and endTwo may not actually be proxyOne and proxyTwo
+     * of the OMRS relationship, but could be reversed.) UNLESS the proxyOrderKnown is true, in which case the method
+     * will take endOne as proxyOne and endTwo as proxyTwo and not attempt any detection.
+     * <br><br>
+     * The intention of the method is to guarantee a unique, consistent GUID irrespective of the direction in which
+     * the relationship was traversed. For example: an IGC 'parent_category' relationship from B to A for a
+     * CategoryHierarchyLink should result in the same GUID as an IGC 'subcategories' relationship from A to B.
+     *
+     * @param relationshipMapping the relationship mapping defining how an IGC relationship maps to an OMRS relationship
+     * @param endOne the candidate to consider for endpoint 1 of the relationship
+     * @param endTwo the candidate to consider for endpoint 2 of the relationship
+     * @param igcPropertyName the name of the IGC property for which the relationship is being generated
+     * @param relationshipLevelRid the relationship-level RID (if any) within IGC (these are very rare)
+     * @param proxyOrderKnown should be true iff the provided candidate proxies are known to be in the correct order
+     * @return String - the unique GUID for the relationship
+     */
+    public static String getRelationshipGUID(RelationshipMapping relationshipMapping,
+                                             Reference endOne,
+                                             Reference endTwo,
+                                             String igcPropertyName,
+                                             String relationshipLevelRid,
+                                             boolean proxyOrderKnown) {
 
         String omrsRelationshipName = relationshipMapping.getOmrsRelationshipType();
         // Lookup types via this helper function, to translate any alias types (eg. host_(engine) and host)
@@ -617,7 +652,10 @@ public abstract class RelationshipMapping {
         String proxyOneRid = null;
         String proxyTwoRid = null;
 
-        if (igcPropertyName != null && igcPropertyName.equals(SELF_REFERENCE_SENTINEL)) {
+        if (proxyOrderKnown) {
+            proxyOneRid = endOne.getId();
+            proxyTwoRid = endTwo.getId();
+        } else if (igcPropertyName != null && igcPropertyName.equals(SELF_REFERENCE_SENTINEL)) {
             // When self-referencing, it should be the same entity on both sides, but we need to
             // prefix the correct RID based on where the relationship mapping tells us it belongs
             // (ie. ordering IS important, unlike next conditional)
@@ -718,6 +756,7 @@ public abstract class RelationshipMapping {
             sbGUID.append(proxyTwoRid);
         }
         return sbGUID.toString();
+
     }
 
     /**
@@ -1291,6 +1330,43 @@ public abstract class RelationshipMapping {
                                                      String igcPropertyName,
                                                      String userId,
                                                      String relationshipLevelRid) throws RepositoryErrorException {
+        return getMappedRelationship(
+                igcomrsRepositoryConnector,
+                relationshipMapping,
+                omrsRelationshipDef,
+                proxyOne,
+                proxyTwo,
+                igcPropertyName,
+                userId,
+                relationshipLevelRid,
+                false
+        );
+    }
+
+    /**
+     * Retrieve a Relationship instance based on the provided definition, endpoints, and optional prefixes.
+     *
+     * @param igcomrsRepositoryConnector connectivity to the IGC repository
+     * @param relationshipMapping the definition of how to map the relationship
+     * @param omrsRelationshipDef the OMRS relationship definition
+     * @param proxyOne the IGC asset to consider for endpoint 1 of the relationship
+     * @param proxyTwo the IGC asset to consider for endpoint 2 of the relationship
+     * @param igcPropertyName the name of the IGC relationship property
+     * @param userId
+     * @param relationshipLevelRid the IGC RID for the relationship itself (in rare instances where it exists)
+     * @param proxyOrderKnown should be true iff the provided candidate proxies are known to be in the correct order
+     * @return Relationship
+     * @throws RepositoryErrorException
+     */
+    public static Relationship getMappedRelationship(IGCOMRSRepositoryConnector igcomrsRepositoryConnector,
+                                                     RelationshipMapping relationshipMapping,
+                                                     RelationshipDef omrsRelationshipDef,
+                                                     Reference proxyOne,
+                                                     Reference proxyTwo,
+                                                     String igcPropertyName,
+                                                     String userId,
+                                                     String relationshipLevelRid,
+                                                     boolean proxyOrderKnown) throws RepositoryErrorException {
 
         final String methodName = "getMappedRelationship";
         final String repositoryName = igcomrsRepositoryConnector.getRepositoryName();
@@ -1325,7 +1401,8 @@ public abstract class RelationshipMapping {
                     proxyOne,
                     proxyTwo,
                     igcPropertyName,
-                    relationshipLevelRid
+                    relationshipLevelRid,
+                    proxyOrderKnown
             );
 
             if (relationshipGUID == null) {

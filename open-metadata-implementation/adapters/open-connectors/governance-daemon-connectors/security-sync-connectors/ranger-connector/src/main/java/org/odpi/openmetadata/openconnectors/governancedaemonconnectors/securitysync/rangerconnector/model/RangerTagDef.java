@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model;
 
-import java.util.Date;
-
 public class RangerTagDef {
 
     private Long id;
@@ -11,8 +9,6 @@ public class RangerTagDef {
     private Boolean isEnabled;
     private String createdBy;
     private String updatedBy;
-    private Date createTime;
-    private Date updateTime;
     private Long version;
     private String name;
 
@@ -56,22 +52,6 @@ public class RangerTagDef {
         this.updatedBy = updatedBy;
     }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
-
     public Long getVersion() {
         return version;
     }
@@ -96,8 +76,6 @@ public class RangerTagDef {
                 ", isEnabled=" + isEnabled +
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
                 ", version=" + version +
                 ", name='" + name + '\'' +
                 '}';

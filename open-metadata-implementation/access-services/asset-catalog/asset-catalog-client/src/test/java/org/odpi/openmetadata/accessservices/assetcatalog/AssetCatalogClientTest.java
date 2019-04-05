@@ -17,10 +17,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParame
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.PropertyServerException;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.*;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 
@@ -29,9 +26,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.testng.Assert.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
@@ -180,55 +175,6 @@ public class AssetCatalogClientTest {
 
     @Ignore
     @Test
-    @DisplayName("Asset by Classifications Name")
-    void getAssetsByClassificationNameTest() {
-        defaultAssetExpected();
-
-        AssetDescriptionResponse response = new AssetDescriptionResponse();
-        try {
-            response = assetCatalog.getAssetsByClassificationName(defaultUserId, "classificationName");
-        } catch (AssetCatalogException e) {
-            e.printStackTrace();
-        }
-
-        checkResponse(response);
-    }
-
-    @Ignore
-    @Test
-    @DisplayName("Asset by Property Value")
-    void getAssetsByPropertyTest() {
-        defaultAssetExpected();
-
-        AssetDescriptionResponse response = new AssetDescriptionResponse();
-        try {
-            response = assetCatalog.getAssetsByProperty(defaultUserId, "propertyValue");
-        } catch (AssetCatalogException e) {
-            e.printStackTrace();
-        }
-
-        checkResponse(response);
-    }
-
-    @Ignore
-    @Test
-    @DisplayName("Linking Relationships between assets")
-    void getLinkingRelationshipsTest() {
-        defaultRelationshipExpected();
-
-        RelationshipsResponse response = new RelationshipsResponse();
-        final String assetId = "b827683c-2924-4dfd-a92d-7be1ddde2fd0";
-        try {
-            response = assetCatalog.getLinkingRelationships(defaultUserId, defaultAssetId, assetId);
-        } catch (AssetCatalogException e) {
-            e.printStackTrace();
-        }
-
-        checkResponse(response);
-    }
-
-    @Ignore
-    @Test
     @DisplayName("Linking Assets")
     void getLinkingAssetsTest() {
         defaultAssetExpected();
@@ -339,21 +285,6 @@ public class AssetCatalogClientTest {
         checkResponse(response);
     }
 
-    @Test
-    @DisplayName("Relationships By Label")
-    void getRelationshipByLabelTest() {
-        defaultRelationshipExpected();
-
-        RelationshipsResponse response = new RelationshipsResponse();
-        try {
-            response = assetCatalog.getRelationshipByLabel(defaultUserId, "getRelationshipByLabel");
-        } catch (AssetCatalogException e) {
-            e.printStackTrace();
-        }
-
-        checkResponse(response);
-    }
-
     @Ignore
     @Test
     @DisplayName("Search For Relationships")
@@ -377,9 +308,9 @@ public class AssetCatalogClientTest {
     void searchAssetsTest() {
         defaultAssetExpected();
 
-        AssetDescriptionResponse response = new AssetDescriptionResponse();
+        AssetResponse response = new AssetResponse();
         try {
-            response = assetCatalog.searchAssets(defaultUserId, "test");
+            response = assetCatalog.searchForAssets(defaultUserId, "test");
         } catch (AssetCatalogException e) {
             e.printStackTrace();
         }

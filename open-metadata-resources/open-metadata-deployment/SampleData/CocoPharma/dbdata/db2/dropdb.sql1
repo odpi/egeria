@@ -1,7 +1,0 @@
--- SPDX-License-Identifier: Apache-2.0
--- Copyright Contributors to the ODPi Egeria project.
-drop database CDD$
-drop database ESAD$
-drop database ED$
-drop database LD$
-drop database PD$

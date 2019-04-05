@@ -8,7 +8,6 @@ import '@polymer/iron-a11y-keys/iron-a11y-keys.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-styles/paper-styles.js';
 import '@polymer/paper-input/paper-input-behavior.js';
-import '@polymer/iron-localstorage/iron-localstorage.js';
 import '@vaadin/vaadin-grid/vaadin-grid.js';
 import '@vaadin/vaadin-grid/vaadin-grid-selection-column.js';
 import '@vaadin/vaadin-grid/vaadin-grid-sort-column.js';
@@ -27,10 +26,8 @@ class UserOptions extends PolymerElement {
           background-color: #DDD;
         }
       </style>
-        <token-ajax id="userAjax" last-response="{{user}}" url="/api/users" auto></token-ajax>
-     
+        <token-ajax id="userAjax" last-response="{{user}}" url="/api/users" token="[[token]]" auto></token-ajax>
         <element style="float: right">
-                          
             <paper-menu-button
                 horizontal-align="right"
                 horizontal-offset="20" 
@@ -61,6 +58,7 @@ class UserOptions extends PolymerElement {
 
     static get properties() {
         return {
+            token: Object,
             user: {
                 type: Object,
                 notify: true

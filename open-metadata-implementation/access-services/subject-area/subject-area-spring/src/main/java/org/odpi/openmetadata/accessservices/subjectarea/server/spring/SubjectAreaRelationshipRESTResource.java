@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 
 
 /**
- * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectAreaDefinition Open Metadata
- * Assess Service (OMAS).  This interface provides relationship authoring interfaces for subject area experts.
+ * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
+ * Access Service (OMAS).  This interface provides relationship authoring interfaces for subject area experts.
  */
 @RestController
 @RequestMapping("/servers/{serverName}/open-metadata/access-services/subject-area")

@@ -1,9 +1,11 @@
-# <!-- SPDX-License-Identifier: Apache-2.0 -->
+# SPDX-License-Identifier: Apache-2.0 
 # Copyright Contributors to the Egeria project.
+---
 dependencies:
   - name: cp-helm-charts
     version: 0.1.0
     repository: https://confluentinc.github.io/cp-helm-charts/
+    condition: kafka.internal.enabled
   - name: openldap
     version: 0.3.0
     repository: https://kubernetes-charts.storage.googleapis.com/

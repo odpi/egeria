@@ -21,11 +21,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorEx
 
 public class GovernanceEngineAdmin implements AccessServiceAdmin {
 
-    private AccessServiceConfig accessServiceConfig;
     private OMRSAuditLog auditLog;
-
-    private OMRSRepositoryConnector repositoryConnector;
-    private OMRSTopicConnector omrsTopicConnector;
     private GovernanceEngineServicesInstance instance;
     private String serverName;
 
@@ -56,19 +52,15 @@ public class GovernanceEngineAdmin implements AccessServiceAdmin {
 
         try {
             this.auditLog = auditLog;
-            this.repositoryConnector = enterpriseOMRSRepositoryConnector;
-            this.instance = new GovernanceEngineServicesInstance(repositoryConnector);
+            this.instance = new GovernanceEngineServicesInstance(enterpriseOMRSRepositoryConnector);
             this.serverName = instance.getServerName();
-
-            this.accessServiceConfig = accessServiceConfigurationProperties;
-            this.omrsTopicConnector = enterpriseOMRSTopicConnector;
 
             OpenMetadataTopicConnector governanceEngineOutputTopic = initializeGovernanceEngineTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
             GovernanceEngineEventProcessor governanceEngineEventProcessor = new GovernanceEngineEventProcessor(enterpriseOMRSRepositoryConnector, governanceEngineOutputTopic);
 
             GovernanceEnginePublisher governanceEnginePublisher = new GovernanceEnginePublisher(governanceEngineEventProcessor);
 
-            if (omrsTopicConnector != null) {
+            if (enterpriseOMRSTopicConnector != null) {
                 auditCode = GovernanceEngineAuditCode.SERVICE_REGISTERED_WITH_TOPIC;
                 auditLog.logRecord(actionDescription,
                         auditCode.getLogMessageId(),
@@ -79,7 +71,7 @@ public class GovernanceEngineAdmin implements AccessServiceAdmin {
                         auditCode.getUserAction());
 
                 GovernanceEngineOMRSTopicListener omrsTopicListener = new GovernanceEngineOMRSTopicListener(governanceEnginePublisher, auditLog);
-                omrsTopicConnector.registerListener(omrsTopicListener);
+                enterpriseOMRSTopicConnector.registerListener(omrsTopicListener);
             }
 
             auditCode = GovernanceEngineAuditCode.SERVICE_INITIALIZED;
