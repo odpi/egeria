@@ -12,7 +12,6 @@ import org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopi
 import org.odpi.openmetadata.adapters.repositoryservices.archiveconnector.file.FileBasedOpenMetadataArchiveStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.auditlogstore.file.FileBasedAuditLogStoreProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.cohortregistrystore.file.FileBasedRegistryStoreProvider;
-import org.odpi.openmetadata.adapters.repositoryservices.graphrepository.eventmapper.GraphOMRSRepositoryEventMapperProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.graphrepository.repositoryconnector.GraphOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.inmemory.repositoryconnector.InMemoryOMRSRepositoryConnectorProvider;
 import org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector.OMRSRESTRepositoryConnectorProvider;
@@ -590,48 +589,6 @@ public class ConnectorConfigurationFactory
         return connection;
     }
 
-
-    /**
-     * Return the local repository event mapper for the graph repository.
-     *
-     * @param localServerName   name of the local server
-     * @param additionalProperties name value property pairs for the topic connection
-     * @param eventBusConnectorProvider class name of the event bus connector's provider
-     * @param topicURLRoot root name for the topic URL
-     * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
-     * @param eventBusAdditionalProperties name value property pairs for the event bus connection
-     * @return Connection object
-     */
-    public Connection getLocalGraphRepositoryEventMapperConnection(String              localServerName,
-                                                                   Map<String, Object> additionalProperties,
-                                                                   String              eventBusConnectorProvider,
-                                                                   String              topicURLRoot,
-                                                                   String              serverId,
-                                                                   Map<String, Object> eventBusAdditionalProperties)
-    {
-        final String connectionGUID    = "3cb6d03e-b4a7-4884-9fd9-277c77223236";
-        final String connectionDescription = "OMRS default local graph event mapper connection.";
-
-        String connectionName = "DefaultLocalGraphRepository.Connection." + localServerName;
-
-        VirtualConnection connection = new VirtualConnection();
-
-        connection.setType(this.getVirtualConnectionType());
-        connection.setGUID(connectionGUID);
-        connection.setQualifiedName(connectionName);
-        connection.setDisplayName(connectionName);
-        connection.setDescription(connectionDescription);
-        connection.setConnectorType(getConnectorType(GraphOMRSRepositoryEventMapperProvider.class.getName()));
-        connection.setEmbeddedConnections(getEmbeddedEventBusConnection("Local Repository Events",
-                                                                        additionalProperties,
-                                                                        eventBusConnectorProvider,
-                                                                        topicURLRoot,
-                                                                        defaultEventMapperTopicName,
-                                                                        serverId,
-                                                                        eventBusAdditionalProperties));
-
-        return connection;
-    }
 
 
     /**
