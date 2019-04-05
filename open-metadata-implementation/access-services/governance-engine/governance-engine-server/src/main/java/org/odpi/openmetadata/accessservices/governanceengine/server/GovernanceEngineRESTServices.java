@@ -11,8 +11,6 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Governe
 import org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernedAssetHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.server.util.ExceptionHandler;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -43,7 +41,6 @@ import java.util.List;
 
 public class GovernanceEngineRESTServices {
 
-    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineRESTServices.class);
     private static GovernanceEngineInstanceHandler instanceHandler = new GovernanceEngineInstanceHandler();
     private ExceptionHandler exceptionHandler = new ExceptionHandler();
 
@@ -67,7 +64,6 @@ public class GovernanceEngineRESTServices {
                                                           String userId,
                                                           List<String> classification,
                                                           List<String> type) {
-        log.debug("Calling method: getGovernedAssets");
         GovernedAssetListAPIResponse response = new GovernedAssetListAPIResponse();
 
         try {
@@ -80,8 +76,11 @@ public class GovernanceEngineRESTServices {
             exceptionHandler.captureMetadataServerException(response, error);
         } catch (PropertyServerException error) {
             exceptionHandler.capturePropertyServerException(response, error);
-        } catch (PagingErrorException | RepositoryErrorException | FunctionNotSupportedException | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | EntityProxyOnlyException | PropertyErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException | EntityNotKnownException | TypeErrorException | TypeDefNotKnownException e) {
-            log.error(e.getErrorMessage());
+        } catch (PagingErrorException | RepositoryErrorException
+                | FunctionNotSupportedException | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
+                | EntityProxyOnlyException | PropertyErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException
+                | EntityNotKnownException | TypeErrorException | TypeDefNotKnownException | ClassificationErrorException e) {
+            exceptionHandler.captureOMRSException(response, e);
         }
 
         return response;
@@ -102,13 +101,11 @@ public class GovernanceEngineRESTServices {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-
     public GovernedAssetAPIResponse getGovernedAsset(String serverName, String userId, String assetGuid) {
         GovernedAssetAPIResponse response = new GovernedAssetAPIResponse();
 
         try {
             GovernedAssetHandler governedAssetHandler = new GovernedAssetHandler(instanceHandler.getRepositoryConnector(serverName));
-
             response.setAsset(governedAssetHandler.getGovernedAsset(userId, assetGuid));
         } catch (InvalidParameterException error) {
             exceptionHandler.captureInvalidParameterException(response, error);
@@ -116,6 +113,11 @@ public class GovernanceEngineRESTServices {
             exceptionHandler.captureMetadataServerException(response, error);
         } catch (PropertyServerException error) {
             exceptionHandler.capturePropertyServerException(response, error);
+        } catch (PagingErrorException | RepositoryErrorException | FunctionNotSupportedException
+                | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
+                | EntityProxyOnlyException | PropertyErrorException | UserNotAuthorizedException
+                | EntityNotKnownException | TypeErrorException | TypeDefNotKnownException e) {
+           exceptionHandler.captureOMRSException(response, e);
         }
 
         return response;
