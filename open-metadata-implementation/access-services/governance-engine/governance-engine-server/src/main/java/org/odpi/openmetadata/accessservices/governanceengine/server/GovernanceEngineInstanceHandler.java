@@ -4,7 +4,6 @@ package org.odpi.openmetadata.accessservices.governanceengine.server;
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
@@ -15,8 +14,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 class GovernanceEngineInstanceHandler {
     private static GovernanceEngineServicesInstanceMap instanceMap = new GovernanceEngineServicesInstanceMap();
-    private static AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
-
 
     /**
      * Default constructor registers the access service
@@ -88,7 +85,7 @@ class GovernanceEngineInstanceHandler {
      * @return OMRSRepositoryConnector object
      * @throws PropertyServerException the instance has not been initialized successfully
      */
-    public OMRSRepositoryConnector getRepositoryConnector(String serverName) throws PropertyServerException {
+    OMRSRepositoryConnector getRepositoryConnector(String serverName) throws PropertyServerException {
         GovernanceEngineServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {

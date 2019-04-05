@@ -13,12 +13,12 @@ public class DataEngineException extends Exception {
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.
      */
-    private int reportedHTTPCode;
-    private String reportingClassName;
-    private String reportingActionDescription;
-    private String reportedErrorMessage;
-    private String reportedSystemAction;
-    private String reportedUserAction;
+    private final int reportedHTTPCode;
+    private final String reportingClassName;
+    private final String reportingActionDescription;
+    private final String reportedErrorMessage;
+    private final String reportedSystemAction;
+    private final String reportedUserAction;
     private Throwable reportedCaughtException;
 
     /**

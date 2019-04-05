@@ -868,6 +868,13 @@ public interface OMRSRepositoryHelper
                                                     String             methodName);
 
 
+    InstanceProperties addStringArrayPropertyToInstance(String             sourceName,
+                                                        InstanceProperties properties,
+                                                        String             propertyName,
+                                                        List<String>       propertyValues,
+                                                        String             methodName);
+
+
     /**
      * Add the supplied property to an instance properties object.  If the instance property object
      * supplied is null, a new instance properties object is created.

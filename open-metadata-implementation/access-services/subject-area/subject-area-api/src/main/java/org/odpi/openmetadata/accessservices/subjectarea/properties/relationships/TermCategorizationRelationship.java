@@ -76,7 +76,7 @@ public class TermCategorizationRelationship extends Line {
 
     private void initialise()
     {
-       name = "TermCategorizationRelationship";
+       name = "TermCategorization";
        // set the LineType if this is a LineType enum value.
        try {
            lineType = LineType.valueOf(name);

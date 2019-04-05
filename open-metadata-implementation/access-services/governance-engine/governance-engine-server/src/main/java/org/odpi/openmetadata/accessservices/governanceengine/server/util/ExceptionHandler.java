@@ -2,14 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server.util;
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.ClassificationNotFoundException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.GovernanceEngineCheckedExceptionBase;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.GuidNotFoundException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.MetadataServerException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.TypeNotFoundException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.UserNotAuthorizedException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceEngineOMASAPIResponse;
 
 public class ExceptionHandler {
@@ -22,8 +15,8 @@ public class ExceptionHandler {
      * @param exceptionClassName - class name of the exception to recreate
      */
     public void captureCheckedException(GovernanceEngineOMASAPIResponse response,
-                                         GovernanceEngineCheckedExceptionBase error,
-                                         String exceptionClassName) {
+                                        GovernanceEngineCheckedExceptionBase error,
+                                        String exceptionClassName) {
         response.setRelatedHTTPCode(error.getReportedHTTPCode());
         response.setExceptionClassName(exceptionClassName);
         response.setExceptionErrorMessage(error.getErrorMessage());
@@ -38,7 +31,7 @@ public class ExceptionHandler {
      * @param error    returned response.
      */
     public void captureInvalidParameterException(GovernanceEngineOMASAPIResponse response,
-                                                  InvalidParameterException error) {
+                                                 InvalidParameterException error) {
         captureCheckedException(response, error, error.getClass().getName());
     }
 
@@ -49,7 +42,7 @@ public class ExceptionHandler {
      * @param error    returned response.
      */
     public void captureMetadataServerException(GovernanceEngineOMASAPIResponse response,
-                                                MetadataServerException error) {
+                                               MetadataServerException error) {
         captureCheckedException(response, error, error.getClass().getName());
     }
 
@@ -60,7 +53,7 @@ public class ExceptionHandler {
      * @param error    returned response.
      */
     public void captureClassificationNotFoundException(GovernanceEngineOMASAPIResponse response,
-                                                        ClassificationNotFoundException error) {
+                                                       ClassificationNotFoundException error) {
         captureCheckedException(response, error, error.getClass().getName());
     }
 
@@ -71,7 +64,7 @@ public class ExceptionHandler {
      * @param error    returned response.
      */
     public void captureUserNotAuthorizedException(GovernanceEngineOMASAPIResponse response,
-                                                   UserNotAuthorizedException error) {
+                                                  UserNotAuthorizedException error) {
         captureCheckedException(response, error, error.getClass().getName());
     }
 
@@ -82,7 +75,7 @@ public class ExceptionHandler {
      * @param error    returned response.
      */
     public void captureTypeNotFoundException(GovernanceEngineOMASAPIResponse response,
-                                              TypeNotFoundException error) {
+                                             TypeNotFoundException error) {
         captureCheckedException(response, error, error.getClass().getName());
     }
 
@@ -93,7 +86,7 @@ public class ExceptionHandler {
      * @param error    returned response.
      */
     public void captureGuidNotFoundException(GovernanceEngineOMASAPIResponse response,
-                                              GuidNotFoundException error) {
+                                             GuidNotFoundException error) {
         captureCheckedException(response, error, error.getClass().getName());
     }
 
@@ -105,7 +98,7 @@ public class ExceptionHandler {
      * @param error    returned response.
      */
     public void capturePropertyServerException(GovernanceEngineOMASAPIResponse response,
-                                                PropertyServerException error) {
+                                               PropertyServerException error) {
         captureCheckedException(response, error, error.getClass().getName());
     }
 

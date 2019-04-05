@@ -16,13 +16,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-
 public abstract class GovernanceEngineOMASAPIResponse {
+
     protected int relatedHTTPCode = 200;
-    protected String exceptionClassName = null;
-    protected String exceptionErrorMessage = null;
-    protected String exceptionSystemAction = null;
-    protected String exceptionUserAction = null;
+    protected String exceptionClassName;
+    protected String exceptionErrorMessage;
+    protected String exceptionSystemAction;
+    protected String exceptionUserAction;
 
 
     /**
@@ -130,7 +130,6 @@ public abstract class GovernanceEngineOMASAPIResponse {
     public void setExceptionUserAction(String exceptionUserAction) {
         this.exceptionUserAction = exceptionUserAction;
     }
-
 
 
 }

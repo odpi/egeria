@@ -108,10 +108,11 @@ public class SubjectAreaBeansToAccessOMRS  {
      * @throws InvalidParameterException a parameter is null or an invalid value.
      * @throws ClassificationException a classification does not match constraints.
      * @throws StatusNotSupportedException  status is not supported
+     * @throws FunctionNotSupportedException a function is not supported.
      */
 
     public <$$uEntityName$$> create<$$uEntityName$$>(String userId,<$$uEntityName$$> <$$EntityName$$>)
-          throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException, StatusNotSupportedException
+          throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException, StatusNotSupportedException, FunctionNotSupportedException
     {
 
         final String methodName = "create<$$uEntityName$$>ById";
@@ -142,10 +143,11 @@ public class SubjectAreaBeansToAccessOMRS  {
      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
      * @throws InvalidParameterException a parameter is null or an invalid value.
+     * @throws FunctionNotSupportedException a function is not supported.
      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
      */
     public <$$uEntityName$$> update<$$uEntityName$$>(String userId, <$$uEntityName$$> <$$EntityName$$>)
-         throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException,UnrecognizedGUIDException
+         throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, FunctionNotSupportedException
     {
 
             final String methodName = "update<$$uEntityName$$>ById";
@@ -209,10 +211,11 @@ public class SubjectAreaBeansToAccessOMRS  {
      * @throws InvalidParameterException a parameter is null or an invalid value.
      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
      * @throws EntityNotDeletedException the entity was not deleted
+     * @throws FunctionNotSupportedException Function not supported
      * @throws GUIDNotPurgedException the unique identifier (guid) used to purge an object did not result in the object being purged.
      */
     public void purge<$$uEntityName$$>ByGuid(String userId,final String entityGuid)
-           throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, EntityNotDeletedException, GUIDNotPurgedException {
+           throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, EntityNotDeletedException, GUIDNotPurgedException, FunctionNotSupportedException {
 
         final String methodName = "purge<$$uEntityName$$>ByGuid";
          if (log.isDebugEnabled()) {
@@ -272,11 +275,12 @@ public class SubjectAreaBeansToAccessOMRS  {
      * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
      * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
      * @throws InvalidParameterException a parameter is null or an invalid value.
+     * @throws FunctionNotSupportedException a function is not supported.
      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
      * @throws ClassificationException a classification does not match constraints.
      */
      public <$$uEntityName$$> add<$$uEntityName$$>Classifications(String userId,final String entityGuid, List<Classification> classifications)
-           throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException, UnrecognizedGUIDException {
+           throws MetadataServerUncontactableException, FunctionNotSupportedException, UserNotAuthorizedException, InvalidParameterException, ClassificationException, UnrecognizedGUIDException {
 
         final String methodName = "add<$$uEntityName$$>Classifications";
          if (log.isDebugEnabled()) {
@@ -315,9 +319,10 @@ public class SubjectAreaBeansToAccessOMRS  {
      * @throws InvalidParameterException a parameter is null or an invalid value.
      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
      * @throws ClassificationException a classification does not match constraints.
+     * @throws FunctionNotSupportedException a function is not supported.
      */
     public <$$uEntityName$$> update<$$uEntityName$$>Classification(String userId, final String entityGuid, List<Classification> classificationsToUpdate)
-        throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException,  UnrecognizedGUIDException {
+        throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException,  UnrecognizedGUIDException, FunctionNotSupportedException {
 
         final String methodName = "update<$$uEntityName$$>Classifications";
         if (log.isDebugEnabled()) {
@@ -384,9 +389,10 @@ public class SubjectAreaBeansToAccessOMRS  {
      * @throws InvalidParameterException a parameter is null or an invalid value.
      * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
      * @throws ClassificationException a classification does not match constraints.
+     * @throws FunctionNotSupportedException a function is not supported.
      */
     public <$$uEntityName$$> delete<$$uEntityName$$>Classification(String userId,String entityGuid, final String name)
-        throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, ClassificationException,  UnrecognizedGUIDException {
+        throws MetadataServerUncontactableException, UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, ClassificationException,  UnrecognizedGUIDException {
 
        final String methodName = "delete<$$uEntityName$$>Classification";
        if (log.isDebugEnabled()) {
@@ -478,10 +484,17 @@ public class SubjectAreaBeansToAccessOMRS  {
       * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action. 
       * @throws InvalidParameterException a parameter is null or an invalid value.
       * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
+      * @throws FunctionNotSupportedException a function is not supported.
       * @throws StatusNotSupportedException  status is not supported
       */
     public <$$uRelationshipName$$> create<$$uRelationshipName$$>Relationship(String userId,<$$uRelationshipName$$> relationship)
-          throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException,  UnrecognizedGUIDException,StatusNotSupportedException {
+          throws MetadataServerUncontactableException,
+             UserNotAuthorizedException,
+             InvalidParameterException,
+             UnrecognizedGUIDException,
+             StatusNotSupportedException,
+             FunctionNotSupportedException
+               {
         final String methodName = "create<$$uRelationshipName$$>Relationship";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId="+userId+",relationship="+relationship);
@@ -507,7 +520,10 @@ public class SubjectAreaBeansToAccessOMRS  {
       * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
       */
     public <$$uRelationshipName$$> get<$$uRelationshipName$$>RelationshipByGuid( String userId, String relationshipGuid)
-         throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException {
+         throws MetadataServerUncontactableException,
+           UserNotAuthorizedException,
+           InvalidParameterException,
+           UnrecognizedGUIDException {
             final String methodName = "get<$$uRelationshipName$$>RelationshipByGuid";
             if (log.isDebugEnabled()) {
                 log.debug("==> Method: " + methodName + ",userId="+userId+",relationshipGuid="+relationshipGuid);
@@ -532,9 +548,15 @@ public class SubjectAreaBeansToAccessOMRS  {
       * @throws InvalidParameterException a parameter is null or an invalid value.
       * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
       * @throws StatusNotSupportedException  status is not supported
+      * @throws FunctionNotSupportedException a function is not supported.
       */
       public <$$uRelationshipName$$> update<$$uRelationshipName$$>Relationship(String userId,<$$uRelationshipName$$> <$$RelationshipName$$>)
-            throws UserNotAuthorizedException, MetadataServerUncontactableException, InvalidParameterException, StatusNotSupportedException, UnrecognizedGUIDException {
+            throws UserNotAuthorizedException,
+               MetadataServerUncontactableException,
+               InvalidParameterException,
+               StatusNotSupportedException,
+               UnrecognizedGUIDException,
+               FunctionNotSupportedException{
         final String methodName = "update<$$uRelationshipName$$>Relationship";
         if (log.isDebugEnabled()) {
            log.debug("==> Method: " + methodName + ",userId="+userId);
@@ -565,7 +587,7 @@ public class SubjectAreaBeansToAccessOMRS  {
       * @throws FunctionNotSupportedException a function is not supported.
       */
      public Relationship deleteRelationshipById(String userId,String relationshipGuid, String typeName )
-              throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnrecognizedGUIDException {
+              throws MetadataServerUncontactableException,UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, UnrecognizedGUIDException {
             final String methodName = "deleteRelationshipById";
             if (log.isDebugEnabled()) {
                 log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);
@@ -594,9 +616,10 @@ public class SubjectAreaBeansToAccessOMRS  {
       * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
       * @throws RelationshipNotDeletedException the relationship could not be deleted.
       * @throws GUIDNotPurgedException the unique identifier (guid) used to purge an object did not result in the object being purged.
+      * @throws FunctionNotSupportedException a function is not supported.
       */
      public void purgeRelationshipById(String userId,String relationshipGuid,String typeName)
-            throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, RelationshipNotDeletedException, GUIDNotPurgedException {
+            throws MetadataServerUncontactableException, UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, RelationshipNotDeletedException, GUIDNotPurgedException, FunctionNotSupportedException {
             final String methodName = "purgeRelationshipById";
             if (log.isDebugEnabled()) {
                 log.debug("==> Method: " + methodName + ",userId="+userId+",guid="+relationshipGuid);

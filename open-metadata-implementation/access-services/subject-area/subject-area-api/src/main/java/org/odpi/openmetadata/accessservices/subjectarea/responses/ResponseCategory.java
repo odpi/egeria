@@ -62,6 +62,6 @@ public enum ResponseCategory {
     UnrecognizedGUIDException,
     UnrecognizedNameException,
     UserNotAuthorizedException,
-    MetadataServerUncontactableException;
-
+    MetadataServerUncontactableException,
+    UnexpectedException;
 }

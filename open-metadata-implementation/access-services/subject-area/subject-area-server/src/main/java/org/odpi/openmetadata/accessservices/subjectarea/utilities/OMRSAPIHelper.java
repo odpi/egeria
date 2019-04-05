@@ -203,7 +203,9 @@ public class OMRSAPIHelper {
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException,
             ClassificationException,
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.StatusNotSupportedException,
-            MetadataServerUncontactableException {
+            MetadataServerUncontactableException,
+            org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.FunctionNotSupportedException
+    {
         String methodName = "callOMRSAddEntity";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName );
@@ -222,7 +224,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -249,6 +251,11 @@ public class OMRSAPIHelper {
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException e) {
             this.errorHandler.handleUnauthorizedUser(userId,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+            this.errorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -393,6 +400,7 @@ public class OMRSAPIHelper {
     public EntityDetail callOMRSUpdateEntity(String userId, EntityDetail entityDetail) throws
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException,
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException,
+            org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.FunctionNotSupportedException,
             UnrecognizedGUIDException,
             MetadataServerUncontactableException {
         String methodName = "callOMRSUpdateEntity";
@@ -412,7 +420,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -428,8 +436,14 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
+
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException e) {
             this.errorHandler.handleEntityNotKnownError(entityDetail.getGUID(),
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+            this.errorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -488,7 +502,13 @@ public class OMRSAPIHelper {
         }
         return deletedEntity;
     }
-    public void callOMRSPurgeEntity(String userId, String typeDefName, String typeDefGuid, String obsoleteGuid) throws org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException, MetadataServerUncontactableException, org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.EntityNotDeletedException, org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException,  UnrecognizedGUIDException, GUIDNotPurgedException {
+    public void callOMRSPurgeEntity(String userId, String typeDefName, String typeDefGuid, String obsoleteGuid) throws
+            org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.FunctionNotSupportedException,
+            org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException,
+            UnrecognizedGUIDException,
+            GUIDNotPurgedException {
         String methodName = "callOMRSPurgeEntity";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName );
@@ -502,7 +522,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -520,6 +540,11 @@ public class OMRSAPIHelper {
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException e) {
             this.errorHandler.handleEntityNotPurgedException(obsoleteGuid,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+            this.errorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -588,6 +613,7 @@ public class OMRSAPIHelper {
     ) throws org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException,
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException,
             ClassificationException, UnrecognizedGUIDException,
+            org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.FunctionNotSupportedException,
             MetadataServerUncontactableException {
         String methodName = "callOMRSClassifyEntity";
         if (log.isDebugEnabled()) {
@@ -604,7 +630,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -631,8 +657,12 @@ public class OMRSAPIHelper {
                     serverName,
                     serviceName);
 
+          } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+            this.errorHandler.handleFunctionNotSupportedException(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
         }
-
         if (log.isDebugEnabled()) {
             log.debug("<== Method: " + methodName );
         }
@@ -645,6 +675,7 @@ public class OMRSAPIHelper {
     ) throws
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException,
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException,
+            org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.FunctionNotSupportedException,
             ClassificationException, UnrecognizedGUIDException,
             MetadataServerUncontactableException {
 
@@ -663,7 +694,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (RepositoryErrorException  | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+        } catch (RepositoryErrorException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -686,6 +717,11 @@ public class OMRSAPIHelper {
                     serverName,
                     serviceName);
 
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+            this.errorHandler.handleFunctionNotSupportedException(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== Method: " + methodName );
@@ -698,6 +734,7 @@ public class OMRSAPIHelper {
     public Relationship callOMRSAddRelationship(String userId, Relationship relationship) throws
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException,
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException,
+            org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.FunctionNotSupportedException,
             UnrecognizedGUIDException,
             MetadataServerUncontactableException,
             StatusNotSupportedException {
@@ -720,7 +757,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -751,6 +788,11 @@ public class OMRSAPIHelper {
 
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException e) {
             this.errorHandler.handleTypeErrorException(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+            this.errorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -807,6 +849,7 @@ public class OMRSAPIHelper {
             MetadataServerUncontactableException,
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException,
             org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.StatusNotSupportedException,
+            org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.FunctionNotSupportedException,
             UnrecognizedGUIDException {
         String methodName = "callOMRSUpdateRelationship";
         if (log.isDebugEnabled()) {
@@ -831,7 +874,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+        } catch (RepositoryErrorException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -854,6 +897,11 @@ public class OMRSAPIHelper {
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException e) {
             this.errorHandler.handleStatusNotSupportedException(e,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+            this.errorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
@@ -968,7 +1016,12 @@ public class OMRSAPIHelper {
         }
         return restoredRelationship;
     }
-    public void callOMRSPurgeRelationship(String userId, String typeGuid, String typeName,String guid) throws org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException, org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException, GUIDNotPurgedException, UnrecognizedGUIDException, MetadataServerUncontactableException
+    public void callOMRSPurgeRelationship(String userId, String typeGuid, String typeName,String guid) throws org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.UserNotAuthorizedException,
+            org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException,
+            org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.FunctionNotSupportedException,
+            GUIDNotPurgedException,
+            UnrecognizedGUIDException,
+            MetadataServerUncontactableException
     {
 
         // delete the relationship
@@ -986,7 +1039,7 @@ public class OMRSAPIHelper {
                     restAPIName,
                     serverName,
                     serviceName);
-        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException e) {
             this.errorHandler.handleRepositoryError(e,
                     restAPIName,
                     serverName,
@@ -1004,6 +1057,11 @@ public class OMRSAPIHelper {
                     serviceName);
         } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException e) {
             this.errorHandler.handleRelationshipNotPurgedException(guid,
+                    restAPIName,
+                    serverName,
+                    serviceName);
+        } catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException e) {
+            this.errorHandler.handleFunctionNotSupportedException(e,
                     restAPIName,
                     serverName,
                     serviceName);
