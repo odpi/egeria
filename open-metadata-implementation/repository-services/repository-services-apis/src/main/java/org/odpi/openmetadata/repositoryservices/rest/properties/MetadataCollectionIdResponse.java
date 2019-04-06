@@ -77,7 +77,7 @@ public class MetadataCollectionIdResponse extends OMRSAPIResponse
     @Override
     public String toString()
     {
-        return "BooleanResponse{" +
+        return "MetadataCollectionIdResponse{" +
                 "metadataCollectionId=" + metadataCollectionId +
                 ", relatedHTTPCode=" + relatedHTTPCode +
                 ", exceptionClassName='" + exceptionClassName + '\'' +
