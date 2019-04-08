@@ -27,7 +27,6 @@ public class GovernanceClassificationBase {
     }
 
     /**
-     *
      * @param guid - unique identifier
      */
     public void setGuid(String guid) {
@@ -42,7 +41,6 @@ public class GovernanceClassificationBase {
     }
 
     /**
-     *
      * @param name - name of classification
      */
     public void setName(String name) {
@@ -57,7 +55,6 @@ public class GovernanceClassificationBase {
     }
 
     /**
-     *
      * @param tagId - tag id
      */
     public void setTagId(String tagId) {
