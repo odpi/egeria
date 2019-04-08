@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.accessservices.dataplatform.views;
 
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.dataplatform.events.InformationViewEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.QualifiedNameUtils;
-import org.odpi.openmetadata.accessservices.dataplatform.views.beans.InformationViewAsset;
+import org.odpi.openmetadata.accessservices.dataplatform.views.beans.DataPlatformAsset;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -17,18 +17,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-public class InformationViewAssetHandler implements Callable<InformationViewAsset> {
+public class DataPlatformAssetHandler implements Callable<DataPlatformAsset> {
 
-    private InformationViewEvent event;
+    private DataPlatformEvent event;
     private OMEntityDao omEntityDao;
 
-    public InformationViewAssetHandler(InformationViewEvent event, OMEntityDao omEntityDao) {
+    public DataPlatformAssetHandler(DataPlatformEvent event, OMEntityDao omEntityDao) {
         this.event = event;
         this.omEntityDao = omEntityDao;
     }
 
 
-    public InformationViewAsset call() throws TypeErrorException, InvalidParameterException,
+    public DataPlatformAsset call() throws TypeErrorException, InvalidParameterException,
             StatusNotSupportedException, PropertyErrorException,
             EntityNotKnownException, FunctionNotSupportedException,
             PagingErrorException, ClassificationErrorException,
@@ -43,13 +43,13 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
         if (relationalDbSchemaType == null) {
             return createInformationView();
         }
-        InformationViewAsset informationViewAsset = new InformationViewAsset();
-        informationViewAsset.setRelationalDbSchemaType(relationalDbSchemaType);
-        return informationViewAsset;
+        DataPlatformAsset dataplatformAsset = new DataPlatformAsset();
+        dataplatformAsset.setRelationalDbSchemaType(relationalDbSchemaType);
+        return dataplatformAsset;
 
     }
 
-    private InformationViewAsset createInformationView() throws TypeErrorException,
+    private DataPlatformAsset createInformationView() throws TypeErrorException,
             InvalidParameterException,
             StatusNotSupportedException,
             PropertyErrorException,
@@ -60,7 +60,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
             UserNotAuthorizedException,
             RepositoryErrorException,
             TypeDefNotKnownException {
-        InformationViewAsset informationViewAsset = new InformationViewAsset();
+        DataPlatformAsset dataplatformAsset = new DataPlatformAsset();
         String qualifiedNameForSoftwareServer = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER, event.getTableSource().getNetworkAddress().split(":")[0]);
         InstanceProperties softwareServerProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSoftwareServer)
@@ -70,7 +70,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
         classificationList.add(omEntityDao.buildClassification(Constants.DATABASE_SERVER, Constants.SOFTWARE_SERVER, new InstanceProperties()));
         EntityDetail softwareServerEntity = omEntityDao.addEntity(Constants.SOFTWARE_SERVER,
                 qualifiedNameForSoftwareServer, softwareServerProperties, classificationList);
-        informationViewAsset.setSoftwareServerEntity(softwareServerEntity);
+        dataplatformAsset.setSoftwareServerEntity(softwareServerEntity);
 
         String qualifiedNameForEndpoint = QualifiedNameUtils.buildQualifiedName("", Constants.ENDPOINT, event.getTableSource().getProtocol() + event.getTableSource().getNetworkAddress()) ;
         InstanceProperties endpointProperties = new EntityPropertiesBuilder()
@@ -82,7 +82,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
         EntityDetail endpointEntity = omEntityDao.addEntity(Constants.ENDPOINT,
                 qualifiedNameForEndpoint,
                 endpointProperties);
-        informationViewAsset.setEndpointProperties(endpointEntity);
+        dataplatformAsset.setEndpointProperties(endpointEntity);
 
         omEntityDao.addRelationship(Constants.SERVER_ENDPOINT,
                 softwareServerEntity.getGUID(),
@@ -97,7 +97,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 .build();
         EntityDetail connectionEntity = omEntityDao.addEntity(Constants.CONNECTION,
                 qualifiedNameForConnection, connectionProperties);
-        informationViewAsset.setConnectionEntity(connectionEntity);
+        dataplatformAsset.setConnectionEntity(connectionEntity);
 
         omEntityDao.addRelationship(Constants.CONNECTION_TO_ENDPOINT,
                 endpointEntity.getGUID(),
@@ -113,7 +113,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 .build();
         EntityDetail connectorTypeEntity = omEntityDao.addEntity(Constants.CONNECTOR_TYPE,
                 qualifiedNameForConnectorType, connectorTypeProperties);
-        informationViewAsset.setConnectorTypeEntity(connectorTypeEntity);
+        dataplatformAsset.setConnectorTypeEntity(connectorTypeEntity);
 
         omEntityDao.addRelationship(Constants.CONNECTION_CONNECTOR_TYPE,
                 connectionEntity.getGUID(),
@@ -127,7 +127,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 .withStringProperty(Constants.NAME, event.getTableSource().getDatabaseName())
                 .build();
         EntityDetail dataStore = omEntityDao.addEntity(Constants.DATA_STORE, qualifiedNameForDataStore, dataStoreProperties);
-        informationViewAsset.setDataStore(dataStore);
+        dataplatformAsset.setDataStore(dataStore);
 
         omEntityDao.addRelationship(Constants.CONNECTION_TO_ASSET,
                 connectionEntity.getGUID(),
@@ -144,7 +144,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 .build();
         EntityDetail informationViewEntity = omEntityDao.addEntity(Constants.DATA_PLATFORM,
                 qualifiedNameForInformationView, ivProperties);
-        informationViewAsset.setInformationViewEntity(informationViewEntity);
+        dataplatformAsset.setInformationViewEntity(informationViewEntity);
 
         omEntityDao.addRelationship(Constants.DATA_CONTENT_FOR_DATASET,
                 dataStore.getGUID(),
@@ -162,7 +162,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
         EntityDetail relationalDbSchemaType = omEntityDao.addEntity(Constants.RELATIONAL_DB_SCHEMA_TYPE,
                 qualifiedNameForDbSchemaType,
                 dbSchemaTypeProperties);
-        informationViewAsset.setRelationalDbSchemaType(relationalDbSchemaType);
+        dataplatformAsset.setRelationalDbSchemaType(relationalDbSchemaType);
 
 
         omEntityDao.addRelationship(Constants.ASSET_SCHEMA_TYPE,
@@ -170,7 +170,7 @@ public class InformationViewAssetHandler implements Callable<InformationViewAsse
                 relationalDbSchemaType.getGUID(),
                 Constants.DATA_PLATFORM_OMAS_NAME,
                 new InstanceProperties());
-        return informationViewAsset;
+        return dataplatformAsset;
     }
 
 

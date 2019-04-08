@@ -4,8 +4,8 @@ package org.odpi.openmetadata.accessservices.dataplatform.views;
 
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityWrapper;
+import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.events.DerivedColumn;
-import org.odpi.openmetadata.accessservices.dataplatform.events.InformationViewEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.QualifiedNameUtils;
@@ -29,11 +29,11 @@ public class ViewHandler implements Callable<View> {
 
     private static final Logger log = LoggerFactory.getLogger(ViewHandler.class);
     private View view;
-    private InformationViewEvent event;
+    private DataPlatformEvent event;
     private OMEntityDao omEntityDao;
     private OMRSRepositoryHelper helper;
 
-    public ViewHandler(InformationViewEvent event, OMEntityDao omEntityDao, OMRSRepositoryHelper helper) {
+    public ViewHandler(DataPlatformEvent event, OMEntityDao omEntityDao, OMRSRepositoryHelper helper) {
         this.event = event;
         this.omEntityDao = omEntityDao;
         this.helper = helper;
@@ -109,7 +109,7 @@ public class ViewHandler implements Callable<View> {
     }
 
 
-    private void deleteView(InformationViewEvent event) throws UserNotAuthorizedException,
+    private void deleteView(DataPlatformEvent event) throws UserNotAuthorizedException,
             EntityNotKnownException,
             EntityNotDeletedException,
             InvalidParameterException,
