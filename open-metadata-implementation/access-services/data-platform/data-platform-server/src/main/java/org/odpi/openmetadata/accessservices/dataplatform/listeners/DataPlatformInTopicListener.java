@@ -1,18 +1,16 @@
-/* SPDX-License-Identifier: Apache-2.0 */
-/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.listeners;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEvent;
-import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
-import org.odpi.openmetadata.accessservices.dataplatform.views.InformationViewAssetHandler;
-import org.odpi.openmetadata.accessservices.dataplatform.views.ViewHandler;
-import org.odpi.openmetadata.accessservices.dataplatform.views.beans.InformationViewAsset;
-import org.odpi.openmetadata.accessservices.dataplatform.views.beans.View;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
-import org.odpi.openmetadata.accessservices.dataplatform.events.InformationViewEvent;
+import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
+import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
+import org.odpi.openmetadata.accessservices.dataplatform.views.DataPlatformAssetHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.views.ViewHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.views.beans.DataPlatformAsset;
+import org.odpi.openmetadata.accessservices.dataplatform.views.beans.View;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
@@ -26,6 +24,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
+
+
     private static final Logger log = LoggerFactory.getLogger(DataPlatformInTopicListener.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final OMEntityDao omEntityDao;
@@ -46,8 +46,8 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
      */
     @Override
     public void processEvent(String eventAsString) {
-        DataPlatformEvent event = null;
 
+        DataPlatformEvent event = null;
         try {
             event = OBJECT_MAPPER.readValue(eventAsString, DataPlatformEvent.class);
         } catch (Exception e) {
@@ -65,30 +65,29 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
         }
         if (event != null) {
             try {
-                log.info("Started processing information view event in DataPlatform OMAS");
+                log.info("Started processing event in DataPlatform OMAS");
 
-               /* InformationViewAssetHandler informationViewAssetHandler = new InformationViewAssetHandler(event, omEntityDao);
+                DataPlatformAssetHandler dataPlatformAssetHandler = new DataPlatformAssetHandler(event, omEntityDao);
                 ViewHandler viewsBuilder = new ViewHandler(event, omEntityDao, helper);
                 ExecutorService executor = Executors.newCachedThreadPool();
-                Future<InformationViewAsset> informationViewFuture = executor.submit(informationViewAssetHandler);
-                Future<View> viewCreationFuture = executor.submit(viewsBuilder);
+                Future<DataPlatformAsset> dataPlatformAssetFuture = executor.submit(dataPlatformAssetHandler);
+                Future<View> assetCreationFuture = executor.submit(viewsBuilder);
 
-                InformationViewAsset informationViewAsset = informationViewFuture.get();
-                View view = viewCreationFuture.get();
+                DataPlatformAsset dataplatformAsset = dataPlatformAssetFuture.get();
+                View view = assetCreationFuture.get();
                 executor.shutdown();
 
-               // DataPlatformEventHandlder
-                if(view.getViewEntity() != null) {
+                if (view.getViewEntity() != null) {
                     omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
-                            informationViewAsset.getRelationalDbSchemaType().getGUID(),
+                            dataplatformAsset.getRelationalDbSchemaType().getGUID(),
                             view.getViewEntity().getGUID(),
                             Constants.DATA_PLATFORM_OMAS_NAME,
                             new InstanceProperties());
                     event.getTableSource().setTableGuid(view.getViewEntity().getGUID());
                 }
-                eventPublisher.sendEvent(event);*/
+                eventPublisher.sendEvent(event);
             } catch (Exception e) {
-                log.error("Exception processing event from Data Platform in topic", e);
+                log.error("Exception processing event from in topic", e);
                 DataPlatformErrorCode auditCode = DataPlatformErrorCode.PROCESS_EVENT_EXCEPTION;
 
                 auditLog.logException("processEvent",
@@ -102,6 +101,5 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
             }
         }
     }
-
 
 }
