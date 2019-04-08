@@ -106,7 +106,7 @@ spec:
                 {{- if .Values.kafka.topicroot -}}
                 ?topicURLRoot={{ .Values.kafka.topicroot }}
                 {{- end -}}
-                {{- if .Values.kafka.internal.enabled -}}
+                {{- if .Values.kafka.internal.enabled }}
                 --data '{"producer": {"bootstrap.servers":"'"${KAFKA_ENDPOINT}"'"}, "consumer": {"bootstrap.servers":"'"${KAFKA_ENDPOINT}"'"} }'
                 {{- else -}}
                 {{- include "vdc.template.kafkaext.eventbus" . | nindent 14 -}}
