@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetcatalog;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.PropertyServerException;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
 
@@ -87,40 +88,6 @@ public interface AssetCatalogInterface {
     ClassificationsResponse getClassificationForAsset(String userId, String assetId) throws PropertyServerException, InvalidParameterException;
 
     /**
-     * Fetch the assets that match the properties
-     *
-     * @param userId        the unique identifier for the user
-     * @param propertyValue the property value searched
-     * @return a list of assets that match the properties
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    AssetDescriptionResponse getAssetsByProperty(String userId, String propertyValue) throws PropertyServerException, InvalidParameterException;
-
-    /**
-     * Fetch the assets that match the classification name
-     *
-     * @param userId             the unique identifier for the user
-     * @param classificationName the name of the classification
-     * @return a list of assets that match the classification name
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    AssetDescriptionResponse getAssetsByClassificationName(String userId, String classificationName) throws PropertyServerException, InvalidParameterException;
-
-    /**
-     * Return a sub-graph of relationships that connect two assets
-     *
-     * @param userId       the unique identifier for the user
-     * @param startAssetId the starting asset identifier of the query
-     * @param endAssetId   the ending asset identifier of the query
-     * @return a list of relationships that connects the assets
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    RelationshipsResponse getLinkingRelationships(String userId, String startAssetId, String endAssetId) throws PropertyServerException, InvalidParameterException;
-
-    /**
      * Returns a sub-graph of intermediate assets that connected two assets
      *
      * @param userId       the unique identifier for the user
@@ -197,17 +164,6 @@ public interface AssetCatalogInterface {
     RelationshipsResponse getRelationship(String userId, String relationshipId) throws InvalidParameterException, PropertyServerException;
 
     /**
-     * Fetch relationship details based on property name
-     *
-     * @param userId       String unique identifier for the user
-     * @param propertyName String that it is used to identify the relationship label
-     * @return a list of relationships that have the property specified
-     * @throws PropertyServerException   there is a problem retrieving information from the property server
-     * @throws InvalidParameterException one of the parameters is null or invalid
-     */
-    RelationshipsResponse getRelationshipByLabel(String userId, String propertyName) throws InvalidParameterException, PropertyServerException;
-
-    /**
      * Return a list of relationships that match the search criteria.
      *
      * @param userId             String unique identifier for the user
@@ -220,7 +176,7 @@ public interface AssetCatalogInterface {
     RelationshipsResponse searchForRelationships(String userId, String relationshipTypeId, String criteria) throws PropertyServerException, InvalidParameterException;
 
     /**
-     * Return a list of assets (details and connections) matching the search criteria
+     * Return a list of assets matching the search criteria
      *
      * @param userId         the unique identifier for the user
      * @param searchCriteria a string expression of the characteristics of the required assets
@@ -228,5 +184,5 @@ public interface AssetCatalogInterface {
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    AssetDescriptionResponse searchAssets(String userId, String searchCriteria) throws PropertyServerException, InvalidParameterException;
+    AssetResponse searchForAssets(String userId, String searchCriteria) throws PropertyServerException, InvalidParameterException;
 }

@@ -21,10 +21,7 @@ public enum GovernanceEngineEventType implements Serializable {
 
     NEW_CLASSIFIED_ASSET(0, "ClassifiedAssets", "A governed classification has been assigned to an asset."),
     RE_CLASSIFIED_ASSET(1, "ReClassifiedAssets", "A classification has been changed for governed asset."),
-    UNKNOWN_GOVERNANCE_ENGINE_EVENT(2, "UnknownGovernanceEngineEvent", "A Governance Engine event that is not recognized by the local handlers."),
-    NEW_TAG_EVENT(3, "NewTag", "A new tag has been defined."),
-    UPDATED_TAG_EVENT(4, "UpdatedTag", "An existing tag has been updated."),
-    DELETED_TAG_EVENT(5, "DeletedTag", "An existing tag has been deleted.");
+    UNKNOWN_GOVERNANCE_ENGINE_EVENT(2, "UnknownGovernanceEngineEvent", "A Governance Engine event that is not recognized by the local handlers.");
 
     private static final long serialVersionUID = 1L;
 

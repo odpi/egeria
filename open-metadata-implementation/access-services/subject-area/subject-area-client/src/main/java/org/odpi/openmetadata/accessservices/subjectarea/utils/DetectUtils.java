@@ -341,7 +341,7 @@ public class DetectUtils {
         List<Line> relationships = null;
         if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.Relationships)) {
             RelationshipsResponse termRelationshipResponse = (RelationshipsResponse)restResponse;
-            relationships = termRelationshipResponse.getTermRelationships();
+            relationships = termRelationshipResponse.getRelationships();
         } else {
             CategoryErrorResponse(methodName, restResponse);
         }
@@ -564,5 +564,32 @@ public class DetectUtils {
             CategoryErrorResponse(methodName, restResponse);
         }
         return termCategorizationRelationship;
+    }
+
+    /**
+     * Convert a subject area a checked exception to a response
+     * @param e Exception to comnvert
+     * @return the relevant exception response
+     */
+    static public SubjectAreaOMASAPIResponse getResponseFromException(SubjectAreaCheckedExceptionBase e) {
+        SubjectAreaOMASAPIResponse response =null;
+        if (e instanceof MetadataServerUncontactableException) {
+            response = new MetadataServerUncontactableExceptionResponse(e);
+        } else if (e instanceof InvalidParameterException) {
+            response = new InvalidParameterExceptionResponse(e);
+        } else if (e instanceof UserNotAuthorizedException) {
+            response = new UserNotAuthorizedExceptionResponse(e);
+        } else if (e instanceof UnrecognizedGUIDException) {
+            response = new UnrecognizedGUIDExceptionResponse(e);
+        } else if (e instanceof ClassificationException) {
+            response = new ClassificationExceptionResponse(e);
+        } else if (e instanceof FunctionNotSupportedException) {
+            response = new FunctionNotSupportedExceptionResponse(e);
+        } else if (e instanceof UnexpectedResponseException) {
+            response = new UnexpectedExceptionResponse(e);
+        } else {
+            // TODO catch all error
+        }
+        return response;
     }
 }

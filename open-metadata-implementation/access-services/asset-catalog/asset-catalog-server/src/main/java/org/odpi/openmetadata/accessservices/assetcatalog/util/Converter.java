@@ -17,12 +17,6 @@ import static org.odpi.openmetadata.repositoryservices.connectors.stores.metadat
 
 public class Converter {
 
-    private HashMap<String, DataType> dataTypes;
-
-    public Converter() {
-        dataTypes = getDataTypeMap();
-    }
-
     public List<AssetDescription> getAssetsDetails(List<EntityDetail> entityDetails) {
         return entityDetails.stream()
                 .map(this::getAssetDescription)
@@ -33,7 +27,6 @@ public class Converter {
         AssetDescription assetDescription = new AssetDescription();
         assetDescription.setGuid(entityDetail.getGUID());
         assetDescription.setMetadataCollectionId(entityDetail.getMetadataCollectionId());
-        assetDescription.setDisplayName((String) getPropertyValue(entityDetail.getProperties(), Constants.NAME));
 
         assetDescription.setCreatedBy(entityDetail.getCreatedBy());
         assetDescription.setCreateTime(entityDetail.getCreateTime());
@@ -65,8 +58,11 @@ public class Converter {
         assetDescription.setUpdateTime(entitySummary.getUpdateTime());
         assetDescription.setVersion(entitySummary.getVersion());
 
-        assetDescription.setTypeDefName(entitySummary.getType().getTypeDefName());
-        assetDescription.setTypeDefDescription(entitySummary.getType().getTypeDefDescription());
+        if(entitySummary.getType()  !=null){
+            assetDescription.setTypeDefName(entitySummary.getType().getTypeDefName());
+            assetDescription.setTypeDefDescription(entitySummary.getType().getTypeDefDescription());
+        }
+
         assetDescription.setUrl(entitySummary.getInstanceURL());
         assetDescription.setStatus(getStatus(entitySummary.getStatus().getName()));
 
@@ -87,8 +83,7 @@ public class Converter {
                 .collect(Collectors.toCollection(() -> new ArrayList<>(relationshipsEntity.size())));
     }
 
-    public Relationship toRelationship(
-            org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship rel) {
+    public Relationship toRelationship(org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship rel) {
         Relationship relationship = new Relationship();
 
         relationship.setGuid(rel.getGUID());
@@ -308,42 +303,6 @@ public class Converter {
         }
     }
 
-    public DataType getColumnTypeValue(EntityDetail columnType) {
-        PrimitivePropertyValue value = (PrimitivePropertyValue) columnType.getProperties().getPropertyValue(Constants.TYPE);
-
-        if (value != null) {
-            PrimitiveDefCategory primitiveValue = value.getPrimitiveDefCategory();
-            return getDataTypeDef(primitiveValue);
-        }
-
-        return null;
-    }
-
-    private DataType getDataTypeDef(PrimitiveDefCategory primitiveValue) {
-        if (primitiveValue == null || !dataTypes.containsKey(primitiveValue.getJavaClassName())) {
-            return null;
-        }
-
-        return dataTypes.get(primitiveValue.getJavaClassName());
-    }
-
-    private HashMap<String, DataType> getDataTypeMap() {
-        HashMap<String, DataType> dataTypesMap = new HashMap<>();
-        dataTypesMap.put("java.lang.Boolean", DataType.BOOLEAN);
-        dataTypesMap.put("java.lang.Byte", DataType.BYTE);
-        dataTypesMap.put("java.Lang.Char", DataType.CHAR);
-        dataTypesMap.put("java.lang.Short", DataType.SHORT);
-        dataTypesMap.put("java.lang.Integer", DataType.INT);
-        dataTypesMap.put("java.lang.Long", DataType.LONG);
-        dataTypesMap.put("java.lang.Float", DataType.FLOAT);
-        dataTypesMap.put("java.lang.Double", DataType.DOUBLE);
-        dataTypesMap.put("java.math.BigInteger", DataType.BIG_INTEGER);
-        dataTypesMap.put("java.math.BigDecimal", DataType.BIG_DECIMAL);
-        dataTypesMap.put("java.lang.String", DataType.STRING);
-        dataTypesMap.put("java.util.Date", DataType.DATE);
-        return dataTypesMap;
-    }
-
     public Map<String, Object> getAdditionalPropertiesFromEntity(InstanceProperties properties, String propertyName, OMRSRepositoryHelper helper) {
         InstanceProperties mapProperty = getMapInstanceProperties(propertyName, properties, helper);
         if (mapProperty == null) {
@@ -397,7 +356,7 @@ public class Converter {
                 for (Map.Entry<String, InstancePropertyValue> property : instanceProperties.entrySet()) {
                     if (property.getValue() != null) {
                         String propertyValue = getStringForPropertyValue(property.getValue());
-                        if (!propertyValue.equals("")) {
+                        if (propertyValue != null) {
                             attributes.put(property.getKey(), propertyValue);
                         }
                     }
@@ -411,9 +370,15 @@ public class Converter {
     private String getStringForPropertyValue(InstancePropertyValue ipv) {
 
         if (ipv instanceof PrimitivePropertyValue) {
-            PrimitiveDefCategory primtype =
-                    ((PrimitivePropertyValue) ipv).getPrimitiveDefCategory();
-            switch (primtype) {
+            PrimitiveDefCategory primitiveDefCategory = ((PrimitivePropertyValue) ipv).getPrimitiveDefCategory();
+            if(primitiveDefCategory == null){
+                return null;
+            }
+            if(((PrimitivePropertyValue) ipv).getPrimitiveValue() == null){
+                return null;
+            }
+
+            switch (primitiveDefCategory) {
                 case OM_PRIMITIVE_TYPE_STRING:
                     return (String) ((PrimitivePropertyValue) ipv).getPrimitiveValue();
                 case OM_PRIMITIVE_TYPE_INT:
@@ -430,13 +395,13 @@ public class Converter {
                     return ((PrimitivePropertyValue) ipv).getPrimitiveValue().toString();
                 case OM_PRIMITIVE_TYPE_UNKNOWN:
                 default:
-                    return "";
+                    return null;
             }
         } else {
             if (ipv instanceof EnumPropertyValue) {
                 return ((EnumPropertyValue) ipv).getSymbolicName();
             } else {
-                return "";
+                return null;
             }
         }
     }

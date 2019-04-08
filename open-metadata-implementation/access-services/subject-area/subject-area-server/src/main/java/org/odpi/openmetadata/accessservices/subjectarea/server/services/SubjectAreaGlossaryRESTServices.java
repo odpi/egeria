@@ -29,8 +29,8 @@ import java.util.Set;
 
 
 /**
- * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectAreaDefinition Open Metadata
- * Assess Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
+ * The SubjectAreaRESTServicesInstance provides the org.odpi.openmetadata.accessservices.subjectarea.server-side implementation of the SubjectArea Open Metadata
+ * Access Service (OMAS).  This interface provides glossary authoring interfaces for subject area experts.
  */
 
 public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInstance
@@ -75,12 +75,14 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * @param suppliedGlossary Glossary to create
      * @return response, when successful contains the created glossary.
      * when not successful the following Exception responses can occur
-     *  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
-     *  MetadataServerUncontactableException not able to communicate with a Metadata respository service.
-     *  InvalidParameterException            one of the parameters is null or invalid.
-     *  UnrecognizedGUIDException            the supplied guid was not recognised
-     *  ClassificationException              Error processing a classification
-     *  StatusNotSupportedException          A status value is not supported
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised.</li>
+     * <li>ClassificationException              Error processing a classification.</li>
+     * <li>StatusNotSupportedException          A status value is not supported.</li>
+     * </ul>
      */
     public SubjectAreaOMASAPIResponse createGlossary(String serverName, String userId, org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary suppliedGlossary) {
         final String methodName = "createGlossary";
@@ -149,6 +151,8 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             response = OMASExceptionToResponse.convertStatusNotsupportedException(e);
         } catch (UnrecognizedGUIDException e) {
             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
+        } catch(FunctionNotSupportedException e){
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response =" + response);
@@ -303,14 +307,12 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * @param sequencingProperty the name of the property that should be used to sequence the results.
      * @return the relationships associated with the requested Glossary guid
      *
-     * Exceptions returned by the server
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws FunctionNotSupportedException   Function not supported
-     *
-     * Client library Exceptions
-     * @throws MetadataServerUncontactableException Unable to contact the server
-     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException the requesting user is not authorized to issue this request.</li>
+     * <li> InvalidParameterException one of the parameters is null or invalid.</li>
+     * <li> FunctionNotSupportedException   Function not supported.</li>
+     * </ul>
      */
 
     public  SubjectAreaOMASAPIResponse getGlossaryRelationships(String serverName, String userId,String guid,
@@ -446,6 +448,8 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
         } catch (InvalidParameterException e) {
             response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        } catch(FunctionNotSupportedException e){
+            response = OMASExceptionToResponse.convertFunctionNotSupportedException(e);
         }
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId=" + userId + ",response=" + response);
@@ -476,7 +480,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      * <ul>
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
-     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> FunctionNotSupportedException        Function not supported</li>
      * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
      * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
      * <li> EntityNotDeletedException            a soft delete was issued but the glossary was not deleted.</li>

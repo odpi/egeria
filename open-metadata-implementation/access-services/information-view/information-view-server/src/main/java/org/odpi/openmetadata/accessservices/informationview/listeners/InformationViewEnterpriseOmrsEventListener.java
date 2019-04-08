@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.listeners;
 
-
-
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
@@ -123,6 +121,24 @@ public class InformationViewEnterpriseOmrsEventListener implements OMRSTopicList
                                 instanceEventOriginator.getOrganizationName(),
                                 instanceEvent.getOriginalEntity(),
                                 instanceEvent.getEntity());
+                        break;
+
+                    case DELETED_RELATIONSHIP_EVENT:
+                        instanceEventProcessor.processDeletedRelationshipEvent("EnterpriseOMRSTopic",
+                                instanceEventOriginator.getMetadataCollectionId(),
+                                instanceEventOriginator.getServerName(),
+                                instanceEventOriginator.getServerType(),
+                                instanceEventOriginator.getOrganizationName(),
+                                instanceEvent.getRelationship());
+                        break;
+
+                    case DELETE_PURGED_RELATIONSHIP_EVENT:
+                        instanceEventProcessor.processDeletePurgedRelationshipEvent("EnterpriseOMRSTopic",
+                                instanceEventOriginator.getMetadataCollectionId(),
+                                instanceEventOriginator.getServerName(),
+                                instanceEventOriginator.getServerType(),
+                                instanceEventOriginator.getOrganizationName(),
+                                instanceEvent.getRelationship());
                         break;
 
                 }

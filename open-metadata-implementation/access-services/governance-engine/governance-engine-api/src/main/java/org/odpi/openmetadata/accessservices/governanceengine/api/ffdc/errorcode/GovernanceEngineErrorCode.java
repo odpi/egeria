@@ -89,18 +89,15 @@ public enum GovernanceEngineErrorCode {
     GUID_NOT_FOUND_ERROR(404, "OMAS-GOVERNANCEENGINE-404-005 ",
             "The guid {0} for {1} could not be found",
             "The item could not be returned as it does not exist",
-            "Check the guid being requested")
-    ;
+            "Check the guid being requested");
 
 
+    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineErrorCode.class);
     private int httpErrorCode;
     private String errorMessageId;
     private String errorMessage;
     private String systemAction;
     private String userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineErrorCode.class);
-
 
     /**
      * The constructor for GovernanceEngineErrorCode expects to be passed one of the enumeration rows defined in
@@ -170,7 +167,6 @@ public enum GovernanceEngineErrorCode {
 
         return result;
     }
-
 
     /**
      * Returns a description of the action taken by the system when the condition that caused this exception was
