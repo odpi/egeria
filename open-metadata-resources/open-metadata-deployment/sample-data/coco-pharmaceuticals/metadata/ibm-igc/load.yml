@@ -273,6 +273,20 @@
             - { property: "assigned_to_terms.parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
           is: 55
 
+- import_role: name=IBM.infosvr-import-export
+  vars:
+    ingest:
+      datastage:
+        - from: "metadata/ibm-igc/ds_tabledefs_{{ egeria_samples_cocopharma_db_type }}.isx"
+          into_project: dstage1
+          with_options:
+            overwrite: True
+        - from: "metadata/ibm-igc/ds_jobs_{{ egeria_samples_cocopharma_db_type }}.isx"
+          into_project: dstage1
+          with_options:
+            overwrite: True
+  when: (egeria_samples_cocopharma_db_type == 'ibm-db2')
+
 - name: remove cached files
   file:
     path: cache/__ibm_infosvr_cert_root.crt
