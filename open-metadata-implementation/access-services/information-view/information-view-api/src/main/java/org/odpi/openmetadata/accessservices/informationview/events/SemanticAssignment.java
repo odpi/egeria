@@ -18,8 +18,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 public class SemanticAssignment extends InformationViewHeader{
-    private BusinessTerm businessTerm;
+
     private DatabaseColumn databaseColumn;
+    private BusinessTerm businessTerm;
 
     public BusinessTerm getBusinessTerm() {
         return businessTerm;

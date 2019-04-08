@@ -9,7 +9,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
+import org.odpi.openmetadata.accessservices.informationview.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.informationview.events.InformationViewEvent;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewInTopicListener;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
@@ -31,11 +32,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.odpi.openmetadata.repositoryservices.localrepository.repositorycontentmanager.OMRSRepositoryContentHelper;
 import org.odpi.openmetadata.repositoryservices.rest.properties.TypeLimitedFindRequest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 import static org.junit.Assert.assertEquals;
@@ -74,13 +77,13 @@ public class InformationViewOmasListenerTest {
     private static final String ENDPOINT_QUALIFIED_NAME = "jdbc:derby://localhost:9393";
     private static final String CONNECTION_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection";
     private static final String CONNECTOR_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.GaianConnectorProvider_type";
-    private static final String DATABASE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest";
-    private static final String INFORMATION_VIEW_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema";
-    private static final String DB_SCHEMA_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema_type";
-    private static final String TABLE_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema.customer_table_type";
-    private static final String TABLE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema.customer_table";
-    private static final String DERIVED_COLUMN_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema.customer_table.client_name";
-    private static final String DERIVED_COLUMN_TYPE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.Connection.databaseTest.schema.customer_table.client_name_type";
+    private static final String DATABASE_QUALIFIED_NAME = "jdbc:derby://localhost:9393.databaseTest";
+    private static final String INFORMATION_VIEW_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(InformationView)=schema";
+    private static final String DB_SCHEMA_TYPE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(RelationalDBSchemaType)=schema_type";
+    private static final String TABLE_TYPE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(InformationView)=schema::(RelationalTableType)=customer_table_type";
+    private static final String TABLE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(InformationView)=schema::(RelationalTable)=customer_table";
+    private static final String DERIVED_COLUMN_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(InformationView)=schema::(RelationalTable)=customer_table::(DerivedRelationalColumn)=client_name";
+    private static final String DERIVED_COLUMN_TYPE_QUALIFIED_NAME = "(SoftwareServer)=localhost::(DataStore)=databaseTest::(InformationView)=schema::(RelationalTable)=customer_table::(RelationalColumnType)=client_name_type";
     private static final String IV_PREFIX = "iv_";
 
     private InformationViewInTopicListener listener;
@@ -114,7 +117,9 @@ public class InformationViewOmasListenerTest {
     @Mock
     private EntityDetail businessTerm;
     @Mock
-    private OMRSRepositoryHelper helper;
+    private OMRSRepositoryContentHelper helper;
+    @Mock
+    private EventPublisher eventPublisher;
 
     private OMRSAuditLog auditLog;
 
@@ -136,10 +141,33 @@ public class InformationViewOmasListenerTest {
     public void setup() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        EntitiesCreatorHelper entitiesCreatorHelper = new EntitiesCreatorHelper(enterpriseConnector, auditLog);
-        listener = new InformationViewInTopicListener(entitiesCreatorHelper, auditLog);
+        OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, Collections.EMPTY_LIST, auditLog);
+        listener = new InformationViewInTopicListener(omEntityDao, eventPublisher,enterpriseConnector.getRepositoryHelper(), Collections.emptyList(), auditLog);
         when(enterpriseConnector.getMetadataCollection()).thenReturn(omrsMetadataCollection);
         when(enterpriseConnector.getRepositoryHelper()).thenReturn(helper);
+        when(helper.getStringProperty(eq(Constants.INFORMATION_VIEW_OMAS_NAME),
+                                    any(String.class),
+                                    any(InstanceProperties.class),
+                                    any(String.class))).thenCallRealMethod();
+        when(helper.getBooleanProperty(eq(Constants.INFORMATION_VIEW_OMAS_NAME),
+                                    any(String.class),
+                                    any(InstanceProperties.class),
+                                    any(String.class))).thenCallRealMethod();
+        when(helper.getIntProperty(eq(Constants.INFORMATION_VIEW_OMAS_NAME),
+                                any(String.class),
+                                any(InstanceProperties.class),
+                                any(String.class))).thenCallRealMethod();
+        when(helper.getStringArrayProperty(eq(Constants.INFORMATION_VIEW_OMAS_NAME),
+                                        any(String.class),
+                                        any(InstanceProperties.class),
+                                        any(String.class))).thenCallRealMethod();
+
+
+        when(helper.addStringArrayPropertyToInstance(eq(Constants.INFORMATION_VIEW_OMAS_NAME),
+                                        any(InstanceProperties.class),
+                                        any(String.class),
+                                        anyList(),
+                                        any(String.class))).thenCallRealMethod();
 
         testDataHelper = new TestDataHelper();
         buildInstanceTypes();
@@ -161,7 +189,7 @@ public class InformationViewOmasListenerTest {
         when(mockType.getTypeDefGUID()).thenReturn(classificationTypeGuid);
         when(skeletonClassification.getType()).thenReturn(mockType);
         when(skeletonClassification.getStatus()).thenReturn(InstanceStatus.ACTIVE);
-        when(helper.getSkeletonClassification("",
+        when(helper.getSkeletonClassification(Constants.INFORMATION_VIEW_OMAS_NAME,
                 Constants.USER_ID,
                 classificationTypeName,
                 entityTypeName))
@@ -216,7 +244,7 @@ public class InformationViewOmasListenerTest {
         when(mockType.getTypeDefGUID()).thenReturn(typeGuid);
         when(skeletonRelationship.getType()).thenReturn(mockType);
         when(skeletonRelationship.getStatus()).thenReturn(InstanceStatus.ACTIVE);
-        when(helper.getSkeletonRelationship("",
+        when(helper.getSkeletonRelationship(Constants.INFORMATION_VIEW_OMAS_NAME,
                 "",
                 InstanceProvenanceType.LOCAL_COHORT,
                 Constants.USER_ID,

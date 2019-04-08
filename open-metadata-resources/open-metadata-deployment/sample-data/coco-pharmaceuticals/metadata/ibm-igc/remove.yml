@@ -101,6 +101,15 @@
   register: __egeria_samples_ia_projects
   when: ('ibm-information-server-domain' in group_names)
 
+- name: check for project in XML
+  xml:
+    xmlstring: "{{ __egeria_samples_ia_projects.content }}"
+    xpath: /iaapi:Projects/Project[@name='CocoPharma']
+    namespaces:
+      iaapi: http://www.ibm.com/investigate/api/iaapi
+    count: yes
+  register: __egeria_samples_ia_project_matches
+
 - name: remove Information Analyzer project
   uri:
     url: "https://{{ ibm_infosvr_hosts.domain }}:{{ ibm_infosvr_ports.console }}\
@@ -113,8 +122,8 @@
     validate_certs: no
     timeout: 10
   when: >
-    __egeria_samples_ia_projects.content.find('CocoPharma') != -1
-    and ('ibm-information-server-domain' in group_names)
+    ('ibm-information-server-domain' in group_names)
+    and __egeria_samples_ia_project_matches.count > 0
 
 - import_role: name=IBM.infosvr-import-export
   vars:
@@ -189,7 +198,7 @@
     -list USERS
   args:
     executable: /bin/bash
-  when: egeria_samples_cocopharma_groups is defined and ('ibm-information-server-engine' in group_names)
+  when: ('ibm-information-server-engine' in group_names) and egeria_samples_cocopharma_groups is defined
   register: __cocopharma_existing_users
 
 - name: add users removal to command-list
@@ -202,9 +211,9 @@
     create: yes
   with_items: "{{ egeria_samples_cocopharma_users }}"
   when: >
-    __cocopharma_existing_users is defined
+    ('ibm-information-server-engine' in group_names)
+    and __cocopharma_existing_users is defined
     and __cocopharma_existing_users.stdout.find(item.username) != -1
-    and ('ibm-information-server-engine' in group_names)
   loop_control:
     label: "{{ item.username }}"
 
@@ -217,7 +226,7 @@
     -list GROUPS
   args:
     executable: /bin/bash
-  when: egeria_samples_cocopharma_groups is defined and ('ibm-information-server-engine' in group_names)
+  when: ('ibm-information-server-engine' in group_names) and egeria_samples_cocopharma_groups is defined
   register: __cocopharma_existing_groups
 
 - name: add group removal to command-list
@@ -229,9 +238,9 @@
     insertafter: EOF
     create: yes
   when: >
-    __cocopharma_existing_groups is defined
+    ('ibm-information-server-engine' in group_names)
+    and __cocopharma_existing_groups is defined
     and __cocopharma_existing_groups.stdout.find(item.id) != -1
-    and ('ibm-information-server-engine' in group_names)
   with_items: "{{ egeria_samples_cocopharma_groups }}"
   loop_control:
     label: "{{ item.id }}"
@@ -293,7 +302,7 @@
     executable: /bin/bash
   when: >
     ('ibm-information-server-engine' in group_names)
-    and __cocopharma_existing_import_areas.stdout.find(item) != -1
+    and __cocopharma_existing_import_areas.stdout.find('CocoPharma_'~item) != -1
   with_items: "{{ egeria_samples_cocopharma_databases }}"
 
 - name: remote database catalog status

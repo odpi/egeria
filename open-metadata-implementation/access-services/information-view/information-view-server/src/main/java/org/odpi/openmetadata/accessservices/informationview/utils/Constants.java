@@ -76,4 +76,9 @@ public class Constants {
     public static final String CREATE_TIME = "createdTime";
     public static final String SCHEMA_ATTRIBUTE = "SchemaAttribute";
     public static final String SCHEMA_TYPE = "SchemaType";
+    public static final String NATIVE_CLASS = "nativeClass";
+    public static final String AGGREGATING_FUNCTION = "aggregatingFunction";
+    public static final String COMMENT = "comment";
+    public static final String PRIMITIVE_SCHEMA_TYPE = "PrimitiveSchemaType";
+    public static final String ZONE_MEMBERSHIP = "zoneMembership";
 }

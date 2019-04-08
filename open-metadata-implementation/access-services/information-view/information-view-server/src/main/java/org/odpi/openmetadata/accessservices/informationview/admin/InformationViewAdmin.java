@@ -5,10 +5,11 @@ package org.odpi.openmetadata.accessservices.informationview.admin;
 
 
 import org.odpi.openmetadata.accessservices.informationview.auditlog.InformationViewAuditCode;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.ColumnContextEventBuilder;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.EntitiesCreatorHelper;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
+import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
-import org.odpi.openmetadata.accessservices.informationview.contentmanager.ReportHandler;
+import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.eventprocessor.EventPublisher;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewEnterpriseOmrsEventListener;
 import org.odpi.openmetadata.accessservices.informationview.listeners.InformationViewInTopicListener;
@@ -31,11 +32,16 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 
 public class InformationViewAdmin implements AccessServiceAdmin {
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewAdmin.class);
     private OpenMetadataTopicConnector informationViewInTopicConnector;
+    private OpenMetadataTopicConnector informationViewOutTopicConnector;
     private OMRSAuditLog auditLog;
     private String serverName = null;
     private InformationViewServicesInstance instance = null;
@@ -73,17 +79,14 @@ public class InformationViewAdmin implements AccessServiceAdmin {
             serverName = enterpriseConnector.getServerName();
         }
 
-        Connection  inTopicConnection = accessServiceConfigurationProperties.getAccessServiceInTopic();
-        String inTopicName = getTopicName(inTopicConnection);
+        String inTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceInTopic());
+        String outTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceOutTopic());
+        informationViewInTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceInTopic());
+        informationViewOutTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
+        List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions());
+        OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, supportedZones, auditLog);
 
-        Connection  outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
-        String outTopicName = getTopicName(outTopicConnection);
-
-        informationViewInTopicConnector = initializeInformationViewTopicConnector(inTopicConnection);
-        OpenMetadataTopicConnector informationViewOutTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
-
-        EntitiesCreatorHelper entitiesCreatorHelper = new EntitiesCreatorHelper(enterpriseConnector, auditLog);
-
+        EventPublisher eventPublisher = null;
         if (enterpriseOMRSTopicConnector != null) {
             auditCode = InformationViewAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
             auditLog.logRecord(actionDescription,
@@ -93,15 +96,15 @@ public class InformationViewAdmin implements AccessServiceAdmin {
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
-            ColumnContextEventBuilder columnContextEventBuilder = new ColumnContextEventBuilder(enterpriseConnector);
-            EventPublisher eventPublisher = new EventPublisher(informationViewOutTopicConnector, columnContextEventBuilder, auditLog);
+
+            eventPublisher = new EventPublisher(informationViewOutTopicConnector, enterpriseConnector, supportedZones, auditLog);
             InformationViewEnterpriseOmrsEventListener informationViewEnterpriseOmrsEventListener = new InformationViewEnterpriseOmrsEventListener(eventPublisher, auditLog);
             enterpriseOMRSTopicConnector.registerListener(informationViewEnterpriseOmrsEventListener);
         }
 
 
         if (informationViewInTopicConnector != null) {
-            OpenMetadataTopicListener informationViewInTopicListener = new InformationViewInTopicListener(entitiesCreatorHelper, auditLog);
+            OpenMetadataTopicListener informationViewInTopicListener = new InformationViewInTopicListener(omEntityDao, eventPublisher, enterpriseConnector.getRepositoryHelper(), supportedZones, auditLog);
             this.informationViewInTopicConnector.registerListener(informationViewInTopicListener);
             startConnector(InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_IN_TOPIC, actionDescription, inTopicName, informationViewInTopicConnector);
         }
@@ -110,8 +113,10 @@ public class InformationViewAdmin implements AccessServiceAdmin {
             startConnector(InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_OUT_TOPIC, actionDescription, outTopicName, informationViewOutTopicConnector);
         }
 
-        LookupHelper lookupHelper = new LookupHelper(enterpriseConnector, entitiesCreatorHelper, auditLog);
-        instance = new InformationViewServicesInstance(new ReportHandler(entitiesCreatorHelper, lookupHelper, auditLog), serverName);
+        LookupHelper lookupHelper = new LookupHelper(enterpriseConnector, omEntityDao, auditLog);
+        DataViewHandler dataViewHandler = new DataViewHandler(omEntityDao, enterpriseConnector.getRepositoryHelper(), auditLog);
+        ReportHandler reportHandler = new ReportHandler(omEntityDao, lookupHelper, enterpriseConnector.getRepositoryHelper(), auditLog);
+        instance = new InformationViewServicesInstance(reportHandler, dataViewHandler, serverName);
 
         auditCode = InformationViewAuditCode.SERVICE_INITIALIZED;
         auditLog.logRecord(actionDescription,
@@ -235,12 +240,90 @@ public class InformationViewAdmin implements AccessServiceAdmin {
     }
 
 
+    private List<String> extractSupportedZones(Map<String, Object> accessServiceOptions) throws OMAGConfigurationErrorException
+    {
+        final String           methodName = "extractSupportedZones";
+        InformationViewAuditCode auditCode;
+
+        if (accessServiceOptions == null)
+        {
+            return null;
+        }
+        else
+        {
+            Object   zoneListObject = accessServiceOptions.get(supportedZonesPropertyName);
+
+            if (zoneListObject == null)
+            {
+                auditCode = InformationViewAuditCode.ALL_ZONES;
+                auditLog.logRecord(methodName,
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(),
+                        null,
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction());
+                return null;
+            }
+            else
+            {
+                try
+                {
+                    List<String>  zoneList =  (List<String>)zoneListObject;
+
+                    auditCode = InformationViewAuditCode.SUPPORTED_ZONES;
+                    auditLog.logRecord(methodName,
+                            auditCode.getLogMessageId(),
+                            auditCode.getSeverity(),
+                            auditCode.getFormattedLogMessage(zoneList.toString()),
+                            null,
+                            auditCode.getSystemAction(),
+                            auditCode.getUserAction());
+
+                    return zoneList;
+                }
+                catch (Throwable error)
+                {
+                    auditCode = InformationViewAuditCode.BAD_CONFIG;
+                    auditLog.logRecord(methodName,
+                            auditCode.getLogMessageId(),
+                            auditCode.getSeverity(),
+                            auditCode.getFormattedLogMessage(zoneListObject.toString(), supportedZonesPropertyName),
+                            null,
+                            auditCode.getSystemAction(),
+                            auditCode.getUserAction());
+
+                    InformationViewErrorCode errorCode    = InformationViewErrorCode.BAD_CONFIG;
+                    String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(zoneListObject.toString(),
+                            supportedZonesPropertyName,
+                            error.getClass().getName(),
+                            error.getMessage());
+
+                    throw new OMAGConfigurationErrorException(errorCode.getHttpErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction(),
+                            error);
+                }
+            }
+        }
+    }
+
+
+
     /**
      * Shutdown the access service.
      */
     public void shutdown() {
         try {
             informationViewInTopicConnector.disconnect();
+        } catch (ConnectorCheckedException e) {
+            log.error("Error disconnecting information view topic connector");
+        }
+        try {
+            informationViewOutTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {
             log.error("Error disconnecting information view topic connector");
         }

@@ -36,7 +36,7 @@ public class DataEngineServicesInstance {
                 this.metadataCollection = repositoryConnector.getMetadataCollection();
 
                 DataEngineServicesInstanceMap.setNewInstanceForJVM(serverName, this);
-            } catch (Throwable error) {
+            } catch (Exception error) {
                 dataEngineErrorHandler.handleNewInstanceException(DataEngineErrorCode.OMRS_NOT_INITIALIZED, methodName);
             }
         } else {

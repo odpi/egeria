@@ -8,6 +8,22 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
   <template>
     
     <style>
+        :root{
+        
+            --egeria-primary-color: 	#71ccdc;
+            --egeria-secondary-color: #24272a;          
+            --egeria-icon-color: var(--egeria-primary-color);          
+          
+            --paper-input-container-focus-color: var(--egeria-primary-color);
+            --lumo-primary-color: var(--egeria-primary-color);
+            
+            --paper-spinner-color: var(--egeria-primary-color);
+            --paper-spinner-stroke-width: 5px;
+        }
+        
+        .icon {
+            color: var(--egeria-icon-color);
+        }
       .card {
         margin: 24px;
         padding: 16px;
@@ -40,15 +56,8 @@ $_documentContainer.innerHTML = `<dom-module id="shared-styles">
       }
       
       paper-button:not([disabled]) {
-        background: #71ccdc;
+        background: var(--egeria-primary-color);
         color: white;
-      }
-      
-      paper-spinner-lite {
-          --paper-spinner-color: #71ccdc;;
-          --paper-spinner-stroke-width: 5px;
-           width: 200px;
-           height: 200px;              
       }
       
       vaadin-grid {

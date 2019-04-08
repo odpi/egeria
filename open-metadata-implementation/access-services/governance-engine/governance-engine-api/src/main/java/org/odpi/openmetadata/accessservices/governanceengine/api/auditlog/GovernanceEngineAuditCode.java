@@ -63,14 +63,13 @@ public enum GovernanceEngineAuditCode {
             "Unable to initialize the Governance Engice Open Metadata Access Service (OMAS) topic connection {0} for server instance {1}; error message was: {2}",
             "The connection could not be initialized.",
             "Review the exception and resolve the configuration. ");
-    
+
+    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineAuditCode.class);
     private String logMessageId;
     private OMRSAuditLogRecordSeverity severity;
     private String logMessage;
     private String systemAction;
     private String userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineAuditCode.class);
 
 
     /**

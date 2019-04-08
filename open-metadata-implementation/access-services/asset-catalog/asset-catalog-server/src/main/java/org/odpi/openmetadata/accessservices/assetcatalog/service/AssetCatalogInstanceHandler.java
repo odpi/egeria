@@ -40,20 +40,6 @@ class AssetCatalogInstanceHandler {
         return instance.getMetadataCollection();
     }
 
-    /**
-     * @return
-     */
-    public OMRSRepositoryHelper getRepositoryHelper(String serverName) throws PropertyServerException {
-
-        AssetCatalogServicesInstance instance = instanceMap.getInstance(serverName);
-
-        if (instance == null) {
-            return throwServiceNotInitializedException(serverName, "getRepositoryHelper");
-        }
-
-        return instance.getRepositoryHelper();
-    }
-
     private OMRSRepositoryHelper throwServiceNotInitializedException(String serverName, String getRepositoryHelper) throws PropertyServerException {
         final String methodName = getRepositoryHelper;
 
