@@ -2,17 +2,21 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.eventbus.topic.kafka;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
 
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConfigurationWrapper;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.errors.WakeupException;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,9 +32,11 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 
     private OMRSAuditLog auditLog;
 
-    private static final long recoverySleepTimeSec = 10L;
-    private static final long defaultPollTimeout   = 1000;
+    private final long recoverySleepTimeSec; 
+    private final long pollTimeout; ;
+    private final long maxQueueSize;
 
+    private				 KafkaOpenMetadataEventConsumerConfiguration config;
     private              KafkaConsumer<String, String>   consumer;
     private              String                          topicToSubscribe;
     private              String                          localServerId;
@@ -38,7 +44,15 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
     private              KafkaOpenMetadataTopicConnector connector;
 
     private Map<TopicPartition, OffsetAndMetadata> currentOffsets = new HashMap<>();
-
+    private long maxNextPollTimestampToAvoidConsumerTimeout = 0;
+    private final long maxMsBetweenPolls;
+    
+    
+    //If we get close enough to the consumer timeout timestamp, force a poll so that
+    //we do not exceed the timeout.  This parameter controls how close we can get
+    //before forcing a poll.
+    private final long consumerTimeoutPreventionSafetyWindowMs;
+    
     private Boolean running = true;
 
     /**
@@ -46,18 +60,19 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
      *
      * @param topicName name of the topic to listen on.
      * @param localServerId identifier to enable receiver to identify that an event came from this server.
-     * @param consumerProperties properties for the consumer.
+     * @param kafkaConsumerProperties properties for the consumer.
      * @param connector connector holding the inbound listeners.
      * @param auditLog  audit log for this component.
      */
     public KafkaOpenMetadataEventConsumer(String                          topicName,
                                           String                          localServerId,
-                                          Properties                      consumerProperties,
+                                          KafkaOpenMetadataEventConsumerConfiguration config,
+                                          Properties                      kafkaConsumerProperties,
                                           KafkaOpenMetadataTopicConnector connector,
                                           OMRSAuditLog                    auditLog)
     {
         this.auditLog = auditLog;
-        this.consumer = new KafkaConsumer<>(consumerProperties);
+        this.consumer = new KafkaConsumer<>(kafkaConsumerProperties);
         this.topicToSubscribe = topicName;
         this.consumer.subscribe(Collections.singletonList(topicToSubscribe), new HandleRebalance());
         this.connector = connector;
@@ -70,12 +85,19 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(topicName, consumerProperties.toString()),
+                           auditCode.getFormattedLogMessage(topicName, kafkaConsumerProperties.toString()),
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
+        
+        maxMsBetweenPolls = new KafkaConfigurationWrapper(kafkaConsumerProperties).getMaxPollIntervalMs();
+        this.recoverySleepTimeSec = config.getLongProperty(KafkaOpenMetadataEventConsumerProperty.RECOVERY_SLEEP_TIME);
+        this.maxQueueSize = config.getIntProperty(KafkaOpenMetadataEventConsumerProperty.MAX_QUEUE_SIZE);
+        this.consumerTimeoutPreventionSafetyWindowMs = config.getLongProperty(KafkaOpenMetadataEventConsumerProperty.CONSUMER_TIMEOUT_PREVENTION_SAFETY_WINDOW_MS);
+        this.pollTimeout = config.getLongProperty(KafkaOpenMetadataEventConsumerProperty.POLL_TIMEOUT);
     }
 
+  
 
     /**
      * The server is shutting down.
@@ -90,6 +112,10 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
     }
 
 
+    private void updateNextMaxPollTimestamp() {
+    	maxNextPollTimestampToAvoidConsumerTimeout = System.currentTimeMillis() + maxMsBetweenPolls - consumerTimeoutPreventionSafetyWindowMs;
+    	
+    }
     /**
      * This is the method that provides the behaviour of the thread.
      */
@@ -103,8 +129,25 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         {
             try
             {
-                ConsumerRecords<String, String> records = consumer.poll(defaultPollTimeout);
-
+            	//if we are close to the timeout, force a poll to avoid having the consumer
+            	//be marked as dead because we have not polled often enough
+            	boolean pollRequired = System.currentTimeMillis() > maxNextPollTimestampToAvoidConsumerTimeout;
+            
+            	
+                	
+            	int nUnprocessedEvents = connector.getNumberOfUnprocessedEvents();
+            	if (! pollRequired && nUnprocessedEvents > maxQueueSize) {
+            		//The connector queue is too big.  Wait until the size goes down until
+            		//polling again.  If we let the events just accumulate, we will
+            		//eventually run out of memory if the consumer cannot keep up.
+            		log.warn("Skipping Kafka polling since unprocessed message queue size {} is greater than {}", nUnprocessedEvents, maxQueueSize);
+            		awaitNextPollingTime();
+            		continue;
+            	
+            	}
+            	updateNextMaxPollTimestamp();
+                ConsumerRecords<String, String> records = consumer.poll(pollTimeout);
+                
                 log.debug("Found records: " + records.count());
                 for (ConsumerRecord<String, String> record : records)
                 {
@@ -172,14 +215,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             }
             finally
             {
-                try
-                {
-                    Thread.sleep(1000);
-                }
-                catch (InterruptedException e)
-                {
-                    log.error(String.format("Interruption error: %s", e.getMessage()), e);
-                }
+                awaitNextPollingTime();
             }
         }
 
@@ -196,6 +232,18 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             consumer = null;
         }
     }
+
+
+	private void awaitNextPollingTime() {
+		try
+		{
+		    Thread.sleep(1000);
+		}
+		catch (InterruptedException e)
+		{
+		    log.error(String.format("Interruption error: %s", e.getMessage()), e);
+		}
+	}
 
 
     protected void recoverAfterError()

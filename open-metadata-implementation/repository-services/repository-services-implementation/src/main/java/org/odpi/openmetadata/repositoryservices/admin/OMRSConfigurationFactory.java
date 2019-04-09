@@ -194,16 +194,8 @@ public class OMRSConfigurationFactory
         LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName,
                                                                                            localServerURL);
 
-        localRepositoryConfig.
-                setLocalRepositoryLocalConnection(connectorConfigurationFactory.getLocalGraphRepositoryLocalConnection(localServerName));
+        localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getLocalGraphRepositoryLocalConnection(localServerName));
 
-        localRepositoryConfig.
-                setEventMapperConnection(connectorConfigurationFactory.getLocalGraphRepositoryEventMapperConnection(localServerName,
-                                                                                                                    additionalProperties,
-                                                                                                                    eventBusConnectorProvider,
-                                                                                                                    topicURLRoot,
-                                                                                                                    serverId,
-                                                                                                                    eventBusAdditionalProperties));
 
         return localRepositoryConfig;
     }

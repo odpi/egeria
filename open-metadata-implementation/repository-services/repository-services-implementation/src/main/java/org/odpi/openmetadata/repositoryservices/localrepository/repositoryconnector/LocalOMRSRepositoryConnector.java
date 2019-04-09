@@ -4,6 +4,7 @@ package org.odpi.openmetadata.repositoryservices.localrepository.repositoryconne
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
@@ -302,7 +303,18 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
         }
     }
 
-
+    /**
+     * Receive an audit log object that can be used to record audit log messages.  The caller has initialized it
+     * with the correct component description and log destinations.
+     *
+     * @param auditLog audit log object
+     */
+    public void setAuditLog(OMRSAuditLog auditLog)
+    {
+        super.setAuditLog(auditLog);
+        if (realLocalConnector != null)
+            realLocalConnector.setAuditLog(auditLog);
+    }
 
     /**
      * Set up the unique Id for this metadata collection.
