@@ -5,7 +5,6 @@ package org.odpi.openmetadata.accessservices.governanceengine.server;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineErrorCode;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
@@ -19,7 +18,6 @@ public class GovernanceEngineServicesInstance {
     private OMRSRepositoryConnector repositoryConnector;
     private OMRSMetadataCollection metadataCollection;
     private String serverName;
-    private AccessServiceDescription myDescription = AccessServiceDescription.GOVERNANCE_ENGINE_OMAS;
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -87,42 +85,6 @@ public class GovernanceEngineServicesInstance {
                     errorCode.getUserAction());
         }
     }
-
-
-    /**
-     * Return the Governance Engine's official Access Service Name
-     *
-     * @return String name
-     */
-    String getAccessServiceName() {
-        return myDescription.getAccessServiceName();
-    }
-
-
-    /**
-     * Return the local metadata collection for this server.
-     *
-     * @return OMRSMetadataCollection object
-     * @throws PropertyServerException the instance has not been initialized successfully
-     */
-    OMRSMetadataCollection getMetadataCollection() throws PropertyServerException {
-        final String methodName = "getMetadataCollection";
-
-        if ((repositoryConnector != null) && (metadataCollection != null) && (repositoryConnector.isActive())) {
-            return metadataCollection;
-        } else {
-            GovernanceEngineErrorCode errorCode = GovernanceEngineErrorCode.OMRS_NOT_AVAILABLE;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
-        }
-    }
-
 
     /**
      * Return the repository connector for this server.

@@ -62,8 +62,7 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
 
 
         validateOMASServerURL(methodName);
-        validateUserId(userId, methodName); // cannot be null
-        // No validation for other parms -- optional. Managed server-side
+        validateUserId(userId, methodName);
 
         GovernedAssetListAPIResponse restResult = callGovernedAssetListREST(methodName,
                 omasServerURL + urlTemplate,
