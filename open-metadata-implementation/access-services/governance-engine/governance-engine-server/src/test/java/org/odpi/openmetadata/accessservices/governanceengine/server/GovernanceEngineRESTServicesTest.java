@@ -2,7 +2,6 @@
 
 package org.odpi.openmetadata.accessservices.governanceengine.server;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.platform.suite.api.SuiteDisplayName;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -14,23 +13,4 @@ import org.mockito.quality.Strictness;
 @MockitoSettings(strictness = Strictness.WARN)
 class GovernanceEngineRESTServicesTest {
 
-    @Test
-    void setRepositoryConnector() {
-    }
-
-    @Test
-    void getGovernanceClassificationDefinitions() {
-    }
-
-    @Test
-    void getClassificationDefinition() {
-    }
-
-    @Test
-    void getGovernedAssetComponents() {
-    }
-
-    @Test
-    void getGovernedAssetComponent() {
-    }
 }
