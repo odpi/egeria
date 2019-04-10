@@ -91,7 +91,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
 
     @Override
     public ResourceTagMapper createAssociationResourceToSecurityTag(String tagGUID, String resourceGUID) {
-        String rangerBaseURL = connection.getEndpoint().getURL();
+        String rangerBaseURL = connection.getEndpoint().getAddress();
         String createAssociation = MessageFormat.format("{0}/service/tags/tagresourcemaps?tag-guid={1}&resource-guid={2}", rangerBaseURL, tagGUID, resourceGUID);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -107,7 +107,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
 
     @Override
     public void deleteAssociationResourceToSecurityTag(ResourceTagMapper resourceTagMapper) {
-        String rangerBaseURL = connection.getEndpoint().getURL();
+        String rangerBaseURL = connection.getEndpoint().getAddress();
         String deleteAssociationURL = MessageFormat.format("{0}/service/tags/tagresourcemap/{1}", rangerBaseURL, resourceTagMapper.getId());
 
         RestTemplate restTemplate = new RestTemplate();
@@ -237,7 +237,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
     }
 
     public RangerServiceResource getResourceByGUID(String resourceGuid) {
-        String rangerBaseURL = connection.getEndpoint().getURL();
+        String rangerBaseURL = connection.getEndpoint().getAddress();
         String resourceURL = MessageFormat.format(SERVICE_TAGS_RESOURCE_BY_GUID, rangerBaseURL, resourceGuid);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -350,7 +350,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
     }
 
     private String getRangerURL(String s) {
-        String rangerBaseURL = connection.getEndpoint().getURL();
+        String rangerBaseURL = connection.getEndpoint().getAddress();
         return MessageFormat.format(s, rangerBaseURL);
     }
 
