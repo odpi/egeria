@@ -22,5 +22,26 @@
 
     <artifactId>graph-repository-connector</artifactId>
 
+    <properties>
+        <janus.version>0.3.1</janus.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.janusgraph</groupId>
+            <artifactId>janusgraph-core</artifactId>
+            <version>${janus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.janusgraph</groupId>
+            <artifactId>janusgraph-berkeleyje</artifactId>
+            <version>${janus.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.janusgraph</groupId>
+            <artifactId>janusgraph-lucene</artifactId>
+            <version>${janus.version}</version>
+        </dependency>
+    </dependencies>
 
 </project>

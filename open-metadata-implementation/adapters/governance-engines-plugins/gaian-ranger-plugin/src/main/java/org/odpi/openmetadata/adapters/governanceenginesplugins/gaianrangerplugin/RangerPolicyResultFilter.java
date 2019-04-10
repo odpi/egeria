@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.governanceenginesplugins.gaianrangerplugin;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ibm.gaiandb.Logger;
 import com.ibm.gaiandb.Util;
 import com.ibm.gaiandb.policyframework.SQLResultFilterX;
@@ -14,7 +12,6 @@ import org.springframework.http.*;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.MessageFormat;
@@ -55,24 +52,11 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
         HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
 
         try {
-            ResponseEntity<String> result = restTemplate.exchange(url, HttpMethod.GET, entity, String.class);
-            return mapResultToRangerUser(result);
+            ResponseEntity<RangerUser> result = restTemplate.exchange(url, HttpMethod.GET, entity, RangerUser.class);
+            return result.getBody();
         } catch (HttpStatusCodeException exception) {
             return null;
         }
-    }
-
-    private static RangerUser mapResultToRangerUser(ResponseEntity<String> result) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        try {
-            return mapper.readValue(result.getBody(), RangerUser.class);
-        } catch (IOException e) {
-            logger.logException("403", e.getMessage(), e);
-        }
-
-        return null;
     }
 
     private HttpHeaders getHttpHeaders() {
@@ -81,8 +65,8 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(Collections.singletonList(MediaType.APPLICATION_JSON));
 
-        if(rangerGaianAuthorizer.getRangerServerProperties() != null
-                && rangerGaianAuthorizer.getRangerServerProperties().getServerAuthorization() != null){
+        if (rangerGaianAuthorizer.getRangerServerProperties() != null
+                && rangerGaianAuthorizer.getRangerServerProperties().getServerAuthorization() != null) {
             String base64Credentials = rangerGaianAuthorizer.getRangerServerProperties().getServerAuthorization();
             headers.set("Authorization", base64Credentials);
         }
@@ -220,7 +204,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
                     try {
                         ApplyMasking.redact(row[querySetColumnIndex + resultSetColumnIndexOffset], isNullMasking, properties);
                     } catch (StandardException | ParseException e) {
-                        logger.logException("GAIAN_RANGER-Exeption-1",e.getMessage(),e);
+                        logger.logException("GAIAN_RANGER-Exeption-1", e.getMessage(), e);
                     }
                 }
 
@@ -401,7 +385,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
      */
     private Set<String> getUserGroups(String userName) {
         String userDetailsURL = getRangerURL(userName, USER_DETAILS);
-        if(userDetailsURL == null){
+        if (userDetailsURL == null) {
             return Collections.emptySet();
         }
 
@@ -416,7 +400,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 
     private Set<String> getUserGroupsByUserId(RangerUser userDetails) {
         String userGroupsURL = getRangerURL(userDetails.getId(), USER_GROUPS);
-        if(userGroupsURL == null){
+        if (userGroupsURL == null) {
             return Collections.emptySet();
         }
 
@@ -431,8 +415,8 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
     }
 
     private String getRangerURL(String userId, String rangerSpecificURL) {
-        String rangerURL  = getRangerServerURL();
-        if(rangerURL == null){
+        String rangerURL = getRangerServerURL();
+        if (rangerURL == null) {
             return null;
         }
 
@@ -441,11 +425,11 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
     }
 
     private String getRangerServerURL() {
-        if(rangerGaianAuthorizer.getRangerServerProperties() == null ||
-                rangerGaianAuthorizer.getRangerServerProperties().getServerURL() == null){
+        if (rangerGaianAuthorizer.getRangerServerProperties() == null ||
+                rangerGaianAuthorizer.getRangerServerProperties().getServerURL() == null) {
             return null;
         }
-        String rangerURL  = rangerGaianAuthorizer.getRangerServerProperties().getServerURL();
+        String rangerURL = rangerGaianAuthorizer.getRangerServerProperties().getServerURL();
         logger.logDetail("RangerURL: " + rangerURL);
 
         return rangerURL;

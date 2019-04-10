@@ -369,7 +369,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
                 Objects.equals(getSecuritySyncWiki(), that.getSecuritySyncWiki()) &&
                 Objects.equals(getSecurityServerURL(), that.getSecurityServerURL()) &&
                 Objects.equals(getGovernanceEngineServerURL(), that.getGovernanceEngineServerURL()) &&
-                getSecurityServerAuthorization() == that.getSecurityServerAuthorization() &&
+                Objects.equals(getSecurityServerAuthorization(), that.getSecurityServerAuthorization()) &&
                 Objects.equals(getTagServiceName(), that.getTagServiceName()) &&
                 Objects.equals(getSecuritySyncInTopic(), that.getSecuritySyncInTopic()) &&
                 Objects.equals(getSecuritySyncOutTopic(), that.getSecuritySyncOutTopic()) &&
