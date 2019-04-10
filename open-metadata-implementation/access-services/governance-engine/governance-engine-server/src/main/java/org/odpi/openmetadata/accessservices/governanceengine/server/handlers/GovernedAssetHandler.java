@@ -186,10 +186,15 @@ public class GovernedAssetHandler {
     }
 
     private List<GovernedAsset> addToAssetListByClassification(String type, String classification, String userId) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, ClassificationErrorException {
-        String typeGuid = getTypeGuidFromTypeName(type, userId);
-        List<EntityDetail> entities = getEntitiesByClassification(classification, userId, typeGuid);
+        String typeGuid = null;
+        if(type != null) {
+            typeGuid = getTypeGuidFromTypeName(type, userId);
+        }
 
+
+        List<EntityDetail> entities = getEntitiesByClassification(classification, userId, typeGuid);
         List<GovernedAsset> assetsToReturn = new ArrayList<>();
+
         if (entities != null) {
             for (EntityDetail entity : entities) {
                 GovernedAsset entry = existingGovernedAsset(assetsToReturn, entity);
@@ -328,8 +333,6 @@ public class GovernedAssetHandler {
     }
 
     private String getTypeGuidFromTypeName(String typeName, String userId) throws UserNotAuthorizedException, RepositoryErrorException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, TypeDefNotKnownException {
-
-
             if (knownTypeDefs.containsKey(typeName)) {
                 return knownTypeDefs.get(typeName);
             } else {
