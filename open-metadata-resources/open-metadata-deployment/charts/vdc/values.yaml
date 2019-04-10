@@ -126,7 +126,7 @@ kafka:
     provider: none
     # k8s secret that needs defining externally with 'username' and 'password'
     # For IBMEventStreams you can also set 'username' to 'token' and set 'password' to <APIKEY>
-    secret: auth-vdc-kafka
+    secret: ""
     # Comma seperated list of brokers (typically 5 for event streams)
     brokers: ""
 
