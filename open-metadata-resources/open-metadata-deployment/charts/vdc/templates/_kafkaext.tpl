@@ -23,8 +23,8 @@
 --data '{
 "producer":
 {
-"bootstrap.servers":"{{  required "Require kafka.external.brokers" .Values.kafka.external.brokers }}"
-{{- if and .Values.kafka.external.provider ( eq  .Values.kafka.external.provider "IBMEventStreams" ) -}}
+"bootstrap.servers":"{{-  required "Require kafka.external.brokers" .Values.kafka.external.brokers -}}"
+{{- if and (required "Required kafka.external.provider" .Values.kafka.external.provider) ( eq  .Values.kafka.external.provider "IBMEventStreams" ) -}}
 ,
 "security.protocol":"SASL_SSL",
 "ssl.protocol":"TLSv1.2",
@@ -37,8 +37,7 @@
 "consumer":
 {
 "bootstrap.servers":"{{ .Values.kafka.external.brokers }}"
-{{- if and .Values.kafka.external.provider ( eq  .Values.kafka.external.provider "IBMEventStreams" ) -}}
-,
+{{- if and (required "Required kafka.external.provider" .Values.kafka.external.provider) ( eq  .Values.kafka.external.provider "IBMEventStreams" ) -}},
 "security.protocol":"SASL_SSL",
 "ssl.protocol":"TLSv1.2",
 "ssl.enabled.protocols":"TLSv1.2",
@@ -47,5 +46,6 @@
 "sasl.jaas.config":"org.apache.kafka.common.security.plain.PlainLoginModule required username='${KAFKA_USER}' password='${KAFKA_PASS}';",
 "sasl.mechanism":"PLAIN"
 {{- end -}}
-} }'
+}
+}'
 {{- end -}}
