@@ -92,7 +92,6 @@ public class SecuritySyncOperationalServices {
             return topicConnector;
         } catch (Exception error) {
             String methodName = "getTopicConnector";
-            log.debug("Unable to create topic connector: " + error.toString());
 
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
             String errorMessage = errorCode.getErrorMessageId()

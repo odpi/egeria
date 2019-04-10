@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,14 +12,8 @@ import java.util.Map;
  * Instances of this class call the synchronized static methods to work with the map.
  */
 public class GovernanceEngineServicesInstanceMap {
+
     private static Map<String, GovernanceEngineServicesInstance> instanceMap = new HashMap<>();
-
-
-    /**
-     * Constructor
-     */
-    public GovernanceEngineServicesInstanceMap() {
-    }
 
     /**
      * Add a new server instance to the server map.
