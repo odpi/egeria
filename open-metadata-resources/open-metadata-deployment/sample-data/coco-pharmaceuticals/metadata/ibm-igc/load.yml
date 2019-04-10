@@ -273,6 +273,20 @@
             - { property: "assigned_to_terms.parent_category.parent_category.name", operator: "=", value: "Coco Pharmaceuticals" }
           is: 55
 
+- import_role: name=IBM.infosvr-import-export
+  vars:
+    ingest:
+      datastage:
+        - from: "metadata/ibm-igc/ds_tabledefs_{{ egeria_samples_cocopharma_db_type }}.isx"
+          into_project: dstage1
+          with_options:
+            overwrite: True
+        - from: "metadata/ibm-igc/ds_jobs_{{ egeria_samples_cocopharma_db_type }}.isx"
+          into_project: dstage1
+          with_options:
+            overwrite: True
+  when: (egeria_samples_cocopharma_db_type == 'ibm-db2')
+
 - name: remove cached files
   file:
     path: cache/__ibm_infosvr_cert_root.crt
@@ -300,9 +314,9 @@
     insertafter: EOF
     create: yes
   when: >
-    __cocopharma_existing_groups is defined
+    ('ibm-information-server-engine' in group_names)
+    and __cocopharma_existing_groups is defined
     and __cocopharma_existing_groups.stdout.find(item.id) == -1
-    and ('ibm-information-server-engine' in group_names)
   with_items: "{{ egeria_samples_cocopharma_groups }}"
   loop_control:
     label: "{{ item.id }}"
@@ -316,7 +330,7 @@
     insertafter: EOF
     create: yes
   with_items: "{{ egeria_samples_cocopharma_groups }}"
-  when: egeria_samples_cocopharma_groups is defined and ('ibm-information-server-engine' in group_names)
+  when: ('ibm-information-server-engine' in group_names) and egeria_samples_cocopharma_groups is defined
   loop_control:
     label: "{{ item.id }}"
 
@@ -329,7 +343,7 @@
     -list USERS
   args:
     executable: /bin/bash
-  when: egeria_samples_cocopharma_groups is defined and ('ibm-information-server-engine' in group_names)
+  when: ('ibm-information-server-engine' in group_names) and egeria_samples_cocopharma_groups is defined
   register: __cocopharma_existing_users
 
 - name: add users to command-list
@@ -342,9 +356,9 @@
     create: yes
   with_items: "{{ egeria_samples_cocopharma_users }}"
   when: >
-    __cocopharma_existing_users is defined
+    ('ibm-information-server-engine' in group_names)
+    and __cocopharma_existing_users is defined
     and __cocopharma_existing_users.stdout.find(item.username) == -1
-    and ('ibm-information-server-engine' in group_names)
   loop_control:
     label: "{{ item.username }}"
 
@@ -357,7 +371,7 @@
     insertafter: EOF
     create: yes
   with_items: "{{ egeria_samples_cocopharma_users }}"
-  when: egeria_samples_cocopharma_users is defined and ('ibm-information-server-engine' in group_names)
+  when: ('ibm-information-server-engine' in group_names) and egeria_samples_cocopharma_users is defined
   loop_control:
     label: "{{ item.username }}"
 
@@ -408,7 +422,7 @@
     headers:
       Content-Type: "application/json"
   with_items: "{{ egeria_samples_cocopharma_users }}"
-  when: egeria_samples_cocopharma_users is defined and ('ibm-information-server-engine' in group_names)
+  when: ('ibm-information-server-engine' in group_names) and egeria_samples_cocopharma_users is defined
   loop_control:
     label: "{{ item.username }}"
 

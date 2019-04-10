@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server;
 
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,8 +12,8 @@ import java.util.Map;
  * Instances of this class call the synchronized static methods to work with the map.
  */
 public class GovernanceEngineServicesInstanceMap {
-    private static Map<String, GovernanceEngineServicesInstance> instanceMap = new HashMap<>();
 
+    private static Map<String, GovernanceEngineServicesInstance> instanceMap = new HashMap<>();
 
     /**
      * Add a new server instance to the server map.
@@ -27,7 +26,6 @@ public class GovernanceEngineServicesInstanceMap {
         instanceMap.put(serverName, instance);
     }
 
-
     /**
      * Return the instance for this server.
      *
@@ -35,11 +33,8 @@ public class GovernanceEngineServicesInstanceMap {
      * @return OMRSRepositoryServicesInstance object
      */
     private static synchronized GovernanceEngineServicesInstance getInstanceForJVM(String serverName) {
-        GovernanceEngineServicesInstance instance = instanceMap.get(serverName);
-
-        return instance;
+        return instanceMap.get(serverName);
     }
-
 
     /**
      * Remove the instance for this server.
@@ -49,14 +44,6 @@ public class GovernanceEngineServicesInstanceMap {
     static synchronized void removeInstanceForJVM(String serverName) {
         instanceMap.remove(serverName);
     }
-
-
-    /**
-     * Constructor
-     */
-    public GovernanceEngineServicesInstanceMap() {
-    }
-
 
     /**
      * Return the instance for this server.

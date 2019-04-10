@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
-
-
 /**
  * GovernanceEngineExceptionBase provides a checked exception for reporting errors found when using
  * the Governance Engine OMAS services.
@@ -14,6 +12,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exception
  * and remedy for the error.
  */
 public class GovernanceEngineCheckedExceptionBase extends Exception {
+
     /*
      * These default values are only seen if this exception is initialized using one of its superclass constructors.
      */

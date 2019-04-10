@@ -4,22 +4,10 @@ package org.odpi.openmetadata.accessservices.governanceengine.server.processor;
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Context;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.*;
 
@@ -27,15 +15,15 @@ import static org.odpi.openmetadata.accessservices.governanceengine.server.util.
 
 public class ContextBuilder {
 
-    private Map<String, String> relationalTableNames= new HashMap();
+    private Map<String, String> relationalTableNames = new HashMap();
 
     public List<Context> buildContextForColumn(OMRSMetadataCollection metadataCollection, String assetId) throws UserNotAuthorizedException, RepositoryErrorException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, FunctionNotSupportedException, PagingErrorException {
         EntityDetail column = getEntity(metadataCollection, assetId);
-        if(isRelationalColumnType(column)){
+        if (isRelationalColumnType(column)) {
             Context context = getDatabaseContextForColumn(metadataCollection, column);
             return Collections.singletonList(context);
         }
-       return Collections.emptyList();
+        return Collections.emptyList();
     }
 
     public List<Context> buildContextForTable(OMRSMetadataCollection metadataCollection, String assetId) throws InvalidParameterException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, EntityProxyOnlyException, UserNotAuthorizedException, RepositoryErrorException {
@@ -43,9 +31,7 @@ public class ContextBuilder {
         context.setTable(getTableName(metadataCollection, assetId));
         context.setSchema(DEFAULT_SCHEMA_NAME);
 
-        List<Context> contexts = new ArrayList<>(1);
-        contexts.add(context);
-        return contexts;
+        return Collections.singletonList(context);
     }
 
 
@@ -57,7 +43,7 @@ public class ContextBuilder {
         List<Context> contexts = new ArrayList<>(columnsAssigned.size());
         for (String columnId : columnsAssigned) {
             EntityDetail column = getEntity(metadataCollection, columnId);
-            if(isRelationalColumnType(column)){
+            if (isRelationalColumnType(column)) {
                 Context context = getDatabaseContextForColumn(metadataCollection, column);
                 contexts.add(context);
             }
@@ -78,13 +64,13 @@ public class ContextBuilder {
         return metadataCollection.getEntityDetail(GOVERNANCE_ENGINE, relationalColumnGuid);
     }
 
-    private String getColumnName(EntityDetail entityDetail){
+    private String getColumnName(EntityDetail entityDetail) {
         return getStringProperty(entityDetail.getProperties(), NAME);
     }
 
     private String getTableName(OMRSMetadataCollection metadataCollection, String relationalColumnGuid) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, TypeDefNotKnownException, TypeErrorException, FunctionNotSupportedException, EntityNotKnownException, PagingErrorException, PropertyErrorException, EntityProxyOnlyException {
         final String relationalTableTypeGUID = getRelationalTableTypeGUID(metadataCollection, relationalColumnGuid);
-        if(relationalTableNames.containsKey(relationalTableTypeGUID)){
+        if (relationalTableNames.containsKey(relationalTableTypeGUID)) {
             return relationalTableNames.get(relationalTableTypeGUID);
         }
 
@@ -99,8 +85,14 @@ public class ContextBuilder {
         return null;
     }
 
-    private List<String> getRelationalColumnsAssignedToGlossaryTerm(OMRSMetadataCollection metadataCollection, String resourceID) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException {
-        final List<Relationship> semanticAssignmentForGlossaryTerm = getSemanticAssignemntForGlossaryTerm(metadataCollection, resourceID);
+    private List<String> getRelationalColumnsAssignedToGlossaryTerm(OMRSMetadataCollection metadataCollection, String resourceID) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, TypeDefNotKnownException {
+        TypeDef semanticAssignment = metadataCollection.getTypeDefByName(GOVERNANCE_ENGINE, "SemanticAssignment");
+        String relationshipGUID = semanticAssignment.getGUID();
+
+        final List<Relationship> semanticAssignmentForGlossaryTerm = getSemanticAssignmentForGlossaryTerm(
+                metadataCollection,
+                resourceID,
+                relationshipGUID);
         List<String> columnIds = new ArrayList<>();
 
         if (semanticAssignmentForGlossaryTerm == null || semanticAssignmentForGlossaryTerm.isEmpty()) {
@@ -175,11 +167,11 @@ public class ContextBuilder {
         return "";
     }
 
-    private List<Relationship> getSemanticAssignemntForGlossaryTerm(OMRSMetadataCollection metadataCollection, String resourceID) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException {
+    private List<Relationship> getSemanticAssignmentForGlossaryTerm(OMRSMetadataCollection metadataCollection, String resourceID, String relationshipGUID ) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException {
 
         return metadataCollection.getRelationshipsForEntity(GOVERNANCE_ENGINE,
                 resourceID,
-                "e6670973-645f-441a-bec7-6f5570345b92",
+                relationshipGUID,
                 0,
                 getActiveStatuses(),
                 null,
@@ -188,7 +180,7 @@ public class ContextBuilder {
                 0);
     }
 
-    private boolean isRelationalColumnType(EntityDetail entityDetail){
+    private boolean isRelationalColumnType(EntityDetail entityDetail) {
         return entityDetail.getType().getTypeDefName().equals(RELATIONAL_COLUMN);
     }
 }

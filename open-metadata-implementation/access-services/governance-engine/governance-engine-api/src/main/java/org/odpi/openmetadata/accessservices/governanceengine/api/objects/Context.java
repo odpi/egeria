@@ -2,7 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.api.objects;
 
-public class Context {
+import java.io.Serializable;
+
+public class Context implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private String column;
     private String table;
