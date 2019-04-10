@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Context
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.*;
@@ -84,8 +85,14 @@ public class ContextBuilder {
         return null;
     }
 
-    private List<String> getRelationalColumnsAssignedToGlossaryTerm(OMRSMetadataCollection metadataCollection, String resourceID) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException {
-        final List<Relationship> semanticAssignmentForGlossaryTerm = getSemanticAssignemntForGlossaryTerm(metadataCollection, resourceID);
+    private List<String> getRelationalColumnsAssignedToGlossaryTerm(OMRSMetadataCollection metadataCollection, String resourceID) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException, TypeDefNotKnownException {
+        TypeDef semanticAssignment = metadataCollection.getTypeDefByName(GOVERNANCE_ENGINE, "SemanticAssignment");
+        String relationshipGUID = semanticAssignment.getGUID();
+
+        final List<Relationship> semanticAssignmentForGlossaryTerm = getSemanticAssignmentForGlossaryTerm(
+                metadataCollection,
+                resourceID,
+                relationshipGUID);
         List<String> columnIds = new ArrayList<>();
 
         if (semanticAssignmentForGlossaryTerm == null || semanticAssignmentForGlossaryTerm.isEmpty()) {
@@ -160,11 +167,11 @@ public class ContextBuilder {
         return "";
     }
 
-    private List<Relationship> getSemanticAssignemntForGlossaryTerm(OMRSMetadataCollection metadataCollection, String resourceID) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException {
+    private List<Relationship> getSemanticAssignmentForGlossaryTerm(OMRSMetadataCollection metadataCollection, String resourceID, String relationshipGUID ) throws InvalidParameterException, RepositoryErrorException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException {
 
         return metadataCollection.getRelationshipsForEntity(GOVERNANCE_ENGINE,
                 resourceID,
-                "e6670973-645f-441a-bec7-6f5570345b92",
+                relationshipGUID,
                 0,
                 getActiveStatuses(),
                 null,

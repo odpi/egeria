@@ -63,5 +63,4 @@ public class GovernanceEngineOMASResource {
         return restAPI.getGovernedAsset(serverName, userId, assetGuid);
     }
 
-
 }

@@ -65,7 +65,6 @@ public class GovernanceEngineEventProcessor {
         }
 
         GovernanceEngineEvent governanceEvent = getGovernanceEngineEvent(entityDetail, GovernanceEngineEventType.NEW_CLASSIFIED_ASSET);
-
         sendEvent(governanceEvent);
     }
 
