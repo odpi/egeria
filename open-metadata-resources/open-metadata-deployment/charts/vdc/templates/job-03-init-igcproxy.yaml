@@ -86,7 +86,7 @@ spec:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
           env:
-            {{- include "vdc.template.kafkaext.secret" . | nindent 10 }}
+            {{- include "vdc.template.kafkaext.secret" . | nindent 12 }}
           command:
             - "/bin/bash"
             - "-c"
@@ -109,7 +109,7 @@ spec:
                 {{- if .Values.kafka.internal.enabled -}}
                 --data '{"producer": {"bootstrap.servers":"'"${KAFKA_ENDPOINT}"'"}, "consumer": {"bootstrap.servers":"'"${KAFKA_ENDPOINT}"'"} }'
                 {{- else -}}
-                {{- include "vdc.template.kafkaext.eventbus" . | nindent 14 -}}
+                {{- include "vdc.template.kafkaext.eventbus" . | nindent 16 -}}
                 {{- end -}}
                 &&
                 curl -f --verbose --basic admin:admin -X POST
