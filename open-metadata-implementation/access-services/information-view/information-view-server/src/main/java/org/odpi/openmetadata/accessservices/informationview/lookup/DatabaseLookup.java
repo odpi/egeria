@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.informationview.lookup;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
+import org.odpi.openmetadata.accessservices.informationview.events.DatabaseSource;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class DatabaseLookup extends EntityLookup<TableSource> {
+public class DatabaseLookup extends EntityLookup<DatabaseSource> {
 
     private static final Logger log = LoggerFactory.getLogger(DatabaseLookup.class);
 
@@ -32,8 +32,8 @@ public class DatabaseLookup extends EntityLookup<TableSource> {
 
 
     @Override
-    public EntityDetail lookupEntity(TableSource source) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
-        EntityDetail parentEntity = parentChain.lookupEntity(source);
+    public EntityDetail lookupEntity(DatabaseSource source) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+        EntityDetail parentEntity = parentChain.lookupEntity(source.getEndpointSource());
         if(parentEntity == null)
             return null;
         List<String> allConnectionGuids = getRelatedEntities(parentEntity.getGUID(), Constants.CONNECTION_TO_ENDPOINT);
@@ -51,8 +51,8 @@ public class DatabaseLookup extends EntityLookup<TableSource> {
     }
 
     @Override
-    protected InstanceProperties getMatchingProperties(TableSource source) {
-        InstanceProperties matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", new InstanceProperties(), Constants.NAME, source.getDatabaseName(), "findDEntity");
+    protected InstanceProperties getMatchingProperties(DatabaseSource source) {
+        InstanceProperties matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", new InstanceProperties(), Constants.NAME, source.getName(), "findDEntity");
         return matchProperties;
     }
 

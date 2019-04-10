@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.server;
 
+import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
@@ -58,6 +59,24 @@ class InformationViewInstanceHandler
             return instance.getDataViewHandler();
         } else {
             final String methodName = "getDataViewHandler";
+            throwError(serverName, methodName);
+            return null;
+        }
+    }
+    /**
+     * Retrieve the handler for retrieving assets details for the access service.
+     *
+     * @param serverName name of the server tied to the request
+     * @return assetsHandler for exclusive use by the requested instance
+     * @throws PropertyServerException no instance for this server
+     */
+     DatabaseContextHandler getAssetContextHandler(String serverName) throws PropertyServerException {
+        InformationViewServicesInstance instance = instanceMap.getInstance(serverName);
+
+        if (instance != null) {
+            return instance.getDatabaseContextHandler();
+        } else {
+            final String methodName = "getDatabaseContextHandler";
             throwError(serverName, methodName);
             return null;
         }
