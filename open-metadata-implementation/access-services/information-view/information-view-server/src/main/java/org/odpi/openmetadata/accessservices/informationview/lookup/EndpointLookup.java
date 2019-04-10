@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.informationview.lookup;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.informationview.events.Source;
+import org.odpi.openmetadata.accessservices.informationview.events.EndpointSource;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -21,7 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-public class EndpointLookup extends EntityLookup<Source> {
+public class EndpointLookup extends EntityLookup<EndpointSource> {
 
     private static final Logger log = LoggerFactory.getLogger(EndpointLookup.class);
 
@@ -31,13 +31,13 @@ public class EndpointLookup extends EntityLookup<Source> {
     }
 
     @Override
-    public EntityDetail lookupEntity(Source source) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
+    public EntityDetail lookupEntity(EndpointSource source) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityNotKnownException {
         return findEndpoint(source);
 
     }
 
     @Override
-    protected InstanceProperties getMatchingProperties(Source source) {
+    protected InstanceProperties getMatchingProperties(EndpointSource source) {
         InstanceProperties matchProperties = new InstanceProperties();
         matchProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, matchProperties, Constants.NETWORK_ADDRESS, source.getNetworkAddress(), "findEndpoint");
         if(!StringUtils.isEmpty(source.getProtocol())){
@@ -49,7 +49,7 @@ public class EndpointLookup extends EntityLookup<Source> {
     }
 
 
-    public EntityDetail findEndpoint(Source source) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
+    public EntityDetail findEndpoint(EndpointSource source) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
         EntityDetail entity = findEntity(getMatchingProperties(source), Constants.ENDPOINT);
         log.info("Endpoint found [{}]", entity);
         return entity;

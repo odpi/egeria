@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions;
 
 public class ReportCreationException extends InformationViewExceptionBase{
 
-    private   String  reportName;
+    private String reportName;
 
     public ReportCreationException(int httpCode,
                                    String className,
