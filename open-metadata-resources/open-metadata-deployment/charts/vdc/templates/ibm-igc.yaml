@@ -126,6 +126,8 @@ spec:
                   {{ .Values.image.ibmigc.name }}\
                   :{{ .Values.image.ibmigc.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.ibmigc.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          securityContext:
+            privileged: true
           ports:
             - containerPort: 9446
             - containerPort: 52181
