@@ -20,20 +20,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -214,7 +201,7 @@ public class OMEntityDao {
             auditLog.logException("retrieveEntity",
                     auditCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage("matchProperties: " + matchProperties, e.getMessage()),
+                    auditCode.getFormattedErrorMessage("matchProperties", "" + matchProperties, e.getMessage()),
                     "entity with properties {" + matchProperties + "}",
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
@@ -226,7 +213,11 @@ public class OMEntityDao {
     }
 
 
-    public EntityDetail getEntityByGuid(String guid) throws Exception {
+    public EntityDetail getEntityByGuid(String guid) throws RepositoryErrorException,
+                                                            UserNotAuthorizedException,
+                                                            EntityProxyOnlyException,
+                                                            InvalidParameterException,
+                                                            EntityNotKnownException {
         return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);
 
     }

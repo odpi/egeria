@@ -11,6 +11,7 @@ import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.Info
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.ReportCreationException;
 import org.odpi.openmetadata.accessservices.informationview.responses.*;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.List;
 
@@ -79,7 +80,9 @@ public class InformationViewRestServices {
      * @return
      */
     public InformationViewOMASAPIResponse getDatabases(String serverName,
-                                                       String userId, int startFrom, int pageSize) {
+                                                       String userId,
+                                                       int startFrom,
+                                                       int pageSize) {
 
         DatabaseListResponse response = new DatabaseListResponse();
         try {
@@ -97,6 +100,7 @@ public class InformationViewRestServices {
      *
      * @param serverName
      * @param userId
+     * @param databaseGuid - guid of the database entity
      * @param startFrom
      * @param pageSize
      * @return
@@ -114,7 +118,7 @@ public class InformationViewRestServices {
             List<TableSource> tables = databaseContextHandler.getTables(databaseGuid, startFrom, pageSize);
             response.setTableList(tables);
         }
-        catch (  PropertyServerException e) {
+        catch (InformationViewExceptionBase e) {
             return handleErrorResponse( e);
         }
 
@@ -131,7 +135,7 @@ public class InformationViewRestServices {
             List<TableContextEvent> tables = databaseContextHandler.getTableContext(tableGuid);
             response.setTableContexts(tables);
         }
-        catch (PropertyServerException e) {
+        catch (InformationViewExceptionBase e) {
             return handleErrorResponse( e);
         }
         return response;
@@ -149,9 +153,10 @@ public class InformationViewRestServices {
             List<TableColumn> columns = databaseContextHandler.getTableColumns(tableGuid, startFrom, pageSize);
             response.setTableColumns(columns);
         }
-        catch (PropertyServerException e) {
-            return handleErrorResponse( e);
+        catch (InformationViewExceptionBase e) {
+            return handleErrorResponse(e);
         }
+
         return response;
     }
 

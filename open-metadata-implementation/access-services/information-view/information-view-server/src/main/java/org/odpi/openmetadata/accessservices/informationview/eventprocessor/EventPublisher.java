@@ -273,7 +273,7 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
             events = columnContextBuilder.buildContexts(guid);
         } catch (Exception e) {
             log.error("Exception building events", e);
-            InformationViewErrorCode auditCode = InformationViewErrorCode.BUILD_COLUMN_CONTEXT_EXCEPTION;
+            InformationViewErrorCode auditCode = InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION;
 
             auditLog.logException("processNewRelationshipEvent",
                     auditCode.getErrorMessageId(),
@@ -321,7 +321,7 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
             auditLog.logException("retrieveEntity",
                     auditCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage("guid: " + entityGuid),
+                    auditCode.getFormattedErrorMessage("guid", entityGuid, e.getMessage()),
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
                     "",

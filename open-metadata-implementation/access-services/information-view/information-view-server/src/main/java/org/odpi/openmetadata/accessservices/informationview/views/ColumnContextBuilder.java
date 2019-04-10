@@ -83,7 +83,18 @@ public class ColumnContextBuilder {
      * @throws InvalidParameterException
      * @throws EntityNotKnownException
      */
-    public List<TableContextEvent> getTableContext(String tableTypeGuid, int startFrom, int pageSize) throws Exception {
+    public List<TableContextEvent> getTableContext(String tableTypeGuid, int startFrom, int pageSize) throws
+                                                                                                      InvalidParameterException,
+                                                                                                      RelationshipNotKnownException,
+                                                                                                      PropertyErrorException,
+                                                                                                      FunctionNotSupportedException,
+                                                                                                      EntityNotKnownException,
+                                                                                                      TypeDefNotKnownException,
+                                                                                                      PagingErrorException,
+                                                                                                      EntityProxyOnlyException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      TypeErrorException,
+                                                                                                      RepositoryErrorException {
         log.debug("Load table type details for entity with guid {}", tableTypeGuid);
         List<TableContextEvent> tableContexts = new ArrayList<>();
         EntityDetail tableTypeDetail = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, tableTypeGuid);
@@ -263,6 +274,23 @@ public class ColumnContextBuilder {
 
         return tableEntities;
     }
+
+    /**
+     *
+     * @param databaseEntityGuid - guid of the database entity
+     * @param startFrom - index to start from
+     * @param pageSize - number of tables to return
+     * @return
+     * @throws InvalidParameterException
+     * @throws PropertyErrorException
+     * @throws EntityNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws PagingErrorException
+     * @throws EntityProxyOnlyException
+     * @throws UserNotAuthorizedException
+     * @throws TypeErrorException
+     * @throws RepositoryErrorException
+     */
     public List<TableSource> getTablesForDatabase(String databaseEntityGuid, int startFrom, int pageSize) throws InvalidParameterException,
                                                                                                                  PropertyErrorException,
                                                                                                                  EntityNotKnownException,
@@ -358,7 +386,16 @@ public class ColumnContextBuilder {
      * @throws InvalidParameterException
      * @throws EntityNotKnownException
      */
-    private List<TableContextEvent> getDatabaseSchemaTypeContext(String dbSchemaTypeGuid) throws Exception {
+    private List<TableContextEvent> getDatabaseSchemaTypeContext(String dbSchemaTypeGuid) throws
+                                                                                          RepositoryErrorException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          EntityNotKnownException,
+                                                                                          FunctionNotSupportedException,
+                                                                                          InvalidParameterException,
+                                                                                          PropertyErrorException,
+                                                                                          TypeErrorException,
+                                                                                          PagingErrorException,
+                                                                                          EntityProxyOnlyException {
         log.debug("Load db schema type with guid {}", dbSchemaTypeGuid);
         List<TableContextEvent> tableContexts = new ArrayList<>();
         String assetSchemaTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.USER_ID, Constants.ASSET_SCHEMA_TYPE).getGUID();
@@ -382,7 +419,16 @@ public class ColumnContextBuilder {
      * @throws InvalidParameterException
      * @throws EntityNotKnownException
      */
-    private List<TableContextEvent> getDeployedDatabaseSchemaContext(String deployedDatabaseSchemaGuid) throws Exception {
+    private List<TableContextEvent> getDeployedDatabaseSchemaContext(String deployedDatabaseSchemaGuid) throws
+                                                                                                        UserNotAuthorizedException,
+                                                                                                        EntityNotKnownException,
+                                                                                                        FunctionNotSupportedException,
+                                                                                                        InvalidParameterException,
+                                                                                                        RepositoryErrorException,
+                                                                                                        PropertyErrorException,
+                                                                                                        TypeErrorException,
+                                                                                                        PagingErrorException,
+                                                                                                        EntityProxyOnlyException {
         log.debug("Load deployed db schema with guid {}", deployedDatabaseSchemaGuid);
         List<TableContextEvent> allEvents = new ArrayList<>();
         EntityDetail deployedDatabaseSchemaEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, deployedDatabaseSchemaGuid);
@@ -406,7 +452,15 @@ public class ColumnContextBuilder {
      * @throws InvalidParameterException
      * @throws EntityNotKnownException
      */
-    public List<TableContextEvent> getDatabaseContext( String databaseGuid) throws Exception {
+    public List<TableContextEvent> getDatabaseContext( String databaseGuid) throws RepositoryErrorException,
+                                                                                   UserNotAuthorizedException,
+                                                                                   TypeErrorException,
+                                                                                   EntityNotKnownException,
+                                                                                   FunctionNotSupportedException,
+                                                                                   InvalidParameterException,
+                                                                                   PropertyErrorException,
+                                                                                   EntityProxyOnlyException,
+                                                                                   PagingErrorException {
         log.debug("Load database details entity with guid {}", databaseGuid);
         List<TableContextEvent> allEvents = new ArrayList<>();
 
@@ -433,7 +487,15 @@ public class ColumnContextBuilder {
      * @throws InvalidParameterException
      * @throws EntityNotKnownException
      */
-    public TableContextEvent getConnectionContext( String connectionEntityGuid) throws Exception {
+    public TableContextEvent getConnectionContext( String connectionEntityGuid) throws EntityProxyOnlyException,
+                                                                                       TypeErrorException,
+                                                                                       PropertyErrorException,
+                                                                                       EntityNotKnownException,
+                                                                                       FunctionNotSupportedException,
+                                                                                       PagingErrorException,
+                                                                                       UserNotAuthorizedException,
+                                                                                       InvalidParameterException,
+                                                                                       RepositoryErrorException {
         log.debug("Load connection details for entity with guid {}", connectionEntityGuid);
         String relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.USER_ID, Constants.CONNECTION_TO_ENDPOINT).getGUID();
         Relationship relationshipToEndpoint = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID,
