@@ -18,8 +18,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class GraphOMRSRepositoryConnectorProvider extends OMRSRepositoryConnectorProviderBase
 {
-    static final String  connectorTypeGUID = "9c6b3198-ccef-4644-af13-2789646f4233";
-    static final String  connectorTypeName = "OMRS Graph Repository Connector";
+    @SuppressWarnings("SpellCheckingInspection")
+    static final String  connectorTypeGUID        = "9c6b3198-ccef-4644-af13-2789646f4233";
+    static final String  connectorTypeName        = "OMRS Graph Repository Connector";
     static final String  connectorTypeDescription = "OMRS Repository Connector that uses graph repository store.";
 
 
@@ -29,7 +30,7 @@ public class GraphOMRSRepositoryConnectorProvider extends OMRSRepositoryConnecto
      */
     public GraphOMRSRepositoryConnectorProvider()
     {
-        Class    connectorClass = GraphOMRSRepositoryConnector.class;
+        Class connectorClass = GraphOMRSRepositoryConnector.class;
 
         super.setConnectorClassName(connectorClass.getName());
 

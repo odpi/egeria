@@ -20,6 +20,7 @@ public class KafkaOpenMetadataTopicProvider extends OpenMetadataTopicProvider
 
     public static final String  producerPropertyName = "producer";
     public static final String  consumerPropertyName = "consumer";
+    public static final String  egeriaConsumerPropertyName = "egeria_kafka_consumer";
     public static final String  serverIdPropertyName = "local.server.id";
 
     /**

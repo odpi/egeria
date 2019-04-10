@@ -2,9 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Context;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassification;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
@@ -18,7 +17,6 @@ import org.springframework.http.*;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.*;
 
@@ -99,8 +97,8 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
         try {
-            ResponseEntity<String> result = restTemplate.exchange(createAssociation, HttpMethod.POST, entity, String.class);
-            return (ResourceTagMapper) mapToObject(result, ResourceTagMapper.class);
+            ResponseEntity<ResourceTagMapper> result = restTemplate.exchange(createAssociation, HttpMethod.POST, entity, ResourceTagMapper.class);
+            return result.getBody();
         } catch (HttpStatusCodeException exception) {
             log.error(exception.getMessage());
         }
@@ -170,7 +168,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
     private RangerResource processGovernedAsset(GovernedAsset governedAsset) {
         Map<Long, RangerTag> tags = buildTags(governedAsset.getAssignedGovernanceClassifications());
 
-        List<RangerServiceResource> rangerServiceResources = getRangerServiceResources(0L, governedAsset);
+        List<RangerServiceResource> rangerServiceResources = getRangerServiceResources(governedAsset);
         Map<Long, List<Long>> resourceToTagIds = mapResources(tags, rangerServiceResources);
 
         return buildRangerResource(rangerServiceResources, tags, resourceToTagIds);
@@ -208,7 +206,8 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         return tagDefinitions;
     }
 
-    private List<RangerServiceResource> getRangerServiceResources(Long resourceId, GovernedAsset governedAsset) {
+    private List<RangerServiceResource> getRangerServiceResources(GovernedAsset governedAsset) {
+        Long resourceId = 0L;
         List<RangerServiceResource> rangerServiceResources = new ArrayList<>(governedAsset.getContexts().size());
 
         for (Context context : governedAsset.getContexts()) {
@@ -245,8 +244,8 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
 
         try {
-            ResponseEntity<String> result = restTemplate.exchange(resourceURL, HttpMethod.GET, entity, String.class);
-            return (RangerServiceResource) mapToObject(result, RangerServiceResource.class);
+            ResponseEntity<RangerServiceResource> result = restTemplate.exchange(resourceURL, HttpMethod.GET, entity, RangerServiceResource.class);
+            return result.getBody();
         } catch (HttpStatusCodeException exception) {
             log.error(exception.getMessage());
         }
@@ -341,8 +340,13 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
     }
 
     private String getBody(Object resource) {
-        Gson gson = new Gson();
-        return gson.toJson(resource);
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            return objectMapper.writeValueAsString(resource);
+        } catch (JsonProcessingException e) {
+            log.error("error write json ");
+        }
+        return null;
     }
 
     private String getRangerURL(String s) {
@@ -366,16 +370,4 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         return headers;
     }
 
-    private Object mapToObject(ResponseEntity<String> result, Class className) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-        try {
-            return mapper.readValue(result.getBody(), className);
-        } catch (IOException e) {
-            log.error("403", e.getMessage(), e);
-        }
-
-        return null;
-    }
 }

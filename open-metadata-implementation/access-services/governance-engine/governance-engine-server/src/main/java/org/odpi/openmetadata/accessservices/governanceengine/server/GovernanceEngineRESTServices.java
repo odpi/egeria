@@ -3,28 +3,14 @@
 package org.odpi.openmetadata.accessservices.governanceengine.server;
 
 
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.GuidNotFoundException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.MetadataServerException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.UserNotAuthorizedException;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassificationDefAPIResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassificationDefListAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListAPIResponse;
-import org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernanceClassificationDefHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernedAssetHandler;
 import org.odpi.openmetadata.accessservices.governanceengine.server.util.ExceptionHandler;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.List;
 
@@ -55,75 +41,8 @@ import java.util.List;
 
 public class GovernanceEngineRESTServices {
 
-    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineRESTServices.class);
     private static GovernanceEngineInstanceHandler instanceHandler = new GovernanceEngineInstanceHandler();
     private ExceptionHandler exceptionHandler = new ExceptionHandler();
-
-    public GovernanceClassificationDefListAPIResponse getGovernanceClassificationDefs(String serverName, String userId, List<String> classification) {
-        GovernanceClassificationDefListAPIResponse response = new GovernanceClassificationDefListAPIResponse();
-        try {
-            GovernanceClassificationDefHandler governanceClassificationDefHandler = new GovernanceClassificationDefHandler(
-                    instanceHandler.getAccessServiceName(serverName),
-                    instanceHandler.getRepositoryConnector(serverName));
-
-            response.setClassificationDefsList(governanceClassificationDefHandler.getGovernanceClassificationDefs(userId, classification));
-        } catch (InvalidParameterException error) {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (MetadataServerException error) {
-            exceptionHandler.captureMetadataServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            exceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (PropertyServerException error) {
-            exceptionHandler.capturePropertyServerException(response, error);
-        }
-
-        return response;
-    }
-
-    /**
-     * Returns a single governance tag for the enforcement engine
-     * <p>
-     * These are the definitions - so tell us the name, guid, attributes
-     * associated with the tag. The security engine will want to know about
-     * these tags to assist in policy authoring/validation, as well as know
-     * when they change, since any existing assets classified with the tags
-     * are affected
-     *
-     * @param serverName         - name of the server that the request is for
-     * @param userId             - String - userId of user making request.
-     * @param classificationGuid - guid of the definition to retrieve
-     * @return GovernanceClassificationDef or
-     * InvalidParameterException - one of the parameters is null or invalid.
-     * UnrecognizedConnectionNameException - there is no connection defined for this name.
-     * AmbiguousConnectionNameException - there is more than one connection defined for this name.
-     * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
-     * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
-     */
-
-    public GovernanceClassificationDefAPIResponse getClassificationDefs(String serverName, String userId, String classificationGuid) {
-        GovernanceClassificationDefAPIResponse response = new GovernanceClassificationDefAPIResponse();
-
-        try {
-            GovernanceClassificationDefHandler tagHandler = new GovernanceClassificationDefHandler(
-                    instanceHandler.getAccessServiceName(serverName),
-                    instanceHandler.getRepositoryConnector(serverName));
-
-            response.setGovernanceClassificationDef(tagHandler.getGovernanceClassificationDef(userId, classificationGuid));
-        } catch (InvalidParameterException error) {
-            exceptionHandler.captureInvalidParameterException(response, error);
-        } catch (MetadataServerException error) {
-            exceptionHandler.captureMetadataServerException(response, error);
-        } catch (UserNotAuthorizedException error) {
-            exceptionHandler.captureUserNotAuthorizedException(response, error);
-        } catch (GuidNotFoundException error) {
-            exceptionHandler.captureGuidNotFoundException(response, error);
-        } catch (PropertyServerException error) {
-            exceptionHandler.capturePropertyServerException(response, error);
-        }
-
-        return response;
-    }
-
 
     /**
      * Returns the list of governed asset
@@ -145,7 +64,6 @@ public class GovernanceEngineRESTServices {
                                                           String userId,
                                                           List<String> classification,
                                                           List<String> type) {
-        log.debug("Calling method: getGovernedAssets");
         GovernedAssetListAPIResponse response = new GovernedAssetListAPIResponse();
 
         try {
@@ -158,8 +76,11 @@ public class GovernanceEngineRESTServices {
             exceptionHandler.captureMetadataServerException(response, error);
         } catch (PropertyServerException error) {
             exceptionHandler.capturePropertyServerException(response, error);
-        } catch (PagingErrorException | RepositoryErrorException | FunctionNotSupportedException | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException | EntityProxyOnlyException | PropertyErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException | EntityNotKnownException | TypeErrorException | TypeDefNotKnownException e) {
-            log.error(e.getErrorMessage());
+        } catch (PagingErrorException | RepositoryErrorException
+                | FunctionNotSupportedException | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
+                | EntityProxyOnlyException | PropertyErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException
+                | EntityNotKnownException | TypeErrorException | TypeDefNotKnownException | ClassificationErrorException e) {
+            exceptionHandler.captureOMRSException(response, e);
         }
 
         return response;
@@ -180,13 +101,11 @@ public class GovernanceEngineRESTServices {
      * PropertyServerException - there is a problem retrieving information from the property (metadata) handlers.
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
-
     public GovernedAssetAPIResponse getGovernedAsset(String serverName, String userId, String assetGuid) {
         GovernedAssetAPIResponse response = new GovernedAssetAPIResponse();
 
         try {
             GovernedAssetHandler governedAssetHandler = new GovernedAssetHandler(instanceHandler.getRepositoryConnector(serverName));
-
             response.setAsset(governedAssetHandler.getGovernedAsset(userId, assetGuid));
         } catch (InvalidParameterException error) {
             exceptionHandler.captureInvalidParameterException(response, error);
@@ -194,6 +113,11 @@ public class GovernanceEngineRESTServices {
             exceptionHandler.captureMetadataServerException(response, error);
         } catch (PropertyServerException error) {
             exceptionHandler.capturePropertyServerException(response, error);
+        } catch (PagingErrorException | RepositoryErrorException | FunctionNotSupportedException
+                | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
+                | EntityProxyOnlyException | PropertyErrorException | UserNotAuthorizedException
+                | EntityNotKnownException | TypeErrorException | TypeDefNotKnownException e) {
+           exceptionHandler.captureOMRSException(response, e);
         }
 
         return response;

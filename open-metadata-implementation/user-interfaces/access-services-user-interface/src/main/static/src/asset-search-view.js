@@ -25,65 +25,51 @@ class AssetSearchView extends PolymerElement {
           display: block;
           padding: 10px 20px;
         }
+        vaadin-grid {
+          height: calc(100vh - 130px);
+        }
       </style>
       <token-ajax id="tokenAjax" last-response="{{searchResp}}"></token-ajax>
       <iron-form id="searchForm">
         <form method="get">
             <iron-a11y-keys keys="enter" on-keys-pressed="_search"></iron-a11y-keys>
             <paper-input label="Search" value="{{q}}" no-label-float required autofocus>
-                <iron-icon icon="search" slot="prefix"></iron-icon>
+                <iron-icon icon="search" slot="prefix" class="icon"></iron-icon>
             </paper-input>
-            
-             <!--<paper-icon-button on-tap="_test" icon="icons:visibility" title="View"></paper-icon-button>-->
         </form>
        </iron-form>
         <vaadin-grid id="grid" items="{{searchResp}}" theme="row-stripes"
                      column-reordering-allowed multi-sort>
             <vaadin-grid-selection-column auto-select frozen></vaadin-grid-selection-column>
         
-            <vaadin-grid-column width="5em" resizable>
+            <vaadin-grid-column width="10em" resizable>
                 <template class="header">
                     <vaadin-grid-sorter path="displayName">Name</vaadin-grid-sorter>
                 </template>
-                <template>[[item.displayName]]</template>
+                <template>[[item.properties.displayName]][[item.properties.name]]</template>
             </vaadin-grid-column>
             
-             <vaadin-grid-column width="5em" resizable>
+             <vaadin-grid-column width="6em" resizable>
                 <template class="header">
-                    <vaadin-grid-sorter path="typeDefName">Type</vaadin-grid-sorter>
+                    <vaadin-grid-sorter path="type">Type</vaadin-grid-sorter>
                 </template>
-                <template>[[item.typeDefName]]</template>
+                <template>[[item.type]]</template>
             </vaadin-grid-column>
             
-            <vaadin-grid-column width="5em" resizable>
+            <vaadin-grid-column width="15em" resizable>
                 <template class="header">
-                    <vaadin-grid-sorter path="typeDefDescription">Description</vaadin-grid-sorter>
+                    <vaadin-grid-sorter path="properties.summary">Description</vaadin-grid-sorter>
                 </template>
-                <template>[[item.typeDefDescription]]</template>
+                <template>[[item.properties.summary]]</template>
             </vaadin-grid-column>
             
-            <vaadin-grid-column width="5em" resizable>
+            <vaadin-grid-column width="15em" resizable>
                 <template class="header">
-                    <vaadin-grid-sorter path="item.contexts[0].database.name">Database</vaadin-grid-sorter>
+                    <vaadin-grid-sorter path="properties.qualifiedName">QualifiedName</vaadin-grid-sorter>
                 </template>
-                <template></template>
+                <template>[[item.properties.qualifiedName]]</template>
             </vaadin-grid-column>
             
-             <vaadin-grid-column width="5em" resizable>
-                <template class="header">
-                    <vaadin-grid-sorter path="item.contexts[0].table.name">Table</vaadin-grid-sorter>
-                </template>
-                <template></template>
-            </vaadin-grid-column>
-            
-            <vaadin-grid-column width="5em" >
-                <template class="header">
-                    <vaadin-grid-sorter >Options</vaadin-grid-sorter>
-                </template>
-                <template>
-                    <paper-icon-button on-tap="_itemClick" icon="icons:visibility" title="View"></paper-icon-button>
-                </template>
-            </vaadin-grid-column>
   
         </vaadin-grid>
        
@@ -110,21 +96,6 @@ class AssetSearchView extends PolymerElement {
         this.$.tokenAjax._go();
     }
 
-    _test(){
-        console.log("clicked on page changes");
-        var customEvent = new CustomEvent('open-page', {
-            page: "view1"
-        });
-        this.dispatchEvent(customEvent);
-    }
-
-    _itemClick(e){
-        console.log("clicked on:" + e.model.item);
-        var customEvent = new CustomEvent('open-page', {
-            page: "view1"
-        });
-        this.dispatchEvent(customEvent);
-    }
 
 }
 

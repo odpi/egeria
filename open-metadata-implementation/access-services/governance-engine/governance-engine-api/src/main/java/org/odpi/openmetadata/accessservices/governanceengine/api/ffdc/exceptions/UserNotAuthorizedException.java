@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
-
-
 /**
  * The UserNotAuthorizedException is thrown by the Governance Engine OMAS when a userId passed on a request is not
  * authorized to perform the requested action.
