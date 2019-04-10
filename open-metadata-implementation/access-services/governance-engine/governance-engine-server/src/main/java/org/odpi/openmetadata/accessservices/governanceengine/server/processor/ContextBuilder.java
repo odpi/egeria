@@ -15,7 +15,7 @@ import static org.odpi.openmetadata.accessservices.governanceengine.server.util.
 
 public class ContextBuilder {
 
-    private Map<String, String> relationalTableNames = new HashMap();
+    private Map<String, String> relationalTableNames = new HashMap<>();
 
     public List<Context> buildContextForColumn(OMRSMetadataCollection metadataCollection, String assetId) throws UserNotAuthorizedException, RepositoryErrorException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, FunctionNotSupportedException, PagingErrorException {
         EntityDetail column = getEntity(metadataCollection, assetId);
