@@ -30,8 +30,8 @@ public class DatabaseContextHandlerTest extends InMemoryRepositoryTest{
 
 
     @Test
-    public void testDatabaseContextServices() throws Exception{
-        List<DatabaseSource> databases = databaseContextHandler.getDataStores(0, 10);
+    public void testDatabaseContextServices() {
+        List<DatabaseSource> databases = databaseContextHandler.getDatabases(0, 10);
         assertNotNull(databases);
         assertTrue( databases.size() == 1, "Database was not retrieved");
 
