@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
-import java.io.Serializable;
 import java.util.Map;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -18,11 +17,13 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes
         ({
-          @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse")
+          @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
+          @JsonSubTypes.Type(value = DatabaseListResponse.class, name = "DatabaseListResponse"),
+          @JsonSubTypes.Type(value = TableListResponse.class, name = "TableListResponse"),
+          @JsonSubTypes.Type(value = TableColumnsResponse.class, name = "TableColumnsResponse")
         })
 public class InformationViewOMASAPIResponse{
 

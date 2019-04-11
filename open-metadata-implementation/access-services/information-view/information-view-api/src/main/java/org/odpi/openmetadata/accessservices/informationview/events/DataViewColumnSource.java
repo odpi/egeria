@@ -16,7 +16,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 public class DataViewColumnSource extends Source {
 
@@ -56,11 +55,6 @@ public class DataViewColumnSource extends Source {
                 ", name='" + name + '\'' +
                 ", dataViewSource=" + dataViewSource +
                 '}';
-    }
-
-    @Override
-    public String buildQualifiedName() {
-        return "";
     }
 
 

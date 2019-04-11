@@ -5,12 +5,9 @@ package org.odpi.openmetadata.accessservices.informationview.eventprocessor;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.accessservices.informationview.events.*;
 import org.odpi.openmetadata.accessservices.informationview.views.ColumnContextBuilder;
-import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumn;
-import org.odpi.openmetadata.accessservices.informationview.events.InformationViewHeader;
-import org.odpi.openmetadata.accessservices.informationview.events.SemanticAssignment;
-import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
-import org.odpi.openmetadata.accessservices.informationview.events.UpdatedEntityEvent;
+import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -276,7 +273,7 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
             events = columnContextBuilder.buildContexts(guid);
         } catch (Exception e) {
             log.error("Exception building events", e);
-            InformationViewErrorCode auditCode = InformationViewErrorCode.BUILD_COLUMN_CONTEXT_EXCEPTION;
+            InformationViewErrorCode auditCode = InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION;
 
             auditLog.logException("processNewRelationshipEvent",
                     auditCode.getErrorMessageId(),
@@ -295,12 +292,12 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
         SemanticAssignment semanticAssignment = new SemanticAssignment();
         EntityDetail businessTerm = retrieveEntity(relationship.getEntityTwoProxy().getGUID());
         semanticAssignment.setBusinessTerm(columnContextBuilder.buildBusinessTerm(businessTerm));
-        DatabaseColumn databaseColumn = new DatabaseColumn();
+        TableColumn databaseColumn = new TableColumn();
         EntityDetail columnEntity = retrieveEntity(relationship.getEntityOneProxy().getGUID());
         databaseColumn.setGuid(columnEntity.getGUID());
         databaseColumn.setName(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, columnEntity.getProperties(), "publishSemanticAssignment"));
         databaseColumn.setQualifiedName(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, columnEntity.getProperties(), "publishSemanticAssignment"));
-        semanticAssignment.setDatabaseColumn(databaseColumn);
+        semanticAssignment.setTableColumn(databaseColumn);
         sendEvent(semanticAssignment);
     }
 
@@ -324,7 +321,7 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
             auditLog.logException("retrieveEntity",
                     auditCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage("guid: " + entityGuid),
+                    auditCode.getFormattedErrorMessage("guid", entityGuid, e.getMessage()),
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
                     "",
