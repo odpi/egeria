@@ -15,7 +15,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 public class ReportColumnSource extends Source {
 
@@ -45,8 +44,4 @@ public class ReportColumnSource extends Source {
                 '}';
     }
 
-    @Override
-    public String buildQualifiedName() {
-        return parentReportSection != null ? parentReportSection.buildQualifiedName() + "." + this.getName() : this.getName();
-    }
 }

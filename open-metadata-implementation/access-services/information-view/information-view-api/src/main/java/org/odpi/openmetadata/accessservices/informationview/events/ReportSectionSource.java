@@ -33,12 +33,14 @@ public class ReportSectionSource extends Source {
     }
 
     @Override
-    public String buildQualifiedName() {
-        if (parentReportSection != null) {
-            return parentReportSection.buildQualifiedName() + "." + name;
-        } else {
-            return reportSource.buildQualifiedName() + "." + name;
-        }
+    public String toString() {
+        return "ReportSectionSource{" +
+                "reportSource=" + reportSource +
+                ", parentReportSection=" + parentReportSection +
+                ", name='" + name + '\'' +
+                ", additionalProperties=" + additionalProperties +
+                ", qualifiedName='" + qualifiedName + '\'' +
+                ", guid='" + guid + '\'' +
+                '}';
     }
-
 }

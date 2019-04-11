@@ -50,6 +50,6 @@ public class TableLookup extends EntityLookup<TableSource> {
 
     @Override
     protected InstanceProperties getMatchingProperties(TableSource source) {
-        return enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", new InstanceProperties(), Constants.NAME, source.getTableName(), "lookupEntity");
+        return enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance("", new InstanceProperties(), Constants.NAME, source.getName(), "lookupEntity");
     }
 }
