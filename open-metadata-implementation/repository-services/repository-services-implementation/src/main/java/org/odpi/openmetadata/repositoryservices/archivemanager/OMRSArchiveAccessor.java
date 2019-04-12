@@ -5,6 +5,7 @@ package org.odpi.openmetadata.repositoryservices.archivemanager;
 import org.odpi.openmetadata.repositoryservices.archivemanager.opentypes.OpenMetadataTypesArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchive;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.archivestore.properties.OpenMetadataArchiveTypeStore;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
 
 import java.util.*;
@@ -159,6 +160,28 @@ public class OMRSArchiveAccessor
     public EnumDef getEnumDefByName(String typeName)
     {
         return enumDefs.get(typeName);
+    }
+    /**
+     * Return the instance type definition for the supplied TypeDef
+     *
+     * @param typeDef typeDef source values for the InstanceType
+     * @return the an InstanceType (template)
+     */
+    public InstanceType createTemplateFromTypeDef(TypeDef typeDef) {
+        InstanceType template = new InstanceType();
+        template.setTypeDefName(typeDef.getName());
+        template.setTypeDefCategory(typeDef.getCategory());
+        template.setTypeDefDescription(typeDef.getDescription());
+        template.setTypeDefDescriptionGUID(typeDef.getDescriptionGUID());
+        template.setTypeDefGUID(typeDef.getGUID());
+
+        List supertypes = new ArrayList();
+        supertypes.add(typeDef.getSuperType());
+        template.setTypeDefSuperTypes(supertypes);
+        template.setTypeDefVersion(typeDef.getVersion());
+        template.setValidStatusList(typeDef.getValidInstanceStatusList());
+        // Not setting template.setValidInstanceProperties(); as this information is not in the typeDef
+        return template;
     }
 }
 

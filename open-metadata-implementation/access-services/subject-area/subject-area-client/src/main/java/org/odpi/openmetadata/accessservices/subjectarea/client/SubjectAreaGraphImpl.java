@@ -53,7 +53,7 @@ public class SubjectAreaGraphImpl extends SubjectAreaBaseImpl implements org.odp
 
 
     /**
-     * Get the graph of nodes and lines radiating out from a node.
+     * Get the graph of nodes and Lines radiating out from a node.
      *
      * The results are scoped by types of Lines, types of nodes and classifications as well as level.
      *
@@ -62,12 +62,12 @@ public class SubjectAreaGraphImpl extends SubjectAreaBaseImpl implements org.odp
      * @param guid the starting point of the query.
      * @param nodeFilter Set of the names of the nodes to include in the query results.  Null means include
      *                          all nodes found, irrespective of their type.
-     * @param lineFilter Set of names of lines to include in the query results.  Null means include
-     *                                all lines found, irrespective of their type.
-     * @param asOfTime Requests a historical query of the lines for the node.  Null means return the
+     * @param lineFilter Set of names of Lines to include in the query results.  Null means include
+     *                                all Lines found, irrespective of their type.
+     * @param asOfTime Requests a historical query of the Lines for the node.  Null means return the
      *                 present values.
      * @param statusFilter By default only active instances are returned. Specify ALL to see all instance in any status.
-     * @param level the number of the lines (relationships) out from the starting node that the query will traverse to
+     * @param level the number of the Lines (relationships) out from the starting node that the query will traverse to
      *              gather results. If not specified then it defaults to 3.
      * @return A graph of nodes.
      *

@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.SubjectAreaDefinition;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.LineType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
@@ -153,7 +154,7 @@ public class GraphFVT
                 new HashSet<>(Arrays.asList(LineType.Synonym)),
                 null,
                 null);
-        // expect 3 terms with the 2 Synonym lines from term1.
+        // expect 3 terms with the 2 Synonym Lines from term1.
         checkGraphContent(graph,3,2);
 
         // at this stage we should have a glossary, 3 terms, 3 term to glossary relationships and 2 synonym relationships
@@ -180,7 +181,7 @@ public class GraphFVT
 
                 null,
                 1);
-        // expect to only pick up the TermAnchor lines not the synonyms because we have depth 1.
+        // expect to only pick up the TermAnchor Lines not the synonyms because we have depth 1.
         checkGraphContent(graph,4,3);
 
         // createCategory
@@ -202,10 +203,9 @@ public class GraphFVT
                 1);
         checkGraphContent(graph,5,4);
 
-        Glossary taxonomy= glossaryFVT.getGlossaryForInput(DEFAULT_TEST_GLOSSARY_NAME);
-        taxonomy.setNodeType(NodeType.Taxonomy);
-        taxonomy= glossaryFVT.issueCreateGlossary(taxonomy);
-        String taxonomyGuid = taxonomy.getSystemAttributes().getGUID();
+        Taxonomy taxonomy= glossaryFVT.getTaxonomyForInput(DEFAULT_TEST_GLOSSARY_NAME);
+        Glossary createdTaxonomy= glossaryFVT.issueCreateGlossary(taxonomy);
+        String taxonomyGuid = createdTaxonomy.getSystemAttributes().getGUID();
         SubjectAreaDefinition subjectAreaDefinition =subjectAreaFVT.createSubjectAreaDefinitionWithGlossaryGuid("Subject area 1",taxonomyGuid);
         graph = getGraph(taxonomyGuid,
                 null,
@@ -240,7 +240,7 @@ public class GraphFVT
         } else  if (expectedLinesSize !=0 && (graph.getLines() == null) ) {
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected " + expectedLinesSize + " and graph.getLines() is null ", "", "");
         } else if (graph.getLines()!=null && graph.getLines().size() !=expectedLinesSize ) {
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected " + expectedLinesSize + " lines, got " +graph.getLines().size(), "", "");
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected " + expectedLinesSize + " Lines, got " +graph.getLines().size(), "", "");
         }
     }
 

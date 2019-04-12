@@ -4,10 +4,9 @@ package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.NewInstanceException;
 import org.odpi.openmetadata.accessservices.subjectarea.initialization.SubjectAreaRegistration;
 import org.odpi.openmetadata.accessservices.subjectarea.initialization.SubjectAreaServicesInstanceMap;
-import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.adminservices.OMAGAccessServiceRegistration;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceRegistration;
@@ -32,10 +31,9 @@ public class SubjectAreaServicesInstance
     private OMRSRepositoryConnector  repositoryConnector = null;
     private OMRSMetadataCollection   metadataCollection  = null;
     private String                   serverName          = null;
-    private AccessServiceDescription myDescription       = AccessServiceDescription.SUBJECT_AREA_OMAS;
 
     // The OMRSAPIHelper allows the junits to mock out the omrs layer.
-    protected OMRSAPIHelper oMRSAPIHelper = new OMRSAPIHelper();
+    //protected OMRSAPIHelper oMRSAPIHelper =null;
     //static private String accessServiceName = null;
 
 
@@ -106,9 +104,9 @@ public class SubjectAreaServicesInstance
         }
     }
 
-    public void setOMRSAPIHelper(OMRSAPIHelper oMRSAPIHelper) {
-        this.oMRSAPIHelper = oMRSAPIHelper;
-    }
+    // public void setOMRSAPIHelper(OMRSAPIHelper oMRSAPIHelper) {
+//        this.oMRSAPIHelper = oMRSAPIHelper;
+//    }
 
 
     //    /**
