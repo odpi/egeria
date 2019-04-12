@@ -128,6 +128,8 @@ spec:
           imagePullPolicy: {{ .Values.image.ibmigc.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           securityContext:
             privileged: true
+            capabilities:
+              add: ["IPC_OWNER"]
           ports:
             - containerPort: 9446
             - containerPort: 52181
@@ -150,9 +152,6 @@ spec:
             timeoutSeconds: 3
             failureThreshold: 3
           resources: {}
-          securityContext:
-            capabilities:
-              add: ["IPC_OWNER"]
           volumeMounts:
             - mountPath: /egeria
               name: egeria-volume
