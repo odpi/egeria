@@ -18,13 +18,13 @@ import org.odpi.openmetadata.fvt.opentypes.relationships.SchemaTypeDefinition.Sc
 import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToAnnotationReview.AnnotationReviewsReference;
 import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationReviewLink.AnnotationReviewLink;
 import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationReviewLink.AnnotationReviewLinkMapper;
+import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToAnnotation.ExtendedAnnotationsReference;
+import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtension;
+import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtensionMapper;
 import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToOpenDiscoveryAnalysisReport.FromAnalysisReportReference;
 import org.odpi.openmetadata.fvt.opentypes.relationships.DiscoveredAnnotation.DiscoveredAnnotation;
 import org.odpi.openmetadata.fvt.opentypes.relationships.DiscoveredAnnotation.DiscoveredAnnotationMapper;
 import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToAnnotation.AnnotationExtensionsReference;
-import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtension;
-import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtensionMapper;
-import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToAnnotation.ExtendedAnnotationsReference;
 import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtension;
 import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtensionMapper;
 
@@ -55,9 +55,9 @@ public class SchemaAnalysisAnnotationReferences implements Serializable {
              "discoveredDataFields",
              "schemaTypeDefinition",
              "annotationReviews",
+             "extendedAnnotations",
              "fromAnalysisReport",
              "annotationExtensions",
-             "extendedAnnotations",
              // Terminate the list
              null
     };
@@ -66,8 +66,8 @@ public class SchemaAnalysisAnnotationReferences implements Serializable {
              "DiscoveredDataField",
              "SchemaTypeDefinition",
              "AnnotationReviewLink",
-             "DiscoveredAnnotation",
              "AnnotationExtension",
+             "DiscoveredAnnotation",
              "AnnotationExtension",
               // Terminate the list
               null
@@ -106,14 +106,6 @@ public class SchemaAnalysisAnnotationReferences implements Serializable {
                          }
                           annotationReviews.add(annotationReviewsReference);
                     }
-                    if ("annotationExtensions".equals(referenceName)) {
-                         AnnotationExtension annotationExtension_relationship = (AnnotationExtension)relationships;
-                         AnnotationExtensionsReference annotationExtensionsReference = new AnnotationExtensionsReference(entityGuid,annotationExtension_relationship);
-                         if ( annotationExtensions== null ) {
-                              annotationExtensions = new HashSet();
-                         }
-                          annotationExtensions.add(annotationExtensionsReference);
-                    }
                     if ("extendedAnnotations".equals(referenceName)) {
                          AnnotationExtension annotationExtension_relationship = (AnnotationExtension)relationships;
                          ExtendedAnnotationsReference extendedAnnotationsReference = new ExtendedAnnotationsReference(entityGuid,annotationExtension_relationship);
@@ -121,6 +113,14 @@ public class SchemaAnalysisAnnotationReferences implements Serializable {
                               extendedAnnotations = new HashSet();
                          }
                           extendedAnnotations.add(extendedAnnotationsReference);
+                    }
+                    if ("annotationExtensions".equals(referenceName)) {
+                         AnnotationExtension annotationExtension_relationship = (AnnotationExtension)relationships;
+                         AnnotationExtensionsReference annotationExtensionsReference = new AnnotationExtensionsReference(entityGuid,annotationExtension_relationship);
+                         if ( annotationExtensions== null ) {
+                              annotationExtensions = new HashSet();
+                         }
+                          annotationExtensions.add(annotationExtensionsReference);
                     }
 
                     if ("schemaTypeDefinition".equals(referenceName)) {
@@ -147,8 +147,8 @@ public class SchemaAnalysisAnnotationReferences implements Serializable {
 
     private Set<DiscoveredDataFieldsReference> discoveredDataFields;
     private Set<AnnotationReviewsReference> annotationReviews;
-    private Set<AnnotationExtensionsReference> annotationExtensions;
     private Set<ExtendedAnnotationsReference> extendedAnnotations;
+    private Set<AnnotationExtensionsReference> annotationExtensions;
 
 // List properties
 
@@ -179,19 +179,19 @@ public class SchemaAnalysisAnnotationReferences implements Serializable {
     public void setAnnotationReviewsReferences(Set<AnnotationReviewsReference> annotationReviews) {
         this.annotationReviews =annotationReviews;
     }
-    public Set<AnnotationExtensionsReference> getAnnotationExtensionsReferences() {
-        return annotationExtensions;
-    }
-
-    public void setAnnotationExtensionsReferences(Set<AnnotationExtensionsReference> annotationExtensions) {
-        this.annotationExtensions =annotationExtensions;
-    }
     public Set<ExtendedAnnotationsReference> getExtendedAnnotationsReferences() {
         return extendedAnnotations;
     }
 
     public void setExtendedAnnotationsReferences(Set<ExtendedAnnotationsReference> extendedAnnotations) {
         this.extendedAnnotations =extendedAnnotations;
+    }
+    public Set<AnnotationExtensionsReference> getAnnotationExtensionsReferences() {
+        return annotationExtensions;
+    }
+
+    public void setAnnotationExtensionsReferences(Set<AnnotationExtensionsReference> annotationExtensions) {
+        this.annotationExtensions =annotationExtensions;
     }
 
 // Lists
@@ -204,8 +204,8 @@ public class SchemaAnalysisAnnotationReferences implements Serializable {
         sb.append("SchemaAnalysisAnnotationReferences{");
         sb.append("discoveredDataFieldsReference='").append(discoveredDataFields.toString());
         sb.append("annotationReviewsReference='").append(annotationReviews.toString());
-        sb.append("annotationExtensionsReference='").append(annotationExtensions.toString());
         sb.append("extendedAnnotationsReference='").append(extendedAnnotations.toString());
+        sb.append("annotationExtensionsReference='").append(annotationExtensions.toString());
         sb.append("schemaTypeDefinitionReference='").append(schemaTypeDefinition.toString());
         sb.append("fromAnalysisReportReference='").append(fromAnalysisReport.toString());
 
@@ -230,13 +230,13 @@ public class SchemaAnalysisAnnotationReferences implements Serializable {
          if (this.annotationReviews != null && !Objects.equals(this.annotationReviews,typedThat.annotationReviews)) {
                             return false;
                  }
+         if (this.extendedAnnotations != null && !Objects.equals(this.extendedAnnotations,typedThat.extendedAnnotations)) {
+                            return false;
+                 }
          if (this.fromAnalysisReport != null && !Objects.equals(this.fromAnalysisReport,typedThat.fromAnalysisReport)) {
                             return false;
                  }
          if (this.annotationExtensions != null && !Objects.equals(this.annotationExtensions,typedThat.annotationExtensions)) {
-                            return false;
-                 }
-         if (this.extendedAnnotations != null && !Objects.equals(this.extendedAnnotations,typedThat.extendedAnnotations)) {
                             return false;
                  }
         return false;
@@ -248,9 +248,9 @@ public class SchemaAnalysisAnnotationReferences implements Serializable {
     ,this.discoveredDataFields
     ,this.schemaTypeDefinition
     ,this.annotationReviews
+    ,this.extendedAnnotations
     ,this.fromAnalysisReport
     ,this.annotationExtensions
-    ,this.extendedAnnotations
        );
     }
 
