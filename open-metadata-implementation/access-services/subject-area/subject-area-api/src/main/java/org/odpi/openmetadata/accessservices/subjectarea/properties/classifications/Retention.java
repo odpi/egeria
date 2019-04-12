@@ -147,7 +147,7 @@ public class Retention extends Classification {
        private GovernanceClassificationStatus status;
        /**
         * {@literal Status of this classification. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return Status of this classification.
         */
        public GovernanceClassificationStatus getStatus() {
            return this.status;
@@ -160,7 +160,7 @@ public class Retention extends Classification {
        private Integer confidence;
        /**
         * {@literal Level of confidence in the classification (0=none -> 100=excellent). }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return Level of confidence
         */
        public Integer getConfidence() {
            return this.confidence;
@@ -173,7 +173,7 @@ public class Retention extends Classification {
        private String steward;
        /**
         * {@literal Person responsible for maintaining this classification. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return  Person responsible for maintaining this classification.
         */
        public String getSteward() {
            return this.steward;
@@ -186,7 +186,7 @@ public class Retention extends Classification {
        private String source;
        /**
         * {@literal Source of the classification. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return Source of the classification.
         */
        public String getSource() {
            return this.source;
@@ -199,7 +199,7 @@ public class Retention extends Classification {
        private String notes;
        /**
         * {@literal Information relating to the classification. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return Information relating to the classification.
         */
        public String getNotes() {
            return this.notes;
@@ -212,7 +212,7 @@ public class Retention extends Classification {
        private RetentionBasis basis;
        /**
         * {@literal Basis on which the retention period is defined. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return Basis on which the retention period is defined.
         */
        public RetentionBasis getBasis() {
            return this.basis;
@@ -225,7 +225,7 @@ public class Retention extends Classification {
        private String associatedGUID;
        /**
         * {@literal Related entity used to determine the retention period. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return Related entity used to determine the retention period.
         */
        public String getAssociatedGUID() {
            return this.associatedGUID;
@@ -238,7 +238,7 @@ public class Retention extends Classification {
        private Date archiveAfter;
        /**
         * {@literal Related entity used to determine the retention period. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return Related entity used to determine the retention period.
         */
        public Date getArchiveAfter() {
            return this.archiveAfter;
@@ -251,7 +251,7 @@ public class Retention extends Classification {
        private Date deleteAfter;
        /**
         * {@literal Related entity used to determine the retention period. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return  Related entity used to determine the retention period.
         */
        public Date getDeleteAfter() {
            return this.deleteAfter;

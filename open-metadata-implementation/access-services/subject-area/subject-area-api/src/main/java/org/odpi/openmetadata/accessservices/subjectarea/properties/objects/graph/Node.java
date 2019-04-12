@@ -41,6 +41,7 @@ public class Node implements Serializable {
     private String description =null;
     protected List<Classification> classifications = null;
     private Set<IconSummary> icons = null;
+    private Map<String,Object> extraAttributes;
 
     /**
      * Node type
@@ -102,13 +103,16 @@ public class Node implements Serializable {
      * @return {@code List<Classification>  }
      */
     public List<Classification> getClassifications() {
+        if (classifications == null) {
+            classifications = new ArrayList<>();
+        }
         return classifications;
     }
     /**
      * If governance action classifications (Retention, Confidence, Confidentiality or Criticality) are supplied then remove them
      * from the classifications and add to the appropriate named field. e.g. Retention will be set in the retention field.
      *
-     * @param classifications the list of classifications to set on the GovernedNode.
+     * @param classifications list of classifications to set on the Node.
      */
     public void setClassifications(List<Classification> classifications) {
         this.classifications=classifications;
@@ -234,5 +238,28 @@ public class Node implements Serializable {
     // allow child classes to process classifications
     protected void processClassification(Classification classification) {
     }
+    /**
+     * Set the extra attributes.
+     * The extra attributes are OMRS attributes that exist in the Node, due to a repository defining a Type that subclasses
+     * the open types and adds extra attributes.
+     *
+     * These extra attributes should be supplied on calls for this node - or they will be lost.
+     * @param  extraAttributes the extra attributes
+     */
+    public void setExtraAttributes(Map<String,Object> extraAttributes) {
+        this.extraAttributes = extraAttributes;
+    }
 
+    /**
+     * Get the extra attributes.
+     *
+     * The extra attributes are OMRS attributes that exist in the Node, due to a repository defining a Type that subclasses
+     * the open types and adds extra attributes.
+     *
+     * These extra attributes should be supplied on calls for this node - or they will be lost.
+     * @return the extra attributes
+     */
+    public Map<String,Object> getExtraAttributes() {
+        return this.extraAttributes;
+    }
 }

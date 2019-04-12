@@ -2,88 +2,168 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermAssignmentStatus;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.SemanticAssignment;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.Map;
 
 
 /**
- * Static mapping methods to map between the semanticAssignment and the equivalent generated OMRSRelationshipBean
+ * Mapping methods to map between the semanticAssignment and the equivalent omrs Relationship.
  */
-public class SemanticAssignmentMapper
+public class SemanticAssignmentMapper extends LineMapper 
 {
     private static final Logger log = LoggerFactory.getLogger( SemanticAssignmentMapper.class);
     private static final String className = SemanticAssignmentMapper.class.getName();
+    public static final String SEMANTIC_ASSIGNMENT = "SemanticAssignment";
 
-    /**
-     * map SemanticAssignment to the omrs relationship bean equivalent
-     * @param semanticAssignment supplied SemanticAssignment
-     * @return omrs relationship bean equivalent
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     */
-    static public org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.SemanticAssignment.SemanticAssignment mapSemanticAssignmentToOMRSRelationshipBean(SemanticAssignment semanticAssignment) throws InvalidParameterException {
-        // copy over the Line attributes
-        org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.SemanticAssignment.SemanticAssignment omrsRelationshipBean = new  org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.SemanticAssignment.SemanticAssignment(semanticAssignment);
-        //Set properties
-        omrsRelationshipBean.setDescription(semanticAssignment.getDescription());
-        omrsRelationshipBean.setExpression(semanticAssignment.getExpression());
-        omrsRelationshipBean.setSource(semanticAssignment.getSource());
-        omrsRelationshipBean.setSteward(semanticAssignment.getSteward());
-        omrsRelationshipBean.setConfidence(semanticAssignment.getConfidence());
-        omrsRelationshipBean.setGuid(semanticAssignment.getGuid());
-        omrsRelationshipBean.setEntity1Guid(semanticAssignment.getAssignedElementGuid());
-        omrsRelationshipBean.setEntity2Guid(semanticAssignment.getTermGuid());
-
-        Map<String, Object> extraAttributes = omrsRelationshipBean.getExtraAttributes();
-        if (extraAttributes !=null)
-        {
-            String[] properties = org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.SemanticAssignment.SemanticAssignment.PROPERTY_NAMES_SET_VALUES;
-            for (String property : properties)
-            {
-                if (extraAttributes.containsKey(property))
-                {
-                    extraAttributes.remove(property);
-                }
-            }
-            omrsRelationshipBean.setExtraAttributes(extraAttributes);
-        }
-
-        return omrsRelationshipBean;
+    public SemanticAssignmentMapper(OMRSAPIHelper omrsapiHelper) {
+        super(omrsapiHelper);
     }
 
     /**
-     * Map omrs relationship bean equivalent to SemanticAssignment
-     * @param omrsRelationshipBean omrs relationship bean equivalent
-     * @return SemanticAssignment semanticAssignment
+     * Map the supplied Line to omrs InstanceProperties.
+     * @param line supplied line
+     * @param properties equivalent instance properties to the Line
      */
-    public static SemanticAssignment mapOMRSRelationshipBeanToSemanticAssignment(org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.SemanticAssignment.SemanticAssignment omrsRelationshipBean) {
-        // copy over the Line attributes
-        SemanticAssignment semanticAssignment = new SemanticAssignment(omrsRelationshipBean);
-        semanticAssignment.setDescription(omrsRelationshipBean.getDescription());
-        semanticAssignment.setExpression(omrsRelationshipBean.getExpression());
-        semanticAssignment.setSource(omrsRelationshipBean.getSource());
-        semanticAssignment.setSteward(omrsRelationshipBean.getSteward());
-        semanticAssignment.setConfidence(omrsRelationshipBean.getConfidence());
-        semanticAssignment.setGuid(omrsRelationshipBean.getGuid());
-        semanticAssignment.setAssignedElementGuid(omrsRelationshipBean.getEntity1Guid());
-        semanticAssignment.setTermGuid(omrsRelationshipBean.getEntity2Guid());
-        String[] properties=org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.SemanticAssignment.SemanticAssignment.PROPERTY_NAMES_SET_VALUES;
-        Map<String, Object> extraAttributes =semanticAssignment.getExtraAttributes();
-        if (properties!=null && properties.length >0) {
-            if (extraAttributes ==null) {
-                extraAttributes =new HashMap<>();
-            }
-            for (String property : properties) {
-                if (extraAttributes.containsKey(property)) {
-                    extraAttributes.remove(property);
-                }
-            }
-            semanticAssignment.setExtraAttributes(extraAttributes);
+    @Override
+    protected void mapLineToInstanceProperties(Line line, InstanceProperties properties) {
+        SemanticAssignment semanticAssignment = (SemanticAssignment)line;
+        if (semanticAssignment.getDescription()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getDescription(), "description");
         }
-        return semanticAssignment;
+        if (semanticAssignment.getExpression()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getExpression(), "expression");
+        }
+        if (semanticAssignment.getConfidence()!=null) {
+            SubjectAreaUtils.setIntegerPropertyInInstanceProperties(properties, semanticAssignment.getConfidence(), "confidence");
+        }
+        if (semanticAssignment.getSteward()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getSteward(), "steward");
+        }
+        if (semanticAssignment.getSource()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getSource(), "source");
+        }
+        if (semanticAssignment.getAssignedElementGuid()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(properties, semanticAssignment.getAssignedElementGuid(), "assignedElementGuid");
+        }
+
+        Map<String, InstancePropertyValue> instancePropertyMap = properties.getInstanceProperties();
+        InstancePropertyValue instancePropertyValue = instancePropertyMap.get("status");
+        if (instancePropertyValue!=null) {
+            EnumPropertyValue enumPropertyValue = (EnumPropertyValue) instancePropertyValue;
+            TermAssignmentStatus status = TermAssignmentStatus.valueOf(enumPropertyValue.getSymbolicName());
+            semanticAssignment.setStatus(status);
+        }
+    }
+    /**
+     * Map a primitive omrs property to the semanticAssignment object.
+     * @param line the glossary to be updated
+     * @param propertyName the omrs property name
+     * @param value the omrs primitive property value
+     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     */
+    @Override
+    protected boolean mapPrimitiveToLine(Line line, String propertyName, Object value) {
+        String stringValue = (String) value;
+        SemanticAssignment semanticAssignment = (SemanticAssignment) line;
+        boolean foundProperty = false;
+        if (propertyName.equals("description")) {
+            semanticAssignment.setDescription(stringValue);
+            foundProperty = true;
+        }
+        if (propertyName.equals("expression")) {
+            semanticAssignment.setExpression(stringValue);
+            foundProperty = true;
+        }
+        if (propertyName.equals("confidence")) {
+            semanticAssignment.setConfidence((Integer)value);
+            foundProperty = true;
+        }
+        if (propertyName.equals("steward")) {
+            semanticAssignment.setSteward(stringValue);
+            foundProperty = true;
+        }
+        if (propertyName.equals("source")) {
+            semanticAssignment.setSource(stringValue);
+            foundProperty = true;
+        }
+        return foundProperty;
+    }
+    @Override
+    protected boolean mapEnumToLine(Line line, String propertyName, EnumPropertyValue enumPropertyValue)
+    {
+        SemanticAssignment semanticAssignment = (SemanticAssignment) line;
+        boolean foundProperty = false;
+        if (propertyName.equals("status")) {
+            TermAssignmentStatus status = TermAssignmentStatus.valueOf(enumPropertyValue.getSymbolicName());
+            semanticAssignment.setStatus(status);
+            foundProperty = true;
+        }
+        return foundProperty;
+    }
+
+    /**
+     * Get proxy1 guid.
+     * The proxy has omrs type Referenceable
+     * @param line line
+     * @return guid for entity proxy 1
+     */
+    @Override
+    protected String getProxy1Guid(Line line)
+    {
+        SemanticAssignment semanticAssignment = (SemanticAssignment) line;
+        return semanticAssignment.getAssignedElementGuid();
+    }
+
+    /**
+     * Get proxy2 guid
+     * The proxy has omrs type GlossaryTerm
+     * @param line for this Line
+     * @return guid for entity proxy 2
+     */
+    @Override
+    protected String getProxy2Guid(Line line)
+    {
+        SemanticAssignment semanticAssignment = (SemanticAssignment) line;
+        return semanticAssignment.getTermGuid();
+    }
+
+    /**
+     * Get the relationship type def guid.
+     * @param relationship the relationship associated with the typedef whose guid is returned.
+     * @return guid of the typedef
+     */
+    @Override
+    protected String getRelationshipTypeDefGuid(Relationship relationship)
+    {
+        return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), SEMANTIC_ASSIGNMENT).getGUID();
+    }
+    @Override
+    protected String getTypeName() {
+        return  SEMANTIC_ASSIGNMENT;
+    }
+    @Override
+    protected Line getLineInstance() {
+        return new SemanticAssignment();
+    }
+    @Override
+    protected void setEnd1GuidInLine(Line line, String guid){
+        SemanticAssignment semanticAssignment = (SemanticAssignment)line;
+        semanticAssignment.setAssignedElementGuid(guid);
+    }
+    @Override
+    protected void setEnd2GuidInLine(Line line, String guid) {
+        SemanticAssignment semanticAssignment = (SemanticAssignment)line;
+        semanticAssignment.setTermGuid(guid);
     }
 }
