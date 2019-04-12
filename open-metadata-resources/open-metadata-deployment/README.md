@@ -153,6 +153,8 @@ disabled). The remaining options are similar to those for Kafka: setting `igc.in
 of a container (you specify the image name and repository for this in `vdc/templates/values.yaml`), or if set to `false`
 will use the further variables under `igc.external` to define the network location of your pre-existing IGC environment.
 
+Note if using IBM Cloud, IGC in a container (ibmigc.internal) is not working correctly. See https://github.com/odpi/egeria/issues/906 for further details.
+
 Also check the settings in `vdc/templates/configmap.yaml` to ensure they are set to match your environment.
 
 ### Deploying the demonstration
