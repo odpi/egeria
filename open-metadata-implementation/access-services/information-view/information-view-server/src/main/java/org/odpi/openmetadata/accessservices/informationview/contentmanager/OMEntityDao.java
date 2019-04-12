@@ -87,7 +87,7 @@ public class OMEntityDao {
                     auditCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
                     auditCode.getFormattedErrorMessage(typeName, e.getMessage()),
-                    "entity of type{" + typeName + "}",
+                    "entity of type {" + typeName + "}",
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
                     e);
@@ -406,8 +406,7 @@ public class OMEntityDao {
         return wrapper;
     }
 
-    private EntityDetail updateEntity(EntityDetail entityDetail, String userId, InstanceProperties instanceProperties,
-                                      boolean zoneRestricted) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, EntityNotKnownException, PropertyErrorException, FunctionNotSupportedException {
+    private EntityDetail updateEntity(EntityDetail entityDetail, String userId, InstanceProperties instanceProperties, boolean zoneRestricted) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, EntityNotKnownException, PropertyErrorException, FunctionNotSupportedException {
         //TODO add validation to new instance properties
         if(zoneRestricted){
             instanceProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, instanceProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "addEntity");

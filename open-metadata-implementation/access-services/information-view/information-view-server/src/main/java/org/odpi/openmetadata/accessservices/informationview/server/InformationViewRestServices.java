@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.informationview.server;
 
 import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.informationview.events.*;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewUncheckedExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.DataViewCreationException;
@@ -37,11 +38,8 @@ public class InformationViewRestServices {
             ReportHandler reportCreator = instanceHandler.getReportCreator(serverName);
             reportCreator.submitReportModel(requestBody);
         }
-        catch (ReportCreationException | PropertyServerException e) {
-            response.setExceptionClassName(e.getReportingClassName());
-            response.setExceptionErrorMessage(e.getReportedErrorMessage());
-            response.setRelatedHTTPCode(e.getReportedHTTPCode());
-            response.setExceptionUserAction(e.getReportedUserAction());
+        catch (InformationViewExceptionBase e) {
+           handleErrorResponse(e);
         }
 
         return response;
@@ -90,7 +88,7 @@ public class InformationViewRestServices {
             List<DatabaseSource> databases = databaseContextHandler.getDatabases(startFrom, pageSize);
             response.setDatabasesList(databases);
         }
-        catch (  PropertyServerException e) {
+        catch ( PropertyServerException e) {
             return handleErrorResponse( e);
         }
         return response;
@@ -165,6 +163,16 @@ public class InformationViewRestServices {
         response.setExceptionClassName(e.getReportingClassName());
         response.setExceptionErrorMessage(e.getReportedErrorMessage());
         response.setRelatedHTTPCode(e.getReportedHTTPCode());
+        response.setExceptionUserAction(e.getReportedUserAction());
+        return response;
+    }
+
+
+    private InformationViewOMASAPIResponse handleErrorResponse(InformationViewUncheckedExceptionBase e) {
+        VoidResponse  response = new VoidResponse();
+        response.setExceptionClassName(e.getReportingClassName());
+        response.setExceptionErrorMessage(e.getReportedErrorMessage());
+        response.setRelatedHTTPCode(e.getHttpErrorCode());
         response.setExceptionUserAction(e.getReportedUserAction());
         return response;
     }

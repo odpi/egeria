@@ -76,7 +76,11 @@ public enum InformationViewErrorCode {
     INCORRECT_MODEL_EXCEPTION(500, "OMAS-INFORMATION-VIEW-016",
             "The model for entity {0} is not correct: {1}",
             "The system is unable to process the request.",
-            "Correct the metadata model.");
+            "Correct the metadata model."),
+    REPORT_ELEMENT_CREATION_EXCEPTION(500, "OMAS-INFORMATION-VIEW-017",
+                            "Element {0} could not be created because of error: {1}",
+                            "The system is unable to process the request.",
+                            "Check the error message on how to fix the error.");
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewErrorCode.class);
     private String errorMessageId;

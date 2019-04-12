@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEnt
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.InformationViewExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.ReportCreationException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
@@ -14,9 +15,11 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 
@@ -44,7 +47,7 @@ public class ReportHandler {
     public void submitReportModel(ReportRequestBody payload) throws ReportCreationException {
 
         try {
-            log.info("Creating report based on payload {}", payload);
+            log.debug("Creating report based on payload {}", payload);
             URL url = new URL(payload.getReportUrl());
             String networkAddress = url.getHost();
             if (url.getPort() > 0) {
@@ -65,11 +68,11 @@ public class ReportHandler {
 
 
             OMEntityWrapper reportWrapper = omEntityDao.createOrUpdateEntity(Constants.DEPLOYED_REPORT,
-                    qualifiedNameForReport,
-                    reportProperties,
-                    null,
-                    true,
-                    true);
+                                                                            qualifiedNameForReport,
+                                                                            reportProperties,
+                                                                            null,
+                                                                            true,
+                                                                            true);
 
 
             if (reportWrapper.getEntityStatus().equals(OMEntityWrapper.EntityStatus.NEW)) {
@@ -78,7 +81,7 @@ public class ReportHandler {
                 reportUpdater.updateReport(payload, reportWrapper.getEntityDetail());
             }
 
-        } catch (Exception e) {
+        } catch (PagingErrorException |  PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | MalformedURLException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException | EntityProxyOnlyException | RelationshipNotDeletedException | RelationshipNotKnownException | EntityNotDeletedException | TypeDefNotKnownException e) {
             InformationViewErrorCode auditCode = InformationViewErrorCode.REPORT_CREATION_EXCEPTION;
 
             auditLog.logException("processEvent",
@@ -89,7 +92,7 @@ public class ReportHandler {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
                     e);
-            throw new ReportCreationException(404,
+            throw new ReportCreationException(500,
                     "ReportHandler",
                     "createReport",
                     "Unable to create report: " + e.getMessage(),
