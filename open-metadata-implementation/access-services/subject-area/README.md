@@ -21,7 +21,6 @@ The module structure for the Subject Area OMAS is as follows:
 * [subject-area-api](subject-area-api) supports the common Java classes that are used both by the client and the server.
 * [subject-area-server](subject-area-server) supports an implementation of the access service and its related event management.
 * [subject-area-spring](subject-area-spring) supports the REST API using the [Spring](../../../developer-resources/Spring.md) libraries.
-* [subject-area-tools](subject-area-tools) supports code generation of POJO property objects from archive types.
 
 The implementation is not complete. The following has been implemented : 
 
@@ -66,18 +65,18 @@ DELETE url : localhost:8080/open-metadata/access-services/subject-area/users/{us
 ## The Subject Area OMAS philosophy
 
 The Subject area OMAS is the access service that subject area experts should use. The intent is that the APIs that are exposed are natural for the 
-tasks that a subject area expert is performing. At this time the subjet area OMAS exposes APIs around the task of Glossary authoring,
+tasks that a subject area expert is performing. At this time the Subject area OMAS exposes APIs around the task of Glossary authoring,
 focusing on Glossary, Category and Term objects.
  
 ## The Subject Area OMAS architecture
 The Subject Area main objects are the Glossary, Category and Terms. There map onto the OMRS types Glossary, GlossaryCategory and GlossaryTerm. The mapping is
-not one to one, because the OMAS API is looking to emphasis certain content and hide some of the OMRS details that the  subject area expert is not concerned with.
+not one to one, because the OMAS API is looking to emphasise certain content and hide some of the OMRS details that the subject area expert is not concerned with.
  
 Subject Area OMAS mapping to OMRS entities considerations:
 * Glossary, Category and Term objects have associated icons, these are embedded objects rather than relationships. In this way icon content is shown as important to 
 the subject area expert as they are like to be working with the glossary content visually
-* The icon embedded object is a n IconSummary object. This is an example of other object in the OMAS API whose names end with "Summary". These objects represent
- a summary of the entity at the end of a certain type of OMRS relationships
+* The icon embedded object is an IconSummary object. This is an example of other object in the OMAS API whose names end with "Summary". These objects represent
+ a summary of the entity at the end of a certain type of OMRS relationships. Note the icon function has not been implmented in the OMAS yet.
 * Categories and Terms have a GlossarySummary , this is there associated Glossary. Good practice is to have Terms and Categories within a Glossary, so the Subject
 area API Term and Category create and update APIs expect a glossary to be supplied. See effective date considerations.   
 * OMRS relationships can be managed via the Subject Area relationships API. Some of these relationships may appear as summary objects.    
@@ -99,12 +98,13 @@ There are a number of types of APIs associated with the Subject Area OMAS.
  The OMRS entities, relationships and classifications have optional effective From and To dates. These dates are exposed in the Term, Category and Glossary 
 objects as attributes.
 * create, update and replace calls to the subject Area for Term, Category, glossary and relationships omas can specify an effective date range in the request, allowing the subject area 
-OMAS to manage effective dates. The null value or when it is not specified To date means there is not limit in the future for the objects effectivity.
- A null or unspecified from  date means that this no starting restriction for effectivity. The date must not be in the past. The From date should be prior to the To Date.
+OMAS to manage effective dates. The null value or when it is not specified To date means there is no limit in the future for the objects effectivity.
+ A null or unspecified from date means that this no starting restriction for effectivity. The date must not be in the past. The From date should be prior to the To Date.
 * create, update, replace, restore, soft delete responses may return Summary objects that are not in the effective date range of the associated Term,
 Category or Glossary object. This is to allow glossaries content to be 'messy' and allow the subject area expert to fix it up.           
-* A get of a Term, Glossary or Category that has potentially associated Summary objects, will only return the summary objects within the effective date
-range of the get operation at the time the get was processed.
+* A get of a Term, Glossary or Category that has potentially associated Summary objects. Because the Subject Area OMAS is an authoring interface, the user needs to 
+see all content irrespective of the effectivity date. So associated summary objects are exposed even if they are not effective. The summary objects contain the effectivity dates of the relationship
+and the connected object. The Subject Area user can see these dates and maker a decision as to whether they want to amend them.
 * create, update, delete restore and replace operations are exposed for relationships that appear as summary objects - so that their effectivity ranges can be managed
 by the subject area expert.
 
