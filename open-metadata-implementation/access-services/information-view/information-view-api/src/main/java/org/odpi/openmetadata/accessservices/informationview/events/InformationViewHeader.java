@@ -38,7 +38,7 @@ public abstract class InformationViewHeader {
 
     @Override
     public String toString() {
-        return "InformationViewHeader{" +
+        return "{" +
                 "eventVersionId=" + eventVersionId +
                 '}';
     }

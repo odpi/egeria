@@ -61,7 +61,17 @@ public class ColumnContextBuilder {
      * @throws InvalidParameterException
      * @throws EntityNotKnownException
      */
-    public List<TableContextEvent> buildContexts(String guidColumn) throws Exception {
+    public List<TableContextEvent> buildContexts(String guidColumn) throws RepositoryErrorException,
+                                                                           UserNotAuthorizedException,
+                                                                           EntityNotKnownException,
+                                                                           FunctionNotSupportedException,
+                                                                           InvalidParameterException,
+                                                                           PropertyErrorException,
+                                                                           TypeErrorException,
+                                                                           PagingErrorException,
+                                                                           RelationshipNotKnownException,
+                                                                           TypeDefNotKnownException,
+                                                                           EntityProxyOnlyException {
         List<TableContextEvent> tableContexts = new ArrayList<>();
         String relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.USER_ID, Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
         for (Relationship relationship : enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID, guidColumn, relationshipTypeGuid, 0, null, null, null, null, 0)) {
@@ -568,9 +578,23 @@ public class ColumnContextBuilder {
      *
      * @param businessTermGuid guid of the business term for which we want to retrieve the linked columns
      * @return list of columns assigned to the business term
-     * @throws Exception
+     * @throws UserNotAuthorizedException
+     * @throws EntityNotKnownException
+     * @throws FunctionNotSupportedException
+     * @throws InvalidParameterException
+     * @throws RepositoryErrorException
+     * @throws PropertyErrorException
+     * @throws TypeErrorException
+     * @throws PagingErrorException
      */
-    public List<EntitySummary> getAssignedColumns(String businessTermGuid) throws Exception{
+    public List<EntitySummary> getAssignedColumns(String businessTermGuid) throws UserNotAuthorizedException,
+                                                                                  EntityNotKnownException,
+                                                                                  FunctionNotSupportedException,
+                                                                                  InvalidParameterException,
+                                                                                  RepositoryErrorException,
+                                                                                  PropertyErrorException,
+                                                                                  TypeErrorException,
+                                                                                  PagingErrorException {
         List<EntitySummary> entities = new ArrayList<>();
         List<Relationship> columnsAssigned = getRelationships(Constants.SEMANTIC_ASSIGNMENT, businessTermGuid);
         if(columnsAssigned != null && !columnsAssigned.isEmpty()){

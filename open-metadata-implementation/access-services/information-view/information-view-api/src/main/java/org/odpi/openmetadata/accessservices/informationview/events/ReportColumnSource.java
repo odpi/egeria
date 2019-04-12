@@ -39,7 +39,7 @@ public class ReportColumnSource extends Source {
 
     @Override
     public String toString() {
-        return "ReportColumnSource{" +
+        return "{" +
                 "name='" + name + '\'' +
                 '}';
     }

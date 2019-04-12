@@ -28,7 +28,7 @@ public class ReportSection extends ReportElement{
 
     @Override
     public String toString() {
-        return "ReportSection{" +
+        return "{" +
                 "elements=" + elements +
                 ", name='" + name + '\'' +
                 '}';

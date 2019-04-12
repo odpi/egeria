@@ -81,7 +81,7 @@ public class EndpointSource extends Source {
 
     @Override
     public String toString() {
-        return "EndpointSource{" +
+        return "{" +
                 "networkAddress='" + networkAddress + '\'' +
                 ", protocol='" + protocol + '\'' +
                 ", encryptionMethod='" + encryptionMethod + '\'' +

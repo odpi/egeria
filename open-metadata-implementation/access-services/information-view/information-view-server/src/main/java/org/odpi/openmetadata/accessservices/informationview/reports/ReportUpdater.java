@@ -10,6 +10,8 @@ import org.odpi.openmetadata.accessservices.informationview.events.ReportElement
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ReportElementCreationException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
@@ -44,7 +46,21 @@ public class ReportUpdater extends ReportBasicOperation {
      * @param reportEntity - entity describing the report
      * @throws Exception
      */
-    public void updateReport(ReportRequestBody payload, EntityDetail reportEntity) throws Exception {
+    public void updateReport(ReportRequestBody payload, EntityDetail reportEntity) throws UserNotAuthorizedException,
+                                                                                          EntityNotKnownException,
+                                                                                          EntityNotDeletedException,
+                                                                                          InvalidParameterException,
+                                                                                          RepositoryErrorException,
+                                                                                          FunctionNotSupportedException,
+                                                                                          ClassificationErrorException,
+                                                                                          StatusNotSupportedException,
+                                                                                          TypeDefNotKnownException,
+                                                                                          PropertyErrorException,
+                                                                                          TypeErrorException,
+                                                                                          PagingErrorException,
+                                                                                          RelationshipNotKnownException,
+                                                                                          EntityProxyOnlyException,
+                                                                                          RelationshipNotDeletedException {
         String qualifiedNameForComplexSchemaType = QualifiedNameUtils.buildQualifiedName("", Constants.ASSET_SCHEMA_TYPE, payload.getId()  + Constants.TYPE_SUFFIX);
 
         List<Relationship> relationships = omEntityDao.getRelationships(Constants.ASSET_SCHEMA_TYPE, reportEntity.getGUID());
@@ -83,7 +99,16 @@ public class ReportUpdater extends ReportBasicOperation {
      * @param reportElements - elements describing the report
      * @throws Exception
      */
-    private void createOrUpdateElements(String qualifiedNameForParent, String parentGuid, List<ReportElement> reportElements) throws Exception {
+    private void createOrUpdateElements(String qualifiedNameForParent, String parentGuid, List<ReportElement> reportElements) throws
+                                                                                                                              InvalidParameterException,
+                                                                                                                              RelationshipNotDeletedException,
+                                                                                                                              RelationshipNotKnownException,
+                                                                                                                              EntityProxyOnlyException,
+                                                                                                                              EntityNotDeletedException,
+                                                                                                                              EntityNotKnownException,
+                                                                                                                              FunctionNotSupportedException,
+                                                                                                                              UserNotAuthorizedException,
+                                                                                                                              RepositoryErrorException {
         List<Relationship> relationships = omEntityDao.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
         List<EntityDetail> matchingEntities = filterMatchingEntities(relationships, reportElements);
         if (reportElements != null && !reportElements.isEmpty()) {
@@ -98,7 +123,16 @@ public class ReportUpdater extends ReportBasicOperation {
      * @return - list of entities matching the report elements
      * @throws Exception
      */
-    private List<EntityDetail> filterMatchingEntities(List<Relationship> relationships, List<ReportElement> reportElements) throws Exception {
+    private List<EntityDetail> filterMatchingEntities(List<Relationship> relationships, List<ReportElement> reportElements) throws
+                                                                                                                            RelationshipNotDeletedException,
+                                                                                                                            UserNotAuthorizedException,
+                                                                                                                            FunctionNotSupportedException,
+                                                                                                                            InvalidParameterException,
+                                                                                                                            RepositoryErrorException,
+                                                                                                                            RelationshipNotKnownException,
+                                                                                                                            EntityProxyOnlyException,
+                                                                                                                            EntityNotKnownException,
+                                                                                                                            EntityNotDeletedException {
         List<EntityDetail> matchingEntities = new ArrayList<>();
         if (relationships != null && !relationships.isEmpty()) {
             for (Relationship relationship : relationships) {
@@ -127,7 +161,7 @@ public class ReportUpdater extends ReportBasicOperation {
      * @throws EntityNotKnownException
      * @throws EntityNotDeletedException
      */
-    private void deleteSection(EntitySummary entity) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, RelationshipNotDeletedException, RelationshipNotKnownException, FunctionNotSupportedException, EntityNotKnownException, EntityNotDeletedException {
+    private void deleteSection(EntitySummary entity) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, EntityNotKnownException, EntityNotDeletedException {
 
         List<Relationship> typeRelationships = omEntityDao.getRelationships(Constants.COMPLEX_SCHEMA_TYPE, entity.getGUID());
          if(typeRelationships != null && !typeRelationships.isEmpty()){
@@ -170,8 +204,11 @@ public class ReportUpdater extends ReportBasicOperation {
             } else if (element instanceof ReportColumn) {
                 createOrUpdateReportColumn(qualifiedNameForParent, parentGuid, (ReportColumn) element, existingElements);
             }
-        } catch (Exception e) {
-            throw new RuntimeException(e);//TODO throw specific exception
+        } catch (TypeDefNotKnownException | InvalidParameterException | RelationshipNotDeletedException | FunctionNotSupportedException | EntityNotDeletedException | EntityProxyOnlyException | PagingErrorException | ClassificationErrorException | UserNotAuthorizedException | TypeErrorException | EntityNotKnownException | RepositoryErrorException | RelationshipNotKnownException | StatusNotSupportedException | PropertyErrorException e) {
+            throw new ReportElementCreationException(ReportUpdater.class.getName(),
+                                                    InformationViewErrorCode.REPORT_ELEMENT_CREATION_EXCEPTION.getFormattedErrorMessage(),
+                                                    InformationViewErrorCode.REPORT_ELEMENT_CREATION_EXCEPTION.getSystemAction(),
+                                                    InformationViewErrorCode.REPORT_ELEMENT_CREATION_EXCEPTION.getUserAction(), e);
         }
     }
 
@@ -184,7 +221,22 @@ public class ReportUpdater extends ReportBasicOperation {
      * @param existingElements entities already defined
      * @throws Exception
      */
-    private void createOrUpdateReportSection(String qualifiedNameForParent, String parentGuid, ReportSection reportSection, List<EntityDetail> existingElements) throws Exception {
+    private void createOrUpdateReportSection(String qualifiedNameForParent, String parentGuid, ReportSection reportSection, List<EntityDetail> existingElements) throws
+                                                                                                                                                                 InvalidParameterException,
+                                                                                                                                                                 TypeErrorException,
+                                                                                                                                                                 PropertyErrorException,
+                                                                                                                                                                 EntityNotKnownException,
+                                                                                                                                                                 FunctionNotSupportedException,
+                                                                                                                                                                 PagingErrorException,
+                                                                                                                                                                 ClassificationErrorException,
+                                                                                                                                                                 UserNotAuthorizedException,
+                                                                                                                                                                 RepositoryErrorException,
+                                                                                                                                                                 StatusNotSupportedException,
+                                                                                                                                                                 EntityNotDeletedException,
+                                                                                                                                                                 EntityProxyOnlyException,
+                                                                                                                                                                 RelationshipNotDeletedException,
+                                                                                                                                                                 RelationshipNotKnownException,
+                                                                                                                                                                 TypeDefNotKnownException {
 
         EntityDetail matchingSection = findMatchingEntityForElements(reportSection, existingElements);
         if (matchingSection != null) {
@@ -223,7 +275,20 @@ public class ReportUpdater extends ReportBasicOperation {
     }
 
 
-    private void createOrUpdateReportColumn(String parentQualifiedName, String parentGuid, ReportColumn reportColumn, List<EntityDetail> existingElements) throws Exception {
+    private void createOrUpdateReportColumn(String parentQualifiedName, String parentGuid, ReportColumn reportColumn, List<EntityDetail> existingElements) throws
+                                                                                                                                                           InvalidParameterException,
+                                                                                                                                                           StatusNotSupportedException,
+                                                                                                                                                           PropertyErrorException,
+                                                                                                                                                           EntityNotKnownException,
+                                                                                                                                                           TypeErrorException,
+                                                                                                                                                           FunctionNotSupportedException,
+                                                                                                                                                           PagingErrorException,
+                                                                                                                                                           ClassificationErrorException,
+                                                                                                                                                           UserNotAuthorizedException,
+                                                                                                                                                           RepositoryErrorException,
+                                                                                                                                                           RelationshipNotKnownException,
+                                                                                                                                                           TypeDefNotKnownException,
+                                                                                                                                                           RelationshipNotDeletedException {
 
         EntityDetail matchingColumn = findMatchingEntityForElements(reportColumn, existingElements);
         List<Relationship> columnType;
@@ -252,7 +317,18 @@ public class ReportUpdater extends ReportBasicOperation {
 
     }
 
-    private void createOrUpdateSchemaQueryImplementation(ReportColumn reportColumn, String columnGuid) throws Exception {
+    private void createOrUpdateSchemaQueryImplementation(ReportColumn reportColumn, String columnGuid) throws
+                                                                                                       UserNotAuthorizedException,
+                                                                                                       FunctionNotSupportedException,
+                                                                                                       InvalidParameterException,
+                                                                                                       RepositoryErrorException,
+                                                                                                       PropertyErrorException,
+                                                                                                       TypeErrorException,
+                                                                                                       PagingErrorException,
+                                                                                                       StatusNotSupportedException,
+                                                                                                       EntityNotKnownException,
+                                                                                                       RelationshipNotKnownException,
+                                                                                                       RelationshipNotDeletedException {
 
         List<Relationship> relationships = omEntityDao.getRelationships(Constants.SCHEMA_QUERY_IMPLEMENTATION, columnGuid);
         List<String> relationshipsToRemove = new ArrayList<>();
@@ -299,8 +375,7 @@ public class ReportUpdater extends ReportBasicOperation {
                                                                                                        PagingErrorException,
                                                                                                        RelationshipNotKnownException,
                                                                                                        RelationshipNotDeletedException,
-                                                                                                       StatusNotSupportedException,
-                                                                                                       TypeDefNotKnownException {
+                                                                                                       StatusNotSupportedException{
         List<Relationship> existingAssignments = omEntityDao.getRelationships(Constants.SEMANTIC_ASSIGNMENT, columnGuid);
         if (reportColumn.getBusinessTerm() == null) {
             deleteRelationships(existingAssignments);
@@ -316,7 +391,7 @@ public class ReportUpdater extends ReportBasicOperation {
                 omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
                                             columnGuid,
                                             businessTermAssignedToColumnGuid,
-                        new InstanceProperties());
+                                            new InstanceProperties());
             }
         }
     }

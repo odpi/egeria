@@ -223,7 +223,7 @@ public class ReportRequestBody extends InformationViewHeader {
      */
     @Override
     public String toString() {
-        return "ReportRequestBody{" +
+        return "{" +
                 "sources=" + sources +
                 ", id='" + id + '\'' +
                 ", createdTime=" + createdTime +

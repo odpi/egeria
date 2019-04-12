@@ -68,10 +68,10 @@ public class DatabaseContextHandler {
             if (relationships != null && !relationships.isEmpty()) {
                 return columnContextBuilder.getTableContext(relationships.get(0).getEntityTwoProxy().getGUID(), Constants.START_FROM, Constants.PAGE_SIZE);
             } else {
-                throw new ContextLoadException(DatabaseContextHandler.class.getName(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getFormattedErrorMessage(tableGuid, "Schema attribute type relationship doesn't exist"), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getSystemAction(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getUserAction(), null);
+                throw new ContextLoadException(InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getFormattedErrorMessage(tableGuid, "Schema attribute type relationship doesn't exist"), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getSystemAction(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getUserAction(), null);
             }
         } catch (PagingErrorException | TypeDefNotKnownException | TypeErrorException | EntityNotKnownException | UserNotAuthorizedException | RelationshipNotKnownException | PropertyErrorException | EntityProxyOnlyException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException e) {
-            throw new ContextLoadException(DatabaseContextHandler.class.getName(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getFormattedErrorMessage(tableGuid, e.getMessage()), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getSystemAction(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getUserAction(), e);
+            throw new ContextLoadException(InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getFormattedErrorMessage(tableGuid, e.getMessage()), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getSystemAction(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getUserAction(), e);
         }
     }
 
@@ -84,7 +84,7 @@ public class DatabaseContextHandler {
                     contexts = columnContextBuilder.getDatabaseContext(entityDetail.getGUID());
                     databaseSources.add(contexts.get(0).getTableSource().getDatabaseSource());
                 } catch (UserNotAuthorizedException | EntityProxyOnlyException | RepositoryErrorException | PagingErrorException | TypeErrorException | InvalidParameterException | EntityNotKnownException | PropertyErrorException | FunctionNotSupportedException e) {
-                    throw new ContextLoadException(DatabaseContextHandler.class.getName(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getFormattedErrorMessage(entityDetail.getGUID(), e.getMessage()), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getSystemAction(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getUserAction(), e);
+                    throw new ContextLoadException(InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getFormattedErrorMessage(entityDetail.getGUID(), e.getMessage()), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getSystemAction(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getUserAction(), e);
                 }
             }
         }
@@ -107,7 +107,7 @@ public class DatabaseContextHandler {
                                                 InformationViewErrorCode.INCORRECT_MODEL_EXCEPTION.getUserAction(), null);
             }
         } catch (PagingErrorException | TypeDefNotKnownException | PropertyErrorException | UserNotAuthorizedException | RelationshipNotKnownException | EntityProxyOnlyException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | EntityNotKnownException e) {
-            throw new ContextLoadException(DatabaseContextHandler.class.getName(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getFormattedErrorMessage(tableGuid, e.getMessage()), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getSystemAction(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getUserAction(), e);
+            throw new ContextLoadException(InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getFormattedErrorMessage(tableGuid, e.getMessage()), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getSystemAction(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getUserAction(), e);
         }
     }
 
@@ -119,9 +119,9 @@ public class DatabaseContextHandler {
             throw new EntityNotFoundException(DatabaseContextHandler.class.getName(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(guid, typeName), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(), e);
         }
         if (entityDetail == null)
-            throw new EntityNotFoundException(DatabaseContextHandler.class.getName(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(GUID, guid, typeName), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(), null);
+            throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(GUID, guid, typeName), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(), null);
         if(!repositoryHelper.isTypeOf("getEntity", entityDetail.getType().getTypeDefName(), typeName)){
-            throw new IncorrectTypeException(DatabaseContextHandler.class.getName(), InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getFormattedErrorMessage(GUID,  guid, typeName), InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getSystemAction(), InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getUserAction(), null);
+            throw new IncorrectTypeException(InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getFormattedErrorMessage(GUID,  guid, typeName), InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getSystemAction(), InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getUserAction(), null);
         }
         return entityDetail;
     }
