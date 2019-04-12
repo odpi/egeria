@@ -9,10 +9,13 @@ import org.slf4j.LoggerFactory;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
+import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToAnnotation.ExtendedAnnotationsReference;
+import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtension;
+import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtensionMapper;
 import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToAnnotationReview.AnnotationReviewsReference;
 import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationReviewLink.AnnotationReviewLink;
 import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationReviewLink.AnnotationReviewLinkMapper;
-import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToAnnotation.ExtendedAnnotationsReference;
+import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToAnnotation.AnnotationExtensionsReference;
 import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtension;
 import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtensionMapper;
 import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToOpenDiscoveryAnalysisReport.FromAnalysisReportReference;
@@ -21,9 +24,6 @@ import org.odpi.openmetadata.fvt.opentypes.relationships.DiscoveredAnnotation.Di
 import  org.odpi.openmetadata.fvt.opentypes.references.DataFieldAnnotationToDataField.AnnotatedDataFieldsReference;
 import org.odpi.openmetadata.fvt.opentypes.relationships.DataFieldAnalysis.DataFieldAnalysis;
 import org.odpi.openmetadata.fvt.opentypes.relationships.DataFieldAnalysis.DataFieldAnalysisMapper;
-import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToAnnotation.AnnotationExtensionsReference;
-import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtension;
-import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtensionMapper;
 
 import java.io.Serializable;
 import java.util.*;
@@ -49,21 +49,21 @@ public class ClassificationAnnotationReferences implements Serializable {
     private static final String className = ClassificationAnnotationReferences.class.getName();
 
     public static final String[] REFERENCE_NAMES_SET_VALUES = new String[] {
-             "annotationReviews",
              "extendedAnnotations",
+             "annotationReviews",
+             "annotationExtensions",
              "fromAnalysisReport",
              "annotatedDataFields",
-             "annotationExtensions",
              // Terminate the list
              null
     };
 
      public static final String[] RELATIONSHIP_NAMES_SET_VALUES = new String[] {
+             "AnnotationExtension",
              "AnnotationReviewLink",
              "AnnotationExtension",
              "DiscoveredAnnotation",
              "DataFieldAnalysis",
-             "AnnotationExtension",
               // Terminate the list
               null
      };
@@ -85,14 +85,6 @@ public class ClassificationAnnotationReferences implements Serializable {
                if (relationships.getName().equals(RELATIONSHIP_NAMES_SET_VALUES[i])) {
                     String referenceName = REFERENCE_NAMES_SET_VALUES[i];
 
-                    if ("annotationReviews".equals(referenceName)) {
-                         AnnotationReviewLink annotationReviewLink_relationship = (AnnotationReviewLink)relationships;
-                         AnnotationReviewsReference annotationReviewsReference = new AnnotationReviewsReference(entityGuid,annotationReviewLink_relationship);
-                         if ( annotationReviews== null ) {
-                              annotationReviews = new HashSet();
-                         }
-                          annotationReviews.add(annotationReviewsReference);
-                    }
                     if ("extendedAnnotations".equals(referenceName)) {
                          AnnotationExtension annotationExtension_relationship = (AnnotationExtension)relationships;
                          ExtendedAnnotationsReference extendedAnnotationsReference = new ExtendedAnnotationsReference(entityGuid,annotationExtension_relationship);
@@ -101,13 +93,13 @@ public class ClassificationAnnotationReferences implements Serializable {
                          }
                           extendedAnnotations.add(extendedAnnotationsReference);
                     }
-                    if ("annotatedDataFields".equals(referenceName)) {
-                         DataFieldAnalysis dataFieldAnalysis_relationship = (DataFieldAnalysis)relationships;
-                         AnnotatedDataFieldsReference annotatedDataFieldsReference = new AnnotatedDataFieldsReference(entityGuid,dataFieldAnalysis_relationship);
-                         if ( annotatedDataFields== null ) {
-                              annotatedDataFields = new HashSet();
+                    if ("annotationReviews".equals(referenceName)) {
+                         AnnotationReviewLink annotationReviewLink_relationship = (AnnotationReviewLink)relationships;
+                         AnnotationReviewsReference annotationReviewsReference = new AnnotationReviewsReference(entityGuid,annotationReviewLink_relationship);
+                         if ( annotationReviews== null ) {
+                              annotationReviews = new HashSet();
                          }
-                          annotatedDataFields.add(annotatedDataFieldsReference);
+                          annotationReviews.add(annotationReviewsReference);
                     }
                     if ("annotationExtensions".equals(referenceName)) {
                          AnnotationExtension annotationExtension_relationship = (AnnotationExtension)relationships;
@@ -116,6 +108,14 @@ public class ClassificationAnnotationReferences implements Serializable {
                               annotationExtensions = new HashSet();
                          }
                           annotationExtensions.add(annotationExtensionsReference);
+                    }
+                    if ("annotatedDataFields".equals(referenceName)) {
+                         DataFieldAnalysis dataFieldAnalysis_relationship = (DataFieldAnalysis)relationships;
+                         AnnotatedDataFieldsReference annotatedDataFieldsReference = new AnnotatedDataFieldsReference(entityGuid,dataFieldAnalysis_relationship);
+                         if ( annotatedDataFields== null ) {
+                              annotatedDataFields = new HashSet();
+                         }
+                          annotatedDataFields.add(annotatedDataFieldsReference);
                     }
 
                     if ("fromAnalysisReport".equals(referenceName)) {
@@ -135,10 +135,10 @@ public class ClassificationAnnotationReferences implements Serializable {
     private FromAnalysisReportReference fromAnalysisReport;
 // Set properties
 
-    private Set<AnnotationReviewsReference> annotationReviews;
     private Set<ExtendedAnnotationsReference> extendedAnnotations;
-    private Set<AnnotatedDataFieldsReference> annotatedDataFields;
+    private Set<AnnotationReviewsReference> annotationReviews;
     private Set<AnnotationExtensionsReference> annotationExtensions;
+    private Set<AnnotatedDataFieldsReference> annotatedDataFields;
 
 // List properties
 
@@ -150,13 +150,6 @@ public class ClassificationAnnotationReferences implements Serializable {
         this.fromAnalysisReport = fromAnalysisReport; }
 
 // Sets
-    public Set<AnnotationReviewsReference> getAnnotationReviewsReferences() {
-        return annotationReviews;
-    }
-
-    public void setAnnotationReviewsReferences(Set<AnnotationReviewsReference> annotationReviews) {
-        this.annotationReviews =annotationReviews;
-    }
     public Set<ExtendedAnnotationsReference> getExtendedAnnotationsReferences() {
         return extendedAnnotations;
     }
@@ -164,12 +157,12 @@ public class ClassificationAnnotationReferences implements Serializable {
     public void setExtendedAnnotationsReferences(Set<ExtendedAnnotationsReference> extendedAnnotations) {
         this.extendedAnnotations =extendedAnnotations;
     }
-    public Set<AnnotatedDataFieldsReference> getAnnotatedDataFieldsReferences() {
-        return annotatedDataFields;
+    public Set<AnnotationReviewsReference> getAnnotationReviewsReferences() {
+        return annotationReviews;
     }
 
-    public void setAnnotatedDataFieldsReferences(Set<AnnotatedDataFieldsReference> annotatedDataFields) {
-        this.annotatedDataFields =annotatedDataFields;
+    public void setAnnotationReviewsReferences(Set<AnnotationReviewsReference> annotationReviews) {
+        this.annotationReviews =annotationReviews;
     }
     public Set<AnnotationExtensionsReference> getAnnotationExtensionsReferences() {
         return annotationExtensions;
@@ -177,6 +170,13 @@ public class ClassificationAnnotationReferences implements Serializable {
 
     public void setAnnotationExtensionsReferences(Set<AnnotationExtensionsReference> annotationExtensions) {
         this.annotationExtensions =annotationExtensions;
+    }
+    public Set<AnnotatedDataFieldsReference> getAnnotatedDataFieldsReferences() {
+        return annotatedDataFields;
+    }
+
+    public void setAnnotatedDataFieldsReferences(Set<AnnotatedDataFieldsReference> annotatedDataFields) {
+        this.annotatedDataFields =annotatedDataFields;
     }
 
 // Lists
@@ -187,10 +187,10 @@ public class ClassificationAnnotationReferences implements Serializable {
         }
 
         sb.append("ClassificationAnnotationReferences{");
-        sb.append("annotationReviewsReference='").append(annotationReviews.toString());
         sb.append("extendedAnnotationsReference='").append(extendedAnnotations.toString());
-        sb.append("annotatedDataFieldsReference='").append(annotatedDataFields.toString());
+        sb.append("annotationReviewsReference='").append(annotationReviews.toString());
         sb.append("annotationExtensionsReference='").append(annotationExtensions.toString());
+        sb.append("annotatedDataFieldsReference='").append(annotatedDataFields.toString());
         sb.append("fromAnalysisReportReference='").append(fromAnalysisReport.toString());
 
         sb.append('}');
@@ -205,10 +205,13 @@ public class ClassificationAnnotationReferences implements Serializable {
         if (!super.equals(o)) { return false; }
          ClassificationAnnotationReferences typedThat = (ClassificationAnnotationReferences) o;
       // compare single cardinality attributes
+         if (this.extendedAnnotations != null && !Objects.equals(this.extendedAnnotations,typedThat.extendedAnnotations)) {
+                            return false;
+                 }
          if (this.annotationReviews != null && !Objects.equals(this.annotationReviews,typedThat.annotationReviews)) {
                             return false;
                  }
-         if (this.extendedAnnotations != null && !Objects.equals(this.extendedAnnotations,typedThat.extendedAnnotations)) {
+         if (this.annotationExtensions != null && !Objects.equals(this.annotationExtensions,typedThat.annotationExtensions)) {
                             return false;
                  }
          if (this.fromAnalysisReport != null && !Objects.equals(this.fromAnalysisReport,typedThat.fromAnalysisReport)) {
@@ -217,20 +220,17 @@ public class ClassificationAnnotationReferences implements Serializable {
          if (this.annotatedDataFields != null && !Objects.equals(this.annotatedDataFields,typedThat.annotatedDataFields)) {
                             return false;
                  }
-         if (this.annotationExtensions != null && !Objects.equals(this.annotationExtensions,typedThat.annotationExtensions)) {
-                            return false;
-                 }
         return false;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode()
-    ,this.annotationReviews
     ,this.extendedAnnotations
+    ,this.annotationReviews
+    ,this.annotationExtensions
     ,this.fromAnalysisReport
     ,this.annotatedDataFields
-    ,this.annotationExtensions
        );
     }
 

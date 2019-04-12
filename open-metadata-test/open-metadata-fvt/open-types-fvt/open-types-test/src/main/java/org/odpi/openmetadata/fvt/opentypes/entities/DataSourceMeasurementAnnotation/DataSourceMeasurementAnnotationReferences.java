@@ -9,18 +9,18 @@ import org.slf4j.LoggerFactory;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 
+import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToAnnotation.ExtendedAnnotationsReference;
+import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtension;
+import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtensionMapper;
 import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToAnnotationReview.AnnotationReviewsReference;
 import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationReviewLink.AnnotationReviewLink;
 import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationReviewLink.AnnotationReviewLinkMapper;
-import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToAnnotation.ExtendedAnnotationsReference;
+import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToAnnotation.AnnotationExtensionsReference;
 import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtension;
 import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtensionMapper;
 import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToOpenDiscoveryAnalysisReport.FromAnalysisReportReference;
 import org.odpi.openmetadata.fvt.opentypes.relationships.DiscoveredAnnotation.DiscoveredAnnotation;
 import org.odpi.openmetadata.fvt.opentypes.relationships.DiscoveredAnnotation.DiscoveredAnnotationMapper;
-import  org.odpi.openmetadata.fvt.opentypes.references.AnnotationToAnnotation.AnnotationExtensionsReference;
-import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtension;
-import org.odpi.openmetadata.fvt.opentypes.relationships.AnnotationExtension.AnnotationExtensionMapper;
 
 import java.io.Serializable;
 import java.util.*;
@@ -46,19 +46,19 @@ public class DataSourceMeasurementAnnotationReferences implements Serializable {
     private static final String className = DataSourceMeasurementAnnotationReferences.class.getName();
 
     public static final String[] REFERENCE_NAMES_SET_VALUES = new String[] {
-             "annotationReviews",
              "extendedAnnotations",
-             "fromAnalysisReport",
+             "annotationReviews",
              "annotationExtensions",
+             "fromAnalysisReport",
              // Terminate the list
              null
     };
 
      public static final String[] RELATIONSHIP_NAMES_SET_VALUES = new String[] {
+             "AnnotationExtension",
              "AnnotationReviewLink",
              "AnnotationExtension",
              "DiscoveredAnnotation",
-             "AnnotationExtension",
               // Terminate the list
               null
      };
@@ -80,14 +80,6 @@ public class DataSourceMeasurementAnnotationReferences implements Serializable {
                if (relationships.getName().equals(RELATIONSHIP_NAMES_SET_VALUES[i])) {
                     String referenceName = REFERENCE_NAMES_SET_VALUES[i];
 
-                    if ("annotationReviews".equals(referenceName)) {
-                         AnnotationReviewLink annotationReviewLink_relationship = (AnnotationReviewLink)relationships;
-                         AnnotationReviewsReference annotationReviewsReference = new AnnotationReviewsReference(entityGuid,annotationReviewLink_relationship);
-                         if ( annotationReviews== null ) {
-                              annotationReviews = new HashSet();
-                         }
-                          annotationReviews.add(annotationReviewsReference);
-                    }
                     if ("extendedAnnotations".equals(referenceName)) {
                          AnnotationExtension annotationExtension_relationship = (AnnotationExtension)relationships;
                          ExtendedAnnotationsReference extendedAnnotationsReference = new ExtendedAnnotationsReference(entityGuid,annotationExtension_relationship);
@@ -95,6 +87,14 @@ public class DataSourceMeasurementAnnotationReferences implements Serializable {
                               extendedAnnotations = new HashSet();
                          }
                           extendedAnnotations.add(extendedAnnotationsReference);
+                    }
+                    if ("annotationReviews".equals(referenceName)) {
+                         AnnotationReviewLink annotationReviewLink_relationship = (AnnotationReviewLink)relationships;
+                         AnnotationReviewsReference annotationReviewsReference = new AnnotationReviewsReference(entityGuid,annotationReviewLink_relationship);
+                         if ( annotationReviews== null ) {
+                              annotationReviews = new HashSet();
+                         }
+                          annotationReviews.add(annotationReviewsReference);
                     }
                     if ("annotationExtensions".equals(referenceName)) {
                          AnnotationExtension annotationExtension_relationship = (AnnotationExtension)relationships;
@@ -122,8 +122,8 @@ public class DataSourceMeasurementAnnotationReferences implements Serializable {
     private FromAnalysisReportReference fromAnalysisReport;
 // Set properties
 
-    private Set<AnnotationReviewsReference> annotationReviews;
     private Set<ExtendedAnnotationsReference> extendedAnnotations;
+    private Set<AnnotationReviewsReference> annotationReviews;
     private Set<AnnotationExtensionsReference> annotationExtensions;
 
 // List properties
@@ -136,19 +136,19 @@ public class DataSourceMeasurementAnnotationReferences implements Serializable {
         this.fromAnalysisReport = fromAnalysisReport; }
 
 // Sets
-    public Set<AnnotationReviewsReference> getAnnotationReviewsReferences() {
-        return annotationReviews;
-    }
-
-    public void setAnnotationReviewsReferences(Set<AnnotationReviewsReference> annotationReviews) {
-        this.annotationReviews =annotationReviews;
-    }
     public Set<ExtendedAnnotationsReference> getExtendedAnnotationsReferences() {
         return extendedAnnotations;
     }
 
     public void setExtendedAnnotationsReferences(Set<ExtendedAnnotationsReference> extendedAnnotations) {
         this.extendedAnnotations =extendedAnnotations;
+    }
+    public Set<AnnotationReviewsReference> getAnnotationReviewsReferences() {
+        return annotationReviews;
+    }
+
+    public void setAnnotationReviewsReferences(Set<AnnotationReviewsReference> annotationReviews) {
+        this.annotationReviews =annotationReviews;
     }
     public Set<AnnotationExtensionsReference> getAnnotationExtensionsReferences() {
         return annotationExtensions;
@@ -166,8 +166,8 @@ public class DataSourceMeasurementAnnotationReferences implements Serializable {
         }
 
         sb.append("DataSourceMeasurementAnnotationReferences{");
-        sb.append("annotationReviewsReference='").append(annotationReviews.toString());
         sb.append("extendedAnnotationsReference='").append(extendedAnnotations.toString());
+        sb.append("annotationReviewsReference='").append(annotationReviews.toString());
         sb.append("annotationExtensionsReference='").append(annotationExtensions.toString());
         sb.append("fromAnalysisReportReference='").append(fromAnalysisReport.toString());
 
@@ -183,16 +183,16 @@ public class DataSourceMeasurementAnnotationReferences implements Serializable {
         if (!super.equals(o)) { return false; }
          DataSourceMeasurementAnnotationReferences typedThat = (DataSourceMeasurementAnnotationReferences) o;
       // compare single cardinality attributes
-         if (this.annotationReviews != null && !Objects.equals(this.annotationReviews,typedThat.annotationReviews)) {
-                            return false;
-                 }
          if (this.extendedAnnotations != null && !Objects.equals(this.extendedAnnotations,typedThat.extendedAnnotations)) {
                             return false;
                  }
-         if (this.fromAnalysisReport != null && !Objects.equals(this.fromAnalysisReport,typedThat.fromAnalysisReport)) {
+         if (this.annotationReviews != null && !Objects.equals(this.annotationReviews,typedThat.annotationReviews)) {
                             return false;
                  }
          if (this.annotationExtensions != null && !Objects.equals(this.annotationExtensions,typedThat.annotationExtensions)) {
+                            return false;
+                 }
+         if (this.fromAnalysisReport != null && !Objects.equals(this.fromAnalysisReport,typedThat.fromAnalysisReport)) {
                             return false;
                  }
         return false;
@@ -201,10 +201,10 @@ public class DataSourceMeasurementAnnotationReferences implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode()
-    ,this.annotationReviews
     ,this.extendedAnnotations
-    ,this.fromAnalysisReport
+    ,this.annotationReviews
     ,this.annotationExtensions
+    ,this.fromAnalysisReport
        );
     }
 
