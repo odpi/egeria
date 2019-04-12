@@ -9,6 +9,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * A Classification
@@ -19,6 +20,7 @@ import java.util.Date;
 public class Classification implements Serializable {
     protected static final long serialVersionUID = 1L;
 
+
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
@@ -26,6 +28,7 @@ public class Classification implements Serializable {
     private SystemAttributes systemAttributes = null;
     private Date effectiveFromTime = null;
     private Date effectiveToTime = null;
+    private Map<String,Object> extraAttributes;
 
     protected String classificationName = null;
     /**
@@ -72,4 +75,15 @@ public class Classification implements Serializable {
     }
 
     public InstanceProperties obtainInstanceProperties() { return null;}
+
+    /**
+     * Get the extra attributes - ones that are in addition to the standard types.
+     * @return extra attributes
+     */
+    public Map<String, Object> getExtraAttributes() {
+        return extraAttributes;
+    }
+    public void setExtraAttributes(Map<String, Object> extraAttributes) {
+        this.extraAttributes = extraAttributes;
+    }
 }

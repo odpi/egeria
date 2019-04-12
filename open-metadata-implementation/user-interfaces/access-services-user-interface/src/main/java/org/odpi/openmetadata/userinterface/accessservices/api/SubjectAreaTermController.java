@@ -7,8 +7,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaTerm;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.SubjectAreaCheckedExceptionBase;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder;
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.utils.DetectUtils;
 import org.odpi.openmetadata.userinterface.accessservices.domain.User;
@@ -217,10 +217,10 @@ public class SubjectAreaTermController
             if (pageSize==null) {
                 pageSize=0;
             }
-            List<Line> relationships = this.subjectAreaTerm.getTermRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
-            RelationshipsResponse relationshipsResponse = new RelationshipsResponse();
-            relationshipsResponse.setRelationships(relationships);
-            response = relationshipsResponse;
+            List<Line> lines = this.subjectAreaTerm.getTermRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            LinesResponse linesResponse = new LinesResponse();
+            linesResponse.setLines(lines);
+            response = linesResponse;
         } catch (SubjectAreaCheckedExceptionBase e) {
             response = DetectUtils.getResponseFromException(e);
         }

@@ -52,7 +52,7 @@ public class TermFVT
         }
 
     }
-    public TermFVT(String url,String serverName,String userId) throws InvalidParameterException
+    public TermFVT(String url,String serverName,String userId) throws SubjectAreaCheckedExceptionBase
     {
         subjectAreaTerm = new SubjectAreaImpl(serverName,url).getSubjectAreaTerm();
         System.out.println("Create a glossary");
@@ -76,7 +76,7 @@ public class TermFVT
     public void run() throws SubjectAreaCheckedExceptionBase
     {
         Glossary glossary= glossaryFVT.createGlossary(DEFAULT_TEST_GLOSSARY_NAME);
-        System.out.println("Create a term1 using glossary name");
+        System.out.println("Create a term1");
         String glossaryGuid = glossary.getSystemAttributes().getGUID();
         Term term1 = createTerm(DEFAULT_TEST_TERM_NAME, glossaryGuid);
         FVTUtils.validateNode(term1);
@@ -177,6 +177,53 @@ public class TermFVT
         results = findTerms("This is a Term with spaces in name");
         if (results.size() !=1 ) {
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
+        }
+        Term term = results.get(0);
+        long now = new Date().getTime();
+        Date fromTermTime = new Date(now+6*1000*60*60*24);
+        Date toTermTime = new Date(now+7*1000*60*60*24);
+
+        term.setEffectiveFromTime(fromTermTime);
+        term.setEffectiveToTime(toTermTime);
+        Term updatedFutureTerm = updateTerm(term.getSystemAttributes().getGUID(),term);
+        if (updatedFutureTerm.getEffectiveFromTime().getTime()!=fromTermTime.getTime()) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected term from time to update", "", "");
+        }
+        if (updatedFutureTerm.getEffectiveToTime().getTime()!=toTermTime.getTime()) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected term to time to update", "", "");
+        }
+        Date fromGlossaryTime = new Date(now+8*1000*60*60*24);
+        Date toGlossaryTime = new Date(now+9*1000*60*60*24);
+        glossary.setEffectiveFromTime(fromGlossaryTime);
+        glossary.setEffectiveToTime(toGlossaryTime);
+        Glossary updatedFutureGlossary= glossaryFVT.updateGlossary(glossaryGuid,glossary);
+
+        if (updatedFutureGlossary.getEffectiveFromTime().getTime()!=fromGlossaryTime.getTime()) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected glossary from time to update", "", "");
+        }
+        if (updatedFutureGlossary.getEffectiveToTime().getTime()!=toGlossaryTime.getTime()) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected glossary to time to update", "", "");
+        }
+
+        Term newTerm = getTermByGUID(term.getSystemAttributes().getGUID());
+
+        GlossarySummary glossarySummary =  newTerm.getGlossary();
+
+        if (glossarySummary.getFromEffectivityTime().getTime()!=fromGlossaryTime.getTime()) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected glossary summary from time to update", "", "");
+        }
+        if (glossarySummary.getToEffectivityTime().getTime()!=toGlossaryTime.getTime()) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected glossary summary to time to update", "", "");
+        }
+
+        if (glossarySummary.getRelationshipguid() ==null) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected glossary summary non null relationship", "", "");
+        }
+        if (glossarySummary.getFromRelationshipEffectivityTime() !=null) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected glossary summary null relationship from time", "", "");
+        }
+        if (glossarySummary.getToRelationshipEffectivityTime() !=null) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected glossary summary null relationship to time", "", "");
         }
     }
 
