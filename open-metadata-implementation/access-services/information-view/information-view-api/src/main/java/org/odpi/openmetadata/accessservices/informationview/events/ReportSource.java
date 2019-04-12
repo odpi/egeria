@@ -15,11 +15,19 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 public class ReportSource extends Source {
 
+    private EndpointSource endpointSource;
     private String reportId;
+
+    public EndpointSource getEndpointSource() {
+        return endpointSource;
+    }
+
+    public void setEndpointSource(EndpointSource endpointSource) {
+        this.endpointSource = endpointSource;
+    }
 
     public String getReportId() {
         return reportId;
@@ -32,12 +40,9 @@ public class ReportSource extends Source {
     @Override
     public String toString() {
         return "ReportSource{" +
-                "reportId='" + reportId + '\'' +
+                "endpointSource=" + endpointSource +
+                ", reportId='" + reportId + '\'' +
                 '}';
     }
 
-    @Override
-    public String buildQualifiedName() {
-        return this.getNetworkAddress() + "." + reportId;
-    }
 }

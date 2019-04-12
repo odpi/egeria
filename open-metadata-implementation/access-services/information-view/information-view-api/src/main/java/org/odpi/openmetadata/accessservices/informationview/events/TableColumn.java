@@ -14,7 +14,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DatabaseColumn {
+public class TableColumn {
 
     private String guid;
     private String qualifiedName;
@@ -215,7 +215,7 @@ public class DatabaseColumn {
 
     @Override
     public String toString() {
-        return "DatabaseColumn{" +
+        return "{" +
                 "guid='" + guid + '\'' +
                 ", qualifiedName='" + qualifiedName + '\'' +
                 ", name='" + name + '\'' +
