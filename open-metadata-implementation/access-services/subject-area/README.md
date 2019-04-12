@@ -28,7 +28,7 @@ The implementation is not complete. The following has been implemented :
 * Java and REST API for create, get and update for Glossary, Category, Term , SubjectAreaDefinition.
 * Java and REST API for the Term to Term relationships HASA, RelatedTerm, Synonym, Antonym, Translations, used in context,
   preferred terms, valid values, replacement terms, typed by, is a, is a type of.
-* Java and REST API for the Term to Category relationship TermCategorization.  
+* Java and REST API for the Term to Category relationships TermCategorization.  
 * getTermRelationships, get GlossaryRelationships and getCategoryRelationships
 * findTerm, findCategory and findGlossary  
 
@@ -77,10 +77,10 @@ Subject Area OMAS mapping to OMRS entities considerations:
 * Glossary, Category and Term objects have associated icons, these are embedded objects rather than relationships. In this way icon content is shown as important to 
 the subject area expert as they are like to be working with the glossary content visually
 * The icon embedded object is a n IconSummary object. This is an example of other object in the OMAS API whose names end with "Summary". These objects represent
- a summary of the entity at the end of a certain type of OMRS relationship
+ a summary of the entity at the end of a certain type of OMRS relationships
 * Categories and Terms have a GlossarySummary , this is there associated Glossary. Good practice is to have Terms and Categories within a Glossary, so the Subject
 area API Term and Category create and update APIs expect a glossary to be supplied. See effective date considerations.   
-* OMRS relationships can be managed via the Subject Area relationship API. Some of these relationships may appear as summary objects.    
+* OMRS relationships can be managed via the Subject Area relationships API. Some of these relationships may appear as summary objects.    
     
 
 ## The Subject Area OMAS API overview.

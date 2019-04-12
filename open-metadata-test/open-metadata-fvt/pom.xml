@@ -13,15 +13,15 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Open Metadata Access Service FVT Resources</name>
+    <name>Open Metadata FVT Resources</name>
     <description>
-        The open metadata Access Services Functional Verification Test (FVT) resources.
+        The open metadata Functional Verification Test (FVT) resources.
     </description>
 
     <artifactId>open-metadata-fvt</artifactId>
     <packaging>pom</packaging>
     <modules>
         <module>access-services-fvt</module>
+        <module>open-types-fvt</module>
     </modules>
-
 </project>

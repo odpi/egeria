@@ -132,7 +132,7 @@ public class Confidence extends Classification {
        private GovernanceClassificationStatus status;
        /**
         * {@literal Status of this classification. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return Status of this classification.
         */
        public GovernanceClassificationStatus getStatus() {
            return this.status;
@@ -145,7 +145,7 @@ public class Confidence extends Classification {
        private Integer confidence;
        /**
         * {@literal Level of confidence in the classification (0=none -> 100=excellent). }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return  Level of confidence in the classification
         */
        public Integer getConfidence() {
            return this.confidence;
@@ -158,7 +158,7 @@ public class Confidence extends Classification {
        private String steward;
        /**
         * {@literal Person responsible for maintaining this classification. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return  Person responsible for maintaining this classification.
         */
        public String getSteward() {
            return this.steward;
@@ -171,7 +171,7 @@ public class Confidence extends Classification {
        private String source;
        /**
         * {@literal Source of the classification. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return Source of the classification.
         */
        public String getSource() {
            return this.source;
@@ -184,7 +184,7 @@ public class Confidence extends Classification {
        private String notes;
        /**
         * {@literal Information relating to the classification. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return Information relating to the classification.
         */
        public String getNotes() {
            return this.notes;
@@ -197,7 +197,7 @@ public class Confidence extends Classification {
        private ConfidenceLevel level;
        /**
         * {@literal Level of confidence in the quality of this data. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return Level of confidence in the quality of this data.
         */
        public ConfidenceLevel getLevel() {
            return this.level;

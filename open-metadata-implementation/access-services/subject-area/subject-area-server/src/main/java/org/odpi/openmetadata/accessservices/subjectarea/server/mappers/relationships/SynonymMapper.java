@@ -3,90 +3,159 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.ConfidentialityLevel;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.GovernanceClassificationStatus;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Synonym;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Synonym;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.Map;
 
 
 /**
- * Static mapping methods to map between the synonym and the equivalent generated OMRSRelationshipBean
+ * Mapping methods to map between the synonym and the equivalent omrs Relationship.
  */
-public class SynonymMapper
+public class SynonymMapper extends LineMapper 
 {
     private static final Logger log = LoggerFactory.getLogger( SynonymMapper.class);
     private static final String className = SynonymMapper.class.getName();
+    public static final String SYNONYM = "Synonym";
 
+    public SynonymMapper(OMRSAPIHelper omrsapiHelper) {
+        super(omrsapiHelper);
+    }
     /**
-     * map Synonym to the omrs relationship bean equivalent
-     * @param synonym supplied Synonym
-     * @return omrs relationship bean equivalent
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
+     * Map the supplied Line to omrs InstanceProperties.
+     * @param line supplied line
+     * @param instanceProperties equivalent instance properties to the Line
      */
-    static public org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym mapSynonymToOMRSRelationshipBean(Synonym synonym) throws InvalidParameterException {
-        // copy over the Line attributes
-        org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym omrsRelationshipBean = new  org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym(synonym);
-        //Set properties
-        omrsRelationshipBean.setDescription(synonym.getDescription());
-        omrsRelationshipBean.setExpression(synonym.getExpression());
-        omrsRelationshipBean.setSource(synonym.getSource());
-        omrsRelationshipBean.setSteward(synonym.getSteward());
-        omrsRelationshipBean.setStatus(synonym.getStatus());
-        omrsRelationshipBean.setGuid(synonym.getGuid());
-        omrsRelationshipBean.setEntity1Guid(synonym.getSynonym1Guid());
-        omrsRelationshipBean.setEntity2Guid(synonym.getSynonym2Guid());
-        Map<String, Object> extraAttributes = synonym.getExtraAttributes();
-        if (extraAttributes !=null)
-        {
-            String[] properties = org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym.PROPERTY_NAMES_SET_VALUES;
-            for (String property : properties)
-            {
-                if (extraAttributes.containsKey(property))
-                {
-                    extraAttributes.remove(property);
-                }
-            }
-            omrsRelationshipBean.setExtraAttributes(extraAttributes);
+    @Override
+    protected void mapLineToInstanceProperties(Line line, InstanceProperties instanceProperties) {
+        Synonym synonym = (Synonym)line;
+        if (synonym.getDescription()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, synonym.getDescription(), "description");
         }
-        if (synonym.getSystemAttributes() !=null) {
-            omrsRelationshipBean.setSystemAttributes(synonym.getSystemAttributes());
+        if (synonym.getExpression()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, synonym.getExpression(), "expression");
         }
-
-        return omrsRelationshipBean;
+        if (synonym.getSteward()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, synonym.getSteward(), "steward");
+        }
+        if (synonym.getSource()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, synonym.getSource(), "source");
+        }
+        if (synonym.getStatus()!=null) {
+            EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
+            enumPropertyValue.setOrdinal(synonym.getStatus().getOrdinal());
+            instanceProperties.setProperty("status",enumPropertyValue);
+        }
+    }
+    /**
+     * Map a primitive omrs property to the synonym object.
+     * @param line the glossary to be updated
+     * @param propertyName the omrs property name
+     * @param value the omrs primitive property value
+     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     */
+    @Override
+    protected boolean mapPrimitiveToLine(Line line, String propertyName, Object value) {
+        String stringValue = (String) value;
+       Synonym synonym = (Synonym) line;
+        boolean foundProperty = false;
+        if (propertyName.equals("description")) {
+            synonym.setDescription(stringValue);
+            foundProperty = true;
+        }
+        if (propertyName.equals("expression")) {
+            synonym.setExpression(stringValue);
+            foundProperty = true;
+        }
+        if (propertyName.equals("steward")) {
+            synonym.setSteward(stringValue);
+            foundProperty = true;
+        }
+        if (propertyName.equals("source")) {
+            synonym.setSource(stringValue);
+            foundProperty = true;
+        }
+        return foundProperty;
+    }
+    @Override
+    protected boolean mapEnumToLine(Line line, String propertyName, EnumPropertyValue enumPropertyValue)
+    {
+        Synonym synonym = (Synonym) line;
+        boolean foundProperty = false;
+        if (propertyName.equals("status")) {
+            TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
+            synonym.setStatus(status);
+            foundProperty = true;
+        }
+        return foundProperty;
     }
 
     /**
-     * Map omrs relationship bean equivalent to Synonym
-     * @param omrsRelationshipBean omrs relationship bean equivalent
-     * @return Synonym synonym
+     * Get proxy1 guid.
+     * The proxy has omrs type GlossaryTerm
+     * @param line line
+     * @return guid for entity proxy 1
      */
-    public static Synonym mapOMRSRelationshipBeanToSynonym(org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym omrsRelationshipBean) {
-        // copy over the Line attributes
-        Synonym synonym = new Synonym(omrsRelationshipBean);
-        synonym.setDescription(omrsRelationshipBean.getDescription());
-        synonym.setExpression(omrsRelationshipBean.getExpression());
-        synonym.setSource(omrsRelationshipBean.getSource());
-        synonym.setSteward(omrsRelationshipBean.getSteward());
-        synonym.setStatus(omrsRelationshipBean.getStatus());
-        synonym.setGuid(omrsRelationshipBean.getGuid());
-        synonym.setSynonym1Guid(omrsRelationshipBean.getEntity1Guid());
-        synonym.setSynonym2Guid(omrsRelationshipBean.getEntity2Guid());
-        String[] properties=org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym.PROPERTY_NAMES_SET_VALUES;
-        Map<String, Object> extraAttributes =synonym.getExtraAttributes();
-        if (properties!=null && properties.length >0) {
-            if (extraAttributes ==null) {
-                extraAttributes =new HashMap<>();
-            }
-            for (String property : properties) {
-                if (extraAttributes.containsKey(property)) {
-                    extraAttributes.remove(property);
-                }
-            }
-            synonym.setExtraAttributes(extraAttributes);
-        }
-        return synonym;
+    @Override
+    protected String getProxy1Guid(Line line)
+    {
+        Synonym synonym = (Synonym) line;
+        return synonym.getSynonym1Guid();
+    }
+
+    /**
+     * Get proxy2 guid
+     * The proxy has omrs type GlossaryTerm
+     * @param line for this Line
+     * @return guid for entity proxy 2
+     */
+    @Override
+    protected String getProxy2Guid(Line line)
+    {
+        Synonym synonym = (Synonym) line;
+        return synonym.getSynonym2Guid();
+    }
+
+    /**
+     * Get the relationship type def guid.
+     * @param relationship the relationship associated with the typedef whose guid is returned.
+     * @return guid of the typedef
+     */
+    @Override
+    protected String getRelationshipTypeDefGuid(Relationship relationship)
+    {
+        return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), SYNONYM).getGUID();
+    }
+    @Override
+    protected String getTypeName() {
+        return  SYNONYM;
+    }
+    @Override
+    protected Line getLineInstance() {
+        return new Synonym();
+    }
+    @Override
+    protected void setEnd1GuidInLine(Line line, String guid){
+        Synonym synonym =(Synonym) line;
+        synonym.setSynonym1Guid(guid);
+    }
+    @Override
+    protected void setEnd2GuidInLine(Line line, String guid) {
+        Synonym synonym =(Synonym) line;
+        synonym.setSynonym2Guid(guid);
     }
 }
