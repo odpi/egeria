@@ -61,8 +61,8 @@ public class CategoryHierarchyLink extends Line {
       public static final java.util.Set<String> ATTRIBUTE_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ATTRIBUTE_NAMES_SET_VALUES)));
       public static final java.util.Set<String> ENUM_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(ENUM_NAMES_SET_VALUES)));
       public static final java.util.Set<String> MAP_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(MAP_NAMES_SET_VALUES)));
-    protected String entity1Guid;
-    protected String entity2Guid;
+      protected String superCategoryGuid;
+      protected String subCategoryGuid;
 
 
     public CategoryHierarchyLink() {
@@ -118,8 +118,27 @@ public class CategoryHierarchyLink extends Line {
           return instanceProperties;
     }
 
+    public String getSuperCategoryGuid()
+    {
+        return superCategoryGuid;
+    }
 
-      @Override
+    public void setSuperCategoryGuid(String superCategoryGuid)
+    {
+        this.superCategoryGuid = superCategoryGuid;
+    }
+
+    public String getSubCategoryGuid()
+    {
+        return subCategoryGuid;
+    }
+
+    public void setSubCategoryGuid(String subCategoryGuid)
+    {
+        this.subCategoryGuid = subCategoryGuid;
+    }
+
+    @Override
          public StringBuilder toString(StringBuilder sb)
          {
              if (sb == null)

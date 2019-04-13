@@ -103,7 +103,7 @@ public class SubjectAreaBaseImpl
         DetectUtils.detectAndThrowUserNotAuthorizedException(methodName,restResponse);
         DetectUtils.detectAndThrowInvalidParameterException(methodName,restResponse);
         DetectUtils.detectAndThrowFunctionNotSupportedException(methodName,restResponse);
-        List<Line> relationships = DetectUtils.detectAndReturnRelationships(methodName,restResponse);
+        List<Line> relationships = DetectUtils.detectAndReturnLines(methodName,restResponse);
         if (log.isDebugEnabled()) {
             log.debug("<== successful method : " + methodName + ",userId="+userId );
         }

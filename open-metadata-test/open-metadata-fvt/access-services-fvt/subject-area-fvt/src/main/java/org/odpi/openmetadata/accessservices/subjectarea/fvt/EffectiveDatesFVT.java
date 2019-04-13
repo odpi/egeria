@@ -41,7 +41,7 @@ public class EffectiveDatesFVT
         }
 
     }
-    public EffectiveDatesFVT(String url, String serverName,String userId) throws InvalidParameterException
+    public EffectiveDatesFVT(String url, String serverName,String userId) throws SubjectAreaCheckedExceptionBase
     {
         subjectAreaTerm = new SubjectAreaImpl(serverName,url).getSubjectAreaTerm();
         System.out.println("Create a glossary");
@@ -86,14 +86,14 @@ public class EffectiveDatesFVT
         FVTUtils.validateNode(term5);
         if (term5.getGlossary()==null) {
             // error
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Term expected an associated future Glossary,  ", "", "");
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Term with no effectivity constraints expected an associated future Glossary,  ", "", "");
         }
 
         Term gotTerm5 = termFVT.getTermByGUID(term5.getSystemAttributes().getGUID());
         FVTUtils.validateNode(gotTerm5);
         if (gotTerm5.getGlossary()==null) {
             // error
-            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Term expected an associated future Glossary,  ", "", "");
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Term with no effectivity constraints expected an associated future Glossary,  ", "", "");
         }
         // update the term so that its effective dates not longer are compatible with the glossary
         Term futureTerm = termFVT.updateTermToFuture(gotTerm5.getSystemAttributes().getGUID(),term5);
@@ -109,5 +109,4 @@ public class EffectiveDatesFVT
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Term expected no associated future Glossary,  ", "", "");
         }
     }
-
 }
