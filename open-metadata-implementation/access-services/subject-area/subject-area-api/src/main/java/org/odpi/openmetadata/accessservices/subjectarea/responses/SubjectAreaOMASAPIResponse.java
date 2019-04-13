@@ -30,9 +30,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = TermsResponse.class, name = "TermsResponse"),
                 @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
                 @JsonSubTypes.Type(value = ProjectResponse.class, name = "ProjectResponse"),
-                @JsonSubTypes.Type(value = RelationshipsResponse.class, name = "RelationshipsResponse"),
+                @JsonSubTypes.Type(value = LinesResponse.class, name = "LinesResponse"),
 
-                // Relationships
+                // Lines
 
                 // term to term relationship responses
                 @JsonSubTypes.Type(value = TermHASARelationshipResponse.class, name = "TermHASARelationshipResponse"),

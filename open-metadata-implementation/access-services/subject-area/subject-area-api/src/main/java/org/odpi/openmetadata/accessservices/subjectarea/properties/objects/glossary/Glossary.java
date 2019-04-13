@@ -2,28 +2,41 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.CanonicalVocabulary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.CategoriesResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.CategoryResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.GlossaryResponse;
 
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- *
+ * Glossary object
  */
+
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+@JsonSubTypes(
+        {
+                @JsonSubTypes.Type(value = Taxonomy.class, name = "Taxonomy"),
+                @JsonSubTypes.Type(value = CanonicalTaxonomy.class, name = "CanonicalTaxonomy"),
+                @JsonSubTypes.Type(value = CanonicalGlossary.class, name = "CanonicalGlossary")
+        })
+
 public class Glossary extends Node{
     public Glossary() {
         nodeType = NodeType.Glossary;
@@ -103,13 +116,6 @@ public class Glossary extends Node{
      * The Governance level associated with this glossary
      */
 
-    /**
-     * The classifications associated with this glossary
-     */
-    @Override
-    public List<Classification> getClassifications() {
-        return super.getClassifications();
-    }
       @Override
     /**
      * The icons associated with this glossary.

@@ -206,10 +206,10 @@ public class SubjectAreaGlossaryController
         String userId = getUser(model);
         SubjectAreaOMASAPIResponse response;
         try {
-            List<Line> relationships = this.subjectAreaGlossary.getGlossaryRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
-            RelationshipsResponse relationshipsResponse = new RelationshipsResponse();
-            relationshipsResponse.setRelationships(relationships);
-            response = relationshipsResponse;
+            List<Line> lines = this.subjectAreaGlossary.getGlossaryRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
+            LinesResponse linesResponse = new LinesResponse();
+            linesResponse.setLines(lines);
+            response = linesResponse;
         } catch (SubjectAreaCheckedExceptionBase e) {
             response = DetectUtils.getResponseFromException(e);
         }

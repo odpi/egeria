@@ -32,7 +32,7 @@ public class SubjectAreaInstanceHandler
      * Return the Subject Area's official Access Service Name
      *
      * @param serverName  name of the server that the request is for
-     * @return String name
+     * @return String the service name
      * @throws MetadataServerUncontactableException no available instance for the requested server
      */
     public String  getAccessServiceName(String serverName) throws MetadataServerUncontactableException {
