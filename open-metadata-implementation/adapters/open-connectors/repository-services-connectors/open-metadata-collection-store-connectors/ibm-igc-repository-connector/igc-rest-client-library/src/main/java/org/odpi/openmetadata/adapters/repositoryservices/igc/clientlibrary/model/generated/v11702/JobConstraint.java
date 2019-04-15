@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v11702;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import javax.annotation.Generated;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,9 +21,9 @@ import java.util.ArrayList;
  */
 @Generated("org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.IGCRestModelGenerator")
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeName("job_constraint")
 public class JobConstraint extends Reference {
 
-    public static String getIgcTypeId() { return "job_constraint"; }
     public static String getIgcTypeDisplayName() { return "Job Constraint"; }
 
     /**
