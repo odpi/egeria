@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.discovery;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException;
+import org.odpi.openmetadata.frameworks.discovery.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryReport;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;
@@ -26,12 +27,14 @@ public abstract class DiscoveryEngine
      *
      * @return unique id for the discovery request.
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public abstract String discoverAsset(String   userId,
                                          String   assetGUID,
-                                         String   assetType) throws UserNotAuthorizedException,
+                                         String   assetType) throws InvalidParameterException,
+                                                                    UserNotAuthorizedException,
                                                                     DiscoveryEngineException;
 
 
@@ -43,11 +46,13 @@ public abstract class DiscoveryEngine
      *
      * @return status enum
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public abstract DiscoveryRequestStatus getDiscoveryStatus(String   userId,
-                                                              String   discoveryRequestGUID) throws UserNotAuthorizedException,
+                                                              String   discoveryRequestGUID) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
                                                                                                     DiscoveryEngineException;
 
 
@@ -59,11 +64,13 @@ public abstract class DiscoveryEngine
      *
      * @return discovery report
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public abstract DiscoveryReport   getDiscoveryReport(String   userId,
-                                                         String   discoveryRequestGUID) throws UserNotAuthorizedException,
+                                                         String   discoveryRequestGUID) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
                                                                                                DiscoveryEngineException;
 
 
@@ -77,13 +84,15 @@ public abstract class DiscoveryEngine
      *
      * @return list of annotations
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public abstract List<Annotation>  getDiscoveryReportAnnotations(String   userId,
                                                                     String   discoveryRequestGUID,
                                                                     int      startingFrom,
-                                                                    int      maximumResults) throws UserNotAuthorizedException,
+                                                                    int      maximumResults) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
                                                                                                     DiscoveryEngineException;
 
 
@@ -97,13 +106,15 @@ public abstract class DiscoveryEngine
      *
      * @return list of Annotation objects
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public abstract List<Annotation>  getExtendedAnnotations(String   userId,
                                                              String   annotationGUID,
                                                              int      startingFrom,
-                                                             int      maximumResults) throws UserNotAuthorizedException,
+                                                             int      maximumResults) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
                                                                                              DiscoveryEngineException;
 
 
@@ -116,10 +127,12 @@ public abstract class DiscoveryEngine
      *
      * @return Annotation object
      *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
      * @throws UserNotAuthorizedException user not authorized to issue this request.
      * @throws DiscoveryEngineException there was a problem detected by the discovery engine.
      */
     public abstract Annotation        getAnnotation(String   userId,
-                                                    String   annotationGUID) throws UserNotAuthorizedException,
+                                                    String   annotationGUID) throws InvalidParameterException,
+                                                                                    UserNotAuthorizedException,
                                                                                     DiscoveryEngineException;
 }
