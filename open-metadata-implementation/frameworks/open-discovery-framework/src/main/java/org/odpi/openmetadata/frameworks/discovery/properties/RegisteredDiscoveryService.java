@@ -50,6 +50,17 @@ public class RegisteredDiscoveryService extends DiscoveryServiceProperties
 
 
     /**
+     * Copy/clone constructor
+     *
+     * @param template object to copy
+     */
+    public RegisteredDiscoveryService(DiscoveryServiceProperties  template)
+    {
+        super(template);
+    }
+
+
+    /**
      * Return the list of asset types that this discovery service supports.
      *
      * @return list of asset type names
