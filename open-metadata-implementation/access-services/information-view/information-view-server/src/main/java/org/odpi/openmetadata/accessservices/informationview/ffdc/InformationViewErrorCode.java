@@ -80,6 +80,14 @@ public enum InformationViewErrorCode {
     REPORT_ELEMENT_CREATION_EXCEPTION(500, "OMAS-INFORMATION-VIEW-017",
                             "Element {0} could not be created because of error: {1}",
                             "The system is unable to process the request.",
+                            "Check the error message on how to fix the error."),
+    REPORT_SUBMIT_EXCEPTION(500, "OMAS-INFORMATION-VIEW-018",
+                            "Unable to create report because of error: {1}",
+                            "The system is unable to process the request.",
+                            "Check the error message on how to fix the error."),
+    INFORMATION_VIEW_SUBMIT_EXCEPTION(500, "OMAS-INFORMATION-VIEW-019",
+                            "Unable to create information view because of error: {1}",
+                            "The system is unable to process the request.",
                             "Check the error message on how to fix the error.");
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewErrorCode.class);
