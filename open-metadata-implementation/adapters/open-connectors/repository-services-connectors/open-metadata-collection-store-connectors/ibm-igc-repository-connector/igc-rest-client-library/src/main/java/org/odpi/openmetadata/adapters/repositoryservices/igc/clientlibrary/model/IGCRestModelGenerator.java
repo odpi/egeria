@@ -3,11 +3,13 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestClient;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCRestConstants;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.IGCVersionEnum;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Type;
 import org.odpi.openmetadata.http.HttpHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +27,32 @@ import java.util.regex.Matcher;
 public class IGCRestModelGenerator {
 
     private static final Logger log = LoggerFactory.getLogger(IGCRestModelGenerator.class);
+    private static final String DIRECTORY = ""
+            + "open-metadata-implementation" + File.separator
+            + "adapters" + File.separator
+            + "open-connectors" + File.separator
+            + "repository-services-connectors" + File.separator
+            + "open-metadata-collection-store-connectors" + File.separator
+            + "ibm-igc-repository-connector" + File.separator
+            + "igc-rest-client-library" + File.separator
+            + "src" + File.separator
+            + "main" + File.separator
+            + "java" + File.separator
+            + "org" + File.separator
+            + "odpi" + File.separator
+            + "openmetadata" + File.separator
+            + "adapters" + File.separator
+            + "repositoryservices" + File.separator
+            + "igc" + File.separator
+            + "clientlibrary" + File.separator
+            + "model" + File.separator
+            + "generated";
+
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     public static void main(String[] args) {
 
-        if (args.length < 5) {
+        if (args.length < 4) {
             System.out.println("Inadequate parameters provided.");
             printUsage();
             System.exit(1);
@@ -37,7 +61,7 @@ public class IGCRestModelGenerator {
         HttpHelper.noStrictSSL();
 
         IGCRestModelGenerator generator = new IGCRestModelGenerator(args[0], args[1], args[2], args[3]);
-        generator.generateForAllIgcTypesInEnvironment(args[4]);
+        generator.generateForAllIgcTypesInEnvironment();
 
     }
 
@@ -95,27 +119,34 @@ public class IGCRestModelGenerator {
 
     }
 
-    public void generateForAllIgcTypesInEnvironment(String directory) {
+    public void generateForAllIgcTypesInEnvironment() {
+
+        String igcVersion = igcRestClient.getIgcVersion().getVersionString();
+        String genDirectory = this.DIRECTORY + File.separator + igcVersion;
 
         // First ensure the target directory has been created / exists
-        File dir = new File(directory);
+        File dir = new File(genDirectory);
         if (!dir.exists()){
-            System.out.println("Creating directory: " + directory);
+            System.out.println("Creating directory: " + genDirectory);
             dir.mkdirs();
         }
 
         // Then generate the POJOs within that directory
-        System.out.println("Generating POJOs for IGC version: " + igcRestClient.getIgcVersion());
-        ArrayNode types = igcRestClient.getTypes();
-        for (int i = 0; i < types.size(); i++) {
-            String type = types.get(i).path("_id").asText();
-            JsonNode properties = igcRestClient.makeRequest(
+        System.out.println("Generating POJOs for IGC version: " + igcVersion);
+        List<Type> types = igcRestClient.getTypes(mapper);
+        for (Type igcType : types) {
+            String type = igcType.getId();
+            String properties = igcRestClient.makeRequest(
                     igcRestClient.getBaseURL() + "/ibm/iis/igc-rest/v1/types/" + type + "?showViewProperties=true&showCreateProperties=true",
                     HttpMethod.GET,
                     MediaType.APPLICATION_JSON,
                     null
             );
-            createPOJOForType(properties, directory, igcRestClient.getIgcVersion());
+            try {
+                createPOJOForType(mapper.readValue(properties, JsonNode.class), genDirectory, igcRestClient.getIgcVersion());
+            } catch (IOException e) {
+                System.out.println("ERROR: could not translate properties to JSON: " + properties);
+            }
         }
         igcRestClient.disconnect();
 
@@ -302,6 +333,8 @@ public class IGCRestModelGenerator {
                 fs.append(System.lineSeparator());
                 fs.append("import com.fasterxml.jackson.annotation.JsonIgnoreProperties;");
                 fs.append(System.lineSeparator());
+                fs.append("import com.fasterxml.jackson.annotation.JsonTypeName;");
+                fs.append(System.lineSeparator());
                 fs.append("import javax.annotation.Generated;");
                 fs.append(System.lineSeparator());
 
@@ -326,6 +359,8 @@ public class IGCRestModelGenerator {
                 fs.append(System.lineSeparator());
                 fs.append("@JsonIgnoreProperties(ignoreUnknown=true)");
                 fs.append(System.lineSeparator());
+                fs.append("@JsonTypeName(\"" + id + "\")");
+                fs.append(System.lineSeparator());
 
                 if (ALIAS_OBJECTS.containsKey(id)) {
                     fs.append("public class " + className + " extends " + IGCRestConstants.getClassNameForAssetType(ALIAS_OBJECTS.get(id)) + " {");
@@ -335,8 +370,6 @@ public class IGCRestModelGenerator {
                     fs.append(System.lineSeparator() + System.lineSeparator());
                 }
 
-                fs.append("    public static String getIgcTypeId() { return \"" + id + "\"; }");
-                fs.append(System.lineSeparator());
                 fs.append("    public static String getIgcTypeDisplayName() { return \"" + name + "\"; }");
                 fs.append(System.lineSeparator());
                 fs.append(System.lineSeparator());
