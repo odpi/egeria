@@ -12,15 +12,4 @@ public class DataPlatformOMASResource {
 
     private final DataPlatformRestServices restAPI = new DataPlatformRestServices();
 
-
-    /**
-     * @param serverName  unique identifier for requested server.
-     * @param userId      the unique identifier for the user
-     * @return
-     */
-    @PostMapping(path = "/test")
-    public String submitReport(@PathVariable("serverName") String serverName,
-                                                    @PathVariable("userId") String userId) {
-        return userId;
-    }
 }
