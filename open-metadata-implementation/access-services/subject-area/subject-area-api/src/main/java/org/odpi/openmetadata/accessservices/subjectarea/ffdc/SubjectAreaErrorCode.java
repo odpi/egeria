@@ -319,7 +319,14 @@ public enum SubjectAreaErrorCode {
             "An error occurred when attempting to encode the value of Query parameter {0}",
             "The client is unable to send the rest call as the supplied query parameter {0} cannot be encoded.",
             "Correct the code in the caller to supply a query parameter that can be encoded."),
-
+    MAPPER_ENTITY_GUID_TYPE_ERROR(400, "OMAS-SUBJECTAREA-400-076 ",
+            "An error occurred because guid {0} is not a {1} so the EntityDetail cannot be mapped to a {1} , ",
+            "The server is unable to continue the call.",
+            "Correct the code in the caller to supply a guid that corresponds to type {1}."),
+    MAPPER_RELATIONSHIP_GUID_TYPE_ERROR(400, "OMAS-SUBJECTAREA-400-077 ",
+            "An error occurred because guid {0} is not a {1} so the Relationship cannot be mapped to a {1} , ",
+            "The server is unable to continue the call.",
+            "Correct the code in the caller to supply a guid that corresponds to type {1}."),
 
     OMRS_NOT_INITIALIZED(404, "OMAS-SUBJECTAREA-404-001 ",
             "The open metadata repository services are not initialized for the {0} operation",
