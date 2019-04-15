@@ -98,10 +98,7 @@ public class GovernanceEngineAdminTest {
 
         // Validate first entry is initializing, last is initialized. Interim audit log entries are not checked
         assertTrue(auditString.getAllValues().get(0).contains("OMAS-GOVERNANCE-ENGINE-0004"));
-        assertTrue(auditString.getAllValues().get(auditString.getAllValues().size() - 1).contains("OMAS-GOVERNANCE" +
-                "-ENGINE" +
-                "-0005"));
+        assertTrue(auditString.getAllValues().get(auditString.getAllValues().size() - 1).contains("OMAS-GOVERNANCE-ENGINE-0005"));
     }
-
 
 }

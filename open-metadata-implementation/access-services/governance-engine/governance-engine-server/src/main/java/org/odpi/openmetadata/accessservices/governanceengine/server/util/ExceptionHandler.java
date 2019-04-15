@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.server.util;
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceEngineOMASAPIResponse;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSCheckedExceptionBase;
 
 public class ExceptionHandler {
 
@@ -100,6 +101,15 @@ public class ExceptionHandler {
     public void capturePropertyServerException(GovernanceEngineOMASAPIResponse response,
                                                PropertyServerException error) {
         captureCheckedException(response, error, error.getClass().getName());
+    }
+
+    public void captureOMRSException(GovernanceEngineOMASAPIResponse response,
+                                     OMRSCheckedExceptionBase error) {
+        response.setRelatedHTTPCode(error.getReportedHTTPCode());
+        response.setExceptionClassName(error.getClass().getName());
+        response.setExceptionErrorMessage(error.getErrorMessage());
+        response.setExceptionSystemAction(error.getReportedSystemAction());
+        response.setExceptionUserAction(error.getReportedUserAction());
     }
 
 }

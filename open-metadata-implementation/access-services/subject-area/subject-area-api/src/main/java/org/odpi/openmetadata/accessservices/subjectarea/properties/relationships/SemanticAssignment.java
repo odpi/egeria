@@ -161,11 +161,7 @@ public class SemanticAssignment extends Line {
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("status",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();
-          
-          primitivePropertyValue.setPrimitiveValue(null);
-          instanceProperties.setProperty("confidence",primitivePropertyValue);
-          primitivePropertyValue = new PrimitivePropertyValue();
-          
+
           primitivePropertyValue.setPrimitiveValue(null);
           instanceProperties.setProperty("steward",primitivePropertyValue);
           primitivePropertyValue = new PrimitivePropertyValue();

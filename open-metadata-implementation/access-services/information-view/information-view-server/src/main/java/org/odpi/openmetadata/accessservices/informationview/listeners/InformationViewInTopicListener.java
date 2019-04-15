@@ -82,7 +82,7 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                             informationViewAsset.getRelationalDbSchemaType().getGUID(),
                             view.getViewEntity().getGUID(),
                             new InstanceProperties());
-                    event.getTableSource().setTableGuid(view.getViewEntity().getGUID());
+                    event.getTableSource().setGuid(view.getViewEntity().getGUID());
                 }
                 eventPublisher.sendEvent(event);
             } catch (Exception e) {

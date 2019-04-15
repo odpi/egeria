@@ -33,8 +33,7 @@ public interface GovernanceEngineClient {
      * @throws MetadataServerException         - A failure occurred communicating with the metadata repository
      */
     List<GovernedAsset> getGovernedAssetList(String userId, String classification, String type)
-            throws InvalidParameterException, UserNotAuthorizedException, ClassificationNotFoundException,
-            MetadataServerException, TypeNotFoundException;
+            throws InvalidParameterException, UserNotAuthorizedException, ClassificationNotFoundException, MetadataServerException, TypeNotFoundException;
 
     /**
      * @param userId    - String - userId of user making request.
@@ -45,6 +44,6 @@ public interface GovernanceEngineClient {
      * @throws MetadataServerException    - A failure occurred communicating with the metadata repository
      * @throws GuidNotFoundException      - the guid is not found
      */
-    GovernedAsset getGovernedAsset(String userId, String assetGuid) throws InvalidParameterException,
-            UserNotAuthorizedException, MetadataServerException, GuidNotFoundException;
+    GovernedAsset getGovernedAsset(String userId, String assetGuid)
+            throws InvalidParameterException, UserNotAuthorizedException, MetadataServerException, GuidNotFoundException;
 }

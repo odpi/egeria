@@ -39,7 +39,8 @@ public class GraphOMRSRepositoryConnector extends OMRSRepositoryConnector
                                                                        super.serverName,
                                                                        repositoryHelper,
                                                                        repositoryValidator,
-                                                                       metadataCollectionId);
+                                                                       metadataCollectionId,
+                                                                       auditLog);
         }
     }
 }

@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.outtopic;
 
-import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.GlossaryMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
@@ -59,16 +57,8 @@ public class SubjectAreaPublisher
     {
         InstanceType type = entity.getType();
         String typeDefName = type.getTypeDefName();
-
-        try {
-            if (typeDefName.equals("Glossary")) {
-                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary generatedGlossary=org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.GlossaryMapper.mapOmrsEntityDetailToGlossary(entity);
-                Glossary glossary= GlossaryMapper.mapOMRSBeantoGlossary(generatedGlossary);
-                // TODO create OMAS event.
-            }
-        } catch (InvalidParameterException e) {
-            // TODO create a more informative message
-            log.error(e.getErrorMessage());
+        if (typeDefName.equals("Glossary")) {
+            // TODO create OMAS event.
         }
     }
 

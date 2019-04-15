@@ -44,27 +44,27 @@ public class Taxonomy extends Classification {
     private Map<String, Object> extraAttributes;
 
 
- public static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
-        "organizingPrinciple",
+    public static final String[] PROPERTY_NAMES_SET_VALUES = new String[] {
+            "organizingPrinciple",
 
-    // Terminate the list
-        null
+            // Terminate the list
+            null
     };
     public static final String[] ATTRIBUTE_NAMES_SET_VALUES = new String[] {
-        "organizingPrinciple",
+            "organizingPrinciple",
 
-     // Terminate the list
-        null
+            // Terminate the list
+            null
     };
     public static final String[] ENUM_NAMES_SET_VALUES = new String[] {
 
-         // Terminate the list
-          null
+            // Terminate the list
+            null
     };
     public static final String[] MAP_NAMES_SET_VALUES = new String[] {
 
-         // Terminate the list
-         null
+            // Terminate the list
+            null
     };
     // note the below definitions needs to be fully qualified
     public static final java.util.Set<String> PROPERTY_NAMES_SET = new HashSet(new HashSet<>(Arrays.asList(PROPERTY_NAMES_SET_VALUES)));
@@ -75,13 +75,13 @@ public class Taxonomy extends Classification {
      * Default constructor
      */
     public Taxonomy() {
-            super.classificationName="Taxonomy";
+        super.classificationName="Taxonomy";
     }
     @Override
     public InstanceProperties obtainInstanceProperties() {
         final String methodName = "obtainInstanceProperties";
         if (log.isDebugEnabled()) {
-               log.debug("==> Method: " + methodName);
+            log.debug("==> Method: " + methodName);
         }
         InstanceProperties instanceProperties = new InstanceProperties();
         EnumPropertyValue enumPropertyValue=null;
@@ -91,33 +91,31 @@ public class Taxonomy extends Classification {
         primitivePropertyValue.setPrimitiveValue(organizingPrinciple);
         instanceProperties.setProperty("organizingPrinciple",primitivePropertyValue);
         if (log.isDebugEnabled()) {
-               log.debug("<== Method: " + methodName);
+            log.debug("<== Method: " + methodName);
         }
         return instanceProperties;
     }
 
-       private String organizingPrinciple;
-       /**
-        * {@literal Characteristics that influence the organization of the taxonomy. }
-        * @return {$$PropertyTypeJavadoc$$ }
-        */
-       public String getOrganizingPrinciple() {
-           return this.organizingPrinciple;
-       }
-       public void setOrganizingPrinciple(String organizingPrinciple)  {
-           this.organizingPrinciple = organizingPrinciple;
-       }
-
-
+    private String organizingPrinciple;
+    /**
+     * {@literal Characteristics that influence the organization of the taxonomy. }
+     * @return Characteristics that influence the organization of the taxonomy.
+     */
+    public String getOrganizingPrinciple() {
+        return this.organizingPrinciple;
+    }
+    public void setOrganizingPrinciple(String organizingPrinciple)  {
+        this.organizingPrinciple = organizingPrinciple;
+    }
 
     /**
-      * Get the extra attributes - ones that are in addition to the standard types.
-      * @return extra attributes
-      */
+     * Get the extra attributes - ones that are in addition to the standard types.
+     * @return extra attributes
+     */
     public Map<String, Object> getExtraAttributes() {
-          return extraAttributes;
+        return extraAttributes;
     }
     public void setExtraAttributes(Map<String, Object> extraAttributes) {
-          this.extraAttributes = extraAttributes;
+        this.extraAttributes = extraAttributes;
     }
 }
