@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v11702;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import javax.annotation.Generated;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,9 +21,9 @@ import java.util.ArrayList;
  */
 @Generated("org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.IGCRestModelGenerator")
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeName("r_shiny_app_object")
 public class RShinyAppObject extends Reference {
 
-    public static String getIgcTypeId() { return "r_shiny_app_object"; }
     public static String getIgcTypeDisplayName() { return "RShiny App Object"; }
 
     /**

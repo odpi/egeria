@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v11702;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import javax.annotation.Generated;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,9 +21,9 @@ import java.util.ArrayList;
  */
 @Generated("org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.IGCRestModelGenerator")
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeName("dsdata_connection")
 public class DsdataConnection extends Reference {
 
-    public static String getIgcTypeId() { return "dsdata_connection"; }
     public static String getIgcTypeDisplayName() { return "Data Connection"; }
 
     /**

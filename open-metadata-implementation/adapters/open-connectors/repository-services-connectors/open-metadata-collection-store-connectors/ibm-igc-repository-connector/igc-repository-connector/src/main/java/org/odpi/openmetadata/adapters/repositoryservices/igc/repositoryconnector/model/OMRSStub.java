@@ -3,14 +3,15 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.repositoryconnector.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.MainObject;
 
 import java.util.Arrays;
 import java.util.List;
 
+@JsonTypeName("$OMRS-Stub")
 public class OMRSStub extends MainObject {
-
-    public static String getIgcTypeId() { return "$OMRS-Stub"; }
+    
     public static String getIgcTypeDisplayName() { return "OMRS Stub"; }
 
     /**
