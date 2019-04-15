@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The GovernanceEngineErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
@@ -121,7 +120,6 @@ public enum GovernanceEngineErrorCode {
         this.userAction = newUserAction;
     }
 
-
     public int getHTTPErrorCode() {
         return httpErrorCode;
     }
@@ -136,17 +134,6 @@ public enum GovernanceEngineErrorCode {
         return errorMessageId;
     }
 
-
-    /**
-     * Returns the error message with placeholders for specific details.
-     *
-     * @return errorMessage (unformatted)
-     */
-    public String getUnformattedErrorMessage() {
-        return errorMessage;
-    }
-
-
     /**
      * Returns the error message with the placeholders filled out with the supplied parameters.
      *
@@ -154,16 +141,8 @@ public enum GovernanceEngineErrorCode {
      * @return errorMessage (formatted with supplied parameters)
      */
     public String getFormattedErrorMessage(String... params) {
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("<== GovernanceEngineErrorCode.getMessage(%s)", Arrays.toString(params)));
-        }
-
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
-
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("==> GovernanceEngineErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-        }
 
         return result;
     }
