@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v11501ru5;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import javax.annotation.Generated;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,9 +21,9 @@ import java.util.ArrayList;
  */
 @Generated("org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.IGCRestModelGenerator")
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeName("design_stored_procedure_parameter")
 public class DesignStoredProcedureParameter extends Reference {
 
-    public static String getIgcTypeId() { return "design_stored_procedure_parameter"; }
     public static String getIgcTypeDisplayName() { return "Design Stored Procedure Parameter"; }
 
     /**
