@@ -1,0 +1,87 @@
+/* SPDX-License-Identifier: Apache 2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.accessservices.discoveryengine.converters;
+
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+
+
+
+/**
+ * ElementHeaderConverter provides the root converter for the Discovery Engine OMAS beans.
+ * These beans are defined in the Open Discovery Framework (ODF) and extend the Open Connector Framework (OCF)
+ * beans.
+ *
+ * This root converter covers the OCF ElementHeader attributes: type (ElementType), guid, url and the classifications.
+ * It leaves extendedProperties to the sub classes
+ *
+ * The root converter has two constructors.  Once constructor is for an object that is built just from an
+ * entity (eg Discovery Engine Properties).  The other is for an object built from a combination of connected
+ * entities.  In this second case, the root entity and possibly a relevant relationship is passed on the constructor.
+ */
+class ElementHeaderConverter
+{
+    EntityDetail           entity;
+    Relationship           relationship = null;
+    OMRSRepositoryHelper   repositoryHelper;
+    String                 serviceName;
+
+    /**
+     * Constructor captures the initial content
+     *
+     * @param entity properties to convert
+     * @param repositoryHelper helper object to parse entity
+     * @param serviceName name of this component
+     */
+    ElementHeaderConverter(EntityDetail           entity,
+                           OMRSRepositoryHelper   repositoryHelper,
+                           String                 serviceName)
+    {
+        this.entity = entity;
+        this.repositoryHelper = repositoryHelper;
+        this.serviceName = serviceName;
+    }
+
+
+    /**
+     * Constructor captures the initial content with relationship
+     *
+     * @param entity properties to convert
+     * @param relationship properties to convert
+     * @param repositoryHelper helper object to parse entity/relationship
+     * @param serviceName name of this component
+     */
+    ElementHeaderConverter(EntityDetail         entity,
+                           Relationship         relationship,
+                           OMRSRepositoryHelper repositoryHelper,
+                           String               serviceName)
+    {
+        this.entity = entity;
+        this.relationship = relationship;
+        this.repositoryHelper = repositoryHelper;
+        this.serviceName = serviceName;
+    }
+
+
+    /**
+     * Extract the properties from the entity.
+     */
+    void updateBean(ElementHeader bean)
+    {
+        if (entity != null)
+        {
+            TypeConverter typeConverter = new TypeConverter();
+
+            bean.setType(typeConverter.getElementType(entity.getType(),
+                                                      entity.getInstanceProvenanceType(),
+                                                      entity.getMetadataCollectionId(),
+                                                      entity.getMetadataCollectionName(),
+                                                      entity.getInstanceLicense()));
+            bean.setGUID(entity.getGUID());
+            bean.setURL(entity.getInstanceURL());
+        }
+    }
+
+}
