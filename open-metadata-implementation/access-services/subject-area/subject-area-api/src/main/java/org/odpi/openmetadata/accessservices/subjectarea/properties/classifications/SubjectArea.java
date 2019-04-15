@@ -99,7 +99,7 @@ public class SubjectArea extends Classification {
        private String name;
        /**
         * {@literal Name of the subject area. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return Name of the subject area.
         */
        public String getName() {
            return this.name;

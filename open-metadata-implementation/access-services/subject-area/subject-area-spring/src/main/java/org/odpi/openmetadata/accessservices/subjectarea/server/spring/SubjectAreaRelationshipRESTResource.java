@@ -1008,7 +1008,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/replacement-terms/{guid}")
     public SubjectAreaOMASAPIResponse getReplacementTermRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
-        return restAPI.getReplacementTermRelationship(serverName, userId,guid);
+        return restAPI.getReplacementTerm(serverName, userId,guid);
     }
 
     /**
@@ -1032,7 +1032,8 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      */
     @RequestMapping(method = RequestMethod.PUT, path = "/users/{userId}/relationships/replacement-terms")
     public SubjectAreaOMASAPIResponse updateReplacementTermRelationship(@PathVariable String serverName,@PathVariable String userId,@RequestBody ReplacementTerm replacementTerm,@RequestParam(value = "isReplace", required=false) Boolean isReplace) {
-        return restAPI.updateReplacementTermRelationship(serverName, userId,replacementTerm,isReplace);
+        return restAPI.updateReplacementTerm
+                (serverName, userId,replacementTerm,isReplace);
     }
 
     /**
@@ -1060,7 +1061,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
             // default to soft delete if isPurge is not specified.
             isPurge = false;
         }
-        return restAPI.deleteReplacementTermRelationship(serverName, userId,guid,isPurge);
+        return restAPI.deleteReplacementTerm(serverName, userId,guid,isPurge);
     }
     /**
      * Restore a ReplacementTerm
