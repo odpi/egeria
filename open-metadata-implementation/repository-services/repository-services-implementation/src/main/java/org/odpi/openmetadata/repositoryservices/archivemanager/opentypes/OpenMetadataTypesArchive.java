@@ -7778,6 +7778,15 @@ public class OpenMetadataTypesArchive
         final String attribute4Name            = "configurationProperties";
         final String attribute4Description     = "Specific configuration properties for the underlying technology.";
         final String attribute4DescriptionGUID = null;
+        final String attribute5Name            = "userId";
+        final String attribute5Description     = "User identity that the connector should use.";
+        final String attribute5DescriptionGUID = null;
+        final String attribute6Name            = "clearPassword";
+        final String attribute6Description     = "Password for the userId in clear text.";
+        final String attribute6DescriptionGUID = null;
+        final String attribute7Name            = "encryptedPassword";
+        final String attribute7Description     = "Encrypted password that the connector needs to decrypt before use.";
+        final String attribute7DescriptionGUID = null;
 
         property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
                                                            attribute1Description,
@@ -7787,13 +7796,25 @@ public class OpenMetadataTypesArchive
                                                            attribute2Description,
                                                            attribute2DescriptionGUID);
         properties.add(property);
-        property = archiveHelper.getMapStringStringTypeDefAttribute(attribute3Name,
+        property = archiveHelper.getMapStringObjectTypeDefAttribute(attribute3Name,
                                                                     attribute3Description,
                                                                     attribute3DescriptionGUID);
         properties.add(property);
         property = archiveHelper.getMapStringObjectTypeDefAttribute(attribute4Name,
                                                                     attribute4Description,
                                                                     attribute4DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute5Name,
+                                                           attribute5Description,
+                                                           attribute5DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute6Name,
+                                                           attribute6Description,
+                                                           attribute6DescriptionGUID);
+        properties.add(property);
+        property = archiveHelper.getStringTypeDefAttribute(attribute7Name,
+                                                           attribute7Description,
+                                                           attribute7DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
