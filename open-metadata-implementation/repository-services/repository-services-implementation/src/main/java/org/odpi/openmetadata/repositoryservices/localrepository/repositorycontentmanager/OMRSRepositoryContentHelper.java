@@ -2684,6 +2684,64 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
 
 
     /**
+     * Add the supplied array property to an instance properties object.  The supplied array is stored as a single
+     * property in the instances properties.   If the instance properties object
+     * supplied is null, a new instance properties object is created.
+     *
+     * @param sourceName name of caller
+     * @param properties properties object to add property to, may be null.
+     * @param propertyName name of property
+     * @param arrayValues contents of the array
+     * @param methodName calling method name
+     * @return instance properties object.
+     */
+    public InstanceProperties addStringArrayPropertyToInstance(String              sourceName,
+                                                               InstanceProperties  properties,
+                                                               String              propertyName,
+                                                               List<String>        arrayValues,
+                                                               String              methodName)
+    {
+        if ((arrayValues != null) && (! arrayValues.isEmpty()))
+        {
+            log.debug("Adding property " + propertyName + " for " + methodName + " from " + sourceName);
+
+            InstanceProperties  resultingProperties;
+
+            if (properties == null)
+            {
+                resultingProperties = new InstanceProperties();
+            }
+            else
+            {
+                resultingProperties = properties;
+            }
+
+            ArrayPropertyValue arrayPropertyValue = new ArrayPropertyValue();
+            arrayPropertyValue.setArrayCount(arrayValues.size());
+            int index = 0;
+            for (String arrayValue : arrayValues )
+            {
+                PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+
+                primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+                primitivePropertyValue.setPrimitiveValue(arrayValue);
+
+                arrayPropertyValue.setArrayValue(index, primitivePropertyValue);
+            }
+
+            resultingProperties.setProperty(propertyName, arrayPropertyValue);
+
+            log.debug("Returning instanceProperty: " + resultingProperties.toString());
+
+            return resultingProperties;
+        }
+
+        log.debug("Null property");
+        return properties;
+    }
+
+
+    /**
      * Add the supplied map property to an instance properties object.  The supplied map is stored as a single
      * property in the instances properties.   If the instance properties object
      * supplied is null, a new instance properties object is created.
@@ -2724,7 +2782,6 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
                  */
                 InstanceProperties  mapInstanceProperties  = this.addPropertyMapToInstance(sourceName,
                                                                                            null,
-                                                                                           propertyName,
                                                                                            mapValues,
                                                                                            methodName);
 
@@ -2825,20 +2882,18 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
      *
      * @param sourceName name of caller
      * @param properties properties object to add property to, may be null.
-     * @param propertyName name of property
      * @param mapValues contents of the map
      * @param methodName calling method name
      * @return instance properties object.
      */
     public InstanceProperties addPropertyMapToInstance(String              sourceName,
                                                        InstanceProperties  properties,
-                                                       String              propertyName,
                                                        Map<String, Object> mapValues,
                                                        String              methodName)
     {
         if ((mapValues != null) && (! mapValues.isEmpty()))
         {
-            log.debug("Adding property " + propertyName + " for " + methodName);
+            log.debug("Building map property for " + methodName);
 
             InstanceProperties  resultingProperties;
 
