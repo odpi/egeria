@@ -25,9 +25,12 @@ public class InformationViewUncheckedExceptionBase extends RuntimeException{
         this.reportedCaughtException = caughtError;
     }
 
-    public InformationViewUncheckedExceptionBase(int httpErrorCode, String reportingClassName,
-                                                 String reportedErrorMessage, String reportedSystemAction,
-                                                 String reportedUserAction, Throwable reportedCaughtException) {
+    public InformationViewUncheckedExceptionBase(int httpErrorCode,
+                                                 String reportingClassName,
+                                                 String reportedErrorMessage,
+                                                 String reportedSystemAction,
+                                                 String reportedUserAction,
+                                                 Throwable reportedCaughtException) {
         this.httpErrorCode = httpErrorCode;
         this.reportingClassName = reportingClassName;
         this.reportedErrorMessage = reportedErrorMessage;
@@ -83,4 +86,5 @@ public class InformationViewUncheckedExceptionBase extends RuntimeException{
     public void setHttpErrorCode(int httpErrorCode) {
         this.httpErrorCode = httpErrorCode;
     }
+
 }

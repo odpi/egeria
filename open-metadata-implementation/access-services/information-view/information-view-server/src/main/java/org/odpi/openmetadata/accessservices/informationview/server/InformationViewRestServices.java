@@ -7,12 +7,8 @@ import org.odpi.openmetadata.accessservices.informationview.events.*;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewUncheckedExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.DataViewCreationException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.InformationViewExceptionBase;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.ReportCreationException;
 import org.odpi.openmetadata.accessservices.informationview.responses.*;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 
 import java.util.List;
 
@@ -38,7 +34,7 @@ public class InformationViewRestServices {
             ReportHandler reportCreator = instanceHandler.getReportCreator(serverName);
             reportCreator.submitReportModel(requestBody);
         }
-        catch (InformationViewExceptionBase e) {
+        catch (InformationViewUncheckedExceptionBase e) {
            handleErrorResponse(e);
         }
 
@@ -62,8 +58,8 @@ public class InformationViewRestServices {
             DataViewHandler dataViewHandler = instanceHandler.getDataViewHandler(serverName);
             dataViewHandler.createDataView(requestBody);
         }
-        catch (DataViewCreationException |  PropertyServerException e) {
-            return handleErrorResponse( e);
+        catch (InformationViewUncheckedExceptionBase e) {
+            handleErrorResponse(e);
         }
 
         return response;
@@ -88,8 +84,8 @@ public class InformationViewRestServices {
             List<DatabaseSource> databases = databaseContextHandler.getDatabases(startFrom, pageSize);
             response.setDatabasesList(databases);
         }
-        catch ( PropertyServerException e) {
-            return handleErrorResponse( e);
+        catch (InformationViewUncheckedExceptionBase e) {
+            handleErrorResponse(e);
         }
         return response;
     }
@@ -116,8 +112,8 @@ public class InformationViewRestServices {
             List<TableSource> tables = databaseContextHandler.getTables(databaseGuid, startFrom, pageSize);
             response.setTableList(tables);
         }
-        catch (InformationViewExceptionBase e) {
-            return handleErrorResponse( e);
+        catch (InformationViewUncheckedExceptionBase e) {
+            handleErrorResponse(e);
         }
 
         return response;
@@ -133,8 +129,8 @@ public class InformationViewRestServices {
             List<TableContextEvent> tables = databaseContextHandler.getTableContext(tableGuid);
             response.setTableContexts(tables);
         }
-        catch (InformationViewExceptionBase e) {
-            return handleErrorResponse( e);
+        catch (InformationViewUncheckedExceptionBase e) {
+            handleErrorResponse(e);
         }
         return response;
     }
@@ -151,19 +147,10 @@ public class InformationViewRestServices {
             List<TableColumn> columns = databaseContextHandler.getTableColumns(tableGuid, startFrom, pageSize);
             response.setTableColumns(columns);
         }
-        catch (InformationViewExceptionBase e) {
-            return handleErrorResponse(e);
+        catch (InformationViewUncheckedExceptionBase e) {
+            handleErrorResponse(e);
         }
 
-        return response;
-    }
-
-    private InformationViewOMASAPIResponse handleErrorResponse(InformationViewExceptionBase e) {
-        VoidResponse  response = new VoidResponse();
-        response.setExceptionClassName(e.getReportingClassName());
-        response.setExceptionErrorMessage(e.getReportedErrorMessage());
-        response.setRelatedHTTPCode(e.getReportedHTTPCode());
-        response.setExceptionUserAction(e.getReportedUserAction());
         return response;
     }
 

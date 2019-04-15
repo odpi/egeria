@@ -3,10 +3,10 @@
 package org.odpi.openmetadata.accessservices.informationview.server;
 
 import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.PropertyServerException;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.PropertyServerException;
 
 /**
  * InformationViewInstanceHandler retrieves information from the instance map for the
@@ -87,10 +87,9 @@ class InformationViewInstanceHandler
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
 
         throw new PropertyServerException(this.getClass().getName(),
-                methodName,
-                errorMessage,
-                errorCode.getSystemAction(),
-                errorCode.getUserAction());
+                                            errorMessage,
+                                            errorCode.getSystemAction(),
+                                            errorCode.getUserAction());
     }
 
 

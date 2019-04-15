@@ -7,14 +7,14 @@ import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEnt
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.DataViewCreationException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.DataViewCreationException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +43,7 @@ public class DataViewHandler {
      */
     public void createDataView(DataViewRequestBody requestBody) throws DataViewCreationException {
 
-        log.info("Creating data view based on payload {}", requestBody);
+        log.debug("Creating data view based on payload {}", requestBody);
         try {
             String qualifiedNameForDataView = QualifiedNameUtils.buildQualifiedName(requestBody.getEndpointAddress(), Constants.INFORMATION_VIEW, requestBody.getId());
             InstanceProperties dataViewProperties = new EntityPropertiesBuilder()
@@ -74,25 +74,16 @@ public class DataViewHandler {
 //            } TODO update not implemented yet
 
 
-        } catch (Exception e) {
-            InformationViewErrorCode auditCode = InformationViewErrorCode.REPORT_CREATION_EXCEPTION;
+        } catch (PagingErrorException | PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException e) {
 
-            auditLog.logException("processEvent",
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(requestBody.toString(), e.getMessage()),
-                    "json {" + requestBody + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e);
-            throw new DataViewCreationException(404,
-                    "DataViewHandler",
-                    "createDataView",
-                    "Unable to create data view: " + e.getMessage(),
-                    "The system is unable to process the request.",
-                    "Correct the payload submitted to request.",
-                    e,
-                    requestBody.getId());
+            log.error(e.getMessage(), e);
+            throw new DataViewCreationException(InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getHttpErrorCode(),
+                                               DataViewHandler.class.getName(),
+                                               InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getFormattedErrorMessage(requestBody.toString(), e.getMessage()),
+                                               InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getUserAction(),
+                                               InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getSystemAction(),
+                                                e,
+                                                requestBody.getId());
         }
 
     }
