@@ -39,6 +39,7 @@ ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
 
 # Remove -DskipTests if unit tests are to be included
 RUN mvn clean install -DskipTests -Pdist,embedded-hbase-solr -f ./atlas/pom.xml
+RUN git log > git.log && echo ${branch} > git.branch && git remote -v >> git.remote
 RUN mkdir -p atlas-bin
 RUN tar xzf /root/atlas/distro/target/*bin.tar.gz --strip-components 1 -C /root/atlas-bin
 
@@ -46,6 +47,7 @@ FROM openjdk:8-jdk-alpine
 
 RUN apk add python bash
 COPY --from=build /root/atlas-bin/ /root/atlas-bin/
+COPY --from=build /root/git.* /
 WORKDIR /root/atlas-bin/conf
 RUN sed -i "s|^atlas.graph.storage.lock.wait-time=10000|atlas.graph.storage.lock.wait-time=100|g" atlas-application.properties
 RUN echo "atlas.notification.relationships.enabled=true" >> atlas-application.properties
