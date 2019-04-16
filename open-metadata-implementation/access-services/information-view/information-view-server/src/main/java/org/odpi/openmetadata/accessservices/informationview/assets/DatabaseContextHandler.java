@@ -26,7 +26,6 @@ public class DatabaseContextHandler {
 
 
     private static final Logger log = LoggerFactory.getLogger(DatabaseContextHandler.class);
-    public static final String GUID = "guid";
     private org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao omEntityDao;
     private OMRSRepositoryHelper repositoryHelper;
     private OMRSAuditLog auditLog;
@@ -119,9 +118,9 @@ public class DatabaseContextHandler {
             throw new EntityNotFoundException(DatabaseContextHandler.class.getName(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(guid, typeName), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(), e);
         }
         if (entityDetail == null)
-            throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(GUID, guid, typeName), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(), null);
+            throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(Constants.GUID, guid, typeName), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(), null);
         if(!repositoryHelper.isTypeOf("getEntity", entityDetail.getType().getTypeDefName(), typeName)){
-            throw new IncorrectTypeException(InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getFormattedErrorMessage(GUID,  guid, typeName), InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getSystemAction(), InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getUserAction(), null);
+            throw new IncorrectTypeException(InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getFormattedErrorMessage(Constants.GUID,  guid, typeName), InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getSystemAction(), InformationViewErrorCode.INCORRECT_TYPE_EXCEPTION.getUserAction(), null);
         }
         return entityDetail;
     }

@@ -40,7 +40,7 @@ public class DatabaseLookup extends EntityLookup<DatabaseSource> {
         List<EntityDetail> allLinkedDatabasesList = getRelatedEntities(allConnectionGuids, Constants.CONNECTION_TO_ASSET);
 
         EntityDetail databaseEntity = lookupEntity(source, allLinkedDatabasesList);
-        log.info("Database found [{}]", databaseEntity);
+        log.debug("Database found [{}]", databaseEntity);
         return databaseEntity;
     }
 

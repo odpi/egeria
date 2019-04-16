@@ -82,13 +82,21 @@ public enum InformationViewErrorCode {
                             "The system is unable to process the request.",
                             "Check the error message on how to fix the error."),
     REPORT_SUBMIT_EXCEPTION(500, "OMAS-INFORMATION-VIEW-018",
-                            "Unable to create report because of error: {1}",
+                            "Unable to create report because of error: {0}",
                             "The system is unable to process the request.",
                             "Check the error message on how to fix the error."),
     INFORMATION_VIEW_SUBMIT_EXCEPTION(500, "OMAS-INFORMATION-VIEW-019",
-                            "Unable to create information view because of error: {1}",
+                            "Unable to create information view because of error: {0}",
                             "The system is unable to process the request.",
-                            "Check the error message on how to fix the error.");
+                            "Check the error message on how to fix the error."),
+    NO_MATCHING_ENTITY_EXCEPTION(500, "OMAS-INFORMATION-VIEW-020",
+                            "No entity matches the criteria: {0}",
+                            "The system is unable to process the request.",
+                            "Check the criteria used for matching."),
+    MULTIPLE_MATCHING_ENTITIES_EXCEPTION(500, "OMAS-INFORMATION-VIEW-021",
+                            "More than one entity match the criteria: {0}",
+                            "The system is unable to process the request.",
+                            "Check the criteria used for matching.");
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewErrorCode.class);
     private String errorMessageId;
