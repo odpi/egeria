@@ -14,16 +14,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class DerivedColumn extends DatabaseColumn {
+public class DerivedColumn extends TableColumn {
 
-    private DatabaseColumn sourceColumn;
+    private TableColumn sourceColumn;
 
     /**
      * Return the real column associated with the derived column
      *
      * @return real column linked to the derived column
      */
-    public DatabaseColumn getSourceColumn() {
+    public TableColumn getSourceColumn() {
         return sourceColumn;
     }
 
@@ -32,7 +32,7 @@ public class DerivedColumn extends DatabaseColumn {
      *
      * @param sourceColumn - real column associated to the derived column
      */
-    public void setSourceColumn(DatabaseColumn sourceColumn) {
+    public void setSourceColumn(TableColumn sourceColumn) {
         this.sourceColumn = sourceColumn;
     }
 

@@ -1,3 +1,5 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.dataplatform.listeners;
 
 
@@ -83,7 +85,7 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
                             view.getViewEntity().getGUID(),
                             Constants.DATA_PLATFORM_OMAS_NAME,
                             new InstanceProperties());
-                    event.getTableSource().setTableGuid(view.getViewEntity().getGUID());
+                    event.getTableSource().setGuid(view.getViewEntity().getGUID());
                 }
                 eventPublisher.sendEvent(event);
             } catch (Exception e) {
