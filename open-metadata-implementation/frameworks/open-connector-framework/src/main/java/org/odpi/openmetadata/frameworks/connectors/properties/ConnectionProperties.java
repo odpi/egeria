@@ -239,6 +239,39 @@ public class ConnectionProperties extends AssetReferenceable
 
 
     /**
+     * Return id of the calling user.
+     *
+     * @return string
+     */
+    public String getUserId()
+    {
+        return connectionBean.getUserId();
+    }
+
+
+    /**
+     * Return an encrypted password.  The caller is responsible for decrypting it.
+     *
+     * @return string
+     */
+    public String getEncryptedPassword()
+    {
+        return connectionBean.getEncryptedPassword();
+    }
+
+
+    /**
+     * Return an unencrypted password.
+     *
+     * @return string
+     */
+    public String getClearPassword()
+    {
+        return connectionBean.getClearPassword();
+    }
+
+
+    /**
      * Returns a copy of the properties for this connection's endpoint.
      * Null means no endpoint information available.
      *
