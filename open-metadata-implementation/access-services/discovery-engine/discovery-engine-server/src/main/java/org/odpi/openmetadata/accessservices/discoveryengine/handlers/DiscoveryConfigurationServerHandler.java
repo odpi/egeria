@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.discoveryengine.converters.Discovery
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.DiscoveryServicePropertiesConverter;
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.RegisteredDiscoveryServiceConverter;
 import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineErrorCode;
+import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.accessservices.discoveryengine.mappers.ConnectionMapper;
 import org.odpi.openmetadata.accessservices.discoveryengine.mappers.DiscoveryEnginePropertiesMapper;
 import org.odpi.openmetadata.accessservices.discoveryengine.mappers.DiscoveryServicePropertiesMapper;
@@ -43,6 +44,7 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
     private ErrorHandler            errorHandler;
     private BasicHandler            basicHandler;
     private ConnectionHandler       connectionHandler;
+    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
 
     /**
@@ -63,7 +65,7 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         this.serverName = repositoryConnector.getServerName();
         this.errorHandler = new ErrorHandler(serviceName, serverName);
         this.basicHandler = new BasicHandler(errorHandler, metadataCollection);
-        this.connectionHandler = new ConnectionHandler(serviceName, serverName, repositoryHelper, errorHandler, basicHandler);
+        this.connectionHandler = new ConnectionHandler(serviceName, serverName, repositoryHelper, basicHandler);
     }
 
 
@@ -134,8 +136,8 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         final String methodName = "createDiscoveryEngine";
         final String qualifiedNameParameter = "qualifiedName";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         /*
@@ -179,8 +181,8 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         final  String   methodName = "getDiscoveryEngineByGUID";
         final  String   guidParameter = "guid";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(guid, guidParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameter, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         EntityDetail retrievedEntity = basicHandler.getEntityByGUID(userId,
@@ -223,8 +225,8 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         final  String   methodName = "getDiscoveryEngineByName";
         final  String   nameParameter = "name";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(name, nameParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(name, nameParameter, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         /*
@@ -316,8 +318,8 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
     {
         final  String   methodName = "getAllDiscoveryEngines";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validatePaging(startingFrom, maximumResults, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         List<EntityDetail> retrievedEntities = basicHandler.getEntityByType(userId,
@@ -393,8 +395,8 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         final String methodName = "updateDiscoveryEngine";
         final String qualifiedNameParameter = "qualifiedName";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         DiscoveryEngineBuilder builder = new DiscoveryEngineBuilder(qualifiedName,
@@ -442,8 +444,8 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         final String methodName = "deleteDiscoveryEngine";
         final String qualifiedNameParameter = "qualifiedName";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         DiscoveryEngineBuilder builder = new DiscoveryEngineBuilder(qualifiedName,
@@ -490,9 +492,9 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         final String qualifiedNameParameter = "qualifiedName";
         final String connectionParameter = "connection";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
-        errorHandler.validateConnection(connection, connectionParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+        invalidParameterHandler.validateConnection(connection, connectionParameter, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         String connectionGUID = connectionHandler.saveConnection(userId, connection);
@@ -543,8 +545,8 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         final  String   methodName = "getDiscoveryServiceByGUID";
         final  String   guidParameter = "guid";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(guid, guidParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameter, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         EntityDetail discoveryServiceEntity = basicHandler.getEntityByGUID(userId,
@@ -577,8 +579,8 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         final String methodName    = "getDiscoveryServiceByName";
         final String nameParameter = "name";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateName(name, nameParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameter, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         /*
@@ -708,8 +710,8 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
     {
         final  String   methodName = "getAllDiscoveryServices";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validatePaging(startingFrom, maximumResults, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         List<EntityDetail> retrievedEntities = basicHandler.getEntityByType(userId,
@@ -763,8 +765,8 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         final  String   methodName = "getAllDiscoveryServices";
         final  String   guidParameter = "discoveryServiceGUID";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(discoveryServiceGUID, guidParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(discoveryServiceGUID, guidParameter, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         List<Relationship>  relationships = basicHandler.getRelationshipsByType(userId,
@@ -843,8 +845,8 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         final String methodName = "updateDiscoveryService";
         final String qualifiedNameParameter = "qualifiedName";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         DiscoveryServiceBuilder builder = new DiscoveryServiceBuilder(qualifiedName,
@@ -951,8 +953,8 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         final String methodName = "deleteDiscoveryService";
         final String qualifiedNameParameter = "qualifiedName";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameter, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         EntityDetail connectionEntity = basicHandler.getEntityForRelationshipType(userId,
@@ -1012,10 +1014,10 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         final String discoveryServiceGUIDParameter = "discoveryServiceGUID";
         final String assetTypesParameter = "assetTypes";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
-        errorHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
-        errorHandler.validateStringArray(assetTypes, assetTypesParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
+        invalidParameterHandler.validateStringArray(assetTypes, assetTypesParameter, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         InstanceProperties instanceProperties = new InstanceProperties();
@@ -1057,9 +1059,9 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         final String discoveryEngineGUIDParameter = "discoveryEngineGUID";
         final String discoveryServiceGUIDParameter = "discoveryServiceGUID";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
-        errorHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         Relationship relationship = basicHandler.getRelationshipBetweenEntities(userId,
@@ -1103,9 +1105,9 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         final String methodName = "getRegisteredDiscoveryServices";
         final String discoveryEngineGUIDParameter = "discoveryEngineGUID";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
-        errorHandler.validatePaging(startingFrom, maximumResults, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
+        invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         List<Relationship> relationships = basicHandler.getPagedRelationshipsByType(userId,
@@ -1165,9 +1167,9 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
         final String discoveryEngineGUIDParameter = "discoveryEngineGUID";
         final String discoveryServiceGUIDParameter = "discoveryServiceGUID";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
-        errorHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
+        invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
         errorHandler.validateRepositoryConnector(repositoryConnector, methodName);
 
         basicHandler.deleteRelationshipBetweenEntities(userId,

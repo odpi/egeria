@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.discoveryengine.handlers;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.builders.ConnectorTypeBuilder;
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.ConnectorTypeConverter;
+import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.accessservices.discoveryengine.mappers.ConnectorTypeMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -20,11 +21,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 class ConnectorTypeHandler
 {
-    private String               serviceName;
-    private String               serverName;
-    private OMRSRepositoryHelper repositoryHelper;
-    private BasicHandler         basicHandler;
-    private ErrorHandler         errorHandler;
+    private String                  serviceName;
+    private String                  serverName;
+    private OMRSRepositoryHelper    repositoryHelper;
+    private BasicHandler            basicHandler;
+    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
 
     /**
@@ -38,13 +39,11 @@ class ConnectorTypeHandler
     ConnectorTypeHandler(String                  serviceName,
                          String                  serverName,
                          BasicHandler            basicHandler,
-                         ErrorHandler            errorHandler,
                          OMRSRepositoryHelper    repositoryHelper)
     {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.basicHandler = basicHandler;
-        this.errorHandler = errorHandler;
         this.repositoryHelper = repositoryHelper;
     }
 
@@ -73,7 +72,7 @@ class ConnectorTypeHandler
 
         if (connectorType != null)
         {
-            errorHandler.validateName(connectorType.getQualifiedName(), qualifiedNameParameter, methodName);
+            invalidParameterHandler.validateName(connectorType.getQualifiedName(), qualifiedNameParameter, methodName);
 
             if (connectorType.getGUID() != null)
             {
