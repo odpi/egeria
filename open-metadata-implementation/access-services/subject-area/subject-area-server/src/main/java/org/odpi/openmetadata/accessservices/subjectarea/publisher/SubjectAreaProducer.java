@@ -3,8 +3,6 @@
 package org.odpi.openmetadata.accessservices.subjectarea.publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-//import org.odpi.openmetadata.accessservices.subjectarea.assetconsumer.properties.Asset;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;

@@ -544,6 +544,30 @@ public class DetectUtils {
         return termCategorizationRelationship;
     }
 
+    public static TermAnchorRelationship detectAndReturnTermAnchorRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        TermAnchorRelationship termAnchorRelationship = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TermAnchorRelationship)) {
+            TermAnchorRelationshipResponse relationshipResponse = (TermAnchorRelationshipResponse) restResponse;
+            termAnchorRelationship= relationshipResponse.getTermAnchorRelationship();
+        } else {
+            CategoryErrorResponse(methodName, restResponse);
+        }
+        return termAnchorRelationship;
+    }
+
+    public static CategoryAnchorRelationship detectAndReturnCategoryAnchorRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        CategoryAnchorRelationship categoryAnchorRelationship = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.CategoryAnchorRelationship)) {
+            CategoryAnchorRelationshipResponse relationshipResponse = (CategoryAnchorRelationshipResponse) restResponse;
+            categoryAnchorRelationship= relationshipResponse.getCategoryAnchorRelationship();
+        } else {
+            CategoryErrorResponse(methodName, restResponse);
+        }
+        return categoryAnchorRelationship;
+    }
+
+
+
     /**
      * Convert a subject area a checked exception to a response
      * @param e Exception to comnvert
@@ -570,4 +594,5 @@ public class DetectUtils {
         }
         return response;
     }
+
 }
