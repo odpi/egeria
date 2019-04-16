@@ -1568,8 +1568,194 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     {
         return restAPI.restoreTermCategorizationRelationship(serverName,userId,guid);
     }
-    
 
+    /**
+     *  Create a termAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
+     * Terms created using the Subject Area OMAS cannot be created without a glossary and there can only be one glossary associated with a
+     * Term. This method is to allow glossaries to be associated with Terms that have not been created via the Subject Area OMAS or to recreate
+     * the TermAnchor relationship if it has been purged.
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param termAnchorRelationship the TermAnchorRelationship relationship
+     * @return response, when successful contains the created termAnchorRelationship relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/term-anchor")
+    public SubjectAreaOMASAPIResponse createTermAnchor(@PathVariable String serverName,@PathVariable String userId,@RequestBody TermAnchorRelationship  termAnchorRelationship)
+    {
+        return restAPI.createTermAnchor(serverName, userId, termAnchorRelationship);
+    }
+
+    /**
+     * Get a termAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the termAnchor Relationship to get
+     * @return response which when successful contains the termAnchorRelationship relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/term-anchor/{guid}")
+    public SubjectAreaOMASAPIResponse getTermAnchorRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+        return getLine(serverName, userId,TermAnchorRelationship.class.getName(), guid);
+    }
+
+
+    /**
+     * Delete a TermAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the TermAnchorRelationship relationship to delete
+     * @param isPurge true indicates a hard delete, false is a soft delete.
+     * @return response which when successful contains the TermAnchorRelationship relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
+     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/term-anchor/{guid}")
+    public SubjectAreaOMASAPIResponse deleteTermAnchorRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid, @RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+        return deleteLine(serverName, userId,TermAnchorRelationship.class.getName(), guid,isPurge);
+    }
+    /**
+     * Restore a TermAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
+     *
+     * Restore allows the deleted TermAnchor Relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Term Anchor Relationship to delete
+     * @return response which when successful contains the restored TermAnchor
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/term-anchor/{guid}")
+    public SubjectAreaOMASAPIResponse restoreTermAnchorRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
+    {
+        return restoreLine(serverName, userId, TermAnchorRelationship.class.getName(), guid);
+    }
+    /**
+     *  Create a categoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
+     * Categories created using the Subject Area OMAS cannot be created without a glossary and there can only be one glossary associated with a
+     * Category. This method is to allow glossaries to be associated with Categories that have not been created via the Subject Area OMAS or to recreate
+     * the CategoryAnchor relationship if it has been purged.
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param categoryAnchorRelationship the CategoryAnchorRelationship relationship
+     * @return response, when successful contains the created categoryAnchorRelationship relationship
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> ClassificationException              Error processing a classification.</li>
+     * <li> StatusNotSupportedException          A status value is not supported.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/category-anchor")
+    public SubjectAreaOMASAPIResponse createCategoryAnchor(@PathVariable String serverName, @PathVariable String userId, @RequestBody CategoryAnchorRelationship  categoryAnchorRelationship)
+    {
+        return createLine(serverName, userId,CategoryAnchorRelationship.class.getName(), categoryAnchorRelationship);
+    }
+
+    /**
+     * Get a categoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the categoryAnchor Relationship to get
+     * @return response which when successful contains the categoryAnchorRelationship relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/category-anchor/{guid}")
+    public SubjectAreaOMASAPIResponse getCategoryAnchorRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
+        return getLine(serverName, userId,CategoryAnchorRelationship.class.getName(), guid);
+    }
+
+    /**
+     * Delete a CategoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the CategoryAnchorRelationship relationship to delete
+     * @param isPurge true indicates a hard delete, false is a soft delete.
+     * @return response which when successful contains the CategoryAnchorRelationship relationship with the requested guid
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * <li> EntityNotDeletedException            a soft delete was issued but the relationship was not deleted.</li>
+     * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/category-anchor/{guid}")
+    public SubjectAreaOMASAPIResponse deleteCategoryAnchorRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid, @RequestParam(value = "isPurge", required=false) Boolean isPurge) {
+        return deleteLine(serverName, userId,CategoryAnchorRelationship.class.getName(), guid,isPurge);
+    }
+    /**
+     * Restore a CategoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
+     *
+     * Restore allows the deleted CategoryAnchor Relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Category Anchor Relationship to delete
+     * @return response which when successful contains the restored CategoryAnchor
+     * when not successful the following Exception responses can occur
+     * <ul>
+     * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
+     * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
+     * <li> FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.</li>
+     * <li> InvalidParameterException            one of the parameters is null or invalid.</li>
+     * <li> MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.</li>
+     * </ul>
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/category-anchor/{guid}")
+    public SubjectAreaOMASAPIResponse restoreCategoryAnchorRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
+    {
+        return restoreLine(serverName, userId, CategoryAnchorRelationship.class.getName(), guid);
+    }
 
     /**
      * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.
