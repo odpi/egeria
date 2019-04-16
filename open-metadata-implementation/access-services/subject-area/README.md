@@ -28,6 +28,7 @@ The implementation is not complete. The following has been implemented :
 * Java and REST API for the Term to Term relationships HASA, RelatedTerm, Synonym, Antonym, Translations, used in context,
   preferred terms, valid values, replacement terms, typed by, is a, is a type of.
 * Java and REST API for the Term to Category relationships TermCategorization.  
+* TermAnchor and CategoryAnchor relationships can be created , deleted, purged and restored. As there are no properties, there are no update or replace operations.
 * getTermRelationships, get GlossaryRelationships and getCategoryRelationships
 * findTerm, findCategory and findGlossary  
 
