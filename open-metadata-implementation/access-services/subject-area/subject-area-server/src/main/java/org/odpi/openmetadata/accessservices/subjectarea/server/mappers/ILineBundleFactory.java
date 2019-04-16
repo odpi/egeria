@@ -45,6 +45,11 @@ public class ILineBundleFactory
                     new CategoryAnchorMapper(omrsapiHelper),
                     bundleName,
                     "CategoryAnchor");
+        } else if (bundleName.equals(TermAnchorRelationship.class.getName())){
+            bundle = new LineBundle(
+                    new TermAnchorMapper(omrsapiHelper),
+                    bundleName,
+                    "TermAnchor");
         } else if (bundleName.equals(TermTYPEDBYRelationship.class.getName())){
             bundle = new LineBundle(
                     new TermTYPEDBYRelationshipMapper(omrsapiHelper),

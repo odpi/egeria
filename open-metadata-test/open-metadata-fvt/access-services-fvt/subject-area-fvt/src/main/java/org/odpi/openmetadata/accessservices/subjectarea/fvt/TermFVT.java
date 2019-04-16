@@ -233,7 +233,7 @@ public class TermFVT
         return issueCreateTerm(term);
     }
 
-    private Term issueCreateTerm(Term term) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException {
+    public Term issueCreateTerm(Term term) throws MetadataServerUncontactableException, InvalidParameterException, UserNotAuthorizedException, ClassificationException, FunctionNotSupportedException, UnexpectedResponseException {
         Term newTerm = subjectAreaTerm.createTerm(serverName,this.userId, term);
         if (newTerm != null)
         {

@@ -7,10 +7,17 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 
 /**
- *
+ * This is a factory that is passed in the classname of a Line and the Line itself. It returns the appropriate
+ * SubjectAreaOMASAPIResponse for use as a rest call response. The Line is embedded in these responses.
  */
 public class ResponseFactory
 {
+    /**
+     * Get a response from the factory.
+     * @param bundleName classname
+     * @param line line object
+     * @return SubjectAreaOMASAPIResponse rest response
+     */
    public SubjectAreaOMASAPIResponse getInstance(String bundleName, Line line) {
        SubjectAreaOMASAPIResponse response = null;
        if (bundleName.equals(Synonym.class.getName())){
@@ -62,6 +69,14 @@ public class ResponseFactory
        } else if (bundleName.equals(ValidValue.class.getName()))
        {
            response = new ValidValueRelationshipResponse((ValidValue) line);
+
+       } else if (bundleName.equals(TermAnchorRelationship.class.getName()))
+       {
+        response = new TermAnchorRelationshipResponse((TermAnchorRelationship) line);
+
+       } else if (bundleName.equals(CategoryAnchorRelationship.class.getName()))
+       {
+           response = new CategoryAnchorRelationshipResponse((CategoryAnchorRelationship) line);
 
        }
        return response;

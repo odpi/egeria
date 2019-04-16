@@ -131,6 +131,8 @@ public class RelationshipsFVT
         isaFVT(term1, term2);
         isatypeofFVT(term1, term2);
         termCategorizationFVT(term1,cat1);
+        termAnchorFVT(term1);
+        categoryAnchorFVT(cat1);
         createSomeTermRelationships(term1, term2, term3);
         term1relationshipcount = term1relationshipcount + 12;
         term2relationshipcount = term2relationshipcount + 11;
@@ -194,7 +196,7 @@ public class RelationshipsFVT
         }
     }
 
-    private void createSomeTermRelationships(Term term1, Term term2, Term term3) throws SubjectAreaFVTCheckedException, InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException {
+    private void createSomeTermRelationships(Term term1, Term term2, Term term3) throws SubjectAreaFVTCheckedException, InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, ClassificationException, FunctionNotSupportedException {
         FVTUtils.validateLine(createValidValue(term1, term2));
         FVTUtils.validateLine(createAntonym(term1,term2));
         FVTUtils.validateLine(createIsaRelationship(term1,term2));
@@ -1309,6 +1311,7 @@ public class RelationshipsFVT
         System.out.println("Created termISATypeOFRelationship " + createdTermISATypeOFRelationship);
         return createdTermISATypeOFRelationship;
     }
+
     private void termCategorizationFVT(Term term, Category category) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, GUIDNotPurgedException {
         TermCategorizationRelationship createdTermCategorizationRelationship = createTermCategorization(term, category);
         FVTUtils.validateLine(createdTermCategorizationRelationship);
@@ -1365,6 +1368,67 @@ public class RelationshipsFVT
         subjectAreaRelationship.purgeTermCategorizationRelationship(this.serverName,this.userId, guid);
         System.out.println("Hard deleted TermCategorization with guid=" + guid);
     }
+
+
+    private void termAnchorFVT(Term term) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, GUIDNotPurgedException, ClassificationException {
+        // No create for TermAnchor - because this OMAS cannot create a Term without a glossary
+        String termGuid = term.getSystemAttributes().getGUID();
+        String glossaryGuid = term.getGlossary().getGuid();
+        String relationshipGuid = term.getGlossary().getRelationshipguid();
+
+        TermAnchorRelationship gotTermAnchorRelationship =subjectAreaRelationship.getTermAnchorRelationship(this.serverName,this.userId,relationshipGuid );
+        FVTUtils.validateLine(gotTermAnchorRelationship);
+        System.out.println("Got TermAnchorRelationship " + gotTermAnchorRelationship);
+
+        // no update or replace as this relationship has no properties
+
+        gotTermAnchorRelationship = subjectAreaRelationship.deleteTermAnchorRelationship(this.serverName,this.userId, relationshipGuid);
+        FVTUtils.validateLine(gotTermAnchorRelationship);
+        System.out.println("Soft deleted TermAnchorRelationship with relationshipGuid=" + relationshipGuid);
+        gotTermAnchorRelationship = subjectAreaRelationship.restoreTermAnchorRelationship(this.serverName,this.userId, relationshipGuid);
+        FVTUtils.validateLine(gotTermAnchorRelationship);
+        System.out.println("Restored TermAnchorRelationship with relationshipGuid=" + relationshipGuid);
+        gotTermAnchorRelationship = subjectAreaRelationship.deleteTermAnchorRelationship(this.serverName,this.userId, relationshipGuid);
+        FVTUtils.validateLine(gotTermAnchorRelationship);
+        System.out.println("Soft deleted TermAnchor with relationshipGuid=" + relationshipGuid);
+        subjectAreaRelationship.purgeTermAnchorRelationship(this.serverName,this.userId, relationshipGuid);
+        System.out.println("Hard deleted TermAnchor with relationshipGuid=" + relationshipGuid);
+
+        TermAnchorRelationship newTermAnchorRelationship =new TermAnchorRelationship();
+        newTermAnchorRelationship.setGlossaryGuid(glossaryGuid);
+        newTermAnchorRelationship.setTermGuid(termGuid);
+        FVTUtils.validateLine(subjectAreaRelationship.createTermAnchorRelationship(serverName,userId,newTermAnchorRelationship));
+    }
+
+    private void categoryAnchorFVT(Category category) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException, FunctionNotSupportedException, RelationshipNotDeletedException, GUIDNotPurgedException, ClassificationException {
+        // No create for CategoryAnchor - because this OMAS cannot create a Category without a glossary
+        String categoryGuid = category.getSystemAttributes().getGUID();
+        String glossaryGuid = category.getGlossary().getGuid();
+        String relationshipGuid = category.getGlossary().getRelationshipguid();
+        CategoryAnchorRelationship gotCategoryAnchorRelationship =subjectAreaRelationship.getCategoryAnchorRelationship(this.serverName,this.userId, relationshipGuid);
+        FVTUtils.validateLine(gotCategoryAnchorRelationship);
+        System.out.println("Got CategoryAnchorRelationship " + gotCategoryAnchorRelationship);
+        // no update as this relationship has no properties
+
+        gotCategoryAnchorRelationship = subjectAreaRelationship.deleteCategoryAnchorRelationship(this.serverName,this.userId, relationshipGuid);
+        FVTUtils.validateLine(gotCategoryAnchorRelationship);
+        System.out.println("Soft deleted CategoryAnchorRelationship with relationshipGuid=" + relationshipGuid);
+        gotCategoryAnchorRelationship = subjectAreaRelationship.restoreCategoryAnchorRelationship(this.serverName,this.userId, relationshipGuid);
+        FVTUtils.validateLine(gotCategoryAnchorRelationship);
+        System.out.println("Restored CategoryAnchorRelationship with relationshipGuid=" + relationshipGuid);
+        gotCategoryAnchorRelationship = subjectAreaRelationship.deleteCategoryAnchorRelationship(this.serverName,this.userId, relationshipGuid);
+        FVTUtils.validateLine(gotCategoryAnchorRelationship);
+        System.out.println("Soft deleted CategoryAnchor with relationshipGuid=" + relationshipGuid);
+        subjectAreaRelationship.purgeCategoryAnchorRelationship(this.serverName,this.userId, relationshipGuid);
+        System.out.println("Hard deleted CategoryAnchor with relationshipGuid=" + relationshipGuid);
+
+        CategoryAnchorRelationship newCategoryAnchorRelationship =new CategoryAnchorRelationship();
+        newCategoryAnchorRelationship.setGlossaryGuid(glossaryGuid);
+        newCategoryAnchorRelationship.setCategoryGuid(categoryGuid);
+        FVTUtils.validateLine(subjectAreaRelationship.createCategoryAnchorRelationship(serverName,userId,newCategoryAnchorRelationship));
+
+    }
+
     public TermCategorizationRelationship createTermCategorization(Term term, Category category) throws InvalidParameterException, UserNotAuthorizedException, MetadataServerUncontactableException, UnexpectedResponseException, UnrecognizedGUIDException, SubjectAreaFVTCheckedException {
         TermCategorizationRelationship termCategorization = new TermCategorizationRelationship();
         termCategorization.setTermGuid(term.getSystemAttributes().getGUID());
