@@ -4,6 +4,9 @@ package org.odpi.openmetadata.accessservices.informationview.lookup;
 
 import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumnSource;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.EntityNotFoundException;
+import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
@@ -25,7 +28,12 @@ public class LookupBasedOnDatabaseColumn implements LookupStrategy {
         try {
             return lookupHelper.lookupDatabaseColumn((DatabaseColumnSource) source);
         } catch (EntityNotKnownException | UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
-            throw new RuntimeException("Exception retrieving the entity based on source details", e);
+            throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(),
+                    EntityLookup.class.getName(),
+                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage("source", source.toString()),
+                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(),
+                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(),
+                    null);
         }
     }
 }

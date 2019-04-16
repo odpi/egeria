@@ -84,4 +84,5 @@ public class Constants {
     public static final String ZONE_MEMBERSHIP = "zoneMembership";
     public static final Integer PAGE_SIZE = 100;
     public static final int START_FROM = 0;
+    public static final String GUID = "guid";
 }
