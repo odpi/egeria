@@ -1,11 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-
 package org.odpi.openmetadata.accessservices.dataplatform.events;
+
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -13,39 +14,42 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TableSource extends DatabaseSource {
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.PROPERTY,
+        property = "class")
+public class DataViewSource extends Source {
 
-    private String tableName;
-    private String schemaName;
-    private String tableGuid;
+    protected String id;
+    protected String name;
 
-    public String getTableName() {
-        return tableName;
+    public String getId() {
+        return id;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public String getSchemaName() {
-        return schemaName;
+    public String getName() {
+        return name;
     }
 
-    public void setSchemaName(String schemaName) {
-        this.schemaName = schemaName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getTableGuid() {
-        return tableGuid;
+    @Override
+    public String toString() {
+        return "DataViewSource{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
-
-    public void setTableGuid(String tableGuid) {
-        this.tableGuid = tableGuid;
-    }
-
 
     @Override
     public String buildQualifiedName() {
-        return this.getNetworkAddress() + "." + "Connection." + this.getDatabaseName() + "." + this.getSchemaName() + "." + this.getTableName();
+        return "";
+
     }
 }
