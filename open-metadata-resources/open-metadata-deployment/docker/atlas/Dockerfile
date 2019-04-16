@@ -30,6 +30,11 @@ RUN git clone https://github.com/grahamwallis/atlas -b master
 
 WORKDIR /root/atlas
 
+# Appy any patches - temporary as per #922
+COPY dist/0001-EGERIA-github-922-upgrade-kafka-version.patch /root/0001-EGERIA-github-922-upgrade-kafka-version.patch
+RUN git config --global user.email "you@example.com"
+RUN git config --global user.name "Your Name"
+RUN git am < /root/0001-EGERIA-github-922-upgrade-kafka-version.patch
 # Add reference to odpi repository for snapshots
 COPY dist/settings.xml /root/.m2/settings.xml
 WORKDIR /root
