@@ -393,7 +393,7 @@ public enum OMRSAuditCode
                       OMRSAuditLogRecordSeverity.ACTION,
                       "Registration error occurred in cohort {0} because the local server is not able to use " +
                                     "the remote connection {1} supplied by server {2} that hosts metadata " +
-                                    "collection {3} to create a connector to its metadata repository",
+                                    "collection {3} to create a connector to its metadata repository.  Error message is {4}",
                       "The local server is not able to query metadata from the remote server.",
                       "This error may be caused because the connection is incorrectly " +
                                     "configured, or that the jar file for the connector is not available in the " +

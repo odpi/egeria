@@ -174,9 +174,9 @@ public class ConfigRepositoryServicesResource
      * OMAGConfigurationErrorException the local repository mode has not been set.
      */
     @RequestMapping(method = RequestMethod.POST, path = "/local-repository/mode/ibm-igc/details")
-    public VoidResponse setIBMIGCConnection(@PathVariable                  String               userId,
-                                            @PathVariable                  String               serverName,
-                                            @RequestBody(required = true)  Map<String, Object>  additionalProperties)
+    public VoidResponse setIBMIGCConnection(@PathVariable String               userId,
+                                            @PathVariable String               serverName,
+                                            @RequestBody  Map<String, Object>  additionalProperties)
     {
         return adminAPI.setIBMIGCConnection(userId, serverName, additionalProperties);
     }

@@ -93,10 +93,12 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private String                    organizationName          = defaultLocalOrganizationName;
     private String                    localServerURL            = defaultLocalServerURL;
     private String                    localServerUserId         = defaultLocalServerUserId;
+    private String                    localServerPassword       = null;
     private int                       maxPageSize               = defaultMaxPageSize;
     private EventBusConfig            eventBusConfig            = null;
     private List<AccessServiceConfig> accessServicesConfig      = null;
     private RepositoryServicesConfig  repositoryServicesConfig  = null;
+    private ConformanceSuiteConfig    conformanceSuiteConfig    = null;
     private DiscoveryServerConfig     discoveryServerConfig     = null;
     private OpenLineageConfig         openLineageConfig         = null;
     private StewardshipServicesConfig stewardshipServicesConfig = null;
@@ -130,10 +132,12 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
             organizationName = template.getOrganizationName();
             localServerURL = template.getLocalServerURL();
             localServerUserId = template.getLocalServerUserId();
+            localServerPassword = template.getLocalServerPassword();
             maxPageSize = template.getMaxPageSize();
             eventBusConfig = template.getEventBusConfig();
             accessServicesConfig = template.getAccessServicesConfig();
             repositoryServicesConfig = template.getRepositoryServicesConfig();
+            conformanceSuiteConfig = template.getConformanceSuiteConfig();
             discoveryServerConfig = template.getDiscoveryServerConfig();
             openLineageConfig = template.getOpenLineageConfig();
             stewardshipServicesConfig = template.getStewardshipServicesConfig();
@@ -301,6 +305,32 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Return the password that the local server should use on outbound REST calls (this is the password for
+     * the localServerUserId).  Using userId's and passwords for server authentication is not suitable
+     * for production environments.
+     *
+     * @return password in clear
+     */
+    public String getLocalServerPassword()
+    {
+        return localServerPassword;
+    }
+
+
+    /**
+     * Set up the password that the local server should use on outbound REST calls (this is the password for
+     * the localServerUserId).  Using userId's and passwords for server authentication is not suitable
+     * for production environments.
+     *
+     * @param localServerPassword password in clear
+     */
+    public void setLocalServerPassword(String localServerPassword)
+    {
+        this.localServerPassword = localServerPassword;
+    }
+
+
+    /**
      * Return the maximum page size supported by this server.
      *
      * @return int number of elements
@@ -384,6 +414,28 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     public void setRepositoryServicesConfig(RepositoryServicesConfig repositoryServicesConfig)
     {
         this.repositoryServicesConfig = repositoryServicesConfig;
+    }
+
+
+    /**
+     * Return the configuration for the open metadata conformance suite services.
+     *
+     * @return configuration properties that control the operation of the open metadata test labs.
+     */
+    public ConformanceSuiteConfig getConformanceSuiteConfig()
+    {
+        return conformanceSuiteConfig;
+    }
+
+
+    /**
+     * Set up the configuration for the open metadata conformance suite services.
+     *
+     * @param conformanceSuiteConfig configuration properties that control the operation of the open metadata test labs.
+     */
+    public void setConformanceSuiteConfig(ConformanceSuiteConfig conformanceSuiteConfig)
+    {
+        this.conformanceSuiteConfig = conformanceSuiteConfig;
     }
 
 
@@ -479,7 +531,8 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
      *
      * @return VirtualizationConfig properties
      */
-    public VirtualizationConfig getVirtualizationConfig() {
+    public VirtualizationConfig getVirtualizationConfig()
+    {
         return virtualizationConfig;
     }
 

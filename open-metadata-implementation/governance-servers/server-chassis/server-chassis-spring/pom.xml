@@ -38,6 +38,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-conformance-suite-spring</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>connected-asset-spring</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
