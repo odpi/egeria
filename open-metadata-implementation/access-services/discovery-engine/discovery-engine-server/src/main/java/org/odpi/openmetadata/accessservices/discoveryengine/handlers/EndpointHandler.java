@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.discoveryengine.handlers;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.builders.EndpointBuilder;
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.EndpointConverter;
+import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.accessservices.discoveryengine.mappers.EndpointMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
@@ -21,11 +22,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 class EndpointHandler
 {
-    private String               serviceName;
-    private String               serverName;
-    private OMRSRepositoryHelper repositoryHelper;
-    private BasicHandler         basicHandler;
-    private ErrorHandler         errorHandler;
+    private String                  serviceName;
+    private String                  serverName;
+    private OMRSRepositoryHelper    repositoryHelper;
+    private BasicHandler            basicHandler;
+    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
 
 
     /**
@@ -39,13 +40,11 @@ class EndpointHandler
     EndpointHandler(String serviceName,
                     String serverName,
                     BasicHandler basicHandler,
-                    ErrorHandler errorHandler,
                     OMRSRepositoryHelper repositoryHelper)
     {
         this.serviceName = serviceName;
         this.serverName = serverName;
         this.basicHandler = basicHandler;
-        this.errorHandler = errorHandler;
         this.repositoryHelper = repositoryHelper;
     }
 
@@ -72,7 +71,7 @@ class EndpointHandler
 
         if (endpoint != null)
         {
-            errorHandler.validateName(endpoint.getQualifiedName(), qualifiedNameParameter, methodName);
+            invalidParameterHandler.validateName(endpoint.getQualifiedName(), qualifiedNameParameter, methodName);
 
             if (endpoint.getGUID() != null)
             {

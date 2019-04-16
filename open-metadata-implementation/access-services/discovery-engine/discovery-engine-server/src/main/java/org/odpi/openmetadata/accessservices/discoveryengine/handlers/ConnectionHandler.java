@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.discoveryengine.handlers;
 import org.odpi.openmetadata.accessservices.discoveryengine.builders.ConnectionBuilder;
 import org.odpi.openmetadata.accessservices.discoveryengine.builders.EmbeddedConnectionBuilder;
 import org.odpi.openmetadata.accessservices.discoveryengine.converters.ConnectionConverter;
+import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.accessservices.discoveryengine.mappers.ConnectionMapper;
 import org.odpi.openmetadata.accessservices.discoveryengine.mappers.EndpointMapper;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -25,7 +26,7 @@ class ConnectionHandler
     private String                    serviceName;
     private OMRSRepositoryHelper      repositoryHelper;
     private String                    serverName;
-    private ErrorHandler              errorHandler;
+    private InvalidParameterHandler   invalidParameterHandler = new InvalidParameterHandler();
     private BasicHandler              basicHandler;
     private EndpointHandler           endpointHandler;
     private ConnectorTypeHandler      connectorTypeHandler;
@@ -37,30 +38,25 @@ class ConnectionHandler
      * @param serviceName name of this service
      * @param serverName name of the local server
      * @param repositoryHelper    helper utilities for managing repository services objects
-     * @param errorHandler handler for validation and exceptions
      * @param basicHandler handler for interfacing with the repository services
      */
     ConnectionHandler(String                  serviceName,
                       String                  serverName,
                       OMRSRepositoryHelper    repositoryHelper,
-                      ErrorHandler            errorHandler,
                       BasicHandler            basicHandler)
     {
         this.serviceName = serviceName;
         this.repositoryHelper = repositoryHelper;
         this.serverName = serverName;
-        this.errorHandler = errorHandler;
         this.basicHandler = basicHandler;
 
         this.endpointHandler = new EndpointHandler(serviceName,
                                                    serverName,
                                                    basicHandler,
-                                                   errorHandler,
                                                    repositoryHelper);
         this.connectorTypeHandler = new ConnectorTypeHandler(serviceName,
                                                              serverName,
                                                              basicHandler,
-                                                             errorHandler,
                                                              repositoryHelper);
     }
 
@@ -103,7 +99,7 @@ class ConnectionHandler
                 }
             }
 
-            errorHandler.validateName(connection.getQualifiedName(), qualifiedNameParameter, methodName);
+            invalidParameterHandler.validateName(connection.getQualifiedName(), qualifiedNameParameter, methodName);
 
             ConnectionBuilder connectionBuilder = new ConnectionBuilder(connection.getQualifiedName(),
                                                                         connection.getDisplayName(),
