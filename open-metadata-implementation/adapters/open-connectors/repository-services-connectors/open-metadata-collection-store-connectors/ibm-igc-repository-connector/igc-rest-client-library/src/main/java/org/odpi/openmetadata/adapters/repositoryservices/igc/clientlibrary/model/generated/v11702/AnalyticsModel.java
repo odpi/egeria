@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v11702;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import javax.annotation.Generated;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,9 +21,9 @@ import java.util.ArrayList;
  */
 @Generated("org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.IGCRestModelGenerator")
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeName("analytics_model")
 public class AnalyticsModel extends Reference {
 
-    public static String getIgcTypeId() { return "analytics_model"; }
     public static String getIgcTypeDisplayName() { return "Data Science Model"; }
 
     /**
