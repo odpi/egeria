@@ -3,16 +3,14 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.MetadataServerUncontactableException;
 import org.odpi.openmetadata.accessservices.subjectarea.initialization.SubjectAreaInstanceHandler;
 import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.RelationshipResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.RelationshipsResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.LinesResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.ResponseCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineBundle;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineBundleFactory;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
@@ -427,7 +425,7 @@ public class SubjectAreaRESTServicesInstance
                         // use the relationship as supplied
                     } else
                     {
-                        if (relationshipToUpdate.getProperties() !=null) {
+                        if (relationshipToUpdate.getProperties() !=null && relationshipToUpdate.getProperties().getPropertyCount()>0) {
                             Map<String, InstancePropertyValue> updateInstanceProperties = relationshipToUpdate.getProperties().getInstanceProperties();
                             if (originalRelationship.getProperties() != null) {
                                 Map<String, InstancePropertyValue> orgInstanceProperties = originalRelationship.getProperties().getInstanceProperties();
@@ -448,12 +446,22 @@ public class SubjectAreaRESTServicesInstance
                             relationshipToUpdate.setProperties(instancePropertiesToUpdate);
                         }
                     }
-                    response = oMRSAPIHelper.callOMRSUpdateRelationship(userId, relationshipToUpdate);
-                    if (response.getResponseCategory() == ResponseCategory.OmrsRelationship)
-                    {
-                        Relationship updatedOmrsRelationship = ((RelationshipResponse) response).getRelationship();
-                        Line updatedLine = mapper.mapRelationshipToLine(updatedOmrsRelationship);
-                        response = new ResponseFactory().getInstance(className, updatedLine);
+                    if (relationshipToUpdate.getProperties() ==null || relationshipToUpdate.getProperties().getPropertyCount() ==0) {
+                        // nothing to update.
+                        // TODO may need to change this logic if effectivity updates can be made through this call.
+                        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.LINE_UPDATE_ATTEMPTED_WITH_NO_PROPERTIES;
+                        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
+                        log.error(errorMessage);
+                        response = new InvalidParameterExceptionResponse(
+                                new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction())
+                                );
+                    } else {
+                        response = oMRSAPIHelper.callOMRSUpdateRelationship(userId, relationshipToUpdate);
+                        if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
+                            Relationship updatedOmrsRelationship = ((RelationshipResponse) response).getRelationship();
+                            Line updatedLine = mapper.mapRelationshipToLine(updatedOmrsRelationship);
+                            response = new ResponseFactory().getInstance(className, updatedLine);
+                        }
                     }
                 }
             } catch (InvalidParameterException e)
