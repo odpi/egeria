@@ -177,8 +177,7 @@ public class ConnectorConfigurationFactory
 
         final String endpointDescription = "Open metadata archive for " + fileName;
 
-        String endpointAddress = fileName;
-        String endpointName    = "OpenMetadataArchiveFile.Endpoint" + endpointAddress;
+        String endpointName    = "OpenMetadataArchiveFile.Endpoint" + fileName;
 
         Endpoint endpoint = new Endpoint();
 
@@ -187,7 +186,7 @@ public class ConnectorConfigurationFactory
         endpoint.setQualifiedName(endpointName);
         endpoint.setDisplayName(endpointName);
         endpoint.setDescription(endpointDescription);
-        endpoint.setAddress(endpointAddress);
+        endpoint.setAddress(fileName);
 
         final String connectionDescription = "Open metadata archive connection.";
 
@@ -278,13 +277,15 @@ public class ConnectorConfigurationFactory
     /**
      * Return the Connection for this server's OMRS Repository REST API.  If the localServerURL is
      * something like localhost:8080/west-domain then the REST API URL would be
-     * localhost:8080/west-domain/open-metadata/repository-services/...
+     * localhost:8080/west-domain/servers/{localServerName}/open-metadata/repository-services/...
      *
+     * @param repositoryName   name of the local repository
      * @param localServerName   name of the local server
      * @param localServerURL   root of the local server's URL
      * @return Connection object
      */
-    public  Connection getDefaultLocalRepositoryRemoteConnection(String localServerName,
+    public  Connection getDefaultLocalRepositoryRemoteConnection(String repositoryName,
+                                                                 String localServerName,
                                                                  String localServerURL)
     {
         final String endpointGUID      = "cee85898-43aa-4af5-9bbd-2bed809d1acb";
@@ -299,20 +300,20 @@ public class ConnectorConfigurationFactory
         endpoint.setType(this.getEndpointType());
         endpoint.setGUID(endpointGUID);
         endpoint.setQualifiedName(endpointName);
-        endpoint.setDisplayName(endpointName);
+        endpoint.setDisplayName(localServerName);
         endpoint.setDescription(endpointDescription);
         endpoint.setAddress(localServerURL + "/servers/" + localServerName);
 
         final String connectionDescription = "OMRS default repository REST API connection.";
 
-        String connectionName = "DefaultRepositoryRESTAPI.Connection." + localServerName;
+        String connectionName = "Remote connection to " + repositoryName + "@" + localServerName;
 
         Connection connection = new Connection();
 
         connection.setType(this.getConnectionType());
         connection.setGUID(connectionGUID);
         connection.setQualifiedName(connectionName);
-        connection.setDisplayName(connectionName);
+        connection.setDisplayName(repositoryName + "@" + localServerName);
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(OMRSRESTRepositoryConnectorProvider.class.getName()));
@@ -326,23 +327,25 @@ public class ConnectorConfigurationFactory
      * Note there is no endpoint defined.  This needs to be added when the graph repository connector
      * is implemented.
      *
+     * @param repositoryName   name of the repository
      * @param localServerName   name of the local server
      * @return Connection object
      */
-    public Connection getLocalGraphRepositoryLocalConnection(String localServerName)
+    public Connection getLocalGraphRepositoryLocalConnection(String repositoryName,
+                                                             String localServerName)
     {
         final String connectionGUID    = "3f1fd4fc-90f9-436a-8e2c-2120d590f5e4";
 
         final String connectionDescription = "OMRS default local graph repository connection.";
 
-        String connectionName = "DefaultLocalGraphRepository.Connection." + localServerName;
+        String connectionName = "Local connection to " + repositoryName + "@" + localServerName;
 
         Connection connection = new Connection();
 
         connection.setType(this.getConnectionType());
         connection.setGUID(connectionGUID);
         connection.setQualifiedName(connectionName);
-        connection.setDisplayName(connectionName);
+        connection.setDisplayName(repositoryName + "@" + localServerName);
         connection.setDescription(connectionDescription);
         connection.setConnectorType(getConnectorType(GraphOMRSRepositoryConnectorProvider.class.getName()));
 
@@ -353,23 +356,25 @@ public class ConnectorConfigurationFactory
     /**
      * Return the in-memory local repository connection.  This is using the InMemoryOMRSRepositoryConnector.
      *
+     * @param repositoryName   name of the repository
      * @param localServerName   name of the local server
      * @return Connection object
      */
-    public Connection getInMemoryLocalRepositoryLocalConnection(String localServerName)
+    public Connection getInMemoryLocalRepositoryLocalConnection(String repositoryName,
+                                                                String localServerName)
     {
         final String connectionGUID    = "6a3c07b0-0e04-42dc-bcc6-392609bf1d02";
 
         final String connectionDescription = "OMRS default in memory local repository connection.";
 
-        String connectionName = "DefaultInMemoryRepository.Connection." + localServerName;
+        String connectionName = "Local connection to " + repositoryName + "@" + localServerName;
 
         Connection connection = new Connection();
 
         connection.setType(this.getConnectionType());
         connection.setGUID(connectionGUID);
         connection.setQualifiedName(connectionName);
-        connection.setDisplayName(connectionName);
+        connection.setDisplayName(repositoryName + "@" + localServerName);
         connection.setDescription(connectionDescription);
         connection.setConnectorType(getConnectorType(InMemoryOMRSRepositoryConnectorProvider.class.getName()));
 
@@ -389,7 +394,6 @@ public class ConnectorConfigurationFactory
                                                     String              url,
                                                     Map<String, Object> configurationProperties)
     {
-        // TODO: confirm whether these should be final GUIDs or randomly generated (like ProxyConnection below)?
         final String endpointGUID          = "94546575-45b5-4ece-9c05-7654b4a7cf7e";
         final String connectionGUID        = "c2e88b7b-4d23-43b0-b6d9-7d25a68f17c0";
         final String endpointDescription   = "OMRS repository endpoint for IBM Information Governance Catalog.";

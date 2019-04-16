@@ -84,7 +84,8 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
     private List<RegisteredConnector>         registeredRemoteConnectors   = new ArrayList<>();
     private List<RegisteredConnectorConsumer> registeredConnectorConsumers = new ArrayList<>();
     private OMRSAuditLog                      auditLog;
-
+    private String                            localServerUserId;
+    private String                            localServerPassword;
 
     /**
      * Constructor for the enterprise connector manager.
@@ -96,16 +97,37 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
      * @param maxPageSize the maximum number of elements that can be requested on a page.
      * @param repositoryContentManager repository content manager used by the connectors.
      * @param auditLog audit log to act as a factory for connector audit logs.
+     * @param localServerUserId userId for the local server
+     * @param localServerPassword password for the local server
      */
     public OMRSEnterpriseConnectorManager(boolean                      enterpriseAccessEnabled,
                                           int                          maxPageSize,
                                           OMRSRepositoryContentManager repositoryContentManager,
-                                          OMRSAuditLog                 auditLog)
+                                          OMRSAuditLog                 auditLog,
+                                          String                       localServerUserId,
+                                          String                       localServerPassword)
     {
         this.enterpriseAccessEnabled = enterpriseAccessEnabled;
         this.maxPageSize = maxPageSize;
         this.repositoryContentManager = repositoryContentManager;
         this.auditLog = auditLog;
+        this.localServerUserId = localServerUserId;
+        this.localServerPassword = localServerPassword;
+    }
+
+
+    /**
+     * Returns boolean indicating whether the enterprise connector manager should pass on details about remote
+     * members of the cohort to the connector consumers or not.  (This capability allows the OMASs to be configured
+     * to work only with the local repository and not perform federated queries.)
+     *
+     * @return boolean - true means that the registered connector consumers will receive information about
+     * remote connectors enabling federated queries across the cohort members.  False means all queries
+     * will be directed to the local repository only.
+     */
+    public boolean isEnterpriseAccessEnabled()
+    {
+        return enterpriseAccessEnabled;
     }
 
 
@@ -121,12 +143,14 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
         /*
          * Disconnect the local connector
          */
-        if (localRepositoryConnector != null) {
-
-            try {
+        if (localRepositoryConnector != null)
+        {
+            try
+            {
                 localRepositoryConnector.disconnect();
             }
-            catch (Throwable error) {
+            catch (Throwable error)
+            {
                 log.error("Exception from disconnect of connector to metadata collection:" + localMetadataCollectionId + "  Error message was: " + error.getMessage());
                 throw error;
             }
@@ -465,18 +489,46 @@ public class OMRSEnterpriseConnectorManager implements OMRSConnectionConsumer, O
                                                                String     metadataCollectionId,
                                                                String     metadataCollectionName)
     {
-        String     methodName = "getOMRSRepositoryConnector()";
+        String     methodName = "getOMRSRepositoryConnector";
 
         try
         {
+            String repositoryName = null;
+
+            /*
+             * Add in the local server's userId and password if the remote server has not provided values.
+             */
+            if (connection != null)
+            {
+                if (connection.getUserId() == null)
+                {
+                    connection.setUserId(localServerUserId);
+                }
+
+                if (connection.getClearPassword() == null)
+                {
+                    connection.setClearPassword(localServerPassword);
+                }
+
+                repositoryName = connection.getDisplayName();
+            }
+
+            /*
+             * Create the connector
+             */
             ConnectorBroker         connectorBroker     = new ConnectorBroker();
             Connector               connector           = connectorBroker.getConnector(connection);
 
             OMRSRepositoryConnector repositoryConnector = (OMRSRepositoryConnector) connector;
 
+            if (repositoryName != null)
+            {
+                repositoryConnector.setRepositoryName(repositoryName);
+            }
             repositoryConnector.setAuditLog(auditLog.createNewAuditLog(OMRSAuditingComponent.REMOTE_REPOSITORY_CONNECTOR));
             repositoryConnector.setServerName(serverName);
             repositoryConnector.setServerType(serverType);
+            repositoryConnector.setServerUserId(localServerUserId);
             repositoryConnector.setOrganizationName(owningOrganizationName);
             repositoryConnector.setMaxPageSize(maxPageSize);
             repositoryConnector.setRepositoryValidator(new OMRSRepositoryContentValidator(repositoryContentManager));

@@ -27,7 +27,7 @@ public class ConfigDefaultsResource
      * The default value is "localhost:8080".
      *
      * ServerURLRoot is used as a default value during the configuration of the server's subsystems.
-     * If it is updated after a subsystem is
+     * If it is updated after a subsystem is configured then the new value is ignored.
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
@@ -48,7 +48,7 @@ public class ConfigDefaultsResource
     /**
      * Set up the default event bus for embedding in event-driven connector.   The resulting connector will
      * be used for example, in the OMRS Topic Connector for each cohort, the in and out topics for each Access Service and
-     * the local repositories event mapper.
+     * possibly the local repository's event mapper.
      *
      * When the event bus is configured, it is used only on future configuration.  It does not effect
      * existing configuration.
@@ -68,7 +68,7 @@ public class ConfigDefaultsResource
                                     @PathVariable                   String              serverName,
                                     @RequestParam(required = false) String              connectorProvider,
                                     @RequestParam(required = false) String              topicURLRoot,
-                                    @RequestBody(required = false)  Map<String, Object> configurationProperties)
+                                    @RequestBody (required = false) Map<String, Object> configurationProperties)
     {
         return adminAPI.setEventBus(userId, serverName, connectorProvider, topicURLRoot, configurationProperties);
     }

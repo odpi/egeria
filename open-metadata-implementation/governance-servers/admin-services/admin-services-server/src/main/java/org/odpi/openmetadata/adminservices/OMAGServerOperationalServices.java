@@ -13,6 +13,7 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterEx
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
+import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
@@ -140,6 +141,7 @@ public class OMAGServerOperationalServices
              */
             RepositoryServicesConfig  repositoryServicesConfig  = configuration.getRepositoryServicesConfig();
             List<AccessServiceConfig> accessServiceConfigList   = configuration.getAccessServicesConfig();
+            ConformanceSuiteConfig    conformanceSuiteConfig    = configuration.getConformanceSuiteConfig();
             DiscoveryServerConfig     discoveryServerConfig     = configuration.getDiscoveryServerConfig();
             OpenLineageConfig         openLineageConfig         = configuration.getOpenLineageConfig();
             SecuritySyncConfig        securitySyncConfig        = configuration.getSecuritySyncConfig();
@@ -148,6 +150,7 @@ public class OMAGServerOperationalServices
 
             if ((repositoryServicesConfig == null) &&
                 (accessServiceConfigList == null) &&
+                (conformanceSuiteConfig == null) &&
                 (discoveryServerConfig == null) &&
                 (openLineageConfig == null) &&
                 (securitySyncConfig == null) &&
@@ -191,6 +194,7 @@ public class OMAGServerOperationalServices
                                                                         configuration.getLocalServerType(),
                                                                         configuration.getOrganizationName(),
                                                                         configuration.getLocalServerUserId(),
+                                                                        configuration.getLocalServerPassword(),
                                                                         configuration.getLocalServerURL(),
                                                                         configuration.getMaxPageSize());
             activatedServiceList.add(REPOSITORY_SERVICES);
@@ -285,6 +289,30 @@ public class OMAGServerOperationalServices
             instanceMap.setNewInstance(serverName, instance);
 
             /*
+             * Initialize the Open Metadata Conformance Suite Services.  This runs the Open Metadata TestLabs that are
+             * part of the ODPi Egeria Conformance Program.
+             */
+            if (conformanceSuiteConfig != null)
+            {
+                ConformanceSuiteOperationalServices
+                        operationalConformanceSuiteServices = new ConformanceSuiteOperationalServices(configuration.getLocalServerName(),
+                                                                                                      configuration.getLocalServerUserId(),
+                                                                                                      configuration.getLocalServerPassword(),
+                                                                                                      configuration.getMaxPageSize());
+                instance.setOperationalConformanceSuiteServices(operationalConformanceSuiteServices);
+                operationalConformanceSuiteServices.initialize(conformanceSuiteConfig,
+                                                               enterpriseTopicConnector,
+                                                               operationalRepositoryServices.getEnterpriseConnectorManager(),
+                                                               operationalRepositoryServices.getAuditLog(
+                                                                       GovernanceServersDescription.CONFORMANCE_SUITE_SERVICES.getServiceCode(),
+                                                                       GovernanceServersDescription.CONFORMANCE_SUITE_SERVICES.getServiceName(),
+                                                                       GovernanceServersDescription.CONFORMANCE_SUITE_SERVICES.getServiceDescription(),
+                                                                       GovernanceServersDescription.CONFORMANCE_SUITE_SERVICES.getServiceWiki()));
+
+                activatedServiceList.add(GovernanceServersDescription.CONFORMANCE_SUITE_SERVICES.getServiceName());
+            }
+
+            /*
              * The enterprise topic passes OMRS Events from the cohort to the listening access services.
              * During the access services start up, they registered listeners with the enterprise topic.
              * Starting the enterprise topic will start the flow of events to the registered access services.
@@ -322,6 +350,7 @@ public class OMAGServerOperationalServices
                 DiscoveryServerOperationalServices
                         operationalDiscoveryServer = new DiscoveryServerOperationalServices(configuration.getLocalServerName(),
                                                                                             configuration.getLocalServerUserId(),
+                                                                                            configuration.getLocalServerPassword(),
                                                                                             configuration.getMaxPageSize());
                 instance.setOperationalDiscoveryServer(operationalDiscoveryServer);
                 operationalDiscoveryServer.initialize(discoveryServerConfig,

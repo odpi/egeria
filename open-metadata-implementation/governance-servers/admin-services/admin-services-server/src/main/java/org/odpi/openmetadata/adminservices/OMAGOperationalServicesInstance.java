@@ -4,6 +4,7 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
 import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
@@ -20,14 +21,15 @@ import java.util.List;
 
 public class OMAGOperationalServicesInstance
 {
-    private OMAGServerConfig                   operationalConfiguration          = null;
-    private OMRSOperationalServices            operationalRepositoryServices     = null;
-    private List<AccessServiceAdmin>           operationalAccessServiceAdminList = new ArrayList<>();
-    private DiscoveryServerOperationalServices operationalDiscoveryServer        = null;
-    private OpenLineageOperationalServices     openLineageOperationalServices    = null;
-    private StewardshipOperationalServices     operationalStewardshipServices    = null;
-    private SecuritySyncOperationalServices    operationalSecuritySyncServices   = null;
-    private VirtualizationOperationalServices  operationalVirtualizationServices = null;
+    private OMAGServerConfig                    operationalConfiguration            = null;
+    private OMRSOperationalServices             operationalRepositoryServices       = null;
+    private List<AccessServiceAdmin>            operationalAccessServiceAdminList   = new ArrayList<>();
+    private ConformanceSuiteOperationalServices operationalConformanceSuiteServices = null;
+    private DiscoveryServerOperationalServices  operationalDiscoveryServer          = null;
+    private OpenLineageOperationalServices      openLineageOperationalServices      = null;
+    private StewardshipOperationalServices      operationalStewardshipServices      = null;
+    private SecuritySyncOperationalServices     operationalSecuritySyncServices     = null;
+    private VirtualizationOperationalServices   operationalVirtualizationServices   = null;
 
     /**
      * Default constructor
@@ -97,6 +99,28 @@ public class OMAGOperationalServicesInstance
     public void setOperationalAccessServiceAdminList(List<AccessServiceAdmin> operationalAccessServiceAdminList)
     {
         this.operationalAccessServiceAdminList = operationalAccessServiceAdminList;
+    }
+
+
+    /**
+     * Return the running instance of the conformance suite operational services for this server.
+     *
+     * @return ConformanceSuiteOperationalServices object
+     */
+    public ConformanceSuiteOperationalServices getOperationalConformanceSuiteServices()
+    {
+        return operationalConformanceSuiteServices;
+    }
+
+
+    /**
+     * Set up the running instance of the conformance suite operational services for this server.
+     *
+     * @param operationalConformanceSuiteServices ConformanceSuiteOperationalServices object
+     */
+    public void setOperationalConformanceSuiteServices(ConformanceSuiteOperationalServices operationalConformanceSuiteServices)
+    {
+        this.operationalConformanceSuiteServices = operationalConformanceSuiteServices;
     }
 
 

@@ -42,19 +42,19 @@ public class OMAGServerAdminForOpenLineage {
         try {
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String> configAuditLog = serverConfig.getAuditTrail();
+            List<String> configAuditTrail = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null) {
-                configAuditLog = new ArrayList<>();
+            if (configAuditTrail == null) {
+                configAuditTrail = new ArrayList<>();
             }
 
             if (openLineageConfig == null) {
-                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for open lineage services.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for open lineage services.");
             } else {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for open lineage services.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for open lineage services.");
             }
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();

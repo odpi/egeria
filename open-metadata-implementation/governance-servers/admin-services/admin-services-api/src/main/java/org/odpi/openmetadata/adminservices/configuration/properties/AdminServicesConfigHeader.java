@@ -23,12 +23,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = AccessServiceConfig.class, name = "AccessServiceConfig"),
         @JsonSubTypes.Type(value = CohortConfig.class, name = "CohortConfig"),
+        @JsonSubTypes.Type(value = ConformanceSuiteConfig.class, name = "ConformanceSuiteConfig"),
+        @JsonSubTypes.Type(value = PlatformConformanceWorkbenchConfig.class, name = "PlatformConformanceWorkbenchConfig"),
+        @JsonSubTypes.Type(value = RepositoryConformanceWorkbenchConfig.class, name = "RepositoryConformanceWorkbenchConfig"),
         @JsonSubTypes.Type(value = DiscoveryServerConfig.class, name = "DiscoveryServerConfig"),
-        @JsonSubTypes.Type(value = OpenLineageConfig.class, name = "OpenLineageConfig"),
         @JsonSubTypes.Type(value = EnterpriseAccessConfig.class, name = "EnterpriseAccessConfig"),
         @JsonSubTypes.Type(value = EventBusConfig.class, name = "EventBusConfig"),
         @JsonSubTypes.Type(value = LocalRepositoryConfig.class, name = "LocalRepositoryConfig"),
         @JsonSubTypes.Type(value = OMAGServerConfig.class, name = "OMAGServerConfig"),
+        @JsonSubTypes.Type(value = OpenLineageConfig.class, name = "OpenLineageConfig"),
         @JsonSubTypes.Type(value = RepositoryServicesConfig.class, name = "RepositoryServicesConfig"),
         @JsonSubTypes.Type(value = SecuritySyncConfig.class, name = "SecuritySyncConfig"),
         @JsonSubTypes.Type(value = StewardshipServicesConfig.class, name = "StewardshipServicesConfig"),
@@ -52,7 +55,7 @@ public class AdminServicesConfigHeader implements Serializable
      *
      * @param template object to copy
      */
-    public AdminServicesConfigHeader(AdminServicesConfigHeader  template)
+    public AdminServicesConfigHeader(AdminServicesConfigHeader template)
     {
     }
 

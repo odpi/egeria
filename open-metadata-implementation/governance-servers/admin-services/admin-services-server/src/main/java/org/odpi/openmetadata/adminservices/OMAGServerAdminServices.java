@@ -62,11 +62,11 @@ public class OMAGServerAdminServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String>  configAuditLog          = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
             if ("".equals(typeName))
@@ -76,14 +76,14 @@ public class OMAGServerAdminServices
 
             if (typeName == null)
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for local server type name.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server type name.");
             }
             else
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for local server type name to " + typeName + ".");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server type name to " + typeName + ".");
             }
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
             serverConfig.setLocalServerType(typeName);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
@@ -127,11 +127,11 @@ public class OMAGServerAdminServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String>  configAuditLog          = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
             if ("".equals(name))
@@ -141,14 +141,14 @@ public class OMAGServerAdminServices
 
             if (name == null)
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for local server's owning organization's name.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server's owning organization's name.");
             }
             else
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for local server's owning organization's name to " + name + ".");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server's owning organization's name to " + name + ".");
             }
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
             serverConfig.setOrganizationName(name);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
@@ -192,11 +192,11 @@ public class OMAGServerAdminServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String>  configAuditLog          = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
             if ("".equals(serverUserId))
@@ -206,15 +206,80 @@ public class OMAGServerAdminServices
 
             if (serverUserId == null)
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for local server's userId.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server's userId.");
             }
             else
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for local server's userId to " + serverUserId + ".");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server's userId to " + serverUserId + ".");
             }
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
             serverConfig.setLocalServerUserId(serverUserId);
+
+            configStore.saveServerConfig(serverName, methodName, serverConfig);
+        }
+        catch (OMAGInvalidParameterException  error)
+        {
+            errorHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException  error)
+        {
+            errorHandler.captureNotAuthorizedException(response, error);
+        }
+
+        return response;
+    }
+
+
+    /**
+     * Set up the user id to use when there is no external user driving the work (for example when processing events
+     * from another server).
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param serverPassword  String password for the server.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
+     */
+    public VoidResponse setServerPassword(String userId,
+                                          String serverName,
+                                          String serverPassword)
+    {
+        final String methodName = "setServerPassword";
+
+        VoidResponse response = new VoidResponse();
+
+        try
+        {
+            errorHandler.validateUserId(userId, serverName, methodName);
+            errorHandler.validateServerName(serverName, methodName);
+
+            OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
+
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
+
+            if (configAuditTrail == null)
+            {
+                configAuditTrail = new ArrayList<>();
+            }
+
+            if ("".equals(serverPassword))
+            {
+                serverPassword = null;
+            }
+
+            if (serverPassword == null)
+            {
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server's password.");
+            }
+            else
+            {
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server's password to " + serverPassword + ".");
+            }
+
+            serverConfig.setAuditTrail(configAuditTrail);
+            serverConfig.setLocalServerPassword(serverPassword);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
@@ -262,16 +327,16 @@ public class OMAGServerAdminServices
             {
                 OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-                List<String>  configAuditLog          = serverConfig.getAuditTrail();
+                List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
-                if (configAuditLog == null)
+                if (configAuditTrail == null)
                 {
-                    configAuditLog = new ArrayList<>();
+                    configAuditTrail = new ArrayList<>();
                 }
 
-                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for maximum page size to " + Integer.toString(maxPageSize) + ".");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for maximum page size to " + Integer.toString(maxPageSize) + ".");
 
-                serverConfig.setAuditTrail(configAuditLog);
+                serverConfig.setAuditTrail(configAuditTrail);
                 serverConfig.setMaxPageSize(maxPageSize);
 
                 configStore.saveServerConfig(serverName, methodName, serverConfig);
@@ -350,16 +415,16 @@ public class OMAGServerAdminServices
             eventBusConfig.setTopicURLRoot(topicURLRoot);
             eventBusConfig.setConfigurationProperties(configurationProperties);
 
-            List<String>  configAuditLog          = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
-            configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for default event bus.");
+            configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for default event bus.");
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
             serverConfig.setEventBusConfig(eventBusConfig);
 
             /*
@@ -413,11 +478,11 @@ public class OMAGServerAdminServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String>  configAuditLog          = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
             if ("".equals(url))
@@ -427,14 +492,14 @@ public class OMAGServerAdminServices
 
             if (url == null)
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for local server's URL root.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for local server's URL root.");
             }
             else
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for local server's URL root to " + url + ".");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for local server's URL root to " + url + ".");
             }
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
             serverConfig.setLocalServerURL(url);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
@@ -818,10 +883,9 @@ public class OMAGServerAdminServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
-            LocalRepositoryConfig localRepositoryConfig
-                    = configurationFactory.getRepositoryIBMIGCRepositoryConfig(serverConfig.getLocalServerName(),
-                    serverConfig.getLocalServerURL());
+            OMRSConfigurationFactory configurationFactory = new OMRSConfigurationFactory();
+            LocalRepositoryConfig localRepositoryConfig = configurationFactory.getRepositoryIBMIGCRepositoryConfig(serverConfig.getLocalServerName(),
+                                                                                                                   serverConfig.getLocalServerURL());
 
             /*
              * Set up the repository proxy connection in the local repository config
@@ -1243,23 +1307,23 @@ public class OMAGServerAdminServices
             errorHandler.validateUserId(userId, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
-            List<String>  configAuditLog  = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail  = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
             if (auditLogDestinations == null)
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " setting up no audit log destinations.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " setting up no audit log destinations.");
             }
             else
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated list of audit log destinations.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated list of audit log destinations.");
             }
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
 
@@ -1322,23 +1386,23 @@ public class OMAGServerAdminServices
             errorHandler.validateUserId(userId, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
-            List<String>  configAuditLog  = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail  = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
             if (openMetadataArchives == null)
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " clearing open metadata archives.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " clearing open metadata archives.");
             }
             else
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated list of open metadata archives loaded at server start up.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated list of open metadata archives loaded at server start up.");
             }
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
 
@@ -1400,23 +1464,23 @@ public class OMAGServerAdminServices
             errorHandler.validateUserId(userId, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
-            List<String>  configAuditLog          = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
             if (localRepositoryConfig == null)
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " setting up a null local repository.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " setting up a null local repository.");
             }
             else
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for the local repository.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for the local repository.");
             }
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
 
@@ -1490,23 +1554,23 @@ public class OMAGServerAdminServices
             List<CohortConfig>       existingCohortConfigs = null;
             List<CohortConfig>       newCohortConfigs = new ArrayList<>();
 
-            List<String>  configAuditLog          = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
             if (cohortConfig == null)
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for cohort " + cohortName + ".");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for cohort " + cohortName + ".");
             }
             else
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for cohort " + cohortName + ".");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for cohort " + cohortName + ".");
             }
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
 
             /*
              * Extract any existing local repository configuration
@@ -1622,16 +1686,16 @@ public class OMAGServerAdminServices
 
             OMAGServerConfig         serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String>  configAuditLog          = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
-            configAuditLog.add(new Date().toString() + " " + userId + " replaced configuration for server.");
+            configAuditTrail.add(new Date().toString() + " " + userId + " replaced configuration for server.");
 
-            omagServerConfig.setAuditTrail(configAuditLog);
+            omagServerConfig.setAuditTrail(configAuditTrail);
 
             configStore.saveServerConfig(serverName, methodName, omagServerConfig);
         }

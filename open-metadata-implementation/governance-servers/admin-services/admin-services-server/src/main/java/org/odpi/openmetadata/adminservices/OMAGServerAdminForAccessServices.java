@@ -214,23 +214,23 @@ public class OMAGServerAdminForAccessServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String>  configAuditLog          = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
             if (accessServicesConfig == null)
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for access services.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for access services.");
             }
             else
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for access services.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for access services.");
             }
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
 
             serverConfig.setAccessServicesConfig(accessServicesConfig);
 
@@ -277,23 +277,23 @@ public class OMAGServerAdminForAccessServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String>  configAuditLog          = serverConfig.getAuditTrail();
+            List<String>  configAuditTrail          = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
             if (enterpriseAccessConfig == null)
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for enterprise repository services (used by access services).");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for enterprise repository services (used by access services).");
             }
             else
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for enterprise repository services (used by access services).");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for enterprise repository services (used by access services).");
             }
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
 
             RepositoryServicesConfig repositoryServicesConfig = serverConfig.getRepositoryServicesConfig();
 

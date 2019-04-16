@@ -4,5 +4,5 @@ package org.odpi.openmetadata.adminservices.configuration.properties;
 
 /**
  * The properties package provides the configuration properties for the different services that run inside
- * the Open Metadata and Governance (OMAG) Software Server process.
+ * the Open Metadata and Governance (OMAG) Software Server.
  */

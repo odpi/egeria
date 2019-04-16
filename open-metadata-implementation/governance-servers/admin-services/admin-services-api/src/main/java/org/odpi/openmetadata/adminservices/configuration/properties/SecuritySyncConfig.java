@@ -19,8 +19,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SecuritySyncConfig extends AdminServicesConfigHeader {
-
+public class SecuritySyncConfig extends AdminServicesConfigHeader
+{
     private int securitySyncId = 0;
     private String securitySyncName;
     private String securitySyncDescription;
@@ -51,10 +51,12 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
      *
      * @param template fixed properties about security sync
      */
-    public SecuritySyncConfig(SecuritySyncConfig template) {
+    public SecuritySyncConfig(SecuritySyncConfig template)
+    {
         super(template);
 
-        if (template != null) {
+        if (template != null)
+        {
             securitySyncId = template.securitySyncId;
             securitySyncName = template.securitySyncName;
             securitySyncDescription = template.securitySyncDescription;
@@ -71,6 +73,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         }
     }
 
+
     /**
      * Return the code number (ordinal) for this Security Sync
      *
@@ -79,6 +82,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
     public int getSecuritySyncId() {
         return securitySyncId;
     }
+
 
     /**
      * Set up the code number (ordinal) for the Security Sync
@@ -89,6 +93,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         this.securitySyncId = securitySyncId;
     }
 
+
     /**
      *  Return the name of the Security Sync Connector
      *
@@ -97,6 +102,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
     public String getSecuritySyncName() {
         return securitySyncName;
     }
+
 
     /**
      * Set up the name of the Security Sync Connector
@@ -107,6 +113,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         this.securitySyncName = securitySyncName;
     }
 
+
     /**
      * Return the short description of the Security Sync Component.  The default value is in English but this can be changed.
      *
@@ -116,14 +123,17 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         return securitySyncDescription;
     }
 
+
     /**
      * Set up the short description of the Security Sync.
      *
      * @param securitySyncDescription String description
      */
-    public void setSecuritySyncDescription(String securitySyncDescription) {
+    public void setSecuritySyncDescription(String securitySyncDescription)
+    {
         this.securitySyncDescription = securitySyncDescription;
     }
+
 
     /**
      * Return the wiki page link for the Security Sync. The default value points to a page on the Egeria confluence wiki.
@@ -134,6 +144,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         return securitySyncWiki;
     }
 
+
     /**
      * Set up the wiki page link for the Security Sync. The default value points to a page on the Egeria confluence wiki.
      *
@@ -142,6 +153,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
     public void setSecuritySyncWiki(String securitySyncWiki) {
         this.securitySyncWiki = securitySyncWiki;
     }
+
 
     /**
      * Return the URL for the Security Server used in the Governance Server Connector
@@ -152,6 +164,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         return securityServerURL;
     }
 
+
     /**
      * Set up the URL for the Security Server used in the Governance Server Connector.
      *
@@ -160,6 +173,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
     public void setSecurityServerURL(String securityServerURL) {
         this.securityServerURL = securityServerURL;
     }
+
 
     /**
      * Return the URL for the Governance Engine Server used in the Governance Server Connector
@@ -170,14 +184,17 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         return governanceEngineServerURL;
     }
 
+
     /**
      * Set up the URL for the Governance Engine  Server used in the Governance Server Connector.
      *
      * @param governanceEngineServerURL String for Governance Server URL
      */
-    public void setGovernanceEngineServerURL(String governanceEngineServerURL) {
+    public void setGovernanceEngineServerURL(String governanceEngineServerURL)
+    {
         this.governanceEngineServerURL = governanceEngineServerURL;
     }
+
 
     /**
      * Return the server type in order to identify the Governance Connector.
@@ -188,6 +205,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         return securityServerType;
     }
 
+
     /**
      * Set up the server type in order to identify the Governance Connector.
      *
@@ -196,6 +214,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
     public void setSecurityServerType(String securityServerType) {
         this.securityServerType = securityServerType;
     }
+
 
     /**
      * Return the authorization needed in the Governance Services Connector
@@ -206,12 +225,14 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         return securityServerAuthorization;
     }
 
+
     /**
      * Set up the authorization needed in the Governance Services Connector.
      *
      * @param securityServerAuthorization String with basic authorization header
      */
-    public void setSecurityServerAuthorization(String securityServerAuthorization) {
+    public void setSecurityServerAuthorization(String securityServerAuthorization)
+    {
         this.securityServerAuthorization = securityServerAuthorization;
     }
 
@@ -224,6 +245,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         return tagServiceName;
     }
 
+
     /**
      * Set up the Tag Service Named used in the Governance Services Connector to synchronize the governed classifications.
      *
@@ -232,6 +254,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
     public void setTagServiceName(String tagServiceName) {
         this.tagServiceName = tagServiceName;
     }
+
 
     /**
      * Return the Input Topic Name for Security Sync
@@ -242,14 +265,17 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         return securitySyncInTopicName;
     }
 
+
     /**
      * Set up the Security Sync In Topic Name
      *
      * @param securitySyncInTopicName String Security Sync Name
      */
-    public void setSecuritySyncInTopicName(String securitySyncInTopicName) {
+    public void setSecuritySyncInTopicName(String securitySyncInTopicName)
+    {
         this.securitySyncInTopicName = securitySyncInTopicName;
     }
+
 
     /**
      * Return the OCF Connection for the In Topic used to pass requests to this Security Sync.
@@ -262,12 +288,14 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         return securitySyncInTopic;
     }
 
+
     /**
      * Set up the OCF Connection for the Out Topic used to pass requests to this Security Sync.
      *
      * @param securitySyncInTopic  Connection for In Topic
      */
-    public void setSecuritySyncInTopic(Connection securitySyncInTopic) {
+    public void setSecuritySyncInTopic(Connection securitySyncInTopic)
+    {
         this.securitySyncInTopic = securitySyncInTopic;
     }
 
@@ -285,7 +313,8 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
      * Set up the Security Sync Out Name
      * @param securitySyncOutTopicName String Security Out Topic Name
      */
-    public void setSecuritySyncOutTopicName(String securitySyncOutTopicName) {
+    public void setSecuritySyncOutTopicName(String securitySyncOutTopicName)
+    {
         this.securitySyncOutTopicName = securitySyncOutTopicName;
     }
 
@@ -299,14 +328,17 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
         return securitySyncOutTopic;
     }
 
+
     /**
      * Set up the OCF Connection for the Out Topic used to pass requests to this Security Sync.
      *
      * @param securitySyncOutTopic Connection for Out Topic
      */
-    public void setSecuritySyncOutTopic(Connection securitySyncOutTopic) {
+    public void setSecuritySyncOutTopic(Connection securitySyncOutTopic)
+    {
         this.securitySyncOutTopic = securitySyncOutTopic;
     }
+
 
     @Override
     public String toString() {
@@ -334,11 +366,14 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
      * @return boolean result
      */
     @Override
-    public boolean equals(Object objectToCompare) {
-        if (this == objectToCompare) {
+    public boolean equals(Object objectToCompare)
+    {
+        if (this == objectToCompare)
+        {
             return true;
         }
-        if (objectToCompare == null || getClass() != objectToCompare.getClass()) {
+        if (objectToCompare == null || getClass() != objectToCompare.getClass())
+        {
             return false;
         }
         SecuritySyncConfig that = (SecuritySyncConfig) objectToCompare;
@@ -362,7 +397,8 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader {
      * @return in hash code
      */
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         return Objects.hash(getSecuritySyncId(), getSecuritySyncName(),
                 getSecuritySyncDescription(), getSecuritySyncWiki(), getSecurityServerURL(), getGovernanceEngineServerURL(),
                 getSecurityServerAuthorization(), getTagServiceName(), getSecuritySyncInTopic(),

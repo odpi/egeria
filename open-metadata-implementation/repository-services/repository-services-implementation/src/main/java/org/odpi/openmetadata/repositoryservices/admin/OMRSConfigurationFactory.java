@@ -130,18 +130,21 @@ public class OMRSConfigurationFactory
     /**
      * Returns the basic configuration for a local repository.
      *
+     * @param repositoryName name of the local repository
      * @param localServerName name of the local server
      * @param localServerURL URL root of local server used for REST calls
      * @return LocalRepositoryConfig object
      */
-    private LocalRepositoryConfig getDefaultLocalRepositoryConfig(String              localServerName,
+    private LocalRepositoryConfig getDefaultLocalRepositoryConfig(String              repositoryName,
+                                                                  String              localServerName,
                                                                   String              localServerURL)
     {
         LocalRepositoryConfig localRepositoryConfig = new LocalRepositoryConfig();
 
         localRepositoryConfig.setMetadataCollectionId(UUID.randomUUID().toString());
         localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getDefaultLocalRepositoryLocalConnection());
-        localRepositoryConfig.setLocalRepositoryRemoteConnection(connectorConfigurationFactory.getDefaultLocalRepositoryRemoteConnection(localServerName,
+        localRepositoryConfig.setLocalRepositoryRemoteConnection(connectorConfigurationFactory.getDefaultLocalRepositoryRemoteConnection(repositoryName,
+                                                                                                                                         localServerName,
                                                                                                                                          localServerURL));
         localRepositoryConfig.setEventsToSaveRule(this.getDefaultEventsToSaveRule());
         localRepositoryConfig.setSelectedTypesToSave(this.getDefaultSelectedTypesToSave());
@@ -162,10 +165,14 @@ public class OMRSConfigurationFactory
      */
     public LocalRepositoryConfig getInMemoryLocalRepositoryConfig(String localServerName, String localServerURL)
     {
-        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName,
+        final String  repositoryName = "In-memory repository";
+
+        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(repositoryName,
+                                                                                           localServerName,
                                                                                            localServerURL);
 
-        localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getInMemoryLocalRepositoryLocalConnection(localServerName));
+        localRepositoryConfig.setLocalRepositoryLocalConnection(connectorConfigurationFactory.getInMemoryLocalRepositoryLocalConnection(repositoryName,
+                                                                                                                                        localServerName));
 
         return localRepositoryConfig;
     }
@@ -191,11 +198,15 @@ public class OMRSConfigurationFactory
                                                                     String              serverId,
                                                                     Map<String, Object> eventBusConfigurationProperties)
     {
-        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName,
+        final String   repositoryName = "Graph Open Metadata Repository";
+
+        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(repositoryName,
+                                                                                           localServerName,
                                                                                            localServerURL);
 
         localRepositoryConfig.
-                setLocalRepositoryLocalConnection(connectorConfigurationFactory.getLocalGraphRepositoryLocalConnection(localServerName));
+                setLocalRepositoryLocalConnection(connectorConfigurationFactory.getLocalGraphRepositoryLocalConnection(repositoryName,
+                                                                                                                       localServerName));
 
         localRepositoryConfig.
                 setEventMapperConnection(connectorConfigurationFactory.getLocalGraphRepositoryEventMapperConnection(localServerName,
@@ -218,7 +229,10 @@ public class OMRSConfigurationFactory
      */
     public LocalRepositoryConfig getRepositoryProxyLocalRepositoryConfig(String localServerName, String localServerURL)
     {
-        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName,
+        final String   repositoryName = "Repository Proxy";
+
+        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(repositoryName,
+                                                                                           localServerName,
                                                                                            localServerURL);
 
         localRepositoryConfig.setLocalRepositoryLocalConnection(null);
@@ -236,8 +250,11 @@ public class OMRSConfigurationFactory
      */
     public LocalRepositoryConfig getRepositoryIBMIGCRepositoryConfig(String localServerName, String localServerURL)
     {
-        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(localServerName,
-                localServerURL);
+        final String   repositoryName = "IBM IGC Repository Proxy";
+
+        LocalRepositoryConfig localRepositoryConfig = this.getDefaultLocalRepositoryConfig(repositoryName,
+                                                                                           localServerName,
+                                                                                           localServerURL);
 
         localRepositoryConfig.setLocalRepositoryLocalConnection(null);
 
