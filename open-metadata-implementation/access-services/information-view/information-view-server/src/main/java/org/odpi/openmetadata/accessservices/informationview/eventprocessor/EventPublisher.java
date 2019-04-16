@@ -94,8 +94,8 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
                 if(assignedColumns != null && !assignedColumns.isEmpty()) {
                     assignedColumns.parallelStream().forEach(s -> publishColumnContextEvent(s.getGUID()));
                 }
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
+            }  catch (UserNotAuthorizedException | PagingErrorException | RepositoryErrorException | TypeErrorException | EntityNotKnownException | InvalidParameterException | PropertyErrorException | FunctionNotSupportedException e) {
+               log.error(e.getMessage(), e);
             }
         }
 
