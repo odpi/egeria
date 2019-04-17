@@ -207,32 +207,6 @@ public class AssetSchemaType extends AssetSchemaElement
         return this.getSchemaTypeBean().getEncodingStandard();
     }
 
-
-    /**
-     * Return the properties that come from the technology-specific subtypes of SchemaElement.
-     *
-     * @return AdditionalProperties object
-     */
-    public AdditionalProperties getSchemaProperties()
-    {
-        if (schemaTypeBean == null)
-        {
-            return null;
-        }
-
-        Map<String, Object> schemaProperties = this.getSchemaTypeBean().getSchemaProperties();
-
-        if (schemaProperties == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new AdditionalProperties(super.getParentAsset(), schemaProperties);
-        }
-    }
-
-
     /**
      * Standard toString method.
      *
@@ -248,9 +222,9 @@ public class AssetSchemaType extends AssetSchemaElement
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", schemaProperties=" + getSchemaProperties() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +

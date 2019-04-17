@@ -14,7 +14,7 @@ import java.util.Objects;
  */
 public class AdditionalProperties extends AssetPropertyBase
 {
-    protected Map<String,Object>  additionalProperties = new HashMap<>();
+    protected Map<String, String>  additionalProperties = new HashMap<>();
 
 
     /**
@@ -22,7 +22,7 @@ public class AdditionalProperties extends AssetPropertyBase
      *
      * @param additionalProperties   map of properties for the metadata element.
      */
-    public AdditionalProperties(Map<String,Object>  additionalProperties)
+    public AdditionalProperties(Map<String, String>  additionalProperties)
     {
         this(null, additionalProperties);
     }
@@ -35,7 +35,7 @@ public class AdditionalProperties extends AssetPropertyBase
      * @param additionalProperties   map of properties for the metadata element.
      */
     public AdditionalProperties(AssetDescriptor     parentAsset,
-                                Map<String,Object>  additionalProperties)
+                                Map<String, String> additionalProperties)
     {
         super(parentAsset);
 
@@ -71,7 +71,7 @@ public class AdditionalProperties extends AssetPropertyBase
                 while (propertyNames.hasNext())
                 {
                     String newPropertyName = propertyNames.next();
-                    Object newPropertyValue = templateProperties.getProperty(newPropertyName);
+                    String newPropertyValue = templateProperties.getProperty(newPropertyName);
 
                     additionalProperties.put(newPropertyName, newPropertyValue);
                 }
@@ -99,7 +99,7 @@ public class AdditionalProperties extends AssetPropertyBase
      * @param name   String name of the property to return.
      * @return requested property value.
      */
-    public Object getProperty(String name)
+    public String getProperty(String name)
     {
         return additionalProperties.get(name);
     }

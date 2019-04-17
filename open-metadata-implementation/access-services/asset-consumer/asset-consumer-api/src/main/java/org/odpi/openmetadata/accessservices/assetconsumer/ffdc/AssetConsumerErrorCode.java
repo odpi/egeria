@@ -124,7 +124,7 @@ public enum AssetConsumerErrorCode
             "The system is unable to populate the connected asset properties because the open metadata repositories have many links to assets defined for this connection.  The service is unsure which one to use.",
             "Investigate why multiple assets are connected to this connection.  If the related connector is able to serve up many assets then create a virtual asset to cover its collection of assets and link it to the connection. Then link the assets currently linked to this connection to the virtual asset instead. Then retry the request."),
     UNKNOWN_ASSET(404, "OMAS-ASSET-CONSUMER-404-009 ",
-            "The asset with unique identifier {0} is not found for method {1} of access service {2} in open metadata server {3}, error message was: {4}",
+            "The asset with unique identifier {0} and expected type of {1} is not found for method {2} of access service {3} in open metadata server {4}, error message was: {5}",
             "The system is unable to update information associated with the asset because none of the connected open metadata repositories recognize the asset's unique identifier.",
             "The unique identifier of the asset is supplied by the caller.  Verify that the caller's logic is correct, and that there are no errors being reported by the open metadata repository. Once all errors have been resolved, retry the request."),
     INSTANCE_NOT_FOUND_BY_GUID(404, "OMAS-ASSET-CONSUMER-404-010 ",
