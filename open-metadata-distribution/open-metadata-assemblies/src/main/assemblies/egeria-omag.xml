@@ -340,6 +340,7 @@
             <directory>../../open-metadata-conformance-suite/target/</directory>
             <outputDirectory>./conformance-suite</outputDirectory>
             <includes>
+                <include>lib/*.jar</include>
                 <include>*.jar</include>
             </includes>
             <fileMode>0755</fileMode>
