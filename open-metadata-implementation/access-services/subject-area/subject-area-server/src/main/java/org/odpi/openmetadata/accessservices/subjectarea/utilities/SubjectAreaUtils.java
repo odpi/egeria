@@ -136,15 +136,16 @@ public class SubjectAreaUtils {
 
     /**
      * Get a Term's icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
+     * @param restAPIName rest API Name
      * @param userId userid under which to issue to the get of the related media
      * @param omrsapiHelper helper to access OMRS
      * @param termAnchorRelationship term glossary relationship
      * @param term supplied term
      * @return response object - glossary summary or an error
      */
-    public static  SubjectAreaOMASAPIResponse  getGlossarySummaryForTerm(String userId, OMRSAPIHelper omrsapiHelper, TermAnchorRelationship termAnchorRelationship,Term term)  {
+    public static  SubjectAreaOMASAPIResponse  getGlossarySummaryForTerm(String restAPIName, String userId, OMRSAPIHelper omrsapiHelper, TermAnchorRelationship termAnchorRelationship,Term term)  {
         String glossaryGuid = termAnchorRelationship.getGlossaryGuid();
-        SubjectAreaOMASAPIResponse response = omrsapiHelper.callOMRSGetEntityByGuid(userId,glossaryGuid);
+        SubjectAreaOMASAPIResponse response = omrsapiHelper.callOMRSGetEntityByGuid(restAPIName, userId,glossaryGuid);
         if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
             EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
             EntityDetail glossaryEntity = entityDetailResponse.getEntityDetail();
@@ -163,15 +164,16 @@ public class SubjectAreaUtils {
     }
     /**
      * Get a Categories icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
+     * @param restAPIName rest API Name
      * @param userId userid under which to issue to the get of the related media
      * @param omrsapiHelper helper to access OMRS
      * @param line glossary relationship
      * @return Glossary summary for Category
      */
-    public static  SubjectAreaOMASAPIResponse  getGlossarySummaryForCategory(String userId, OMRSAPIHelper omrsapiHelper, Line line)  {
+    public static  SubjectAreaOMASAPIResponse  getGlossarySummaryForCategory(String restAPIName, String userId, OMRSAPIHelper omrsapiHelper, Line line)  {
         CategoryAnchorRelationship categoryAnchorRelationship = (CategoryAnchorRelationship) line;
         String glossaryGuid = categoryAnchorRelationship.getGlossaryGuid();
-        SubjectAreaOMASAPIResponse response = omrsapiHelper.callOMRSGetEntityByGuid(userId, glossaryGuid);
+        SubjectAreaOMASAPIResponse response = omrsapiHelper.callOMRSGetEntityByGuid(restAPIName, userId, glossaryGuid);
         if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
             EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
             EntityDetail glossaryEntity = entityDetailResponse.getEntityDetail();
@@ -193,7 +195,8 @@ public class SubjectAreaUtils {
     }
     /**
      * Get a summary of the parent category. The parent category is optional. We might validly have more than one parent category. this can occur if effectivity dates are being used
-     * The parent category is the first relationship we find of the rigght type that is effective.
+     * The parent category is the first relationship we find of the right type that is effective.
+     * @param restAPIName rest API Name
      * @param userId userid that the requests are issued under
      * @param omrsapiHelper helper to access OMRS
      * @param lines set of Lines that are of the right type.
@@ -204,7 +207,7 @@ public class SubjectAreaUtils {
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws FunctionNotSupportedException   Function not supported
      */
-    public static CategorySummary getParentCategorySummary(String userId, OMRSAPIHelper omrsapiHelper,  Set<Line> lines) throws UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, MetadataServerUncontactableException, FunctionNotSupportedException
+    public static CategorySummary getParentCategorySummary(String restAPIName, String userId, OMRSAPIHelper omrsapiHelper,  Set<Line> lines) throws UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, MetadataServerUncontactableException, FunctionNotSupportedException
     {
         CategorySummary parentCategorySummary =null;
         SubjectAreaOMASAPIResponse response = null;
@@ -213,7 +216,7 @@ public class SubjectAreaUtils {
         {
             CategoryHierarchyLink parentRelationship = (CategoryHierarchyLink) iterator.next();
             String parentCategoryGuid = parentRelationship.getSuperCategoryGuid();
-            response = omrsapiHelper.callOMRSGetEntityByGuid(userId, parentCategoryGuid);
+            response = omrsapiHelper.callOMRSGetEntityByGuid(restAPIName, userId, parentCategoryGuid);
             if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetail) {
                 EntityDetailResponse parentCategoryEntityResponse  = (EntityDetailResponse)response;
                 EntityDetail parentCategoryEntity = parentCategoryEntityResponse.getEntityDetail();

@@ -108,7 +108,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
                 {
                     GlossaryMapper glossaryMapper = new GlossaryMapper(oMRSAPIHelper);
                     EntityDetail glossaryEntityDetail = glossaryMapper.mapNodeToEntityDetail(suppliedGlossary);
-                    response = oMRSAPIHelper.callOMRSAddEntity(userId, glossaryEntityDetail);
+                    response = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, glossaryEntityDetail);
                     if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail))
                     {
                         EntityDetailResponse entityDetailResponse = (EntityDetailResponse)response;
@@ -154,7 +154,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             try
             {
                 InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-                response = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid);
+                response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId, guid);
                 if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail))
                 {
                     response = getResponse(response);
@@ -209,7 +209,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
         if (response ==null)
         {
-            response = OMRSAPIHelper.findEntitiesByType(oMRSAPIHelper, serverName, userId, "Glossary", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
+            response = OMRSAPIHelper.findEntitiesByType(oMRSAPIHelper, serverName, methodName, userId, "Glossary", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetails))
             {
                 EntityDetailsResponse entityDetailsResponse = (EntityDetailsResponse) response;
@@ -272,7 +272,8 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
                                                             org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
                                                             String sequencingProperty
     ) {
-        return  getRelationshipsFromGuid(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        String methodName = "getGlossaryRelationships";
+        return  getRelationshipsFromGuid(serverName, methodName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
@@ -360,7 +361,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
                     GlossaryMapper glossaryMapper = new GlossaryMapper(oMRSAPIHelper);
                     EntityDetail entityDetail = glossaryMapper.mapNodeToEntityDetail(updateGlossary);
                     String glossaryGuid = entityDetail.getGUID();
-                    response = oMRSAPIHelper.callOMRSUpdateEntityProperties(userId, entityDetail);
+                    response = oMRSAPIHelper.callOMRSUpdateEntityProperties(methodName, userId, entityDetail);
                     if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail))
                     {
                         response = getGlossaryByGuid(serverName,userId,glossaryGuid);
@@ -434,7 +435,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
 
                 if (isPurge)
                 {
-                    oMRSAPIHelper.callOMRSPurgeEntity(userId, glossaryTypeDefName, glossaryTypeDefGuid, guid);
+                    oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, glossaryTypeDefName, glossaryTypeDefGuid, guid);
                     response = new VoidResponse();
                 } else
                 {
@@ -442,19 +443,19 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
                     String categoryAnchorGuid = repositoryHelper.getTypeDefByName(methodName, "TermAnchor").getGUID();
 
                     // if this is a not a purge then attempt to get terms and categories, as we should not delete if there are any
-                    response = oMRSAPIHelper.callGetRelationshipsForEntity(userId, guid, termAnchorGuid, 0, statusList, null, null, null, 1);
+                    response = oMRSAPIHelper.callGetRelationshipsForEntity(methodName, userId, guid, termAnchorGuid, 0, statusList, null, null, null, 1);
                     if (response.getResponseCategory().equals(ResponseCategory.OmrsRelationships))
                     {
                         RelationshipsResponse termAnchorRelationshipsResponse = (RelationshipsResponse) response;
                         List<Relationship> termRelationships =  termAnchorRelationshipsResponse.getRelationships();
-                        response = oMRSAPIHelper.callGetRelationshipsForEntity(userId, guid, categoryAnchorGuid, 0, statusList, null, null, null, 1);
+                        response = oMRSAPIHelper.callGetRelationshipsForEntity(methodName, userId, guid, categoryAnchorGuid, 0, statusList, null, null, null, 1);
                         if (response.getResponseCategory().equals(ResponseCategory.OmrsRelationships))
                         {
                             RelationshipsResponse categoryAnchorRelationshipsResponse = (RelationshipsResponse) response;
                             List<Relationship> categoryRelationships =  categoryAnchorRelationshipsResponse.getRelationships();
                             if (((termRelationships == null) || termRelationships.isEmpty()) && (categoryRelationships == null || categoryRelationships.isEmpty()))
                             {
-                                response = oMRSAPIHelper.callOMRSDeleteEntity(userId, glossaryTypeDefName, glossaryTypeDefGuid, guid);
+                                response = oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, glossaryTypeDefName, glossaryTypeDefGuid, guid);
                                 if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail))
                                 {
                                     response = getResponse(response);
@@ -515,7 +516,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
             try
             {
                 InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-                response = this.oMRSAPIHelper.callOMRSRestoreEntity(userId, guid);
+                response = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
                 if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail))
                 {
                     response = getGlossaryByGuid(serverName,userId,guid);
