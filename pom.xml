@@ -404,6 +404,8 @@
                         <exclude>**/*.iml</exclude>
                         <exclude>**/*.registrystore</exclude>
                         <exclude>**/*.results</exclude>
+                        <exclude>**/*.graphml</exclude>
+                        <exclude>**/*.isx</exclude>
                         <exclude>**/target/**</exclude>
                         <exclude>**/venv/**</exclude>
                         <exclude>**/.repository/**</exclude>
