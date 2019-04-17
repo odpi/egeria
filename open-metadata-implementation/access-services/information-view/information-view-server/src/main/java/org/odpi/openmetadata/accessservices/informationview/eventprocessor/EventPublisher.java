@@ -299,10 +299,10 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
                                                                              InvalidParameterException,
                                                                              EntityNotKnownException {
         SemanticAssignment semanticAssignment = new SemanticAssignment();
-        EntityDetail businessTerm = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, relationship.getEntityTwoProxy().getGUID());
+        EntityDetail businessTerm = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, relationship.getEntityTwoProxy().getGUID());
         semanticAssignment.setBusinessTerm(columnContextBuilder.buildBusinessTerm(businessTerm));
         TableColumn databaseColumn = new TableColumn();
-        EntityDetail columnEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, relationship.getEntityOneProxy().getGUID());
+        EntityDetail columnEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, relationship.getEntityOneProxy().getGUID());
         databaseColumn.setGuid(columnEntity.getGUID());
         databaseColumn.setName(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, columnEntity.getProperties(), "publishSemanticAssignment"));
         databaseColumn.setQualifiedName(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, columnEntity.getProperties(), "publishSemanticAssignment"));

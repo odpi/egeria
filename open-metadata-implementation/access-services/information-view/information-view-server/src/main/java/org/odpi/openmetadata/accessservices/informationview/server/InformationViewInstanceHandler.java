@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.informationview.server;
 
 import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.PropertyServerException;
+import org.odpi.openmetadata.accessservices.informationview.registration.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
@@ -77,6 +78,24 @@ class InformationViewInstanceHandler
             return instance.getDatabaseContextHandler();
         } else {
             final String methodName = "getDatabaseContextHandler";
+            throwError(serverName, methodName);
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @param serverName name of the server tied to the request
+     * @return registration handler for exclusive use by the requested instance
+     * @throws PropertyServerException
+     */
+     RegistrationHandler getRegistrationHandler(String serverName) throws PropertyServerException {
+        InformationViewServicesInstance instance = instanceMap.getInstance(serverName);
+
+        if (instance != null) {
+            return instance.getRegistrationHandler();
+        } else {
+            final String methodName = "getRegistrationHandler";
             throwError(serverName, methodName);
             return null;
         }

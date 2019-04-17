@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.informationview.server.spring;
 
 
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.events.RegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.responses.InformationViewOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.informationview.server.InformationViewRestServices;
@@ -79,5 +80,13 @@ public class InformationViewOMASResource {
                                                                 @RequestParam int     pageSize) {
         return restAPI.getTableColumns(serverName, userId, table, startFrom, pageSize);
     }
+
+    @PostMapping(path = "register")
+    public InformationViewOMASAPIResponse registerExternalTool(@PathVariable("serverName") String serverName,
+                                                         @PathVariable("userId") String userId,
+                                                         @RequestBody RegistrationRequestBody requestBody) {
+        return restAPI.registerExternalTool(serverName, userId, requestBody);
+    }
+
 
 }

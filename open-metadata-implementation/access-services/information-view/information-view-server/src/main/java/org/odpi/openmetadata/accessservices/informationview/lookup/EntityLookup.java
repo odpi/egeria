@@ -9,7 +9,6 @@ import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationView
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.EntityNotFoundException;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.MultipleEntitiesMatching;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.NoMatchingEntityException;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveEntityException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -124,7 +123,7 @@ public abstract class EntityLookup<T extends Source> {
 
     protected EntityDetail getEntity(String guid) {
         try {
-            return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);
+            return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, guid);
         } catch (InvalidParameterException | EntityProxyOnlyException | EntityNotKnownException | UserNotAuthorizedException | RepositoryErrorException e) {
             throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(),
                     EntityLookup.class.getName(),

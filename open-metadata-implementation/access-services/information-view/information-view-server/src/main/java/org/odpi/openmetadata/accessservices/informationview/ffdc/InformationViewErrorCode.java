@@ -96,7 +96,11 @@ public enum InformationViewErrorCode {
     MULTIPLE_MATCHING_ENTITIES_EXCEPTION(500, "OMAS-INFORMATION-VIEW-021",
                             "More than one entity match the criteria: {0}",
                             "The system is unable to process the request.",
-                            "Check the criteria used for matching.");
+                            "Check the criteria used for matching."),
+    REGISTRATION_EXCEPTION(500, "OMAS-INFORMATION-VIEW-022",
+                            "Tool registration failed because of error: {0}",
+                            "The system is unable to process the request.",
+                            "Check the error message for more details.");
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewErrorCode.class);
     private String errorMessageId;
