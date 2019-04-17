@@ -17,10 +17,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.exception.InvalidParame
 import org.odpi.openmetadata.accessservices.assetcatalog.exception.PropertyServerException;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetCatalogOMASAPIResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.AssetDescriptionResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.ClassificationsResponse;
-import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.RelationshipsResponse;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.rest.responses.*;
 import org.springframework.web.client.RestTemplate;
 import org.testng.Assert;
 
@@ -311,9 +308,9 @@ public class AssetCatalogClientTest {
     void searchAssetsTest() {
         defaultAssetExpected();
 
-        AssetDescriptionResponse response = new AssetDescriptionResponse();
+        AssetResponse response = new AssetResponse();
         try {
-            response = assetCatalog.searchAssets(defaultUserId, "test");
+            response = assetCatalog.searchForAssets(defaultUserId, "test");
         } catch (AssetCatalogException e) {
             e.printStackTrace();
         }

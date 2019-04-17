@@ -164,7 +164,7 @@
                 <!--
                 To skip UI (deactivate this profile) specify the skipUI system property
                 mvn clean install -DskipUI
-		-->
+		        -->
                 <property>
 	            <name>!skipUI</name>
 		</property>
@@ -250,7 +250,8 @@
                                     <outputDirectory>${basedir}/src/main/resources/public</outputDirectory>
                                     <resources>
                                         <resource>
-                                            <directory>${basedir}/src/main/static/build/es6-bundled</directory>
+                                            <directory>${basedir}/src/main/static/build/dev</directory>
+                                            <!--<directory>${basedir}/src/main/static/build/es6-bundled</directory>-->
                                             <filtering>true</filtering>
                                         </resource>
                                     </resources>
@@ -282,14 +283,15 @@
                 <artifactId>apache-rat-plugin</artifactId>
                 <configuration>
                     <excludes>
-                        <exclude>**/node/**</exclude>
+                        <exclude>**/tools/**</exclude>
                         <exclude>**/resources/public/**</exclude>
-                        <exclude>**/node_modules/**</exclude>
+                        <!--<exclude>**/node_modules/**</exclude>-->
                         <exclude>**/static/**</exclude>
                         <exclude>**/build/**</exclude>
-                        <exclude>**/src/*</exclude>
-                        <exclude>**/*.json</exclude>
+                        <!--<exclude>**/src/*</exclude>-->
+                        <!--<exclude>**/*.json</exclude>-->
                         <exclude>**/banner.txt</exclude>
+                        <exclude>tools/polymer*</exclude>
                     </excludes>
                 </configuration>
             </plugin>

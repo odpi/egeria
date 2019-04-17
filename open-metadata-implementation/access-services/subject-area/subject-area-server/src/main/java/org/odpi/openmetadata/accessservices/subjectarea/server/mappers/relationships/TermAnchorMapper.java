@@ -3,77 +3,82 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchorRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-
 
 /**
- * Static mapping methods to map between the termAnchor and the equivalent generated OMRSRelationshipBean
+ * Mapping methods to map between the termAnchor and the equivalent omrs Relationship.
  */
-public class TermAnchorMapper
+public class TermAnchorMapper extends LineMapper 
 {
     private static final Logger log = LoggerFactory.getLogger( TermAnchorMapper.class);
     private static final String className = TermAnchorMapper.class.getName();
+    public static final String TERM_ANCHOR = "TermAnchor";
 
-    /**
-     * map TermAnchorRelationship to the omrs relationship bean equivalent
-     * @param termAnchorRelationship supplied TermAnchorRelationship
-     * @return omrs relationship bean equivalent
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     */
-    static public org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermAnchor.TermAnchor mapTermAnchorToOMRSRelationshipBean(TermAnchorRelationship termAnchorRelationship) throws InvalidParameterException {
-        // copy over the Line attributes
-        org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermAnchor.TermAnchor omrsRelationshipBean = new  org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermAnchor.TermAnchor(termAnchorRelationship);
-        //Set properties
-        omrsRelationshipBean.setGuid(termAnchorRelationship.getGuid());
-        omrsRelationshipBean.setEntity1Guid(termAnchorRelationship.getGlossaryGuid());
-        omrsRelationshipBean.setEntity2Guid(termAnchorRelationship.getTermGuid());
-
-        Map<String, Object> extraAttributes = omrsRelationshipBean.getExtraAttributes();
-        if (extraAttributes !=null)
-        {
-            String[] properties = org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermAnchor.TermAnchor.PROPERTY_NAMES_SET_VALUES;
-            if (properties!=null && properties.length >0) {
-                for (String property : properties) {
-                    if (extraAttributes.containsKey(property)) {
-                        extraAttributes.remove(property);
-                    }
-                }
-                omrsRelationshipBean.setExtraAttributes(extraAttributes);
-            }
-        }
-
-        return omrsRelationshipBean;
+    public TermAnchorMapper(OMRSAPIHelper omrsapiHelper) {
+        super(omrsapiHelper);
     }
 
     /**
-     * Map omrs relationship bean equivalent to TermAnchorRelationship
-     * @param omrsRelationshipBean omrs relationship bean equivalent
-     * @return TermAnchorRelationship termAnchor
+     * Get proxy1 guid.
+     * The proxy has omrs type Glossary
+     * @param line line
+     * @return guid for entity proxy 1
      */
-    public static TermAnchorRelationship mapOMRSRelationshipBeanToTermAnchor(org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermAnchor.TermAnchor omrsRelationshipBean) {
-        // copy over the Line attributes
-        TermAnchorRelationship termAnchorRelationship = new TermAnchorRelationship(omrsRelationshipBean);
-        termAnchorRelationship.setGuid(omrsRelationshipBean.getGuid());
-        termAnchorRelationship.setGlossaryGuid((omrsRelationshipBean.getEntity1Guid()));
-        termAnchorRelationship.setTermGuid((omrsRelationshipBean.getEntity2Guid()));
-        String[] properties=org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermAnchor.TermAnchor.PROPERTY_NAMES_SET_VALUES;
-        Map<String, Object> extraAttributes = termAnchorRelationship.getExtraAttributes();
-        if (properties!=null && properties.length >0) {
-            if (extraAttributes ==null) {
-                extraAttributes =new HashMap<>();
-            }
-            for (String property : properties) {
-                if (extraAttributes.containsKey(property)) {
-                    extraAttributes.remove(property);
-                }
-            }
-            termAnchorRelationship.setExtraAttributes(extraAttributes);
-        }
-        return termAnchorRelationship;
+    @Override
+    protected String getProxy1Guid(Line line)
+    {
+        TermAnchorRelationship termAnchor = (TermAnchorRelationship) line;
+        return termAnchor.getGlossaryGuid();
+    }
+
+    /**
+     * Get proxy2 guid
+     * The proxy has omrs type GlossaryTerm
+     * @param line for this Line
+     * @return guid for entity proxy 2
+     */
+    @Override
+    protected String getProxy2Guid(Line line)
+    {
+        TermAnchorRelationship termAnchor = (TermAnchorRelationship) line;
+        return termAnchor.getTermGuid();
+    }
+
+    /**
+     * Get the relationship type def guid.
+     * @param relationship the relationship associated with the typedef whose guid is returned.
+     * @return guid of the typedef
+     */
+    @Override
+    protected String getRelationshipTypeDefGuid(Relationship relationship)
+    {
+        return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), TERM_ANCHOR).getGUID();
+    }
+    @Override
+    protected String getTypeName() {
+        return  TERM_ANCHOR;
+    }
+    @Override
+    protected Line getLineInstance() {
+        return new TermAnchorRelationship();
+    }
+    @Override
+    protected void setEnd1GuidInLine(Line line, String guid){
+        TermAnchorRelationship termAnchorRelationship = (TermAnchorRelationship)line;
+        termAnchorRelationship.setGlossaryGuid(guid);
+    }
+    @Override
+    protected void setEnd2GuidInLine(Line line, String guid) {
+        TermAnchorRelationship termAnchorRelationship = (TermAnchorRelationship)line;
+        termAnchorRelationship.setTermGuid(guid);
     }
 }

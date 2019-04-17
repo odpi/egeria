@@ -21,22 +21,22 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SecuritySyncConfig extends AdminServicesConfigHeader
 {
-    private int securitySyncId = 0;
-    private String securitySyncName;
-    private String securitySyncDescription;
-    private String securitySyncWiki;
+    private int        securitySyncId = 0;
+    private String     securitySyncName;
+    private String     securitySyncDescription;
+    private String     securitySyncWiki;
 
-    private String securityServerURL;
-    private String governanceEngineServerURL;
-    private String securityServerType;
-    private String securityServerAuthorization;
-    private String tagServiceName;
+    private String     securityServerURL;
+    private String     governanceEngineServerURL;
+    private String     securityServerType;
+    private String     securityServerAuthorization;
+    private String     tagServiceName;
 
-    private String securitySyncInTopicName;
+    private String     securitySyncInTopicName;
     private Connection securitySyncInTopic;
-
-    private String securitySyncOutTopicName;
+    private String     securitySyncOutTopicName;
     private Connection securitySyncOutTopic;
+    private Connection securityServerConnection;
 
     /**
      * Default constructor
@@ -64,12 +64,15 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader
 
             securityServerURL = template.securityServerURL;
             governanceEngineServerURL =  template.governanceEngineServerURL;
+            securityServerType = template.securityServerType;
             securityServerAuthorization = template.securityServerAuthorization;
             tagServiceName = template.tagServiceName;
 
             securitySyncInTopic = template.securitySyncInTopic;
-
+            securitySyncInTopicName = template.securitySyncInTopicName;
             securitySyncOutTopic = template.securitySyncOutTopic;
+            securitySyncOutTopicName = template.securitySyncOutTopicName;
+            securityServerConnection = template.securityServerConnection;
         }
     }
 
@@ -77,7 +80,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader
     /**
      * Return the code number (ordinal) for this Security Sync
      *
-     * @return the code numner for Security Sync component
+     * @return the code number for Security Sync component
      */
     public int getSecuritySyncId() {
         return securitySyncId;
@@ -340,6 +343,26 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader
     }
 
 
+    /**
+     * Return the OCF Connection for the Security Server used to push the Security Tags.
+     *
+     * @return Connection for Security Server
+     */
+    public Connection getSecurityServerConnection() {
+        return securityServerConnection;
+    }
+
+    /**
+     * Set up the OCF Connection for the Security Server used to pass requests to this Security Sync.
+     *
+     * @param securityServerConnection Connection for Out Topic
+     */
+    public void setSecurityServerConnection(Connection securityServerConnection)
+    {
+        this.securityServerConnection = securityServerConnection;
+    }
+
+
     @Override
     public String toString() {
         return "SecuritySyncConfig{" +
@@ -356,6 +379,7 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader
                 ", securitySyncInTopic=" + securitySyncInTopic +
                 ", securitySyncOutTopicName='" + securitySyncOutTopicName + '\'' +
                 ", securitySyncOutTopic=" + securitySyncOutTopic +
+                ", securityServerConnection=" + securityServerConnection +
                 '}';
     }
 
@@ -383,11 +407,12 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader
                 Objects.equals(getSecuritySyncWiki(), that.getSecuritySyncWiki()) &&
                 Objects.equals(getSecurityServerURL(), that.getSecurityServerURL()) &&
                 Objects.equals(getGovernanceEngineServerURL(), that.getGovernanceEngineServerURL()) &&
-                getSecurityServerAuthorization() == that.getSecurityServerAuthorization() &&
+                Objects.equals(getSecurityServerAuthorization(), that.getSecurityServerAuthorization()) &&
                 Objects.equals(getTagServiceName(), that.getTagServiceName()) &&
                 Objects.equals(getSecuritySyncInTopic(), that.getSecuritySyncInTopic()) &&
                 Objects.equals(getSecuritySyncOutTopic(), that.getSecuritySyncOutTopic()) &&
                 Objects.equals(getSecuritySyncInTopicName(), that.getSecuritySyncInTopicName()) &&
+                Objects.equals(getSecurityServerConnection(), that.getSecurityServerConnection()) &&
                 Objects.equals(getSecuritySyncOutTopicName(), that.getSecuritySyncOutTopicName());
     }
 
@@ -402,6 +427,6 @@ public class SecuritySyncConfig extends AdminServicesConfigHeader
         return Objects.hash(getSecuritySyncId(), getSecuritySyncName(),
                 getSecuritySyncDescription(), getSecuritySyncWiki(), getSecurityServerURL(), getGovernanceEngineServerURL(),
                 getSecurityServerAuthorization(), getTagServiceName(), getSecuritySyncInTopic(),
-                getSecuritySyncOutTopic(), getSecuritySyncInTopicName(), getSecuritySyncOutTopicName());
+                getSecuritySyncOutTopic(), getSecuritySyncInTopicName(), getSecuritySyncOutTopicName(), getSecurityServerConnection());
     }
 }

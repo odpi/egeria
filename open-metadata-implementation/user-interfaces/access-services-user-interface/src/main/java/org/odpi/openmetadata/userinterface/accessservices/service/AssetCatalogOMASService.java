@@ -8,6 +8,7 @@ import org.odpi.openmetadata.accessservices.assetcatalog.exception.PropertyServe
 import org.odpi.openmetadata.accessservices.assetcatalog.model.AssetDescription;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Classification;
 import org.odpi.openmetadata.accessservices.assetcatalog.model.Relationship;
+import org.odpi.openmetadata.accessservices.assetcatalog.model.Term;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,16 +32,16 @@ public class AssetCatalogOMASService {
     }
 
     /**
-     * Fetch asset's header, classification and properties
+     * Fetch asset's header
      *
      * @param searchCriteria the searchCriteria
      * @return the assets for the search criteria
      * @throws PropertyServerException   there is a problem retrieving information from the property server
      * @throws InvalidParameterException one of the parameters is null or invalid
      */
-    public List<AssetDescription> searchAssets(String searchCriteria) throws PropertyServerException, InvalidParameterException {
+    public List<Term> searchAssets(String searchCriteria) throws PropertyServerException, InvalidParameterException {
         try {
-            return assetCatalog.searchAssets(user, searchCriteria).getAssetDescriptionList();
+            return assetCatalog.searchForAssets(user, searchCriteria).getAssets();
         } catch (InvalidParameterException | PropertyServerException e) {
             LOG.error(String.format("Error retrieving asset details for '%s'", searchCriteria));
             throw e;

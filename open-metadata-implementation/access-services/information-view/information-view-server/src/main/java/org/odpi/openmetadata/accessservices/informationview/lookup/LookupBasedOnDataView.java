@@ -10,7 +10,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 public class LookupBasedOnDataView implements LookupStrategy{
 
@@ -35,12 +34,12 @@ public class LookupBasedOnDataView implements LookupStrategy{
             return null;
         } else {
             String qualifiedName = buildQualifiedName((DataViewColumnSource) source);
-            return omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedName);
+            return omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedName, false);
         }
     }
 
     private String buildQualifiedName(DataViewColumnSource source) {
         DataViewSource dataViewSource = source.getDataViewSource();
-        return  QualifiedNameUtils.buildQualifiedNameForDataViewColumn(dataViewSource.getNetworkAddress(), dataViewSource.getId(), source.getId() );
+        return  QualifiedNameUtils.buildQualifiedNameForDataViewColumn(dataViewSource.getEndpointSource().getNetworkAddress(), dataViewSource.getId(), source.getId() );
     }
 }

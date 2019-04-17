@@ -75,11 +75,11 @@ public class OpenMetadataConformanceTestReport
      * @throws PropertyServerException the conformance test server is not reachable.
      * @throws UserNotAuthorizedException the test user is not authorized to run the tests.
      */
-    private OpenMetadataConformanceTestLabResults getComplianceReport() throws InvalidParameterException,
-                                                                               PropertyServerException,
-                                                                               UserNotAuthorizedException
+    private OpenMetadataConformanceTestLabResults getConformanceReport() throws InvalidParameterException,
+                                                                                PropertyServerException,
+                                                                                UserNotAuthorizedException
     {
-        final String   methodName = "getComplianceReport";
+        final String   methodName = "getConformanceReport";
         final String   urlTemplate = "/servers/{0}/open-metadata/conformance-suite-services/users/{1}/report";
 
         try
@@ -150,6 +150,7 @@ public class OpenMetadataConformanceTestReport
         System.out.println(" Open Metadata Conformance Test Report ");
         System.out.println("=======================================");
         System.out.println(" ... contacting conformance suite server: " + serverName + " (" + serverURLRoot + ")");
+        System.out.println();
 
         OpenMetadataConformanceTestLabResults testLabResults = null;
 
@@ -166,27 +167,31 @@ public class OpenMetadataConformanceTestReport
                 testLab = new OpenMetadataConformanceTestReport(serverName, serverURLRoot, userId, password);
             }
 
-            testLabResults = testLab.getComplianceReport();
+            testLabResults = testLab.getConformanceReport();
         }
         catch (RESTConfigurationException  error)
         {
             System.out.println("Unable to issue calls to the conformance suite server " + serverName + " at " + serverURLRoot);
             System.out.println("Returned error message is " + error.getErrorMessage() + ".");
+            System.out.println();
         }
         catch (InvalidParameterException  error)
         {
             System.out.println("The server " + serverName + " is not a conformance suite server");
             System.out.println("Returned error message is " + error.getErrorMessage() + ".");
+            System.out.println();
         }
         catch (PropertyServerException  error)
         {
             System.out.println("The OMAG server platform at " + serverURLRoot + " is not contactable or the conformance suite server " + serverName + " has not been started.");
             System.out.println("Returned error message is " + error.getErrorMessage() + ".");
+            System.out.println();
         }
         catch (UserNotAuthorizedException  error)
         {
             System.out.println("The userId " + userId + " is not authorized to call the conformance suite tests.");
             System.out.println("Returned error message is " + error.getErrorMessage() + ".");
+            System.out.println();
         }
 
         if (testLabResults == null)

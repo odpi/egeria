@@ -3,14 +3,20 @@
   "sources": [{
     "@id": "0",
     "class": "TableSource",
-    "networkAddress": "host",
-    "protocol": "",
-    "additionalProperties": {
-      "type": "live/import"
-    },
-    "tableName": "EMPLOYEE",
+    "name": "EMPLOYEE",
     "schemaName": "HR",
-    "databaseName": "XE"
+    "databaseSource":{
+      "class": "DatabaseSource",
+      "name": "XE",
+      "endpointSource":{
+        "class": "EndpointSource",
+        "networkAddress": "host",
+        "protocol": "",
+        "additionalProperties": {
+          "type": "live/import"
+        }
+      }
+    }
   }
   ],
   "id": "report_number_35",

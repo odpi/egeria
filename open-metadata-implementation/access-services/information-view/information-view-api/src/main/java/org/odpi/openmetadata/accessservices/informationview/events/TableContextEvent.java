@@ -19,15 +19,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 public class TableContextEvent extends InformationViewHeader {
 
     private TableSource tableSource;
-    private List<DatabaseColumn> tableColumns = new ArrayList<>();
+    private List<TableColumn> tableColumns = new ArrayList<>();
+    private Paging paging;
 
 
-       /**
+     /**
      * Return the list of columns
      *
      * @return list of columns
      */
-    public List<DatabaseColumn> getTableColumns() {
+    public List<TableColumn> getTableColumns() {
         return tableColumns;
     }
 
@@ -36,7 +37,7 @@ public class TableContextEvent extends InformationViewHeader {
      *
      * @param tableColumns - columns of the table
      */
-    public void setTableColumns(List<DatabaseColumn> tableColumns) {
+    public void setTableColumns(List<TableColumn> tableColumns) {
         this.tableColumns = tableColumns;
     }
 
@@ -50,7 +51,7 @@ public class TableContextEvent extends InformationViewHeader {
 
     @Override
     public String toString() {
-        return "TableContextEvent{" +
+        return "{" +
                 "tableSource=" + tableSource +
                 ", tableColumns=" + tableColumns +
                 '}';

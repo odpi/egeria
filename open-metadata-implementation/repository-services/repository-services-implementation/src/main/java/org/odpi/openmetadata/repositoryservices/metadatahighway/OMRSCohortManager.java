@@ -250,6 +250,7 @@ public class OMRSCohortManager
         }
         catch (Throwable   error)
         {
+            log.error("Unable to initialize cohort manager", error);
             this.cohortConnectionStatus = CohortConnectionStatus.CONFIGURATION_ERROR;
 
             OMRSAuditCode auditCode = OMRSAuditCode.COHORT_CONFIG_ERROR;

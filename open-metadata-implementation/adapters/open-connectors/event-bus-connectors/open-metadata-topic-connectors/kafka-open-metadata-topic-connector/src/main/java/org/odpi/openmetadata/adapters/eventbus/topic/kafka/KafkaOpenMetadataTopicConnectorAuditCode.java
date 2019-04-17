@@ -99,6 +99,12 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode
                                      "server or in the event bus itself. Once the error is corrected, " +
                                      "the server will send the buffered events.  "),
 
+    MISSING_PROPERTY( "OCF-KAFKA-TOPIC-CONNECTOR-0012 ",
+             OMRSAuditLogRecordSeverity.ERROR,
+             "Property {0} is missing from the Kafka Event Bus configuration",
+             "The system is unable to connect to the event bus.",
+             "Add the missing property to the event bus properties in the server configuration.")
+
     ;
 
     private String                     logMessageId;

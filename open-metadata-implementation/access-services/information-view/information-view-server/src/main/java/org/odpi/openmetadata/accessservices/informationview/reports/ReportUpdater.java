@@ -237,7 +237,7 @@ public class ReportUpdater extends ReportBasicOperation {
                     .withStringProperty(Constants.FORMULA, reportColumn.getFormula())
                     .build();
 
-            OMEntityWrapper wrapper = omEntityDao.createOrUpdateEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedNameForColumn, columnProperties, null, true);
+            OMEntityWrapper wrapper = omEntityDao.createOrUpdateEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedNameForColumn, columnProperties, null, true, false);
             createOrUpdateSemanticAssignment(reportColumn, wrapper.getEntityDetail().getGUID());
             createOrUpdateSchemaQueryImplementation(reportColumn, wrapper.getEntityDetail().getGUID());
 
@@ -273,7 +273,6 @@ public class ReportUpdater extends ReportBasicOperation {
                     omEntityDao.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
                             columnGuid,
                             sourceColumnGuid,
-                            Constants.INFORMATION_VIEW_OMAS_NAME,
                             schemaQueryImplProperties);
                 }
             } else {
@@ -317,8 +316,7 @@ public class ReportUpdater extends ReportBasicOperation {
                 omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
                                             columnGuid,
                                             businessTermAssignedToColumnGuid,
-                                            Constants.INFORMATION_VIEW_OMAS_NAME,
-                                            new InstanceProperties());
+                        new InstanceProperties());
             }
         }
     }

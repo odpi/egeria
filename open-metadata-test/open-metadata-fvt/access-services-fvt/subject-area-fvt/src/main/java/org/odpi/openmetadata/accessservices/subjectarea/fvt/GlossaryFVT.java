@@ -6,6 +6,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.SubjectAreaGlossary;
 import org.odpi.openmetadata.accessservices.subjectarea.client.SubjectAreaImpl;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Taxonomy;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 
 import java.io.IOException;
@@ -147,6 +148,11 @@ public class GlossaryFVT
         Glossary glossary = new Glossary();
         glossary.setName(glossaryName);
         return glossary;
+    }
+    public Taxonomy getTaxonomyForInput(String glossaryName) {
+        Taxonomy taxonomy = new Taxonomy();
+        taxonomy.setName(glossaryName);
+        return taxonomy;
     }
     public  Glossary createPastToGlossary(String name) throws SubjectAreaCheckedExceptionBase
     {

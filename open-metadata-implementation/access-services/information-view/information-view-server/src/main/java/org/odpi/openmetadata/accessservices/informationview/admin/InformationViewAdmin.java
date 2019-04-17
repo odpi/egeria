@@ -4,8 +4,9 @@
 package org.odpi.openmetadata.accessservices.informationview.admin;
 
 
+import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.informationview.auditlog.InformationViewAuditCode;
-import org.odpi.openmetadata.accessservices.informationview.views.ColumnContextBuilder;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
@@ -31,6 +32,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Map;
 
 
 public class InformationViewAdmin implements AccessServiceAdmin {
@@ -79,7 +83,8 @@ public class InformationViewAdmin implements AccessServiceAdmin {
         String outTopicName = getTopicName(accessServiceConfigurationProperties.getAccessServiceOutTopic());
         informationViewInTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceInTopic());
         informationViewOutTopicConnector = initializeInformationViewTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
-        OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, auditLog);
+        List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions());
+        OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, supportedZones, auditLog);
 
         EventPublisher eventPublisher = null;
         if (enterpriseOMRSTopicConnector != null) {
@@ -92,15 +97,14 @@ public class InformationViewAdmin implements AccessServiceAdmin {
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
 
-            eventPublisher = new EventPublisher(informationViewOutTopicConnector, enterpriseConnector, auditLog);
+            eventPublisher = new EventPublisher(informationViewOutTopicConnector, enterpriseConnector, supportedZones, auditLog);
             InformationViewEnterpriseOmrsEventListener informationViewEnterpriseOmrsEventListener = new InformationViewEnterpriseOmrsEventListener(eventPublisher, auditLog);
             enterpriseOMRSTopicConnector.registerListener(informationViewEnterpriseOmrsEventListener);
         }
 
 
         if (informationViewInTopicConnector != null) {
-            OpenMetadataTopicListener informationViewInTopicListener = new InformationViewInTopicListener(omEntityDao, eventPublisher, enterpriseConnector.getRepositoryHelper(),
-                    auditLog);
+            OpenMetadataTopicListener informationViewInTopicListener = new InformationViewInTopicListener(omEntityDao, eventPublisher, enterpriseConnector.getRepositoryHelper(), supportedZones, auditLog);
             this.informationViewInTopicConnector.registerListener(informationViewInTopicListener);
             startConnector(InformationViewAuditCode.SERVICE_REGISTERED_WITH_IV_IN_TOPIC, actionDescription, inTopicName, informationViewInTopicConnector);
         }
@@ -112,7 +116,8 @@ public class InformationViewAdmin implements AccessServiceAdmin {
         LookupHelper lookupHelper = new LookupHelper(enterpriseConnector, omEntityDao, auditLog);
         DataViewHandler dataViewHandler = new DataViewHandler(omEntityDao, enterpriseConnector.getRepositoryHelper(), auditLog);
         ReportHandler reportHandler = new ReportHandler(omEntityDao, lookupHelper, enterpriseConnector.getRepositoryHelper(), auditLog);
-        instance = new InformationViewServicesInstance(reportHandler, dataViewHandler, serverName);
+        DatabaseContextHandler databaseContextHandler = new DatabaseContextHandler(omEntityDao, enterpriseConnector, auditLog );
+        instance = new InformationViewServicesInstance(reportHandler, dataViewHandler, databaseContextHandler, serverName);
 
         auditCode = InformationViewAuditCode.SERVICE_INITIALIZED;
         auditLog.logRecord(actionDescription,
@@ -234,6 +239,79 @@ public class InformationViewAdmin implements AccessServiceAdmin {
 
         }
     }
+
+
+    private List<String> extractSupportedZones(Map<String, Object> accessServiceOptions) throws OMAGConfigurationErrorException
+    {
+        final String           methodName = "extractSupportedZones";
+        InformationViewAuditCode auditCode;
+
+        if (accessServiceOptions == null)
+        {
+            return null;
+        }
+        else
+        {
+            Object   zoneListObject = accessServiceOptions.get(supportedZonesPropertyName);
+
+            if (zoneListObject == null)
+            {
+                auditCode = InformationViewAuditCode.ALL_ZONES;
+                auditLog.logRecord(methodName,
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(),
+                        null,
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction());
+                return null;
+            }
+            else
+            {
+                try
+                {
+                    List<String>  zoneList =  (List<String>)zoneListObject;
+
+                    auditCode = InformationViewAuditCode.SUPPORTED_ZONES;
+                    auditLog.logRecord(methodName,
+                            auditCode.getLogMessageId(),
+                            auditCode.getSeverity(),
+                            auditCode.getFormattedLogMessage(zoneList.toString()),
+                            null,
+                            auditCode.getSystemAction(),
+                            auditCode.getUserAction());
+
+                    return zoneList;
+                }
+                catch (Throwable error)
+                {
+                    auditCode = InformationViewAuditCode.BAD_CONFIG;
+                    auditLog.logRecord(methodName,
+                            auditCode.getLogMessageId(),
+                            auditCode.getSeverity(),
+                            auditCode.getFormattedLogMessage(zoneListObject.toString(), supportedZonesPropertyName),
+                            null,
+                            auditCode.getSystemAction(),
+                            auditCode.getUserAction());
+
+                    InformationViewErrorCode errorCode    = InformationViewErrorCode.BAD_CONFIG;
+                    String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(zoneListObject.toString(),
+                            supportedZonesPropertyName,
+                            error.getClass().getName(),
+                            error.getMessage());
+
+                    throw new OMAGConfigurationErrorException(errorCode.getHttpErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction(),
+                            error);
+                }
+            }
+        }
+    }
+
 
 
     /**

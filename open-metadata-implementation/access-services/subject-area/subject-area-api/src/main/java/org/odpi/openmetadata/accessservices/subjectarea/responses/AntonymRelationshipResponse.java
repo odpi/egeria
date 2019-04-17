@@ -45,9 +45,9 @@ public class AntonymRelationshipResponse extends SubjectAreaOMASAPIResponse
         return antonym;
     }
 
-    public void setAntonym(Antonym termHASARelationship)
+    public void setAntonym(Antonym antonym)
     {
-        this.antonym = termHASARelationship;
+        this.antonym = antonym;
     }
 
 

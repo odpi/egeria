@@ -24,6 +24,7 @@ public class Constants {
     public static final String DATA_CONTENT_FOR_DATASET = "DataContentForDataSet";
     public static final String CONNECTION_TO_ENDPOINT = "ConnectionEndpoint";
     public static final String ASSET_SCHEMA_TYPE = "AssetSchemaType";
+    public static final String ASSET = "Asset";
     public static final String NAME = "name";
     public static final String ATTRIBUTE_NAME = "name";
     public static final String DISPLAY_NAME = "displayName";
@@ -80,4 +81,7 @@ public class Constants {
     public static final String AGGREGATING_FUNCTION = "aggregatingFunction";
     public static final String COMMENT = "comment";
     public static final String PRIMITIVE_SCHEMA_TYPE = "PrimitiveSchemaType";
+    public static final String ZONE_MEMBERSHIP = "zoneMembership";
+    public static final Integer PAGE_SIZE = 100;
+    public static final int START_FROM = 0;
 }

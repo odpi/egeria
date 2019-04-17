@@ -2,8 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions;
 
-
-
 /**
  * The TypeNotFoundException is thrown by the Governance Engine OMAS when the root type passed
  * is not valid.

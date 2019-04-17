@@ -13,7 +13,6 @@ public class RangerTag {
     private String createdBy;
     private String updatedBy;
     private String createTime;
-    private Long version;
     private String type;
     private Map<String, String> attributes;
     private Map<String, Object> options;
@@ -66,14 +65,6 @@ public class RangerTag {
         this.createTime = createTime;
     }
 
-    public Long getVersion() {
-        return version;
-    }
-
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
     public String getType() {
         return type;
     }
@@ -121,7 +112,6 @@ public class RangerTag {
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
                 ", createTime='" + createTime + '\'' +
-                ", version=" + version +
                 ", type='" + type + '\'' +
                 ", attributes=" + attributes +
                 ", options=" + options +
