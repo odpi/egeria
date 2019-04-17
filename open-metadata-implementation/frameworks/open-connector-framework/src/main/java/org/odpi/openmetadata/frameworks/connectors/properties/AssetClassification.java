@@ -171,22 +171,9 @@ public class AssetClassification extends AssetPropertyBase
      *
      * @return properties for the classification
      */
-    public AdditionalProperties getProperties()
+    public Map<String, Object> getProperties()
     {
-        Map<String, Object>  classificationProperties = classificationBean.getClassificationProperties();
-
-        if (classificationProperties == null)
-        {
-            return null;
-        }
-        else if (classificationProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new AdditionalProperties(super.getParentAsset(), classificationProperties);
-        }
+        return classificationBean.getClassificationProperties();
     }
 
 

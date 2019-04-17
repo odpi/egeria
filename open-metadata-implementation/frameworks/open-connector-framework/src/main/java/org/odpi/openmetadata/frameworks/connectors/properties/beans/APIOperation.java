@@ -183,9 +183,9 @@ public class APIOperation extends SchemaType
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", schemaProperties=" + getSchemaProperties() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
                 ", meanings=" + getMeanings() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +

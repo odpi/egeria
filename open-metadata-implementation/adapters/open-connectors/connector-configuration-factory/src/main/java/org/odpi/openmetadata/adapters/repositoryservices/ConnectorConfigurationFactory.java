@@ -177,8 +177,7 @@ public class ConnectorConfigurationFactory
 
         final String endpointDescription = "Open metadata archive for " + fileName;
 
-        String endpointAddress = fileName;
-        String endpointName    = "OpenMetadataArchiveFile.Endpoint" + endpointAddress;
+        String endpointName    = "OpenMetadataArchiveFile.Endpoint" + fileName;
 
         Endpoint endpoint = new Endpoint();
 
@@ -187,7 +186,7 @@ public class ConnectorConfigurationFactory
         endpoint.setQualifiedName(endpointName);
         endpoint.setDisplayName(endpointName);
         endpoint.setDescription(endpointDescription);
-        endpoint.setAddress(endpointAddress);
+        endpoint.setAddress(fileName);
 
         final String connectionDescription = "Open metadata archive connection.";
 
@@ -278,13 +277,15 @@ public class ConnectorConfigurationFactory
     /**
      * Return the Connection for this server's OMRS Repository REST API.  If the localServerURL is
      * something like localhost:8080/west-domain then the REST API URL would be
-     * localhost:8080/west-domain/open-metadata/repository-services/...
+     * localhost:8080/west-domain/servers/{localServerName}/open-metadata/repository-services/...
      *
+     * @param repositoryName   name of the local repository
      * @param localServerName   name of the local server
      * @param localServerURL   root of the local server's URL
      * @return Connection object
      */
-    public  Connection getDefaultLocalRepositoryRemoteConnection(String localServerName,
+    public  Connection getDefaultLocalRepositoryRemoteConnection(String repositoryName,
+                                                                 String localServerName,
                                                                  String localServerURL)
     {
         final String endpointGUID      = "cee85898-43aa-4af5-9bbd-2bed809d1acb";
@@ -299,20 +300,20 @@ public class ConnectorConfigurationFactory
         endpoint.setType(this.getEndpointType());
         endpoint.setGUID(endpointGUID);
         endpoint.setQualifiedName(endpointName);
-        endpoint.setDisplayName(endpointName);
+        endpoint.setDisplayName(localServerName);
         endpoint.setDescription(endpointDescription);
         endpoint.setAddress(localServerURL + "/servers/" + localServerName);
 
         final String connectionDescription = "OMRS default repository REST API connection.";
 
-        String connectionName = "DefaultRepositoryRESTAPI.Connection." + localServerName;
+        String connectionName = "Remote connection to " + repositoryName + "@" + localServerName;
 
         Connection connection = new Connection();
 
         connection.setType(this.getConnectionType());
         connection.setGUID(connectionGUID);
         connection.setQualifiedName(connectionName);
-        connection.setDisplayName(connectionName);
+        connection.setDisplayName(repositoryName + "@" + localServerName);
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(OMRSRESTRepositoryConnectorProvider.class.getName()));
@@ -326,23 +327,25 @@ public class ConnectorConfigurationFactory
      * Note there is no endpoint defined.  This needs to be added when the graph repository connector
      * is implemented.
      *
+     * @param repositoryName   name of the repository
      * @param localServerName   name of the local server
      * @return Connection object
      */
-    public Connection getLocalGraphRepositoryLocalConnection(String localServerName)
+    public Connection getLocalGraphRepositoryLocalConnection(String repositoryName,
+                                                             String localServerName)
     {
         final String connectionGUID    = "3f1fd4fc-90f9-436a-8e2c-2120d590f5e4";
 
         final String connectionDescription = "OMRS default local graph repository connection.";
 
-        String connectionName = "DefaultLocalGraphRepository.Connection." + localServerName;
+        String connectionName = "Local connection to " + repositoryName + "@" + localServerName;
 
         Connection connection = new Connection();
 
         connection.setType(this.getConnectionType());
         connection.setGUID(connectionGUID);
         connection.setQualifiedName(connectionName);
-        connection.setDisplayName(connectionName);
+        connection.setDisplayName(repositoryName + "@" + localServerName);
         connection.setDescription(connectionDescription);
         connection.setConnectorType(getConnectorType(GraphOMRSRepositoryConnectorProvider.class.getName()));
 
@@ -353,23 +356,25 @@ public class ConnectorConfigurationFactory
     /**
      * Return the in-memory local repository connection.  This is using the InMemoryOMRSRepositoryConnector.
      *
+     * @param repositoryName   name of the repository
      * @param localServerName   name of the local server
      * @return Connection object
      */
-    public Connection getInMemoryLocalRepositoryLocalConnection(String localServerName)
+    public Connection getInMemoryLocalRepositoryLocalConnection(String repositoryName,
+                                                                String localServerName)
     {
         final String connectionGUID    = "6a3c07b0-0e04-42dc-bcc6-392609bf1d02";
 
         final String connectionDescription = "OMRS default in memory local repository connection.";
 
-        String connectionName = "DefaultInMemoryRepository.Connection." + localServerName;
+        String connectionName = "Local connection to " + repositoryName + "@" + localServerName;
 
         Connection connection = new Connection();
 
         connection.setType(this.getConnectionType());
         connection.setGUID(connectionGUID);
         connection.setQualifiedName(connectionName);
-        connection.setDisplayName(connectionName);
+        connection.setDisplayName(repositoryName + "@" + localServerName);
         connection.setDescription(connectionDescription);
         connection.setConnectorType(getConnectorType(InMemoryOMRSRepositoryConnectorProvider.class.getName()));
 
@@ -382,14 +387,13 @@ public class ConnectorConfigurationFactory
      *
      * @param serverName  name of the real repository server
      * @param url  location of the repository proxy
-     * @param additionalProperties name value pairs for the connection
+     * @param configurationProperties name value pairs for the connection
      * @return Connection object
      */
     public Connection getIBMIGCRepositoryConnection(String              serverName,
                                                     String              url,
-                                                    Map<String, Object> additionalProperties)
+                                                    Map<String, Object> configurationProperties)
     {
-        // TODO: confirm whether these should be final GUIDs or randomly generated (like ProxyConnection below)?
         final String endpointGUID          = "94546575-45b5-4ece-9c05-7654b4a7cf7e";
         final String connectionGUID        = "c2e88b7b-4d23-43b0-b6d9-7d25a68f17c0";
         final String endpointDescription   = "OMRS repository endpoint for IBM Information Governance Catalog.";
@@ -416,7 +420,7 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setConnectorType(getConnectorType(IGCOMRSRepositoryConnectorProvider.class.getName()));
-        connection.setAdditionalProperties(additionalProperties);
+        connection.setConfigurationProperties(configurationProperties);
 
         return connection;
     }
@@ -428,13 +432,13 @@ public class ConnectorConfigurationFactory
      * @param serverName  name of the real repository server
      * @param connectorProviderClassName  class name of the connector provider
      * @param url  location of the repository proxy
-     * @param additionalProperties name value pairs for the connection
+     * @param configurationProperties name value pairs for the connection
      * @return Connection object
      */
     public Connection  getRepositoryProxyConnection(String              serverName,
                                                     String              connectorProviderClassName,
                                                     String              url,
-                                                    Map<String, Object> additionalProperties)
+                                                    Map<String, Object> configurationProperties)
     {
         final String endpointGUID             = UUID.randomUUID().toString();
         final String connectionGUID           = UUID.randomUUID().toString();
@@ -464,7 +468,7 @@ public class ConnectorConfigurationFactory
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(connectorProviderClassName));
-        connection.setAdditionalProperties(additionalProperties);
+        connection.setConfigurationProperties(configurationProperties);
 
         return connection;
     }
@@ -491,7 +495,7 @@ public class ConnectorConfigurationFactory
      * @param topicURLRoot  root URL of the topic - this is prepended to the topic name
      * @param topicName  name of the topic
      * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
-     * @param eventBusAdditionalProperties - additional properties for the event bus connection
+     * @param eventBusConfigurationProperties - additional properties for the event bus connection
      * @return List of EmbeddedConnection object
      */
     private List<EmbeddedConnection> getEmbeddedEventBusConnection(String              eventSource,
@@ -500,7 +504,7 @@ public class ConnectorConfigurationFactory
                                                                    String              topicURLRoot,
                                                                    String              topicName,
                                                                    String              serverId,
-                                                                   Map<String, Object> eventBusAdditionalProperties)
+                                                                   Map<String, Object> eventBusConfigurationProperties)
     {
         EmbeddedConnection     embeddedConnection = new EmbeddedConnection();
         Connection             connection         = this.getDefaultEventBusConnection(eventSource,
@@ -508,7 +512,7 @@ public class ConnectorConfigurationFactory
                                                                                       topicURLRoot,
                                                                                       topicName,
                                                                                       serverId,
-                                                                                      eventBusAdditionalProperties);
+                                                                                      eventBusConfigurationProperties);
 
         embeddedConnection.setDisplayName(eventSource);
         embeddedConnection.setArguments(arguments);
@@ -530,7 +534,7 @@ public class ConnectorConfigurationFactory
      * @param topicURLRoot  root URL of the topic - this is prepended to the topic name
      * @param topicName  name of the topic
      * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
-     * @param additionalProperties  additional properties for the connection
+     * @param configurationProperties  additional configuration properties for the connection
      * @return Connection object
      */
     public Connection getDefaultEventBusConnection(String               connectionName,
@@ -538,7 +542,7 @@ public class ConnectorConfigurationFactory
                                                    String               topicURLRoot,
                                                    String               topicName,
                                                    String               serverId,
-                                                   Map<String, Object>  additionalProperties)
+                                                   Map<String, Object>  configurationProperties)
     {
         Endpoint endpoint = null;
 
@@ -569,12 +573,12 @@ public class ConnectorConfigurationFactory
             connectorTypeJavaClassName = connectorProviderClassName;
         }
 
-        if (additionalProperties == null)
+        if (configurationProperties == null)
         {
-            additionalProperties = new HashMap<>();
+            configurationProperties = new HashMap<>();
         }
 
-        additionalProperties.put(KafkaOpenMetadataTopicProvider.serverIdPropertyName, serverId);
+        configurationProperties.put(KafkaOpenMetadataTopicProvider.serverIdPropertyName, serverId);
 
         Connection connection = new Connection();
 
@@ -585,11 +589,10 @@ public class ConnectorConfigurationFactory
         connection.setDescription(connectionName);
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(connectorTypeJavaClassName));
-        connection.setAdditionalProperties(additionalProperties);
+        connection.setConfigurationProperties(configurationProperties);
 
         return connection;
     }
-
 
 
     /**
@@ -632,19 +635,19 @@ public class ConnectorConfigurationFactory
      * Return the connection for the OMRS topic for the named cohort.
      *
      * @param cohortName   name of the cohort
-     * @param additionalProperties name value property pairs for the topic connection
+     * @param configurationProperties name value property pairs for the topic connection
      * @param eventBusConnectorProvider class name of the event bus connector's provider
      * @param topicURLRoot root name for the topic URL
      * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
-     * @param eventBusAdditionalProperties name value property pairs for the event bus connection
+     * @param eventBusConfigurationProperties name value property pairs for the event bus connection
      * @return Connection object
      */
     public Connection getDefaultCohortOMRSTopicConnection(String              cohortName,
-                                                          Map<String, Object> additionalProperties,
+                                                          Map<String, Object> configurationProperties,
                                                           String              eventBusConnectorProvider,
                                                           String              topicURLRoot,
                                                           String              serverId,
-                                                          Map<String, Object> eventBusAdditionalProperties)
+                                                          Map<String, Object> eventBusConfigurationProperties)
     {
         final String connectionGUID    = "023bb1f3-03dd-47ae-b3bc-dce62e9c11cb";
         final String connectionDescription = "OMRS default cohort topic connection.";
@@ -660,13 +663,14 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setConnectorType(getConnectorType(OMRSTopicProvider.class.getName()));
+        connection.setConfigurationProperties(configurationProperties);
         connection.setEmbeddedConnections(getEmbeddedEventBusConnection(cohortName + " OMRS Topic",
-                                                                        additionalProperties,
+                                                                        null,
                                                                         eventBusConnectorProvider,
                                                                         topicURLRoot,
                                                                         topicName,
                                                                         serverId,
-                                                                        eventBusAdditionalProperties));
+                                                                        eventBusConfigurationProperties));
 
         return connection;
     }
@@ -683,7 +687,7 @@ public class ConnectorConfigurationFactory
      */
     public Connection getRepositoryEventMapperConnection(String              serverName,
                                                          String              connectorProviderClassName,
-                                                         Map<String, Object> additionalProperties,
+                                                         Map<String, Object> configurationProperties,
                                                          String              eventSource)
     {
         final String endpointGUID             = UUID.randomUUID().toString();
@@ -713,22 +717,23 @@ public class ConnectorConfigurationFactory
         connection.setDescription(connectionDescription);
         connection.setEndpoint(endpoint);
         connection.setConnectorType(getConnectorType(connectorProviderClassName));
-        connection.setAdditionalProperties(additionalProperties);
+        connection.setConfigurationProperties(configurationProperties);
 
         return connection;
     }
+
 
     /**
      * Return the connection.  This is using the RangerConnector.
      *
      * @param serverName  name of the real repository server
      * @param url  url for the Security Server
-     * @param additionalProperties name value pairs for the connection
+     * @param configurationProperties name value pairs for the connection
      * @return Connection object
      */
     public Connection getSecuritySyncServerConnection(String              serverName,
                                                       String              url,
-                                                      Map<String, Object> additionalProperties)
+                                                      Map<String, Object> configurationProperties)
     {
         final String endpointGUID          = "Ysns8MHD-a79I-AZB2-BdqU-T6u2d3hj4nTS";
         final String endpointDescription   = "OMRS repository endpoint for Security Sync Server.";
@@ -739,8 +744,10 @@ public class ConnectorConfigurationFactory
         String connectionName = "SecuritySyncServer.Connection." + serverName;
         final String connectionGUID        = "GPKHhpfW-xXjN-QbFR-T50l-XMnY68SS2Bip";
         final String connectionDescription = "OMRS repository connection to Security Sync Server.";
-        return getConnection(additionalProperties, endpoint, connectionName, connectionGUID, connectionDescription);
+        return getConnection(configurationProperties, endpoint, connectionName, connectionGUID, connectionDescription);
     }
+
+
 
     /**
      * Return the connector type for the requested connector provider.  This is best used for connector providers that
@@ -875,17 +882,18 @@ public class ConnectorConfigurationFactory
     /**
      * Return the Connection build based on the given parameters
      *
-     * @param additionalProperties
+     * @param configurationProperties properties used to configure the underlying technology
      * @param endpoint that contains the server url
      * @param connectionName name of the connection
      * @param connectionGUID connection identifier
      * @param connectionDescription description for the connection
      * @return Connection object
      */
-    private Connection getConnection(Map<String, Object> additionalProperties,
-                                     Endpoint endpoint, String connectionName,
-                                     String connectionGUID,
-                                     String connectionDescription)
+    private Connection getConnection(Map<String, Object> configurationProperties,
+                                     Endpoint            endpoint,
+                                     String              connectionName,
+                                     String              connectionGUID,
+                                     String              connectionDescription)
     {
         Connection connection = new Connection();
 
@@ -896,7 +904,8 @@ public class ConnectorConfigurationFactory
         connection.setDisplayName(connectionName);
         connection.setDescription(connectionDescription);
         connection.setConnectorType(getConnectorType(RangerSecurityServiceConnectorProvider.class.getName()));
-        connection.setAdditionalProperties(additionalProperties);
+        connection.setConfigurationProperties(configurationProperties);
+
         return connection;
     }
 

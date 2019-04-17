@@ -103,10 +103,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
 
         try
         {
-            if (log.isDebugEnabled())
-            {
-                log.debug("Retrieving server configuration properties");
-            }
+            log.debug("Retrieving server configuration properties");
 
             String configStoreFileContents = FileUtils.readFileToString(configStoreFile, "UTF-8");
 
@@ -121,7 +118,7 @@ public class FileBasedServerConfigStoreConnector extends OMAGServerConfigStoreCo
              */
             log.debug("New server config Store", ioException);
 
-            newConfigProperties = new OMAGServerConfig();
+            newConfigProperties = null;
         }
 
         return newConfigProperties;

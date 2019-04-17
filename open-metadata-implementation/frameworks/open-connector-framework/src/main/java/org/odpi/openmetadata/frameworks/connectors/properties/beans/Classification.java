@@ -97,6 +97,10 @@ public class Classification extends PropertyBase
         {
             return null;
         }
+        else if (classificationProperties.isEmpty())
+        {
+            return null;
+        }
         else
         {
             return new HashMap<>(classificationProperties);

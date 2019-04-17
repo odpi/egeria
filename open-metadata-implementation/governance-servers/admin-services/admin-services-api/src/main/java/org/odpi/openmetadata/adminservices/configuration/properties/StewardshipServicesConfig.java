@@ -43,7 +43,7 @@ public class StewardshipServicesConfig extends AdminServicesConfigHeader
      *
      * @param template object to copy
      */
-    public StewardshipServicesConfig(StewardshipServicesConfig  template)
+    public StewardshipServicesConfig(StewardshipServicesConfig template)
     {
         super(template);
 
