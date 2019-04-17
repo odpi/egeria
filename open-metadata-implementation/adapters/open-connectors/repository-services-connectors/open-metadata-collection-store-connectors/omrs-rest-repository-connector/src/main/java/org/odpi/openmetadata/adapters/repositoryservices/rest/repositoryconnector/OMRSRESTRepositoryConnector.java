@@ -17,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class OMRSRESTRepositoryConnector extends OMRSRepositoryConnector
 {
     private OMRSRESTMetadataCollection  metadataCollection   = null;
+    private RepositoryErrorException    metadataCollectionException = null;
 
     /**
      * Default constructor used by the OCF Connector Provider.
@@ -36,16 +37,24 @@ public class OMRSRESTRepositoryConnector extends OMRSRepositoryConnector
      */
     public void setMetadataCollectionId(String     metadataCollectionId)
     {
-        this.metadataCollectionId = metadataCollectionId;
+        super.setMetadataCollectionId(metadataCollectionId);
 
-        /*
-         * Initialize the metadata collection.
-         */
-        metadataCollection = new OMRSRESTMetadataCollection(this,
-                                                            super.repositoryName,
-                                                            repositoryHelper,
-                                                            repositoryValidator,
-                                                            metadataCollectionId);
+        try
+        {
+            /*
+             * Initialize the metadata collection.
+             */
+            metadataCollection = new OMRSRESTMetadataCollection(this,
+                                                                super.repositoryName,
+                                                                repositoryHelper,
+                                                                repositoryValidator,
+                                                                metadataCollectionId);
+        }
+        catch (RepositoryErrorException  error)
+        {
+            metadataCollectionException = error;
+            metadataCollection = null;
+        }
     }
 
 
@@ -60,19 +69,27 @@ public class OMRSRESTRepositoryConnector extends OMRSRepositoryConnector
     {
         if (metadataCollection == null)
         {
-            final String      methodName = "getMetadataCollection";
+            if (metadataCollectionException != null)
+            {
+                throw metadataCollectionException;
+            }
+            else
+            {
+                final String methodName = "getMetadataCollection";
 
-            OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION;
-            String        errorMessage = errorCode.getErrorMessageId()
-                                       + errorCode.getFormattedErrorMessage(super.serverName);
+                OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION;
+                String errorMessage = errorCode.getErrorMessageId()
+                        + errorCode.getFormattedErrorMessage(super.serverName);
 
-            throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction());
+                throw new OMRSLogicErrorException(errorCode.getHTTPErrorCode(),
+                                                  this.getClass().getName(),
+                                                  methodName,
+                                                  errorMessage,
+                                                  errorCode.getSystemAction(),
+                                                  errorCode.getUserAction());
+            }
         }
+
         return metadataCollection;
     }
 

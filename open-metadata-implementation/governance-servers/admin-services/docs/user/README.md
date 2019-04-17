@@ -4,7 +4,7 @@
 # OMAG Server Platform Administration Services User Guide
 
 An **[Open Metadata and Governance (OMAG) Server Platform](../../../../../open-metadata-publication/website/omag-server)**
-hosts one or more logical **[OMAG servers](../concepts/logical-omag-server.md)**, each supporting a variety of open metadata
+hosts one or more logical **[OMAG servers](../concepts/omag-server.md)**, each supporting a variety of open metadata
 and governance capabilities.
 
 The capabilities that are enabled in a specific instance of a logical OMAG Server
@@ -84,6 +84,7 @@ In the descriptions of the configuration commands the following values are used 
 
 ### Advanced Configuration Topics
 
+* [Migrating configuration documents](migrating-configuration-documents.md)
 * [Configuring the storage mechanism to use for configuration documents](configuring-configuration-file-store.md)
 
 
@@ -97,7 +98,8 @@ GET http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/c
 
 ```
 
-It is also possible to query the origin of the server supporting the open metadata services.  For the Egeria OMAG Server Platform, the response is "ODPI Egeria OMAG Server Platform".
+It is also possible to query the origin of the server supporting the open metadata services.
+For the Egeria OMAG Server Platform, the response is "ODPI Egeria OMAG Server Platform (version 1.1-SNAPSHOT)".
 
 ```
 

@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.adminservices.spring;
 
 import org.odpi.openmetadata.adminservices.OMAGServerAdminServices;
-import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,6 +75,26 @@ public class ConfigPropertiesResource
                                         @RequestParam String id)
     {
         return adminAPI.setServerUserId(userId, serverName, id);
+    }
+
+
+    /**
+     * Set up the password to use when the server is issuing REST calls.  If this value is set then the
+     * serverUserId and this password are embedded the the HTTP header.
+     *
+     * @param userId  user that is issuing the request.
+     * @param serverName  local server name.
+     * @param password  String password for the server.
+     * @return void response or
+     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
+     * OMAGInvalidParameterException invalid serverName or serverURLRoot parameter.
+     */
+    @RequestMapping(method = RequestMethod.POST, path = "/server-user-password")
+    public VoidResponse setServerPassword(@PathVariable String userId,
+                                          @PathVariable String serverName,
+                                          @RequestParam String password)
+    {
+        return adminAPI.setServerPassword(userId, serverName, password);
     }
 
 

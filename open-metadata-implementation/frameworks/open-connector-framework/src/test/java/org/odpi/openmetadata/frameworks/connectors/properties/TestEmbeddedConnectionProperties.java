@@ -93,7 +93,7 @@ public class TestEmbeddedConnectionProperties
     {
         assertTrue(resultObject.getDisplayName().equals("TestDisplayName"));
         assertTrue(resultObject.getConnectionProperties().equals(new ConnectionProperties(connection)));
-        assertTrue(resultObject.getArguments().equals(new AdditionalProperties(arguments)));
+        assertTrue(resultObject.getArguments().equals(new HashMap<>(arguments)));
     }
 
 

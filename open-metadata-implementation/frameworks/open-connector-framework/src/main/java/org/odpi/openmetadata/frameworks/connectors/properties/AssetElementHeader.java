@@ -8,6 +8,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -215,6 +216,24 @@ public abstract class AssetElementHeader extends AssetPropertyBase
             }
         }
     }
+
+
+    /**
+     * Return any properties defined for a sub type that are not explicitly supported by the connected
+     * asset API.
+     *
+     * @return property map
+     */
+    public Map<String, Object> getExtendedProperties()
+    {
+        if (elementHeaderBean == null)
+        {
+            return null;
+        }
+
+        return elementHeaderBean.getExtendedProperties();
+    }
+
 
 
     /**

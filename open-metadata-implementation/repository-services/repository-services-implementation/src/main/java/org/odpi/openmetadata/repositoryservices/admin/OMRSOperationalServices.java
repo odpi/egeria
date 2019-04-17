@@ -72,6 +72,7 @@ public class OMRSOperationalServices
     private String                         localMetadataCollectionName;   /* Initialized in constructor */
     private String                         localOrganizationName;         /* Initialized in constructor */
     private String                         localServerUserId;             /* Initialized in constructor */
+    private String                         localServerPassword;           /* Initialized in constructor */
     private String                         localServerURL;                /* Initialized in constructor */
     private int                            maxPageSize;                   /* Initialized in constructor */
 
@@ -97,7 +98,9 @@ public class OMRSOperationalServices
      * @param localServerName name of the local server
      * @param localServerType type of the local server
      * @param organizationName name of the organization that owns the local server
-     * @param localServerUserId user id for this server to use if processing inbound messages.
+     * @param localServerUserId user id for this server to use in outbound REST calls and
+     *                          internal calls when processing inbound messages.
+     * @param localServerPassword password for this server to use on outbound REST calls.
      * @param localServerURL URL root for this server.
      * @param maxPageSize maximum number of records that can be requested on the pageSize parameter
      */
@@ -105,6 +108,7 @@ public class OMRSOperationalServices
                                    String                   localServerType,
                                    String                   organizationName,
                                    String                   localServerUserId,
+                                   String                   localServerPassword,
                                    String                   localServerURL,
                                    int                      maxPageSize)
     {
@@ -115,6 +119,7 @@ public class OMRSOperationalServices
         this.localServerType = localServerType;
         this.localOrganizationName = organizationName;
         this.localServerUserId = localServerUserId;
+        this.localServerPassword = localServerPassword;
         this.localServerURL = localServerURL;
         this.maxPageSize = maxPageSize;
     }
@@ -185,6 +190,22 @@ public class OMRSOperationalServices
 
             return null;
         }
+    }
+
+
+    /**
+     * Return the enterprise connector manager.  This is used by the conformance suite to get access to connectors
+     * to registered members of the cohorts that this server is connected to.  That way it can exercise their
+     * APIs and compare them with the events being received over the cohort topic.
+     *
+     * This method is called after the OMRS is initialized.  The enterprise connector manager is created whether
+     * there are OMASs activated or not.
+     *
+     * @return enterprise connector manager.
+     */
+    public OMRSEnterpriseConnectorManager  getEnterpriseConnectorManager()
+    {
+        return enterpriseConnectorManager;
     }
 
 
@@ -494,7 +515,10 @@ public class OMRSOperationalServices
             enterpriseConnectorManager = new OMRSEnterpriseConnectorManager(false,
                                                                             maxPageSize,
                                                                             repositoryContentManager,
-                                                                            new OMRSAuditLog(auditLogDestination, OMRSAuditingComponent.ENTERPRISE_CONNECTOR_MANAGER));
+                                                                            new OMRSAuditLog(auditLogDestination,
+                                                                                             OMRSAuditingComponent.ENTERPRISE_CONNECTOR_MANAGER),
+                                                                            localServerUserId,
+                                                                            localServerPassword);
         }
         else
         {
@@ -515,7 +539,10 @@ public class OMRSOperationalServices
             enterpriseConnectorManager = new OMRSEnterpriseConnectorManager(true,
                                                                             maxPageSize,
                                                                             repositoryContentManager,
-                                                                            new OMRSAuditLog(auditLogDestination, OMRSAuditingComponent.ENTERPRISE_CONNECTOR_MANAGER));
+                                                                            new OMRSAuditLog(auditLogDestination,
+                                                                                             OMRSAuditingComponent.ENTERPRISE_CONNECTOR_MANAGER),
+                                                                            localServerUserId,
+                                                                            localServerPassword);
 
             /*
              * Save information about the enterprise metadata collection for the OMRSEnterpriseConnectorProvider class as

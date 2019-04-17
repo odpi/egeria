@@ -4,7 +4,9 @@ package org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacolle
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
@@ -14,14 +16,27 @@ import static org.testng.Assert.assertTrue;
  */
 public class InstanceAuditHeaderTest
 {
-    private InstanceType   type          = new InstanceType();
-    private String         createdBy     = "TestAuthor";
-    private String         updatedBy     = "TestEditor";
-    private Date           createTime    = new Date(23);
-    private Date           updateTime    = new Date(45);
-    private long           version       = 30L;
-    private InstanceStatus currentStatus = InstanceStatus.UNKNOWN;
-    private InstanceStatus statusOnDelete  = InstanceStatus.UNKNOWN;
+    private InstanceType           type                   = new InstanceType();
+    private InstanceProvenanceType instanceProvenanceType = InstanceProvenanceType.LOCAL_COHORT;
+    private String                 metadataCollectionId   = "TestMetadataCollectionId";
+    private String                 metadataCollectionName = "TestMetadataCollectionName";
+    private String                 replicatedBy           = "TestReplicatedBy";
+    private String                 instanceLicense        = "TestInstanceLicense";
+    private String                 createdBy              = "TestAuthor";
+    private String                 updatedBy              = "TestEditor";
+    private Date                   createTime             = new Date(23);
+    private Date                   updateTime             = new Date(45);
+    private List<String>           maintainedBy           = new ArrayList<>();
+    private long                   version                = 30L;
+    private InstanceStatus         currentStatus          = InstanceStatus.UNKNOWN;
+    private InstanceStatus         statusOnDelete         = InstanceStatus.UNKNOWN;
+
+
+    public InstanceAuditHeaderTest()
+    {
+        maintainedBy.add("TestMaintainer");
+    }
+
 
     /**
      * Return a filled in test object
@@ -33,7 +48,13 @@ public class InstanceAuditHeaderTest
         InstanceAuditHeader testObject = new InstanceAuditHeaderMock();
 
         testObject.setType(type);
+        testObject.setInstanceProvenanceType(instanceProvenanceType);
+        testObject.setMetadataCollectionId(metadataCollectionId);
+        testObject.setMetadataCollectionName(metadataCollectionName);
+        testObject.setReplicatedBy(replicatedBy);
+        testObject.setInstanceLicense(instanceLicense);
         testObject.setCreatedBy(createdBy);
+        testObject.setMaintainedBy(maintainedBy);
         testObject.setUpdatedBy(updatedBy);
         testObject.setCreateTime(createTime);
         testObject.setUpdateTime(updateTime);
@@ -53,7 +74,13 @@ public class InstanceAuditHeaderTest
     private void validateObject(InstanceAuditHeader   testObject)
     {
         assertTrue(testObject.getType().equals(type));
+        assertTrue(testObject.getInstanceProvenanceType().equals(instanceProvenanceType));
+        assertTrue(testObject.getMetadataCollectionId().equals(metadataCollectionId));
+        assertTrue(testObject.getMetadataCollectionName().equals(metadataCollectionName));
+        assertTrue(testObject.getReplicatedBy().equals(replicatedBy));
+        assertTrue(testObject.getInstanceLicense().equals(instanceLicense));
         assertTrue(testObject.getCreatedBy().equals(createdBy));
+        assertTrue(testObject.getMaintainedBy().equals(maintainedBy));
         assertTrue(testObject.getUpdatedBy().equals(updatedBy));
         assertTrue(testObject.getCreateTime().equals(createTime));
         assertTrue(testObject.getUpdateTime().equals(updateTime));
@@ -71,13 +98,22 @@ public class InstanceAuditHeaderTest
         InstanceAuditHeader testObject = new InstanceAuditHeaderMock();
 
         assertTrue(testObject.getType() == null);
+        assertTrue(testObject.getInstanceProvenanceType() == null);
+        assertTrue(testObject.getMetadataCollectionId() == null);
+        assertTrue(testObject.getMetadataCollectionName() == null);
+        assertTrue(testObject.getReplicatedBy() == null);
+        assertTrue(testObject.getInstanceLicense() == null);
         assertTrue(testObject.getCreatedBy() == null);
+        assertTrue(testObject.getMaintainedBy() == null);
         assertTrue(testObject.getUpdatedBy() == null);
         assertTrue(testObject.getCreateTime() == null);
         assertTrue(testObject.getUpdateTime() == null);
         assertTrue(testObject.getVersion() == 0L);
         assertTrue(testObject.getStatus() == null);
         assertTrue(testObject.getStatusOnDelete() == null);
+
+        testObject.setMaintainedBy(new ArrayList<>());
+        assertTrue(testObject.getMaintainedBy() == null);
 
         InstanceAuditHeader anotherTestObject = getTestObject();
 

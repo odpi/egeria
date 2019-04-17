@@ -19,7 +19,7 @@ public class TestSchemaElement
 {
     private ElementType          type                 = new ElementType();
     private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, Object>  additionalProperties = new HashMap<>();
+    private Map<String, String>  additionalProperties = new HashMap<>();
 
 
     /**
@@ -100,7 +100,7 @@ public class TestSchemaElement
      */
     @Test public void testAdditionalProperties()
     {
-        Map<String, Object> propertyMap;
+        Map<String, String> propertyMap;
         SchemaElement       testObject = new MockSchemaElement();
 
         assertTrue(testObject.getQualifiedName() == null);
@@ -121,7 +121,7 @@ public class TestSchemaElement
         testObject = new MockSchemaElement();
         testObject.setAdditionalProperties(propertyMap);
 
-        Map<String, Object>   retrievedPropertyMap = testObject.getAdditionalProperties();
+        Map<String, String>   retrievedPropertyMap = testObject.getAdditionalProperties();
 
         assertTrue(retrievedPropertyMap != null);
         assertFalse(retrievedPropertyMap.isEmpty());

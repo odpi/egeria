@@ -52,11 +52,11 @@ address of `http://localhost:8080`.
 ```bash
 
 $ curl -X GET http://localhost:8080/open-metadata/admin-services/users/test/server-origin
-ODPi Egeria OMAG Server Platform
+ODPi Egeria OMAG Server Platform (version 1.1-SNAPSHOT)
 $
 
 ```
-If you get the `ODPi Egeria OMAG Server Platform` response then your OMAG server platform is already running.
+If you get the `ODPi Egeria OMAG Server Platform (version `versionNumber`)` response then your OMAG server platform is already running.
 If you get a response like this:
 
 ```json

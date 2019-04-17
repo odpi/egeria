@@ -4,7 +4,7 @@
 # Discovery Annotations
 
 A discovery annotation describes one or more related properties about an
-[Asset](../../../../open-metadata-implementation/access-services/docs/concepts/assetss) that has been
+[Asset](../../../../open-metadata-implementation/access-services/docs/concepts/assets) that has been
 discovered by a [discovery service](discovery-service.md).
 
 Some discovery annotations refer to an entire asset and others refer to a data field within
@@ -20,7 +20,7 @@ The open metadata types for a discovery annotations are describe in
 The main entity type is called
 [Annotation](../../../../open-metadata-publication/website/open-metadata-types/0610-Annotations.md).
 It is extended by
-[DataFieldAnnotation](../../../../open-metadata-publication/website/open-metadata-types/0617-DataFieldAnalysis.md)
+[DataFieldAnnotation](../../../../open-metadata-publication/website/open-metadata-types/0617-Data-Field-Analysis.md)
 to distinguish annotations that refer, primarily to a data field.
 
 
