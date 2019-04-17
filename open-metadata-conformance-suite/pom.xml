@@ -70,7 +70,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>
-                                ${project.build.directory}/libs
+                                ${project.build.directory}/lib
                             </outputDirectory>
                         </configuration>
                     </execution>
@@ -84,7 +84,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <classpathPrefix>libs/</classpathPrefix>
+                            <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>
                                 org.odpi.openmetadata.conformance.client.OpenMetadataConformanceTestReport
                             </mainClass>
