@@ -13,18 +13,18 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TableSource extends DatabaseSource {
+public class TableSource extends Source {
 
-    private String tableName;
+    private String name;
     private String schemaName;
-    private String tableGuid;
+    private DatabaseSource databaseSource;
 
-    public String getTableName() {
-        return tableName;
+    public String getName() {
+        return name;
     }
 
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getSchemaName() {
@@ -35,17 +35,22 @@ public class TableSource extends DatabaseSource {
         this.schemaName = schemaName;
     }
 
-    public String getTableGuid() {
-        return tableGuid;
+
+    public DatabaseSource getDatabaseSource() {
+        return databaseSource;
     }
 
-    public void setTableGuid(String tableGuid) {
-        this.tableGuid = tableGuid;
+    public void setDatabaseSource(DatabaseSource databaseSource) {
+        this.databaseSource = databaseSource;
     }
-
 
     @Override
-    public String buildQualifiedName() {
-        return this.getNetworkAddress() + "." + "Connection." + this.getDatabaseName() + "." + this.getSchemaName() + "." + this.getTableName();
+    public String toString() {
+        return "{" +
+                "name='" + name + '\'' +
+                ", schemaName='" + schemaName + '\'' +
+                ", guid='" + guid + '\'' +
+                ", databaseSource=" + databaseSource +
+                '}';
     }
 }

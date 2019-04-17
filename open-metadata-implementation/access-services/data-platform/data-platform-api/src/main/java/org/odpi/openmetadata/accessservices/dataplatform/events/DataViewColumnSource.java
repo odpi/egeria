@@ -58,10 +58,4 @@ public class DataViewColumnSource extends Source {
                 '}';
     }
 
-    @Override
-    public String buildQualifiedName() {
-        return "";
-    }
-
-
 }

@@ -83,7 +83,6 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
                     omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
                             dataplatformAsset.getRelationalDbSchemaType().getGUID(),
                             view.getViewEntity().getGUID(),
-                            Constants.DATA_PLATFORM_OMAS_NAME,
                             new InstanceProperties());
                     event.getTableSource().setGuid(view.getViewEntity().getGUID());
                 }

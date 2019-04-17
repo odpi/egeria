@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.dataplatform.admin;
 import org.odpi.openmetadata.accessservices.dataplatform.auditlog.DataPlatformAuditCode;
 import org.odpi.openmetadata.accessservices.dataplatform.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPublisher;
+import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
 import org.odpi.openmetadata.accessservices.dataplatform.listeners.DataPlatformInTopicListener;
 import org.odpi.openmetadata.accessservices.dataplatform.server.DataPlatformServicesInstance;
 import org.odpi.openmetadata.accessservices.dataplatform.listeners.DataPlatformEnterpriseOmrsEventListener;
@@ -26,6 +27,9 @@ import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
+import java.util.Map;
 
 
 public class DataPlatformAdmin implements AccessServiceAdmin {
@@ -72,8 +76,8 @@ public class DataPlatformAdmin implements AccessServiceAdmin {
         dataPlatformInTopicConnector = initializeDataPlatformTopicConnector(accessServiceConfigurationProperties.getAccessServiceInTopic());
         dataPlatformOutTopicConnector = initializeDataPlatformTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
 
-
-        OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, auditLog);
+        List<String> supportedZones = this.extractSupportedZones(accessServiceConfigurationProperties.getAccessServiceOptions());
+        OMEntityDao omEntityDao = new OMEntityDao(enterpriseConnector, supportedZones, auditLog);
         EventPublisher eventPublisher = null;
 
         if (enterpriseOMRSTopicConnector != null) {
@@ -223,6 +227,68 @@ public class DataPlatformAdmin implements AccessServiceAdmin {
         }
     }
 
+
+    private List<String> extractSupportedZones(Map<String, Object> accessServiceOptions) throws OMAGConfigurationErrorException {
+        final String methodName = "extractSupportedZones";
+        DataPlatformAuditCode auditCode;
+
+        if (accessServiceOptions == null) {
+            return null;
+        } else {
+            Object zoneListObject = accessServiceOptions.get(supportedZonesPropertyName);
+
+            if (zoneListObject == null) {
+                auditCode = DataPlatformAuditCode.ALL_ZONES;
+                auditLog.logRecord(methodName,
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(),
+                        null,
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction());
+                return null;
+            } else {
+                try {
+                    List<String> zoneList = (List<String>) zoneListObject;
+
+                    auditCode = DataPlatformAuditCode.SUPPORTED_ZONES;
+                    auditLog.logRecord(methodName,
+                            auditCode.getLogMessageId(),
+                            auditCode.getSeverity(),
+                            auditCode.getFormattedLogMessage(zoneList.toString()),
+                            null,
+                            auditCode.getSystemAction(),
+                            auditCode.getUserAction());
+
+                    return zoneList;
+                } catch (Throwable error) {
+                    auditCode = DataPlatformAuditCode.BAD_CONFIG;
+                    auditLog.logRecord(methodName,
+                            auditCode.getLogMessageId(),
+                            auditCode.getSeverity(),
+                            auditCode.getFormattedLogMessage(zoneListObject.toString(), supportedZonesPropertyName),
+                            null,
+                            auditCode.getSystemAction(),
+                            auditCode.getUserAction());
+
+                    DataPlatformErrorCode errorCode = DataPlatformErrorCode.BAD_CONFIG;
+
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(zoneListObject.toString(),
+                            supportedZonesPropertyName,
+                            error.getClass().getName(),
+                            error.getMessage());
+
+                    throw new OMAGConfigurationErrorException(errorCode.getHttpErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction(),
+                            error);
+                }
+            }
+        }
+    }
 
     /**
      * Shutdown the access service.

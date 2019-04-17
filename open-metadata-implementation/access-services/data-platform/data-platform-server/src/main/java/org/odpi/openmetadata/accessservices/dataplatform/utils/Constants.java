@@ -37,6 +37,7 @@ public class Constants {
     public static final String QUERY = "query";
     public static final String FORMULA = "formula";
     public static final String INFO_VIEW_PREFIX = "iv_";
+    public static final String INFORMATION_VIEW = "InformationView";
     public static final String TYPE_SUFFIX = "_type";
     public static final String CONNECTION_CONNECTOR_TYPE = "ConnectionConnectorType";
     public static final String RELATIONAL_COLUMN_TYPE = "RelationalColumnType";
@@ -78,4 +79,7 @@ public class Constants {
     public static final String AGGREGATING_FUNCTION = "aggregatingFunction";
     public static final String COMMENT = "comment";
     public static final String PRIMITIVE_SCHEMA_TYPE = "PrimitiveSchemaType";
+    public static final String ZONE_MEMBERSHIP = "zoneMembership";
+    public static final int START_FROM = 0;
+    public static final Integer PAGE_SIZE = 100;
 }

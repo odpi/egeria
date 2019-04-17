@@ -20,6 +20,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         property = "class")
 public class DataViewSource extends Source {
 
+    protected EndpointSource endpointSource;
     protected String id;
     protected String name;
 
@@ -39,17 +40,20 @@ public class DataViewSource extends Source {
         this.name = name;
     }
 
-    @Override
-    public String toString() {
-        return "DataViewSource{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+    public EndpointSource getEndpointSource() {
+        return endpointSource;
+    }
+
+    public void setEndpointSource(EndpointSource endpointSource) {
+        this.endpointSource = endpointSource;
     }
 
     @Override
-    public String buildQualifiedName() {
-        return "";
-
+    public String toString() {
+        return "DataViewSource{" +
+                "endpointSource=" + endpointSource +
+                ", id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
