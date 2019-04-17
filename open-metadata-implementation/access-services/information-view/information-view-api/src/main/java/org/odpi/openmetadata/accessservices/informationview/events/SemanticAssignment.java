@@ -15,11 +15,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 public class SemanticAssignment extends InformationViewHeader{
 
-    private DatabaseColumn databaseColumn;
+    private TableColumn tableColumn;
     private BusinessTerm businessTerm;
 
     public BusinessTerm getBusinessTerm() {
@@ -30,19 +29,19 @@ public class SemanticAssignment extends InformationViewHeader{
         this.businessTerm = businessTerm;
     }
 
-    public DatabaseColumn getDatabaseColumn() {
-        return databaseColumn;
+    public TableColumn getTableColumn() {
+        return tableColumn;
     }
 
-    public void setDatabaseColumn(DatabaseColumn databaseColumn) {
-        this.databaseColumn = databaseColumn;
+    public void setTableColumn(TableColumn tableColumn) {
+        this.tableColumn = tableColumn;
     }
 
     @Override
     public String toString() {
         return "SemanticAssignment{" +
                 "businessTerm=" + businessTerm +
-                ", databaseColumn=" + databaseColumn +
+                ", tableColumn=" + tableColumn +
                 '}';
     }
 }

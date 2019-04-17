@@ -59,7 +59,7 @@ public class EntityReferenceResolver {
         }
         String sourceName = source.getClass().getName();
         if (!StringUtils.isEmpty(source.getQualifiedName())) {
-            EntityDetail entity = omEntityDao.getEntity(sourceName, source.getQualifiedName());
+            EntityDetail entity = omEntityDao.getEntity(sourceName, source.getQualifiedName(), false);
             return entity.getGUID();
         }
         LookupStrategy strategy = strategies.get(sourceName);
@@ -97,7 +97,8 @@ public class EntityReferenceResolver {
         }
 
         if (!StringUtils.isEmpty(businessTerm.getQualifiedName())) {
-            EntityDetail entity = omEntityDao.getEntity(Constants.BUSINESS_TERM, businessTerm.getQualifiedName());
+            EntityDetail entity = omEntityDao.getEntity(Constants.BUSINESS_TERM, businessTerm.getQualifiedName(),
+                    false);
             return entity.getGUID();
         }
         return null;

@@ -3,29 +3,33 @@
 package org.odpi.openmetadata.accessservices.subjectarea.server.services;
 
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.OMRSRelationshipToLines;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.server.SubjectAreaBeansToAccessOMRS;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.MetadataServerUncontactableException;
+import org.odpi.openmetadata.accessservices.subjectarea.initialization.SubjectAreaInstanceHandler;
+import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.RelationshipResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.RelationshipsResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.RelationshipsResponse;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineBundle;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineBundleFactory;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ILineMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.ResponseFactory;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.accessservices.subjectarea.validators.InputValidator;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
-
-import org.odpi.openmetadata.accessservices.subjectarea.initialization.SubjectAreaInstanceHandler;
+import java.util.*;
 
 
 /**
@@ -54,14 +58,13 @@ public class SubjectAreaRESTServicesInstance
      * @param serverName server name used to create the instance
      * @param userId userid under which the request will be made
      * @param methodName method name for logging
-     * @return the Subject Area OMAS bean to access OMRS
-     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
-     * @throws InvalidParameterException a parameter is null or an invalid value.
+     * @return null if successful or the response containing the error
      */
-    protected SubjectAreaBeansToAccessOMRS initializeAPI(String serverName, String userId, String methodName) throws MetadataServerUncontactableException,
-            InvalidParameterException
+    protected  SubjectAreaOMASAPIResponse  initializeAPI(String serverName, String userId, String methodName)
     {
-        return initializeAPI(serverName,userId,null,null,methodName);
+
+        return  initializeAPI(serverName, userId,null,null, methodName);
+
     }
     /**
      * Each API call needs to run in the requested tenant - indicated by the serverName and validate the userid.
@@ -70,32 +73,42 @@ public class SubjectAreaRESTServicesInstance
      * @param from effective from date
      * @param to effective to Date
      * @param methodName method name for logging
-     * @return the Subject Area OMAS bean to access OMRS
-     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
-     * @throws InvalidParameterException a parameter is null or an invalid value.
+     * @return null if successful or the response containing the error
      */
-    protected SubjectAreaBeansToAccessOMRS initializeAPI(String serverName, String userId, Date from, Date to, String methodName) throws MetadataServerUncontactableException, InvalidParameterException
+    protected SubjectAreaOMASAPIResponse initializeAPI(String serverName, String userId, Date from, Date to, String methodName)
+
     {
-        // this is set as a mock object for junits.
-        if (oMRSAPIHelper ==null)
-        {
-            oMRSAPIHelper = new OMRSAPIHelper();
-        }
+        SubjectAreaOMASAPIResponse response = null;
+
         // initialise omrs API helper with the right instance based on the server name
-        OMRSRepositoryConnector omrsConnector = instanceHandler.getRepositoryConnector(serverName);
-        oMRSAPIHelper.setOMRSRepositoryConnector(omrsConnector);
-        SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = new SubjectAreaBeansToAccessOMRS();
-        subjectAreaOmasREST.setOMRSAPIHelper(this.oMRSAPIHelper);
-        InputValidator.validateUserIdNotNull(className, methodName, userId);
-        InputValidator.validateEffectiveDate(className,methodName,to,from);
-        return subjectAreaOmasREST;
+        OMRSRepositoryConnector omrsConnector = null;
+        try
+        {
+            // this is set as a mock object for junits.
+            if (oMRSAPIHelper ==null)
+            {
+                oMRSAPIHelper = new OMRSAPIHelper(instanceHandler.getAccessServiceName(serverName));
+            }
+            omrsConnector = instanceHandler.getRepositoryConnector(serverName);
+            oMRSAPIHelper.setOMRSRepositoryConnector(omrsConnector);
+            InputValidator.validateUserIdNotNull(className, methodName, userId);
+            InputValidator.validateEffectiveDate(className,methodName,to,from);
+        } catch (MetadataServerUncontactableException e)
+        {
+            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
+        } catch (InvalidParameterException e)
+        {
+            response = OMASExceptionToResponse.convertInvalidParameterException(e);
+        }
+
+        return response;
     }
 
     public void setOMRSAPIHelper(OMRSAPIHelper oMRSAPIHelper)
     {
         this.oMRSAPIHelper = oMRSAPIHelper;
     }
-  /*
+    /*
      * Get Term relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -120,92 +133,114 @@ public class SubjectAreaRESTServicesInstance
      * @throws UnexpectedResponseException an unexpected response was returned from the server
      */
 
-    public  SubjectAreaOMASAPIResponse getRelationshipsFromGuid(String serverName, String userId,
-                                                           String guid,
-                                                           Date asOfTime,
-                                                           Integer offset,
-                                                           Integer pageSize,
-                                                           org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
-                                                           String sequencingProperty
+    public  SubjectAreaOMASAPIResponse getRelationshipsFromGuid(String serverName,
+                                                                String userId,
+                                                                String guid,
+                                                                Date asOfTime,
+                                                                Integer offset,
+                                                                Integer pageSize,
+                                                                org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
+                                                                String sequencingProperty
     ) {
         final String methodName = "getRelationshipsFromGuid";
         if (log.isDebugEnabled())
         {
             log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
         }
-
-        SubjectAreaOMASAPIResponse response =null;
-        try
-        {
-            // initialise omrs API helper with the right instance based on the server name
-            SubjectAreaBeansToAccessOMRS subjectAreaOmasREST = initializeAPI(serverName, userId, methodName);
-            InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
-            if (offset ==null) {
-                offset = new Integer(0);
-            }
-            if (pageSize == null) {
-                pageSize = new Integer(0);
-            }
-            if (sequencingProperty !=null) {
-                try {
-                    sequencingProperty = URLDecoder.decode(sequencingProperty,"UTF-8");
-                } catch (UnsupportedEncodingException e) {
-                    // TODO error
+        // initialise omrs API helper with the right instance based on the server name
+        SubjectAreaOMASAPIResponse response =initializeAPI(serverName, userId, methodName);
+        if (response == null) {
+            try {
+                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+                // if offset or pagesize were not supplied then default them, so they can be converted to primitives.
+                if (offset == null) {
+                    offset = new Integer(0);
                 }
-            }
-            SequencingOrder omrsSequencingOrder =  SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
-            Set<Line> omrsRelationships = getRelationshipsFromGuid(
-                    userId,
-                    guid,
-                    null,
-                    offset,
-                    asOfTime,
-                    sequencingProperty,
-                    omrsSequencingOrder,
-                    pageSize);
-            List<Line> relationshipsToReturn = SubjectAreaUtils.convertOMRSLinesToOMASLines(omrsRelationships);
-            int sizeToGet = 0;
-            if (omrsRelationships.size() > relationshipsToReturn.size()) {
-                sizeToGet = omrsRelationships.size() - relationshipsToReturn.size();
-            }
-
-            while (sizeToGet >0) {
-
-                // there are more relationships we need to get
-                omrsRelationships = getRelationshipsFromGuid(
+                if (pageSize == null) {
+                    pageSize = new Integer(0);
+                }
+                if (sequencingProperty != null) {
+                    sequencingProperty = URLDecoder.decode(sequencingProperty, "UTF-8");
+                }
+                SequencingOrder omrsSequencingOrder = SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
+                List<Relationship> omrsRelationships = null;
+                response = getRelationshipsFromGuid(
                         userId,
                         guid,
                         null,
-                        offset + sizeToGet,
+                        offset,
                         asOfTime,
                         sequencingProperty,
                         omrsSequencingOrder,
-                        sizeToGet);
-                if (omrsRelationships != null) {
-                    sizeToGet = getSizeToGet(omrsRelationships, relationshipsToReturn);
-                    offset = +sizeToGet;
+                        pageSize);
+                if (response.getResponseCategory() == ResponseCategory.OmrsRelationships) {
+                    RelationshipsResponse relationshipsResponse = (RelationshipsResponse) response;
+                    omrsRelationships = relationshipsResponse.getRelationships();
+                    response = SubjectAreaUtils.convertOMRSRelationshipsToOMASLines(oMRSAPIHelper, omrsRelationships);
+
+                    if (response.getResponseCategory() == ResponseCategory.Lines) {
+                        LinesResponse linesResponse = (LinesResponse) response;
+                        List<Line> linesToReturn = linesResponse.getLines();
+
+                        if (pageSize > 0) {
+                            /*
+                             * There are  some relationships that do not translate to lines for example CategoryAnchor is represented as the GlossarySummary object embedded in Category
+                             * this is important if there is a page size - as we may end up returning less that a pagesize of data.
+                             * The following logic attempts to get more relationships that can be turned in to Lines so that the requested page of data is returned.
+                             */
+                            int sizeToGet = 0;
+                            // omrsRelationships.size() should be page size or less
+                            if (omrsRelationships.size() > linesToReturn.size()) {
+                                sizeToGet = omrsRelationships.size() - linesToReturn.size();
+                            }
+                            // bump up the offset by whay we have received.
+                            offset = offset + omrsRelationships.size();
+
+                            while (sizeToGet > 0) {
+
+                                // there are more relationships we need to get
+                                response = getRelationshipsFromGuid(
+                                        userId,
+                                        guid,
+                                        null,
+                                        offset,
+                                        asOfTime,
+                                        sequencingProperty,
+                                        omrsSequencingOrder,
+                                        sizeToGet);
+                                sizeToGet = 0;
+                                if (response.getResponseCategory() == ResponseCategory.OmrsRelationships) {
+                                    relationshipsResponse = (RelationshipsResponse) response;
+                                    List<Relationship> moreOmrsRelationships = relationshipsResponse.getRelationships();
+                                    if (moreOmrsRelationships != null && moreOmrsRelationships.size() > 0) {
+
+                                        response = SubjectAreaUtils.convertOMRSRelationshipsToOMASLines(oMRSAPIHelper, omrsRelationships);
+                                        if (response.getResponseCategory() == ResponseCategory.Lines) {
+                                            linesResponse = (LinesResponse) response;
+                                            List<Line> moreLines = linesResponse.getLines();
+                                            if (moreLines != null && !moreLines.isEmpty()) {
+                                                // we have found more lines
+                                                linesToReturn.addAll(moreLines);
+                                                // check whether we need to get more.
+                                                sizeToGet = moreOmrsRelationships.size() - moreLines.size();
+                                                // bump up the offset by what we have just received.
+                                                offset = offset + moreOmrsRelationships.size();
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                            response = new LinesResponse(linesToReturn);
+                        }
+                    }
                 }
+            } catch(InvalidParameterException e){
+                response = OMASExceptionToResponse.convertInvalidParameterException(e);
+            } catch (UnsupportedEncodingException e) {
+                // TODO error
             }
-            response =new RelationshipsResponse(relationshipsToReturn);
-        } catch (InvalidParameterException e)
-        {
-            response = OMASExceptionToResponse.convertInvalidParameterException(e);
-        } catch (UserNotAuthorizedException e)
-        {
-            response = OMASExceptionToResponse.convertUserNotAuthorizedException(e);
-        } catch (MetadataServerUncontactableException e)
-        {
-            response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
-        } catch (UnrecognizedGUIDException e)
-        {
-            response = OMASExceptionToResponse.convertUnrecognizedGUIDException(e);
-        } catch (FunctionNotSupportedException e)
-        {
-            //should not occur as it is issued when a type guid is supplied - we supply null. TODO appropriate error/log
         }
-
-
 
         if (log.isDebugEnabled())
         {
@@ -228,13 +263,8 @@ public class SubjectAreaRESTServicesInstance
      * @param pageSize  the maximum number of result classifications that can be returned on this request.  Zero means
      *                 unrestricted return results size.
      * @return {@code List<Line> }
-     * @throws MetadataServerUncontactableException not able to communicate with the metadata server.
-     * @throws UserNotAuthorizedException the userId passed on the request is not authorized to perform the requested action.
-     * @throws InvalidParameterException a parameter is null or an invalid value.
-     * @throws UnrecognizedGUIDException the unique identifier (guid) used to request an object is either unrecognized, or is the identifier for a different type of object.
-     * @throws FunctionNotSupportedException a function is not supported.
      */
-    private Set<Line> getRelationshipsFromGuid(
+    private SubjectAreaOMASAPIResponse getRelationshipsFromGuid(
             String                     userId,
             String                     entityGuid,
             String                     relationshipTypeGuid,
@@ -243,46 +273,289 @@ public class SubjectAreaRESTServicesInstance
             String                     sequencingProperty,
             SequencingOrder            sequencingOrder,
             int                        pageSize)
-            throws MetadataServerUncontactableException,
-            UserNotAuthorizedException,
-            InvalidParameterException,
-            FunctionNotSupportedException,
-            UnrecognizedGUIDException {
+    {
         final String methodName = "getRelationshipsFromGuid";
         if (log.isDebugEnabled()) {
             log.debug("==> Method: " + methodName + ",userId="+userId+",entity guid="+entityGuid + ",relationship Type Guid="+relationshipTypeGuid);
         }
-        InputValidator.validateUserIdNotNull(className,methodName,userId);
-        InputValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+        SubjectAreaOMASAPIResponse response = null;
 
-        Set<Line> lines = null;
+        try {
+            InputValidator.validateUserIdNotNull(className,methodName,userId);
 
-        List<Relationship> omrsRelationships = oMRSAPIHelper.callGetRelationshipsForEntity( userId,
-                entityGuid,
-                relationshipTypeGuid,
-                fromRelationshipElement,
-                asOfTime,
-                sequencingProperty,
-                sequencingOrder,
-                pageSize);
-        if (omrsRelationships !=null) {
-            lines =  OMRSRelationshipToLines.convert(omrsRelationships);
+            InputValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
+
+            response = oMRSAPIHelper.callGetRelationshipsForEntity( userId,
+                    entityGuid,
+                    relationshipTypeGuid,
+                    fromRelationshipElement,
+                    asOfTime,
+                    sequencingProperty,
+                    sequencingOrder,
+                    pageSize);
+            if (response.getResponseCategory() == ResponseCategory.OmrsRelationships) {
+                RelationshipsResponse relationshipsResponse = (RelationshipsResponse) response;
+                List<Relationship> omrsRelationships = relationshipsResponse.getRelationships();
+                if (omrsRelationships != null) {
+                    Set<Relationship> relationshipSet = new HashSet<>(omrsRelationships);
+                    response = SubjectAreaUtils.convertOMRSRelationshipsToOMASLines(oMRSAPIHelper, omrsRelationships);
+                    // the response if successful will be LinesResponse
+                }
+            }
+        } catch (InvalidParameterException e) {
+            response = OMASExceptionToResponse.convertInvalidParameterException(e);
         }
         if (log.isDebugEnabled()) {
-            log.debug("<== successful method : " + methodName + ",userId="+userId+",guid="+entityGuid);
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ",guid=" + entityGuid);
         }
-        return lines;
-    }
-    private int getSizeToGet(Set<Line> omrsTermRelationships, List<Line> termRelationships) {
-        int sizeToGet =0;
-        List<Line> moreTermRelationships = SubjectAreaUtils.convertOMRSLinesToOMASLines(omrsTermRelationships);
-        if ( moreTermRelationships !=null && moreTermRelationships.size() >0) {
-            for (Line moreTermRelationship : moreTermRelationships) {
-                termRelationships.add(moreTermRelationship);
-            }
-            sizeToGet = omrsTermRelationships.size() - moreTermRelationships.size();
+        return response;
 
+    }
+    protected SubjectAreaOMASAPIResponse createLine(String serverName, String userId,String className,Line line ) {
+        String methodName = "createLine";
+        if (log.isDebugEnabled())
+        {
+            log.debug("==> Method: " + methodName + ",userId=" + userId +",className=" +className );
         }
-        return sizeToGet;
+
+        SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
+        if (response ==null)
+        {
+            ILineBundleFactory factory = new ILineBundleFactory(oMRSAPIHelper);
+            ILineBundle bundle = factory.getInstance(className);
+            ILineMapper mapper = bundle.getMapper();
+
+            try
+            {
+                Relationship omrsRelationship = mapper.mapLineToRelationship(line);
+                response = oMRSAPIHelper.callOMRSAddRelationship(userId, omrsRelationship);
+                if (response.getResponseCategory() == ResponseCategory.OmrsRelationship)
+                {
+                    Relationship createdOMRSRelationship = ((RelationshipResponse) response).getRelationship();
+                    Line createdLine = mapper.mapRelationshipToLine(createdOMRSRelationship);
+                    response = new ResponseFactory().getInstance(className, createdLine);
+                }
+            } catch (InvalidParameterException e)
+            {
+                response = OMASExceptionToResponse.convertInvalidParameterException(e);
+            }
+        }
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+        }
+        return response;
+
+    }
+    protected SubjectAreaOMASAPIResponse getLine(String serverName, String userId,String className,String guid ) {
+
+        String methodName = "getLine";
+        if (log.isDebugEnabled())
+        {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid);
+        }
+        // initialise omrs API helper with the right instance based on the server name
+        SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
+        if (response == null)
+        {
+            ILineBundleFactory factory = new ILineBundleFactory(oMRSAPIHelper);
+            ILineBundle bundle = factory.getInstance(className);
+            ILineMapper mapper = bundle.getMapper();
+
+            try
+            {
+                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+                response = oMRSAPIHelper.callOMRSGetRelationshipByGuid(userId, guid);
+                if (response.getResponseCategory() == ResponseCategory.OmrsRelationship)
+                {
+                    Relationship createdOMRSRelationship = ((RelationshipResponse) response).getRelationship();
+                    Line gotLine = mapper.mapRelationshipToLine(createdOMRSRelationship);
+                    response = new ResponseFactory().getInstance(className, gotLine);
+                }
+            } catch (InvalidParameterException e)
+            {
+                response = OMASExceptionToResponse.convertInvalidParameterException(e);
+            }
+        }
+
+        if (log.isDebugEnabled())
+        {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+        }
+        return response;
+    }
+
+    /**
+     * Update the line.
+     * @param serverName server name to process the request againts
+     * @param userId userid
+     * @param className classname for logging
+     * @param line line to update
+     * @param isReplace whether the other is a replace or an update
+     * @return updated line
+     */
+    protected SubjectAreaOMASAPIResponse updateLine(String serverName, String userId,String className,Line line,boolean isReplace )
+    {
+        String methodName = "updateLine";
+        if (log.isDebugEnabled())
+        {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",className=" + className, ",isReplace="+isReplace);
+        }
+
+        SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
+        if (response == null)
+        {
+            ILineBundleFactory factory = new ILineBundleFactory(oMRSAPIHelper);
+            ILineBundle bundle = factory.getInstance(className);
+            ILineMapper mapper = bundle.getMapper();
+
+            try
+            {
+                String relationshipGuid = line.getGuid();
+                InputValidator.validateGUIDNotNull(className, methodName, relationshipGuid, "termGuid");
+                response = oMRSAPIHelper.callOMRSGetRelationshipByGuid(userId, relationshipGuid);
+                if (response.getResponseCategory() == ResponseCategory.OmrsRelationship)
+                {
+                    Relationship originalRelationship = ((RelationshipResponse) response).getRelationship();
+                    Relationship relationshipToUpdate = mapper.mapLineToRelationship(line);
+
+                    if (isReplace)
+                    {
+                        // use the relationship as supplied
+                    } else
+                    {
+                        if (relationshipToUpdate.getProperties() !=null && relationshipToUpdate.getProperties().getPropertyCount()>0) {
+                            Map<String, InstancePropertyValue> updateInstanceProperties = relationshipToUpdate.getProperties().getInstanceProperties();
+                            if (originalRelationship.getProperties() != null) {
+                                Map<String, InstancePropertyValue> orgInstanceProperties = originalRelationship.getProperties().getInstanceProperties();
+
+                                // if there a property that already exists but is not in the update properties then make sure that value is not overwritten by including it in this update request.
+                                for (String orgPropertyName : orgInstanceProperties.keySet()) {
+                                    if (!updateInstanceProperties.keySet().contains(orgPropertyName)) {
+                                        // make sure the original value is not lost.
+                                        updateInstanceProperties.put(orgPropertyName, orgInstanceProperties.get(orgPropertyName));
+                                    }
+                                }
+                            }
+                            InstanceProperties instancePropertiesToUpdate = new InstanceProperties();
+                            instancePropertiesToUpdate.setInstanceProperties(updateInstanceProperties);
+                            // copy over with effectivity dates - honour what is in the request. So null means we lose any effectivity time that are set.
+                            instancePropertiesToUpdate.setEffectiveFromTime(line.getEffectiveFromTime());
+                            instancePropertiesToUpdate.setEffectiveToTime(line.getEffectiveToTime());
+                            relationshipToUpdate.setProperties(instancePropertiesToUpdate);
+                        }
+                    }
+                    if (relationshipToUpdate.getProperties() ==null || relationshipToUpdate.getProperties().getPropertyCount() ==0) {
+                        // nothing to update.
+                        // TODO may need to change this logic if effectivity updates can be made through this call.
+                        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.LINE_UPDATE_ATTEMPTED_WITH_NO_PROPERTIES;
+                        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
+                        log.error(errorMessage);
+                        response = new InvalidParameterExceptionResponse(
+                                new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction())
+                                );
+                    } else {
+                        response = oMRSAPIHelper.callOMRSUpdateRelationship(userId, relationshipToUpdate);
+                        if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
+                            Relationship updatedOmrsRelationship = ((RelationshipResponse) response).getRelationship();
+                            Line updatedLine = mapper.mapRelationshipToLine(updatedOmrsRelationship);
+                            response = new ResponseFactory().getInstance(className, updatedLine);
+                        }
+                    }
+                }
+            } catch (InvalidParameterException e)
+            {
+                response = OMASExceptionToResponse.convertInvalidParameterException(e);
+            }
+        } if (log.isDebugEnabled())
+    {
+        log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+    }
+        return response;
+    }
+    public SubjectAreaOMASAPIResponse deleteLine(String serverName, String userId,String className,String guid, Boolean isPurge) {
+
+        String methodName = "deleteLine";
+        if (log.isDebugEnabled())
+        {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid + ",isPurge="+isPurge);
+        }
+        // initialise omrs API helper with the right instance based on the server name
+        SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
+        if (response == null)
+        {
+            OMRSRepositoryHelper repositoryHelper  = oMRSAPIHelper.getOMRSRepositoryHelper();
+            ILineBundleFactory factory = new ILineBundleFactory(oMRSAPIHelper);
+            ILineBundle bundle = factory.getInstance(className);
+            ILineMapper mapper = bundle.getMapper();
+
+            try
+            {
+                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+                StringTokenizer st = new StringTokenizer(className,".");
+
+                String typeName = bundle.getTypeName();
+                String source = oMRSAPIHelper.getServiceName();
+                String typeGuid = repositoryHelper.getTypeDefByName(source, typeName).getGUID();
+                if (isPurge)
+                {
+                    response = oMRSAPIHelper.callOMRSPurgeRelationship(userId, typeGuid, typeName, guid);
+                } else
+                {
+                    response = oMRSAPIHelper.callOMRSDeleteRelationship(userId, typeGuid, typeName, guid);
+                    if (response.getResponseCategory() == ResponseCategory.OmrsRelationship)
+                    {
+                        Relationship omrsRelationship = ((RelationshipResponse) response).getRelationship();
+                        Line deletedLine= mapper.mapRelationshipToLine(omrsRelationship);
+                        response = new ResponseFactory().getInstance(className, deletedLine);
+                    }
+                }
+            } catch (InvalidParameterException e)
+            {
+                response = OMASExceptionToResponse.convertInvalidParameterException(e);
+            }
+        }
+        if (log.isDebugEnabled())
+        {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+        }
+        return response;
+    }
+    protected SubjectAreaOMASAPIResponse restoreLine(String serverName, String userId,String className,String guid ) {
+
+        String methodName = "deleteLine";
+        if (log.isDebugEnabled())
+        {
+            log.debug("==> Method: " + methodName + ",userId=" + userId + ",guid=" + guid );
+        }
+        // initialise omrs API helper with the right instance based on the server name
+        SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
+        if (response == null)
+        {
+            ILineBundleFactory factory = new ILineBundleFactory(oMRSAPIHelper);
+            ILineBundle bundle = factory.getInstance(className);
+            ILineMapper mapper = bundle.getMapper();
+
+            try
+            {
+                InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
+                response = this.oMRSAPIHelper.callOMRSRestoreRelationship(userId, guid);
+                if (response.getResponseCategory() == ResponseCategory.OmrsRelationship)
+                {
+                    Relationship omrsRelationship = ((RelationshipResponse) response).getRelationship();
+                    Line restoredLine =  mapper.mapRelationshipToLine(omrsRelationship);
+                    response =new ResponseFactory().getInstance(className, restoredLine);
+                }
+            } catch (InvalidParameterException e)
+            {
+                response = OMASExceptionToResponse.convertInvalidParameterException(e);
+            }
+        }
+        if (log.isDebugEnabled())
+        {
+            log.debug("<== successful method : " + methodName + ",userId=" + userId + ", response=" + response);
+        }
+        return response;
     }
 }

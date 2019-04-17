@@ -105,7 +105,6 @@ public class ConfigRepositoryServicesResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param additionalProperties additional parameters to pass to the repository connector
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
@@ -113,10 +112,9 @@ public class ConfigRepositoryServicesResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/local-repository/mode/local-graph-repository")
     public VoidResponse setGraphLocalRepository(@PathVariable                  String userId,
-                                                @PathVariable                  String serverName,
-                                                @RequestBody(required = false) Map<String,Object> additionalProperties)
+                                                @PathVariable                  String serverName)
     {
-        return adminAPI.setGraphLocalRepository(userId, serverName, additionalProperties);
+        return adminAPI.setGraphLocalRepository(userId, serverName);
     }
 
 

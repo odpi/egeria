@@ -48,37 +48,39 @@ public class ViewHandler implements Callable<View> {
             log.info("Delete existing view as event received has no derived columns");
             deleteView(event);
         } else {
-            String qualifiedNameForInformationView = QualifiedNameUtils.buildQualifiedNameForInformationView(event.getTableSource().getNetworkAddress().split(":")[0], event.getTableSource().getDatabaseName(), event.getTableSource().getSchemaName());
-            String qualifiedNameForTableType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForInformationView, Constants.RELATIONAL_TABLE_TYPE,event.getTableSource().getTableName() + Constants.TYPE_SUFFIX);
+            String qualifiedNameForInformationView = QualifiedNameUtils.buildQualifiedNameForInformationView(event.getTableSource().getDatabaseSource().getEndpointSource().getNetworkAddress().split(":")[0], event.getTableSource().getDatabaseSource().getName(), event.getTableSource().getSchemaName());
+            String qualifiedNameForTableType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForInformationView, Constants.RELATIONAL_TABLE_TYPE,event.getTableSource().getName() + Constants.TYPE_SUFFIX);
             InstanceProperties tableTypeProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForTableType)
-                    .withStringProperty(Constants.DISPLAY_NAME, event.getTableSource().getTableName() + Constants.TYPE_SUFFIX)
+                    .withStringProperty(Constants.DISPLAY_NAME, event.getTableSource().getName() + Constants.TYPE_SUFFIX)
                     .withStringProperty(Constants.AUTHOR, "")
                     .withStringProperty(Constants.USAGE, "")
                     .withStringProperty(Constants.ENCODING_STANDARD, "")
                     .build();
             OMEntityWrapper tableTypeEntityWrapper = omEntityDao.createOrUpdateEntity(Constants.RELATIONAL_TABLE_TYPE,
-                    qualifiedNameForTableType,
-                    tableTypeProperties,
-                    null,
-                    false);
+                                                                                    qualifiedNameForTableType,
+                                                                                    tableTypeProperties,
+                                                                                    null,
+                                                                                    false,
+                                                                                false);
 
-            String qualifiedNameForTable = QualifiedNameUtils.buildQualifiedName(qualifiedNameForInformationView, Constants.RELATIONAL_TABLE, event.getTableSource().getTableName());
+            String qualifiedNameForTable = QualifiedNameUtils.buildQualifiedName(qualifiedNameForInformationView, Constants.RELATIONAL_TABLE, event.getTableSource().getName());
             InstanceProperties tableProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForTable)
-                    .withStringProperty(Constants.ATTRIBUTE_NAME, event.getTableSource().getTableName())
+                    .withStringProperty(Constants.ATTRIBUTE_NAME, event.getTableSource().getName())
                     .build();
 
 
             if (event.getOriginalTableSource() != null) {
                 HashMap<String, String> prop = new HashMap<>();
-                prop.put(Constants.DISPLAY_NAME, event.getOriginalTableSource().getTableName());
+                prop.put(Constants.DISPLAY_NAME, event.getOriginalTableSource().getName());
                 tableProperties = helper.addStringMapPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, tableProperties, Constants.ADDITIONAL_PROPERTIES, prop, "ViewHandler.call");
             }
 
             EntityDetail tableEntity = omEntityDao.addEntity(Constants.RELATIONAL_TABLE,
                                                             qualifiedNameForTable,
-                                                            tableProperties);
+                                                            tableProperties,
+                                                            false);
 
             view.setViewEntity(tableEntity);
 
@@ -118,9 +120,9 @@ public class ViewHandler implements Callable<View> {
                                                                TypeErrorException,
                                                                PropertyErrorException,
                                                                PagingErrorException {
-        String qualifiedNameForInformationView = QualifiedNameUtils.buildQualifiedNameForInformationView(event.getTableSource().getNetworkAddress().split(":")[0], event.getTableSource().getDatabaseName(), event.getTableSource().getSchemaName());
-        String qualifiedNameForTableType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForInformationView, Constants.RELATIONAL_TABLE_TYPE,event.getTableSource().getTableName() + Constants.TYPE_SUFFIX);
-        EntityDetail tableTypeEntity = omEntityDao.getEntity(Constants.RELATIONAL_TABLE_TYPE, qualifiedNameForTableType);
+        String qualifiedNameForInformationView = QualifiedNameUtils.buildQualifiedNameForInformationView(event.getTableSource().getDatabaseSource().getEndpointSource().getNetworkAddress().split(":")[0], event.getTableSource().getName(), event.getTableSource().getSchemaName());
+        String qualifiedNameForTableType = QualifiedNameUtils.buildQualifiedName( qualifiedNameForInformationView, Constants.RELATIONAL_TABLE_TYPE, event.getTableSource().getName() + Constants.TYPE_SUFFIX);
+        EntityDetail tableTypeEntity = omEntityDao.getEntity(Constants.RELATIONAL_TABLE_TYPE, qualifiedNameForTableType, false);
 
         if (tableTypeEntity != null) {
             List<Relationship> derivedColumns = omEntityDao.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, tableTypeEntity.getGUID());
@@ -128,9 +130,8 @@ public class ViewHandler implements Callable<View> {
             omEntityDao.purgeEntity(tableTypeEntity);
         }
 
-        String qualifiedNameForTable =  QualifiedNameUtils.buildQualifiedName( qualifiedNameForInformationView , Constants.RELATIONAL_TABLE,  event.getTableSource().getTableName());
-        EntityDetail tableEntity = omEntityDao.getEntity(Constants.RELATIONAL_TABLE,
-                                                        qualifiedNameForTable);
+        String qualifiedNameForTable =  QualifiedNameUtils.buildQualifiedName( qualifiedNameForInformationView , Constants.RELATIONAL_TABLE,  event.getTableSource().getName());
+        EntityDetail tableEntity = omEntityDao.getEntity(Constants.RELATIONAL_TABLE, qualifiedNameForTable, false);
         if (tableEntity != null) {
             omEntityDao.purgeEntity(tableEntity);
         }
@@ -164,8 +165,9 @@ public class ViewHandler implements Callable<View> {
                     .withStringProperty(Constants.DATA_TYPE, derivedColumn.getType())
                     .build();
             EntityDetail columnTypeEntity = omEntityDao.addEntity(Constants.RELATIONAL_COLUMN_TYPE,
-                    qualifiedNameColumnType,
-                    columnTypeProperties);
+                                                                    qualifiedNameColumnType,
+                                                                    columnTypeProperties,
+                                                                    false);
 
             String qualifiedNameForColumn = QualifiedNameUtils.buildQualifiedName( qualifiedNameForTable , Constants.DERIVED_RELATIONAL_COLUMN, derivedColumn.getName());
             InstanceProperties columnProperties = new EntityPropertiesBuilder()
@@ -175,8 +177,9 @@ public class ViewHandler implements Callable<View> {
                     .withIntegerProperty(Constants.ELEMENT_POSITION_NAME, derivedColumn.getPosition())
                     .build();
             EntityDetail derivedColumnEntity = omEntityDao.addEntity(Constants.DERIVED_RELATIONAL_COLUMN,
-                    qualifiedNameForColumn,
-                    columnProperties);
+                                                                    qualifiedNameForColumn,
+                                                                    columnProperties,
+                                                                    false);
 
             derivedColumn.setGuid(derivedColumnEntity.getGUID());
 
@@ -199,9 +202,8 @@ public class ViewHandler implements Callable<View> {
             omEntityDao.addRelationship(relationshipTypeName,
                     entityGuid1,
                     entityGuid2,
-                    Constants.INFORMATION_VIEW_OMAS_NAME,
                     new InstanceProperties());
-        } catch (InvalidParameterException | TypeErrorException | TypeDefNotKnownException | PropertyErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException | StatusNotSupportedException e) {
+        } catch (InvalidParameterException | TypeErrorException |  PropertyErrorException | EntityNotKnownException | FunctionNotSupportedException | PagingErrorException | UserNotAuthorizedException | RepositoryErrorException | StatusNotSupportedException e) {
             log.error(e.getErrorMessage(), e);
             throw new RuntimeException(e);
         }

@@ -668,15 +668,13 @@ public class OMAGServerAdminServices
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param additionalProperties additional properties for the event bus connection
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGConfigurationErrorException the event bus has not been configured or
      * OMAGInvalidParameterException invalid serverName or localRepositoryMode parameter.
      */
     public VoidResponse setGraphLocalRepository(String              userId,
-                                                String              serverName,
-                                                Map<String,Object>  additionalProperties)
+                                                String              serverName)
     {
         final String methodName = "setGraphLocalRepository";
 
@@ -688,7 +686,6 @@ public class OMAGServerAdminServices
             errorHandler.validateUserId(userId, serverName, methodName);
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
-            EventBusConfig eventBusConfig = errorHandler.validateEventBusIsSet(serverName, serverConfig, methodName);
 
             OMRSConfigurationFactory configurationFactory     = new OMRSConfigurationFactory();
 
@@ -696,20 +693,11 @@ public class OMAGServerAdminServices
             this.setLocalRepositoryConfig(userId,
                                           serverName,
                                           configurationFactory.getLocalGraphLocalRepositoryConfig(serverConfig.getLocalServerName(),
-                                                                                                  serverConfig.getLocalServerURL(),
-                                                                                                  additionalProperties,
-                                                                                                  eventBusConfig.getConnectorProvider(),
-                                                                                                  eventBusConfig.getTopicURLRoot(),
-                                                                                                  serverConfig.getLocalServerId(),
-                                                                                                  eventBusConfig.getConfigurationProperties()));
+                                                                                                  serverConfig.getLocalServerURL()));
         }
         catch (OMAGInvalidParameterException  error)
         {
             errorHandler.captureInvalidParameterException(response, error);
-        }
-        catch (OMAGConfigurationErrorException  error)
-        {
-            errorHandler.captureConfigurationErrorException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {

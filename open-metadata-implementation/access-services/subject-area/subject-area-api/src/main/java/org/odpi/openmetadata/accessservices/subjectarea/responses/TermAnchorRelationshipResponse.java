@@ -45,9 +45,9 @@ public class TermAnchorRelationshipResponse extends SubjectAreaOMASAPIResponse
         return termAnchorRelationship;
     }
 
-    public void setTermAnchorRelationship(TermAnchorRelationship termHASARelationship)
+    public void setTermAnchorRelationship(TermAnchorRelationship termAnchorRelationship)
     {
-        this.termAnchorRelationship = termHASARelationship;
+        this.termAnchorRelationship = termAnchorRelationship;
     }
 
 

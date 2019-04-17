@@ -183,20 +183,10 @@ public class OMRSConfigurationFactory
      *
      * @param localServerName name of local server
      * @param localServerURL  URL root of local server used for REST calls
-     * @param configurationProperties name value property pairs for the topic connection
-     * @param eventBusConnectorProvider class name of the event bus connector's provider
-     * @param topicURLRoot root name for the topic URL
-     * @param serverId identifier of the server - used to pick up the right offset for the inbound messages.
-     * @param eventBusConfigurationProperties name value property pairs for the event bus connection
      * @return LocalRepositoryConfig object
      */
     public LocalRepositoryConfig getLocalGraphLocalRepositoryConfig(String              localServerName,
-                                                                    String              localServerURL,
-                                                                    Map<String, Object> configurationProperties,
-                                                                    String              eventBusConnectorProvider,
-                                                                    String              topicURLRoot,
-                                                                    String              serverId,
-                                                                    Map<String, Object> eventBusConfigurationProperties)
+                                                                    String              localServerURL)
     {
         final String   repositoryName = "Graph Open Metadata Repository";
 
@@ -207,14 +197,6 @@ public class OMRSConfigurationFactory
         localRepositoryConfig.
                 setLocalRepositoryLocalConnection(connectorConfigurationFactory.getLocalGraphRepositoryLocalConnection(repositoryName,
                                                                                                                        localServerName));
-
-        localRepositoryConfig.
-                setEventMapperConnection(connectorConfigurationFactory.getLocalGraphRepositoryEventMapperConnection(localServerName,
-                                                                                                                    configurationProperties,
-                                                                                                                    eventBusConnectorProvider,
-                                                                                                                    topicURLRoot,
-                                                                                                                    serverId,
-                                                                                                                    eventBusConfigurationProperties));
 
         return localRepositoryConfig;
     }

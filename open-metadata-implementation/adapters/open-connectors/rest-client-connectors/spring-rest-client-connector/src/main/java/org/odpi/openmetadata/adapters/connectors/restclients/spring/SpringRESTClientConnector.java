@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.connectors.restclients.spring;
 
-import org.apache.commons.codec.binary.Base64;
+import org.codehaus.plexus.util.Base64;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.RESTClientConnectorErrorCode;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
@@ -155,6 +155,8 @@ public class SpringRESTClientConnector extends RESTClientConnector
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
                                                                                                      methodName,
+                                                                                                     urlTemplate,
+                                                                                                     serverName,
                                                                                                      serverPlatformURLRoot,
                                                                                                      error.getMessage());
 
@@ -222,6 +224,8 @@ public class SpringRESTClientConnector extends RESTClientConnector
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
                                                                                                      methodName,
+                                                                                                     urlTemplate,
+                                                                                                     serverName,
                                                                                                      serverPlatformURLRoot,
                                                                                                      error.getMessage());
 
@@ -298,7 +302,9 @@ public class SpringRESTClientConnector extends RESTClientConnector
             log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+                                                                                                     methodName,
+                                                                                                     urlTemplate,
                                                                                                      serverName,
                                                                                                      serverPlatformURLRoot,
                                                                                                      error.getMessage());
@@ -379,7 +385,9 @@ public class SpringRESTClientConnector extends RESTClientConnector
             log.debug("Exception " + error.getClass().getName() + " with message " + error.getMessage() + " occurred during REST call for " + methodName + ".");
 
             RESTClientConnectorErrorCode errorCode = RESTClientConnectorErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
+                                                                                                     methodName,
+                                                                                                     urlTemplate,
                                                                                                      serverName,
                                                                                                      serverPlatformURLRoot,
                                                                                                      error.getMessage());

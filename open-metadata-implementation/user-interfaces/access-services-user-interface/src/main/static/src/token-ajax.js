@@ -3,20 +3,21 @@
 
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
 import '@polymer/iron-ajax/iron-ajax.js';
+import '@polymer/iron-localstorage/iron-localstorage.js';
 import './spinner.js';
 
 
 class TokenAjax extends PolymerElement {
     static get template() {
         return html`
-      <style>
+        <style>
         :host {
             /*display: none;*/
         }
-       
-      </style>
+        
+        </style>
+        <iron-localstorage name="my-app-storage" value="{{token}}"></iron-localstorage>
 
-      <app-localstorage-document key="token" data="{{token}}"></app-localstorage-document>
         <iron-ajax id="ajax" url="[[url]]"
                    headers="[[headers]]"
                    handle-as="json"
@@ -48,7 +49,7 @@ class TokenAjax extends PolymerElement {
             url: String,
             headers: {
                 type: Object,
-                computed: '_getHeader(token)'
+                computed: 'computeHeader(token)'
             },
             lastResponse: {
                 notify: true
@@ -65,11 +66,9 @@ class TokenAjax extends PolymerElement {
 
     static get observers() {
       return [
-        // Observer method name, followed by a list of dependencies, in parenthesis
-        '_requestOptionsChanged(auto)',
-          '_loadingChanged(loading)'
-
-      ]
+            // Observer method name, followed by a list of dependencies, in parenthesis
+            '_requestOptionsChanged(auto)',
+            '_loadingChanged(loading)']
     }
     ready() {
         super.ready();
@@ -80,20 +79,17 @@ class TokenAjax extends PolymerElement {
         this.$.ajax.generateRequest();
     }
 
-    _onError(evt){
-        alert('auth token error');
-    }
-
     _tokenUpdated(){
-        console.info('token is:'+this.token)
+        console.debug('token updated with:'+this.token)
     }
 
-    _getHeader(token) {
-        return {'x-auth-token': token};
+    computeHeader(tok) {
+        console.log("computing header:" + tok)
+        return {'x-auth-token': tok};
     }
 
     _requestOptionsChanged(auto){
-        console.log('request token-ajax');
+        this.headers = {'x-auth-token': this.token};
         if (this.auto) {
             this.$.ajax.generateRequest();
         }
@@ -105,8 +101,11 @@ class TokenAjax extends PolymerElement {
          console.log('Error response with status code: '+ status);
          // Token is not valid, log out.
           if (status === 401 || status === 403 || resp.exception == 'io.jsonwebtoken.ExpiredJwtException') {
-              console.debug('Token invalid, logging out.');
-              this.token = null;
+              console.log('Token invalid, logging out.');
+              this.dispatchEvent(new CustomEvent('logout', {
+                  bubbles: true,
+                  composed: true,
+                  detail: {greeted: "Bye!", status: status}}));
           }else{
               console.debug('Unknown error!');
           }
@@ -115,6 +114,7 @@ class TokenAjax extends PolymerElement {
     _onLoadingChanged(){
         console.debug('cn-loading changed... ' + this.loading);
     }
+
     _loadingChanged(loading){
         console.debug('loading changed... ' + this.loading);
         if(this.loading){
@@ -123,7 +123,6 @@ class TokenAjax extends PolymerElement {
             this.$.backdrop.close();
         }
     }
-
 }
 
 window.customElements.define('token-ajax', TokenAjax);

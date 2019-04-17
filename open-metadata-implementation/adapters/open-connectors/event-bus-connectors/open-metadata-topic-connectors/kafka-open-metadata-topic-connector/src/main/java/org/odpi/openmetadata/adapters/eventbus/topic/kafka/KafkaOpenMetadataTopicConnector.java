@@ -20,7 +20,10 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 {
     private static final Logger       log      = LoggerFactory.getLogger(KafkaOpenMetadataTopicConnector.class);
 
+    
     private Properties producerProperties = new Properties();
+    
+    private Properties consumerEgeriaProperties = new Properties();
     private Properties consumerProperties = new Properties();
 
     private KafkaOpenMetadataEventConsumer consumer = null;
@@ -142,13 +145,13 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      */
     private void  initializeKafkaProperties(Map<String, Object> configurationProperties)
     {
-        final String           actionDescription = "initializeKafkaProperties";
+        final String                             actionDescription = "initializeKafkaProperties";
         KafkaOpenMetadataTopicConnectorAuditCode auditCode;
+        Map<String, Object>   propertiesMap;
 
         try
         {
             Object              propertiesObject;
-            Map<String, Object> propertiesMap;
 
             propertiesObject = configurationProperties.get(KafkaOpenMetadataTopicProvider.producerPropertyName);
             if (propertiesObject != null)
@@ -184,6 +187,19 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     }
 
 
+	private void copyProperties(Object propertiesObject, Properties target)
+    {
+		Map<String, Object> propertiesMap;
+		if (propertiesObject != null)
+		{
+		    propertiesMap = (Map<String, Object>)propertiesObject;
+		    for (Map.Entry<String, Object> entry : propertiesMap.entrySet())
+		    {
+		        target.setProperty(entry.getKey(), (String) entry.getValue());
+		    }
+		}
+	}
+
     /**
      * Indicates that the connector is completely configured and can begin processing.
      * It creates two threads, one for sending (producer) and the other for receiving
@@ -198,8 +214,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         Thread                         producerThread;
 
         this.initializeTopic();
-
-        consumer = new KafkaOpenMetadataEventConsumer(topicName, serverId, consumerProperties, this, auditLog);
+        
+        KafkaOpenMetadataEventConsumerConfiguration consumerConfig = new KafkaOpenMetadataEventConsumerConfiguration(consumerEgeriaProperties, auditLog);
+        consumer = new KafkaOpenMetadataEventConsumer(topicName, serverId, consumerConfig, consumerProperties, this, auditLog);
         consumerThread = new Thread(consumer, threadHeader + "Consumer-" + topicName);
         consumerThread.start();
 
@@ -242,7 +259,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
         if ((incomingEventsList != null) && (!incomingEventsList.isEmpty()))
         {
-            log.debug("checking for events {0}" + incomingEventsList);
+            log.debug("Checking for events.  Number of found events: {0}", incomingEventsList.size());
             newEvents = new ArrayList<>(incomingEventsList);
 
             // empty incomingEventsList otherwise same events will be sent again
@@ -288,5 +305,14 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
+    }
+    
+    /**
+     * Gets the number of events that have not been processed yet.
+     * 
+     * @return
+     */
+    public int getNumberOfUnprocessedEvents() {
+    	return incomingEventsList.size();
     }
 }

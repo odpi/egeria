@@ -5,14 +5,9 @@ package org.odpi.openmetadata.accessservices.informationview.lookup;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
@@ -30,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public abstract class EntityLookup<T extends Source> {
 
@@ -63,7 +57,7 @@ public abstract class EntityLookup<T extends Source> {
 
 
     public EntityDetail findEntity(InstanceProperties matchProperties, String typeDefName) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
-        List<EntityDetail> existingEntities =  omEntityDao.findEntities(matchProperties, typeDefName);
+        List<EntityDetail> existingEntities =  omEntityDao.findEntities(matchProperties, typeDefName, 0, PAGE_SIZE);
         return matchExactlyToUniqueEntity(existingEntities, matchProperties);
     }
 
@@ -86,7 +80,7 @@ public abstract class EntityLookup<T extends Source> {
         InstanceProperties entityProperties = entityDetail.getProperties();
         for (Map.Entry<String, InstancePropertyValue> property : matchingProperties.getInstanceProperties().entrySet()) {
 
-            String actualValue = enterpriseConnector.getRepositoryHelper().getStringProperty("", property.getKey(), entityProperties, "matchProperties");//TODO only string supported for now
+            String actualValue = enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, property.getKey(), entityProperties, "matchProperties");//TODO only string supported for now
             if (!((PrimitivePropertyValue)property.getValue()).getPrimitiveValue().equals(actualValue)) {
                 return false;
             }

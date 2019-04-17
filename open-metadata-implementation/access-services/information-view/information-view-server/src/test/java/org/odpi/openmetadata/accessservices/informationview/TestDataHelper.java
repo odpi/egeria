@@ -3,11 +3,8 @@
 package org.odpi.openmetadata.accessservices.informationview;
 
 
-import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
-import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumn;
-import org.odpi.openmetadata.accessservices.informationview.events.DerivedColumn;
-import org.odpi.openmetadata.accessservices.informationview.events.InformationViewEvent;
-import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
+import org.odpi.openmetadata.accessservices.informationview.events.*;
+import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
@@ -378,19 +375,21 @@ public class TestDataHelper {
 
     public InformationViewEvent buildEvent() {
         InformationViewEvent event = new InformationViewEvent();
-        TableSource databaseConnection = new TableSource();
-        event.setTableSource(databaseConnection);
-        databaseConnection.setNetworkAddress(HOSTNAME_VALUE + ":" + TestDataHelper.PORT_VALUE);
-        databaseConnection.setProtocol(PROTOCOL_VALUE);
-        databaseConnection.setConnectorProviderName(PROVIDER_CLASS_NAME);
-        databaseConnection.setConnectorProviderName("jdbc:derby:localhost:9393.connection.GaianConnectorProvider_type");
-        databaseConnection.setUser("Connection");
+        TableSource tableSource = new TableSource();
+        tableSource.setDatabaseSource(new DatabaseSource());
+        tableSource.getDatabaseSource().setEndpointSource(new EndpointSource());
+        event.setTableSource(tableSource);
+        tableSource.getDatabaseSource().getEndpointSource().setNetworkAddress(HOSTNAME_VALUE + ":" + TestDataHelper.PORT_VALUE);
+        tableSource.getDatabaseSource().getEndpointSource().setProtocol(PROTOCOL_VALUE);
+        tableSource.getDatabaseSource().getEndpointSource().setConnectorProviderName(PROVIDER_CLASS_NAME);
+        tableSource.getDatabaseSource().getEndpointSource().setConnectorProviderName("jdbc:derby:localhost:9393.connection.GaianConnectorProvider_type");
+        tableSource.getDatabaseSource().getEndpointSource().setUser("Connection");
         event.getTableSource().setSchemaName(SCHEMA_NAME);
-        event.getTableSource().setTableName(TABLE_NAME);
-        event.getTableSource().setDatabaseName(DATABASE_NAME);
+        event.getTableSource().setName(TABLE_NAME);
+        event.getTableSource().getDatabaseSource().setName(DATABASE_NAME);
 
         BusinessTerm businessTerm = new BusinessTerm();
-        DatabaseColumn realColumn = new DatabaseColumn();
+        TableColumn realColumn = new TableColumn();
         realColumn.setName("cl_nm");
         realColumn.setBusinessTerm(businessTerm);
         realColumn.setPosition(2);

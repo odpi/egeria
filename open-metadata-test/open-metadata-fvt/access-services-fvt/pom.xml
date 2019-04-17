@@ -13,12 +13,13 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Open Metadata Test Resources</name>
+    <name>OMAS FV and SV Tests</name>
     <description>
-        The open metadata test resources contains Functional Verification Test (FVT) and System Verification Test (SVT)resource.
+        The open metadata access services test module contains Functional Verification Test (FVT) and System Verification Test (SVT) resources.
     </description>
 
     <artifactId>access-services-fvt</artifactId>
+
     <packaging>pom</packaging>
     <modules>
         <module>asset-consumer-fvt</module>

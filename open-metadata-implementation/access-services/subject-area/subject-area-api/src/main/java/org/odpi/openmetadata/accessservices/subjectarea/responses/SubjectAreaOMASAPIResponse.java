@@ -9,7 +9,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * SubjectAreaOMASAPIResponse provides a common header for Asset Consumer OMAS managed rest to its REST API.
+ * SubjectAreaOMASAPIResponse provides a common header for Subject Area OMAS managed rest to its REST API.
  * It manages information about exceptions.  If no exception has been raised exceptionClassName is null.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
@@ -30,9 +30,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = TermsResponse.class, name = "TermsResponse"),
                 @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
                 @JsonSubTypes.Type(value = ProjectResponse.class, name = "ProjectResponse"),
-                @JsonSubTypes.Type(value = RelationshipsResponse.class, name = "RelationshipsResponse"),
+                @JsonSubTypes.Type(value = LinesResponse.class, name = "LinesResponse"),
 
-                // Relationships
+                // Lines
 
                 // term to term relationship responses
                 @JsonSubTypes.Type(value = TermHASARelationshipResponse.class, name = "TermHASARelationshipResponse"),
@@ -49,6 +49,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = TermISARelationshipResponse.class,name = "TermISARelationshipResponse"),
                 // term to glossary response
                 @JsonSubTypes.Type(value = TermAnchorRelationshipResponse.class,name = "TermAnchorRelationshipResponse"),
+                // category to glossary response
+                @JsonSubTypes.Type(value =CategoryAnchorRelationshipResponse.class,name = "CategoryAnchorRelationshipResponse"),
                 // category to term response
                 @JsonSubTypes.Type(value = TermCategorizationRelationshipResponse.class, name = "TermCategorizationRelationshipResponse"),
                 // Term to asset response
@@ -58,7 +60,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = LibraryCategoryReferenceResponse.class, name = "LibraryCategoryReferenceResponse"),
                 /*
                  Exception responses - note that each exception has the same 4 Exception orientated fields.
-                 Ideally these should be in a superclass. Due to restrictions in the @JsonSubTypes processing it  is only possible to have
+                 Ideally these should be in a superclass. Due to restrictions in the @JsonSubTypes processing it is only possible to have
                  one level of inheritance at this time.
                  */
                 @JsonSubTypes.Type(value = ClassificationExceptionResponse.class, name = "ClassificationExceptionResponse"),

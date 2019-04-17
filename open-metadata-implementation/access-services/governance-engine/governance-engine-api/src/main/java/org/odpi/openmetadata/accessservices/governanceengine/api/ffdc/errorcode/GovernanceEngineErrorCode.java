@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The GovernanceEngineErrorCode is used to define first failure data capture (FFDC) for errors that occur when working with
@@ -89,18 +88,15 @@ public enum GovernanceEngineErrorCode {
     GUID_NOT_FOUND_ERROR(404, "OMAS-GOVERNANCEENGINE-404-005 ",
             "The guid {0} for {1} could not be found",
             "The item could not be returned as it does not exist",
-            "Check the guid being requested")
-    ;
+            "Check the guid being requested");
 
 
+    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineErrorCode.class);
     private int httpErrorCode;
     private String errorMessageId;
     private String errorMessage;
     private String systemAction;
     private String userAction;
-
-    private static final Logger log = LoggerFactory.getLogger(GovernanceEngineErrorCode.class);
-
 
     /**
      * The constructor for GovernanceEngineErrorCode expects to be passed one of the enumeration rows defined in
@@ -124,7 +120,6 @@ public enum GovernanceEngineErrorCode {
         this.userAction = newUserAction;
     }
 
-
     public int getHTTPErrorCode() {
         return httpErrorCode;
     }
@@ -139,17 +134,6 @@ public enum GovernanceEngineErrorCode {
         return errorMessageId;
     }
 
-
-    /**
-     * Returns the error message with placeholders for specific details.
-     *
-     * @return errorMessage (unformatted)
-     */
-    public String getUnformattedErrorMessage() {
-        return errorMessage;
-    }
-
-
     /**
      * Returns the error message with the placeholders filled out with the supplied parameters.
      *
@@ -157,20 +141,11 @@ public enum GovernanceEngineErrorCode {
      * @return errorMessage (formatted with supplied parameters)
      */
     public String getFormattedErrorMessage(String... params) {
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("<== GovernanceEngineErrorCode.getMessage(%s)", Arrays.toString(params)));
-        }
-
         MessageFormat mf = new MessageFormat(errorMessage);
         String result = mf.format(params);
 
-        if (log.isDebugEnabled()) {
-            log.debug(String.format("==> GovernanceEngineErrorCode.getMessage(%s): %s", Arrays.toString(params), result));
-        }
-
         return result;
     }
-
 
     /**
      * Returns a description of the action taken by the system when the condition that caused this exception was

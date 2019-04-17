@@ -34,7 +34,7 @@ public enum DataEngineErrorCode {
     OMRS_NOT_AVAILABLE(404, "OMAS-DATA-ENGINE-404-002 ",
             "The open metadata repository services are not available for the {0} operation",
             "The system is unable to connect to the open metadata property server.",
-            "Check that the server where the Asset Catalog OMAS is running initialized correctly and is not in the process of shutting down.  " +
+            "Check that the server where the Data Engine OMAS is running initialized correctly and is not in the process of shutting down.  " +
                     "Correct any errors discovered and retry the request when the open metadata services are available."),
     SERVICE_NOT_INITIALIZED(503, "OMAS-DATA-ENGINE-503-001 ",
             "The access service has not been initialized for server {0} and can not support REST API calls",

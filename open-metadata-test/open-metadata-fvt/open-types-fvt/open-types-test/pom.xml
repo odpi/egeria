@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- SPDX-License-Identifier: Apache-2.0 -->
+<!-- Copyright Contributors to the ODPi Egeria project. -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>open-types-fvt</artifactId>
+        <groupId>org.odpi.egeria</groupId>
+        <version>1.1-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <name>Open Types Test generator</name>
+
+    <artifactId>open-types-test</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-services-implementation</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-types-test-generator</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <mainClass>org.odpi.openmetadata.fvt.opentypes.generators.OmrsBeanGenerator</mainClass>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-clean-plugin</artifactId>
+                <version>${maven-clean-plugin.version}</version>
+                <configuration>
+                    <filesets>
+                        <fileset>
+                            <directory>${basedir}/src/main/java/org/odpi/openmetadata/fvt/open-types</directory>
+                        </fileset>
+                        <fileset>
+                            <directory>${basedir}/src/test/java/org/odpi/openmetadata/fvt/open-types</directory>
+                        </fileset>
+                    </filesets>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

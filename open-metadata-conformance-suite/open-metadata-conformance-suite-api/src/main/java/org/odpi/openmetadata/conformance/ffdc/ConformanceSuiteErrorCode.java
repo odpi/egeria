@@ -155,10 +155,6 @@ public enum ConformanceSuiteErrorCode
             "The conformance suite is unable to process one of the test cases.",
             "This is an internal logic error.  Create a git issue at https://github.com/odpi/egeria/issues to get this resolved."),
 
-    CLIENT_SIDE_REST_API_ERROR(503, "CONFORMANCE-SUITE-503-002 ",
-            "A client-side exception was received from API call {0} to server {1} at {2}.  The error message was {3}",
-            "The client has issued a call to the open metadata conformance suite REST API in a remote server and has received an exception from the local client libraries.",
-            "Review the error message to determine the cause of the error.  Check that the server is running an the URL is correct. Look for errors in the local server's console to understand and correct the cause of the error. Then rerun the request"),
     SERVICE_NOT_INITIALIZED(503, "CONFORMANCE-SUITE-503-003 ",
             "The conformance suite service has not been initialized for server {0} and can not support REST API call {1}",
             "The server has received a call to one of its open metadata conformance suite operations but is unable to process it because the conformance suite service is not active.",

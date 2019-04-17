@@ -46,9 +46,9 @@ public class SemanticAssignementRelationshipResponse extends SubjectAreaOMASAPIR
         return semanticAssignment;
     }
 
-    public void setSemanticAssignment(SemanticAssignment termHASARelationship)
+    public void setSemanticAssignment(SemanticAssignment semanticAssignment)
     {
-        this.semanticAssignment = termHASARelationship;
+        this.semanticAssignment = semanticAssignment;
     }
 
 

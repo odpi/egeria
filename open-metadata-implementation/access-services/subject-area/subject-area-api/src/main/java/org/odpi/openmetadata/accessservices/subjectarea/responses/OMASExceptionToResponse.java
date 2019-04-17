@@ -7,71 +7,57 @@ import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
 public class OMASExceptionToResponse {
 
     public static SubjectAreaOMASAPIResponse convertInvalidParameterException(InvalidParameterException e) {
-        InvalidParameterExceptionResponse response = new InvalidParameterExceptionResponse(e);
-        return response;
-
+        return new InvalidParameterExceptionResponse(e);
     }
     public static SubjectAreaOMASAPIResponse convertUserNotAuthorizedException(UserNotAuthorizedException e) {
-        UserNotAuthorizedExceptionResponse response = new UserNotAuthorizedExceptionResponse(e);
-        return response;
+       return  new UserNotAuthorizedExceptionResponse(e);
+
     }
 
     public static SubjectAreaOMASAPIResponse convertUnrecognizedGUIDException(UnrecognizedGUIDException e) {
-        UnrecognizedGUIDExceptionResponse response = new  UnrecognizedGUIDExceptionResponse(e);
-        return response;
+       return new UnrecognizedGUIDExceptionResponse(e);
     }
 
     public static SubjectAreaOMASAPIResponse convertStatusNotSupportedException(StatusNotSupportedException e) {
-        StatusNotsupportedExceptionResponse response = new StatusNotsupportedExceptionResponse(e);
-        return response;
+        return new StatusNotsupportedExceptionResponse(e);
     }
 
     public static SubjectAreaOMASAPIResponse convertFunctionNotSupportedException(FunctionNotSupportedException e) {
-        FunctionNotSupportedExceptionResponse response = new   FunctionNotSupportedExceptionResponse(e);
-        return response;
+       return new  FunctionNotSupportedExceptionResponse(e);
     }
 
     public static SubjectAreaOMASAPIResponse convertStatusNotsupportedException(StatusNotSupportedException e) {
-        StatusNotsupportedExceptionResponse response= new StatusNotsupportedExceptionResponse(e);
-        return response;
+       return new StatusNotsupportedExceptionResponse(e);
     }
 
     public static SubjectAreaOMASAPIResponse convertClassificationException(ClassificationException e) {
-        ClassificationExceptionResponse response = new ClassificationExceptionResponse(e);
-        return response;
+       return new ClassificationExceptionResponse(e);
     }
 
     public static SubjectAreaOMASAPIResponse convertGUIDNotPurgedException(GUIDNotPurgedException e) {
-        GUIDNotPurgedExceptionResponse response = new GUIDNotPurgedExceptionResponse(e);
-        return response;
+       return new GUIDNotPurgedExceptionResponse(e);
     }
+
     public static SubjectAreaOMASAPIResponse convertGUIDNotDeletedException(GUIDNotDeletedException e)
     {
-        GUIDNotDeletedExceptionResponse response = new GUIDNotDeletedExceptionResponse(e);
-        return response;
+       return new GUIDNotDeletedExceptionResponse(e);
     }
 
     public static SubjectAreaOMASAPIResponse convertEntityNotDeletedException(EntityNotDeletedException e) {
-        EntityNotDeletedExceptionResponse response = new EntityNotDeletedExceptionResponse(e);
-        return response;
+        return new EntityNotDeletedExceptionResponse(e);
     }
 
     public static SubjectAreaOMASAPIResponse convertMetadataServerUncontactableException(MetadataServerUncontactableException e) {
-        MetadataServerUncontactableExceptionResponse response = new MetadataServerUncontactableExceptionResponse(e);
-        return response;
+       return new MetadataServerUncontactableExceptionResponse(e);
     }
 
     public static SubjectAreaOMASAPIResponse convertRelationshipNotDeletedException(RelationshipNotDeletedException e)
     {
-        RelationshipNotDeletedExceptionResponse response = new RelationshipNotDeletedExceptionResponse(e);
-        return response;
+      return new RelationshipNotDeletedExceptionResponse(e);
     }
 
     public static SubjectAreaOMASAPIResponse convertUnrecognizedNameException(UnrecognizedNameException e)
     {
-        UnrecognizedNameExceptionResponse response = new UnrecognizedNameExceptionResponse(e);
-        return response;
+       return new UnrecognizedNameExceptionResponse(e);
     }
-
-
 }

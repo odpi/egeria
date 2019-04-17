@@ -34,7 +34,7 @@ public enum RESTClientConnectorErrorCode
             "The system has issued a call to an open metadata access service REST API in a remote server and has received a null response.",
             "Look for errors in the remote server's audit log and console to understand and correct the source of the error."),
     CLIENT_SIDE_REST_API_ERROR(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-002 ",
-            "A client-side exception {0} was received from API call {1} to server {2}.  The error message was {3}",
+            "A client-side exception {0} was received by method {1} from API call {2} to server {3} on platform {4}.  The error message was {5}",
             "The client has issued a call to the open metadata access service REST API in a remote server and has received an exception from the local client libraries.",
             "Review the error message to determine the cause of the error.  Check that the server is running an the URL is correct. Look for errors in the local server's console to understand and correct the cause of the error. Then rerun the request"),
     EXCEPTION_RESPONSE_FROM_API(503, "CLIENT-SIDE-REST-API-CONNECTOR-503-003 ",
