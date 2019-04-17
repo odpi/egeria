@@ -22,6 +22,13 @@
 
     <artifactId>open-metadata-conformance-suite</artifactId>
 
+    <packaging>pom</packaging>
+    <modules>
+        <module>open-metadata-conformance-suite-api</module>
+        <module>open-metadata-conformance-suite-client</module>
+        <module>open-metadata-conformance-suite-server</module>
+        <module>open-metadata-conformance-suite-spring</module>
+    </modules>
     <dependencies>
 
         <!-- File I/O processing -->
@@ -38,25 +45,13 @@
             <version>${commons-collections.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-            <version>${slf4j.version}</version>
-        </dependency>
 
-        <!-- REST Repository Connector -->
+        <!-- JSON processing -->
 
         <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>repository-services-implementation</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>connector-configuration-factory</artifactId>
-            <version>${open-metadata.version}</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
 
     </dependencies>
@@ -91,7 +86,7 @@
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>
-                                org.odpi.openmetadata.conformance.OpenMetadataTestLab
+                                org.odpi.openmetadata.conformance.client.OpenMetadataConformanceTestReport
                             </mainClass>
                         </manifest>
                     </archive>

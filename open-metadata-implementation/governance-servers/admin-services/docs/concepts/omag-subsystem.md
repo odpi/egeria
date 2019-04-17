@@ -8,11 +8,11 @@ within a software server that supports one or more related services.
 Subsystems can be organized in a hierarchy showing how course-grained subsystems can be
 decomposed into subsystems.
 
-The logical [OMAG Server](logical-omag-server.md) is a flexible server whose subsystems
+The logical [OMAG Server](omag-server.md) is a flexible server whose subsystems
 can be activated (or not) through the presence (or absence) of the subsystem's configuration
 properties in the logical OMAG server's [configuration document](configuration-document.md).
 
-The potential subsystems with a logical [OMAG Server](logical-omag-server.md) are as follows:
+The potential subsystems with a logical [OMAG Server](omag-server.md) are as follows:
 
 * **[Open Metadata Repository Services (OMRS)](../../../../repository-services)** for supporting access
   to metadata stored in metadata repositories and the exchange of metadata between repositories.

@@ -20,7 +20,7 @@ public class TestAssetMapSchemaType
 {
     private ElementType          type                 = new ElementType();
     private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, Object>  additionalProperties = new HashMap<>();
+    private Map<String, String>  additionalProperties = new HashMap<>();
 
     private AssetSchemaType mapFromElement = new AssetSchemaType((SchemaType)null);
     private AssetSchemaType mapToElement   = new AssetSchemaType((SchemaType)null);

@@ -24,19 +24,23 @@ import java.util.Map;
  */
 public class ConnectionHandler
 {
-    private static final String connectionTypeGUID                      = "114e9f8f-5ff3-4c32-bd37-a7eb42712253";
-    private static final String connectionConnectorTypeRelationshipGUID = "e542cfc1-0b4b-42b9-9921-f0a5a88aaf96";
-    private static final String connectionEndpointRelationshipGUID      = "887a7132-d6bc-4b92-a483-e80b60c86fb2";
-    private static final String qualifiedNamePropertyName               = "qualifiedName";
-    private static final String displayNamePropertyName                 = "displayName";
-    private static final String additionalPropertiesName                = "additionalProperties";
-    private static final String securePropertiesName                    = "securedProperties";
-    private static final String descriptionPropertyName                 = "description";
-    private static final String connectorProviderPropertyName           = "connectorProviderClassName";
-    private static final String endpointPropertyName                    = "name";
-    private static final String endpointAddressPropertyName             = "networkAddress";
-    private static final String endpointProtocolPropertyName            = "protocol";
-    private static final String endpointEncryptionPropertyName          = "encryptionMethod";
+    private static final String connectionTypeGUID                            = "114e9f8f-5ff3-4c32-bd37-a7eb42712253";
+    private static final String connectionConnectorTypeRelationshipGUID       = "e542cfc1-0b4b-42b9-9921-f0a5a88aaf96";
+    private static final String connectionEndpointRelationshipGUID            = "887a7132-d6bc-4b92-a483-e80b60c86fb2";
+    private static final String qualifiedNamePropertyName                     = "qualifiedName";
+    private static final String displayNamePropertyName                       = "displayName";
+    private static final String additionalPropertiesName                      = "additionalProperties";
+    private static final String configurationPropertiesName                   = "configurationProperties";
+    private static final String securePropertiesName                          = "securedProperties";
+    private static final String descriptionPropertyName                       = "description";
+    private static final String connectorProviderPropertyName                 = "connectorProviderClassName";
+    private static final String recognizedAdditionalPropertiesPropertyName    = "recognizedAdditionalProperties";
+    private static final String recognizedConfigurationPropertiesPropertyName = "recognizedConfigurationProperties";
+    private static final String recognizedSecuredPropertiesPropertyName       = "recognizedSecuredProperties";
+    private static final String endpointPropertyName                          = "name";
+    private static final String endpointAddressPropertyName                   = "networkAddress";
+    private static final String endpointProtocolPropertyName                  = "protocol";
+    private static final String endpointEncryptionPropertyName                = "encryptionMethod";
 
     private String               serviceName;
     private OMRSRepositoryHelper repositoryHelper = null;
@@ -302,7 +306,8 @@ public class ConnectionHandler
         connection.setConnectorType(connectorType);
         connection.setEndpoint(endpoint);
 
-        connection.setAdditionalProperties(repositoryHelper.getMapFromProperty(serviceName, additionalPropertiesName, connectionEntity.getProperties(), methodName));
+        connection.setAdditionalProperties(repositoryHelper.getStringMapFromProperty(serviceName, additionalPropertiesName, connectionEntity.getProperties(), methodName));
+        connection.setConfigurationProperties(repositoryHelper.getMapFromProperty(serviceName, configurationPropertiesName, connectionEntity.getProperties(), methodName));
         connection.setSecuredProperties(repositoryHelper.getMapFromProperty(serviceName, securePropertiesName, connectionEntity.getProperties(), methodName));
 
         return connection;
@@ -327,13 +332,13 @@ public class ConnectionHandler
 
         ConnectorType connectorType = null;
 
-        EntityDetail    endpointEntity = this.getEntityForRelationshipType(userId,
-                                                                           connectionEntity,
-                                                                           connectionConnectorTypeRelationshipGUID,
-                                                                           metadataCollection,
-                                                                           methodName);
+        EntityDetail    connectorTypeEntity = this.getEntityForRelationshipType(userId,
+                                                                                connectionEntity,
+                                                                                connectionConnectorTypeRelationshipGUID,
+                                                                                metadataCollection,
+                                                                                methodName);
 
-        if (endpointEntity != null)
+        if (connectorTypeEntity != null)
         {
             connectorType = new ConnectorType();
 
@@ -342,21 +347,32 @@ public class ConnectionHandler
             connectorType.setType(this.getElementType(connectionEntity));
             connectorType.setQualifiedName(repositoryHelper.getStringProperty(serviceName,
                                                                               qualifiedNamePropertyName,
-                                                                              connectionEntity.getProperties(),
+                                                                              connectorTypeEntity.getProperties(),
                                                                               methodName));
             connectorType.setDisplayName(repositoryHelper.getStringProperty(serviceName,
                                                                             displayNamePropertyName,
-                                                                            connectionEntity.getProperties(),
+                                                                            connectorTypeEntity.getProperties(),
                                                                             methodName));
             connectorType.setDescription(repositoryHelper.getStringProperty(serviceName,
                                                                             descriptionPropertyName,
-                                                                            connectionEntity.getProperties(),
+                                                                            connectorTypeEntity.getProperties(),
                                                                             methodName));
             connectorType.setConnectorProviderClassName(repositoryHelper.getStringProperty(serviceName,
                                                                                            connectorProviderPropertyName,
                                                                                            connectionEntity.getProperties(),
                                                                                            methodName));
-
+            connectorType.setRecognizedAdditionalProperties(repositoryHelper.getStringArrayProperty(serviceName,
+                                                                                                    recognizedAdditionalPropertiesPropertyName,
+                                                                                                    connectorTypeEntity.getProperties(),
+                                                                                                    methodName));
+            connectorType.setRecognizedSecuredProperties(repositoryHelper.getStringArrayProperty(serviceName,
+                                                                                                 recognizedSecuredPropertiesPropertyName,
+                                                                                                 connectorTypeEntity.getProperties(),
+                                                                                                 methodName));
+            connectorType.setRecognizedConfigurationProperties(repositoryHelper.getStringArrayProperty(serviceName,
+                                                                                                       recognizedConfigurationPropertiesPropertyName,
+                                                                                                       connectorTypeEntity.getProperties(),
+                                                                                                       methodName));
             connectorType.setAdditionalProperties(this.getAdditionalPropertiesFromEntity(additionalPropertiesName,
                                                                                          connectionEntity.getProperties(),
                                                                                          methodName));
@@ -403,30 +419,30 @@ public class ConnectionHandler
             endpoint.setType(this.getElementType(connectionEntity));
             endpoint.setQualifiedName(repositoryHelper.getStringProperty(serviceName,
                                                                          qualifiedNamePropertyName,
-                                                                         connectionEntity.getProperties(),
+                                                                         endpointEntity.getProperties(),
                                                                          methodName));
             endpoint.setDisplayName(repositoryHelper.getStringProperty(serviceName,
                                                                        endpointPropertyName,
-                                                                       connectionEntity.getProperties(),
+                                                                       endpointEntity.getProperties(),
                                                                        methodName));
             endpoint.setDescription(repositoryHelper.getStringProperty(serviceName,
                                                                        descriptionPropertyName,
-                                                                       connectionEntity.getProperties(),
+                                                                       endpointEntity.getProperties(),
                                                                        methodName));
             endpoint.setAddress(repositoryHelper.getStringProperty(serviceName,
                                                                        endpointAddressPropertyName,
-                                                                       connectionEntity.getProperties(),
+                                                                       endpointEntity.getProperties(),
                                                                        methodName));
             endpoint.setProtocol(repositoryHelper.getStringProperty(serviceName,
                                                                        endpointProtocolPropertyName,
-                                                                       connectionEntity.getProperties(),
+                                                                       endpointEntity.getProperties(),
                                                                        methodName));
             endpoint.setEncryptionMethod(repositoryHelper.getStringProperty(serviceName,
                                                                        endpointEncryptionPropertyName,
-                                                                       connectionEntity.getProperties(),
+                                                                       endpointEntity.getProperties(),
                                                                        methodName));
             endpoint.setAdditionalProperties(this.getAdditionalPropertiesFromEntity(additionalPropertiesName,
-                                                                                    connectionEntity.getProperties(),
+                                                                                    endpointEntity.getProperties(),
                                                                                     methodName));
         }
 
@@ -500,7 +516,7 @@ public class ConnectionHandler
      * @param methodName  calling method
      * @return an AdditionalProperties object or null
      */
-    private Map<String, Object> getAdditionalPropertiesFromEntity(String              propertyName,
+    private Map<String, String> getAdditionalPropertiesFromEntity(String              propertyName,
                                                                   InstanceProperties  properties,
                                                                   String              methodName)
     {
@@ -523,7 +539,7 @@ public class ConnectionHandler
 
             if (additionalPropertyNames != null)
             {
-                Map<String,Object> additionalPropertiesMap = new HashMap<>();
+                Map<String, String> additionalPropertiesMap = new HashMap<>();
 
                 while (additionalPropertyNames.hasNext())
                 {
@@ -539,7 +555,7 @@ public class ConnectionHandler
                         {
                             PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) additionalPropertyValue;
 
-                            additionalPropertiesMap.put(additionalPropertyName, primitivePropertyValue.getPrimitiveValue());
+                            additionalPropertiesMap.put(additionalPropertyName, primitivePropertyValue.getPrimitiveValue().toString());
                         }
                     }
                 }
@@ -557,6 +573,7 @@ public class ConnectionHandler
 
         return null;
     }
+
 
     /**
      * Return the entity a the other end of the requested relationship type.  The assumption is that this is a 0..1

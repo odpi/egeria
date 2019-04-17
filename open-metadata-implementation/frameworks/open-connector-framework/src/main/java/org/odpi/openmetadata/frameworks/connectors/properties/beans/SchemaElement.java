@@ -37,8 +37,6 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 
 public abstract class SchemaElement extends Referenceable
 {
-    protected Map<String,Object> schemaProperties = null;
-
     /**
      * Default constructor
      */
@@ -58,11 +56,6 @@ public abstract class SchemaElement extends Referenceable
     public SchemaElement(SchemaElement template)
     {
         super(template);
-
-        if (template != null)
-        {
-            schemaProperties = template.getSchemaProperties();
-        }
     }
 
 
@@ -76,41 +69,6 @@ public abstract class SchemaElement extends Referenceable
 
 
     /**
-     * Set up schema properties - these are properties introduced in the implementation specific subclasses of
-     * schema element.
-     *
-     * @param schemaProperties  properties map
-     */
-    public void setSchemaProperties(Map<String,Object> schemaProperties)
-    {
-        this.schemaProperties = schemaProperties;
-    }
-
-
-    /**
-     * Return Set up schema properties - these are properties introduced in the implementation specific subclasses of
-     * schema element.  Null means no properties are available.
-     *
-     * @return  property map
-     */
-    public Map<String,Object> getSchemaProperties()
-    {
-        if (schemaProperties == null)
-        {
-            return null;
-        }
-        else if (schemaProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(schemaProperties);
-        }
-    }
-
-
-    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -119,7 +77,6 @@ public abstract class SchemaElement extends Referenceable
     public String toString()
     {
         return "SchemaElement{" +
-                "schemaProperties=" + schemaProperties +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +

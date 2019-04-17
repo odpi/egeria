@@ -6,6 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -47,6 +48,9 @@ import java.util.Objects;
  *      </li>
  *      <li>
  *          additionalProperties - Any additional properties associated with the connection.
+ *      </li>
+ *      <li>
+ *          configurationProperties - Any specific configuration properties for the underlying technology.
  *      </li>
  *      <li>
  *          securedProperties - Protected properties for secure log on by connector to back end server.  These
@@ -235,6 +239,39 @@ public class ConnectionProperties extends AssetReferenceable
 
 
     /**
+     * Return id of the calling user.
+     *
+     * @return string
+     */
+    public String getUserId()
+    {
+        return connectionBean.getUserId();
+    }
+
+
+    /**
+     * Return an encrypted password.  The caller is responsible for decrypting it.
+     *
+     * @return string
+     */
+    public String getEncryptedPassword()
+    {
+        return connectionBean.getEncryptedPassword();
+    }
+
+
+    /**
+     * Return an unencrypted password.
+     *
+     * @return string
+     */
+    public String getClearPassword()
+    {
+        return connectionBean.getClearPassword();
+    }
+
+
+    /**
      * Returns a copy of the properties for this connection's endpoint.
      * Null means no endpoint information available.
      *
@@ -256,24 +293,26 @@ public class ConnectionProperties extends AssetReferenceable
 
 
     /**
+     * Return a copy of the configuration properties.  Null means no properties are available.
+     *
+     * @return configuration properties for the underlying technology
+     */
+    public Map<String, Object> getConfigurationProperties()
+    {
+        return connectionBean.getConfigurationProperties();
+    }
+
+
+    /**
      * Return a copy of the secured properties.  Null means no secured properties are available.
      * This method is protected so only OCF (or subclasses) can access them.  When Connector is passed to calling
      * OMAS, the secured properties are not available.
      *
      * @return secured properties typically user credentials for the connection
      */
-    protected AdditionalProperties getSecuredProperties()
+    protected Map<String, Object> getSecuredProperties()
     {
-        Map<String, Object>   securedProperties = connectionBean.getSecuredProperties();
-
-        if (securedProperties == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new AdditionalProperties(super.getParentAsset(), securedProperties);
-        }
+        return connectionBean.getSecuredProperties();
     }
 
 

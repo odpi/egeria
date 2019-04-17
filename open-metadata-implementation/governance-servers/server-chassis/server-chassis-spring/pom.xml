@@ -38,6 +38,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>open-metadata-conformance-suite-spring</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>connected-asset-spring</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
@@ -45,6 +51,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>asset-consumer-spring</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>discovery-engine-spring</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 
@@ -86,12 +98,6 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>http-helper</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>data-engine-spring</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
@@ -105,6 +111,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-lineage-services-spring</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>http-helper</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 

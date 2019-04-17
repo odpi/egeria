@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -25,9 +24,11 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class EventBusConfig extends AdminServicesConfigHeader
 {
-    private String              connectorProvider    = null;
-    private String              topicURLRoot         = null;
-    private Map<String, Object> additionalProperties = null;
+    private String              connectorProvider       = null;
+    private String              topicURLRoot            = null;
+    private Map<String, Object> configurationProperties = null;
+
+    @Deprecated private Map<String, Object> additionalProperties    = null;
 
 
     /**
@@ -52,7 +53,7 @@ public class EventBusConfig extends AdminServicesConfigHeader
         {
             connectorProvider = template.getConnectorProvider();
             topicURLRoot = template.getTopicURLRoot();
-            additionalProperties = template.getAdditionalProperties();
+            configurationProperties = template.getConfigurationProperties();
         }
     }
 
@@ -106,31 +107,54 @@ public class EventBusConfig extends AdminServicesConfigHeader
      *
      * @return map of name value pairs
      */
-    public Map<String, Object> getAdditionalProperties()
+    @Deprecated public Map<String, Object> getAdditionalProperties()
     {
-        if (additionalProperties == null)
-        {
-            return null;
-        }
-        else if (additionalProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new HashMap<>(additionalProperties);
-        }
+        return getConfigurationProperties();
     }
 
 
     /**
      * Set up the additional properties for the event bus connection.
      *
-     * @param additionalProperties map of name value pairs
+     * @param properties map of name value pairs
      */
-    public void setAdditionalProperties(Map<String, Object> additionalProperties)
+    @Deprecated public void setAdditionalProperties(Map<String, Object> properties)
     {
-        this.additionalProperties = additionalProperties;
+        this.configurationProperties = properties;
+    }
+
+
+    /**
+     * Return the configuration properties for the event bus connection.
+     *
+     * @return map of name value pairs
+     */
+    public Map<String, Object> getConfigurationProperties()
+    {
+
+        if (configurationProperties == null)
+        {
+            return null;
+        }
+        else if (configurationProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(configurationProperties);
+        }
+    }
+
+
+    /**
+     * Set up the configuration properties for the event bus connection.
+     *
+     * @param configurationProperties map of name value pairs
+     */
+    public void setConfigurationProperties(Map<String, Object> configurationProperties)
+    {
+        this.configurationProperties = configurationProperties;
     }
 
 
@@ -145,7 +169,7 @@ public class EventBusConfig extends AdminServicesConfigHeader
         return "EventBusConfig{" +
                 "connectorProvider='" + connectorProvider + '\'' +
                 ", topicURLRoot='" + topicURLRoot + '\'' +
-                ", additionalProperties=" + additionalProperties +
+                ", configurationProperties=" + configurationProperties +
                 '}';
     }
 
@@ -170,7 +194,7 @@ public class EventBusConfig extends AdminServicesConfigHeader
         EventBusConfig that = (EventBusConfig) objectToCompare;
         return Objects.equals(getConnectorProvider(), that.getConnectorProvider()) &&
                 Objects.equals(getTopicURLRoot(), that.getTopicURLRoot()) &&
-                Objects.equals(getAdditionalProperties(), that.getAdditionalProperties());
+                Objects.equals(getConfigurationProperties(), that.getConfigurationProperties());
     }
 
 
@@ -182,6 +206,6 @@ public class EventBusConfig extends AdminServicesConfigHeader
     @Override
     public int hashCode()
     {
-        return Objects.hash(getConnectorProvider(), getTopicURLRoot(), getAdditionalProperties());
+        return Objects.hash(getConnectorProvider(), getTopicURLRoot(), getConfigurationProperties());
     }
 }

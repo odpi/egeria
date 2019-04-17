@@ -4,6 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaLink;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -117,24 +118,11 @@ public class AssetSchemaLink extends AssetPropertyBase
     /**
      * Return the list of properties associated with this schema link.
      *
-     * @return AdditionalProperties
+     * @return map of properties
      */
-    public AdditionalProperties getLinkProperties()
+    public  Map<String, Object> getLinkProperties()
     {
-        Map<String, Object>  linkProperties = schemaLinkBean.getLinkProperties();
-
-        if (linkProperties == null)
-        {
-            return null;
-        }
-        else if (linkProperties.isEmpty())
-        {
-            return null;
-        }
-        else
-        {
-            return new AdditionalProperties(super.getParentAsset(), linkProperties);
-        }
+        return schemaLinkBean.getLinkProperties();
     }
 
 

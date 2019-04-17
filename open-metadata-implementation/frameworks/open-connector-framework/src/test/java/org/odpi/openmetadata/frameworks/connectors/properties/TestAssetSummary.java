@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.testng.annotations.Test;
 
 import java.util.*;
@@ -57,10 +58,12 @@ public class TestAssetSummary
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setDisplayName("TestDisplayName");
         testObject.setOwner("TestOwner");
+        testObject.setOwnerType(OwnerType.PROFILE_ID);
         testObject.setShortDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
         testObject.setExtendedProperties(assetProperties);
         testObject.setZoneMembership(zoneMembership);
+        testObject.setLatestChange("TestLatestChange");
 
         return new AssetSummary(testObject);
     }
@@ -85,6 +88,7 @@ public class TestAssetSummary
         testObject.setOwner("TestOwner");
         testObject.setShortDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
+        testObject.setLatestChange("TestLatestChange");
         testObject.setExtendedProperties(assetProperties);
 
         return new AssetSummary(testObject);
@@ -108,8 +112,10 @@ public class TestAssetSummary
         testObject.setQualifiedName("TestDifferentQualifiedName");
         testObject.setDisplayName("TestDisplayName");
         testObject.setOwner("TestOwner");
+        testObject.setOwnerType(OwnerType.PROFILE_ID);
         testObject.setShortDescription("TestShortDescription");
         testObject.setDescription("TestDescription");
+        testObject.setLatestChange("TestLatestChange");
         testObject.setExtendedProperties(assetProperties);
 
         return new AssetSummary(testObject);
@@ -133,6 +139,8 @@ public class TestAssetSummary
         assertTrue(resultObject.getDescription().equals("TestDescription"));
         assertTrue(resultObject.getShortDescription().equals("TestShortDescription"));
         assertTrue(resultObject.getOwner().equals("TestOwner"));
+        assertTrue(resultObject.getLatestChange().equals("TestLatestChange"));
+        assertTrue(resultObject.getOwnerType() == OwnerType.PROFILE_ID);
         assertTrue(resultObject.getZoneMembership() != null);
         assertTrue(resultObject.getExtendedProperties() == null);
         assertTrue(resultObject.getAdditionalProperties() == null);
@@ -156,6 +164,7 @@ public class TestAssetSummary
         assertTrue(nullObject.getDescription() == null);
         assertTrue(nullObject.getShortDescription() == null);
         assertTrue(nullObject.getOwner() == null);
+        assertTrue(nullObject.getOwnerType() == null);
         assertTrue(nullObject.getExtendedProperties() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
     }
@@ -203,21 +212,21 @@ public class TestAssetSummary
 
         AssetSummary testObject = new AssetSummary(assetBean);
 
-        AdditionalProperties assetProperties = testObject.getExtendedProperties();
+        Map<String, Object> assetProperties = testObject.getExtendedProperties();
 
-        assertTrue(assetProperties.getPropertyNames() != null);
+        assertTrue(assetProperties.keySet() != null);
 
-        Iterator<String> iterator = assetProperties.getPropertyNames();
+        Iterator<String> iterator = assetProperties.keySet().iterator();
 
         String propertyName;
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property2"));
-        assertTrue(assetProperties.getProperty(propertyName).equals(new Integer(2)));
+        assertTrue(assetProperties.get(propertyName).equals(new Integer(2)));
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property1"));
-        assertTrue(assetProperties.getProperty(propertyName).equals("TestString"));
+        assertTrue(assetProperties.get(propertyName).equals("TestString"));
 
         try
         {
@@ -252,10 +261,10 @@ public class TestAssetSummary
      */
     @Test public void testAdditionalProperties()
     {
-        Map<String, Object>  propertyMap = new HashMap<>();
+        Map<String, String>  propertyMap = new HashMap<>();
 
         propertyMap.put("property1", "TestString");
-        propertyMap.put("property2", new Integer(2));
+        propertyMap.put("property2", "Two");
 
         Asset assetBean = new Asset();
         assetBean.setAdditionalProperties(propertyMap);
@@ -272,7 +281,7 @@ public class TestAssetSummary
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property2"));
-        assertTrue(additionalProperties.getProperty(propertyName).equals(new Integer(2)));
+        assertTrue(additionalProperties.getProperty(propertyName).equals("Two"));
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property1"));
