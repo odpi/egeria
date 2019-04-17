@@ -57,11 +57,27 @@ public enum DataPlatformAuditCode {
                                                       OMRSAuditLogRecordSeverity.EXCEPTION,
             "Unable to initialize the connection to topic {0} in the Data Platform Open Metadata Access Service (OMAS) instance for server {1} ",
                                                               "The connection to Data Platform topic could not be initialized.",
-                                                              "Review the exception and resolve the configuration. ")
+            "Review the exception and resolve the configuration. "),
+    SUPPORTED_ZONES("OMAS-DATA-PLATFORM-0009",
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Data Platform Open Metadata Access Service (OMAS) is supporting the following governance zones {0}",
+            "The access service was passed a list of governance zones in the SupportedZones property of the access services options.  " +
+                    "This means it is only providing access to the Assets from these zone(s) and the new Assets will be visible only for these zone(s)",
+            "No action is required.  This is part of the normal operation of the service."),
+    BAD_CONFIG("OMAS-DATA-PLATFORM-0010",
+            OMRSAuditLogRecordSeverity.ERROR,
+            "The Data Platform Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property",
+            "The access service has not been passed valid configuration.",
+            "Correct the configuration and restart the service."),
+    ALL_ZONES("OMAS-DATA-PLATFORM-0011",
+            OMRSAuditLogRecordSeverity.INFO,
+            "The Data Platform Open Metadata Access Service (OMAS) is supporting all governance zones",
+            "The access service has not been passed a list of governance zones in the SupportedZones property of the access services options.  " +
+                    "This means it is providing access to all Assets irrespective of the zone(s) they are located in and the created Assets can be accessed from any zone",
+            "No action is required.  This is part of the normal operation of the service.")
             ;
 
 
-    
     private static final Logger log = LoggerFactory.getLogger(DataPlatformAuditCode.class);
     private String logMessageId;
     private OMRSAuditLogRecordSeverity severity;
@@ -76,6 +92,7 @@ public enum DataPlatformAuditCode {
         this.systemAction = systemAction;
         this.userAction = userAction;
     }
+
 
     public String getLogMessageId() {
         return logMessageId;

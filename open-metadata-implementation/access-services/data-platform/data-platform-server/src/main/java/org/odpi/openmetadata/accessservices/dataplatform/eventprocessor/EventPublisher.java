@@ -22,11 +22,11 @@ public class EventPublisher  extends OMRSInstanceEventProcessor  {
 
     private static final Logger log = LoggerFactory.getLogger(EventPublisher.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private OpenMetadataTopic DataPlatformTopicConnector;
+    private OpenMetadataTopic dataPlatformOutTopicConnector;
     private OMRSAuditLog auditLog;
 
-    public EventPublisher(OpenMetadataTopic DataPlatformTopicConnector, OMRSAuditLog auditLog) {
-        this.DataPlatformTopicConnector = DataPlatformTopicConnector;
+    public EventPublisher(OpenMetadataTopic dataPlatformOutTopicConnector, OMRSAuditLog auditLog) {
+        this.dataPlatformOutTopicConnector = dataPlatformOutTopicConnector;
         this.auditLog = auditLog;
     }
 
@@ -338,7 +338,7 @@ public class EventPublisher  extends OMRSInstanceEventProcessor  {
 
         try {
 
-            DataPlatformTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(event));
+            dataPlatformOutTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(event));
             successFlag = true;
 
         } catch (Throwable error) {

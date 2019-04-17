@@ -18,47 +18,33 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class OMEntityDao {
 
     private static final Logger log = LoggerFactory.getLogger(OMEntityDao.class);
-    private static final Integer PAGE_SIZE = 100;
     private final OMRSRepositoryConnector enterpriseConnector;
     private final OMRSAuditLog auditLog;
+    private List<String> supportedZones;
 
-    public OMEntityDao(OMRSRepositoryConnector enterpriseConnector, OMRSAuditLog auditLog) {
+    public OMEntityDao(OMRSRepositoryConnector enterpriseConnector, List<String> supportedZones, OMRSAuditLog auditLog) {
         this.enterpriseConnector = enterpriseConnector;
         this.auditLog = auditLog;
+        this.supportedZones = supportedZones;
     }
 
     /**
      * Returns the newly created entity with the specified properties
      *
-     * @param sourceName
      * @param metadataCollectionId unique identifier for the metadata collection used for adding entities
      * @param userName             name of the user performing the add operation
      * @param typeName             of the entity type def
      * @param instanceProperties   specific to the entity
+     * @param zoneRestricted
      * @return the new entity added to the metadata collection
      * @throws ClassificationErrorException
      * @throws StatusNotSupportedException
@@ -73,22 +59,23 @@ public class OMEntityDao {
                                    String typeName,
                                    InstanceProperties instanceProperties,
                                    List<Classification> classifications,
-                                   String sourceName) throws ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, FunctionNotSupportedException {
+                                   boolean zoneRestricted) throws ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, FunctionNotSupportedException {
         EntityDetail entity;
         try {
-            entity = enterpriseConnector.getRepositoryHelper()
-                    .getSkeletonEntity(sourceName,
-                            metadataCollectionId,
-                            InstanceProvenanceType.LOCAL_COHORT,
-                            userName,
-                            typeName);
+            entity = enterpriseConnector.getRepositoryHelper().getSkeletonEntity(Constants.DATA_PLATFORM_OMAS_NAME,
+                    metadataCollectionId,
+                    InstanceProvenanceType.LOCAL_COHORT,
+                    userName,
+                    typeName);
             entity.setClassifications(classifications);
-            return enterpriseConnector.getMetadataCollection()
-                    .addEntity(userName,
-                            entity.getType().getTypeDefGUID(),
-                            instanceProperties,
-                            entity.getClassifications(),
-                            entity.getStatus());
+            if (zoneRestricted && supportedZones != null && !supportedZones.isEmpty()) {
+                instanceProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.DATA_PLATFORM_OMAS_NAME, instanceProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "addEntity");
+            }
+            return enterpriseConnector.getMetadataCollection().addEntity(userName,
+                    entity.getType().getTypeDefGUID(),
+                    instanceProperties,
+                    entity.getClassifications(),
+                    entity.getStatus());
         } catch (Exception e) {
 
             DataPlatformErrorCode auditCode = DataPlatformErrorCode.ADD_ENTITY_EXCEPTION;
@@ -109,7 +96,7 @@ public class OMEntityDao {
      *
      * @param metadataCollectionId unique identifier for the metadata collection used for adding relationships
      * @param typeName             name of the relationship type def
-     * @param initialProperties    properties for the relationship
+     * @param instanceProperties    properties for the relationship
      * @param entityOneGUID        giud of the first end of the relationship
      * @param entityTwoGUID        giud of the second end of the relationship
      * @return the created relationship
@@ -123,14 +110,14 @@ public class OMEntityDao {
      */
     private Relationship addRelationship(String metadataCollectionId,
                                          String typeName,
-                                         InstanceProperties initialProperties,
+                                         InstanceProperties instanceProperties,
                                          String entityOneGUID,
                                          String entityTwoGUID) throws StatusNotSupportedException, UserNotAuthorizedException, EntityNotKnownException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, FunctionNotSupportedException {
 
         Relationship relationship;
         try {
             relationship = enterpriseConnector.getRepositoryHelper()
-                    .getSkeletonRelationship("",
+                    .getSkeletonRelationship(Constants.DATA_PLATFORM_OMAS_NAME,
                             metadataCollectionId,
                             InstanceProvenanceType.LOCAL_COHORT,
                             Constants.USER_ID,
@@ -138,7 +125,7 @@ public class OMEntityDao {
             return enterpriseConnector.getMetadataCollection()
                     .addRelationship(Constants.USER_ID,
                             relationship.getType().getTypeDefGUID(),
-                            initialProperties,
+                            instanceProperties,
                             entityOneGUID,
                             entityTwoGUID,
                             InstanceStatus.ACTIVE);
@@ -164,22 +151,25 @@ public class OMEntityDao {
      *
      * @param typeName      name of the type def for the entity to be retrieved
      * @param qualifiedName qualified name property of the entity to be retrieved
+     * @param zoneRestricted
      * @return the existing entity with the given qualified name or null if it doesn't exist
      */
-    public EntityDetail getEntity(String typeName, String qualifiedName) throws PagingErrorException,
+    public EntityDetail getEntity(String typeName, String qualifiedName, boolean zoneRestricted) throws PagingErrorException,
             UserNotAuthorizedException,
             FunctionNotSupportedException,
             InvalidParameterException,
             RepositoryErrorException,
             PropertyErrorException,
             TypeErrorException {
-        InstanceProperties matchProperties = buildMatchingInstanceProperties(Constants.QUALIFIED_NAME, qualifiedName);
+        Map<String, String> properties = new HashMap<>();
+        properties.put(Constants.QUALIFIED_NAME, qualifiedName);
+        InstanceProperties matchProperties = buildMatchingInstanceProperties(properties, zoneRestricted);
         List<EntityDetail> existingEntities;
-        existingEntities = findEntities(matchProperties, typeName);
+        existingEntities = findEntities(matchProperties, typeName, Constants.START_FROM, Constants.PAGE_SIZE);
         return checkEntities(existingEntities, qualifiedName);
     }
 
-    public List<EntityDetail> findEntities(InstanceProperties matchProperties, String typeName) throws
+    public List<EntityDetail> findEntities(InstanceProperties matchProperties, String typeName, int fromElement, int pageSize) throws
             PagingErrorException,
             UserNotAuthorizedException,
             FunctionNotSupportedException,
@@ -195,19 +185,19 @@ public class OMEntityDao {
                     typeDef.getGUID(),
                     matchProperties,
                     MatchCriteria.ALL,
-                    0,
+                    fromElement,
                     Collections.singletonList(InstanceStatus.ACTIVE),
                     null,
                     null,
                     null,
                     SequencingOrder.ANY,
-                    PAGE_SIZE);
+                    pageSize);
         } catch (InvalidParameterException | PropertyErrorException | TypeErrorException | FunctionNotSupportedException | UserNotAuthorizedException | RepositoryErrorException e) {
             DataPlatformErrorCode auditCode = DataPlatformErrorCode.GET_ENTITY_EXCEPTION;
             auditLog.logException("retrieveEntity",
                     auditCode.getErrorMessageId(),
                     OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage("matchProperties: " + matchProperties, e.getMessage()),
+                    auditCode.getFormattedErrorMessage("matchProperties", "" + matchProperties, e.getMessage()),
                     "entity with properties {" + matchProperties + "}",
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
@@ -219,7 +209,11 @@ public class OMEntityDao {
     }
 
 
-    public EntityDetail getEntityByGuid(String guid) throws Exception {
+    public EntityDetail getEntityByGuid(String guid) throws RepositoryErrorException,
+            UserNotAuthorizedException,
+            EntityProxyOnlyException,
+            InvalidParameterException,
+            EntityNotKnownException {
         return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);
 
     }
@@ -279,17 +273,16 @@ public class OMEntityDao {
                 .getTypeDefByName(Constants.USER_ID, relationshipType)
                 .getGUID();
         try {
-            log.info("Retrieving relationships of type {} for entity {}", relationshipType,  guid2);
-            relationships = enterpriseConnector.getMetadataCollection()
-                    .getRelationshipsForEntity(Constants.USER_ID,
-                            guid2,
-                            relationshipTypeGuid,
-                            0,
-                            Collections.singletonList(InstanceStatus.ACTIVE),
-                            null,
-                            null,
-                            null,
-                            0);
+            log.debug("Retrieving relationships of type {} for entity {}", relationshipType, guid2);
+            relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID,
+                    guid2,
+                    relationshipTypeGuid,
+                    Constants.START_FROM,
+                    Collections.singletonList(InstanceStatus.ACTIVE),
+                    null,
+                    null,
+                    null,
+                    Constants.PAGE_SIZE);
         } catch (Exception e) {
             DataPlatformErrorCode auditCode = DataPlatformErrorCode.GET_RELATIONSHIP_EXCEPTION;
             auditLog.logException("getRelationships",
@@ -338,8 +331,9 @@ public class OMEntityDao {
      */
     public EntityDetail addEntity(String typeName,
                                   String qualifiedName,
-                                  InstanceProperties properties) throws InvalidParameterException, PropertyErrorException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
-        return addEntity(typeName, qualifiedName, properties, null);
+                                  InstanceProperties properties,
+                                  boolean zoneRestricted) throws InvalidParameterException, PropertyErrorException, RepositoryErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, TypeErrorException, StatusNotSupportedException {
+        return addEntity(typeName, qualifiedName, properties, null, zoneRestricted);
     }
 
     /**
@@ -349,6 +343,7 @@ public class OMEntityDao {
      * @param qualifiedName   - qualified name property of the entity, unique for the same entity type
      * @param properties      specific to the entity type
      * @param classifications classifications to be added to entity
+     * @param zoneRestricted
      * @return the existing entity with the given qualified name or the newly created entity with the given qualified name
      * @throws InvalidParameterException
      * @throws StatusNotSupportedException
@@ -364,13 +359,15 @@ public class OMEntityDao {
     public EntityDetail addEntity(String typeName,
                                   String qualifiedName,
                                   InstanceProperties properties,
-                                  List<Classification> classifications) throws InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeErrorException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException {
+                                  List<Classification> classifications,
+                                  boolean zoneRestricted) throws InvalidParameterException, StatusNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeErrorException, FunctionNotSupportedException, PagingErrorException, ClassificationErrorException, UserNotAuthorizedException, RepositoryErrorException {
 
         OMEntityWrapper wrapper = createOrUpdateEntity(typeName,
                 qualifiedName,
                 properties,
                 classifications,
-                false);
+                false,
+                zoneRestricted);
         return wrapper != null ? wrapper.getEntityDetail() : null;
     }
 
@@ -378,12 +375,13 @@ public class OMEntityDao {
                                                 String qualifiedName,
                                                 InstanceProperties properties,
                                                 List<Classification> classifications,
-                                                boolean update) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, ClassificationErrorException, StatusNotSupportedException, EntityNotKnownException {
+                                                boolean update,
+                                                boolean zoneRestricted) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, ClassificationErrorException, StatusNotSupportedException, EntityNotKnownException {
         EntityDetail entityDetail;
         OMEntityWrapper wrapper;
-        entityDetail = getEntity(typeName, qualifiedName);
+        entityDetail = getEntity(typeName, qualifiedName, zoneRestricted);
         if (entityDetail == null) {
-            entityDetail = addEntity("", Constants.USER_ID, typeName, properties, classifications, Constants.DATA_PLATFORM_OMAS_NAME);
+            entityDetail = addEntity("", Constants.USER_ID, typeName, properties, classifications, zoneRestricted);
             log.info("Entity with qualified name {} added", qualifiedName);
             log.debug("Entity: {}", entityDetail);
             wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.NEW);
@@ -392,9 +390,9 @@ public class OMEntityDao {
             log.debug("Entity: {}", entityDetail);
             if (update && !EntityPropertiesUtils.matchExactlyInstanceProperties(entityDetail.getProperties(), properties)) {//TODO should add validation
                 log.info("Updating entity with qualified name {} ", qualifiedName);
-                entityDetail = updateEntity(entityDetail, Constants.USER_ID, properties);
+                entityDetail = updateEntity(entityDetail, Constants.USER_ID, properties, zoneRestricted);
                 wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.UPDATED);
-            } else{
+            } else {
                 wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.EXISTING);
             }
 
@@ -403,9 +401,13 @@ public class OMEntityDao {
         return wrapper;
     }
 
-    private EntityDetail updateEntity(EntityDetail entityDetail, String userId, InstanceProperties properties) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, EntityNotKnownException, PropertyErrorException, FunctionNotSupportedException {
+    private EntityDetail updateEntity(EntityDetail entityDetail, String userId, InstanceProperties instanceProperties,
+                                      boolean zoneRestricted) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, EntityNotKnownException, PropertyErrorException, FunctionNotSupportedException {
         //TODO add validation to new instance properties
-        entityDetail = enterpriseConnector.getMetadataCollection().updateEntityProperties(userId, entityDetail.getGUID(), properties);
+        if (zoneRestricted) {
+            instanceProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.DATA_PLATFORM_OMAS_NAME, instanceProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "addEntity");
+        }
+        entityDetail = enterpriseConnector.getMetadataCollection().updateEntityProperties(userId, entityDetail.getGUID(), instanceProperties);
         return entityDetail;
     }
 
@@ -415,8 +417,7 @@ public class OMEntityDao {
      * @param relationshipType is the relationship type name
      * @param guid1            first end of the relationship
      * @param guid2            second end of the relationship
-     * @param source           name of the relationship creator
-     * @param properties       specific to the relationship type
+     * @param instanceProperties       specific to the relationship type
      * @return the existing relationship with the given qualified name or the newly created relationship with the given qualified name
      * @throws InvalidParameterException
      * @throws TypeErrorException
@@ -432,13 +433,12 @@ public class OMEntityDao {
     public Relationship addRelationship(String relationshipType,
                                         String guid1,
                                         String guid2,
-                                        String source,
-                                        InstanceProperties properties) throws InvalidParameterException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
+                                        InstanceProperties instanceProperties) throws InvalidParameterException, TypeErrorException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, StatusNotSupportedException {
         Relationship relationship;
 
         relationship = getRelationship(relationshipType, guid1, guid2);
         if (relationship == null) {
-            relationship = addRelationship("", relationshipType, properties, guid1, guid2);
+            relationship = addRelationship("", relationshipType, instanceProperties, guid1, guid2);
             log.info("Relationship {} added between: {} and {}", relationshipType, guid1, guid2);
             log.debug("Relationship: {}", relationship);
         } else {
@@ -453,24 +453,32 @@ public class OMEntityDao {
     /**
      * Returns the properties object for the given pair of key - value that can be used for retrieving
      *
-     * @param key   - name of the property
-     * @param value - value of the property
+     * @param properties - all properties to use for matching
+     * @param zoneRestricted
      * @return properties with the given key - value pair
      */
-    private InstanceProperties buildMatchingInstanceProperties(String key, String value) {
+    public InstanceProperties buildMatchingInstanceProperties(Map<String, String> properties, boolean zoneRestricted) {
         InstanceProperties instanceProperties = new InstanceProperties();
-        instanceProperties.setProperty(key,
-                EntityPropertiesUtils.createPrimitiveStringPropertyValue(value));
+        if (properties != null && properties.size() > 0) {
+            for (Map.Entry<String, String> entry : properties.entrySet()) {
+                instanceProperties = enterpriseConnector.getRepositoryHelper().addStringPropertyToInstance(Constants.DATA_PLATFORM_OMAS_NAME, instanceProperties, entry.getKey(), entry.getValue(), "buildMatchingInstanceProperties");
+            }
+        }
+        if (zoneRestricted && supportedZones != null && !supportedZones.isEmpty()) {
+            instanceProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.DATA_PLATFORM_OMAS_NAME, instanceProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "buildMatchingInstanceProperties");
+        }
+
         return instanceProperties;
     }
 
-    public Classification buildClassification(String classificationTypeName, String entityTypeName, InstanceProperties classificationProperties) throws TypeErrorException {
+    public Classification buildClassification(String classificationTypeName,
+                                              String entityTypeName,
+                                              InstanceProperties classificationProperties) throws TypeErrorException {
         try {
-            Classification classification = enterpriseConnector.getRepositoryHelper()
-                    .getSkeletonClassification("",
-                            Constants.USER_ID,
-                            classificationTypeName,
-                            entityTypeName);
+            Classification classification = enterpriseConnector.getRepositoryHelper().getSkeletonClassification(Constants.DATA_PLATFORM_OMAS_NAME,
+                    Constants.USER_ID,
+                    classificationTypeName,
+                    entityTypeName);
             classification.setProperties(classificationProperties);
             return classification;
         } catch (Exception e) {

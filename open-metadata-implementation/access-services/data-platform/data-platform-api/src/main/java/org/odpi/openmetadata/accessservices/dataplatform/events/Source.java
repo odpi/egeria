@@ -33,59 +33,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIdentityReference
 public abstract class Source {
 
-    private String networkAddress;
-    private String protocol;
-    private String encryptionMethod;
-    private String connectorProviderName;
-    private String user;
-    private Map<String, String> additionalProperties;
-    private String qualifiedName;
-    private String guid;
+    protected Map<String, String> additionalProperties;
+    protected String qualifiedName;
+    protected String guid;
 
-    /**
-     * Return the protocol of the connection
-     *
-     * @return protocol of the connection
-     */
-    public String getProtocol() {
-        return protocol;
-    }
-
-    /**
-     * set up the protocol of the connection
-     *
-     * @param protocol - protocol of the connection
-     */
-    public void setProtocol(String protocol) {
-        this.protocol = protocol;
-    }
-
-
-    /**
-     * Return the address of the connection
-     *
-     * @return address of the connection
-     */
-    public String getNetworkAddress() {
-        return networkAddress;
-    }
-
-    /**
-     * set up the address of the connection
-     *
-     * @param networkAddress - address of the connection
-     */
-    public void setNetworkAddress(String networkAddress) {
-        this.networkAddress = networkAddress;
-    }
-
-    public String getConnectorProviderName() {
-        return connectorProviderName;
-    }
-
-    public void setConnectorProviderName(String connectorProviderName) {
-        this.connectorProviderName = connectorProviderName;
-    }
 
     public Map<String, String> getAdditionalProperties() {
         return additionalProperties;
@@ -93,22 +44,6 @@ public abstract class Source {
 
     public void setAdditionalProperties(Map<String, String> additionalProperties) {
         this.additionalProperties = additionalProperties;
-    }
-
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String user) {
-        this.user = user;
-    }
-
-    public String getEncryptionMethod() {
-        return encryptionMethod;
-    }
-
-    public void setEncryptionMethod(String encryptionMethod) {
-        this.encryptionMethod = encryptionMethod;
     }
 
     public String getQualifiedName() {
@@ -127,19 +62,14 @@ public abstract class Source {
         this.guid = guid;
     }
 
+
     @Override
     public String toString() {
-        return "Source{" +
-                "networkAddress='" + networkAddress + '\'' +
-                ", protocol='" + protocol + '\'' +
-                ", encryptionMethod='" + encryptionMethod + '\'' +
-                ", connectorProviderName='" + connectorProviderName + '\'' +
-                ", user='" + user + '\'' +
-                ", additionalProperties=" + additionalProperties +
+        return "{" +
+                "additionalProperties=" + additionalProperties +
                 ", qualifiedName='" + qualifiedName + '\'' +
+                ", guid='" + guid + '\'' +
                 '}';
     }
-
-    public abstract String buildQualifiedName();
 
 }

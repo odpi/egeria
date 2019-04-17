@@ -57,13 +57,27 @@ public enum DataPlatformErrorCode {
     SERVICE_NOT_INITIALIZED("OMAS-DATA-PLATFORM-012 ",
                                     "The access service has not been initialized for server {0} and can not support REST API calls",
                                     "The server has received a call to one of its open metadata access services but is unable to process it because the access service is not active for the requested server.",
-                                    "If the server is supposed to have this access service activated, correct the server configuration and restart the server.");
+            "If the server is supposed to have this access service activated, correct the server configuration and restart the server."),
+    BAD_CONFIG("OMAS-DATA-PLATFORM-013",
+            "The Data Platform Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property.  The resulting exception of {2} included the following message: {3}",
+            "The access service has not been passed valid configuration.",
+            "Correct the configuration and restart the service."),
+    ;
 
     private static final Logger log = LoggerFactory.getLogger(DataPlatformErrorCode.class);
     private String errorMessageId;
     private String errorMessage;
     private String systemAction;
     private String userAction;
+    private int httpErrorCode;
+
+    DataPlatformErrorCode(String errorMessageId, String errorMessage, String systemAction, String userAction, int httpErrorCode) {
+        this.errorMessageId = errorMessageId;
+        this.errorMessage = errorMessage;
+        this.systemAction = systemAction;
+        this.userAction = userAction;
+        this.httpErrorCode = httpErrorCode;
+    }
 
     DataPlatformErrorCode(String errorMessageId, String errorMessage, String systemAction, String userAction) {
         this.errorMessageId = errorMessageId;
@@ -88,6 +102,9 @@ public enum DataPlatformErrorCode {
         return userAction;
     }
 
+    public int getHttpErrorCode() {
+        return httpErrorCode;
+    }
 
     public String getFormattedErrorMessage(String... params) {//TODO this should be moved to common code base
 
