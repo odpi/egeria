@@ -180,7 +180,8 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
                     level = 3;
                 }
 
-                response = oMRSAPIHelper.callGetEntityNeighbourhood(userId,
+                response = oMRSAPIHelper.callGetEntityNeighbourhood(methodName,
+                        userId,
                         guid,
                         entityTypeGUIDList,
                         relationshipTypeGUIDs,
