@@ -16,7 +16,7 @@ index 6b483eba0..b3bfae0a3 100644
          <hbase.version>1.1.2</hbase.version>
          <solr.version>5.5.1</solr.version>
 -        <kafka.version>1.0.0</kafka.version>
-+        <kafka.version>2.1.1</kafka.version>
++        <kafka.version>2.0.0</kafka.version>
          <elasticsearch.version>5.6.4</elasticsearch.version>
          <kafka.scala.binary.version>2.11</kafka.scala.binary.version>
          <curator.version>2.11.0</curator.version>
