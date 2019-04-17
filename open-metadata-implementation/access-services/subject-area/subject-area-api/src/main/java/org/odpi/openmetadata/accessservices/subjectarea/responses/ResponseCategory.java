@@ -35,6 +35,8 @@ public enum ResponseCategory {
     ValidValueRelationship,
     // term to glossary relationships
     TermAnchorRelationship,
+    // category to glossary relationships
+    CategoryAnchorRelationship,
     // Lines
     Lines,
     // external glossary relationships
@@ -46,6 +48,7 @@ public enum ResponseCategory {
     TermCategorizationRelationship,
     // category relationships
     CategoryRelationships,
+
     // graph
     Graph,
 
