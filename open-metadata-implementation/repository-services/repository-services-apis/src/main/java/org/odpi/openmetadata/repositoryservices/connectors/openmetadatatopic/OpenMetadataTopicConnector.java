@@ -17,6 +17,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSLogicErrorExc
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -229,11 +230,11 @@ public abstract class OpenMetadataTopicConnector extends ConnectorBase implement
                 listenerThreadName = defaultThreadName + ": " + topicName;
             }
 
-            AdditionalProperties  additionalProperties = super.connectionProperties.getAdditionalProperties();
+            Map<String, Object> configurationProperties = super.connectionProperties.getConfigurationProperties();
 
-            if (additionalProperties != null)
+            if (configurationProperties != null)
             {
-                Object   sleepTime = additionalProperties.getProperty("sleepTime");
+                Object   sleepTime = configurationProperties.get("sleepTime");
 
                 if ((sleepTime != null) && (sleepTime instanceof Integer))
                 {

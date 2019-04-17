@@ -2,8 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
  * ConnectorCheckedException provides a checked exception for reporting errors found when using OCF connectors.
@@ -13,6 +19,9 @@ import org.slf4j.LoggerFactory;
  * ConnectorProvider/Connector implementation can be used.  The aim is to be able to uniquely identify the cause
  * and remedy for the error.
  */
+@JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class ConnectorCheckedException extends OCFCheckedExceptionBase
 {
     private static final Logger log = LoggerFactory.getLogger(ConnectorCheckedException.class);

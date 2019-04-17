@@ -337,7 +337,7 @@
         <!-- Copy the Jars for the OMAG Conformance Suite-->
 
         <fileSet>
-            <directory>../../open-metadata-conformance-suite/target/</directory>
+            <directory>../../open-metadata-conformance-suite/open-metadata-conformance-suite-client/target/</directory>
             <outputDirectory>./conformance-suite</outputDirectory>
             <includes>
                 <include>lib/*.jar</include>

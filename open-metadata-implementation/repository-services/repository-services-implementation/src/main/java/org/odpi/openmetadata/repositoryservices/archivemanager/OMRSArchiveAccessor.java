@@ -161,6 +161,8 @@ public class OMRSArchiveAccessor
     {
         return enumDefs.get(typeName);
     }
+
+
     /**
      * Return the instance type definition for the supplied TypeDef
      *

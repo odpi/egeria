@@ -155,6 +155,41 @@ public class OMAGServerAdminStoreServices
         if (serverConfig == null)
         {
             serverConfig = new OMAGServerConfig();
+            serverConfig.setVersionId(OMAGServerConfig.VERSION_TWO);
+        }
+        else
+        {
+            String versionId = serverConfig.getVersionId();
+            boolean isCompatibleVersion = false;
+
+            if (versionId == null)
+            {
+                versionId = OMAGServerConfig.VERSION_ONE;
+            }
+
+            for (String compatibleVersion : OMAGServerConfig.COMPATIBLE_VERSIONS)
+            {
+                if (compatibleVersion.equals(versionId))
+                {
+                    isCompatibleVersion = true;
+                }
+            }
+
+            if (! isCompatibleVersion)
+            {
+                OMAGErrorCode errorCode = OMAGErrorCode.INCOMPATIBLE_CONFIG_FILE;
+                String        errorMessage = errorCode.getErrorMessageId()
+                                           + errorCode.getFormattedErrorMessage(serverName,
+                                                                                versionId,
+                                                                                OMAGServerConfig.COMPATIBLE_VERSIONS.toString());
+
+                throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
+                                                        this.getClass().getName(),
+                                                        methodName,
+                                                        errorMessage,
+                                                        errorCode.getSystemAction(),
+                                                        errorCode.getUserAction());
+            }
         }
 
         serverConfig.setLocalServerName(serverName);

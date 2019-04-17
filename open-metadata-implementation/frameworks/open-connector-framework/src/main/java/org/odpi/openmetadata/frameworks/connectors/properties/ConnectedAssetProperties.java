@@ -118,7 +118,7 @@ public abstract class ConnectedAssetProperties extends AssetPropertyElementBase
     public String toString()
     {
         return "ConnectedAssetProperties{" +
-                "schemaProperties=" + assetProperties +
+                "assetProperties=" + assetProperties +
                 '}';
     }
 }

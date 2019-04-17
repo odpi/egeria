@@ -5,6 +5,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -172,6 +173,17 @@ public class AssetSummary extends AssetDescriptor
 
 
     /**
+     * Return the type of owner stored in the owner property.
+     *
+     * @return OwnerType enum
+     */
+    public OwnerType getOwnerType()
+    {
+        return assetBean.getOwnerType();
+    }
+
+
+    /**
      * Return the names of the zones that this asset is a member of.
      *
      * @return list of zone names
@@ -217,23 +229,25 @@ public class AssetSummary extends AssetDescriptor
 
 
     /**
+     * Return a short description of the last change to the asset.
+     *
+     * @return string description
+     */
+    public String getLatestChange()
+    {
+        return assetBean.getLatestChange();
+    }
+
+
+    /**
      * Return the set of properties that are specific to the particular type of asset.  The caller is given their
      * own copy of the property object.  The properties are named entityName.attributeName. The values are all strings.
      *
-     * @return AdditionalProperties asset properties using the name of attributes from the model.
+     * @return  asset properties using the name of attributes from the model.
      */
-    public AdditionalProperties getExtendedProperties()
+    public Map<String, Object> getExtendedProperties()
     {
-        Map<String, Object>   assetProperties = assetBean.getExtendedProperties();
-
-        if (assetProperties == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new AdditionalProperties(this, assetProperties);
-        }
+        return assetBean.getExtendedProperties();
     }
 
 
@@ -244,7 +258,7 @@ public class AssetSummary extends AssetDescriptor
      */
     public AdditionalProperties getAdditionalProperties()
     {
-        Map<String, Object>   additionalProperties = assetBean.getAdditionalProperties();
+        Map<String, String>   additionalProperties = assetBean.getAdditionalProperties();
 
         if (additionalProperties == null)
         {

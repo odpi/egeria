@@ -19,7 +19,7 @@ public class TestSchemaType
 {
     private ElementType          type                 = new ElementType();
     private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, Object>  additionalProperties = new HashMap<>();
+    private Map<String, String>  additionalProperties = new HashMap<>();
     private Map<String, Object>  schemaProperties     = new HashMap<>();
 
 
@@ -55,7 +55,7 @@ public class TestSchemaType
         testObject.setAuthor("TestAuthor");
         testObject.setUsage("TestUsage");
         testObject.setEncodingStandard("TestEncodingStandard");
-        testObject.setSchemaProperties(schemaProperties);
+        testObject.setExtendedProperties(schemaProperties);
 
 
         return testObject;
@@ -81,7 +81,7 @@ public class TestSchemaType
         assertTrue(resultObject.getAuthor().equals("TestAuthor"));
         assertTrue(resultObject.getEncodingStandard().equals("TestEncodingStandard"));
         assertTrue(resultObject.getUsage().equals("TestUsage"));
-        assertTrue(resultObject.getSchemaProperties() == null);
+        assertTrue(resultObject.getExtendedProperties() == null);
     }
 
 
@@ -104,7 +104,7 @@ public class TestSchemaType
         assertTrue(nullObject.getAuthor() == null);
         assertTrue(nullObject.getUsage() == null);
         assertTrue(nullObject.getEncodingStandard() == null);
-        assertTrue(nullObject.getSchemaProperties() == null);
+        assertTrue(nullObject.getExtendedProperties() == null);
 
 
         nullObject = new SchemaType(null);
@@ -121,7 +121,7 @@ public class TestSchemaType
         assertTrue(nullObject.getAuthor() == null);
         assertTrue(nullObject.getUsage() == null);
         assertTrue(nullObject.getEncodingStandard() == null);
-        assertTrue(nullObject.getSchemaProperties() == null);
+        assertTrue(nullObject.getExtendedProperties() == null);
 
     }
 
@@ -129,30 +129,30 @@ public class TestSchemaType
     /**
      * Validate that schema properties are managed properly
      */
-    @Test public void testSchemaProperties()
+    @Test public void testExtendedProperties()
     {
         Map<String, Object> propertyMap;
         SchemaType          testObject = new SchemaType();
 
-        assertTrue(testObject.getSchemaProperties() == null);
+        assertTrue(testObject.getExtendedProperties() == null);
 
         propertyMap = null;
         testObject = new SchemaType();
-        testObject.setSchemaProperties(propertyMap);
+        testObject.setExtendedProperties(propertyMap);
 
-        assertTrue(testObject.getSchemaProperties() == null);
+        assertTrue(testObject.getExtendedProperties() == null);
 
         propertyMap = new HashMap<>();
         testObject = new SchemaType();
-        testObject.setSchemaProperties(propertyMap);
+        testObject.setExtendedProperties(propertyMap);
 
-        assertTrue(testObject.getSchemaProperties() == null);
+        assertTrue(testObject.getExtendedProperties() == null);
 
         propertyMap.put("propertyName", "propertyValue");
         testObject = new SchemaType();
-        testObject.setSchemaProperties(propertyMap);
+        testObject.setExtendedProperties(propertyMap);
 
-        Map<String, Object>   retrievedPropertyMap = testObject.getSchemaProperties();
+        Map<String, Object>   retrievedPropertyMap = testObject.getExtendedProperties();
 
         assertTrue(retrievedPropertyMap != null);
         assertFalse(retrievedPropertyMap.isEmpty());
