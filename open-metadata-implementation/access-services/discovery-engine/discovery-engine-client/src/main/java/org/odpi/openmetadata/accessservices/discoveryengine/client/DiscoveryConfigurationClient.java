@@ -33,9 +33,11 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
      *
      * @param serverName name of the server to connect to
      * @param newServerURL the network address of the server running the OMAS REST servers
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
      */
     public DiscoveryConfigurationClient(String     serverName,
-                                        String     newServerURL)
+                                        String     newServerURL) throws InvalidParameterException
     {
         this.serverName = serverName;
         this.omasServerURL = newServerURL;
@@ -51,11 +53,13 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
      * @param omasServerURL the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
      */
     public DiscoveryConfigurationClient(String     serverName,
                                         String     omasServerURL,
                                         String     userId,
-                                        String     password)
+                                        String     password) throws InvalidParameterException
     {
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
