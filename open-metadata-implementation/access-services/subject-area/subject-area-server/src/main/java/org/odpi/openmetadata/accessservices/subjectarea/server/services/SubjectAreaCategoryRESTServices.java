@@ -129,7 +129,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
                     // the glossary that was supplied is valid.
                     EntityDetail entityDetail = new CategoryMapper(oMRSAPIHelper).mapNodeToEntityDetail(suppliedCategory);
 
-                    response = oMRSAPIHelper.callOMRSAddEntity(userId, entityDetail);
+                    response = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, entityDetail);
                     if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetail) {
                         EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
                         entityDetail = entityDetailResponse.getEntityDetail();
@@ -142,7 +142,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
                         categoryAnchor.setGlossaryGuid(glossaryGuid);
                         categoryAnchor.setCategoryGuid(categoryGuid);
                         Relationship categoryAnchorRelationship = new CategoryAnchorMapper(oMRSAPIHelper).mapLineToRelationship(categoryAnchor);
-                        response = oMRSAPIHelper.callOMRSAddRelationship(userId, categoryAnchorRelationship);
+                        response = oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, categoryAnchorRelationship);
                         if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
                             if (suppliedCategoryParentGuid != null) {
                                 // Knit the Category to the supplied parent
@@ -150,7 +150,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
                                 categoryHierarchyLink.setSuperCategoryGuid(suppliedCategoryParentGuid);
                                 categoryHierarchyLink.setSubCategoryGuid(categoryGuid);
                                 Relationship relationship = new CategoryHierarchyLinkMapper(oMRSAPIHelper).mapLineToRelationship(categoryHierarchyLink);
-                                response = oMRSAPIHelper.callOMRSAddRelationship(userId, relationship);
+                                response = oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
                             }
                             if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
                                 response = getCategory(serverName,userId,categoryGuid);
@@ -198,7 +198,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
         try
         {
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            response = oMRSAPIHelper.callOMRSGetEntityByGuid(userId,guid);
+            response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId,guid);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail))
             {
                 EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
@@ -206,7 +206,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
                 CategoryMapper categoryMapper = new CategoryMapper(oMRSAPIHelper);
                 Category gotCategory = (Category) categoryMapper.mapEntityDetailToNode(gotEntityDetail);
                 String anchorTypeGuid = TypeGuids.getCategoryAnchorTypeGuid();
-                response = oMRSAPIHelper.callGetRelationshipsForEntity(userId,guid, anchorTypeGuid,0,null,null,null,0);
+                response = oMRSAPIHelper.callGetRelationshipsForEntity(methodName, userId,guid, anchorTypeGuid,0,null,null,null,0);
                 if (response.getResponseCategory().equals(ResponseCategory.OmrsRelationships))
                 {
                     RelationshipsResponse relationshipsResponse = (RelationshipsResponse) response;
@@ -215,7 +215,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
                     {
                         Relationship glossaryRelationship = glossaryRelationships.iterator().next();
                         CategoryAnchorRelationship categoryAnchor = (CategoryAnchorRelationship) new CategoryAnchorMapper(oMRSAPIHelper).mapRelationshipToLine(glossaryRelationship);
-                        response = SubjectAreaUtils.getGlossarySummaryForCategory(userId, oMRSAPIHelper, categoryAnchor);
+                        response = SubjectAreaUtils.getGlossarySummaryForCategory(methodName, userId, oMRSAPIHelper, categoryAnchor);
                         if (response.getResponseCategory().equals(ResponseCategory.GlossarySummary))
                         {
                             GlossarySummaryResponse glossarySummaryResponse = (GlossarySummaryResponse) response;
@@ -291,7 +291,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
         SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
         if (response == null) {
 
-            response = OMRSAPIHelper.findEntitiesByType(oMRSAPIHelper, serverName, userId, "GlossaryCategory", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
+            response = OMRSAPIHelper.findEntitiesByType(oMRSAPIHelper, serverName, methodName, userId, "GlossaryCategory", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
             if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetails) {
                 EntityDetailsResponse entityDetailsResponse = (EntityDetailsResponse) response;
                 List<EntityDetail> entitydetails = entityDetailsResponse.getEntityDetails();
@@ -350,7 +350,8 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
                                                                 org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
                                                                 String sequencingProperty
     ) {
-        return  getRelationshipsFromGuid(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        String restAPIName ="getCategoryRelationships";
+        return  getRelationshipsFromGuid(serverName ,restAPIName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
 
     /**
@@ -428,7 +429,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
                     CategoryMapper mapper =new CategoryMapper(oMRSAPIHelper);
                     EntityDetail updateEntityDetail = mapper.mapNodeToEntityDetail(updateCategory);
                     String categoryGuid = updateCategory.getSystemAttributes().getGUID();
-                    response = oMRSAPIHelper.callOMRSUpdateEntityProperties(userId, updateEntityDetail);
+                    response = oMRSAPIHelper.callOMRSUpdateEntityProperties(methodName, userId, updateEntityDetail);
                     if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetail) {
                         response = getCategory(serverName,userId,categoryGuid);
                     }
@@ -490,10 +491,10 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
                 String typeDefGuid = repositoryHelper.getTypeDefByName(source, typeDefName).getGUID();
                 if (isPurge)
                 {
-                    response = oMRSAPIHelper.callOMRSPurgeEntity(userId, typeDefName, typeDefGuid, guid);
+                    response = oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, typeDefName, typeDefGuid, guid);
                 } else
                 {
-                    response = oMRSAPIHelper.callOMRSDeleteEntity(userId, typeDefName, typeDefGuid, guid);
+                    response = oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, typeDefName, typeDefGuid, guid);
                     if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail))
                     {
                         EntityDetailResponse entityDetailResponse = (EntityDetailResponse)response;
@@ -543,7 +544,7 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
         try
         {
             InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-            response  = this.oMRSAPIHelper.callOMRSRestoreEntity(userId, guid);
+            response  = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
             if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetail) {
                 response = getCategory(serverName,userId,guid);
             }
