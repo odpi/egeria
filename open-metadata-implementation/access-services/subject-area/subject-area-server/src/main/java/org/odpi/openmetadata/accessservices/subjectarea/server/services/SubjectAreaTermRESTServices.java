@@ -133,7 +133,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                 if (glossaryResponse.getResponseCategory().equals(ResponseCategory.Category.Glossary)) {
                     // store the associated glossary
                     associatedGlossary = ((GlossaryResponse) glossaryResponse).getGlossary();
-                    response = oMRSAPIHelper.callOMRSAddEntity(userId, suppliedTermEntityDetail);
+                    response = oMRSAPIHelper.callOMRSAddEntity(methodName, userId, suppliedTermEntityDetail);
                     if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                         EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
                         EntityDetail createdTermEntityDetail = entityDetailResponse.getEntityDetail();
@@ -145,7 +145,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                         termAnchor.setTermGuid(termGuid);
                         TermAnchorMapper termAnchorMapper = new TermAnchorMapper(oMRSAPIHelper);
                         Relationship relationship = termAnchorMapper.mapLineToRelationship(termAnchor);
-                        response = oMRSAPIHelper.callOMRSAddRelationship(userId, relationship);
+                        response = oMRSAPIHelper.callOMRSAddRelationship(methodName, userId, relationship);
                         if (response.getResponseCategory().equals(ResponseCategory.OmrsRelationship)) {
                             // the relationship creation was successful so get the Term to return.
                             response = getTermByGuid(serverName, userId, termGuid);
@@ -194,7 +194,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         if (response == null) {
             try {
                 InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-                response = oMRSAPIHelper.callOMRSGetEntityByGuid(userId, guid);
+                response = oMRSAPIHelper.callOMRSGetEntityByGuid(methodName, userId, guid);
                 if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                     EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
                     EntityDetail gotEntityDetail = entityDetailResponse.getEntityDetail();
@@ -202,14 +202,14 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                     Term gotTerm = (Term) termMapper.mapEntityDetailToNode(gotEntityDetail);
                     String anchorTypeGuid = TypeGuids.getTermAnchorTypeGuid();
 
-                    response = oMRSAPIHelper.callGetRelationshipsForEntity(userId, guid, anchorTypeGuid, 0, null, null, null, 0);
+                    response = oMRSAPIHelper.callGetRelationshipsForEntity(methodName, userId, guid, anchorTypeGuid, 0, null, null, null, 0);
                     if (response.getResponseCategory().equals(ResponseCategory.OmrsRelationships)) {
                         RelationshipsResponse relationshipsResponse = (RelationshipsResponse) response;
                         List<Relationship> glossaryRelationships = relationshipsResponse.getRelationships();
                         if (glossaryRelationships.iterator().hasNext()) {
                             Relationship glossaryRelationship = glossaryRelationships.iterator().next();
                             TermAnchorRelationship termAnchor = (TermAnchorRelationship) new TermAnchorMapper(oMRSAPIHelper).mapRelationshipToLine(glossaryRelationship);
-                            response = SubjectAreaUtils.getGlossarySummaryForTerm(userId, oMRSAPIHelper, termAnchor,gotTerm);
+                            response = SubjectAreaUtils.getGlossarySummaryForTerm(methodName, userId, oMRSAPIHelper, termAnchor,gotTerm);
                             if (response.getResponseCategory().equals(ResponseCategory.GlossarySummary)) {
                                 GlossarySummaryResponse glossarySummaryResponse = (GlossarySummaryResponse) response;
                                 GlossarySummary glossarySummary = glossarySummaryResponse.getGlossarySummary();
@@ -241,6 +241,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * Get Term relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param restAPIName rest API name
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the term to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
@@ -269,7 +270,8 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                                                             org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SequencingOrder sequencingOrder,
                                                             String sequencingProperty
     ) {
-        return  getRelationshipsFromGuid(serverName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
+        String restAPIName ="getTermRelationships";
+        return  getRelationshipsFromGuid(serverName, restAPIName, userId, guid, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty);
     }
     /**
      * Find Term
@@ -293,7 +295,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
      * <li> FunctionNotSupportedException        Function not supported this indicates that a find was issued but the repository does not implement find functionality in some way.</li>
      * </ul>
      */
-    public  SubjectAreaOMASAPIResponse findTerm(String serverName, String userId,
+    public  SubjectAreaOMASAPIResponse findTerm( String serverName, String userId,
                                                 String searchCriteria,
                                                 Date asOfTime,
                                                 Integer offset,
@@ -311,7 +313,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
         if (response == null)
         {
-            response = OMRSAPIHelper.findEntitiesByType(oMRSAPIHelper, serverName, userId, "GlossaryTerm", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
+            response = OMRSAPIHelper.findEntitiesByType(oMRSAPIHelper, serverName, methodName, userId, "GlossaryTerm", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetails))
             {
                 EntityDetailsResponse entityDetailsResponse = (EntityDetailsResponse) response;
@@ -462,12 +464,12 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                     updateTerm.setEffectiveToTime(termToTime);
 
                     EntityDetail updateEntityDetail = termMapper.mapNodeToEntityDetail(updateTerm);
-                    response = oMRSAPIHelper.callOMRSUpdateEntityProperties(userId, updateEntityDetail);
+                    response = oMRSAPIHelper.callOMRSUpdateEntityProperties(methodName, userId, updateEntityDetail);
                     if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail))
                     {
                         if (updateEntityDetail.getClassifications() !=null && !updateEntityDetail.getClassifications().isEmpty()) {
                             for (Classification classification : updateEntityDetail.getClassifications()) {
-                                response = oMRSAPIHelper.callOMRSClassifyEntity(userId,guid,classification.getName(),classification.getProperties());
+                                response = oMRSAPIHelper.callOMRSClassifyEntity(methodName, userId,guid,classification.getName(),classification.getProperties());
                                 if (!response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)){
                                     break;
                                 }
@@ -481,22 +483,22 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                             Set<String> currentClassificationNames = updateEntityDetail.getClassifications().stream().map(x -> x.getName()).collect(Collectors.toSet());
                             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                                 if (originalTerm.getGovernanceActions().getRetention() != null && !currentClassificationNames.contains("Retention")) {
-                                    response = oMRSAPIHelper.callOMRSDeClassifyEntity(userId, guid, "Retention");
+                                    response = oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, "Retention");
                                 }
                             }
                             if (!response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                                 if (originalTerm.getGovernanceActions().getCriticality() != null && !currentClassificationNames.contains("Criticality")) {
-                                    response = oMRSAPIHelper.callOMRSDeClassifyEntity(userId, guid, "Criticality");
+                                    response = oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, "Criticality");
                                 }
                             }
                             if (!response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                                 if (originalTerm.getGovernanceActions().getConfidence() != null && !currentClassificationNames.contains("Confidence")) {
-                                    response = oMRSAPIHelper.callOMRSDeClassifyEntity(userId, guid, "Confidence");
+                                    response = oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, "Confidence");
                                 }
                             }
                             if (!response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
                                 if (originalTerm.getGovernanceActions().getConfidentiality() != null && !currentClassificationNames.contains("Confidentility")) {
-                                    response = oMRSAPIHelper.callOMRSDeClassifyEntity(userId, guid, "Confidentility");
+                                    response = oMRSAPIHelper.callOMRSDeClassifyEntity(methodName, userId, guid, "Confidentility");
                                 }
                             }
                         }
@@ -571,10 +573,10 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
                 String typeDefGuid = repositoryHelper.getTypeDefByName(source, typeDefName).getGUID();
                 if (isPurge)
                 {
-                    response = oMRSAPIHelper.callOMRSPurgeEntity(userId, typeDefName, typeDefGuid, guid);
+                    response = oMRSAPIHelper.callOMRSPurgeEntity(methodName, userId, typeDefName, typeDefGuid, guid);
                 } else
                 {
-                    response = oMRSAPIHelper.callOMRSDeleteEntity(userId, typeDefName, typeDefGuid, guid);
+                    response = oMRSAPIHelper.callOMRSDeleteEntity(methodName, userId, typeDefName, typeDefGuid, guid);
                     if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail))
                     {
                         EntityDetailResponse entityDetailResponse = (EntityDetailResponse)response;
@@ -625,7 +627,7 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
             try {
 
                 InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-                response = this.oMRSAPIHelper.callOMRSRestoreEntity(userId, guid);
+                response = this.oMRSAPIHelper.callOMRSRestoreEntity(methodName, userId, guid);
                 if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetail) {
                     response = getTermByGuid(serverName, userId, guid);
                 }
