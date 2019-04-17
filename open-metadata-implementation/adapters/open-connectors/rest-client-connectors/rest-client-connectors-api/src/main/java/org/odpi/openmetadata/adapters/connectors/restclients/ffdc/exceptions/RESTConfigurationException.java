@@ -1,12 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.conformance.ffdc.exception;
+package org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions;
 
 /**
- * The RESTConfigurationException is thrown by the conformance suite when it is not able to configure
+ * The RESTConfigurationException is thrown by the connector when it is not able to configure
  * a client to call a REST API.
  */
-public class RESTConfigurationException extends ConformanceSuiteCheckedExceptionBase
+public class RESTConfigurationException extends RESTClientCheckedExceptionBase
 {
     /**
      * This is the typical constructor used for creating an exception.
@@ -19,11 +19,11 @@ public class RESTConfigurationException extends ConformanceSuiteCheckedException
      * @param userAction   instructions for correcting the error
      */
     public RESTConfigurationException(int    httpCode,
-                                     String className,
-                                     String actionDescription,
-                                     String errorMessage,
-                                     String systemAction,
-                                     String userAction)
+                                      String className,
+                                      String actionDescription,
+                                      String errorMessage,
+                                      String systemAction,
+                                      String userAction)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
     }
@@ -41,12 +41,12 @@ public class RESTConfigurationException extends ConformanceSuiteCheckedException
      * @param caughtError the error that resulted in this exception.
      */
     public RESTConfigurationException(int       httpCode,
-                                     String    className,
-                                     String    actionDescription,
-                                     String    errorMessage,
-                                     String    systemAction,
-                                     String    userAction,
-                                     Throwable caughtError)
+                                      String    className,
+                                      String    actionDescription,
+                                      String    errorMessage,
+                                      String    systemAction,
+                                      String    userAction,
+                                      Throwable caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
 

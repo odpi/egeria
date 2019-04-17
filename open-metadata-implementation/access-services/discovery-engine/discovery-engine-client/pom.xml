@@ -31,8 +31,15 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>rest-client-connectors-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>rest-client-factory</artifactId>
+            <version>${open-metadata.version}</version>
         </dependency>
 
     </dependencies>
