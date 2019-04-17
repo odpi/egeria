@@ -17,11 +17,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
         @JsonSubTypes.Type(value = InformationViewEvent.class, name = "InformationViewEvent"),
-        @JsonSubTypes.Type(value = TableContextEvent.class, name = "TableContextEvent")
+        @JsonSubTypes.Type(value = TableContextEvent.class, name = "TableContextEvent"),
+        @JsonSubTypes.Type(value = RegistrationRequestBody.class, name = "RegistrationRequestBody"),
+        @JsonSubTypes.Type(value = ReportRequestBody.class, name = "ReportRequestBody"),
+        @JsonSubTypes.Type(value = DataViewRequestBody.class, name = "DataViewRequestBody"),
+        @JsonSubTypes.Type(value = SemanticAssignment.class, name = "SemanticAssignment"),
+        @JsonSubTypes.Type(value = UpdatedEntityEvent.class, name = "UpdatedEntityEvent"),
 })
 public abstract class InformationViewHeader {
 

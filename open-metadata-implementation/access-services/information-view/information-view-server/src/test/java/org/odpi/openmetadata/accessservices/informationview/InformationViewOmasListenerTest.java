@@ -190,7 +190,7 @@ public class InformationViewOmasListenerTest {
         when(skeletonClassification.getType()).thenReturn(mockType);
         when(skeletonClassification.getStatus()).thenReturn(InstanceStatus.ACTIVE);
         when(helper.getSkeletonClassification(Constants.INFORMATION_VIEW_OMAS_NAME,
-                Constants.USER_ID,
+                Constants.INFORMATION_VIEW_USER_ID,
                 classificationTypeName,
                 entityTypeName))
                 .thenReturn(skeletonClassification);
@@ -247,7 +247,7 @@ public class InformationViewOmasListenerTest {
         when(helper.getSkeletonRelationship(Constants.INFORMATION_VIEW_OMAS_NAME,
                 "",
                 InstanceProvenanceType.LOCAL_COHORT,
-                Constants.USER_ID,
+                Constants.INFORMATION_VIEW_USER_ID,
                 typeName)).thenReturn(skeletonRelationship);
     }
 
@@ -262,7 +262,7 @@ public class InformationViewOmasListenerTest {
         when(helper.getSkeletonEntity(Constants.INFORMATION_VIEW_OMAS_NAME,
                 "",
                 InstanceProvenanceType.LOCAL_COHORT,
-                Constants.USER_ID,
+                Constants.INFORMATION_VIEW_USER_ID,
                 typeName)).thenReturn(skeletonEntity);
         when(omrsMetadataCollection.addEntity(any(String.class), eq(typeGuid), propertiesArgumentCaptor.capture(), any(ArrayList.class), any(InstanceStatus.class))).thenReturn(entityDetail);
     }
@@ -305,7 +305,7 @@ public class InformationViewOmasListenerTest {
         when(derivedColumnType.getProperties()).thenReturn(derivedColumnTypeInstanceProperties);
 
 
-        when(omrsMetadataCollection.findEntitiesByProperty(Constants.USER_ID, DATABASE_TYPE_GUID,
+        when(omrsMetadataCollection.findEntitiesByProperty(Constants.INFORMATION_VIEW_USER_ID, DATABASE_TYPE_GUID,
                 buildInstanceProperties(DATABASE_QUALIFIED_NAME),
                 MatchCriteria.ALL,
                 0,
@@ -331,47 +331,47 @@ public class InformationViewOmasListenerTest {
     private void buildInstanceTypes() throws Exception {
 
         TypeDef typeDef = testDataHelper.buildInstanceType(Constants.SOFTWARE_SERVER, SOFTWARE_SERVER_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, Constants.SOFTWARE_SERVER)).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.SOFTWARE_SERVER)).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.ENDPOINT, ENDPOINT_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, Constants.ENDPOINT)).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.ENDPOINT)).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.CONNECTION, CONNECTION_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, Constants.CONNECTION)).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.CONNECTION)).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.CONNECTOR_TYPE, CONNECTOR_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.DATA_STORE, DATABASE_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.INFORMATION_VIEW, INFORMATION_VIEW_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.RELATIONAL_DB_SCHEMA_TYPE, DB_SCHEMA_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.RELATIONAL_TABLE_TYPE, TABLETYPE_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.RELATIONAL_TABLE, TABLE_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.DERIVED_RELATIONAL_COLUMN, DERIVED_COLUMN_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
         typeDef = testDataHelper.buildInstanceType(Constants.RELATIONAL_COLUMN_TYPE, COLUMNTYPE_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         when(helper.getTypeDefByName("", typeDef.getName())).thenReturn(typeDef);
 
     }
@@ -379,25 +379,25 @@ public class InformationViewOmasListenerTest {
     private void buildRelationshipsTypes() throws Exception {
 
         TypeDef typeDef = testDataHelper.buildRelationshipType(Constants.SERVER_ENDPOINT, TestDataHelper.SERVER_ENDPOINT_REL_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.CONNECTION_TO_ENDPOINT, TestDataHelper.CONNECTION_ENDPOINT_REL_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.CONNECTION_CONNECTOR_TYPE, TestDataHelper.CONNECTION_CONNECTOR_REL_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.CONNECTION_TO_ASSET, TestDataHelper.CONNECTION_ASSET_REL_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.DATA_CONTENT_FOR_DATASET, TestDataHelper.DATA_CONTENT_DATASET_REL_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.ASSET_SCHEMA_TYPE, TestDataHelper.ASSET_SCHEMA_REL_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.SCHEMA_ATTRIBUTE_TYPE, TestDataHelper.SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.ATTRIBUTE_FOR_SCHEMA, TestDataHelper.ATTRIBUTE_FOR_SCHEMA_REL_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.SCHEMA_QUERY_IMPLEMENTATION, TestDataHelper.SCHEMA_QUERY_IMPLEMENTATION_REL_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
         typeDef = testDataHelper.buildRelationshipType(Constants.SEMANTIC_ASSIGNMENT, TestDataHelper.SEMANTIC_ASSIGNMENT_REL_TYPE_GUID);
-        when(helper.getTypeDefByName(Constants.USER_ID, typeDef.getName())).thenReturn(typeDef);
+        when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
     }
 
 
@@ -410,7 +410,7 @@ public class InformationViewOmasListenerTest {
         InformationViewEvent informationViewEvent = testDataHelper.buildEvent();
         listener.processEvent(new ObjectMapper().writeValueAsString(informationViewEvent));
 
-        verify(omrsMetadataCollection, Mockito.times(1)).addEntity(eq(Constants.USER_ID), eq(INFORMATION_VIEW_TYPE_GUID), informationViewInstanceProperties.capture(), any(ArrayList.class), eq(InstanceStatus.ACTIVE));
+        verify(omrsMetadataCollection, Mockito.times(1)).addEntity(eq(Constants.INFORMATION_VIEW_USER_ID), eq(INFORMATION_VIEW_TYPE_GUID), informationViewInstanceProperties.capture(), any(ArrayList.class), eq(InstanceStatus.ACTIVE));
 
         assertEquals(EntityPropertiesUtils.getStringValueForProperty(informationViewInstanceProperties.getValue(), Constants.QUALIFIED_NAME), INFORMATION_VIEW_QUALIFIED_NAME);
         assertEquals(EntityPropertiesUtils.getStringValueForProperty(dbSchemaTypeInstanceProperties.getValue(), Constants.QUALIFIED_NAME), DB_SCHEMA_TYPE_QUALIFIED_NAME);
@@ -419,14 +419,14 @@ public class InformationViewOmasListenerTest {
         assertEquals(EntityPropertiesUtils.getStringValueForProperty(derivedColumnInstanceProperties.getValue(), Constants.QUALIFIED_NAME), DERIVED_COLUMN_QUALIFIED_NAME);
         assertEquals(EntityPropertiesUtils.getStringValueForProperty(derivedColumnTypeInstanceProperties.getValue(), Constants.QUALIFIED_NAME), DERIVED_COLUMN_TYPE_QUALIFIED_NAME);
 
-        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.USER_ID), eq(TestDataHelper.DATA_CONTENT_DATASET_REL_TYPE_GUID), any(InstanceProperties.class), eq(DATABASE_GUID), eq(INFORMATION_VIEW_GUID), eq(InstanceStatus.ACTIVE));
-        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.USER_ID), eq(TestDataHelper.ASSET_SCHEMA_REL_TYPE_GUID), any(InstanceProperties.class), eq(INFORMATION_VIEW_GUID), eq(DB_SCHEMA_TYPE_GUID), eq(InstanceStatus.ACTIVE));
-        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.USER_ID), eq(TestDataHelper.SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID), any(InstanceProperties.class), eq(TABLE_GUID), eq(TABLE_TYPE_GUID), eq(InstanceStatus.ACTIVE));
-        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.USER_ID), eq(TestDataHelper.SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID), any(InstanceProperties.class), eq(DERIVED_COLUMN_GUID), eq(DERIVED_COLUMN_TYPE_GUID), eq(InstanceStatus.ACTIVE));
-        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.USER_ID), eq(TestDataHelper.ATTRIBUTE_FOR_SCHEMA_REL_TYPE_GUID), any(InstanceProperties.class), eq(DB_SCHEMA_TYPE_GUID), eq(TABLE_GUID), eq(InstanceStatus.ACTIVE));
-        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.USER_ID), eq(TestDataHelper.SCHEMA_QUERY_IMPLEMENTATION_REL_TYPE_GUID), any(InstanceProperties.class), eq(DERIVED_COLUMN_GUID), eq(TestDataHelper.REAL_COLUMN_GUID), eq(InstanceStatus.ACTIVE));
-        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.USER_ID), eq(TestDataHelper.SEMANTIC_ASSIGNMENT_REL_TYPE_GUID), any(InstanceProperties.class), eq(DERIVED_COLUMN_GUID), eq(TestDataHelper.BUSINESS_TERM_GUID), eq(InstanceStatus.ACTIVE));
-        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.USER_ID), eq(TestDataHelper.ATTRIBUTE_FOR_SCHEMA_REL_TYPE_GUID), any(InstanceProperties.class), eq(TABLE_TYPE_GUID), eq(DERIVED_COLUMN_GUID), eq(InstanceStatus.ACTIVE));
+        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.INFORMATION_VIEW_USER_ID), eq(TestDataHelper.DATA_CONTENT_DATASET_REL_TYPE_GUID), any(InstanceProperties.class), eq(DATABASE_GUID), eq(INFORMATION_VIEW_GUID), eq(InstanceStatus.ACTIVE));
+        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.INFORMATION_VIEW_USER_ID), eq(TestDataHelper.ASSET_SCHEMA_REL_TYPE_GUID), any(InstanceProperties.class), eq(INFORMATION_VIEW_GUID), eq(DB_SCHEMA_TYPE_GUID), eq(InstanceStatus.ACTIVE));
+        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.INFORMATION_VIEW_USER_ID), eq(TestDataHelper.SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID), any(InstanceProperties.class), eq(TABLE_GUID), eq(TABLE_TYPE_GUID), eq(InstanceStatus.ACTIVE));
+        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.INFORMATION_VIEW_USER_ID), eq(TestDataHelper.SCHEMA_ATTRIBUTE_TYPE_REL_TYPE_GUID), any(InstanceProperties.class), eq(DERIVED_COLUMN_GUID), eq(DERIVED_COLUMN_TYPE_GUID), eq(InstanceStatus.ACTIVE));
+        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.INFORMATION_VIEW_USER_ID), eq(TestDataHelper.ATTRIBUTE_FOR_SCHEMA_REL_TYPE_GUID), any(InstanceProperties.class), eq(DB_SCHEMA_TYPE_GUID), eq(TABLE_GUID), eq(InstanceStatus.ACTIVE));
+        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.INFORMATION_VIEW_USER_ID), eq(TestDataHelper.SCHEMA_QUERY_IMPLEMENTATION_REL_TYPE_GUID), any(InstanceProperties.class), eq(DERIVED_COLUMN_GUID), eq(TestDataHelper.REAL_COLUMN_GUID), eq(InstanceStatus.ACTIVE));
+        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.INFORMATION_VIEW_USER_ID), eq(TestDataHelper.SEMANTIC_ASSIGNMENT_REL_TYPE_GUID), any(InstanceProperties.class), eq(DERIVED_COLUMN_GUID), eq(TestDataHelper.BUSINESS_TERM_GUID), eq(InstanceStatus.ACTIVE));
+        verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.INFORMATION_VIEW_USER_ID), eq(TestDataHelper.ATTRIBUTE_FOR_SCHEMA_REL_TYPE_GUID), any(InstanceProperties.class), eq(TABLE_TYPE_GUID), eq(DERIVED_COLUMN_GUID), eq(InstanceStatus.ACTIVE));
 
     }
 }

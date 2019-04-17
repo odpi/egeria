@@ -5,10 +5,11 @@ package org.odpi.openmetadata.accessservices.informationview.server;
 import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
 import org.odpi.openmetadata.accessservices.informationview.events.*;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewUncheckedExceptionBase;
+import org.odpi.openmetadata.accessservices.informationview.registration.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.InformationViewExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.responses.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
 import java.util.List;
 
@@ -153,6 +154,22 @@ public class InformationViewRestServices {
 
         return response;
     }
+
+     public InformationViewOMASAPIResponse registerExternalTool(String serverName,
+                                                                String userId,
+                                                                RegistrationRequestBody requestBody) {
+         RegistrationResponse response = new RegistrationResponse();
+         RegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(serverName);
+         try {
+             EntityDetail entityDetail  = registrationHandler.registerTool(requestBody);
+             response.setGuid(entityDetail.getGUID());
+         } catch (InformationViewUncheckedExceptionBase e) {
+             handleErrorResponse(e);
+         }
+         return response;
+    }
+
+
 
 
     private InformationViewOMASAPIResponse handleErrorResponse(InformationViewUncheckedExceptionBase e) {
