@@ -21,7 +21,7 @@ public class TestAsset
     private ElementType          type                 = new ElementType();
     private List<Classification> classifications      = new ArrayList<>();
     private List<String>         zoneMembership       = new ArrayList<>();
-    private Map<String, Object>  additionalProperties = new HashMap<>();
+    private Map<String, String>  additionalProperties = new HashMap<>();
     private Map<String, Object>  assetProperties      = new HashMap<>();
 
 
@@ -55,7 +55,9 @@ public class TestAsset
         testObject.setDescription("TestDescription");
         testObject.setShortDescription("TestShortDescription");
         testObject.setOwner("TestOwner");
+        testObject.setOwnerType(OwnerType.USER_ID);
         testObject.setZoneMembership(zoneMembership);
+        testObject.setLatestChange("TestLatestChange");
         testObject.setExtendedProperties(assetProperties);
 
         return testObject;
@@ -81,6 +83,8 @@ public class TestAsset
         assertTrue(resultObject.getDescription().equals("TestDescription"));
         assertTrue(resultObject.getShortDescription().equals("TestShortDescription"));
         assertTrue(resultObject.getOwner().equals("TestOwner"));
+        assertTrue(resultObject.getLatestChange().equals("TestLatestChange"));
+        assertTrue(resultObject.getOwnerType() == OwnerType.USER_ID);
         assertTrue(resultObject.getZoneMembership() != null);
         assertTrue(resultObject.getExtendedProperties() == null);
     }

@@ -175,7 +175,7 @@ public class AssetReferenceable extends AssetElementHeader
      */
     public AdditionalProperties getAdditionalProperties()
     {
-        Map<String, Object>   additionalProperties = referenceableBean.getAdditionalProperties();
+        Map<String, String>   additionalProperties = referenceableBean.getAdditionalProperties();
 
         if (additionalProperties == null)
         {

@@ -125,20 +125,11 @@ public class EmbeddedConnectionProperties extends AssetPropertyBase
     /**
      * Return the list of properties associated with this schema link.
      *
-     * @return AdditionalProperties
+     * @return map of properties
      */
-    public AdditionalProperties getArguments()
+    public Map<String, Object> getArguments()
     {
-        Map<String, Object>  arguments = embeddedConnectionBean.getArguments();
-
-        if (arguments == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new AdditionalProperties(super.getParentAsset(), arguments);
-        }
+       return embeddedConnectionBean.getArguments();
     }
 
 

@@ -11,7 +11,6 @@ import java.util.Properties;
 import org.apache.kafka.clients.consumer.ConsumerRebalanceListener;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
-import org.apache.kafka.clients.consumer.KafkaConfigurationWrapper;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
@@ -64,12 +63,12 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
      * @param connector connector holding the inbound listeners.
      * @param auditLog  audit log for this component.
      */
-    public KafkaOpenMetadataEventConsumer(String                          topicName,
-                                          String                          localServerId,
-                                          KafkaOpenMetadataEventConsumerConfiguration config,
-                                          Properties                      kafkaConsumerProperties,
-                                          KafkaOpenMetadataTopicConnector connector,
-                                          OMRSAuditLog                    auditLog)
+    KafkaOpenMetadataEventConsumer(String                                      topicName,
+                                   String                                      localServerId,
+                                   KafkaOpenMetadataEventConsumerConfiguration config,
+                                   Properties                                  kafkaConsumerProperties,
+                                   KafkaOpenMetadataTopicConnector             connector,
+                                   OMRSAuditLog                                auditLog)
     {
         this.auditLog = auditLog;
         this.consumer = new KafkaConsumer<>(kafkaConsumerProperties);
@@ -112,10 +111,12 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
     }
 
 
-    private void updateNextMaxPollTimestamp() {
+    private void updateNextMaxPollTimestamp()
+    {
     	maxNextPollTimestampToAvoidConsumerTimeout = System.currentTimeMillis() + maxMsBetweenPolls - consumerTimeoutPreventionSafetyWindowMs;
-    	
     }
+
+
     /**
      * This is the method that provides the behaviour of the thread.
      */
@@ -136,7 +137,8 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
             	
                 	
             	int nUnprocessedEvents = connector.getNumberOfUnprocessedEvents();
-            	if (! pollRequired && nUnprocessedEvents > maxQueueSize) {
+            	if (! pollRequired && nUnprocessedEvents > maxQueueSize)
+            	{
             		//The connector queue is too big.  Wait until the size goes down until
             		//polling again.  If we let the events just accumulate, we will
             		//eventually run out of memory if the consumer cannot keep up.
@@ -246,7 +248,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
 	}
 
 
-    protected void recoverAfterError()
+    private void recoverAfterError()
     {
         log.info(String.format("Waiting %s seconds to recover", recoverySleepTimeSec));
 
@@ -264,7 +266,7 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
     /**
      * Normal shutdown
      */
-    public void safeCloseConsumer()
+    void safeCloseConsumer()
     {
         stopRunning();
 

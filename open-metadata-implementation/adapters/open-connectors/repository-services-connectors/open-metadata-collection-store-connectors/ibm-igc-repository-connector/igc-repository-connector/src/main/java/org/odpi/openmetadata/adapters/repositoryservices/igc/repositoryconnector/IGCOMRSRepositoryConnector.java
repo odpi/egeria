@@ -51,8 +51,8 @@ public class IGCOMRSRepositoryConnector extends OMRSRepositoryConnector {
         log.debug("Initializing IGCOMRSRepositoryConnector...");
 
         // Retrieve connection details
-        String baseURL = (String) this.connectionBean.getAdditionalProperties().get("igcBaseURL");
-        String auth = (String) this.connectionBean.getAdditionalProperties().get("igcAuthorization");
+        String baseURL = (String) this.connectionBean.getConfigurationProperties().get("igcBaseURL");
+        String auth = (String) this.connectionBean.getConfigurationProperties().get("igcAuthorization");
 
         // Create new REST API client (opens a new session)
         this.igcRestClient = new IGCRestClient(baseURL, auth);

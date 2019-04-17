@@ -15,7 +15,7 @@ This connector is able to return a schema structure for the file
 that can be used by a discovery engine or data platform engine or
 governance daemon or OMAS to extract and store the schema.
 
-There are three additional properties supported by this connector.
+There are three configuration properties supported by this connector.
 
 * **delimiterCharacter** - the character used to delimit the columns.
   The comma '**,**' character is the default.
@@ -26,7 +26,7 @@ There are three additional properties supported by this connector.
 * **columnNames** - list of column names - used when the first line of the
   file is not the column names.
 
-These properties are stored in the additional properties of the Connection object used to create the connector instance.
+These properties are stored in the configuration properties of the Connection object used to create the connector instance.
 
 The unit test cases use examples of different CSV files.  These files are located in the
 test resources folder.  For example, **SimpleColumnsWithColumnNames.csv** shows a very traditional

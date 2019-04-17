@@ -74,7 +74,6 @@ public class SchemaType extends SchemaElement
             author = templateSchema.getAuthor();
             usage = templateSchema.getUsage();
             encodingStandard = templateSchema.getEncodingStandard();
-            schemaProperties = templateSchema.getSchemaProperties();
         }
     }
 
@@ -242,9 +241,9 @@ public class SchemaType extends SchemaElement
                 ", author='" + author + '\'' +
                 ", usage='" + usage + '\'' +
                 ", encodingStandard='" + encodingStandard + '\'' +
-                ", schemaProperties=" + schemaProperties +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
                 ", type=" + getType() +
                 ", GUID='" + getGUID() + '\'' +
                 ", URL='" + getURL() + '\'' +
