@@ -1,0 +1,26 @@
+From 9d9e9c453ae695813e659ddf43d3919f74a2c83c Mon Sep 17 00:00:00 2001
+From: Nigel Jones <nigel.l.jones+git@gmail.com>
+Date: Wed, 17 Apr 2019 14:46:10 +0100
+Subject: [PATCH 2/2] EGERIA github #922 - upgrade findbugs
+
+Signed-off-by: Nigel Jones <nigel.l.jones+git@gmail.com>
+---
+ pom.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pom.xml b/pom.xml
+index b3bfae0a3..ea5d60bbd 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -1792,7 +1792,7 @@
+                 <plugin>
+                     <groupId>org.codehaus.mojo</groupId>
+                     <artifactId>findbugs-maven-plugin</artifactId>
+-                    <version>3.0.1</version>
++                    <version>3.0.5</version>
+                 </plugin>
+ 
+                 <!-- Source code metrics: mvn javancss:report or mvn site -->
+-- 
+2.21.0
+
