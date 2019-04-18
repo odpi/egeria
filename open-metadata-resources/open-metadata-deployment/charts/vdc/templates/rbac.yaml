@@ -9,7 +9,8 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: vdc-rbac
-  name: {{ include "myapp.fullname" . }}-vdc-api-role
+  name: {{ include "myapp.fullname" . }}-api-role
+  namespace: {{ .Release.Namespace }}
 rules:
 - apiGroups: [""]
   resources: ["endpoints","pods","services"]
@@ -24,11 +25,12 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: vdc-rbac
-  name: {{ include "myapp.fullname" . }}-vdc-api-role-binding
+  name: {{ include "myapp.fullname" . }}-api-role-binding
+  namespace: {{ .Release.Namespace }}
 subjects:
 - kind: ServiceAccount
-  name: default # Name is case sensitive
+  name: default
+  namespace: {{ .Release.Namespace }}
 roleRef:
   kind: Role
-  name: vdc-api-role
-  apiGroup: rbac.authorization.k8s.io
+  name: {{ include "myapp.fullname" . }}-api-role
