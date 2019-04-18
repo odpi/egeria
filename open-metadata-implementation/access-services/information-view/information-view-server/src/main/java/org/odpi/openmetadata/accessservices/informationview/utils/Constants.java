@@ -54,7 +54,7 @@ public class Constants {
     public static final String ADDITIONAL_PROPERTIES = "additionalProperties";
     public static final String CONNECTOR_PROVIDER_CLASSNAME = "connectorProviderClassName";
     public static final String GAIAN_DB_NODE_NAME = "GDName";
-    public static final String USER_ID = "informationViewOmas";
+    public static final String INFORMATION_VIEW_USER_ID = "informationViewOmas";
     public static final String CONNECTOR_TYPE = "ConnectorType";
     public static final String DEPLOYED_DATABASE_SCHEMA = "DeployedDatabaseSchema";
     public static final String ENDPOINT = "Endpoint";
@@ -85,4 +85,10 @@ public class Constants {
     public static final Integer PAGE_SIZE = 100;
     public static final int START_FROM = 0;
     public static final String GUID = "guid";
+    public static final String TYPE = "type";
+    public static final String VERSION = "version";
+    public static final String PATCH_LEVEL = "patchLevel";
+    public static final String SOURCE = "source";
+    public static final String USER_ID = "userId";
+    public static final String OWNER_TYPE = "ownerType";
 }
