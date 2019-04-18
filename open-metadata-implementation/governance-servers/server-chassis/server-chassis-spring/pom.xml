@@ -126,6 +126,12 @@
             <version>${open-metadata.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>data-platform-spring</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
 
         <!-- Spring for REST APIs -->
         <dependency>
