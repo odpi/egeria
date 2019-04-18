@@ -21,7 +21,7 @@ public class TestDerivedSchemaAttribute
 {
     private ElementType                       type                 = new ElementType();
     private List<Classification>              classifications      = new ArrayList<>();
-    private Map<String, Object>               additionalProperties = new HashMap<>();
+    private Map<String, String>               additionalProperties = new HashMap<>();
     private SchemaType                        schemaElement        = new PrimitiveSchemaType();
     private SchemaLink                        schemaLink           = new SchemaLink();
     private List<SchemaAttributeRelationship> relationships        = new ArrayList<>();

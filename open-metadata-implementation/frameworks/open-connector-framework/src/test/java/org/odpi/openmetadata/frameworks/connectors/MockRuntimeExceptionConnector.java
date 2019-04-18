@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.ConnectedAssetProp
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -256,16 +257,20 @@ public abstract class MockRuntimeExceptionConnector extends ConnectorBase
          *
          * @return secured properties   typically user credentials for the connection
          */
-        protected AdditionalProperties getSecuredProperties()
+        protected Map<String, Object> getSecuredProperties()
         {
             Map<String, Object>  securedProperties = super.getConnectionBean().getSecuredProperties();
             if (securedProperties == null)
             {
                 return null;
             }
+            else if (securedProperties.isEmpty())
+            {
+                return null;
+            }
             else
             {
-                return new AdditionalProperties(super.getParentAsset(), securedProperties);
+                return new HashMap<>(securedProperties);
             }
         }
 

@@ -2,16 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.builders;
 
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.communityprofile.mappers.PersonalProfileMapper;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethod;
-import org.odpi.openmetadata.accessservices.communityprofile.properties.UserIdentity;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,35 +21,16 @@ public class PersonalProfileBuilder
 {
     private static final Logger log = LoggerFactory.getLogger(PersonalProfileBuilder.class);
 
-    private static final String qualifiedNameParameterName = "qualifiedName";
-    private static final String nameParameterName          = "name";
-
     private OMRSRepositoryHelper    repositoryHelper;
     private String                  serviceName;
 
 
     /**
-     * Constructor takes all of the properties of a new personal profile and saves in private variables to
-     * use later when constructing the repository instances.
+     * Simple constructor.
      *
-     * @param qualifiedName personnel/serial/unique employee number of the individual.
-     * @param fullName full name of the person.
-     * @param name known name or nickname of the individual.
-     * @param jobTitle job title of the individual.
-     * @param jobRoleDescription job description of the individual.
-     * @param additionalProperties  additional properties about the individual.
+     * @param repositoryHelper helper class for formatting instances
+     * @param serviceName name of this service
      */
-    public PersonalProfileBuilder(String              qualifiedName,
-                                  String              fullName,
-                                  String              name,
-                                  String              jobTitle,
-                                  String              jobRoleDescription,
-                                  Map<String, String> additionalProperties)
-    {
-
-    }
-
-
     public PersonalProfileBuilder(OMRSRepositoryHelper repositoryHelper,
                                   String               serviceName)
     {
@@ -134,11 +111,11 @@ public class PersonalProfileBuilder
 
         if ((additionalProperties != null) && (! additionalProperties.isEmpty()))
         {
-            properties = repositoryHelper.addMapPropertyToInstance(serviceName,
-                                                                   properties,
-                                                                   PersonalProfileMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
-                                                                   additionalProperties,
-                                                                   methodName);
+            properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                         properties,
+                                                                         PersonalProfileMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                         additionalProperties,
+                                                                         methodName);
         }
 
         log.debug("Instance properties: " + properties.toString());

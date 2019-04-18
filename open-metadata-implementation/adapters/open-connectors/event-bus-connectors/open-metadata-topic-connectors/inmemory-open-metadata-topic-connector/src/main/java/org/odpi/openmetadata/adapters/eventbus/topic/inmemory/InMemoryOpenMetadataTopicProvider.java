@@ -6,6 +6,9 @@ package org.odpi.openmetadata.adapters.eventbus.topic.inmemory;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ConnectorType;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicProvider;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * InMemoryOpenMetadataTopicProvider provides implementation of the connector provider for the InMemoryOpenMetadataTopicConnector.
  */
@@ -32,6 +35,11 @@ public class InMemoryOpenMetadataTopicProvider extends OpenMetadataTopicProvider
         connectorType.setDisplayName(connectorTypeName);
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
+
+        List<String> recognizedConfigurationProperties = new ArrayList<>();
+        recognizedConfigurationProperties.add(sleepTimeProperty);
+
+        connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
     }

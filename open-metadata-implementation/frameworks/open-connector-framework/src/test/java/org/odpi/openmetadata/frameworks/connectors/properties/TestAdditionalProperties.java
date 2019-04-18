@@ -29,12 +29,12 @@ public class TestAdditionalProperties
     }
 
 
-    private Map<String, Object>  getPropertyMap()
+    private Map<String, String>  getPropertyMap()
     {
-        Map<String, Object>  propertyMap = new HashMap<>();
+        Map<String, String>  propertyMap = new HashMap<>();
 
         propertyMap.put("property1", "TestString");
-        propertyMap.put("property2", new Integer(2));
+        propertyMap.put("property2", "Two");
 
         return propertyMap;
     }
@@ -51,7 +51,7 @@ public class TestAdditionalProperties
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property2"));
-        assertTrue(additionalProperties.getProperty(propertyName).equals(new Integer(2)));
+        assertTrue(additionalProperties.getProperty(propertyName).equals("Two"));
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property1"));
@@ -73,7 +73,7 @@ public class TestAdditionalProperties
     {
         AssetDescriptor      parentAsset = null;
         AdditionalProperties template    = null;
-        Map<String, Object>  propertyMap = new HashMap<>();
+        Map<String, String>  propertyMap = new HashMap<>();
 
         AdditionalProperties  additionalProperties = new AdditionalProperties(parentAsset, template);
         Iterator<String>      iterator             = additionalProperties.getPropertyNames();
@@ -141,7 +141,7 @@ public class TestAdditionalProperties
         AssetDescriptor parentAsset = new AssetSummary(assetBean);
 
         AdditionalProperties template    = null;
-        Map<String, Object>  propertyMap = new HashMap<>();
+        Map<String, String>  propertyMap = new HashMap<>();
 
         AssetPropertyBase assetPropertyBase = new AdditionalProperties(parentAsset, template);
 
@@ -181,7 +181,7 @@ public class TestAdditionalProperties
         assetBean.setType(elementType);
 
         AssetDescriptor      parentAsset = new AssetSummary(assetBean);
-        Map<String, Object>  propertyMap = new HashMap<>();
+        Map<String, String>  propertyMap = new HashMap<>();
 
         AssetPropertyBase assetPropertyBase = new AdditionalProperties(parentAsset, propertyMap);
         AdditionalProperties additionalProperties = new AdditionalProperties(parentAsset, propertyMap);

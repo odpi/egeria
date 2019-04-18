@@ -576,7 +576,8 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
                                    auditCode.getFormattedLogMessage(cohortName,
                                                                     remoteRepositoryConnection.getQualifiedName(),
                                                                     remoteServerName,
-                                                                    remoteMetadataCollectionId),
+                                                                    remoteMetadataCollectionId,
+                                                                    error.getErrorMessage()),
                                    error.getErrorMessage(),
                                    auditCode.getSystemAction(),
                                    auditCode.getUserAction());
@@ -599,7 +600,8 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
                 String     formattedLogMessage = auditCode.getFormattedLogMessage(cohortName,
                                                                                   remoteRepositoryConnection.getQualifiedName(),
                                                                                   remoteServerName,
-                                                                                  remoteMetadataCollectionId);
+                                                                                  remoteMetadataCollectionId,
+                                                                                  error.getMessage());
                 auditLog.logRecord(actionDescription,
                                    auditCode.getLogMessageId(),
                                    auditCode.getSeverity(),
@@ -618,7 +620,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
                                                                              localOrganizationName,
                                                                              remoteMetadataCollectionId,
                                                                              remoteRepositoryConnection,
-                                                                             auditCode.getLogMessageId() + formattedLogMessage);
+                                                                             error.getMessage());
                 }
             }
         }
@@ -874,7 +876,7 @@ public class OMRSCohortRegistry extends OMRSRegistryEventProcessor
      * @param sourceName name of the source of the event.  It may be the cohort name for incoming events or the
      *                   local repository, or event mapper name.
      * @param originatorMetadataCollectionId metadata collectionId of originator.
-     * @param originatorMetadataCollectionId display name of metadata collection of originator.
+     * @param originatorMetadataCollectionName display name of metadata collection of originator.
      * @param originatorServerName name of the server that the event came from.
      * @param originatorServerType type of server that the event came from.
      * @param originatorOrganizationName name of the organization that owns the server that sent the event.

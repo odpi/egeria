@@ -4,123 +4,87 @@
   
 # Open Metadata Conformance Suite Documentation
 
-The open metadata conformance suite contains a series of tests to exercise
-the open metadata APIs of a metadata repository.  The tests are
-run from a client application called **OpenMetadataTestLab** that
-runs each test in turn.  It is invoked as follows:
+The open metadata conformance suite provides a testing framework to help the developers
+integrate a specific technology into the open metadata ecosystem.
+
+Figure 1 shows the structure of the open metadata conformance suite.
+
+![Figure 1](conformance-suite-oveview.png)
+> **Figure 1:** Overview of the open metadata conformance suite
+
+The actual tests are run by an **open metadata conformance workbench** within the open metadata conformance suite server.
+Each workbench focuses on testing a specific type of technology.
+Today there are 2 workbenches:
+* **[Platform Workbench](platform-workbench)** - which tests the REST API of an
+[Open Metadata and Governance (OMAG) Server Platform](../../open-metadata-implementation/governance-servers/admin-services/docs/concepts/omag-server-platform.md)
+
+* **[Repository Workbench](repository-workbench)** - which tests both the repository services 
+[REST API](../../open-metadata-implementation/repository-services/docs/component-descriptions/omrs-rest-services.md)
+and [event exchange](../../open-metadata-implementation/repository-services/docs/event-descriptions)
+of an [open metadata repository](../../open-metadata-implementation/repository-services/docs/open-metadata-repository.md).
+
+Future workbenches will cover other APIs and event types as well
+demonstrate the ability to handle various workloads and also
+a performance benchmark test.
+
+The workbenches are configured using the OMAG Server Platform Administration Services.
+This defines which workbenches to run and how to connect to the technology to test.
+This configuration defines an OMAG Server that will run the requested conformance suite tests.
+The requested workbenches will begin to execute their tests as soon as the OMAG server is started.
+
+The OMAG Server also supports a REST API for querying the results of running
+the conformance suite tests.  These commands include:
+
+* Retrieve the results from a single named workbench.
+* Retrieve the results from all workbenches and test cases.
+* Retrieve the results from all failed test cases.
+* Retrieve the results from a specific test cases.
+
+The Open Metadata Conformance Suite also has a 
+client called `OpenMetadataConformanceTestReport` that will retrieve
+the conformance report and push it to a file called `openmetadata.conformance.testlab.results`.
+The client also outputs a summary of the test run.
+The example below is for an unsuccessful run:
 
 ```
-$ OpenMetadataTestLab <serverName> <URL root of repository under test>
+$ OpenMetadataConformanceTestReport cSuiteServer http://localhost:8081
+=======================================
+ Open Metadata Conformance Test Report 
+=======================================
+ ... contacting conformance suite server: cSuiteServer (http://localhost:8081)
+Conformance report from server:  cSuiteServer
 
-```
-and it prints a high level summary of the results to stdout.  Below is an
-example of a failing repository.
+Number of tests: 847
+Number of tests passed: 846
+Number of tests failed: 1
+Number of tests skipped: 0
 
-```
-$ OpenMetadataTestLab cocoMDS1 http://localhost:8080
-===============================
-Open Metadata Conformance Test  
-===============================
-Conformance Report for server: cocoMDS1 (http://localhost:8080)
-
-Number of tests: 671
-Number of tests passed: 357
-Number of tests failed: 254
-Number of tests skipped: 60
-
-cocoMDS1 server at http://localhost:8080 is not yet an open metadata repository
+Technology under test is not yet conformant
 
 Process finished with exit code 1
+$
 ```
 
-and a successful repository.
+This output is an example of a successful run:
 
 ```
-$ OpenMetadataTestLab cocoMDS1 http://localhost:8080
-===============================
-Open Metadata Conformance Test  
-===============================
-Conformance Report for server: cocoMDS1 (http://localhost:8080)
+$ OpenMetadataConformanceTestReport cSuiteServer http://localhost:8081
+=======================================
+ Open Metadata Conformance Test Report 
+=======================================
+ ... contacting conformance suite server: cSuiteServer (http://localhost:8081)
+Conformance report from server:  cSuiteServer
 
-Number of tests: 681
-Number of tests passed: 681
+Number of tests: 848
+Number of tests passed: 848
 Number of tests failed: 0
 Number of tests skipped: 0
 
-Congratulations, cocoMDS1 server at http://localhost:8080 is an open metadata repository
+Congratulations, technology under test is conformant
 
 Process finished with exit code 0
-
+$
 ```
-
-The detailed results of the tests are accumulated
-in a JSON file called *serverName*`.openmetadata.functional.testlab.results`.
-
-The tests are dynamically driven from different workbenches, each focused
-on a specific type of behavior.
-
-* **[Open Metadata Repository Origin Test Workbench](origin-workbench)** retrieves
-information about the specific implementation of the repository under test.
-
-* **[Open Metadata Repository Test Workbench](repository-workbench)** tests
-the behavior of the Open Metadata Repository Services (OMRS) REST API.
-
-A workbench manages the specific environment necessary to run its tests.
-
-Given the variety of support required by a repository to be classed as
-an open metadata repository, the number of tests required to test the
-breadth of its function also varies.
-Some of the workbenches use information
-from the repository to generate their full suite of tests, so each repository
-may require a different number of tests to cover its function.
-
-The output from the conformance suite contains:
-* Information about when the test was run.
-* Number of tests passing and failing.
-* Details of the assertions within each test that either passed or failed.
-* Additional properties about the repository including support for
-optional features.
-
-The high level structure of the results JSON document is as follows:
-
-```json
-{
-  "class" : "OpenMetadataTestLabResults",
-  "testRunDate" : 1534243775373,
-  "serverName" : "cocoMDS1",
-  "serverRootURL" : "http://localhost:8080",
-  "testResultsFromWorkbenches" : [ {
-    "class" : "OpenMetadataTestWorkbenchResults",
-    "workbenchName" : "Open Metadata Origin Test Workbench",
-    "versionNumber" : "V0.1 SNAPSHOT",
-    "workbenchDocumentationURL" : conformance,
-    "passedTestCases" : [ ],
-    "testCaseCount" : 1,
-    "testPassCount" : 1,
-    "testFailedCount" : 0,
-    "testSkippedCount" : 0
-  }, {
-    "class" : "OpenMetadataTestWorkbenchResults",
-    "workbenchName" : "Open Metadata Repository Test Workbench",
-    "versionNumber" : "V0.1 SNAPSHOT",
-    "workbenchDocumentationURL" : conformance,
-    "passedTestCases" : [  ],
-    "testCaseCount" : 670,
-    "testPassCount" : 356,
-    "testFailedCount" : 254,
-    "testSkippedCount" : 60
-  } ],
-  "testCaseCount" : 671,
-  "testPassCount" : 357,
-  "testFailedCount" : 254,
-  "testSkippedCount" : 60
-}
-```
-More detail of the output from individual test cases that run
-(which have been removed for clarify from the JSON snippet
-above) are described for each workbench.
-
-
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

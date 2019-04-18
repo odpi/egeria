@@ -87,7 +87,7 @@ public class RestValidator {
             // error - glossary is mandatory
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY;
             String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(className,
+                    + errorCode.getFormattedErrorMessage(
                     methodName);
             log.error(errorMessage);
             InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(),
@@ -116,7 +116,7 @@ public class RestValidator {
                 {
                     // error -  glossary guid is mandatory
                     SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY;
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
                     log.error(errorMessage);
                     InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
                     response = OMASExceptionToResponse.convertInvalidParameterException(e);
