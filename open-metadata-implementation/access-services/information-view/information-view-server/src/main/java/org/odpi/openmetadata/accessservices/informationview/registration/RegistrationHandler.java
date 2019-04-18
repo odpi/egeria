@@ -36,21 +36,20 @@ public class RegistrationHandler {
 
     public EntityDetail registerTool(RegistrationRequestBody requestBody) {
 
-        String qualifiedNameForSoftwareServer = requestBody.getUserId();
+        String qualifiedNameForSoftwareServer = requestBody.getName();
         InstanceProperties softwareServerProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSoftwareServer)
-                .withStringProperty(Constants.USER_ID, requestBody.getUserId())
+                .withStringProperty(Constants.PATCH_LEVEL, requestBody.getPatchLevel())
                 .withStringProperty(Constants.TYPE, requestBody.getType())
                 .withStringProperty(Constants.VERSION, requestBody.getVersion())
                 .withStringProperty(Constants.SOURCE, requestBody.getSource())
                 .withStringProperty(Constants.NAME, requestBody.getName())
                 .withStringProperty(Constants.DESCRIPTION, requestBody.getDescription())
-                .withStringProperty(Constants.OWNER, requestBody.getOwner())
                 .build();
 
         OMEntityWrapper registration;
         try {
-            registration = omEntityDao.createOrUpdateEntity(Constants.SOFTWARE_SERVER,
+            registration = omEntityDao.createOrUpdateEntity(Constants.SOFTWARE_SERVER_CAPABILITY,
                     qualifiedNameForSoftwareServer,
                     softwareServerProperties,
                     null,
