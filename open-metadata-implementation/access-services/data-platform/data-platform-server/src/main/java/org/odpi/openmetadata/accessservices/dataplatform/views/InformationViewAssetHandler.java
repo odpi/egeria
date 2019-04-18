@@ -7,7 +7,7 @@ import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEven
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.EntityPropertiesBuilder;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.QualifiedNameUtils;
-import org.odpi.openmetadata.accessservices.dataplatform.views.beans.DataPlatformAsset;
+import org.odpi.openmetadata.accessservices.dataplatform.views.beans.InformationViewAsset;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -17,19 +17,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-public class DataPlatformAssetHandler implements Callable<DataPlatformAsset> {
+public class InformationViewAssetHandler implements Callable<InformationViewAsset> {
 
 
     private DataPlatformEvent event;
     private OMEntityDao omEntityDao;
 
-    public DataPlatformAssetHandler(DataPlatformEvent event, OMEntityDao omEntityDao) {
+    public InformationViewAssetHandler(DataPlatformEvent event, OMEntityDao omEntityDao) {
         this.event = event;
         this.omEntityDao = omEntityDao;
     }
 
 
-    public DataPlatformAsset call() throws TypeErrorException, InvalidParameterException,
+    public InformationViewAsset call() throws TypeErrorException, InvalidParameterException,
             StatusNotSupportedException, PropertyErrorException,
             EntityNotKnownException, FunctionNotSupportedException,
             PagingErrorException, ClassificationErrorException,
@@ -41,13 +41,13 @@ public class DataPlatformAssetHandler implements Callable<DataPlatformAsset> {
         if (relationalDbSchemaType == null) {
             return createInformationView();
         }
-        DataPlatformAsset informationViewAsset = new DataPlatformAsset();
+        InformationViewAsset informationViewAsset = new InformationViewAsset();
         informationViewAsset.setRelationalDbSchemaType(relationalDbSchemaType);
         return informationViewAsset;
 
     }
 
-    private DataPlatformAsset createInformationView() throws TypeErrorException,
+    private InformationViewAsset createInformationView() throws TypeErrorException,
             InvalidParameterException,
             StatusNotSupportedException,
             PropertyErrorException,
@@ -57,7 +57,8 @@ public class DataPlatformAssetHandler implements Callable<DataPlatformAsset> {
             ClassificationErrorException,
             UserNotAuthorizedException,
             RepositoryErrorException {
-        DataPlatformAsset informationViewAsset = new DataPlatformAsset();
+
+        InformationViewAsset informationViewAsset = new InformationViewAsset();
         String qualifiedNameForSoftwareServer = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER, event.getTableSource().getDatabaseSource().getEndpointSource().getNetworkAddress().split(":")[0]);
         InstanceProperties softwareServerProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForSoftwareServer)

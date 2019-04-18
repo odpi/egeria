@@ -9,9 +9,9 @@ import org.odpi.openmetadata.accessservices.dataplatform.eventprocessor.EventPub
 import org.odpi.openmetadata.accessservices.dataplatform.events.DataPlatformEvent;
 import org.odpi.openmetadata.accessservices.dataplatform.ffdc.DataPlatformErrorCode;
 import org.odpi.openmetadata.accessservices.dataplatform.utils.Constants;
-import org.odpi.openmetadata.accessservices.dataplatform.views.DataPlatformAssetHandler;
+import org.odpi.openmetadata.accessservices.dataplatform.views.InformationViewAssetHandler;
 import org.odpi.openmetadata.accessservices.dataplatform.views.ViewHandler;
-import org.odpi.openmetadata.accessservices.dataplatform.views.beans.DataPlatformAsset;
+import org.odpi.openmetadata.accessservices.dataplatform.views.beans.InformationViewAsset;
 import org.odpi.openmetadata.accessservices.dataplatform.views.beans.View;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
@@ -69,19 +69,19 @@ public class DataPlatformInTopicListener implements OpenMetadataTopicListener {
             try {
                 log.info("Started processing event in DataPlatform OMAS");
 
-                DataPlatformAssetHandler dataPlatformAssetHandler = new DataPlatformAssetHandler(event, omEntityDao);
+                InformationViewAssetHandler informationViewAssetHandler = new InformationViewAssetHandler(event, omEntityDao);
                 ViewHandler viewsBuilder = new ViewHandler(event, omEntityDao, helper);
                 ExecutorService executor = Executors.newCachedThreadPool();
-                Future<DataPlatformAsset> dataPlatformAssetFuture = executor.submit(dataPlatformAssetHandler);
+                Future<InformationViewAsset> informationViewAssetFuture = executor.submit(informationViewAssetHandler);
                 Future<View> assetCreationFuture = executor.submit(viewsBuilder);
 
-                DataPlatformAsset dataplatformAsset = dataPlatformAssetFuture.get();
+                InformationViewAsset informationViewAsset = informationViewAssetFuture.get();
                 View view = assetCreationFuture.get();
                 executor.shutdown();
 
                 if (view.getViewEntity() != null) {
                     omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
-                            dataplatformAsset.getRelationalDbSchemaType().getGUID(),
+                            informationViewAsset.getRelationalDbSchemaType().getGUID(),
                             view.getViewEntity().getGUID(),
                             new InstanceProperties());
                     event.getTableSource().setGuid(view.getViewEntity().getGUID());

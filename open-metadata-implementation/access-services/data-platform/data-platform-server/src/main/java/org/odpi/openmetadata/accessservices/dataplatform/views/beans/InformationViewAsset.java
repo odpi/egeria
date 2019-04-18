@@ -4,7 +4,7 @@ package org.odpi.openmetadata.accessservices.dataplatform.views.beans;
 
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
-public class DataPlatformAsset {
+public class InformationViewAsset {
 
     private EntityDetail softwareServerEntity;
     private EntityDetail endpointProperties;
