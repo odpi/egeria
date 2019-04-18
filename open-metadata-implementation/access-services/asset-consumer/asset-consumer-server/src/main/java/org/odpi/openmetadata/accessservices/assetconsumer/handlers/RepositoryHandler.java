@@ -8,6 +8,10 @@ import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.exceptions.UserNo
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
+
+/**
+ * RepositoryHandler provides error handling for calls to the open metadata repository.
+ */
 public class RepositoryHandler
 {
 
@@ -16,7 +20,7 @@ public class RepositoryHandler
     private ErrorHandler errorHandler = null;
 
     /**
-     * Construct the feedback handler with a link to the property server's connector and this access service's
+     * Construct the repository handler with a link to the property server's connector and this access service's
      * official name.
      *
      * @param serviceName  name of this service
@@ -39,6 +43,7 @@ public class RepositoryHandler
      *
      * @param userId  user making the request.
      * @param guid  unique identifier of the entity.
+     * @param assetTypeName expected type of asset.
      * @param metadataCollection  repository's metadata collection
      * @param methodName  name of method called.
      *
@@ -62,6 +67,7 @@ public class RepositoryHandler
         {
             errorHandler.handleUnknownAsset(error,
                                             guid,
+                                            assetTypeName,
                                             methodName,
                                             serverName,
                                             serviceName);

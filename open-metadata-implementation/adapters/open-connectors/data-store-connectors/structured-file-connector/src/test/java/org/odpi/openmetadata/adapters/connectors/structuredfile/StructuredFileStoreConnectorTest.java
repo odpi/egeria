@@ -169,21 +169,21 @@ public class StructuredFileStoreConnectorTest
 
         try
         {
-            Connection           connectionBean       = getConnection(resourcesDirectory + noColumnNamesFile);
-            Map<String, Object>  additionalProperties = new HashMap<>();
-            List<String>         columnNames          = new ArrayList<>();
+            Connection          connectionBean          = getConnection(resourcesDirectory + noColumnNamesFile);
+            Map<String, Object> configurationProperties = new HashMap<>();
+            List<String>        columnNames             = new ArrayList<>();
 
-            additionalProperties.put(StructuredFileStoreProvider.delimiterCharacterProperty, '-');
-            additionalProperties.put(StructuredFileStoreProvider.quoteCharacterProperty, '\'');
+            configurationProperties.put(StructuredFileStoreProvider.delimiterCharacterProperty, '-');
+            configurationProperties.put(StructuredFileStoreProvider.quoteCharacterProperty, '\'');
 
             columnNames.add("RecId");
             columnNames.add("ContactType");
             columnNames.add("Number");
 
-            additionalProperties.put(StructuredFileStoreProvider.columnNamesProperty, columnNames);
+            configurationProperties.put(StructuredFileStoreProvider.columnNamesProperty, columnNames);
 
 
-            connectionBean.setAdditionalProperties(additionalProperties);
+            connectionBean.setConfigurationProperties(configurationProperties);
             ConnectionProperties connectionProperties = new ConnectionProperties(connectionBean);
 
             connector.initialize(UUID.randomUUID().toString(), connectionProperties);

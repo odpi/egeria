@@ -3,7 +3,7 @@
 
 # Repository Proxy
 
-A repository proxy is a [logical OMAG Server](logical-omag-server.md) has been configured to
+A repository proxy is an [OMAG Server](omag-server.md) has been configured to
 act as a proxy to a proprietary metadata repository.
 It is used by a technology that is integrating using the
 [Adapter Integration Pattern](../../../../../open-metadata-publication/website/open-metadata-integration-patterns/adapter-integration-pattern.md)

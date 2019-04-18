@@ -43,6 +43,15 @@ import java.util.Objects;
  *         additionalProperties - Any additional properties that the connector provider needs to know in order to
  *         create connector instances.
  *     </li>
+ *     <li>
+ *         recognizedAdditionalProperties - List of property names recognised by this connector.
+ *     </li>
+ *     <li>
+ *         recognizedConfigurationProperties - List of property names recognised by this connector.
+ *     </li>
+ *     <li>
+ *         recognizedSecuredProperties - List of property names recognised by this connector.
+ *     </li>
  * </ul>
  *
  * The connectorTypeProperties class is simply used to cache the properties for an connector type.
@@ -183,6 +192,18 @@ public class ConnectorTypeProperties extends AssetReferenceable
     public List<String> getRecognizedAdditionalProperties()
     {
         return connectorTypeBean.getRecognizedAdditionalProperties();
+    }
+
+
+    /**
+     * Return the list of property names that this connector/connector provider implementation looks for
+     * in the Connection object's configurationProperties.
+     *
+     * @return list of property names
+     */
+    public List<String> getRecognizedConfigurationProperties()
+    {
+        return connectorTypeBean.getRecognizedConfigurationProperties();
     }
 
 

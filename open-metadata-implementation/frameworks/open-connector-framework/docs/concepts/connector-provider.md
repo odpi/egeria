@@ -31,7 +31,7 @@ With this base implementation, a specific Connector Provider implementation need
 configure the base class's function with details of itself and the Java class of the connector it needs.
 
 For example, here is the implementation of the Connector Provider for the
-[structured file connector](../../../adapters/open-connectors/data-store-connectors/structured-file-connector/README.md).
+[structured file connector](../../../../adapters/open-connectors/data-store-connectors/structured-file-connector/README.md).
 
 ```java
 
@@ -76,12 +76,12 @@ public class StructuredFileStoreProvider extends ConnectorProviderBase
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
-        List<String> recognizedAdditionalProperties = new ArrayList<>();
-        recognizedAdditionalProperties.add(columnNamesProperty);
-        recognizedAdditionalProperties.add(delimiterCharacterProperty);
-        recognizedAdditionalProperties.add(quoteCharacterProperty);
+        List<String> recognizedConfigurationProperties = new ArrayList<>();
+        recognizedConfigurationProperties.add(columnNamesProperty);
+        recognizedConfigurationProperties.add(delimiterCharacterProperty);
+        recognizedConfigurationProperties.add(quoteCharacterProperty);
 
-        connectorType.setRecognizedAdditionalProperties(recognizedAdditionalProperties);
+        connectorType.setRecognizedConfigurationProperties(recognizedAdditionalProperties);
 
         super.connectorTypeBean = connectorType;
     }

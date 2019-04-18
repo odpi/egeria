@@ -235,7 +235,7 @@ public class AssetMapSchemaType extends AssetSchemaType
                 ", author='" + getAuthor() + '\'' +
                 ", usage='" + getUsage() + '\'' +
                 ", encodingStandard='" + getEncodingStandard() + '\'' +
-                ", schemaProperties=" + getSchemaProperties() +
+                ", extendedProperties=" + getExtendedProperties() +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", type=" + getType() +

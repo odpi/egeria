@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.localrepository;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSMetadataCollectionManager;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEventProcessor;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEventManager;
@@ -12,7 +13,7 @@ import org.odpi.openmetadata.repositoryservices.eventmanagement.OMRSRepositoryEv
  * OMRSLocalRepository is an interface used by the OMRS components to retrieve information about the local
  * repository, to register listeners and to get access to the connector for the local repository.
  */
-public interface OMRSLocalRepository
+public interface OMRSLocalRepository extends OMRSMetadataCollectionManager
 {
     /**
      * Returns the unique identifier (guid) of the local repository's metadata collection.

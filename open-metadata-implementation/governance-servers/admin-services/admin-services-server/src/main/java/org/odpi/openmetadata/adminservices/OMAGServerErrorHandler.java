@@ -255,6 +255,35 @@ class OMAGServerErrorHandler
         }
     }
 
+    /**
+     * Set the exception information into the response.
+     *
+     * @param serverName  this server instance
+     * @param methodName  method called
+     * @param response  REST Response
+     * @param runtimeException returned error.
+     */
+    void captureRuntimeException(String                   serverName,
+                                 String                   methodName,
+                                 AdminServicesAPIResponse response,
+                                 Throwable                runtimeException)
+    {
+        OMAGErrorCode errorCode    = OMAGErrorCode.UNEXPECTED_EXCEPTION;
+        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
+                                                                                                        methodName,
+                                                                                                        runtimeException.getClass().getName(),
+                                                                                                        runtimeException.getMessage());
+
+        OMAGConfigurationErrorException error =  new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                                                     this.getClass().getName(),
+                                                                                     methodName,
+                                                                                     errorMessage,
+                                                                                     errorCode.getSystemAction(),
+                                                                                     errorCode.getUserAction(),
+                                                                                     runtimeException);
+        captureCheckedException(response, error, error.getClass().getName());
+    }
+
 
     /**
      * Set the exception information into the response.

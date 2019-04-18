@@ -17,7 +17,7 @@ public class TestAssetReferenceable
 {
     private ElementType          type                 = new ElementType();
     private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, Object>  additionalProperties = new HashMap<>();
+    private Map<String, String>  additionalProperties = new HashMap<>();
 
     /**
      * Default constructor
@@ -170,10 +170,10 @@ public class TestAssetReferenceable
      */
     @Test public void testAdditionalProperties()
     {
-        Map<String, Object>  propertyMap = new HashMap<>();
+        Map<String, String>  propertyMap = new HashMap<>();
 
         propertyMap.put("property1", "TestString");
-        propertyMap.put("property2", new Integer(2));
+        propertyMap.put("property2", "Two");
 
         Certification referenceableBean = new Certification();
         referenceableBean.setAdditionalProperties(propertyMap);
@@ -190,7 +190,7 @@ public class TestAssetReferenceable
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property2"));
-        assertTrue(additionalProperties.getProperty(propertyName).equals(new Integer(2)));
+        assertTrue(additionalProperties.getProperty(propertyName).equals("Two"));
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property1"));
