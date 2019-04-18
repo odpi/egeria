@@ -124,10 +124,10 @@ public class OMEntityDao {
                     .getSkeletonRelationship(Constants.INFORMATION_VIEW_OMAS_NAME,
                             metadataCollectionId,
                             InstanceProvenanceType.LOCAL_COHORT,
-                            Constants.USER_ID,
+                            Constants.INFORMATION_VIEW_USER_ID,
                             typeName);
             return enterpriseConnector.getMetadataCollection()
-                    .addRelationship(Constants.USER_ID,
+                    .addRelationship(Constants.INFORMATION_VIEW_USER_ID,
                             relationship.getType().getTypeDefGUID(),
                             instanceProperties,
                             entityOneGUID,
@@ -181,11 +181,11 @@ public class OMEntityDao {
                                                                                                 RepositoryErrorException,
                                                                                                 PropertyErrorException,
                                                                                                 TypeErrorException {
-        TypeDef typeDef = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.USER_ID, typeName);
+        TypeDef typeDef = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeName);
         List<EntityDetail> existingEntities;
         try {
             log.info("Retrieving entities of type {} with properties {}", typeDef.getName(),  matchProperties);
-            existingEntities = enterpriseConnector.getMetadataCollection().findEntitiesByProperty(Constants.USER_ID,
+            existingEntities = enterpriseConnector.getMetadataCollection().findEntitiesByProperty(Constants.INFORMATION_VIEW_USER_ID,
                                                                                                     typeDef.getGUID(),
                                                                                                     matchProperties,
                                                                                                     MatchCriteria.ALL,
@@ -218,7 +218,7 @@ public class OMEntityDao {
                                                             EntityProxyOnlyException,
                                                             InvalidParameterException,
                                                             EntityNotKnownException {
-        return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);
+        return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, guid);
 
     }
 
@@ -274,11 +274,11 @@ public class OMEntityDao {
     public List<Relationship> getRelationships(String relationshipType, String guid2)  {
         List<Relationship> relationships = new ArrayList<>();
         String relationshipTypeGuid = enterpriseConnector.getRepositoryHelper()
-                                                        .getTypeDefByName(Constants.USER_ID, relationshipType)
+                                                        .getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, relationshipType)
                                                         .getGUID();
         try {
             log.debug("Retrieving relationships of type {} for entity {}", relationshipType,  guid2);
-            relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID,
+            relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
                                                                                                     guid2,
                                                                                                     relationshipTypeGuid,
                                                                                                     Constants.START_FROM,
@@ -385,7 +385,7 @@ public class OMEntityDao {
         OMEntityWrapper wrapper;
         entityDetail = getEntity(typeName, qualifiedName, zoneRestricted);
         if (entityDetail == null) {
-            entityDetail = addEntity("", Constants.USER_ID, typeName, properties, classifications, zoneRestricted);
+            entityDetail = addEntity("", Constants.INFORMATION_VIEW_USER_ID, typeName, properties, classifications, zoneRestricted);
             log.info("Entity with qualified name {} added", qualifiedName);
             log.debug("Entity: {}", entityDetail);
             wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.NEW);
@@ -394,7 +394,7 @@ public class OMEntityDao {
             log.debug("Entity: {}", entityDetail);
             if (update && !EntityPropertiesUtils.matchExactlyInstanceProperties(entityDetail.getProperties(), properties)) {//TODO should add validation
                 log.info("Updating entity with qualified name {} ", qualifiedName);
-                entityDetail = updateEntity(entityDetail, Constants.USER_ID, properties, zoneRestricted);
+                entityDetail = updateEntity(entityDetail, Constants.INFORMATION_VIEW_USER_ID, properties, zoneRestricted);
                 wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.UPDATED);
             }
             else{
@@ -480,7 +480,7 @@ public class OMEntityDao {
                                               InstanceProperties classificationProperties) throws TypeErrorException {
         try {
             Classification classification = enterpriseConnector.getRepositoryHelper().getSkeletonClassification(Constants.INFORMATION_VIEW_OMAS_NAME,
-                                                                                                                Constants.USER_ID,
+                                                                                                                Constants.INFORMATION_VIEW_USER_ID,
                                                                                                                 classificationTypeName,
                                                                                                                 entityTypeName);
             classification.setProperties(classificationProperties);
@@ -506,8 +506,8 @@ public class OMEntityDao {
             log.info("Nothing will be purged, invalid relationship passed as argument: {}", relationship);
         } else {
             log.info("Purge relationship with guid {}", relationship.getGUID());
-            enterpriseConnector.getMetadataCollection().deleteRelationship(Constants.USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
-            enterpriseConnector.getMetadataCollection().purgeRelationship(Constants.USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
+            enterpriseConnector.getMetadataCollection().deleteRelationship(Constants.INFORMATION_VIEW_USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
+            enterpriseConnector.getMetadataCollection().purgeRelationship(Constants.INFORMATION_VIEW_USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
         }
     }
 
@@ -516,8 +516,8 @@ public class OMEntityDao {
             log.info("Nothing will be purged, invalid entity passed as argument: {}", entitySummary);
         } else {
             log.info("Purge entity with guid {}", entitySummary.getGUID());
-            enterpriseConnector.getMetadataCollection().deleteEntity(Constants.USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
-            enterpriseConnector.getMetadataCollection().purgeEntity(Constants.USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
+            enterpriseConnector.getMetadataCollection().deleteEntity(Constants.INFORMATION_VIEW_USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
+            enterpriseConnector.getMetadataCollection().purgeEntity(Constants.INFORMATION_VIEW_USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
         }
     }
 }
