@@ -15,24 +15,28 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RegistrationRequestBody extends InformationViewHeader {
 
-    private String userId;
+    private String name;
+    private String description;
     private String type;
     private String version;
     private String source;
-    private String name;
-    private String description;
-    private String owner;
-    private String ownerType;
-    private String latestChange;
+    private String patchLevel;
 
-    public String getUserId() {
-        return userId;
+    public String getName() {
+        return name;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     public String getType() {
         return type;
@@ -58,58 +62,23 @@ public class RegistrationRequestBody extends InformationViewHeader {
         this.source = source;
     }
 
-    public String getName() {
-        return name;
+    public String getPatchLevel() {
+        return patchLevel;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
-    }
-
-    public String getOwnerType() {
-        return ownerType;
-    }
-
-    public void setOwnerType(String ownerType) {
-        this.ownerType = ownerType;
-    }
-
-    public String getLatestChange() {
-        return latestChange;
-    }
-
-    public void setLatestChange(String latestChange) {
-        this.latestChange = latestChange;
+    public void setPatchLevel(String patchLevel) {
+        this.patchLevel = patchLevel;
     }
 
     @Override
     public String toString() {
         return "{" +
-                "userId='" + userId + '\'' +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
                 ", type='" + type + '\'' +
                 ", version='" + version + '\'' +
                 ", source='" + source + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", owner='" + owner + '\'' +
-                ", ownerType='" + ownerType + '\'' +
-                ", latestChange='" + latestChange + '\'' +
+                ", patchLevel='" + patchLevel + '\'' +
                 '}';
     }
 }

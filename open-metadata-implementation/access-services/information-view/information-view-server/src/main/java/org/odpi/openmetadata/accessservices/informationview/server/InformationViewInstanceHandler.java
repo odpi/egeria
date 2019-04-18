@@ -106,7 +106,6 @@ class InformationViewInstanceHandler
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
 
         throw new PropertyServerException(this.getClass().getName(),
-                methodName,
                 errorMessage,
                 errorCode.getSystemAction(),
                 errorCode.getUserAction());
