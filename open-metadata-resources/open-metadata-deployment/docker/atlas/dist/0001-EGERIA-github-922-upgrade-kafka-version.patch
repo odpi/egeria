@@ -1,0 +1,25 @@
+From 0d8fdb7fcfe38f5a93415805353803ab67e724d8 Mon Sep 17 00:00:00 2001
+From: Nigel Jones <nigel.l.jones+git@gmail.com>
+Date: Tue, 16 Apr 2019 10:45:31 +0100
+Subject: [PATCH] EGERIA github #922 - upgrade kafka version
+
+---
+ pom.xml | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pom.xml b/pom.xml
+index 6b483eba0..b3bfae0a3 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -652,7 +652,7 @@
+         <hadoop.version>2.7.1</hadoop.version>
+         <hbase.version>1.1.2</hbase.version>
+         <solr.version>5.5.1</solr.version>
+-        <kafka.version>1.0.0</kafka.version>
++        <kafka.version>2.0.0</kafka.version>
+         <elasticsearch.version>5.6.4</elasticsearch.version>
+         <kafka.scala.binary.version>2.11</kafka.scala.binary.version>
+         <curator.version>2.11.0</curator.version>
+-- 
+2.21.0
+

@@ -1614,7 +1614,8 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/term-anchor/{guid}")
     public SubjectAreaOMASAPIResponse getTermAnchorRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
-        return getLine(serverName, userId,TermAnchorRelationship.class.getName(), guid);
+        return restAPI.getTermAnchorRelationship(serverName, userId, guid);
+
     }
 
 
@@ -1639,7 +1640,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      */
     @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/term-anchor/{guid}")
     public SubjectAreaOMASAPIResponse deleteTermAnchorRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid, @RequestParam(value = "isPurge", required=false) Boolean isPurge) {
-        return deleteLine(serverName, userId,TermAnchorRelationship.class.getName(), guid,isPurge);
+        return restAPI.deleteTermAnchorRelationship(serverName, userId, guid,isPurge);
     }
     /**
      * Restore a TermAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
@@ -1661,7 +1662,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/term-anchor/{guid}")
     public SubjectAreaOMASAPIResponse restoreTermAnchorRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
-        return restoreLine(serverName, userId, TermAnchorRelationship.class.getName(), guid);
+        return restAPI.restoreTermAnchorRelationship(serverName, userId, guid);
     }
     /**
      *  Create a categoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
@@ -1688,7 +1689,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/category-anchor")
     public SubjectAreaOMASAPIResponse createCategoryAnchor(@PathVariable String serverName, @PathVariable String userId, @RequestBody CategoryAnchorRelationship  categoryAnchorRelationship)
     {
-        return createLine(serverName, userId,CategoryAnchorRelationship.class.getName(), categoryAnchorRelationship);
+        return restAPI.createCategoryAnchor(serverName, userId, categoryAnchorRelationship);
     }
 
     /**
@@ -1708,7 +1709,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      */
     @RequestMapping(method = RequestMethod.GET, path = "/users/{userId}/relationships/category-anchor/{guid}")
     public SubjectAreaOMASAPIResponse getCategoryAnchorRelationship(@PathVariable String serverName,@PathVariable String userId,@PathVariable String guid)  {
-        return getLine(serverName, userId,CategoryAnchorRelationship.class.getName(), guid);
+        return restAPI.getCategoryAnchorRelationship(serverName, userId, guid);
     }
 
     /**
@@ -1732,7 +1733,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
      */
     @RequestMapping(method = RequestMethod.DELETE, path = "/users/{userId}/relationships/category-anchor/{guid}")
     public SubjectAreaOMASAPIResponse deleteCategoryAnchorRelationship(@PathVariable String serverName,@PathVariable String userId, @PathVariable String guid, @RequestParam(value = "isPurge", required=false) Boolean isPurge) {
-        return deleteLine(serverName, userId,CategoryAnchorRelationship.class.getName(), guid,isPurge);
+        return restAPI.deleteCategoryAnchorRelationship(serverName, userId, guid,isPurge);
     }
     /**
      * Restore a CategoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
@@ -1754,7 +1755,7 @@ public class SubjectAreaRelationshipRESTResource extends SubjectAreaRESTServices
     @RequestMapping(method = RequestMethod.POST, path = "/users/{userId}/relationships/category-anchor/{guid}")
     public SubjectAreaOMASAPIResponse restoreCategoryAnchorRelationship( @PathVariable String serverName,  @PathVariable String userId, @PathVariable String guid)
     {
-        return restoreLine(serverName, userId, CategoryAnchorRelationship.class.getName(), guid);
+        return restAPI.restoreCategoryAnchorRelationship(serverName, userId,  guid);
     }
 
     /**

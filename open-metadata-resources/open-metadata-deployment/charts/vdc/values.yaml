@@ -59,6 +59,9 @@ imageDefaults:
   tag: latest
   pullPolicy: IfNotPresent
 
+# supported values are in-memory-repository & local-graph-repository
+egeriarepomode: in-memory-repository
+
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
 # but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
 # these can be individually overridden for each image, if desired, by providing a subkey for 'namespace', 'tag' or

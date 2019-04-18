@@ -57,13 +57,13 @@ public class SubjectAreaRESTServicesInstance
      * Each API call needs to run in the requested tenant - indicated by the serverName and validate the userid.
      * @param serverName server name used to create the instance
      * @param userId userid under which the request will be made
-     * @param methodName method name for logging
+     * @param restAPIName rest API name for logging
      * @return null if successful or the response containing the error
      */
-    protected  SubjectAreaOMASAPIResponse  initializeAPI(String serverName, String userId, String methodName)
+    protected  SubjectAreaOMASAPIResponse  initializeAPI(String serverName, String userId, String restAPIName)
     {
 
-        return  initializeAPI(serverName, userId,null,null, methodName);
+        return  initializeAPI(serverName, userId,null,null, restAPIName);
 
     }
     /**
@@ -72,10 +72,10 @@ public class SubjectAreaRESTServicesInstance
      * @param userId userid under which the request will be made
      * @param from effective from date
      * @param to effective to Date
-     * @param methodName method name for logging
+     * @param restAPIName rest API name for logging
      * @return null if successful or the response containing the error
      */
-    protected SubjectAreaOMASAPIResponse initializeAPI(String serverName, String userId, Date from, Date to, String methodName)
+    protected SubjectAreaOMASAPIResponse initializeAPI(String serverName, String userId, Date from, Date to, String  restAPIName)
 
     {
         SubjectAreaOMASAPIResponse response = null;
@@ -90,9 +90,9 @@ public class SubjectAreaRESTServicesInstance
                 oMRSAPIHelper = new OMRSAPIHelper(instanceHandler.getAccessServiceName(serverName));
             }
             omrsConnector = instanceHandler.getRepositoryConnector(serverName);
-            oMRSAPIHelper.setOMRSRepositoryConnector(omrsConnector);
-            InputValidator.validateUserIdNotNull(className, methodName, userId);
-            InputValidator.validateEffectiveDate(className,methodName,to,from);
+            oMRSAPIHelper.setOMRSRepositoryConnector(omrsConnector, restAPIName);
+            InputValidator.validateUserIdNotNull(className,  restAPIName, userId);
+            InputValidator.validateEffectiveDate(className, restAPIName,to,from);
         } catch (MetadataServerUncontactableException e)
         {
             response = OMASExceptionToResponse.convertMetadataServerUncontactableException(e);
@@ -112,6 +112,7 @@ public class SubjectAreaRESTServicesInstance
      * Get Term relationships
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param restAPIName ret API name
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param guid   guid of the term to get
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time. If specified, the date is in milliseconds since 1970-01-01 00:00:00.
@@ -134,6 +135,7 @@ public class SubjectAreaRESTServicesInstance
      */
 
     public  SubjectAreaOMASAPIResponse getRelationshipsFromGuid(String serverName,
+                                                                String restAPIName,
                                                                 String userId,
                                                                 String guid,
                                                                 Date asOfTime,
@@ -165,6 +167,7 @@ public class SubjectAreaRESTServicesInstance
                 SequencingOrder omrsSequencingOrder = SubjectAreaUtils.convertOMASToOMRSSequencingOrder(sequencingOrder);
                 List<Relationship> omrsRelationships = null;
                 response = getRelationshipsFromGuid(
+                        restAPIName,
                         userId,
                         guid,
                         null,
@@ -200,6 +203,7 @@ public class SubjectAreaRESTServicesInstance
 
                                 // there are more relationships we need to get
                                 response = getRelationshipsFromGuid(
+                                        restAPIName,
                                         userId,
                                         guid,
                                         null,
@@ -250,6 +254,7 @@ public class SubjectAreaRESTServicesInstance
     }
     /**
      * Get the relationships keyed off an entity guid.
+     * @param restAPIName rest API name
      * @param userId user identity
      * @param entityGuid  globally unique identifier
      * @param relationshipTypeGuid the guid of the relationship type to restrict the relationships returned to this type. null means return all relationship types.
@@ -265,6 +270,7 @@ public class SubjectAreaRESTServicesInstance
      * @return {@code List<Line> }
      */
     private SubjectAreaOMASAPIResponse getRelationshipsFromGuid(
+            String restAPIName,
             String                     userId,
             String                     entityGuid,
             String                     relationshipTypeGuid,
@@ -285,7 +291,7 @@ public class SubjectAreaRESTServicesInstance
 
             InputValidator.validateGUIDNotNull(className,methodName,entityGuid,"entityGuid");
 
-            response = oMRSAPIHelper.callGetRelationshipsForEntity( userId,
+            response = oMRSAPIHelper.callGetRelationshipsForEntity( restAPIName, userId,
                     entityGuid,
                     relationshipTypeGuid,
                     fromRelationshipElement,
@@ -311,7 +317,7 @@ public class SubjectAreaRESTServicesInstance
         return response;
 
     }
-    protected SubjectAreaOMASAPIResponse createLine(String serverName, String userId,String className,Line line ) {
+    protected SubjectAreaOMASAPIResponse createLine(String serverName, String restAPIName, String userId,String className,Line line ) {
         String methodName = "createLine";
         if (log.isDebugEnabled())
         {
@@ -328,7 +334,7 @@ public class SubjectAreaRESTServicesInstance
             try
             {
                 Relationship omrsRelationship = mapper.mapLineToRelationship(line);
-                response = oMRSAPIHelper.callOMRSAddRelationship(userId, omrsRelationship);
+                response = oMRSAPIHelper.callOMRSAddRelationship(restAPIName, userId, omrsRelationship);
                 if (response.getResponseCategory() == ResponseCategory.OmrsRelationship)
                 {
                     Relationship createdOMRSRelationship = ((RelationshipResponse) response).getRelationship();
@@ -348,7 +354,7 @@ public class SubjectAreaRESTServicesInstance
         return response;
 
     }
-    protected SubjectAreaOMASAPIResponse getLine(String serverName, String userId,String className,String guid ) {
+    protected SubjectAreaOMASAPIResponse getLine(String serverName, String restAPIName, String userId,String className,String guid ) {
 
         String methodName = "getLine";
         if (log.isDebugEnabled())
@@ -366,7 +372,7 @@ public class SubjectAreaRESTServicesInstance
             try
             {
                 InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-                response = oMRSAPIHelper.callOMRSGetRelationshipByGuid(userId, guid);
+                response = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, guid);
                 if (response.getResponseCategory() == ResponseCategory.OmrsRelationship)
                 {
                     Relationship createdOMRSRelationship = ((RelationshipResponse) response).getRelationship();
@@ -389,13 +395,14 @@ public class SubjectAreaRESTServicesInstance
     /**
      * Update the line.
      * @param serverName server name to process the request againts
-     * @param userId userid
+     * @param restAPIName rest API Name
+     * @param userId userid user identifier
      * @param className classname for logging
      * @param line line to update
      * @param isReplace whether the other is a replace or an update
      * @return updated line
      */
-    protected SubjectAreaOMASAPIResponse updateLine(String serverName, String userId,String className,Line line,boolean isReplace )
+    protected SubjectAreaOMASAPIResponse updateLine(String serverName, String restAPIName, String userId,String className,Line line,boolean isReplace )
     {
         String methodName = "updateLine";
         if (log.isDebugEnabled())
@@ -414,7 +421,7 @@ public class SubjectAreaRESTServicesInstance
             {
                 String relationshipGuid = line.getGuid();
                 InputValidator.validateGUIDNotNull(className, methodName, relationshipGuid, "termGuid");
-                response = oMRSAPIHelper.callOMRSGetRelationshipByGuid(userId, relationshipGuid);
+                response = oMRSAPIHelper.callOMRSGetRelationshipByGuid(restAPIName, userId, relationshipGuid);
                 if (response.getResponseCategory() == ResponseCategory.OmrsRelationship)
                 {
                     Relationship originalRelationship = ((RelationshipResponse) response).getRelationship();
@@ -456,7 +463,7 @@ public class SubjectAreaRESTServicesInstance
                                 new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction())
                                 );
                     } else {
-                        response = oMRSAPIHelper.callOMRSUpdateRelationship(userId, relationshipToUpdate);
+                        response = oMRSAPIHelper.callOMRSUpdateRelationship(restAPIName, userId, relationshipToUpdate);
                         if (response.getResponseCategory() == ResponseCategory.OmrsRelationship) {
                             Relationship updatedOmrsRelationship = ((RelationshipResponse) response).getRelationship();
                             Line updatedLine = mapper.mapRelationshipToLine(updatedOmrsRelationship);
@@ -474,7 +481,7 @@ public class SubjectAreaRESTServicesInstance
     }
         return response;
     }
-    public SubjectAreaOMASAPIResponse deleteLine(String serverName, String userId,String className,String guid, Boolean isPurge) {
+    public SubjectAreaOMASAPIResponse deleteLine(String serverName, String restAPIName, String userId,String className,String guid, Boolean isPurge) {
 
         String methodName = "deleteLine";
         if (log.isDebugEnabled())
@@ -500,10 +507,10 @@ public class SubjectAreaRESTServicesInstance
                 String typeGuid = repositoryHelper.getTypeDefByName(source, typeName).getGUID();
                 if (isPurge)
                 {
-                    response = oMRSAPIHelper.callOMRSPurgeRelationship(userId, typeGuid, typeName, guid);
+                    response = oMRSAPIHelper.callOMRSPurgeRelationship(restAPIName, userId, typeGuid, typeName, guid);
                 } else
                 {
-                    response = oMRSAPIHelper.callOMRSDeleteRelationship(userId, typeGuid, typeName, guid);
+                    response = oMRSAPIHelper.callOMRSDeleteRelationship(restAPIName, userId, typeGuid, typeName, guid);
                     if (response.getResponseCategory() == ResponseCategory.OmrsRelationship)
                     {
                         Relationship omrsRelationship = ((RelationshipResponse) response).getRelationship();
@@ -522,7 +529,7 @@ public class SubjectAreaRESTServicesInstance
         }
         return response;
     }
-    protected SubjectAreaOMASAPIResponse restoreLine(String serverName, String userId,String className,String guid ) {
+    protected SubjectAreaOMASAPIResponse restoreLine(String serverName, String restAPIName, String userId,String className,String guid ) {
 
         String methodName = "deleteLine";
         if (log.isDebugEnabled())
@@ -540,7 +547,7 @@ public class SubjectAreaRESTServicesInstance
             try
             {
                 InputValidator.validateGUIDNotNull(className, methodName, guid, "guid");
-                response = this.oMRSAPIHelper.callOMRSRestoreRelationship(userId, guid);
+                response = this.oMRSAPIHelper.callOMRSRestoreRelationship(restAPIName, userId, guid);
                 if (response.getResponseCategory() == ResponseCategory.OmrsRelationship)
                 {
                     Relationship omrsRelationship = ((RelationshipResponse) response).getRelationship();
