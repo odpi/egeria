@@ -74,7 +74,7 @@ public class ViewHandler implements Callable<View> {
             if (event.getOriginalTableSource() != null) {
                 HashMap<String, String> prop = new HashMap<>();
                 prop.put(Constants.DISPLAY_NAME, event.getOriginalTableSource().getName());
-                tableProperties = helper.addMapPropertyToInstance(Constants.DATA_PLATFORM_OMAS_NAME, tableProperties, Constants.ADDITIONAL_PROPERTIES, prop, "ViewHandler.call");
+                tableProperties = helper.addStringMapPropertyToInstance(Constants.DATA_PLATFORM_OMAS_NAME, tableProperties, Constants.ADDITIONAL_PROPERTIES, prop, "ViewHandler.call");
             }
 
             EntityDetail tableEntity = omEntityDao.addEntity(Constants.RELATIONAL_TABLE,
