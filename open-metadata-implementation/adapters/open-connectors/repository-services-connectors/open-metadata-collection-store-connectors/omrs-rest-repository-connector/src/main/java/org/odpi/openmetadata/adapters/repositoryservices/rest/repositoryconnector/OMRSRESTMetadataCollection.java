@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector;
 
+import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
+import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -14,7 +16,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.odpi.openmetadata.repositoryservices.rest.properties.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.List;
@@ -29,8 +30,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     static final private String defaultRepositoryName = "REST-connected Repository ";
     static final private String urlPathRoot           = "/open-metadata/repository-services/";
 
-    private String restURLRoot;                /* Initialized in constructor */
+    private String localServerUserId = null;
+    private String localServerPassword = null;
 
+    private String restURLRoot;                /* Initialized in constructor */
+    private RESTClientConnector restClient;                 /* Initialized in constructor */
 
     /**
      * Default constructor.
@@ -41,12 +45,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param repositoryHelper     class used to build type definitions and instances.
      * @param repositoryValidator  class used to validate type definitions and instances.
      * @param metadataCollectionId unique identifier for the metadata collection
+     * @throws RepositoryErrorException problem creating the REST client
      */
     OMRSRESTMetadataCollection(OMRSRESTRepositoryConnector parentConnector,
                                String                      repositoryName,
                                OMRSRepositoryHelper        repositoryHelper,
                                OMRSRepositoryValidator     repositoryValidator,
-                               String                      metadataCollectionId)
+                               String metadataCollectionId) throws RepositoryErrorException
     {
         /*
          * The metadata collection Id is the unique Id for the metadata collection.  It is managed by the super class.
@@ -61,6 +66,8 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
         if (connection != null)
         {
+            localServerUserId = connection.getUserId();
+            localServerPassword = connection.getClearPassword();
             EndpointProperties endpoint = connection.getEndpoint();
 
             if (endpoint != null)
@@ -69,8 +76,27 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             }
         }
 
+        if (endpointAddress == null) {
+            final String methodName = "OMRSMetadataCollection constructor";
+
+            OMRSErrorCode errorCode = OMRSErrorCode.REPOSITORY_URL_NULL;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
+
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
         super.repositoryName = defaultRepositoryName + endpointAddress;
         this.restURLRoot = endpointAddress + urlPathRoot;
+
+        this.restClient = this.getRESTClientConnector(repositoryName,
+                restURLRoot,
+                localServerUserId,
+                localServerPassword);
     }
 
 
@@ -96,9 +122,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
         try
         {
-            ////RestTemplate RestCaller = new //RestTemplate();
-
-            restResult = RestCaller.getForObject(restURLRoot + urlTemplate, MetadataCollectionIdResponse.class);
+            restResult = restClient.callGetRESTCallNoParams(methodName,
+                    MetadataCollectionIdResponse.class,
+                    restURLRoot + urlTemplate);
         }
         catch (Throwable error)
         {
@@ -3805,6 +3831,61 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     }
 
 
+    /*
+     * ===============================
+     * REST Client
+     * ===============================
+     */
+
+
+    /**
+     * Create a REST client to call the remote connector.
+     *
+     * @param serverName            name of the remote server.
+     * @param serverPlatformURLRoot name of the URL root for the server.
+     * @param userId                userId of this server.
+     * @param password              password for this server.
+     * @return REST Client connector
+     * @throws RepositoryErrorException an unexpected exception - internal logic error as the parameters should have
+     *                                  all been checked before this call.
+     */
+    private RESTClientConnector getRESTClientConnector(String serverName,
+                                                       String serverPlatformURLRoot,
+                                                       String userId,
+                                                       String password) throws RepositoryErrorException {
+        final String methodName = "getRESTClientConnector";
+
+        RESTClientFactory clientFactory;
+
+        if ((localServerUserId != null) && (localServerPassword != null)) {
+            clientFactory = new RESTClientFactory(serverName,
+                    serverPlatformURLRoot,
+                    userId,
+                    password);
+        } else {
+            clientFactory = new RESTClientFactory(serverName,
+                    serverPlatformURLRoot);
+        }
+
+        try {
+            return clientFactory.getClientConnector();
+        } catch (Throwable error) {
+            OMRSErrorCode errorCode = OMRSErrorCode.NO_REST_CLIENT;
+            String errorMessage = errorCode.getErrorMessageId()
+                    + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
+
+
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction(),
+                    error);
+        }
+    }
+
+
     /* =====================
      * Issuing REST Calls
      * =====================
@@ -3816,44 +3897,20 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName  name of the method being called
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body
+     * @param requestBody request body for REST Call
      * @param params  a list of parameters that are slotted into the url template
      * @return AttributeTypeDefListResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private AttributeTypeDefListResponse callAttributeTypeDefListPostRESTCall(String    methodName,
-                                                                              String    urlTemplate,
-                                                                              Object    request,
-                                                                              Object... params) throws RepositoryErrorException
-    {
-        AttributeTypeDefListResponse restResult = new AttributeTypeDefListResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate  RestCaller  = new //RestTemplate();
-
-            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                                              String urlTemplate,
+                                                                              Object    requestBody,
+                                                                              Object... params) throws RepositoryErrorException {
+        return this.callPostRESTCall(methodName,
+                AttributeTypeDefListResponse.class,
+                urlTemplate,
+                requestBody,
+                params);
     }
 
 
@@ -3868,36 +3925,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     private AttributeTypeDefResponse callAttributeTypeDefGetRESTCall(String    methodName,
                                                                      String    urlTemplate,
-                                                                     Object... params) throws RepositoryErrorException
-    {
-        AttributeTypeDefResponse restResult = new AttributeTypeDefResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate  RestCaller  = new //RestTemplate();
-
-            restResult = RestCaller.getForObject(urlTemplate, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                                     Object... params) throws RepositoryErrorException {
+        return this.callGetRESTCall(methodName,
+                AttributeTypeDefResponse.class,
+                urlTemplate,
+                params);
     }
 
 
@@ -3906,44 +3938,20 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return AttributeTypeDefResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private AttributeTypeDefResponse callAttributeTypeDefPostRESTCall(String    methodName,
-                                                                      String    urlTemplate,
-                                                                      Object    request,
-                                                                      Object... params) throws RepositoryErrorException
-    {
-        AttributeTypeDefResponse restResult = new AttributeTypeDefResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate  RestCaller  = new //RestTemplate();
-
-            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                                      String urlTemplate,
+                                                                      Object    requestBody,
+                                                                      Object... params) throws RepositoryErrorException {
+        return this.callPostRESTCall(methodName,
+                AttributeTypeDefResponse.class,
+                urlTemplate,
+                requestBody,
+                params);
     }
 
 
@@ -3952,44 +3960,20 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return BooleanResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private BooleanResponse callBooleanPostRESTCall(String    methodName,
-                                                    String    urlTemplate,
-                                                    Object    request,
-                                                    Object... params) throws RepositoryErrorException
-    {
-        BooleanResponse restResult = new BooleanResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate  RestCaller  = new //RestTemplate();
-
-            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                    String urlTemplate,
+                                                    Object    requestBody,
+                                                    Object... params) throws RepositoryErrorException {
+        return this.callPostRESTCall(methodName,
+                BooleanResponse.class,
+                urlTemplate,
+                requestBody,
+                params);
     }
 
 
@@ -4004,36 +3988,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     private EntityDetailResponse callEntityDetailGetRESTCall(String    methodName,
                                                              String    urlTemplate,
-                                                             Object... params) throws RepositoryErrorException
-    {
-        EntityDetailResponse restResult = new EntityDetailResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate  RestCaller  = new //RestTemplate();
-
-            restResult = RestCaller.getForObject(urlTemplate, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                             Object... params) throws RepositoryErrorException {
+        return this.callGetRESTCall(methodName,
+                EntityDetailResponse.class,
+                urlTemplate,
+                params);
     }
 
 
@@ -4042,44 +4001,20 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return EntityDetailResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private EntityDetailResponse callEntityDetailPostRESTCall(String    methodName,
-                                                              String    urlTemplate,
-                                                              Object    request,
-                                                              Object... params) throws RepositoryErrorException
-    {
-        EntityDetailResponse restResult = new EntityDetailResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate  RestCaller  = new //RestTemplate();
-
-            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                              String urlTemplate,
+                                                              Object    requestBody,
+                                                              Object... params) throws RepositoryErrorException {
+        return this.callPostRESTCall(methodName,
+                EntityDetailResponse.class,
+                urlTemplate,
+                requestBody,
+                params);
     }
 
 
@@ -4094,36 +4029,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     private EntitySummaryResponse callEntitySummaryGetRESTCall(String    methodName,
                                                                String    urlTemplate,
-                                                               Object... params) throws RepositoryErrorException
-    {
-        EntitySummaryResponse restResult = new EntitySummaryResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate  RestCaller  = new //RestTemplate();
-
-            restResult = RestCaller.getForObject(urlTemplate, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                               Object... params) throws RepositoryErrorException {
+        return this.callGetRESTCall(methodName,
+                EntitySummaryResponse.class,
+                urlTemplate,
+                params);
     }
 
 
@@ -4138,36 +4048,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     private RelationshipResponse callRelationshipGetRESTCall(String    methodName,
                                                              String    urlTemplate,
-                                                             Object... params) throws RepositoryErrorException
-    {
-        RelationshipResponse restResult = new RelationshipResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate  RestCaller  = new //RestTemplate();
-
-            restResult = RestCaller.getForObject(urlTemplate, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                             Object... params) throws RepositoryErrorException {
+        return this.callGetRESTCall(methodName,
+                RelationshipResponse.class,
+                urlTemplate,
+                params);
     }
 
 
@@ -4176,44 +4061,20 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return EntityListResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private EntityListResponse callEntityListPostRESTCall(String    methodName,
-                                                          String    urlTemplate,
-                                                          Object    request,
-                                                          Object... params) throws RepositoryErrorException
-    {
-        EntityListResponse restResult = new EntityListResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate  RestCaller  = new //RestTemplate();
-
-            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                          String urlTemplate,
+                                                          Object    requestBody,
+                                                          Object... params) throws RepositoryErrorException {
+        return this.callPostRESTCall(methodName,
+                EntityListResponse.class,
+                urlTemplate,
+                requestBody,
+                params);
     }
 
 
@@ -4223,44 +4084,20 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return RelationshipListResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private RelationshipListResponse callRelationshipListPostRESTCall(String    methodName,
-                                                                      String    urlTemplate,
-                                                                      Object    request,
-                                                                      Object... params) throws RepositoryErrorException
-    {
-        RelationshipListResponse restResult = new RelationshipListResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate  RestCaller  = new //RestTemplate();
-
-            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                                      String urlTemplate,
+                                                                      Object    requestBody,
+                                                                      Object... params) throws RepositoryErrorException {
+        return this.callPostRESTCall(methodName,
+                RelationshipListResponse.class,
+                urlTemplate,
+                requestBody,
+                params);
     }
 
 
@@ -4269,44 +4106,20 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return RelationshipResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private RelationshipResponse callRelationshipPostRESTCall(String    methodName,
-                                                              String    urlTemplate,
-                                                              Object    request,
-                                                              Object... params) throws RepositoryErrorException
-    {
-        RelationshipResponse restResult = new RelationshipResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate  RestCaller  = new //RestTemplate();
-
-            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                              String urlTemplate,
+                                                              Object    requestBody,
+                                                              Object... params) throws RepositoryErrorException {
+        return this.callPostRESTCall(methodName,
+                RelationshipResponse.class,
+                urlTemplate,
+                requestBody,
+                params);
     }
 
     /**
@@ -4314,44 +4127,20 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return InstanceGraphResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private InstanceGraphResponse callInstanceGraphPostRESTCall(String    methodName,
-                                                                String    urlTemplate,
-                                                                Object    request,
-                                                                Object... params) throws RepositoryErrorException
-    {
-        InstanceGraphResponse restResult = new InstanceGraphResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate  RestCaller  = new //RestTemplate();
-
-            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                                String urlTemplate,
+                                                                Object    requestBody,
+                                                                Object... params) throws RepositoryErrorException {
+        return this.callPostRESTCall(methodName,
+                InstanceGraphResponse.class,
+                urlTemplate,
+                requestBody,
+                params);
     }
 
 
@@ -4366,36 +4155,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     private TypeDefGalleryResponse callTypeDefGalleryGetRESTCall(String    methodName,
                                                                  String    urlTemplate,
-                                                                 Object... params) throws RepositoryErrorException
-    {
-        TypeDefGalleryResponse restResult = new TypeDefGalleryResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate  RestCaller  = new //RestTemplate();
-
-            restResult = RestCaller.getForObject(urlTemplate, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                                 Object... params) throws RepositoryErrorException {
+        return this.callGetRESTCall(methodName,
+                TypeDefGalleryResponse.class,
+                urlTemplate,
+                params);
     }
 
 
@@ -4410,36 +4174,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     private TypeDefListResponse callTypeDefListGetRESTCall(String    methodName,
                                                            String    urlTemplate,
-                                                           Object... params) throws RepositoryErrorException
-    {
-        TypeDefListResponse restResult = new TypeDefListResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate RestCaller = new //RestTemplate();
-
-            restResult = RestCaller.getForObject(urlTemplate, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                           Object... params) throws RepositoryErrorException {
+        return this.callGetRESTCall(methodName,
+                TypeDefListResponse.class,
+                urlTemplate,
+                params);
     }
 
 
@@ -4448,44 +4187,20 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName  name of the method being called
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body
+     * @param requestBody request body
      * @param params  a list of parameters that are slotted into the url template
      * @return TypeDefListResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private TypeDefListResponse callTypeDefListPostRESTCall(String    methodName,
-                                                            String    urlTemplate,
-                                                            Object    request,
-                                                            Object... params) throws RepositoryErrorException
-    {
-        TypeDefListResponse restResult = new TypeDefListResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate RestCaller = new //RestTemplate();
-
-            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                            String urlTemplate,
+                                                            Object    requestBody,
+                                                            Object... params) throws RepositoryErrorException {
+        return this.callPostRESTCall(methodName,
+                TypeDefListResponse.class,
+                urlTemplate,
+                requestBody,
+                params);
     }
 
 
@@ -4500,36 +4215,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     private TypeDefResponse callTypeDefGetRESTCall(String    methodName,
                                                    String    urlTemplate,
-                                                   Object... params) throws RepositoryErrorException
-    {
-        TypeDefResponse restResult = new TypeDefResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate RestCaller = new //RestTemplate();
-
-            restResult = RestCaller.getForObject(urlTemplate, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+                                                   Object... params) throws RepositoryErrorException {
+        return this.callGetRESTCall(methodName,
+                TypeDefResponse.class,
+                urlTemplate,
+                params);
     }
 
 
@@ -4538,26 +4228,78 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return TypeDefResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private TypeDefResponse callTypeDefPostRESTCall(String    methodName,
-                                                    String    urlTemplate,
-                                                    Object    request,
-                                                    Object... params) throws RepositoryErrorException
-    {
-        TypeDefResponse restResult = new TypeDefResponse();
+                                                    String urlTemplate,
+                                                    Object requestBody,
+                                                    Object... params) throws RepositoryErrorException {
+        return this.callPostRESTCall(methodName,
+                TypeDefResponse.class,
+                urlTemplate,
+                requestBody,
+                params);
+    }
 
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate RestCaller = new //RestTemplate();
 
-            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
+    /**
+     * Issue a POST REST call that returns a VoidResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
+     * @param requestBody request body object
+     * @param params      a list of parameters that are slotted into the url template
+     * @return VoidResponse
+     * @throws RepositoryErrorException something went wrong with the REST call stack.
+     */
+    private VoidResponse callVoidPostRESTCall(String methodName,
+                                              String urlTemplate,
+                                              Object requestBody,
+                                              Object... params) throws RepositoryErrorException {
+        return this.callPostRESTCall(methodName,
+                VoidResponse.class,
+                urlTemplate,
+                requestBody,
+                params);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns the requested object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
+     * @return TypeDefResponse
+     * @throws RepositoryErrorException something went wrong with the REST call stack.
+     */
+    private <T> T callGetRESTCall(String methodName,
+                                  Class<T> returnClass,
+                                  String urlTemplate) throws RepositoryErrorException {
+        return this.callGetRESTCall(methodName, returnClass, urlTemplate, null);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a TypeDefResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
+     * @param params      a list of parameters that are slotted into the url template
+     * @return TypeDefResponse
+     * @throws RepositoryErrorException something went wrong with the REST call stack.
+     */
+    private <T> T callGetRESTCall(String methodName,
+                                  Class<T> returnClass,
+                                  String urlTemplate,
+                                  Object... params) throws RepositoryErrorException {
+        try {
+            return restClient.callGetRESTCall(methodName,
+                    returnClass,
+                    urlTemplate,
+                    params);
         }
         catch (Throwable error)
         {
@@ -4574,13 +4316,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                     errorCode.getUserAction(),
                     error);
         }
-
-        return restResult;
     }
 
-
     /**
-     * Issue a POST REST call that returns a VoidResponse object.
+     * Issue a POST REST call that returns the requested type of object.
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
@@ -4589,21 +4328,17 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @return VoidResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
-    private VoidResponse callVoidPostRESTCall(String    methodName,
-                                              String    urlTemplate,
-                                              Object    request,
-                                              Object... params) throws RepositoryErrorException
-    {
-        VoidResponse restResult = new VoidResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            //RestTemplate RestCaller = new //RestTemplate();
-
-            restResult = RestCaller.postForObject(urlTemplate, request, restResult.getClass(), params);
+    private <T> T callPostRESTCall(String methodName,
+                                   Class<T> returnClass,
+                                   String urlTemplate,
+                                   Object request,
+                                   Object... params) throws RepositoryErrorException {
+        try {
+            return restClient.callPostRESTCall(methodName,
+                    returnClass,
+                    urlTemplate,
+                    request,
+                    params);
         }
         catch (Throwable error)
         {
@@ -4620,8 +4355,6 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                     errorCode.getUserAction(),
                     error);
         }
-
-        return restResult;
     }
 
 
