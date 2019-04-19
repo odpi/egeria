@@ -65,7 +65,7 @@ public enum InformationViewErrorCode {
             "The Information View Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property.  The resulting exception of {2} included the following message: {3}",
             "The access service has not been passed valid configuration.",
             "Correct the configuration and restart the service."),
-    ENTITY_NOT_FOUND_EXCEPTION(500, "OMAS-INFORMATION-VIEW-014",
+    ENTITY_NOT_FOUND_EXCEPTION(404, "OMAS-INFORMATION-VIEW-014",
             "The entity matching criteria [{0}={1}] was not found.",
             "The system is unable to process the request.",
             "Correct the request payload submitted."),

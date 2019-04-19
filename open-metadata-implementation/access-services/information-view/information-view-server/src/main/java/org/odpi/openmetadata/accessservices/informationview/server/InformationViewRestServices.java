@@ -25,7 +25,7 @@ public class InformationViewRestServices {
      * @param requestBody  - structure of the report
      * @return
      */
-    public VoidResponse submitReport(String serverName,
+    public InformationViewOMASAPIResponse submitReport(String serverName,
                                      String userId,
                                      ReportRequestBody requestBody) {
 
@@ -36,7 +36,7 @@ public class InformationViewRestServices {
             reportCreator.submitReportModel(requestBody);
         }
         catch (InformationViewUncheckedExceptionBase e) {
-           handleErrorResponse(e);
+            return handleErrorResponse(e);
         }
 
         return response;
@@ -60,7 +60,7 @@ public class InformationViewRestServices {
             dataViewHandler.createDataView(requestBody);
         }
         catch (InformationViewUncheckedExceptionBase e) {
-            handleErrorResponse(e);
+             return handleErrorResponse(e);
         }
 
         return response;
@@ -86,7 +86,7 @@ public class InformationViewRestServices {
             response.setDatabasesList(databases);
         }
         catch (InformationViewUncheckedExceptionBase e) {
-            handleErrorResponse(e);
+             return handleErrorResponse(e);
         }
         return response;
     }
@@ -114,7 +114,7 @@ public class InformationViewRestServices {
             response.setTableList(tables);
         }
         catch (InformationViewUncheckedExceptionBase e) {
-            handleErrorResponse(e);
+             return handleErrorResponse(e);
         }
 
         return response;
@@ -131,7 +131,7 @@ public class InformationViewRestServices {
             response.setTableContexts(tables);
         }
         catch (InformationViewUncheckedExceptionBase e) {
-            handleErrorResponse(e);
+             return handleErrorResponse(e);
         }
         return response;
     }
@@ -149,7 +149,7 @@ public class InformationViewRestServices {
             response.setTableColumns(columns);
         }
         catch (InformationViewUncheckedExceptionBase e) {
-            handleErrorResponse(e);
+             return handleErrorResponse(e);
         }
 
         return response;
@@ -164,7 +164,22 @@ public class InformationViewRestServices {
              EntityDetail entityDetail  = registrationHandler.registerTool(requestBody);
              response.setGuid(entityDetail.getGUID());
          } catch (InformationViewUncheckedExceptionBase e) {
-             handleErrorResponse(e);
+              return handleErrorResponse(e);
+         }
+         return response;
+    }
+
+
+     public InformationViewOMASAPIResponse lookupRegistration(String serverName,
+                                                                String userId,
+                                                                RegistrationRequestBody requestBody) {
+         RegistrationResponse response = new RegistrationResponse();
+         RegistrationHandler registrationHandler = instanceHandler.getRegistrationHandler(serverName);
+         try {
+             EntityDetail entityDetail  = registrationHandler.lookupSoftwareServerCapability(requestBody);
+             response.setGuid(entityDetail.getGUID());
+         } catch (InformationViewUncheckedExceptionBase e) {
+             return handleErrorResponse(e);
          }
          return response;
     }

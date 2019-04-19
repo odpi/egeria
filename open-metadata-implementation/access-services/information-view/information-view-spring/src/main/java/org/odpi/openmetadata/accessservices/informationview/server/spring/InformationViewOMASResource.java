@@ -83,9 +83,17 @@ public class InformationViewOMASResource {
 
     @PostMapping(path = "register")
     public InformationViewOMASAPIResponse registerExternalTool(@PathVariable("serverName") String serverName,
-                                                         @PathVariable("userId") String userId,
-                                                         @RequestBody RegistrationRequestBody requestBody) {
+                                                             @PathVariable("userId") String userId,
+                                                             @RequestBody RegistrationRequestBody requestBody) {
         return restAPI.registerExternalTool(serverName, userId, requestBody);
+    }
+
+
+    @PostMapping(path = "registration/lookup")
+    public InformationViewOMASAPIResponse lookupExternalTool(@PathVariable("serverName") String serverName,
+                                                             @PathVariable("userId") String userId,
+                                                             @RequestBody RegistrationRequestBody requestBody) {
+        return restAPI.lookupRegistration(serverName, userId, requestBody);
     }
 
 
