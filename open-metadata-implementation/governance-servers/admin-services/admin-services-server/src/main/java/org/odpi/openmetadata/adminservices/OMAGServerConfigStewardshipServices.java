@@ -51,11 +51,11 @@ public class OMAGServerConfigStewardshipServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String> configAuditLog = serverConfig.getAuditTrail();
+            List<String> configAuditTrail = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
             if ("".equals(accessServiceRootURL))
@@ -65,14 +65,14 @@ public class OMAGServerConfigStewardshipServices
 
             if (accessServiceRootURL == null)
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " access service root url.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " access service root url.");
             }
             else
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " access service root url to " + accessServiceRootURL + ".");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " access service root url to " + accessServiceRootURL + ".");
             }
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
             
             StewardshipServicesConfig stewardshipServicesConfig = serverConfig.getStewardshipServicesConfig();
             
@@ -126,11 +126,11 @@ public class OMAGServerConfigStewardshipServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String> configAuditLog = serverConfig.getAuditTrail();
+            List<String> configAuditTrail = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
             if ("".equals(accessServiceServerName))
@@ -140,14 +140,14 @@ public class OMAGServerConfigStewardshipServices
 
             if (accessServiceServerName == null)
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " access service server name.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " access service server name.");
             }
             else
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " access service server name " + accessServiceServerName + ".");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " access service server name " + accessServiceServerName + ".");
             }
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
 
             StewardshipServicesConfig stewardshipServicesConfig = serverConfig.getStewardshipServicesConfig();
 
@@ -199,23 +199,23 @@ public class OMAGServerConfigStewardshipServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String> configAuditLog = serverConfig.getAuditTrail();
+            List<String> configAuditTrail = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
             if (connection == null)
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " inbound request connection.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + " inbound request connection.");
             }
             else
             {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " inbound request connection.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for " + serviceName + " inbound request connection.");
             }
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
 
             StewardshipServicesConfig stewardshipServicesConfig = serverConfig.getStewardshipServicesConfig();
 
@@ -263,16 +263,16 @@ public class OMAGServerConfigStewardshipServices
 
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String> configAuditLog = serverConfig.getAuditTrail();
+            List<String> configAuditTrail = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null)
+            if (configAuditTrail == null)
             {
-                configAuditLog = new ArrayList<>();
+                configAuditTrail = new ArrayList<>();
             }
 
-            configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + ".");
+            configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for " + serviceName + ".");
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
             serverConfig.setStewardshipServicesConfig(null);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);

@@ -15,7 +15,7 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Asset lineage OMAS Client</name>
+    <name>Asset Lineage OMAS Client</name>
     <description>
         Client library for the Asset lineage Open Metadata Access Service (OMAS).
     </description>

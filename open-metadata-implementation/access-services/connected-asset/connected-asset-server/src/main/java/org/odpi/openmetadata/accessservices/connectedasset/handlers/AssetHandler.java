@@ -176,28 +176,20 @@ public class AssetHandler
             asset.setGUID(assetEntity.getGUID());
             asset.setURL(assetEntity.getInstanceURL());
 
-            InstanceProperties instanceProperties = assetEntity.getProperties();
+            InstanceProperties instanceProperties = new InstanceProperties(assetEntity.getProperties());
             if (instanceProperties != null)
             {
-                Iterator<String> propertyNames = instanceProperties.getPropertyNames();
-
-                while (propertyNames.hasNext())
-                {
-                    String propertyName = propertyNames.next();
-
-                    if (propertyName != null)
-                    {
-                        asset.setQualifiedName(repositoryHelper.getStringProperty(serviceName, qualifiedNamePropertyName, instanceProperties, methodName));
-                        asset.setDisplayName(repositoryHelper.getStringProperty(serviceName, displayNamePropertyName, instanceProperties, methodName));
-                        asset.setDescription(repositoryHelper.getStringProperty(serviceName, descriptionPropertyName, instanceProperties, methodName));
-                        asset.setOwner(repositoryHelper.getStringProperty(serviceName, ownerPropertyName, instanceProperties, methodName));
-                        asset.setAdditionalProperties(repositoryHelper.getMapFromProperty(serviceName, additionalPropertiesName, instanceProperties, methodName));
-                        asset.setZoneMembership(repositoryHelper.getStringArrayProperty(serviceName, ownerPropertyName, instanceProperties, methodName));
-                    }
-                }
+                asset.setQualifiedName(repositoryHelper.removeStringProperty(serviceName, qualifiedNamePropertyName, instanceProperties, methodName));
+                asset.setDisplayName(repositoryHelper.removeStringProperty(serviceName, displayNamePropertyName, instanceProperties, methodName));
+                asset.setDescription(repositoryHelper.removeStringProperty(serviceName, descriptionPropertyName, instanceProperties, methodName));
+                asset.setOwner(repositoryHelper.removeStringProperty(serviceName, ownerPropertyName, instanceProperties, methodName));
+                asset.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName, additionalPropertiesName, instanceProperties, methodName));
+                asset.setZoneMembership(repositoryHelper.removeStringArrayProperty(serviceName, ownerPropertyName, instanceProperties, methodName));
+                asset.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
 
                   /*  protected List<Meaning>       meanings             = null;
-                    protected String              shortDescription     = null; */
+                    protected String              shortDescription     = null;
+                    classifications  */
             }
 
             return asset;
@@ -210,13 +202,15 @@ public class AssetHandler
 
 
     /**
+     * Calculate the number of attachments to this asset and their types.  The results are saved in the instance variables.
      *
-     * @param userId
-     * @param assetGUID
-     * @throws InvalidParameterException
-     * @throws UnrecognizedGUIDException
-     * @throws PropertyServerException
-     * @throws UserNotAuthorizedException
+     * @param userId calling user
+     * @param assetGUID unique identifier of the asset
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws UnrecognizedGUIDException the supplied GUID is not recognized by the metadata repository.
+     * @throws PropertyServerException there is a problem retrieving information from the property (metadata) server.
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     private void countAssetAttachments(String userId,
                                        String assetGUID) throws InvalidParameterException,

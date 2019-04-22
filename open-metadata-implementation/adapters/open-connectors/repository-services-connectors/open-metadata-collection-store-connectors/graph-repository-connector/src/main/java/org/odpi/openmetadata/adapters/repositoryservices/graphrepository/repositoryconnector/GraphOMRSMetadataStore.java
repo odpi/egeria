@@ -995,6 +995,50 @@ class GraphOMRSMetadataStore {
 
                 Relationship relationship = new Relationship();
                 relationshipMapper.mapEdgeToRelationship(edge, relationship);
+
+                // Set the relationship ends...
+                try {
+
+                    vertex = edge.outVertex();
+
+                    // Could test here whether each vertex is for a proxy, but it doesn't matter whether the vertex represents a full entity
+                    // (i.e. EntityDetail of a local/reference copy) as opposed to an EntityProxy. It can be retrieved as a proxy anyway...
+
+                    if (vertex != null) {
+                        log.debug("{} entity vertex {}", methodName, vertex);
+                        EntityProxy entityOneProxy = new EntityProxy();
+                        entityMapper.mapVertexToEntityProxy(vertex, entityOneProxy);
+                        log.debug("{} entityOneProxy {}", methodName, entityOneProxy);
+                        relationship.setEntityOneProxy(entityOneProxy);
+                    }
+
+                    vertex = edge.inVertex();
+
+                    if (vertex != null) {
+                        log.debug("{} entity vertex {}", methodName, vertex);
+                        EntityProxy entityTwoProxy = new EntityProxy();
+                        entityMapper.mapVertexToEntityProxy(vertex, entityTwoProxy);
+                        log.debug("{} entityTwoProxy {}", methodName, entityTwoProxy);
+                        relationship.setEntityTwoProxy(entityTwoProxy);
+                    }
+
+                } catch (Exception e) {
+                    log.error("{} Caught exception from entity mapper {}", methodName, e.getMessage());
+                    g.tx().rollback();
+                    GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_NOT_FOUND;
+
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityMapper.getEntityGUID(vertex), methodName,
+                            this.getClass().getName(),
+                            repositoryName);
+
+                    throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            errorMessage,
+                            errorCode.getSystemAction(),
+                            errorCode.getUserAction());
+                }
+
                 relationships.add(relationship);
             }
         }

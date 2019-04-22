@@ -2,87 +2,152 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships;
 
-import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.TermRelationshipStatus;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.ValidValue;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EnumPropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
-
 
 /**
- * Static mapping methods to map between the validValue and the equivalent generated OMRSRelationshipBean
+ * Mapping methods to map between the validValue and the equivalent omrs Relationship.
  */
-public class ValidValueMapper
+public class ValidValueMapper extends LineMapper 
 {
     private static final Logger log = LoggerFactory.getLogger( ValidValueMapper.class);
     private static final String className = ValidValueMapper.class.getName();
+    public static final String VALID_VALUE = "ValidValue";
 
-    /**
-     * map ValidValue to the omrs relationship bean equivalent
-     * @param validValue supplied ValidValue
-     * @return omrs relationship bean equivalent
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     */
-    static public org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ValidValue.ValidValue mapValidValueToOMRSRelationshipBean(ValidValue validValue) throws InvalidParameterException {
-        // copy over the Line attributes
-        org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ValidValue.ValidValue omrsRelationshipBean = new  org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ValidValue.ValidValue(validValue);
-        //Set properties
-        omrsRelationshipBean.setDescription(validValue.getDescription());
-        omrsRelationshipBean.setExpression(validValue.getExpression());
-        omrsRelationshipBean.setSource(validValue.getSource());
-        omrsRelationshipBean.setSteward(validValue.getSteward());
-        omrsRelationshipBean.setStatus(validValue.getStatus());
-        omrsRelationshipBean.setGuid(validValue.getGuid());
-        omrsRelationshipBean.setEntity1Guid(validValue.getTermGuid());
-        omrsRelationshipBean.setEntity2Guid(validValue.getValidValueGuid());
-        Map<String, Object> extraAttributes = omrsRelationshipBean.getExtraAttributes();
-        if (extraAttributes !=null)
-        {
-            String[] properties = org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ValidValue.ValidValue.PROPERTY_NAMES_SET_VALUES;
-            for (String property : properties)
-            {
-                if (extraAttributes.containsKey(property))
-                {
-                    extraAttributes.remove(property);
-                }
-            }
-            omrsRelationshipBean.setExtraAttributes(extraAttributes);
-        }
-
-        return omrsRelationshipBean;
+    public ValidValueMapper(OMRSAPIHelper omrsapiHelper) {
+        super(omrsapiHelper);
     }
 
     /**
-     * Map omrs relationship bean equivalent to ValidValue
-     * @param omrsRelationshipBean omrs relationship bean equivalent
-     * @return ValidValue validValue
+     * Map the supplied Line to omrs InstanceProperties.
+     * @param line supplied line
+     * @param instanceProperties equivalent instance properties to the Line
      */
-    public static ValidValue mapOMRSRelationshipBeanToValidValue(org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ValidValue.ValidValue omrsRelationshipBean) {
-        // copy over the Line attributes
-        ValidValue validValue = new ValidValue(omrsRelationshipBean);
-        validValue.setDescription(omrsRelationshipBean.getDescription());
-        validValue.setExpression(omrsRelationshipBean.getExpression());
-        validValue.setSource(omrsRelationshipBean.getSource());
-        validValue.setSteward(omrsRelationshipBean.getSteward());
-        validValue.setStatus(omrsRelationshipBean.getStatus());
-        validValue.setGuid(omrsRelationshipBean.getGuid());
-        validValue.setTermGuid(omrsRelationshipBean.getEntity1Guid());
-        validValue.setValidValueGuid(omrsRelationshipBean.getEntity2Guid());
-        String[] properties=org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ValidValue.ValidValue.PROPERTY_NAMES_SET_VALUES;
-        Map<String, Object> extraAttributes =validValue.getExtraAttributes();
-        if (properties!=null && properties.length >0) {
-            if (extraAttributes ==null) {
-                extraAttributes =new HashMap<>();
-            }
-            for (String property : properties) {
-                if (extraAttributes.containsKey(property)) {
-                    extraAttributes.remove(property);
-                }
-            }
-            validValue.setExtraAttributes(extraAttributes);
+    @Override
+    protected void mapLineToInstanceProperties(Line line, InstanceProperties instanceProperties) {
+        ValidValue validValue = (ValidValue)line;
+        if (validValue.getDescription()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, validValue.getDescription(), "description");
         }
-        return validValue;
+        if (validValue.getExpression()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, validValue.getExpression(), "expression");
+        }
+        if (validValue.getSteward()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, validValue.getSteward(), "steward");
+        }
+        if (validValue.getSource()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, validValue.getSource(), "source");
+        }
+        if (validValue.getStatus()!=null) {
+            EnumPropertyValue enumPropertyValue = new EnumPropertyValue();
+            enumPropertyValue.setOrdinal(validValue.getStatus().getOrdinal());
+            instanceProperties.setProperty("status",enumPropertyValue);
+        }
+    }
+    /**
+     * Map a primitive omrs property to the validValue object.
+     * @param line the glossary to be updated
+     * @param propertyName the omrs property name
+     * @param value the omrs primitive property value
+     * @return true if the propertyName was recognised and mapped to the Line, otherwise false
+     */
+    @Override
+    protected boolean mapPrimitiveToLine(Line line, String propertyName, Object value) {
+        String stringValue = (String) value;
+        ValidValue validValue = (ValidValue) line;
+        boolean foundProperty = false;
+        if (propertyName.equals("description")) {
+            validValue.setDescription(stringValue);
+            foundProperty = true;
+        }
+        if (propertyName.equals("expression")) {
+            validValue.setExpression(stringValue);
+            foundProperty = true;
+        }
+        if (propertyName.equals("steward")) {
+            validValue.setSteward(stringValue);
+            foundProperty = true;
+        }
+        if (propertyName.equals("source")) {
+            validValue.setSource(stringValue);
+            foundProperty = true;
+        }
+        return foundProperty;
+    }
+    @Override
+    protected boolean mapEnumToLine(Line line, String propertyName, EnumPropertyValue enumPropertyValue)
+    {
+        ValidValue validValue = (ValidValue) line;
+        boolean foundProperty = false;
+        if (propertyName.equals("status")) {
+            TermRelationshipStatus status = TermRelationshipStatus.valueOf(enumPropertyValue.getSymbolicName());
+            validValue.setStatus(status);
+            foundProperty = true;
+        }
+        return foundProperty;
+    }
+
+    /**
+     * Get proxy1 guid.
+     * The proxy has omrs type GlossaryTerm
+     * @param line line
+     * @return guid for entity proxy 1
+     */
+    @Override
+    protected String getProxy1Guid(Line line)
+    {
+        ValidValue validValue = (ValidValue) line;
+        return validValue.getTermGuid();
+    }
+
+    /**
+     * Get proxy2 guid
+     * The proxy has omrs type GlossaryTerm
+     * @param line for this Line
+     * @return guid for entity proxy 2
+     */
+    @Override
+    protected String getProxy2Guid(Line line)
+    {
+        ValidValue validValue = (ValidValue) line;
+        return validValue.getValidValueGuid();
+    }
+
+    /**
+     * Get the relationship type def guid.
+     * @param relationship the relationship associated with the typedef whose guid is returned.
+     * @return guid of the typedef
+     */
+    @Override
+    protected String getRelationshipTypeDefGuid(Relationship relationship)
+    {
+        return repositoryHelper.getTypeDefByName(omrsapiHelper.getServiceName(), VALID_VALUE).getGUID();
+    }
+    @Override
+    protected String getTypeName() {
+        return  VALID_VALUE;
+    }
+    @Override
+    protected Line getLineInstance() {
+        return new ValidValue();
+    }
+    @Override
+    protected void setEnd1GuidInLine(Line line, String guid){
+        ValidValue validValue = (ValidValue)line;
+        validValue.setTermGuid(guid);
+    }
+    @Override
+    protected void setEnd2GuidInLine(Line line, String guid) {
+        ValidValue validValue = (ValidValue)line;
+        validValue.setValidValueGuid(guid);
     }
 }

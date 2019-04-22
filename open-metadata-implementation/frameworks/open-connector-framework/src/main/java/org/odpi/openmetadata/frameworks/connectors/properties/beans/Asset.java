@@ -30,10 +30,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
  *     (Sourced from attribute description within Asset - model 0010)</li>
  *     <li>owner - name of the person or organization that owns the asset.
  *     (Sourced from attribute owner within Asset - model 0010)</li>
+ *     <li>ownerType - type of the person or organization that owns the asset.
+ *     (Sourced from attribute ownerType within Asset - model 0010)</li>
  *     <li>zoneMembership - name of the person or organization that owns the asset.
  *     (Sourced from attribute zoneMembership within Asset - model 0010)</li>
+ *     <li>latestChange - description of last update to the asset.
+ *     (Sourced from attribute latestChange within Asset - model 0010)</li>
  *     <li>classifications - list of classifications assigned to the asset</li>
- *     <li>schemaProperties - list of properties assigned to the asset from the Asset subclasses</li>
+ *     <li>extendedProperties - list of properties assigned to the asset from the Asset subclasses</li>
  *     <li>additionalProperties - list of properties assigned to the asset as additional properties</li>
  * </ul>
  */
@@ -46,7 +50,9 @@ public class Asset extends Referenceable
     protected String             shortDescription   = null;
     protected String             description        = null;
     protected String             owner              = null;
+    protected OwnerType          ownerType          = null;
     protected List<String>       zoneMembership     = null;
+    protected String             latestChange       = null;
 
 
     /**
@@ -60,19 +66,21 @@ public class Asset extends Referenceable
     /**
      * Copy/clone constructor.  Note, this is a deep copy
      *
-     * @param templateAsset template values for asset summary
+     * @param template template values for asset summary
      */
-    public Asset(Asset templateAsset)
+    public Asset(Asset template)
     {
-        super(templateAsset);
+        super(template);
 
-        if (templateAsset != null)
+        if (template != null)
         {
-            displayName = templateAsset.getDisplayName();
-            shortDescription = templateAsset.getShortDescription();
-            description = templateAsset.getDescription();
-            owner = templateAsset.getOwner();
-            zoneMembership = templateAsset.getZoneMembership();
+            displayName = template.getDisplayName();
+            shortDescription = template.getShortDescription();
+            description = template.getDescription();
+            owner = template.getOwner();
+            ownerType = template.getOwnerType();
+            zoneMembership = template.getZoneMembership();
+            latestChange = template.getLatestChange();
         }
     }
 
@@ -144,6 +152,7 @@ public class Asset extends Referenceable
         this.description = description;
     }
 
+
     /**
      * Returns the name of the owner for this asset.
      *
@@ -162,6 +171,28 @@ public class Asset extends Referenceable
     public void setOwner(String owner)
     {
         this.owner = owner;
+    }
+
+
+    /**
+     * Return the type of owner stored in the owner property.
+     *
+     * @return OwnerType enum
+     */
+    public OwnerType getOwnerType()
+    {
+        return ownerType;
+    }
+
+
+    /**
+     * Set up the owner type for this asset.
+     *
+     * @param ownerType OwnerType enum
+     */
+    public void setOwnerType(OwnerType ownerType)
+    {
+        this.ownerType = ownerType;
     }
 
 
@@ -198,6 +229,27 @@ public class Asset extends Referenceable
     }
 
 
+    /**
+     * Return a short description of the last change to the asset.
+     *
+     * @return string description
+     */
+    public String getLatestChange()
+    {
+        return latestChange;
+    }
+
+
+    /**
+     * Set up a short description of the last change to the asset.
+     *
+     * @param latestChange string description
+     */
+    public void setLatestChange(String latestChange)
+    {
+        this.latestChange = latestChange;
+    }
+
 
     /**
      * Standard toString method.
@@ -212,7 +264,9 @@ public class Asset extends Referenceable
                 ", shortDescription='" + shortDescription + '\'' +
                 ", description='" + description + '\'' +
                 ", owner='" + owner + '\'' +
+                ", ownerType='" + ownerType + '\'' +
                 ", zoneMembership=" + zoneMembership +
+                ", latestChange=" + latestChange +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", extendedProperties=" + getExtendedProperties() +
@@ -251,8 +305,11 @@ public class Asset extends Referenceable
                 Objects.equals(getShortDescription(), asset.getShortDescription()) &&
                 Objects.equals(getDescription(), asset.getDescription()) &&
                 Objects.equals(getOwner(), asset.getOwner()) &&
-                Objects.equals(getZoneMembership(), asset.getZoneMembership());
+                getOwnerType() == asset.getOwnerType() &&
+                Objects.equals(getZoneMembership(), asset.getZoneMembership()) &&
+                Objects.equals(getLatestChange(), asset.getLatestChange());
     }
+
 
 
     /**
@@ -264,6 +321,6 @@ public class Asset extends Referenceable
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), getDisplayName(), getShortDescription(), getDescription(), getOwner(),
-                            getZoneMembership());
+                            getOwnerType(), getZoneMembership(), getLatestChange());
     }
 }

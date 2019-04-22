@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adapters.repositoryservices.rest.repositoryconnector;
 
+import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
+import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.ConnectionProperties;
 import org.odpi.openmetadata.frameworks.connectors.properties.EndpointProperties;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
@@ -14,7 +16,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.odpi.openmetadata.repositoryservices.rest.properties.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.Date;
 import java.util.List;
@@ -29,8 +30,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     static final private String defaultRepositoryName = "REST-connected Repository ";
     static final private String urlPathRoot           = "/open-metadata/repository-services/";
 
-    private String restURLRoot;                /* Initialized in constructor */
+    private String              localServerUserId   = null;
+    private String              localServerPassword = null;
 
+    private String              restURLRoot;                /* Initialized in constructor */
+    private RESTClientConnector restClient;                 /* Initialized in constructor */
 
     /**
      * Default constructor.
@@ -41,12 +45,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @param repositoryHelper     class used to build type definitions and instances.
      * @param repositoryValidator  class used to validate type definitions and instances.
      * @param metadataCollectionId unique identifier for the metadata collection
+     * @throws RepositoryErrorException problem creating the REST client
      */
     OMRSRESTMetadataCollection(OMRSRESTRepositoryConnector parentConnector,
                                String                      repositoryName,
                                OMRSRepositoryHelper        repositoryHelper,
                                OMRSRepositoryValidator     repositoryValidator,
-                               String                      metadataCollectionId)
+                               String                      metadataCollectionId) throws RepositoryErrorException
     {
         /*
          * The metadata collection Id is the unique Id for the metadata collection.  It is managed by the super class.
@@ -61,6 +66,8 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
         if (connection != null)
         {
+            localServerUserId = connection.getUserId();
+            localServerPassword = connection.getClearPassword();
             EndpointProperties endpoint = connection.getEndpoint();
 
             if (endpoint != null)
@@ -69,8 +76,28 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             }
         }
 
+        if (endpointAddress == null)
+        {
+            final String  methodName = "OMRSMetadataCollection constructor";
+
+            OMRSErrorCode errorCode = OMRSErrorCode.REPOSITORY_URL_NULL;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
+
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
+        }
+
         super.repositoryName = defaultRepositoryName + endpointAddress;
         this.restURLRoot = endpointAddress + urlPathRoot;
+
+        this.restClient = this.getRESTClientConnector(repositoryName,
+                                                      restURLRoot,
+                                                      localServerUserId,
+                                                      localServerPassword);
     }
 
 
@@ -96,25 +123,25 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
         try
         {
-            RestTemplate restTemplate = new RestTemplate();
-
-            restResult = restTemplate.getForObject(restURLRoot + urlTemplate, MetadataCollectionIdResponse.class);
+            restResult = restClient.callGetRESTCallNoParams(methodName,
+                                                            MetadataCollectionIdResponse.class,
+                                                            restURLRoot + urlTemplate);
         }
         catch (Throwable error)
         {
             OMRSErrorCode errorCode = OMRSErrorCode.REMOTE_REPOSITORY_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getClass().getSimpleName(),
-                    error.getMessage());
+                                                                                                     repositoryName,
+                                                                                                     error.getClass().getSimpleName(),
+                                                                                                     error.getMessage());
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction(),
+                                               error);
         }
 
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
@@ -137,15 +164,15 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                 OMRSErrorCode errorCode = OMRSErrorCode.METADATA_COLLECTION_ID_MISMATCH;
                 String errorMessage = errorCode.getErrorMessageId()
                         + errorCode.getFormattedErrorMessage(repositoryName,
-                        remoteMetadataCollectionId,
-                        super.metadataCollectionId);
+                                                             remoteMetadataCollectionId,
+                                                             super.metadataCollectionId);
 
                 throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   errorMessage,
+                                                   errorCode.getSystemAction(),
+                                                   errorCode.getUserAction());
             }
         }
         else
@@ -153,14 +180,14 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_METADATA_COLLECTION_ID;
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage(repositoryName,
-                    super.metadataCollectionId);
+                                                         super.metadataCollectionId);
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
         }
     }
 
@@ -182,14 +209,14 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      * @throws UserNotAuthorizedException the userId is not permitted to perform this operation.
      */
     public TypeDefGallery getAllTypes(String userId) throws RepositoryErrorException,
-            UserNotAuthorizedException
+                                                            UserNotAuthorizedException
     {
         final String methodName  = "getAllTypes";
         final String urlTemplate = "users/{0}/types/all";
 
         TypeDefGalleryResponse restResult = this.callTypeDefGalleryGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId);
+                                                                               restURLRoot + urlTemplate,
+                                                                               userId);
 
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowRepositoryErrorException(methodName, restResult);
@@ -212,16 +239,16 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public TypeDefGallery findTypesByName(String userId,
                                           String name) throws InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
+                                                              RepositoryErrorException,
+                                                              UserNotAuthorizedException
     {
         final String methodName  = "findTypesByName";
         final String urlTemplate = "users/{0}/types/by-name?name={1}";
 
         TypeDefGalleryResponse restResult = this.callTypeDefGalleryGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                name);
+                                                                               restURLRoot + urlTemplate,
+                                                                               userId,
+                                                                               name);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -243,16 +270,16 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public List<TypeDef> findTypeDefsByCategory(String userId,
                                                 TypeDefCategory category) throws InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
+                                                                                 RepositoryErrorException,
+                                                                                 UserNotAuthorizedException
     {
         final String methodName  = "findTypeDefsByCategory";
         final String urlTemplate = "users/{0}/types/typedefs/by-category";
 
         TypeDefListResponse restResult = this.callTypeDefListPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                category,
-                userId);
+                                                                          restURLRoot + urlTemplate,
+                                                                          category,
+                                                                          userId);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -274,16 +301,16 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public List<AttributeTypeDef> findAttributeTypeDefsByCategory(String userId,
                                                                   AttributeTypeDefCategory category) throws InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
+                                                                                                            RepositoryErrorException,
+                                                                                                            UserNotAuthorizedException
     {
         final String methodName  = "findAttributeTypeDefsByCategory";
         final String urlTemplate = "users/{0}/types/attribute-typedefs/by-category";
 
         AttributeTypeDefListResponse restResult = this.callAttributeTypeDefListPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                category,
-                userId);
+                                                                                            restURLRoot + urlTemplate,
+                                                                                            category,
+                                                                                            userId);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -305,16 +332,16 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public List<TypeDef> findTypeDefsByProperty(String userId,
                                                 TypeDefProperties matchCriteria) throws InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
+                                                                                        RepositoryErrorException,
+                                                                                        UserNotAuthorizedException
     {
         final String methodName  = "findTypeDefsByProperty";
         final String urlTemplate = "users/{0}/types/typedefs/by-property";
 
         TypeDefListResponse restResult = this.callTypeDefListGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                matchCriteria);
+                                                                         restURLRoot + urlTemplate,
+                                                                         userId,
+                                                                         matchCriteria);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -341,8 +368,8 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                String standard,
                                                String organization,
                                                String identifier) throws InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
+                                                                         RepositoryErrorException,
+                                                                         UserNotAuthorizedException
     {
         final String methodName  = "findTypesByExternalID";
         final String urlTemplate =
@@ -350,11 +377,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
 
 
         TypeDefListResponse restResult = this.callTypeDefListGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                standard,
-                organization,
-                identifier);
+                                                                         restURLRoot + urlTemplate,
+                                                                         userId,
+                                                                         standard,
+                                                                         organization,
+                                                                         identifier);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -377,16 +404,16 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public List<TypeDef> searchForTypeDefs(String userId,
                                            String searchCriteria) throws InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
+                                                                         RepositoryErrorException,
+                                                                         UserNotAuthorizedException
     {
         final String methodName  = "searchForTypeDefs";
         final String urlTemplate = "users/{0}/types/typedefs/by-property-value?searchCriteria={1}";
 
         TypeDefListResponse restResult = this.callTypeDefListGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                searchCriteria);
+                                                                         restURLRoot + urlTemplate,
+                                                                         userId,
+                                                                         searchCriteria);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -410,17 +437,17 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public TypeDef getTypeDefByGUID(String userId,
                                     String guid) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotKnownException,
-            UserNotAuthorizedException
+                                                        RepositoryErrorException,
+                                                        TypeDefNotKnownException,
+                                                        UserNotAuthorizedException
     {
         final String methodName  = "getTypeDefByGUID";
         final String urlTemplate = "users/{0}/types/typedef/{1}";
 
         TypeDefResponse restResult = this.callTypeDefGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                guid);
+                                                                 restURLRoot + urlTemplate,
+                                                                 userId,
+                                                                 guid);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
@@ -445,17 +472,17 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public AttributeTypeDef getAttributeTypeDefByGUID(String userId,
                                                       String guid) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotKnownException,
-            UserNotAuthorizedException
+                                                                          RepositoryErrorException,
+                                                                          TypeDefNotKnownException,
+                                                                          UserNotAuthorizedException
     {
         final String methodName  = "getAttributeTypeDefByGUID";
         final String urlTemplate = "users/{0}/types/attribute-typedef/{1}";
 
         AttributeTypeDefResponse restResult = this.callAttributeTypeDefGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                guid);
+                                                                                   restURLRoot + urlTemplate,
+                                                                                   userId,
+                                                                                   guid);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
@@ -480,17 +507,17 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public TypeDef getTypeDefByName(String userId,
                                     String name) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotKnownException,
-            UserNotAuthorizedException
+                                                        RepositoryErrorException,
+                                                        TypeDefNotKnownException,
+                                                        UserNotAuthorizedException
     {
         final String methodName  = "getTypeDefByName";
         final String urlTemplate = "users/{0}/types/typedef/name/{1}";
 
         TypeDefResponse restResult = this.callTypeDefGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                name);
+                                                                 restURLRoot + urlTemplate,
+                                                                 userId,
+                                                                 name);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
@@ -515,17 +542,17 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public AttributeTypeDef getAttributeTypeDefByName(String userId,
                                                       String name) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotKnownException,
-            UserNotAuthorizedException
+                                                                          RepositoryErrorException,
+                                                                          TypeDefNotKnownException,
+                                                                          UserNotAuthorizedException
     {
         final String methodName  = "getAttributeTypeDefByName";
         final String urlTemplate = "users/{0}/types/attribute-typedef/name/{1}";
 
         AttributeTypeDefResponse restResult = this.callAttributeTypeDefGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                name);
+                                                                                   restURLRoot + urlTemplate,
+                                                                                   userId,
+                                                                                   name);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
@@ -553,21 +580,21 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public void addTypeDefGallery(String userId,
                                   TypeDefGallery newTypes) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotSupportedException,
-            TypeDefKnownException,
-            TypeDefConflictException,
-            InvalidTypeDefException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                  RepositoryErrorException,
+                                                                  TypeDefNotSupportedException,
+                                                                  TypeDefKnownException,
+                                                                  TypeDefConflictException,
+                                                                  InvalidTypeDefException,
+                                                                  FunctionNotSupportedException,
+                                                                  UserNotAuthorizedException
     {
         final String methodName  = "addTypeDefGallery";
         final String urlTemplate = "users/{0}/types";
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                newTypes,
-                userId);
+                                                            restURLRoot + urlTemplate,
+                                                            newTypes,
+                                                            userId);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotSupportedException(methodName, restResult);
@@ -597,21 +624,21 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public void addTypeDef(String userId,
                            TypeDef newTypeDef) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotSupportedException,
-            TypeDefKnownException,
-            TypeDefConflictException,
-            InvalidTypeDefException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                      RepositoryErrorException,
+                                                      TypeDefNotSupportedException,
+                                                      TypeDefKnownException,
+                                                      TypeDefConflictException,
+                                                      InvalidTypeDefException,
+                                                      FunctionNotSupportedException,
+                                                      UserNotAuthorizedException
     {
         final String methodName  = "addTypeDef";
         final String urlTemplate = "users/{0}/types/typedef";
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                newTypeDef,
-                userId);
+                                                            restURLRoot + urlTemplate,
+                                                            newTypeDef,
+                                                            userId);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotSupportedException(methodName, restResult);
@@ -641,21 +668,21 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public void addAttributeTypeDef(String userId,
                                     AttributeTypeDef newAttributeTypeDef) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotSupportedException,
-            TypeDefKnownException,
-            TypeDefConflictException,
-            InvalidTypeDefException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                 RepositoryErrorException,
+                                                                                 TypeDefNotSupportedException,
+                                                                                 TypeDefKnownException,
+                                                                                 TypeDefConflictException,
+                                                                                 InvalidTypeDefException,
+                                                                                 FunctionNotSupportedException,
+                                                                                 UserNotAuthorizedException
     {
         final String methodName  = "addAttributeTypeDef";
         final String urlTemplate = "users/{0}/types/attribute-typedef";
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                newAttributeTypeDef,
-                userId);
+                                                            restURLRoot + urlTemplate,
+                                                            newAttributeTypeDef,
+                                                            userId);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotSupportedException(methodName, restResult);
@@ -684,19 +711,19 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public boolean verifyTypeDef(String userId,
                                  TypeDef typeDef) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotSupportedException,
-            TypeDefConflictException,
-            InvalidTypeDefException,
-            UserNotAuthorizedException
+                                                         RepositoryErrorException,
+                                                         TypeDefNotSupportedException,
+                                                         TypeDefConflictException,
+                                                         InvalidTypeDefException,
+                                                         UserNotAuthorizedException
     {
         final String methodName  = "verifyTypeDef";
         final String urlTemplate = "users/{0}/types/typedef/compatibility";
 
         BooleanResponse restResult = this.callBooleanPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                typeDef,
-                userId);
+                                                                  restURLRoot + urlTemplate,
+                                                                  typeDef,
+                                                                  userId);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotSupportedException(methodName, restResult);
@@ -725,19 +752,19 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public boolean verifyAttributeTypeDef(String userId,
                                           AttributeTypeDef attributeTypeDef) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotSupportedException,
-            TypeDefConflictException,
-            InvalidTypeDefException,
-            UserNotAuthorizedException
+                                                                                    RepositoryErrorException,
+                                                                                    TypeDefNotSupportedException,
+                                                                                    TypeDefConflictException,
+                                                                                    InvalidTypeDefException,
+                                                                                    UserNotAuthorizedException
     {
         final String methodName  = "verifyTypeDef";
         final String urlTemplate = "users/{0}/types/attribute-typedef/compatibility";
 
         BooleanResponse restResult = this.callBooleanPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                attributeTypeDef,
-                userId);
+                                                                  restURLRoot + urlTemplate,
+                                                                  attributeTypeDef,
+                                                                  userId);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotSupportedException(methodName, restResult);
@@ -768,19 +795,19 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public TypeDef updateTypeDef(String userId,
                                  TypeDefPatch typeDefPatch) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotKnownException,
-            PatchErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                   RepositoryErrorException,
+                                                                   TypeDefNotKnownException,
+                                                                   PatchErrorException,
+                                                                   FunctionNotSupportedException,
+                                                                   UserNotAuthorizedException
     {
         final String methodName  = "updateTypeDef";
         final String urlTemplate = "users/{0}/types/typedef/update";
 
         TypeDefResponse restResult = this.callTypeDefPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                typeDefPatch,
-                userId);
+                                                                  restURLRoot + urlTemplate,
+                                                                  typeDefPatch,
+                                                                  userId);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
@@ -813,11 +840,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     public void deleteTypeDef(String userId,
                               String obsoleteTypeDefGUID,
                               String obsoleteTypeDefName) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotKnownException,
-            TypeDefInUseException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                 RepositoryErrorException,
+                                                                 TypeDefNotKnownException,
+                                                                 TypeDefInUseException,
+                                                                 FunctionNotSupportedException,
+                                                                 UserNotAuthorizedException
     {
         final String methodName  = "deleteTypeDef";
         final String urlTemplate = "users/{0}/types/typedef/{1}/delete";
@@ -826,10 +853,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setObsoleteTypeDefName(obsoleteTypeDefName);
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                obsoleteTypeDefGUID);
+                                                            restURLRoot + urlTemplate,
+                                                            requestBody,
+                                                            userId,
+                                                            obsoleteTypeDefGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
@@ -860,11 +887,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     public void deleteAttributeTypeDef(String userId,
                                        String obsoleteTypeDefGUID,
                                        String obsoleteTypeDefName) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotKnownException,
-            TypeDefInUseException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                          RepositoryErrorException,
+                                                                          TypeDefNotKnownException,
+                                                                          TypeDefInUseException,
+                                                                          FunctionNotSupportedException,
+                                                                          UserNotAuthorizedException
     {
         final String methodName  = "deleteAttributeTypeDef";
         final String urlTemplate = "users/{0}/types/attribute-typedef/{1}/delete";
@@ -873,10 +900,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setObsoleteTypeDefName(obsoleteTypeDefName);
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                obsoleteTypeDefGUID);
+                                                            restURLRoot + urlTemplate,
+                                                            requestBody,
+                                                            userId,
+                                                            obsoleteTypeDefGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
@@ -911,10 +938,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                      String originalTypeDefName,
                                      String newTypeDefGUID,
                                      String newTypeDefName) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotKnownException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                   RepositoryErrorException,
+                                                                   TypeDefNotKnownException,
+                                                                   FunctionNotSupportedException,
+                                                                   UserNotAuthorizedException
     {
         final String methodName  = "reIdentifyTypeDef";
         final String urlTemplate = "users/{0}/types/typedef/{1}/identifier";
@@ -925,10 +952,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setNewTypeDefName(newTypeDefName);
 
         TypeDefResponse restResult = this.callTypeDefPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                originalTypeDefGUID);
+                                                                  restURLRoot + urlTemplate,
+                                                                  requestBody,
+                                                                  userId,
+                                                                  originalTypeDefGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeDefNotKnownException(methodName, restResult);
@@ -964,10 +991,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                        String originalAttributeTypeDefName,
                                                        String newAttributeTypeDefGUID,
                                                        String newAttributeTypeDefName) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeDefNotKnownException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                              RepositoryErrorException,
+                                                                                              TypeDefNotKnownException,
+                                                                                              FunctionNotSupportedException,
+                                                                                              UserNotAuthorizedException
     {
         final String methodName  = "reIdentifyAttributeTypeDef";
         final String urlTemplate = "users/{0}/types/attribute-typedef/{1}/identifier";
@@ -978,10 +1005,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setNewTypeDefName(newAttributeTypeDefName);
 
         AttributeTypeDefResponse restResult = this.callAttributeTypeDefPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                originalAttributeTypeDefGUID);
+                                                                                    restURLRoot + urlTemplate,
+                                                                                    requestBody,
+                                                                                    userId,
+                                                                                    originalAttributeTypeDefGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -1011,16 +1038,16 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public EntityDetail isEntityKnown(String userId,
                                       String guid) throws InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
+                                                          RepositoryErrorException,
+                                                          UserNotAuthorizedException
     {
         final String methodName  = "isEntityKnown";
         final String urlTemplate = "users/{0}/instances/entity/{1}/existence";
 
         EntityDetailResponse restResult = this.callEntityDetailGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                guid);
+                                                                           restURLRoot + urlTemplate,
+                                                                           userId,
+                                                                           guid);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -1045,17 +1072,17 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public EntitySummary getEntitySummary(String userId,
                                           String guid) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            UserNotAuthorizedException
+                                                              RepositoryErrorException,
+                                                              EntityNotKnownException,
+                                                              UserNotAuthorizedException
     {
         final String methodName  = "getEntitySummary";
         final String urlTemplate = "users/{0}/instances/entity/{1}/summary";
 
         EntitySummaryResponse restResult = this.callEntitySummaryGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                guid);
+                                                                             restURLRoot + urlTemplate,
+                                                                             userId,
+                                                                             guid);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
@@ -1081,18 +1108,18 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public EntityDetail getEntityDetail(String userId,
                                         String guid) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            EntityProxyOnlyException,
-            UserNotAuthorizedException
+                                                            RepositoryErrorException,
+                                                            EntityNotKnownException,
+                                                            EntityProxyOnlyException,
+                                                            UserNotAuthorizedException
     {
         final String methodName  = "getEntityDetail";
         final String urlTemplate = "users/{0}/instances/entity/{1}";
 
         EntityDetailResponse restResult = this.callEntityDetailGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                guid);
+                                                                           restURLRoot + urlTemplate,
+                                                                           userId,
+                                                                           guid);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
@@ -1123,19 +1150,19 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     public EntityDetail getEntityDetail(String userId,
                                         String guid,
                                         Date   asOfTime) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            EntityProxyOnlyException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                RepositoryErrorException,
+                                                                EntityNotKnownException,
+                                                                EntityProxyOnlyException,
+                                                                FunctionNotSupportedException,
+                                                                UserNotAuthorizedException
     {
         final String methodName  = "getEntityDetail";
         final String urlTemplate = "users/{0}/instances/entity/{1}/history";
 
         EntityDetailResponse restResult = this.callEntityDetailGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                guid);
+                                                                           restURLRoot + urlTemplate,
+                                                                           userId,
+                                                                           guid);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -1188,13 +1215,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                         String               sequencingProperty,
                                                         SequencingOrder      sequencingOrder,
                                                         int                  pageSize) throws InvalidParameterException,
-            TypeErrorException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            PropertyErrorException,
-            PagingErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                              TypeErrorException,
+                                                                                              RepositoryErrorException,
+                                                                                              EntityNotKnownException,
+                                                                                              PropertyErrorException,
+                                                                                              PagingErrorException,
+                                                                                              FunctionNotSupportedException,
+                                                                                              UserNotAuthorizedException
     {
         final String             methodName = "getRelationshipsForEntity";
         RelationshipListResponse restResult;
@@ -1212,10 +1239,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setPageSize(pageSize);
 
             restResult = this.callRelationshipListPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId,
-                    entityGUID);
+                                                               restURLRoot + urlTemplate,
+                                                               findRequestParameters,
+                                                               userId,
+                                                               entityGUID);
         }
         else
         {
@@ -1231,10 +1258,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setPageSize(pageSize);
 
             restResult = this.callRelationshipListPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId,
-                    entityGUID);
+                                                               restURLRoot + urlTemplate,
+                                                               findRequestParameters,
+                                                               userId,
+                                                               entityGUID);
         }
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -1295,12 +1322,12 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                      String                    sequencingProperty,
                                                      SequencingOrder           sequencingOrder,
                                                      int                       pageSize) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeErrorException,
-            PropertyErrorException,
-            PagingErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                                RepositoryErrorException,
+                                                                                                TypeErrorException,
+                                                                                                PropertyErrorException,
+                                                                                                PagingErrorException,
+                                                                                                FunctionNotSupportedException,
+                                                                                                UserNotAuthorizedException
     {
         final String       methodName = "findEntitiesByProperty";
         EntityListResponse restResult;
@@ -1321,9 +1348,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setPageSize(pageSize);
 
             restResult = this.callEntityListPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId);
+                                                         restURLRoot + urlTemplate,
+                                                         findRequestParameters,
+                                                         userId);
         }
         else
         {
@@ -1342,9 +1369,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setPageSize(pageSize);
 
             restResult = this.callEntityListPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId);
+                                                         restURLRoot + urlTemplate,
+                                                         findRequestParameters,
+                                                         userId);
 
         }
 
@@ -1406,13 +1433,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                             String                    sequencingProperty,
                                                             SequencingOrder           sequencingOrder,
                                                             int                       pageSize) throws InvalidParameterException,
-            TypeErrorException,
-            RepositoryErrorException,
-            ClassificationErrorException,
-            PropertyErrorException,
-            PagingErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                                       TypeErrorException,
+                                                                                                       RepositoryErrorException,
+                                                                                                       ClassificationErrorException,
+                                                                                                       PropertyErrorException,
+                                                                                                       PagingErrorException,
+                                                                                                       FunctionNotSupportedException,
+                                                                                                       UserNotAuthorizedException
     {
         final String       methodName  = "findEntitiesByClassification";
         EntityListResponse restResult;
@@ -1432,10 +1459,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setPageSize(pageSize);
 
             restResult = this.callEntityListPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId,
-                    classificationName);
+                                                         restURLRoot + urlTemplate,
+                                                         findRequestParameters,
+                                                         userId,
+                                                         classificationName);
         }
         else
         {
@@ -1453,10 +1480,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setPageSize(pageSize);
 
             restResult = this.callEntityListPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId,
-                    classificationName);
+                                                         restURLRoot + urlTemplate,
+                                                         findRequestParameters,
+                                                         userId,
+                                                         classificationName);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -1517,12 +1544,12 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                            String                sequencingProperty,
                                                            SequencingOrder       sequencingOrder,
                                                            int                   pageSize) throws InvalidParameterException,
-            TypeErrorException,
-            RepositoryErrorException,
-            PropertyErrorException,
-            PagingErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                                  TypeErrorException,
+                                                                                                  RepositoryErrorException,
+                                                                                                  PropertyErrorException,
+                                                                                                  PagingErrorException,
+                                                                                                  FunctionNotSupportedException,
+                                                                                                  UserNotAuthorizedException
     {
         final String methodName  = "findEntitiesByPropertyValue";
         EntityListResponse restResult;
@@ -1541,10 +1568,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setPageSize(pageSize);
 
             restResult = this.callEntityListPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId,
-                    searchCriteria);
+                                                         restURLRoot + urlTemplate,
+                                                         findRequestParameters,
+                                                         userId,
+                                                         searchCriteria);
         }
         else
         {
@@ -1561,10 +1588,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setPageSize(pageSize);
 
             restResult = this.callEntityListPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId,
-                    searchCriteria);
+                                                         restURLRoot + urlTemplate,
+                                                         findRequestParameters,
+                                                         userId,
+                                                         searchCriteria);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -1592,16 +1619,16 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public Relationship  isRelationshipKnown(String     userId,
                                              String     guid) throws InvalidParameterException,
-            RepositoryErrorException,
-            UserNotAuthorizedException
+                                                                     RepositoryErrorException,
+                                                                     UserNotAuthorizedException
     {
         final String methodName  = "isRelationshipKnown";
         final String urlTemplate = "users/{0}/instances/relationship/{1}/existence";
 
         RelationshipResponse restResult = this.callRelationshipGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                guid);
+                                                                           restURLRoot + urlTemplate,
+                                                                           userId,
+                                                                           guid);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
@@ -1626,17 +1653,17 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public Relationship getRelationship(String    userId,
                                         String    guid) throws InvalidParameterException,
-            RepositoryErrorException,
-            RelationshipNotKnownException,
-            UserNotAuthorizedException
+                                                               RepositoryErrorException,
+                                                               RelationshipNotKnownException,
+                                                               UserNotAuthorizedException
     {
         final String methodName  = "getRelationship";
         final String urlTemplate = "users/{0}/instances/relationship/{1}";
 
         RelationshipResponse restResult = this.callRelationshipGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                guid);
+                                                                           restURLRoot + urlTemplate,
+                                                                           userId,
+                                                                           guid);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
@@ -1665,18 +1692,18 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     public  Relationship getRelationship(String    userId,
                                          String    guid,
                                          Date      asOfTime) throws InvalidParameterException,
-            RepositoryErrorException,
-            RelationshipNotKnownException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                    RepositoryErrorException,
+                                                                    RelationshipNotKnownException,
+                                                                    FunctionNotSupportedException,
+                                                                    UserNotAuthorizedException
     {
         final String methodName  = "getRelationship";
         final String urlTemplate = "users/{0}/instances/relationship/{1}/history";
 
         RelationshipResponse restResult = this.callRelationshipGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                guid);
+                                                                           restURLRoot + urlTemplate,
+                                                                           userId,
+                                                                           guid);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -1733,12 +1760,12 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                            String                    sequencingProperty,
                                                            SequencingOrder           sequencingOrder,
                                                            int                       pageSize) throws InvalidParameterException,
-            TypeErrorException,
-            RepositoryErrorException,
-            PropertyErrorException,
-            PagingErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                                      TypeErrorException,
+                                                                                                      RepositoryErrorException,
+                                                                                                      PropertyErrorException,
+                                                                                                      PagingErrorException,
+                                                                                                      FunctionNotSupportedException,
+                                                                                                      UserNotAuthorizedException
     {
         final String methodName  = "findRelationshipsByProperty";
         RelationshipListResponse restResult;
@@ -1759,9 +1786,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setPageSize(pageSize);
 
             restResult = this.callRelationshipListPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId);
+                                                               restURLRoot + urlTemplate,
+                                                               findRequestParameters,
+                                                               userId);
         }
         else
         {
@@ -1780,9 +1807,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setPageSize(pageSize);
 
             restResult = this.callRelationshipListPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId);
+                                                               restURLRoot + urlTemplate,
+                                                               findRequestParameters,
+                                                               userId);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -1838,12 +1865,12 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                 String                    sequencingProperty,
                                                                 SequencingOrder           sequencingOrder,
                                                                 int                       pageSize) throws InvalidParameterException,
-            TypeErrorException,
-            RepositoryErrorException,
-            PropertyErrorException,
-            PagingErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                                           TypeErrorException,
+                                                                                                           RepositoryErrorException,
+                                                                                                           PropertyErrorException,
+                                                                                                           PagingErrorException,
+                                                                                                           FunctionNotSupportedException,
+                                                                                                           UserNotAuthorizedException
     {
         final String             methodName  = "findRelationshipsByPropertyValue";
         RelationshipListResponse restResult;
@@ -1861,10 +1888,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setPageSize(pageSize);
 
             restResult = this.callRelationshipListPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId,
-                    searchCriteria);
+                                                               restURLRoot + urlTemplate,
+                                                               findRequestParameters,
+                                                               userId,
+                                                               searchCriteria);
         }
         else
         {
@@ -1880,10 +1907,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setPageSize(pageSize);
 
             restResult = this.callRelationshipListPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId,
-                    searchCriteria);
+                                                               restURLRoot + urlTemplate,
+                                                               findRequestParameters,
+                                                               userId,
+                                                               searchCriteria);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -1924,11 +1951,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                              String                    endEntityGUID,
                                              List<InstanceStatus>      limitResultsByStatus,
                                              Date                      asOfTime) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            PropertyErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                        RepositoryErrorException,
+                                                                                        EntityNotKnownException,
+                                                                                        PropertyErrorException,
+                                                                                        FunctionNotSupportedException,
+                                                                                        UserNotAuthorizedException
     {
         final String          methodName  = "getLinkingEntities";
         InstanceGraphResponse restResult;
@@ -1941,11 +1968,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setLimitResultsByStatus(limitResultsByStatus);
 
             restResult = this.callInstanceGraphPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId,
-                    startEntityGUID,
-                    endEntityGUID);
+                                                            restURLRoot + urlTemplate,
+                                                            findRequestParameters,
+                                                            userId,
+                                                            startEntityGUID,
+                                                            endEntityGUID);
         }
         else
         {
@@ -1956,11 +1983,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setAsOfTime(asOfTime);
 
             restResult = this.callInstanceGraphPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId,
-                    startEntityGUID,
-                    endEntityGUID);
+                                                            restURLRoot + urlTemplate,
+                                                            findRequestParameters,
+                                                            userId,
+                                                            startEntityGUID,
+                                                            endEntityGUID);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -2011,12 +2038,12 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                 List<String>         limitResultsByClassification,
                                                 Date                 asOfTime,
                                                 int                  level) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeErrorException,
-            EntityNotKnownException,
-            PropertyErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                   RepositoryErrorException,
+                                                                                   TypeErrorException,
+                                                                                   EntityNotKnownException,
+                                                                                   PropertyErrorException,
+                                                                                   FunctionNotSupportedException,
+                                                                                   UserNotAuthorizedException
     {
         final String          methodName  = "getEntityNeighborhood";
         InstanceGraphResponse restResult;
@@ -2032,11 +2059,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setLimitResultsByClassification(limitResultsByClassification);
 
             restResult = this.callInstanceGraphPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId,
-                    entityGUID,
-                    level);
+                                                            restURLRoot + urlTemplate,
+                                                            findRequestParameters,
+                                                            userId,
+                                                            entityGUID,
+                                                            level);
         }
         else
         {
@@ -2050,11 +2077,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setLimitResultsByClassification(limitResultsByClassification);
 
             restResult = this.callInstanceGraphPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId,
-                    entityGUID,
-                    level);
+                                                            restURLRoot + urlTemplate,
+                                                            findRequestParameters,
+                                                            userId,
+                                                            entityGUID,
+                                                            level);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -2113,13 +2140,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                   String               sequencingProperty,
                                                   SequencingOrder      sequencingOrder,
                                                   int                  pageSize) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeErrorException,
-            EntityNotKnownException,
-            PropertyErrorException,
-            PagingErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                        RepositoryErrorException,
+                                                                                        TypeErrorException,
+                                                                                        EntityNotKnownException,
+                                                                                        PropertyErrorException,
+                                                                                        PagingErrorException,
+                                                                                        FunctionNotSupportedException,
+                                                                                        UserNotAuthorizedException
     {
         final String       methodName  = "getRelatedEntities";
         EntityListResponse restResult;
@@ -2138,10 +2165,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setPageSize(pageSize);
 
             restResult = this.callEntityListPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId,
-                    startEntityGUID);
+                                                         restURLRoot + urlTemplate,
+                                                         findRequestParameters,
+                                                         userId,
+                                                         startEntityGUID);
         }
         else
         {
@@ -2158,10 +2185,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
             findRequestParameters.setPageSize(pageSize);
 
             restResult = this.callEntityListPostRESTCall(methodName,
-                    restURLRoot + urlTemplate,
-                    findRequestParameters,
-                    userId,
-                    startEntityGUID);
+                                                         restURLRoot + urlTemplate,
+                                                         findRequestParameters,
+                                                         userId,
+                                                         startEntityGUID);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -2210,13 +2237,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                   InstanceProperties         initialProperties,
                                   List<Classification>       initialClassifications,
                                   InstanceStatus             initialStatus) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeErrorException,
-            PropertyErrorException,
-            ClassificationErrorException,
-            StatusNotSupportedException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                   RepositoryErrorException,
+                                                                                   TypeErrorException,
+                                                                                   PropertyErrorException,
+                                                                                   ClassificationErrorException,
+                                                                                   StatusNotSupportedException,
+                                                                                   FunctionNotSupportedException,
+                                                                                   UserNotAuthorizedException
     {
         final String methodName  = "addEntity";
         final String urlTemplate = "users/{0}/instances/entity";
@@ -2229,9 +2256,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setInitialStatus(initialStatus);
 
         EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId);
+                                                                            restURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            userId);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
@@ -2260,17 +2287,17 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public void addEntityProxy(String       userId,
                                EntityProxy  entityProxy) throws InvalidParameterException,
-            RepositoryErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                RepositoryErrorException,
+                                                                FunctionNotSupportedException,
+                                                                UserNotAuthorizedException
     {
         final String methodName  = "addEntityProxy";
         final String urlTemplate = "users/{0}/instances/entity-proxy";
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                entityProxy,
-                userId);
+                                                            restURLRoot + urlTemplate,
+                                                            entityProxy,
+                                                            userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -2297,20 +2324,20 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     public EntityDetail updateEntityStatus(String           userId,
                                            String           entityGUID,
                                            InstanceStatus   newStatus) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            StatusNotSupportedException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                              RepositoryErrorException,
+                                                                              EntityNotKnownException,
+                                                                              StatusNotSupportedException,
+                                                                              FunctionNotSupportedException,
+                                                                              UserNotAuthorizedException
     {
         final String methodName  = "updateEntityStatus";
         final String urlTemplate = "users/{0}/instances/entity/{1}/status";
 
         EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                newStatus,
-                userId,
-                entityGUID);
+                                                                            restURLRoot + urlTemplate,
+                                                                            newStatus,
+                                                                            userId,
+                                                                            entityGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
@@ -2342,11 +2369,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     public EntityDetail updateEntityProperties(String               userId,
                                                String               entityGUID,
                                                InstanceProperties   properties) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            PropertyErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                       RepositoryErrorException,
+                                                                                       EntityNotKnownException,
+                                                                                       PropertyErrorException,
+                                                                                       FunctionNotSupportedException,
+                                                                                       UserNotAuthorizedException
     {
         final String methodName  = "updateEntityProperties";
         final String urlTemplate = "users/{0}/instances/entity/{1}/properties";
@@ -2355,10 +2382,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setInstanceProperties(properties);
 
         EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                entityGUID);
+                                                                            restURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            userId,
+                                                                            entityGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
@@ -2386,18 +2413,18 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public EntityDetail undoEntityUpdate(String  userId,
                                          String  entityGUID) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                    RepositoryErrorException,
+                                                                    EntityNotKnownException,
+                                                                    FunctionNotSupportedException,
+                                                                    UserNotAuthorizedException
     {
         final String methodName  = "undoEntityUpdate";
         final String urlTemplate = "users/{0}/instances/entity/{1}/previous";
 
         EntityDetailResponse restResult = this.callEntityDetailGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                entityGUID);
+                                                                           restURLRoot + urlTemplate,
+                                                                           userId,
+                                                                           entityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -2432,10 +2459,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                        String typeDefGUID,
                                        String typeDefName,
                                        String obsoleteEntityGUID) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                         RepositoryErrorException,
+                                                                         EntityNotKnownException,
+                                                                         FunctionNotSupportedException,
+                                                                         UserNotAuthorizedException
     {
         final String methodName  = "deleteEntity";
         final String urlTemplate = "users/{0}/instances/entity/{1}/delete";
@@ -2445,10 +2472,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setTypeDefName(typeDefName);
 
         EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                obsoleteEntityGUID);
+                                                                            restURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            userId,
+                                                                            obsoleteEntityGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
@@ -2479,11 +2506,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                             String    typeDefGUID,
                             String    typeDefName,
                             String    deletedEntityGUID) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            EntityNotDeletedException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                RepositoryErrorException,
+                                                                EntityNotKnownException,
+                                                                EntityNotDeletedException,
+                                                                FunctionNotSupportedException,
+                                                                UserNotAuthorizedException
     {
         final String methodName  = "purgeEntity";
         final String urlTemplate = "users/{0}/instances/entity/{1}/purge";
@@ -2493,10 +2520,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setTypeDefName(typeDefName);
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                deletedEntityGUID);
+                                                            restURLRoot + urlTemplate,
+                                                            requestBody,
+                                                            userId,
+                                                            deletedEntityGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
@@ -2523,19 +2550,19 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public EntityDetail restoreEntity(String    userId,
                                       String    deletedEntityGUID) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            EntityNotDeletedException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                          RepositoryErrorException,
+                                                                          EntityNotKnownException,
+                                                                          EntityNotDeletedException,
+                                                                          FunctionNotSupportedException,
+                                                                          UserNotAuthorizedException
     {
         final String methodName  = "restoreEntity";
         final String urlTemplate = "users/{0}/instances/entity/{1}/restore";
 
         EntityDetailResponse restResult = this.callEntityDetailGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                deletedEntityGUID);
+                                                                           restURLRoot + urlTemplate,
+                                                                           userId,
+                                                                           deletedEntityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -2571,12 +2598,12 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                        String               entityGUID,
                                        String               classificationName,
                                        InstanceProperties   classificationProperties) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            ClassificationErrorException,
-            PropertyErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                             RepositoryErrorException,
+                                                                                             EntityNotKnownException,
+                                                                                             ClassificationErrorException,
+                                                                                             PropertyErrorException,
+                                                                                             FunctionNotSupportedException,
+                                                                                             UserNotAuthorizedException
     {
         final String methodName  = "classifyEntity";
         final String urlTemplate = "users/{0}/instances/entity/{1}/classification/{2}";
@@ -2585,11 +2612,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setInstanceProperties(classificationProperties);
 
         EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                entityGUID,
-                classificationName);
+                                                                            restURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            userId,
+                                                                            entityGUID,
+                                                                            classificationName);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
@@ -2621,11 +2648,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     public EntityDetail declassifyEntity(String  userId,
                                          String  entityGUID,
                                          String  classificationName) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            ClassificationErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                            RepositoryErrorException,
+                                                                            EntityNotKnownException,
+                                                                            ClassificationErrorException,
+                                                                            FunctionNotSupportedException,
+                                                                            UserNotAuthorizedException
     {
         final String methodName  = "declassifyEntity";
         final String urlTemplate = "users/{0}/instances/entity/{1}/classification/{2}/delete";
@@ -2633,11 +2660,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         OMRSAPIRequest requestBody = new OMRSAPIRequest();
 
         EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                entityGUID,
-                classificationName);
+                                                                            restURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            userId,
+                                                                            entityGUID,
+                                                                            classificationName);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
@@ -2672,12 +2699,12 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                    String               entityGUID,
                                                    String               classificationName,
                                                    InstanceProperties   properties) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            ClassificationErrorException,
-            PropertyErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                           RepositoryErrorException,
+                                                                                           EntityNotKnownException,
+                                                                                           ClassificationErrorException,
+                                                                                           PropertyErrorException,
+                                                                                           FunctionNotSupportedException,
+                                                                                           UserNotAuthorizedException
     {
         final String methodName  = "updateEntityClassification";
         final String urlTemplate = "users/{0}/instances/entity/{1}/classification/{2}/properties";
@@ -2686,11 +2713,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setInstanceProperties(properties);
 
         EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                entityGUID,
-                classificationName);
+                                                                            restURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            userId,
+                                                                            entityGUID,
+                                                                            classificationName);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowEntityNotKnownException(methodName, restResult);
@@ -2734,13 +2761,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                         String               entityOneGUID,
                                         String               entityTwoGUID,
                                         InstanceStatus       initialStatus) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeErrorException,
-            PropertyErrorException,
-            EntityNotKnownException,
-            StatusNotSupportedException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                   RepositoryErrorException,
+                                                                                   TypeErrorException,
+                                                                                   PropertyErrorException,
+                                                                                   EntityNotKnownException,
+                                                                                   StatusNotSupportedException,
+                                                                                   FunctionNotSupportedException,
+                                                                                   UserNotAuthorizedException
     {
         final String methodName  = "addRelationship";
         final String urlTemplate = "users/{0}/instances/relationship";
@@ -2753,9 +2780,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         request.setInitialStatus(initialStatus);
 
         RelationshipResponse restResult = this.callRelationshipPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                request,
-                userId);
+                                                                            restURLRoot + urlTemplate,
+                                                                            request,
+                                                                            userId);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowTypeErrorException(methodName, restResult);
@@ -2788,20 +2815,20 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     public Relationship updateRelationshipStatus(String           userId,
                                                  String           relationshipGUID,
                                                  InstanceStatus   newStatus) throws InvalidParameterException,
-            RepositoryErrorException,
-            RelationshipNotKnownException,
-            StatusNotSupportedException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                    RepositoryErrorException,
+                                                                                    RelationshipNotKnownException,
+                                                                                    StatusNotSupportedException,
+                                                                                    FunctionNotSupportedException,
+                                                                                    UserNotAuthorizedException
     {
         final String methodName  = "updateRelationshipStatus";
         final String urlTemplate = "users/{0}/instances/relationship/{1}/status";
 
         RelationshipResponse restResult = this.callRelationshipPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                newStatus,
-                userId,
-                relationshipGUID);
+                                                                            restURLRoot + urlTemplate,
+                                                                            newStatus,
+                                                                            userId,
+                                                                            relationshipGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
@@ -2834,11 +2861,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     public Relationship updateRelationshipProperties(String               userId,
                                                      String               relationshipGUID,
                                                      InstanceProperties   properties) throws InvalidParameterException,
-            RepositoryErrorException,
-            RelationshipNotKnownException,
-            PropertyErrorException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                             RepositoryErrorException,
+                                                                                             RelationshipNotKnownException,
+                                                                                             PropertyErrorException,
+                                                                                             FunctionNotSupportedException,
+                                                                                             UserNotAuthorizedException
     {
         final String methodName  = "updateRelationshipProperties";
         final String urlTemplate = "users/{0}/instances/relationship/{1}/properties";
@@ -2847,10 +2874,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setInstanceProperties(properties);
 
         RelationshipResponse restResult = this.callRelationshipPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                relationshipGUID);
+                                                                            restURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            userId,
+                                                                            relationshipGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
@@ -2879,18 +2906,18 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public Relationship undoRelationshipUpdate(String  userId,
                                                String  relationshipGUID) throws InvalidParameterException,
-            RepositoryErrorException,
-            RelationshipNotKnownException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                RepositoryErrorException,
+                                                                                RelationshipNotKnownException,
+                                                                                FunctionNotSupportedException,
+                                                                                UserNotAuthorizedException
     {
         final String methodName  = "undoRelationshipUpdate";
         final String urlTemplate = "users/{0}/instances/relationship/{1}/previous";
 
         RelationshipResponse restResult = this.callRelationshipGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                relationshipGUID);
+                                                                           restURLRoot + urlTemplate,
+                                                                           userId,
+                                                                           relationshipGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -2924,10 +2951,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                            String typeDefGUID,
                                            String typeDefName,
                                            String obsoleteRelationshipGUID) throws InvalidParameterException,
-            RepositoryErrorException,
-            RelationshipNotKnownException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                   RepositoryErrorException,
+                                                                                   RelationshipNotKnownException,
+                                                                                   FunctionNotSupportedException,
+                                                                                   UserNotAuthorizedException
     {
         final String methodName  = "deleteRelationship";
         final String urlTemplate = "users/{0}/instances/relationship/{1}/delete";
@@ -2937,10 +2964,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setTypeDefName(typeDefName);
 
         RelationshipResponse restResult = this.callRelationshipPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                obsoleteRelationshipGUID);
+                                                                            restURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            userId,
+                                                                            obsoleteRelationshipGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
@@ -2971,11 +2998,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                   String    typeDefGUID,
                                   String    typeDefName,
                                   String    deletedRelationshipGUID) throws InvalidParameterException,
-            RepositoryErrorException,
-            RelationshipNotKnownException,
-            RelationshipNotDeletedException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                            RepositoryErrorException,
+                                                                            RelationshipNotKnownException,
+                                                                            RelationshipNotDeletedException,
+                                                                            FunctionNotSupportedException,
+                                                                            UserNotAuthorizedException
     {
         final String methodName  = "purgeRelationship";
         final String urlTemplate = "users/{0}/instances/relationship/{1}/purge";
@@ -2985,10 +3012,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setTypeDefName(typeDefName);
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                deletedRelationshipGUID);
+                                                            restURLRoot + urlTemplate,
+                                                            requestBody,
+                                                            userId,
+                                                            deletedRelationshipGUID);
 
         this.detectAndThrowInvalidParameterException(methodName, restResult);
         this.detectAndThrowRelationshipNotKnownException(methodName, restResult);
@@ -3016,19 +3043,19 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public Relationship restoreRelationship(String    userId,
                                             String    deletedRelationshipGUID) throws InvalidParameterException,
-            RepositoryErrorException,
-            RelationshipNotKnownException,
-            RelationshipNotDeletedException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                      RepositoryErrorException,
+                                                                                      RelationshipNotKnownException,
+                                                                                      RelationshipNotDeletedException,
+                                                                                      FunctionNotSupportedException,
+                                                                                      UserNotAuthorizedException
     {
         final String methodName  = "restoreRelationship";
         final String urlTemplate = "users/{0}/instances/relationship/{1}/restore";
 
         RelationshipResponse restResult = this.callRelationshipGetRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                userId,
-                deletedRelationshipGUID);
+                                                                           restURLRoot + urlTemplate,
+                                                                           userId,
+                                                                           deletedRelationshipGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -3069,10 +3096,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                          String     typeDefName,
                                          String     entityGUID,
                                          String     newEntityGUID) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                          RepositoryErrorException,
+                                                                          EntityNotKnownException,
+                                                                          FunctionNotSupportedException,
+                                                                          UserNotAuthorizedException
     {
         final String methodName  = "reIdentifyEntity";
         final String urlTemplate = "users/{0}/instances/entity/{1}/identity?newEntityGUID={2}";
@@ -3082,11 +3109,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setTypeDefName(typeDefName);
 
         EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                entityGUID,
-                newEntityGUID);
+                                                                            restURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            userId,
+                                                                            entityGUID,
+                                                                            newEntityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -3123,13 +3150,13 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                      String         entityGUID,
                                      TypeDefSummary currentTypeDefSummary,
                                      TypeDefSummary newTypeDefSummary) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeErrorException,
-            PropertyErrorException,
-            ClassificationErrorException,
-            EntityNotKnownException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                              RepositoryErrorException,
+                                                                              TypeErrorException,
+                                                                              PropertyErrorException,
+                                                                              ClassificationErrorException,
+                                                                              EntityNotKnownException,
+                                                                              FunctionNotSupportedException,
+                                                                              UserNotAuthorizedException
     {
         final String methodName  = "reTypeEntity";
         final String urlTemplate = "users/{0}/instances/entity/{1}/type";
@@ -3139,10 +3166,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setNewTypeDef(newTypeDefSummary);
 
         EntityDetailResponse restResult = this.callEntityDetailPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                entityGUID);
+                                                                            restURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            userId,
+                                                                            entityGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -3184,10 +3211,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                      String         homeMetadataCollectionId,
                                      String         newHomeMetadataCollectionId,
                                      String         newHomeMetadataCollectionName) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                          RepositoryErrorException,
+                                                                                          EntityNotKnownException,
+                                                                                          FunctionNotSupportedException,
+                                                                                          UserNotAuthorizedException
     {
         final String methodName  = "reHomeEntity";
         final String urlTemplate1 = "users/{0}/instances/entity/{1}/home/{2}?newHomeMetadataCollectionId={3}";
@@ -3202,23 +3229,23 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if (newHomeMetadataCollectionName == null)
         {
             restResult = this.callEntityDetailPostRESTCall(methodName,
-                    restURLRoot + urlTemplate1,
-                    requestBody,
-                    userId,
-                    entityGUID,
-                    homeMetadataCollectionId,
-                    newHomeMetadataCollectionId);
+                                                           restURLRoot + urlTemplate1,
+                                                           requestBody,
+                                                           userId,
+                                                           entityGUID,
+                                                           homeMetadataCollectionId,
+                                                           newHomeMetadataCollectionId);
         }
         else
         {
             restResult = this.callEntityDetailPostRESTCall(methodName,
-                    restURLRoot + urlTemplate2,
-                    requestBody,
-                    userId,
-                    entityGUID,
-                    homeMetadataCollectionId,
-                    newHomeMetadataCollectionId,
-                    newHomeMetadataCollectionName);
+                                                           restURLRoot + urlTemplate2,
+                                                           requestBody,
+                                                           userId,
+                                                           entityGUID,
+                                                           homeMetadataCollectionId,
+                                                           newHomeMetadataCollectionId,
+                                                           newHomeMetadataCollectionName);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -3255,10 +3282,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                String     typeDefName,
                                                String     relationshipGUID,
                                                String     newRelationshipGUID) throws InvalidParameterException,
-            RepositoryErrorException,
-            RelationshipNotKnownException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                      RepositoryErrorException,
+                                                                                      RelationshipNotKnownException,
+                                                                                      FunctionNotSupportedException,
+                                                                                      UserNotAuthorizedException
     {
         final String methodName  = "reIdentifyRelationship";
         final String urlTemplate = "users/{0}/instances/relationship/{1}/identity?newRelationshipGUID={2}";
@@ -3268,11 +3295,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setTypeDefName(typeDefName);
 
         RelationshipResponse restResult = this.callRelationshipPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                relationshipGUID,
-                newRelationshipGUID);
+                                                                            restURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            userId,
+                                                                            relationshipGUID,
+                                                                            newRelationshipGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -3309,12 +3336,12 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                            String         relationshipGUID,
                                            TypeDefSummary currentTypeDefSummary,
                                            TypeDefSummary newTypeDefSummary) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeErrorException,
-            PropertyErrorException,
-            RelationshipNotKnownException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                    RepositoryErrorException,
+                                                                                    TypeErrorException,
+                                                                                    PropertyErrorException,
+                                                                                    RelationshipNotKnownException,
+                                                                                    FunctionNotSupportedException,
+                                                                                    UserNotAuthorizedException
     {
         final String methodName  = "reTypeRelationship";
         final String urlTemplate = "users/{0}/instances/relationship/{1}/type";
@@ -3324,10 +3351,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setNewTypeDef(newTypeDefSummary);
 
         RelationshipResponse restResult = this.callRelationshipPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                relationshipGUID);
+                                                                            restURLRoot + urlTemplate,
+                                                                            requestBody,
+                                                                            userId,
+                                                                            relationshipGUID);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -3369,10 +3396,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                            String   homeMetadataCollectionId,
                                            String   newHomeMetadataCollectionId,
                                            String   newHomeMetadataCollectionName) throws InvalidParameterException,
-            RepositoryErrorException,
-            RelationshipNotKnownException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                          RepositoryErrorException,
+                                                                                          RelationshipNotKnownException,
+                                                                                          FunctionNotSupportedException,
+                                                                                          UserNotAuthorizedException
     {
         final String methodName  = "reHomeRelationship";
         final String urlTemplate1 = "users/{0}/instances/relationship/{1}/home/{2}?newHomeMetadataCollectionId={3}";
@@ -3387,23 +3414,23 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if (newHomeMetadataCollectionName == null)
         {
             restResult = this.callRelationshipPostRESTCall(methodName,
-                    restURLRoot + urlTemplate1,
-                    requestBody,
-                    userId,
-                    relationshipGUID,
-                    homeMetadataCollectionId,
-                    newHomeMetadataCollectionId);
+                                                           restURLRoot + urlTemplate1,
+                                                           requestBody,
+                                                           userId,
+                                                           relationshipGUID,
+                                                           homeMetadataCollectionId,
+                                                           newHomeMetadataCollectionId);
         }
         else
         {
             restResult = this.callRelationshipPostRESTCall(methodName,
-                    restURLRoot + urlTemplate2,
-                    requestBody,
-                    userId,
-                    relationshipGUID,
-                    homeMetadataCollectionId,
-                    newHomeMetadataCollectionId,
-                    newHomeMetadataCollectionName);
+                                                           restURLRoot + urlTemplate2,
+                                                           requestBody,
+                                                           userId,
+                                                           relationshipGUID,
+                                                           homeMetadataCollectionId,
+                                                           newHomeMetadataCollectionId,
+                                                           newHomeMetadataCollectionName);
         }
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
@@ -3444,22 +3471,22 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public void saveEntityReferenceCopy(String userId,
                                         EntityDetail   entity) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeErrorException,
-            PropertyErrorException,
-            HomeEntityException,
-            EntityConflictException,
-            InvalidEntityException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                      RepositoryErrorException,
+                                                                      TypeErrorException,
+                                                                      PropertyErrorException,
+                                                                      HomeEntityException,
+                                                                      EntityConflictException,
+                                                                      InvalidEntityException,
+                                                                      FunctionNotSupportedException,
+                                                                      UserNotAuthorizedException
     {
         final String methodName  = "saveEntityReferenceCopy";
         final String urlTemplate = "users/{0}/instances/entities/reference-copy";
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                entity,
-                userId);
+                                                            restURLRoot + urlTemplate,
+                                                            entity,
+                                                            userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -3497,11 +3524,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                          String   typeDefGUID,
                                          String   typeDefName,
                                          String   homeMetadataCollectionId) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            HomeEntityException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                   RepositoryErrorException,
+                                                                                   EntityNotKnownException,
+                                                                                   HomeEntityException,
+                                                                                   FunctionNotSupportedException,
+                                                                                   UserNotAuthorizedException
     {
         final String methodName  = "purgeEntityReferenceCopy";
         final String urlTemplate = "users/{0}/instances/entities/reference-copy/{1}/purge?homeMetadataCollectionId={2}";
@@ -3511,11 +3538,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setTypeDefName(typeDefName);
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                entityGUID,
-                homeMetadataCollectionId);
+                                                            restURLRoot + urlTemplate,
+                                                            requestBody,
+                                                            userId,
+                                                            entityGUID,
+                                                            homeMetadataCollectionId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -3549,11 +3576,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                            String   typeDefGUID,
                                            String   typeDefName,
                                            String   homeMetadataCollectionId) throws InvalidParameterException,
-            RepositoryErrorException,
-            EntityNotKnownException,
-            HomeEntityException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                     RepositoryErrorException,
+                                                                                     EntityNotKnownException,
+                                                                                     HomeEntityException,
+                                                                                     FunctionNotSupportedException,
+                                                                                     UserNotAuthorizedException
     {
         final String methodName  = "refreshEntityReferenceCopy";
         final String urlTemplate = "users/{0}/instances/entities/reference-copy/{1}/refresh?homeMetadataCollectionId={2}";
@@ -3563,11 +3590,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setTypeDefName(typeDefName);
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                entityGUID,
-                homeMetadataCollectionId);
+                                                            restURLRoot + urlTemplate,
+                                                            requestBody,
+                                                            userId,
+                                                            entityGUID,
+                                                            homeMetadataCollectionId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -3602,23 +3629,23 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public void saveRelationshipReferenceCopy(String userId,
                                               Relationship   relationship) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeErrorException,
-            EntityNotKnownException,
-            PropertyErrorException,
-            HomeRelationshipException,
-            RelationshipConflictException,
-            InvalidRelationshipException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                  RepositoryErrorException,
+                                                                                  TypeErrorException,
+                                                                                  EntityNotKnownException,
+                                                                                  PropertyErrorException,
+                                                                                  HomeRelationshipException,
+                                                                                  RelationshipConflictException,
+                                                                                  InvalidRelationshipException,
+                                                                                  FunctionNotSupportedException,
+                                                                                  UserNotAuthorizedException
     {
         final String methodName  = "saveRelationshipReferenceCopy";
         final String urlTemplate = "users/{0}/instances/relationships/reference-copy";
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                relationship,
-                userId);
+                                                            restURLRoot + urlTemplate,
+                                                            relationship,
+                                                            userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -3657,11 +3684,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                String   typeDefGUID,
                                                String   typeDefName,
                                                String   homeMetadataCollectionId) throws InvalidParameterException,
-            RepositoryErrorException,
-            RelationshipNotKnownException,
-            HomeRelationshipException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                         RepositoryErrorException,
+                                                                                         RelationshipNotKnownException,
+                                                                                         HomeRelationshipException,
+                                                                                         FunctionNotSupportedException,
+                                                                                         UserNotAuthorizedException
     {
         final String methodName  = "purgeRelationshipReferenceCopy";
         final String urlTemplate = "users/{0}/instances/relationships/reference-copy/{1}/purge?homeMetadataCollectionId={2}";
@@ -3671,11 +3698,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setTypeDefName(typeDefName);
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                relationshipGUID,
-                homeMetadataCollectionId);
+                                                            restURLRoot + urlTemplate,
+                                                            requestBody,
+                                                            userId,
+                                                            relationshipGUID,
+                                                            homeMetadataCollectionId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -3710,11 +3737,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                  String   typeDefGUID,
                                                  String   typeDefName,
                                                  String   homeMetadataCollectionId) throws InvalidParameterException,
-            RepositoryErrorException,
-            RelationshipNotKnownException,
-            HomeRelationshipException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                                           RepositoryErrorException,
+                                                                                           RelationshipNotKnownException,
+                                                                                           HomeRelationshipException,
+                                                                                           FunctionNotSupportedException,
+                                                                                           UserNotAuthorizedException
     {
         final String methodName  = "refreshRelationshipReferenceCopy";
         final String urlTemplate = "users/{0}/instances/relationships/reference-copy/{1}/refresh?homeMetadataCollectionId={2}";
@@ -3724,11 +3751,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         requestBody.setTypeDefName(typeDefName);
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId,
-                relationshipGUID,
-                homeMetadataCollectionId);
+                                                            restURLRoot + urlTemplate,
+                                                            requestBody,
+                                                            userId,
+                                                            relationshipGUID,
+                                                            homeMetadataCollectionId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -3765,16 +3792,16 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      */
     public void saveInstanceReferenceCopies(String          userId,
                                             InstanceGraph   instances) throws InvalidParameterException,
-            RepositoryErrorException,
-            TypeErrorException,
-            EntityNotKnownException,
-            PropertyErrorException,
-            EntityConflictException,
-            RelationshipConflictException,
-            InvalidEntityException,
-            InvalidRelationshipException,
-            FunctionNotSupportedException,
-            UserNotAuthorizedException
+                                                                              RepositoryErrorException,
+                                                                              TypeErrorException,
+                                                                              EntityNotKnownException,
+                                                                              PropertyErrorException,
+                                                                              EntityConflictException,
+                                                                              RelationshipConflictException,
+                                                                              InvalidEntityException,
+                                                                              InvalidRelationshipException,
+                                                                              FunctionNotSupportedException,
+                                                                              UserNotAuthorizedException
     {
         final String methodName  = "saveInstanceReferenceCopies";
         final String urlTemplate = "users/{0}/instances";
@@ -3787,9 +3814,9 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         }
 
         VoidResponse restResult = this.callVoidPostRESTCall(methodName,
-                restURLRoot + urlTemplate,
-                requestBody,
-                userId);
+                                                            restURLRoot + urlTemplate,
+                                                            requestBody,
+                                                            userId);
 
         this.detectAndThrowFunctionNotSupportedException(methodName, restResult);
         this.detectAndThrowInvalidParameterException(methodName, restResult);
@@ -3805,6 +3832,68 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
     }
 
 
+    /*
+     * ===============================
+     * REST Client
+     * ===============================
+     */
+
+
+    /**
+     * Create a REST client to call the remote connector.
+     *
+     * @param serverName name of the remote server.
+     * @param serverPlatformURLRoot name of the URL root for the server.
+     * @param userId userId of this server.
+     * @param password password for this server.
+     * @return REST Client connector
+     * @throws RepositoryErrorException an unexpected exception - internal logic error as the parameters should have
+     * all been checked before this call.
+     */
+    private RESTClientConnector getRESTClientConnector(String       serverName,
+                                                       String       serverPlatformURLRoot,
+                                                       String       userId,
+                                                       String       password) throws RepositoryErrorException
+    {
+        final String methodName = "getRESTClientConnector";
+
+        RESTClientFactory clientFactory;
+
+        if ((localServerUserId != null) && (localServerPassword != null))
+        {
+            clientFactory = new RESTClientFactory(serverName,
+                                                  serverPlatformURLRoot,
+                                                  userId,
+                                                  password);
+        }
+        else
+        {
+            clientFactory = new RESTClientFactory(serverName,
+                                                  serverPlatformURLRoot);
+        }
+
+        try
+        {
+            return clientFactory.getClientConnector();
+        }
+        catch (Throwable error)
+        {
+            OMRSErrorCode errorCode    = OMRSErrorCode.NO_REST_CLIENT;
+            String        errorMessage = errorCode.getErrorMessageId()
+                                       + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
+
+
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction(),
+                                               error);
+        }
+    }
+
+
     /* =====================
      * Issuing REST Calls
      * =====================
@@ -3816,44 +3905,21 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName  name of the method being called
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body
+     * @param requestBody request body for REST Call
      * @param params  a list of parameters that are slotted into the url template
      * @return AttributeTypeDefListResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private AttributeTypeDefListResponse callAttributeTypeDefListPostRESTCall(String    methodName,
                                                                               String    urlTemplate,
-                                                                              Object    request,
+                                                                              Object    requestBody,
                                                                               Object... params) throws RepositoryErrorException
     {
-        AttributeTypeDefListResponse restResult = new AttributeTypeDefListResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate  restTemplate  = new RestTemplate();
-
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callPostRESTCall(methodName,
+                                     AttributeTypeDefListResponse.class,
+                                     urlTemplate,
+                                     requestBody,
+                                     params);
     }
 
 
@@ -3870,34 +3936,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                      String    urlTemplate,
                                                                      Object... params) throws RepositoryErrorException
     {
-        AttributeTypeDefResponse restResult = new AttributeTypeDefResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate  restTemplate  = new RestTemplate();
-
-            restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callGetRESTCall(methodName,
+                                    AttributeTypeDefResponse.class,
+                                    urlTemplate,
+                                    params);
     }
 
 
@@ -3906,44 +3948,21 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return AttributeTypeDefResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private AttributeTypeDefResponse callAttributeTypeDefPostRESTCall(String    methodName,
                                                                       String    urlTemplate,
-                                                                      Object    request,
+                                                                      Object    requestBody,
                                                                       Object... params) throws RepositoryErrorException
     {
-        AttributeTypeDefResponse restResult = new AttributeTypeDefResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate  restTemplate  = new RestTemplate();
-
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callPostRESTCall(methodName,
+                                     AttributeTypeDefResponse.class,
+                                     urlTemplate,
+                                     requestBody,
+                                     params);
     }
 
 
@@ -3952,44 +3971,21 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return BooleanResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private BooleanResponse callBooleanPostRESTCall(String    methodName,
                                                     String    urlTemplate,
-                                                    Object    request,
+                                                    Object    requestBody,
                                                     Object... params) throws RepositoryErrorException
     {
-        BooleanResponse restResult = new BooleanResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate  restTemplate  = new RestTemplate();
-
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callPostRESTCall(methodName,
+                                     BooleanResponse.class,
+                                     urlTemplate,
+                                     requestBody,
+                                     params);
     }
 
 
@@ -4006,34 +4002,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                              String    urlTemplate,
                                                              Object... params) throws RepositoryErrorException
     {
-        EntityDetailResponse restResult = new EntityDetailResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate  restTemplate  = new RestTemplate();
-
-            restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callGetRESTCall(methodName,
+                                    EntityDetailResponse.class,
+                                    urlTemplate,
+                                    params);
     }
 
 
@@ -4042,44 +4014,21 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return EntityDetailResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private EntityDetailResponse callEntityDetailPostRESTCall(String    methodName,
                                                               String    urlTemplate,
-                                                              Object    request,
+                                                              Object    requestBody,
                                                               Object... params) throws RepositoryErrorException
     {
-        EntityDetailResponse restResult = new EntityDetailResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate  restTemplate  = new RestTemplate();
-
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callPostRESTCall(methodName,
+                                     EntityDetailResponse.class,
+                                     urlTemplate,
+                                     requestBody,
+                                     params);
     }
 
 
@@ -4096,34 +4045,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                String    urlTemplate,
                                                                Object... params) throws RepositoryErrorException
     {
-        EntitySummaryResponse restResult = new EntitySummaryResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate  restTemplate  = new RestTemplate();
-
-            restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callGetRESTCall(methodName,
+                                    EntitySummaryResponse.class,
+                                    urlTemplate,
+                                    params);
     }
 
 
@@ -4140,34 +4065,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                              String    urlTemplate,
                                                              Object... params) throws RepositoryErrorException
     {
-        RelationshipResponse restResult = new RelationshipResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate  restTemplate  = new RestTemplate();
-
-            restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callGetRESTCall(methodName,
+                                    RelationshipResponse.class,
+                                    urlTemplate,
+                                    params);
     }
 
 
@@ -4176,44 +4077,21 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return EntityListResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private EntityListResponse callEntityListPostRESTCall(String    methodName,
                                                           String    urlTemplate,
-                                                          Object    request,
+                                                          Object    requestBody,
                                                           Object... params) throws RepositoryErrorException
     {
-        EntityListResponse restResult = new EntityListResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate  restTemplate  = new RestTemplate();
-
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callPostRESTCall(methodName,
+                                     EntityListResponse.class,
+                                     urlTemplate,
+                                     requestBody,
+                                     params);
     }
 
 
@@ -4223,44 +4101,21 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return RelationshipListResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private RelationshipListResponse callRelationshipListPostRESTCall(String    methodName,
                                                                       String    urlTemplate,
-                                                                      Object    request,
+                                                                      Object    requestBody,
                                                                       Object... params) throws RepositoryErrorException
     {
-        RelationshipListResponse restResult = new RelationshipListResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate  restTemplate  = new RestTemplate();
-
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callPostRESTCall(methodName,
+                                     RelationshipListResponse.class,
+                                     urlTemplate,
+                                     requestBody,
+                                     params);
     }
 
 
@@ -4269,44 +4124,21 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return RelationshipResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private RelationshipResponse callRelationshipPostRESTCall(String    methodName,
                                                               String    urlTemplate,
-                                                              Object    request,
+                                                              Object    requestBody,
                                                               Object... params) throws RepositoryErrorException
     {
-        RelationshipResponse restResult = new RelationshipResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate  restTemplate  = new RestTemplate();
-
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callPostRESTCall(methodName,
+                                     RelationshipResponse.class,
+                                     urlTemplate,
+                                     requestBody,
+                                     params);
     }
 
     /**
@@ -4314,44 +4146,21 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return InstanceGraphResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private InstanceGraphResponse callInstanceGraphPostRESTCall(String    methodName,
                                                                 String    urlTemplate,
-                                                                Object    request,
+                                                                Object    requestBody,
                                                                 Object... params) throws RepositoryErrorException
     {
-        InstanceGraphResponse restResult = new InstanceGraphResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate  restTemplate  = new RestTemplate();
-
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callPostRESTCall(methodName,
+                                     InstanceGraphResponse.class,
+                                     urlTemplate,
+                                     requestBody,
+                                     params);
     }
 
 
@@ -4368,34 +4177,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                                  String    urlTemplate,
                                                                  Object... params) throws RepositoryErrorException
     {
-        TypeDefGalleryResponse restResult = new TypeDefGalleryResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate  restTemplate  = new RestTemplate();
-
-            restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callGetRESTCall(methodName,
+                                    TypeDefGalleryResponse.class,
+                                    urlTemplate,
+                                    params);
     }
 
 
@@ -4412,34 +4197,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                            String    urlTemplate,
                                                            Object... params) throws RepositoryErrorException
     {
-        TypeDefListResponse restResult = new TypeDefListResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate restTemplate = new RestTemplate();
-
-            restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callGetRESTCall(methodName,
+                                    TypeDefListResponse.class,
+                                    urlTemplate,
+                                    params);
     }
 
 
@@ -4448,44 +4209,21 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName  name of the method being called
      * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body
+     * @param requestBody request body
      * @param params  a list of parameters that are slotted into the url template
      * @return TypeDefListResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private TypeDefListResponse callTypeDefListPostRESTCall(String    methodName,
                                                             String    urlTemplate,
-                                                            Object    request,
+                                                            Object    requestBody,
                                                             Object... params) throws RepositoryErrorException
     {
-        TypeDefListResponse restResult = new TypeDefListResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate restTemplate = new RestTemplate();
-
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callPostRESTCall(methodName,
+                                     TypeDefListResponse.class,
+                                     urlTemplate,
+                                     requestBody,
+                                     params);
     }
 
 
@@ -4502,34 +4240,10 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                                                    String    urlTemplate,
                                                    Object... params) throws RepositoryErrorException
     {
-        TypeDefResponse restResult = new TypeDefResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate restTemplate = new RestTemplate();
-
-            restResult = restTemplate.getForObject(urlTemplate, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callGetRESTCall(methodName,
+                                    TypeDefResponse.class,
+                                    urlTemplate,
+                                    params);
     }
 
 
@@ -4538,44 +4252,21 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return TypeDefResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private TypeDefResponse callTypeDefPostRESTCall(String    methodName,
                                                     String    urlTemplate,
-                                                    Object    request,
+                                                    Object    requestBody,
                                                     Object... params) throws RepositoryErrorException
     {
-        TypeDefResponse restResult = new TypeDefResponse();
-
-        /*
-         * Issue the request
-         */
-        try
-        {
-            RestTemplate restTemplate = new RestTemplate();
-
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
-        }
-        catch (Throwable error)
-        {
-            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
-
-            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
-        }
-
-        return restResult;
+        return this.callPostRESTCall(methodName,
+                                     TypeDefResponse.class,
+                                     urlTemplate,
+                                     requestBody,
+                                     params);
     }
 
 
@@ -4584,44 +4275,117 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
      *
      * @param methodName name of the method being called
      * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
-     * @param request request body object
+     * @param requestBody request body object
      * @param params a list of parameters that are slotted into the url template
      * @return VoidResponse
      * @throws RepositoryErrorException something went wrong with the REST call stack.
      */
     private VoidResponse callVoidPostRESTCall(String    methodName,
                                               String    urlTemplate,
-                                              Object    request,
+                                              Object    requestBody,
                                               Object... params) throws RepositoryErrorException
     {
-        VoidResponse restResult = new VoidResponse();
+        return this.callPostRESTCall(methodName,
+                                     VoidResponse.class,
+                                     urlTemplate,
+                                     requestBody,
+                                     params);
+    }
 
-        /*
-         * Issue the request
-         */
+
+    /**
+     * Issue a GET REST call that returns the requested object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @return TypeDefResponse
+     * @throws RepositoryErrorException something went wrong with the REST call stack.
+     */
+    private <T> T callGetRESTCall(String    methodName,
+                                  Class<T>  returnClass,
+                                  String    urlTemplate) throws RepositoryErrorException
+    {
+        return this.callGetRESTCall(methodName, returnClass, urlTemplate, null);
+    }
+
+
+    /**
+     * Issue a GET REST call that returns a TypeDefResponse object.
+     *
+     * @param methodName  name of the method being called
+     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters
+     * @param params  a list of parameters that are slotted into the url template
+     * @return TypeDefResponse
+     * @throws RepositoryErrorException something went wrong with the REST call stack.
+     */
+    private <T> T callGetRESTCall(String    methodName,
+                                  Class<T>  returnClass,
+                                  String    urlTemplate,
+                                  Object... params) throws RepositoryErrorException
+    {
         try
         {
-            RestTemplate restTemplate = new RestTemplate();
-
-            restResult = restTemplate.postForObject(urlTemplate, request, restResult.getClass(), params);
+            return restClient.callGetRESTCall(methodName,
+                                              returnClass,
+                                              urlTemplate,
+                                              params);
         }
         catch (Throwable error)
         {
             OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    repositoryName,
-                    error.getMessage());
+                                                                                                     repositoryName,
+                                                                                                     error.getMessage());
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction(),
-                    error);
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction(),
+                                               error);
         }
+    }
 
-        return restResult;
+    /**
+     * Issue a POST REST call that returns the requested type of object.
+     *
+     * @param methodName name of the method being called
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters
+     * @param request request body object
+     * @param params a list of parameters that are slotted into the url template
+     * @return VoidResponse
+     * @throws RepositoryErrorException something went wrong with the REST call stack.
+     */
+    private <T> T callPostRESTCall(String    methodName,
+                                   Class<T>  returnClass,
+                                   String    urlTemplate,
+                                   Object    request,
+                                   Object... params) throws RepositoryErrorException
+    {
+        try
+        {
+            return restClient.callPostRESTCall(methodName,
+                                               returnClass,
+                                               urlTemplate,
+                                               request,
+                                               params);
+        }
+        catch (Throwable error)
+        {
+            OMRSErrorCode errorCode = OMRSErrorCode.CLIENT_SIDE_REST_API_ERROR;
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
+                                                                                                     repositoryName,
+                                                                                                     error.getMessage());
+
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction(),
+                                               error);
+        }
     }
 
 
@@ -4688,11 +4452,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new ClassificationErrorException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   restResult.getExceptionErrorMessage(),
+                                                   restResult.getExceptionSystemAction(),
+                                                   restResult.getExceptionUserAction());
         }
     }
 
@@ -4712,11 +4476,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new EntityConflictException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                              this.getClass().getName(),
+                                              methodName,
+                                              restResult.getExceptionErrorMessage(),
+                                              restResult.getExceptionSystemAction(),
+                                              restResult.getExceptionUserAction());
         }
     }
 
@@ -4736,11 +4500,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new EntityNotDeletedException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                                this.getClass().getName(),
+                                                methodName,
+                                                restResult.getExceptionErrorMessage(),
+                                                restResult.getExceptionSystemAction(),
+                                                restResult.getExceptionUserAction());
         }
     }
 
@@ -4760,11 +4524,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new EntityNotKnownException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                              this.getClass().getName(),
+                                              methodName,
+                                              restResult.getExceptionErrorMessage(),
+                                              restResult.getExceptionSystemAction(),
+                                              restResult.getExceptionUserAction());
         }
     }
 
@@ -4784,11 +4548,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new EntityProxyOnlyException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                               this.getClass().getName(),
+                                               methodName,
+                                               restResult.getExceptionErrorMessage(),
+                                               restResult.getExceptionSystemAction(),
+                                               restResult.getExceptionUserAction());
         }
     }
 
@@ -4808,11 +4572,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new FunctionNotSupportedException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    restResult.getExceptionErrorMessage(),
+                                                    restResult.getExceptionSystemAction(),
+                                                    restResult.getExceptionUserAction());
         }
     }
 
@@ -4833,11 +4597,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new HomeEntityException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                          this.getClass().getName(),
+                                          methodName,
+                                          restResult.getExceptionErrorMessage(),
+                                          restResult.getExceptionSystemAction(),
+                                          restResult.getExceptionUserAction());
         }
     }
 
@@ -4857,11 +4621,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new HomeRelationshipException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                                this.getClass().getName(),
+                                                methodName,
+                                                restResult.getExceptionErrorMessage(),
+                                                restResult.getExceptionSystemAction(),
+                                                restResult.getExceptionUserAction());
         }
     }
 
@@ -4881,11 +4645,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new InvalidEntityException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                             this.getClass().getName(),
+                                             methodName,
+                                             restResult.getExceptionErrorMessage(),
+                                             restResult.getExceptionSystemAction(),
+                                             restResult.getExceptionUserAction());
         }
     }
 
@@ -4905,11 +4669,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new InvalidParameterException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                                this.getClass().getName(),
+                                                methodName,
+                                                restResult.getExceptionErrorMessage(),
+                                                restResult.getExceptionSystemAction(),
+                                                restResult.getExceptionUserAction());
         }
     }
 
@@ -4929,11 +4693,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new InvalidRelationshipException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   restResult.getExceptionErrorMessage(),
+                                                   restResult.getExceptionSystemAction(),
+                                                   restResult.getExceptionUserAction());
         }
     }
 
@@ -4953,11 +4717,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new InvalidTypeDefException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                              this.getClass().getName(),
+                                              methodName,
+                                              restResult.getExceptionErrorMessage(),
+                                              restResult.getExceptionSystemAction(),
+                                              restResult.getExceptionUserAction());
         }
     }
 
@@ -4977,11 +4741,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new PagingErrorException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                           this.getClass().getName(),
+                                           methodName,
+                                           restResult.getExceptionErrorMessage(),
+                                           restResult.getExceptionSystemAction(),
+                                           restResult.getExceptionUserAction());
         }
     }
 
@@ -5001,11 +4765,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new PatchErrorException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                          this.getClass().getName(),
+                                          methodName,
+                                          restResult.getExceptionErrorMessage(),
+                                          restResult.getExceptionSystemAction(),
+                                          restResult.getExceptionUserAction());
         }
     }
 
@@ -5025,11 +4789,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new PropertyErrorException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                             this.getClass().getName(),
+                                             methodName,
+                                             restResult.getExceptionErrorMessage(),
+                                             restResult.getExceptionSystemAction(),
+                                             restResult.getExceptionUserAction());
         }
     }
 
@@ -5049,11 +4813,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new RelationshipConflictException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    restResult.getExceptionErrorMessage(),
+                                                    restResult.getExceptionSystemAction(),
+                                                    restResult.getExceptionUserAction());
         }
     }
 
@@ -5073,11 +4837,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new RelationshipNotDeletedException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                                      this.getClass().getName(),
+                                                      methodName,
+                                                      restResult.getExceptionErrorMessage(),
+                                                      restResult.getExceptionSystemAction(),
+                                                      restResult.getExceptionUserAction());
         }
     }
 
@@ -5097,11 +4861,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new RelationshipNotKnownException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                                    this.getClass().getName(),
+                                                    methodName,
+                                                    restResult.getExceptionErrorMessage(),
+                                                    restResult.getExceptionSystemAction(),
+                                                    restResult.getExceptionUserAction());
         }
     }
 
@@ -5121,11 +4885,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new StatusNotSupportedException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                                  this.getClass().getName(),
+                                                  methodName,
+                                                  restResult.getExceptionErrorMessage(),
+                                                  restResult.getExceptionSystemAction(),
+                                                  restResult.getExceptionUserAction());
         }
     }
 
@@ -5145,11 +4909,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new TypeDefConflictException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                               this.getClass().getName(),
+                                               methodName,
+                                               restResult.getExceptionErrorMessage(),
+                                               restResult.getExceptionSystemAction(),
+                                               restResult.getExceptionUserAction());
         }
     }
 
@@ -5169,11 +4933,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new TypeDefInUseException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                            this.getClass().getName(),
+                                            methodName,
+                                            restResult.getExceptionErrorMessage(),
+                                            restResult.getExceptionSystemAction(),
+                                            restResult.getExceptionUserAction());
         }
     }
 
@@ -5193,11 +4957,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new TypeDefKnownException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                            this.getClass().getName(),
+                                            methodName,
+                                            restResult.getExceptionErrorMessage(),
+                                            restResult.getExceptionSystemAction(),
+                                            restResult.getExceptionUserAction());
         }
     }
 
@@ -5217,11 +4981,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new TypeDefNotKnownException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                               this.getClass().getName(),
+                                               methodName,
+                                               restResult.getExceptionErrorMessage(),
+                                               restResult.getExceptionSystemAction(),
+                                               restResult.getExceptionUserAction());
         }
     }
 
@@ -5241,11 +5005,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new TypeDefNotSupportedException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                                   this.getClass().getName(),
+                                                   methodName,
+                                                   restResult.getExceptionErrorMessage(),
+                                                   restResult.getExceptionSystemAction(),
+                                                   restResult.getExceptionUserAction());
         }
     }
 
@@ -5265,11 +5029,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new TypeErrorException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                         this.getClass().getName(),
+                                         methodName,
+                                         restResult.getExceptionErrorMessage(),
+                                         restResult.getExceptionSystemAction(),
+                                         restResult.getExceptionUserAction());
         }
     }
 
@@ -5289,11 +5053,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
         if ((restResult != null) && (exceptionClassName.equals(restResult.getExceptionClassName())))
         {
             throw new UserNotAuthorizedException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                                 this.getClass().getName(),
+                                                 methodName,
+                                                 restResult.getExceptionErrorMessage(),
+                                                 restResult.getExceptionSystemAction(),
+                                                 restResult.getExceptionUserAction());
         }
     }
 
@@ -5316,11 +5080,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
                     + errorCode.getFormattedErrorMessage(methodName, repositoryName);
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    errorMessage,
-                    errorCode.getSystemAction(),
-                    errorCode.getUserAction());
+                                               this.getClass().getName(),
+                                               methodName,
+                                               errorMessage,
+                                               errorCode.getSystemAction(),
+                                               errorCode.getUserAction());
         }
         else if (restResult.getExceptionClassName() != null)
         {
@@ -5328,11 +5092,11 @@ public class OMRSRESTMetadataCollection extends OMRSMetadataCollection
              * All of the other expected exceptions have been processed so default exception to RepositoryErrorException
              */
             throw new RepositoryErrorException(restResult.getRelatedHTTPCode(),
-                    this.getClass().getName(),
-                    methodName,
-                    restResult.getExceptionErrorMessage(),
-                    restResult.getExceptionSystemAction(),
-                    restResult.getExceptionUserAction());
+                                               this.getClass().getName(),
+                                               methodName,
+                                               restResult.getExceptionErrorMessage(),
+                                               restResult.getExceptionSystemAction(),
+                                               restResult.getExceptionUserAction());
         }
     }
 }

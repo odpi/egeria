@@ -39,7 +39,7 @@ public class PropertyServerException extends CommunityProfileCheckedExceptionBas
      * @param systemAction   actions of the system as a result of the error
      * @param userAction   instructions for correcting the error
      * @param caughtError   the error that resulted in this exception.
-     * */
+     */
     public PropertyServerException(int       httpCode,
                                    String    className,
                                    String    actionDescription,

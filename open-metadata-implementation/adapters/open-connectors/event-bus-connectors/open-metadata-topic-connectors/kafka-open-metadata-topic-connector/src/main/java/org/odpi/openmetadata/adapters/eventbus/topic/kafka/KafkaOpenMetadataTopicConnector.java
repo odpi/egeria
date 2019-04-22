@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AdditionalProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 
 import java.util.*;
@@ -79,17 +78,17 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         {
             topicName = endpoint.getAddress();
 
-            AdditionalProperties additionalProperties = connectionProperties.getAdditionalProperties();
-            if (additionalProperties != null)
+            Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+            if (configurationProperties != null)
             {
-                this.initializeKafkaProperties(additionalProperties);
+                this.initializeKafkaProperties(configurationProperties);
 
                 /*
                  * The consumer group defines which list of events that this connector is processing.  A particular server
                  * wants to keep reading from the same list.  Thus it needs to be passed the group.id it used
                  * the last time it ran.  This is supplied in the connection object as the serverIdProperty.
                  */
-                serverId = (String) additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.serverIdPropertyName);
+                serverId = (String) configurationProperties.get(KafkaOpenMetadataTopicProvider.serverIdPropertyName);
                 consumerProperties.put("group.id", serverId);
 
                 if (auditLog != null)
@@ -142,29 +141,41 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      * This method overrides the initial values with properties configured on the event bus admin service.
      * For most environments, the only properties needed are the bootstrap servers.
      *
-     * @param additionalProperties additional properties from the connection.
+     * @param configurationProperties additional properties from the connection.
      */
-    private void  initializeKafkaProperties(AdditionalProperties additionalProperties)
+    private void  initializeKafkaProperties(Map<String, Object> configurationProperties)
     {
-        final String           actionDescription = "initializeKafkaProperties";
+        final String                             actionDescription = "initializeKafkaProperties";
         KafkaOpenMetadataTopicConnectorAuditCode auditCode;
+        Map<String, Object>   propertiesMap;
 
         try
         {
             Object              propertiesObject;
 
-            propertiesObject = additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.producerPropertyName);
-            copyProperties(propertiesObject, producerProperties);
+            propertiesObject = configurationProperties.get(KafkaOpenMetadataTopicProvider.producerPropertyName);
+            if (propertiesObject != null)
+            {
+                propertiesMap = (Map<String, Object>)propertiesObject;
+                for (Map.Entry<String, Object> entry : propertiesMap.entrySet())
+                {
+                    producerProperties.setProperty(entry.getKey(), (String) entry.getValue());
+                }
+            }
 
-            propertiesObject = additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.consumerPropertyName);
-            copyProperties(propertiesObject, consumerProperties);
-            
-            propertiesObject = additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.egeriaConsumerPropertyName);
-            copyProperties(propertiesObject, consumerEgeriaProperties);
+            propertiesObject = configurationProperties.get(KafkaOpenMetadataTopicProvider.consumerPropertyName);
+            if (propertiesObject != null)
+            {
+                propertiesMap = (Map<String, Object>)propertiesObject;
+                for (Map.Entry<String, Object> entry : propertiesMap.entrySet())
+                {
+                    consumerProperties.setProperty(entry.getKey(), (String) entry.getValue());
+                }
+            }
         }
         catch (Throwable   error)
         {
-            auditCode = KafkaOpenMetadataTopicConnectorAuditCode.UNABLE_TO_PARSE_ADDITIONAL_PROPERTIES;
+            auditCode = KafkaOpenMetadataTopicConnectorAuditCode.UNABLE_TO_PARSE_CONFIG_PROPERTIES;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
@@ -176,7 +187,8 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
     }
 
 
-	private void copyProperties(Object propertiesObject, Properties target) {
+	private void copyProperties(Object propertiesObject, Properties target)
+    {
 		Map<String, Object> propertiesMap;
 		if (propertiesObject != null)
 		{
@@ -203,7 +215,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
         this.initializeTopic();
         
-        KafkaOpenMetadataEventConsumerConfiguration consumerConfig = new KafkaOpenMetadataEventConsumerConfiguration(consumerEgeriaProperties);
+        KafkaOpenMetadataEventConsumerConfiguration consumerConfig = new KafkaOpenMetadataEventConsumerConfiguration(consumerEgeriaProperties, auditLog);
         consumer = new KafkaOpenMetadataEventConsumer(topicName, serverId, consumerConfig, consumerProperties, this, auditLog);
         consumerThread = new Thread(consumer, threadHeader + "Consumer-" + topicName);
         consumerThread.start();

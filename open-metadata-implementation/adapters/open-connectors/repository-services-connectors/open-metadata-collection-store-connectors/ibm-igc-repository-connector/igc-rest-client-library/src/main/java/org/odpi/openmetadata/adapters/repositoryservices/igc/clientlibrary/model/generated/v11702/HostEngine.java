@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.generated.v11702;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import javax.annotation.Generated;
 
 /**
@@ -14,9 +15,9 @@ import javax.annotation.Generated;
  */
 @Generated("org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.IGCRestModelGenerator")
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeName("host_(engine)")
 public class HostEngine extends Host {
 
-    public static String getIgcTypeId() { return "host_(engine)"; }
     public static String getIgcTypeDisplayName() { return "Host (Engine)"; }
 
     public static Boolean isHostEngine(Object obj) { return (obj.getClass() == HostEngine.class); }

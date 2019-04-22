@@ -130,7 +130,7 @@ public abstract class RelatedAssetProperties extends AssetPropertyElementBase
     public String toString()
     {
         return "RelatedAssetProperties{" +
-                "schemaProperties=" + assetProperties +
+                "assetProperties=" + assetProperties +
                 ", connectedAsset=" + connectedAsset +
                 ", relatedAsset=" + relatedAsset +
                 '}';
