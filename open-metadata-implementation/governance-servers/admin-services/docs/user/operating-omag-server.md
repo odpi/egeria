@@ -4,7 +4,7 @@
 # Activating and deactivating the OMAG server
 
 Once a [configuration document](../concepts/configuration-document.md) has been completed
-for an [OMAG Server](../concepts/logical-omag-server.md), it can be started using the following
+for an [OMAG Server](../concepts/omag-server.md), it can be started using the following
 REST call:
 
 ```

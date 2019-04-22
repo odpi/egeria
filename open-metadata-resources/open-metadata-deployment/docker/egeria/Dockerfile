@@ -12,10 +12,12 @@ WORKDIR /root/egeria/
 # Add Pull request if specified (requires git-extras package)
 RUN if [ ! -z "$pr" ] ; then git pr $pr ; fi
 RUN mvn clean install -DskipTests
+RUN git log > git.log && echo ${branch} > git.branch && git remote -v >> git.remote
 
 FROM openjdk:8-jre-alpine
 COPY --from=build /root/egeria/open-metadata-distribution/open-metadata-assemblies/target/egeria-*-omag-server/servers/omag-server-*/server-chassis-spring-*.jar /server-chassis-spring.jar
 COPY --from=build /root/egeria/open-metadata-distribution/open-metadata-assemblies/target/egeria-*-distribution/egeria-omag-*/user-interface/access-services-user-interface-*.jar /access-services-user-interface.jar
+COPY --from=build /root/egeria/git.* /
 RUN apk add bash
 COPY dist/entrypoint.sh /entrypoint.sh
 # Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug

@@ -5,10 +5,8 @@ package org.odpi.openmetadata.accessservices.subjectarea.validators;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.MetadataServerUncontactableException;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.classifications.SubjectArea.SubjectArea;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
-import org.odpi.openmetadata.accessservices.subjectarea.responses.GlossaryResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.ResponseCategory;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
@@ -89,7 +87,7 @@ public class RestValidator {
             // error - glossary is mandatory
             SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY;
             String errorMessage = errorCode.getErrorMessageId()
-                    + errorCode.getFormattedErrorMessage(className,
+                    + errorCode.getFormattedErrorMessage(
                     methodName);
             log.error(errorMessage);
             InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(),
@@ -118,7 +116,7 @@ public class RestValidator {
                 {
                     // error -  glossary guid is mandatory
                     SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.CREATE_WITHOUT_GLOSSARY;
-                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(className, methodName);
+                    String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
                     log.error(errorMessage);
                     InvalidParameterException e = new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
                     response = OMASExceptionToResponse.convertInvalidParameterException(e);

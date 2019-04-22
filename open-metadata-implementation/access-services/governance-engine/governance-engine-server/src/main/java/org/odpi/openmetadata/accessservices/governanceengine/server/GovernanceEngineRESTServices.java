@@ -76,8 +76,8 @@ public class GovernanceEngineRESTServices {
             exceptionHandler.captureMetadataServerException(response, error);
         } catch (PropertyServerException error) {
             exceptionHandler.capturePropertyServerException(response, error);
-        } catch (PagingErrorException | RepositoryErrorException
-                | FunctionNotSupportedException | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
+        } catch (PagingErrorException | RepositoryErrorException | FunctionNotSupportedException
+                | org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException
                 | EntityProxyOnlyException | PropertyErrorException | org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException
                 | EntityNotKnownException | TypeErrorException | TypeDefNotKnownException | ClassificationErrorException e) {
             exceptionHandler.captureOMRSException(response, e);

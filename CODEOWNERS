@@ -35,6 +35,7 @@ open-metadata-implementation/access-services/stewardship-action @mandy-chessell
 open-metadata-implementation/access-services/security-officer @mandy-chessell
 open-metadata-implementation/access-services/governance-program @mandy-chessell
 open-metadata-implementation/access-services/governance-engine @planetf1
+open-metadata-implementation/access-services/subject-area @davidradl
 
 open-metadata-implementation/repository-services @mandy-chessell
 
@@ -51,9 +52,11 @@ open-metadata-resources/open-metadata-tutorials @mandy-chessell
 
 open-metadata-resources/open-metadata-samples @mandy-chessell
 open-metadata-resources/open-metadata-samples/postman-rest-samples @planetf1
-
+open-metadata-resources/open-metadata-samples/access-services-samples/subject-area-client-samples  @davidradl
 # Test
 
 open-metadata-test @mandy-chessell
+open-metadata-test/open-metadata-fvt/access-services-fvt @davidradl
+open-metadata-test/open-metadata-fvt/open-types-fvt @davidradl
 
 

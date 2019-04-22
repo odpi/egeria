@@ -7,9 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -68,6 +66,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class OMAGServerConfig extends AdminServicesConfigHeader
 {
+    public static final String         VERSION_ONE = "V1.0";
+    public static final String         VERSION_TWO = "V2.0";
+    public static final List<String>   COMPATIBLE_VERSIONS = new ArrayList<>(Arrays.asList(VERSION_TWO));
+
     /*
      * Default values used when the server configuration does not provide a value.
      */
@@ -77,6 +79,10 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private static final String  defaultLocalServerUserId                 = "OMAGServer";
     private static final int     defaultMaxPageSize                       = 1000;
 
+    /*
+     * Configuration document version number - if not in document then assume V1.0.
+     */
+    private String                    versionId                 = null;
 
     /*
      * Values in use by this server.
@@ -87,11 +93,13 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     private String                    organizationName          = defaultLocalOrganizationName;
     private String                    localServerURL            = defaultLocalServerURL;
     private String                    localServerUserId         = defaultLocalServerUserId;
+    private String                    localServerPassword       = null;
     private int                       maxPageSize               = defaultMaxPageSize;
     private EventBusConfig            eventBusConfig            = null;
     private List<AccessServiceConfig> accessServicesConfig      = null;
     private RepositoryServicesConfig  repositoryServicesConfig  = null;
-    private DiscoveryEngineConfig     discoveryEngineConfig     = null;
+    private ConformanceSuiteConfig    conformanceSuiteConfig    = null;
+    private DiscoveryServerConfig     discoveryServerConfig     = null;
     private OpenLineageConfig         openLineageConfig         = null;
     private StewardshipServicesConfig stewardshipServicesConfig = null;
     private SecuritySyncConfig        securitySyncConfig        = null;
@@ -117,23 +125,48 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
         if (template != null)
         {
+            versionId = template.getVersionId();
             localServerId = template.getLocalServerId();
             localServerName = template.getLocalServerName();
             localServerType = template.getLocalServerType();
             organizationName = template.getOrganizationName();
             localServerURL = template.getLocalServerURL();
             localServerUserId = template.getLocalServerUserId();
+            localServerPassword = template.getLocalServerPassword();
             maxPageSize = template.getMaxPageSize();
             eventBusConfig = template.getEventBusConfig();
             accessServicesConfig = template.getAccessServicesConfig();
             repositoryServicesConfig = template.getRepositoryServicesConfig();
-            discoveryEngineConfig = template.getDiscoveryEngineConfig();
+            conformanceSuiteConfig = template.getConformanceSuiteConfig();
+            discoveryServerConfig = template.getDiscoveryServerConfig();
             openLineageConfig = template.getOpenLineageConfig();
             stewardshipServicesConfig = template.getStewardshipServicesConfig();
             securitySyncConfig = template.getSecuritySyncConfig();
             auditTrail = template.getAuditTrail();
             virtualizationConfig = template.getVirtualizationConfig();
         }
+    }
+
+
+    /**
+     * Return the versionId of this document.
+     *
+     * @return string
+     */
+    public String getVersionId()
+    {
+        return versionId;
+    }
+
+
+    /**
+     * Set up the versionId of this document.
+     *
+     * @param versionId string
+     */
+    public void setVersionId(String versionId)
+    {
+        this.versionId = versionId;
     }
 
 
@@ -272,6 +305,32 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Return the password that the local server should use on outbound REST calls (this is the password for
+     * the localServerUserId).  Using userId's and passwords for server authentication is not suitable
+     * for production environments.
+     *
+     * @return password in clear
+     */
+    public String getLocalServerPassword()
+    {
+        return localServerPassword;
+    }
+
+
+    /**
+     * Set up the password that the local server should use on outbound REST calls (this is the password for
+     * the localServerUserId).  Using userId's and passwords for server authentication is not suitable
+     * for production environments.
+     *
+     * @param localServerPassword password in clear
+     */
+    public void setLocalServerPassword(String localServerPassword)
+    {
+        this.localServerPassword = localServerPassword;
+    }
+
+
+    /**
      * Return the maximum page size supported by this server.
      *
      * @return int number of elements
@@ -359,24 +418,46 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
-     * Return the configuration for a discovery engine.
+     * Return the configuration for the open metadata conformance suite services.
      *
-     * @return DiscoveryEngineConfig properties
+     * @return configuration properties that control the operation of the open metadata test labs.
      */
-    public DiscoveryEngineConfig getDiscoveryEngineConfig()
+    public ConformanceSuiteConfig getConformanceSuiteConfig()
     {
-        return discoveryEngineConfig;
+        return conformanceSuiteConfig;
     }
 
 
     /**
-     * Set up the configuration for a discovery engine.
+     * Set up the configuration for the open metadata conformance suite services.
      *
-     * @param discoveryEngineConfig DiscoveryEngineConfig properties
+     * @param conformanceSuiteConfig configuration properties that control the operation of the open metadata test labs.
      */
-    public void setDiscoveryEngineConfig(DiscoveryEngineConfig discoveryEngineConfig)
+    public void setConformanceSuiteConfig(ConformanceSuiteConfig conformanceSuiteConfig)
     {
-        this.discoveryEngineConfig = discoveryEngineConfig;
+        this.conformanceSuiteConfig = conformanceSuiteConfig;
+    }
+
+
+    /**
+     * Return the configuration for a discovery server.
+     *
+     * @return DiscoveryServerConfig properties
+     */
+    public DiscoveryServerConfig getDiscoveryServerConfig()
+    {
+        return discoveryServerConfig;
+    }
+
+
+    /**
+     * Set up the configuration for a discovery server.
+     *
+     * @param discoveryServerConfig DiscoveryServerConfig properties
+     */
+    public void setDiscoveryServerConfig(DiscoveryServerConfig discoveryServerConfig)
+    {
+        this.discoveryServerConfig = discoveryServerConfig;
     }
 
     /**
@@ -446,6 +527,28 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
 
 
     /**
+     * Return the configuration for the virtualization services.
+     *
+     * @return VirtualizationConfig properties
+     */
+    public VirtualizationConfig getVirtualizationConfig()
+    {
+        return virtualizationConfig;
+    }
+
+
+    /**
+     * Set up the configuration for the virtualization services.
+     *
+     * @param virtualizationConfig properties
+     */
+    public void setVirtualizationConfig(VirtualizationConfig virtualizationConfig)
+    {
+        this.virtualizationConfig = virtualizationConfig;
+    }
+
+
+    /**
      * Return the list of audit log entries associated with this config file.
      * The audit log simply keep track of the changed to the configuration.
      *
@@ -465,24 +568,6 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     public void setAuditTrail(List<String> auditTrail)
     {
         this.auditTrail = auditTrail;
-    }
-
-    /**
-     * Return the configuration for the virtualization services.
-     *
-     * @return VirtualizationConfig properties
-     */
-    public VirtualizationConfig getVirtualizationConfig() {
-        return virtualizationConfig;
-    }
-
-    /**
-     * Set up the configuration for the virtualization services.
-     *
-     * @param virtualizationConfig properties
-     */
-    public void setVirtualizationConfig(VirtualizationConfig virtualizationConfig) {
-        this.virtualizationConfig = virtualizationConfig;
     }
 
 
@@ -505,7 +590,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 ", eventBusConfig=" + eventBusConfig +
                 ", accessServicesConfig=" + accessServicesConfig +
                 ", repositoryServicesConfig=" + repositoryServicesConfig +
-                ", discoveryEngineConfig=" + discoveryEngineConfig +
+                ", discoveryServerConfig=" + discoveryServerConfig +
                 ", openLineageConfig=" + openLineageConfig +
                 ", stewardshipServicesConfig=" + stewardshipServicesConfig +
                 ", securitySyncConfig=" + securitySyncConfig +
@@ -542,7 +627,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
                 Objects.equals(getEventBusConfig(), that.getEventBusConfig()) &&
                 Objects.equals(getAccessServicesConfig(), that.getAccessServicesConfig()) &&
                 Objects.equals(getRepositoryServicesConfig(), that.getRepositoryServicesConfig()) &&
-                Objects.equals(getDiscoveryEngineConfig(), that.getDiscoveryEngineConfig()) &&
+                Objects.equals(getDiscoveryServerConfig(), that.getDiscoveryServerConfig()) &&
                 Objects.equals(getOpenLineageConfig(), that.getOpenLineageConfig()) &&
                 Objects.equals(getStewardshipServicesConfig(), that.getStewardshipServicesConfig()) &&
                 Objects.equals(getSecuritySyncConfig(), that.getSecuritySyncConfig()) &&
@@ -561,7 +646,7 @@ public class OMAGServerConfig extends AdminServicesConfigHeader
     {
         return Objects.hash(getLocalServerId(), getLocalServerName(), getLocalServerType(), getOrganizationName(),
                             getLocalServerURL(), getLocalServerUserId(), getMaxPageSize(), getEventBusConfig(),
-                            getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryEngineConfig(),
+                            getAccessServicesConfig(), getRepositoryServicesConfig(), getDiscoveryServerConfig(),
                             getStewardshipServicesConfig(), getSecuritySyncConfig(), getAuditTrail(), getVirtualizationConfig());
     }
 }

@@ -4,14 +4,14 @@ package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.mode
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * Represents the metadata related to a page of results or relationships.
  */
 @JsonIgnoreProperties(ignoreUnknown=true)
+@JsonTypeName("paging")
 public class Paging extends ObjectPrinter {
-
-    public static String getIgcTypeId() { return "paging"; }
 
     /**
      * Specifies the total number of items that exist across all pages.

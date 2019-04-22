@@ -63,6 +63,7 @@ WORKDIR /root/ranger
 # is currently pulling in a later maven assembly plugin as of 2018.11.05 which is breaking the build/packaging for
 # the 1.2 branch....
 RUN mvn -Pall -DskipTests=true clean compile package install assembly:assembly
+RUN git log > /git.log && echo ${branch} > /git.branch && git remote -v > /git.remote
 
 # We have now built the latest ranger from source - let's unpack and setup the admin server & UI
 

@@ -41,7 +41,7 @@ public class OMAGServerVirtualizationService {
                             eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                             virtualizationConfig.getIvOutTopicName(),
                             UUID.randomUUID().toString(),
-                            eventBusConfig.getAdditionalProperties()
+                            eventBusConfig.getConfigurationProperties()
                     )
             );
 
@@ -52,7 +52,7 @@ public class OMAGServerVirtualizationService {
                             eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                             virtualizationConfig.getIvInTopicName(),
                             UUID.randomUUID().toString(),
-                            eventBusConfig.getAdditionalProperties()
+                            eventBusConfig.getConfigurationProperties()
                     )
             );
 

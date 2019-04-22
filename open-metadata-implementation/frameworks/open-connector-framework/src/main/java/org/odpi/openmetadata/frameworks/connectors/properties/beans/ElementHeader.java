@@ -4,9 +4,7 @@ package org.odpi.openmetadata.frameworks.connectors.properties.beans;
 
 import com.fasterxml.jackson.annotation.*;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -39,11 +37,8 @@ public class ElementHeader extends PropertyBase
     protected String      guid = null;
     protected String      url  = null;
 
-    /*
-     * Attached classifications
-     */
     protected List<Classification> classifications = null;
-
+    protected Map<String, Object>  extendedProperties = null;
 
     /**
      * Default constructor used by subclasses
@@ -57,18 +52,19 @@ public class ElementHeader extends PropertyBase
     /**
      * Copy/clone constructor.
      *
-     * @param templateHeader element to copy
+     * @param template element to copy
      */
-    public ElementHeader(ElementHeader templateHeader)
+    public ElementHeader(ElementHeader template)
     {
-        super(templateHeader);
+        super(template);
 
-        if (templateHeader != null)
+        if (template != null)
         {
-            type            = templateHeader.getType();
-            guid            = templateHeader.getGUID();
-            url             = templateHeader.getURL();
-            classifications = templateHeader.getClassifications();
+            type               = template.getType();
+            guid               = template.getGUID();
+            url                = template.getURL();
+            classifications    = template.getClassifications();
+            extendedProperties = template.getExtendedProperties();
         }
     }
 
@@ -183,6 +179,41 @@ public class ElementHeader extends PropertyBase
 
 
     /**
+     * Return the properties that have been defined for a subtype of this object that are not supported explicitly
+     * by this bean.
+     *
+     * @return property map
+     */
+    public Map<String, Object> getExtendedProperties()
+    {
+        if (extendedProperties == null)
+        {
+            return null;
+        }
+        else if (extendedProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(extendedProperties);
+        }
+    }
+
+
+    /**
+     * Set up the properties that have been defined for a subtype of this object that are not supported explicitly
+     * by this bean.
+     *
+     * @param extendedProperties property map
+     */
+    public void setExtendedProperties(Map<String, Object> extendedProperties)
+    {
+        this.extendedProperties = extendedProperties;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -195,6 +226,7 @@ public class ElementHeader extends PropertyBase
                 ", guid='" + guid + '\'' +
                 ", url='" + url + '\'' +
                 ", classifications=" + classifications +
+                ", extendedProperties=" + extendedProperties +
                 '}';
     }
 
@@ -220,7 +252,8 @@ public class ElementHeader extends PropertyBase
         return Objects.equals(getType(), that.getType()) &&
                 Objects.equals(guid, that.guid) &&
                 Objects.equals(url, that.url) &&
-                Objects.equals(getClassifications(), that.getClassifications());
+                Objects.equals(getClassifications(), that.getClassifications()) &&
+                Objects.equals(getExtendedProperties(), that.getExtendedProperties());
     }
 
 
