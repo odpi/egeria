@@ -3,12 +3,24 @@
 package org.odpi.openmetadata.accessservices.informationview.server;
 
 import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
-import org.odpi.openmetadata.accessservices.informationview.events.*;
+import org.odpi.openmetadata.accessservices.informationview.events.DataViewRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.events.DatabaseSource;
+import org.odpi.openmetadata.accessservices.informationview.events.RegistrationRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
+import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
+import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewUncheckedExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.registration.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
-import org.odpi.openmetadata.accessservices.informationview.responses.*;
+import org.odpi.openmetadata.accessservices.informationview.responses.DatabaseListResponse;
+import org.odpi.openmetadata.accessservices.informationview.responses.InformationViewOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.informationview.responses.RegistrationResponse;
+import org.odpi.openmetadata.accessservices.informationview.responses.TableColumnsResponse;
+import org.odpi.openmetadata.accessservices.informationview.responses.TableContextResponse;
+import org.odpi.openmetadata.accessservices.informationview.responses.TableListResponse;
+import org.odpi.openmetadata.accessservices.informationview.responses.VoidResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 
 import java.util.List;
@@ -26,10 +38,10 @@ public class InformationViewRestServices {
      * @return
      */
     public InformationViewOMASAPIResponse submitReport(String serverName,
-                                     String userId,
-                                     ReportRequestBody requestBody) {
+                                                       String userId,
+                                                       ReportRequestBody requestBody) {
 
-        VoidResponse  response = new VoidResponse();
+        VoidResponse response = new VoidResponse();
 
         try {
             ReportHandler reportCreator = instanceHandler.getReportCreator(serverName);
