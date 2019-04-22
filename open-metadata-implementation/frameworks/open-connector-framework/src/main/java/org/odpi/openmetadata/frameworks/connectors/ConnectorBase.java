@@ -48,7 +48,7 @@ public abstract class ConnectorBase extends Connector
      * Secured properties are protected properties from the connection.  They are retrieved as a protected
      * variable to allow subclasses of ConnectorBase to access them.
      */
-    protected AdditionalProperties securedProperties = null;
+    protected Map<String, Object> securedProperties = null;
 
     private static final Logger   log = LoggerFactory.getLogger(ConnectorBase.class);
 
@@ -263,17 +263,9 @@ public abstract class ConnectorBase extends Connector
          *
          * @return secured properties   typically user credentials for the connection
          */
-        protected AdditionalProperties getSecuredProperties()
+        protected Map<String, Object> getSecuredProperties()
         {
-            Map<String, Object>  securedProperties = super.getConnectionBean().getSecuredProperties();
-            if (securedProperties == null)
-            {
-                return null;
-            }
-            else
-            {
-                return new AdditionalProperties(super.getParentAsset(), securedProperties);
-            }
+            return super.getConnectionBean().getSecuredProperties();
         }
 
 

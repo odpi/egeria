@@ -3,8 +3,6 @@
 package org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary;
 
 import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,14 +11,16 @@ import java.util.zip.ZipOutputStream;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsontype.NamedType;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Paging;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Reference;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.ReferenceList;
+import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.model.common.Type;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearch;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchCondition;
 import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.search.IGCSearchConditionSet;
@@ -28,7 +28,6 @@ import org.odpi.openmetadata.adapters.repositoryservices.igc.clientlibrary.updat
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.AbstractResource;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
 import org.springframework.util.Base64Utils;
 import org.springframework.util.LinkedMultiValueMap;
@@ -96,16 +95,20 @@ public class IGCRestClient {
      */
     public IGCRestClient(String baseURL, String authorization) {
 
+        if (baseURL == null || !baseURL.startsWith("https://")) {
+            log.error("Cannot instantiate IGCRestClient -- baseURL must be https: {}", baseURL);
+            throw new NullPointerException();
+        }
+
         this.baseURL = baseURL;
         this.authorization = authorization;
         this.mapper = new ObjectMapper();
-        this.mapper.enableDefaultTyping();
         this.registeredPojosByType = new HashMap<>();
 
         log.debug("Constructing IGCRestClient...");
 
         // Run a simple initial query to obtain a session and setup the cookies
-        if (this.baseURL != null && this.authorization != null) {
+        if (this.authorization != null) {
 
             IGCSearch igcSearch = new IGCSearch("category");
             igcSearch.addType("term");
@@ -113,22 +116,27 @@ public class IGCRestClient {
             igcSearch.addType("information_governance_rule");
             igcSearch.setPageSize(1);
             igcSearch.setDevGlossary(true);
-            JsonNode response = searchJson(igcSearch);
+            String response = searchJson(igcSearch);
 
             if (response != null) {
 
                 log.debug("Checking for workflow and registering version...");
-                this.workflowEnabled = response.path("paging").path("numTotal").asInt(0) > 0;
+                ObjectMapper tmpMapper = new ObjectMapper();
+                try {
+                    this.workflowEnabled = tmpMapper.readValue(response, ReferenceList.class).getPaging().getNumTotal() > 0;
+                } catch (IOException e) {
+                    log.error("Unable to determine if workflow is enabled: {}", e);
+                }
                 // Register the non-generated types
                 this.registerPOJO(Paging.class);
 
                 // Start with lowest version supported
                 this.igcVersion = IGCVersionEnum.values()[0];
-                ArrayNode igcTypes = getTypes();
-                for (JsonNode node : igcTypes) {
+                List<Type> igcTypes = getTypes(tmpMapper);
+                for (Type type : igcTypes) {
                     // Check for a type that does not exist in the lowest version supported against higher versions, and if found
                     // set our version to that higher version
-                    String assetType = node.path("_id").asText();
+                    String assetType = type.getId();
                     for (IGCVersionEnum aVersion : IGCVersionEnum.values()) {
                         if (aVersion.isHigherThan(this.igcVersion)
                                 && assetType.equals(aVersion.getTypeNameFirstAvailableInThisVersion())) {
@@ -140,7 +148,7 @@ public class IGCRestClient {
                 successfullyInitialised = true;
 
             } else {
-                log.error("Unable to construct IGCRestClient.");
+                log.error("Unable to construct IGCRestClient: no authorization provided.");
             }
 
         }
@@ -170,6 +178,7 @@ public class IGCRestClient {
         // If we have cookies already, and haven't been asked to force the login,
         // re-use these (to maintain the same session)
         if (cookies != null && !forceLogin) {
+            // TODO: identified as High issue on page 1122
             headers.addAll(HttpHeaders.COOKIE, cookies);
         } else { // otherwise re-authenticate by Basic authentication
             String auth = "Basic " + this.authorization;
@@ -185,25 +194,25 @@ public class IGCRestClient {
      * and we are unable to open a new session with this attempt, will give up. If the alreadyTriedNewSession is false,
      * will attempt to re-send this request to open a new session precisely once before giving up.
      *
-     * @param endpoint the endpoint to which to send the request
+     * @param url the URL to which to send the request
      * @param method the HTTP method to use in sending the request
      * @param contentType the type of content to expect in the payload (if any)
      * @param payload the payload (if any) for the request
      * @param alreadyTriedNewSession indicates whether a new session was already attempted (true) or not (false)
      * @return {@code ResponseEntity<String>}
      */
-    private ResponseEntity<String> openNewSessionWithRequest(String endpoint,
+    private ResponseEntity<String> openNewSessionWithRequest(String url,
                                                              HttpMethod method,
                                                              MediaType contentType,
                                                              String payload,
                                                              boolean alreadyTriedNewSession) {
         if (alreadyTriedNewSession) {
-            log.error("Opening a new session already attempted without success -- giving up on {} to {} with {}", method, endpoint, payload);
+            log.error("Opening a new session already attempted without success -- giving up on {} to {} with {}", method, url, payload);
             return null;
         } else {
             // By removing cookies, we'll force a login
             this.cookies = null;
-            return makeRequest(endpoint, method, contentType, payload, true);
+            return makeRequest(url, method, contentType, payload, true);
         }
     }
 
@@ -251,16 +260,6 @@ public class IGCRestClient {
             log.error("Unable to make request or unexpected status: {}", response.getStatusCode());
         }
 
-    }
-
-    /**
-     * Attempt to convert a JSON structure into a Java object, based on the registered POJOs.
-     *
-     * @param jsonNode the JSON structure to convert
-     * @return Reference - an IGC object
-     */
-    protected Reference readJSONIntoPOJO(JsonNode jsonNode) {
-        return readJSONIntoPOJO(jsonNode.toString());
     }
 
     /**
@@ -354,7 +353,7 @@ public class IGCRestClient {
      * Internal utility for making potentially repeat requests (if session expires and needs to be re-opened),
      * to upload a file to a given endpoint.
      *
-     * @param endpoint the URL against which to POST the upload
+     * @param endpoint the REST resource against which to POST the upload
      * @param file the Spring FileSystemResource or ClassPathResource of the file to be uploaded
      * @param forceLogin a boolean indicating whether login should be forced (true) or session reused (false)
      * @return {@code ResponseEntity<String>}
@@ -372,7 +371,7 @@ public class IGCRestClient {
 
         try {
             response = new RestTemplate().exchange(
-                    endpoint,
+                    baseURL + endpoint,
                     method,
                     toSend,
                     String.class
@@ -381,7 +380,7 @@ public class IGCRestClient {
             log.warn("Request failed -- session may have expired, retrying...", e);
             // If the response was forbidden (fails with exception), the session may have expired -- create a new one
             response = openNewSessionWithUpload(
-                    endpoint,
+                    baseURL + endpoint,
                     method,
                     file,
                     forceLogin
@@ -397,7 +396,7 @@ public class IGCRestClient {
     /**
      * General utility for uploading binary files.
      *
-     * @param endpoint the URL against which to upload the file
+     * @param endpoint the REST resource against which to upload the file
      * @param method HttpMethod (POST, PUT, etc)
      * @param file the Spring FileSystemResource or ClassPathResource containing the file to be uploaded
      * @return boolean - indicates success (true) or failure (false)
@@ -410,14 +409,14 @@ public class IGCRestClient {
     /**
      * Internal utility for making potentially repeat requests (if session expires and needs to be re-opened).
      *
-     * @param endpoint the URL against which to make the request
+     * @param url the URL against which to make the request
      * @param method HttpMethod (GET, POST, etc)
      * @param contentType the type of content to expect in the payload (if any)
      * @param payload if POSTing some content, the JSON structure providing what should be POSTed
      * @param forceLogin a boolean indicating whether login should be forced (true) or session reused (false)
      * @return {@code ResponseEntity<String>}
      */
-    private ResponseEntity<String> makeRequest(String endpoint,
+    private ResponseEntity<String> makeRequest(String url,
                                                HttpMethod method,
                                                MediaType contentType,
                                                String payload,
@@ -432,9 +431,9 @@ public class IGCRestClient {
         }
         ResponseEntity<String> response = null;
         try {
-            log.debug("{}ing to {} with: {}", method, endpoint, payload);
+            log.debug("{}ing to {} with: {}", method, url, payload);
             response = new RestTemplate().exchange(
-                    endpoint,
+                    url,
                     method,
                     toSend,
                     String.class);
@@ -443,7 +442,7 @@ public class IGCRestClient {
             log.warn("Request failed -- session may have expired, retrying...", e);
             // If the response was forbidden (fails with exception), the session may have expired -- create a new one
             response = openNewSessionWithRequest(
-                    endpoint,
+                    url,
                     method,
                     contentType,
                     payload,
@@ -458,51 +457,46 @@ public class IGCRestClient {
     /**
      * General utility for making requests.
      *
-     * @param endpoint the URL against which to make the request
+     * @param endpoint the REST resource against which to make the request
      * @param method HttpMethod (GET, POST, etc)
      * @param contentType the type of content to expect in the payload (if any)
      * @param payload if POSTing some content, the JSON structure providing what should be POSTed
-     * @return JsonNode - JSON structure of the response
+     * @return String - containing the body of the response
      */
-    public JsonNode makeRequest(String endpoint, HttpMethod method, MediaType contentType, String payload) {
+    public String makeRequest(String endpoint, HttpMethod method, MediaType contentType, String payload) {
         ResponseEntity<String> response = makeRequest(
-                endpoint,
+                baseURL + endpoint,
                 method,
                 contentType,
                 payload,
                 false
         );
-        JsonNode jsonNode = null;
+        String body = null;
         if (response == null) {
             log.error("Unable to complete request -- check IGC environment connectivity and authentication details.");
             throw new NullPointerException("Unable to complete request -- check IGC environment connectivity and authentication details.");
         } else if (response.hasBody()) {
-            try {
-                jsonNode = mapper.readTree(response.getBody());
-            } catch (IOException e) {
-                log.error("Unable to read JSON response body when {} to {} with {}", method, endpoint, payload, e);
-            }
+            body = response.getBody();
         }
-        return jsonNode;
+        return body;
     }
 
     /**
      * Retrieves the list of metadata types supported by IGC.
      *
+     * @param objectMapper an ObjectMapper to use for translating the types list
+     *
      * @return ArrayNode the list of types supported by IGC, as a JSON structure
      */
-    public ArrayNode getTypes() {
-        return (ArrayNode) makeRequest(baseURL + EP_TYPES, HttpMethod.GET, null,null);
-    }
-
-    /**
-     * Retrieve all information about an asset from IGC.
-     *
-     * @param rid the Repository ID of the asset
-     * @return JsonNode - the JSON response of the retrieval
-     */
-    public JsonNode getJsonAssetById(String rid) {
-        return makeRequest(baseURL + EP_ASSET + "/" + rid, HttpMethod.GET, null,null);
+    public List<Type> getTypes(ObjectMapper objectMapper) {
+        String response = makeRequest(EP_TYPES, HttpMethod.GET, null,null);
+        List<Type> alTypes = new ArrayList<>();
+        try {
+            alTypes = objectMapper.readValue(response, new TypeReference<List<Type>>(){});
+        } catch (IOException e) {
+            log.error("Unable to parse types response: {}", response, e);
+        }
+        return alTypes;
     }
 
     /**
@@ -515,7 +509,7 @@ public class IGCRestClient {
      * @return Reference - the IGC object representing the asset
      */
     public Reference getAssetById(String rid) {
-        return readJSONIntoPOJO(getJsonAssetById(rid));
+        return readJSONIntoPOJO(makeRequest(EP_ASSET + "/" + rid, HttpMethod.GET, null,null));
     }
 
     /**
@@ -557,20 +551,12 @@ public class IGCRestClient {
     /**
      * Retrieve all assets that match the provided search criteria from IGC.
      *
-     * @param query the JSON query by which to search
-     * @return JsonNode - the first JSON page of results from the search
-     */
-    public JsonNode searchJson(JsonNode query) {
-        return makeRequest(baseURL + EP_SEARCH, HttpMethod.POST, MediaType.APPLICATION_JSON, query.toString());
-    }
-
-    /**
-     * Retrieve all assets that match the provided search criteria from IGC.
-     *
      * @param igcSearch the IGCSearch object defining criteria by which to search
      * @return JsonNode - the first JSON page of results from the search
      */
-    public JsonNode searchJson(IGCSearch igcSearch) { return searchJson(igcSearch.getQuery()); }
+    public String searchJson(IGCSearch igcSearch) {
+        return makeRequest(EP_SEARCH, HttpMethod.POST, MediaType.APPLICATION_JSON, igcSearch.getQuery().toString());
+    }
 
     /**
      * Retrieve all assets that match the provided search criteria from IGC.
@@ -580,9 +566,9 @@ public class IGCRestClient {
      */
     public ReferenceList search(IGCSearch igcSearch) {
         ReferenceList referenceList = null;
-        JsonNode results = searchJson(igcSearch);
+        String results = searchJson(igcSearch);
         try {
-            referenceList = this.mapper.readValue(results.toString(), ReferenceList.class);
+            referenceList = this.mapper.readValue(results, ReferenceList.class);
         } catch (IOException e) {
             log.error("Unable to translate JSON results: {}", results, e);
         }
@@ -594,10 +580,10 @@ public class IGCRestClient {
      *
      * @param rid the Repository ID of the asset to update
      * @param value the JSON structure defining what value(s) of the asset to update (and mode)
-     * @return JsonNode - the JSON structure indicating the updated asset's RID and updates made
+     * @return String - the JSON indicating the updated asset's RID and updates made
      */
-    public JsonNode updateJson(String rid, JsonNode value) {
-        return makeRequest(baseURL + EP_ASSET + "/" + rid, HttpMethod.PUT, MediaType.APPLICATION_JSON, value.toString());
+    public String updateJson(String rid, JsonNode value) {
+        return makeRequest(EP_ASSET + "/" + rid, HttpMethod.PUT, MediaType.APPLICATION_JSON, value.toString());
     }
 
     /**
@@ -606,7 +592,7 @@ public class IGCRestClient {
      * @param igcUpdate update criteria to use
      */
     public boolean update(IGCUpdate igcUpdate) {
-        JsonNode result = updateJson(igcUpdate.getRidToUpdate(), igcUpdate.getUpdate());
+        String result = updateJson(igcUpdate.getRidToUpdate(), igcUpdate.getUpdate());
         return (result != null);
     }
 
@@ -621,9 +607,9 @@ public class IGCRestClient {
         boolean success;
         List<String> existingBundles = getOpenIgcBundles();
         if (existingBundles.contains(name)) {
-            success = uploadFile(baseURL + EP_BUNDLES, HttpMethod.PUT, file);
+            success = uploadFile(EP_BUNDLES, HttpMethod.PUT, file);
         } else {
-            success = uploadFile(baseURL + EP_BUNDLES, HttpMethod.POST, file);
+            success = uploadFile(EP_BUNDLES, HttpMethod.POST, file);
         }
         return success;
     }
@@ -718,15 +704,15 @@ public class IGCRestClient {
      * @return {@code List<String>}
      */
     public List<String> getOpenIgcBundles() {
-        JsonNode bundles = makeRequest(baseURL + EP_BUNDLES, HttpMethod.GET, null,null);
-        ArrayList<String> alBundles = new ArrayList<>();
+        String bundles = makeRequest(EP_BUNDLES, HttpMethod.GET, null,null);
+        List<String> alBundles = new ArrayList<>();
         try {
-            String[] aBundles = mapper.readValue(bundles.toString(), String[].class);
-            for (String bundleName : aBundles) {
-                alBundles.add(bundleName);
+            ArrayNode anBundles = mapper.readValue(bundles, ArrayNode.class);
+            for (int i = 0; i < anBundles.size(); i++) {
+                alBundles.add(anBundles.get(i).asText());
             }
         } catch (IOException e) {
-            log.error("Unable to parse bundle response: {}", bundles.toString(), e);
+            log.error("Unable to parse bundle response: {}", bundles, e);
         }
         return alBundles;
     }
@@ -735,10 +721,10 @@ public class IGCRestClient {
      * Upload the provided OpenIGC asset XML: creating the asset(s) if they do not exist, updating if they do.
      *
      * @param assetXML the XML string defining the OpenIGC asset
-     * @return JsonNode - the JSON structure indicating the updated assets' RID(s)
+     * @return String - the JSON structure indicating the updated assets' RID(s)
      */
-    public JsonNode upsertOpenIgcAsset(String assetXML) {
-        return makeRequest(baseURL + EP_BUNDLE_ASSETS, HttpMethod.POST, MediaType.APPLICATION_XML, assetXML);
+    public String upsertOpenIgcAsset(String assetXML) {
+        return makeRequest(EP_BUNDLE_ASSETS, HttpMethod.POST, MediaType.APPLICATION_XML, assetXML);
     }
 
     /**
@@ -748,77 +734,39 @@ public class IGCRestClient {
      * @return boolean - true on success, false on failure
      */
     public boolean deleteOpenIgcAsset(String assetXML) {
-        return (makeRequest(baseURL + EP_BUNDLE_ASSETS, HttpMethod.DELETE, MediaType.APPLICATION_XML, assetXML) == null);
+        return (makeRequest(EP_BUNDLE_ASSETS, HttpMethod.DELETE, MediaType.APPLICATION_XML, assetXML) == null);
     }
 
     /**
      * Retrieve the next page of results from a set of paging details<br>
-     * ... or if there is no next page, return an empty JSON Items set.
+     * ... or if there is no next page, return an empty ReferenceList.
      *
      * @param paging the "paging" portion of the JSON response from which to retrieve the next page
-     * @return JsonNode - the JSON response of the next page of results
+     * @return ReferenceList - the next page of results
      */
-    public JsonNode getNextPage(JsonNode paging) {
-        JsonNode nextPage = null;
+    public ReferenceList getNextPage(Paging paging) {
+        ReferenceList nextPage = null;
         try {
-            nextPage = mapper.readTree("{\"items\": []}");
-            JsonNode nextURL = paging.path("next");
-            if (!nextURL.isMissingNode()) {
-                String sNextURL = nextURL.asText();
-                if (sNextURL != null && !sNextURL.equals("null")) {
-                    if (this.workflowEnabled && !sNextURL.contains("workflowMode=draft")) {
-                        sNextURL += "&workflowMode=draft";
-                    }
-                    nextPage = makeRequest(sNextURL, HttpMethod.GET, null, null);
-                    // If the page is part of an ASSET retrieval, we need to strip off the attribute
-                    // name of the relationship for proper multi-page composition
-                    if (sNextURL.contains(EP_ASSET)) {
-                        String remainder = sNextURL.substring((baseURL + EP_ASSET).length() + 2);
-                        String attributeName = remainder.substring(remainder.indexOf('/') + 1, remainder.indexOf('?'));
-                        nextPage = nextPage.path(attributeName);
-                    }
+            nextPage = mapper.readValue("{\"items\": []}", ReferenceList.class);
+            String sNextURL = paging.getNextPageURL();
+            if (sNextURL != null && !sNextURL.equals("null")) {
+                if (this.workflowEnabled && !sNextURL.contains("workflowMode=draft")) {
+                    sNextURL += "&workflowMode=draft";
                 }
+                String nextPageBody = makeRequest(sNextURL.substring(baseURL.length()), HttpMethod.GET, null, null);
+                // If the page is part of an ASSET retrieval, we need to strip off the attribute
+                // name of the relationship for proper multi-page composition
+                if (sNextURL.contains(EP_ASSET)) {
+                    String remainder = sNextURL.substring((baseURL + EP_ASSET).length() + 2);
+                    String attributeName = remainder.substring(remainder.indexOf('/') + 1, remainder.indexOf('?'));
+                    nextPageBody = nextPageBody.substring(attributeName.length() + 4, nextPageBody.length() - 1);
+                }
+                nextPage = mapper.readValue(nextPageBody, ReferenceList.class);
             }
         } catch (IOException e) {
             log.error("Unable to parse next page from JSON: {}", paging, e);
         }
         return nextPage;
-    }
-
-    /**
-     * Retrieve all pages of results from a set of paging details and items<br>
-     * ... or if there is no next page, return the items provided.
-     *
-     * @param items the "items" array of the JSON response for which to retrieve all pages
-     * @param paging the "paging" portion of the JSON response for which to retrieve all pages
-     * @return JsonNode - the JSON containing all pages of results as an "items" array
-     */
-    public ArrayNode getAllPages(ArrayNode items, JsonNode paging) {
-        ArrayNode allPages = items;
-        JsonNode results = getNextPage(paging);
-        ArrayNode resultsItems = (ArrayNode) results.path("items");
-        if (resultsItems.size() > 0) {
-            allPages = getAllPages(items.addAll(resultsItems), results.path("paging"));
-        }
-        return allPages;
-    }
-
-    /**
-     * Retrieve the next page of results from a set of Paging details<br>
-     * ... or if there is no next page, return an empty JSON Items set.
-     *
-     * @param paging the "Paging" object from which to retrieve the next page
-     * @return ReferenceList - the ReferenceList containing the next page of results
-     */
-    public ReferenceList getNextPage(Paging paging) {
-        JsonNode nextPage = getNextPage(mapper.convertValue(paging, JsonNode.class));
-        ReferenceList rlNextPage = null;
-        try {
-            rlNextPage = this.mapper.readValue(nextPage.toString(), ReferenceList.class);
-        } catch (IOException e) {
-            log.error("Unable to parse next page from JSON: {}", paging, e);
-        }
-        return rlNextPage;
     }
 
     /**
@@ -845,7 +793,7 @@ public class IGCRestClient {
      * Disconnect from IGC REST API and invalidate the session.
      */
     public void disconnect() {
-        makeRequest(baseURL + EP_LOGOUT, HttpMethod.GET, null,null);
+        makeRequest(EP_LOGOUT, HttpMethod.GET, null,null);
     }
 
     /**
@@ -857,7 +805,7 @@ public class IGCRestClient {
      * or if you are adding custom attributes to one of the native asset types, consider
      * directly extending that asset from model.generated.*
      * <br><br>
-     * To allow this dynamic registration to work, also ensure you have a 'public static String getIgcTypeId()'
+     * To allow this dynamic registration to work, also ensure you have a @JsonTypeName("...") annotation
      * in your class set to the type that the IGC REST API uses to refer to the asset (eg. for Term.class
      * it would be "term"). See the generated POJOs for examples.
      *
@@ -865,17 +813,14 @@ public class IGCRestClient {
      * @see #getPOJOForType(String)
      */
     public void registerPOJO(Class clazz) {
-        try {
-            // Every POJO should have a public static getIgcTypeId method giving its IGC asset type
-            Method getTypeId = clazz.getMethod("getIgcTypeId");
-            String typeId = (String) getTypeId.invoke(null);
-            this.mapper.registerSubtypes(new NamedType(clazz, typeId));
+        JsonTypeName typeName = (JsonTypeName) clazz.getAnnotation(JsonTypeName.class);
+        if (typeName != null) {
+            String typeId = typeName.value();
+            this.mapper.registerSubtypes(clazz);
             this.registeredPojosByType.put(typeId, clazz);
             log.debug("Registered IGC type {} to be handled by POJO: {}", typeId, clazz.getCanonicalName());
-        } catch (NoSuchMethodException e) {
-            log.error("Unable to find 'getIgcTypeId' method on class: {}", clazz.getCanonicalName(), e);
-        } catch (InvocationTargetException | IllegalAccessException e) {
-            log.error("Unable to access or invoke 'getIgcTypeId' method on class: {}", clazz.getCanonicalName(), e);
+        } else {
+            log.error("Unable to find JsonTypeName annotation to identify type in POJO: {}", clazz.getCanonicalName());
         }
     }
 

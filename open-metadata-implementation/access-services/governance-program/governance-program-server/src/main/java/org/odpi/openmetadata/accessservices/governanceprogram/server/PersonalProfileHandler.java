@@ -117,11 +117,11 @@ class PersonalProfileHandler
                                                                   jobRoleDescription,
                                                                   methodName);
 
-        properties = repositoryHelper.addMapPropertyToInstance(serviceName,
-                                                               properties,
-                                                               additionalPropertiesName,
-                                                               additionalProperties,
-                                                               methodName);
+        properties = repositoryHelper.addStringMapPropertyToInstance(serviceName,
+                                                                     properties,
+                                                                     additionalPropertiesName,
+                                                                     additionalProperties,
+                                                                     methodName);
 
         log.debug("Instance properties: " + properties.toString());
 

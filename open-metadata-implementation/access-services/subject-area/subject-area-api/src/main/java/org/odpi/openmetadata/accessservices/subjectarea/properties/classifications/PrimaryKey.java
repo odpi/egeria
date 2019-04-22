@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.classifications;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.KeyPattern;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -108,7 +109,7 @@ public class PrimaryKey extends Classification {
        private KeyPattern keyPattern;
        /**
         * {@literal Type of primary key. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return Key Pattern
         */
        public KeyPattern getKeyPattern() {
            return this.keyPattern;
@@ -121,7 +122,7 @@ public class PrimaryKey extends Classification {
        private String name;
        /**
         * {@literal Display name for the primary key. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return Display name for the primary key.
         */
        public String getName() {
            return this.name;

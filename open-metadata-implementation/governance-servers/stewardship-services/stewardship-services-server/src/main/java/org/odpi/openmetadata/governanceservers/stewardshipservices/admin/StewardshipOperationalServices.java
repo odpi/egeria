@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.governanceservers.stewardshipservices.admin;
 
-import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryEngineConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipServicesConfig;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
@@ -20,8 +19,8 @@ public class StewardshipOperationalServices
     private String                    localServerName;               /* Initialized in constructor */
     private String                    localServerUserId;             /* Initialized in constructor */
     private int                       maxPageSize;                   /* Initialized in constructor */
-    private OMRSAuditLog              auditLog;                      /* Initialized in constructor */
-    private StewardshipServicesConfig stewardshipServicesConfig;     /* Initialized in constructor */
+    private OMRSAuditLog              auditLog                  = null;
+    private StewardshipServicesConfig stewardshipServicesConfig = null;
 
 
 
@@ -52,7 +51,7 @@ public class StewardshipOperationalServices
                            OMRSAuditLog                 auditLog)
     {
         this.stewardshipServicesConfig = configuration;
-        this.auditLog              = auditLog;
+        this.auditLog = auditLog;
     }
 
 

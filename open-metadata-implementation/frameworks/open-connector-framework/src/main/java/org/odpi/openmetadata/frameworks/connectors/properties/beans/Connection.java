@@ -93,14 +93,15 @@ public class Connection extends Referenceable
     /*
      * Attributes of a connector
      */
-    protected String              displayName         = null;
-    protected String              description         = null;
-    protected ConnectorType       connectorType       = null;
-    protected Endpoint            endpoint            = null;
-    protected String              userId              = null;
-    protected String              encryptedPassword   = null;
-    protected String              clearPassword       = null;
-    protected Map<String, Object> securedProperties   = null;
+    protected String              displayName             = null;
+    protected String              description             = null;
+    protected ConnectorType       connectorType           = null;
+    protected Endpoint            endpoint                = null;
+    protected String              userId                  = null;
+    protected String              encryptedPassword       = null;
+    protected String              clearPassword           = null;
+    protected Map<String, Object> configurationProperties = null;
+    protected Map<String, Object> securedProperties       = null;
 
 
     /**
@@ -144,22 +145,23 @@ public class Connection extends Referenceable
     /**
      * Copy/clone Constructor to return a copy of a connection object.
      *
-     * @param templateConnection Connection to copy
+     * @param template Connection to copy
      */
-    public Connection(Connection templateConnection)
+    public Connection(Connection template)
     {
-        super(templateConnection);
+        super(template);
 
-        if (templateConnection != null)
+        if (template != null)
         {
-            displayName = templateConnection.getDisplayName();
-            description = templateConnection.getDescription();
-            userId = templateConnection.getUserId();
-            clearPassword = templateConnection.getClearPassword();
-            encryptedPassword = templateConnection.getEncryptedPassword();
-            connectorType = templateConnection.getConnectorType();
-            endpoint = templateConnection.getEndpoint();
-            securedProperties = templateConnection.getSecuredProperties();
+            displayName = template.getDisplayName();
+            description = template.getDescription();
+            userId = template.getUserId();
+            clearPassword = template.getClearPassword();
+            encryptedPassword = template.getEncryptedPassword();
+            connectorType = template.getConnectorType();
+            endpoint = template.getEndpoint();
+            configurationProperties = template.getConfigurationProperties();
+            securedProperties = template.getSecuredProperties();
         }
     }
 
@@ -334,6 +336,39 @@ public class Connection extends Referenceable
 
 
     /**
+     * Set up the configuration properties for this Connection.
+     *
+     * @param configurationProperties properties that contain additional configuration information for the connector.
+     */
+    public void setConfigurationProperties(Map<String,Object> configurationProperties)
+    {
+        this.configurationProperties = configurationProperties;
+    }
+
+
+    /**
+     * Return a copy of the configuration properties.  Null means no secured properties are available.
+     *
+     * @return secured properties typically user credentials for the connection
+     */
+    public Map<String,Object> getConfigurationProperties()
+    {
+        if (configurationProperties == null)
+        {
+            return null;
+        }
+        else if (configurationProperties.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return new HashMap<>(configurationProperties);
+        }
+    }
+
+
+    /**
      * Set up the secured properties for this Connection.
      *
      * @param securedProperties properties that contain secret information such as log on information.
@@ -384,6 +419,7 @@ public class Connection extends Referenceable
                 ", encryptedPassword='" + encryptedPassword + '\'' +
                 ", clearPassword='" + clearPassword + '\'' +
                 ", securedProperties=" + securedProperties +
+                ", configurationProperties=" + configurationProperties +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
                 ", extendedProperties=" + getExtendedProperties() +
@@ -425,6 +461,7 @@ public class Connection extends Referenceable
                 Objects.equals(getUserId(), that.getUserId()) &&
                 Objects.equals(getEncryptedPassword(), that.getEncryptedPassword()) &&
                 Objects.equals(getClearPassword(), that.getClearPassword()) &&
+                Objects.equals(getConfigurationProperties(), that.getConfigurationProperties()) &&
                 Objects.equals(getSecuredProperties(), that.getSecuredProperties());
     }
 
@@ -438,6 +475,7 @@ public class Connection extends Referenceable
     public int hashCode()
     {
         return Objects.hash(super.hashCode(), getDisplayName(), getDescription(), getConnectorType(), getEndpoint(),
-                            getUserId(), getEncryptedPassword(), getClearPassword(), getSecuredProperties());
+                            getUserId(), getEncryptedPassword(), getClearPassword(), getSecuredProperties(),
+                            getConfigurationProperties());
     }
 }

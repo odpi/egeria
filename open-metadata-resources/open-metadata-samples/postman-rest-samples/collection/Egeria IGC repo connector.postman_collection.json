@@ -33,7 +33,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"producer\": {\n\t\t\"bootstrap.servers\":\"{{kafkaep}}\",\n\t\t\"acks\":\"all\",\n\t\t\"retries\":\"0\",\n\t\t\"batch.size\":\"16384\",\n\t\t\"linger.ms\":\"1\",\n\t\t\"buffer.memory\":\"33554432\",\n\t\t\"max.request.size\":\"10485760\",\n\t\t\"key.serializer\":\"org.apache.kafka.common.serialization.StringSerializer\",\n\t\t\"value.serializer\":\"org.apache.kafka.common.serialization.StringSerializer\",\n\t\t\"kafka.omrs.topic.id\":\"{{cohort}}\"\n\t},\n\t\"consumer\": {\n   \t\t\"bootstrap.servers\":\"{{kafkaep}}\",\n   \t\t\"zookeeper.session.timeout.ms\":\"400\",\n   \t\t\"zookeeper.sync.time.ms\":\"200\",\n   \t\t\"fetch.message.max.bytes\":\"10485760\",\n   \t\t\"max.partition.fetch.bytes\":\"10485760\",\n   \t\t\"key.deserializer\":\"org.apache.kafka.common.serialization.StringDeserializer\",\n   \t\t\"value.deserializer\":\"org.apache.kafka.common.serialization.StringDeserializer\",\n   \t\t\"kafka.omrs.topic.id\":\"{{cohort}}\"\n\t}\n}"
+					"raw": ""
 				},
 				"url": {
 					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-type?typeName=IBM Information Governance Catalog",
@@ -87,7 +87,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"producer\": {\n\t\t\"bootstrap.servers\":\"{{kafkaep}}\",\n\t\t\"acks\":\"all\",\n\t\t\"retries\":\"0\",\n\t\t\"batch.size\":\"16384\",\n\t\t\"linger.ms\":\"1\",\n\t\t\"buffer.memory\":\"33554432\",\n\t\t\"max.request.size\":\"10485760\",\n\t\t\"key.serializer\":\"org.apache.kafka.common.serialization.StringSerializer\",\n\t\t\"value.serializer\":\"org.apache.kafka.common.serialization.StringSerializer\",\n\t\t\"kafka.omrs.topic.id\":\"{{cohort}}\"\n\t},\n\t\"consumer\": {\n   \t\t\"bootstrap.servers\":\"{{kafkaep}}\",\n   \t\t\"zookeeper.session.timeout.ms\":\"400\",\n   \t\t\"zookeeper.sync.time.ms\":\"200\",\n   \t\t\"fetch.message.max.bytes\":\"10485760\",\n   \t\t\"max.partition.fetch.bytes\":\"10485760\",\n   \t\t\"key.deserializer\":\"org.apache.kafka.common.serialization.StringDeserializer\",\n   \t\t\"value.deserializer\":\"org.apache.kafka.common.serialization.StringDeserializer\",\n   \t\t\"kafka.omrs.topic.id\":\"{{cohort}}\"\n\t}\n}"
+					"raw": ""
 				},
 				"url": {
 					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/organization-name?name=IBM",
@@ -141,7 +141,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"producer\": {\n\t\t\"bootstrap.servers\":\"{{kafkaep}}\",\n\t\t\"acks\":\"all\",\n\t\t\"retries\":\"0\",\n\t\t\"batch.size\":\"16384\",\n\t\t\"linger.ms\":\"1\",\n\t\t\"buffer.memory\":\"33554432\",\n\t\t\"max.request.size\":\"10485760\",\n\t\t\"key.serializer\":\"org.apache.kafka.common.serialization.StringSerializer\",\n\t\t\"value.serializer\":\"org.apache.kafka.common.serialization.StringSerializer\",\n\t\t\"kafka.omrs.topic.id\":\"{{cohort}}\"\n\t},\n\t\"consumer\": {\n   \t\t\"bootstrap.servers\":\"{{kafkaep}}\",\n   \t\t\"zookeeper.session.timeout.ms\":\"400\",\n   \t\t\"zookeeper.sync.time.ms\":\"200\",\n   \t\t\"fetch.message.max.bytes\":\"10485760\",\n   \t\t\"max.partition.fetch.bytes\":\"10485760\",\n   \t\t\"key.deserializer\":\"org.apache.kafka.common.serialization.StringDeserializer\",\n   \t\t\"value.deserializer\":\"org.apache.kafka.common.serialization.StringDeserializer\",\n   \t\t\"kafka.omrs.topic.id\":\"{{cohort}}\"\n\t}\n}"
+					"raw": ""
 				},
 				"url": {
 					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/server-url-root?url={{baseURL}}",
@@ -195,7 +195,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\t\"producer\": {\n\t\t\"bootstrap.servers\":\"{{kafkaep}}\",\n\t\t\"acks\":\"all\",\n\t\t\"retries\":\"0\",\n\t\t\"batch.size\":\"16384\",\n\t\t\"linger.ms\":\"1\",\n\t\t\"buffer.memory\":\"33554432\",\n\t\t\"max.request.size\":\"10485760\",\n\t\t\"key.serializer\":\"org.apache.kafka.common.serialization.StringSerializer\",\n\t\t\"value.serializer\":\"org.apache.kafka.common.serialization.StringSerializer\",\n\t\t\"kafka.omrs.topic.id\":\"{{cohort}}\"\n\t},\n\t\"consumer\": {\n   \t\t\"bootstrap.servers\":\"{{kafkaep}}\",\n   \t\t\"zookeeper.session.timeout.ms\":\"400\",\n   \t\t\"zookeeper.sync.time.ms\":\"200\",\n   \t\t\"fetch.message.max.bytes\":\"10485760\",\n   \t\t\"max.partition.fetch.bytes\":\"10485760\",\n   \t\t\"key.deserializer\":\"org.apache.kafka.common.serialization.StringDeserializer\",\n   \t\t\"value.deserializer\":\"org.apache.kafka.common.serialization.StringDeserializer\",\n   \t\t\"kafka.omrs.topic.id\":\"{{cohort}}\"\n\t}\n}"
+					"raw": "{\n\t\"producer\": {\n\t\t\"bootstrap.servers\":\"{{kafkaep}}\"\n\t},\n\t\"consumer\": {\n   \t\t\"bootstrap.servers\":\"{{kafkaep}}\"\n\t}\n}"
 				},
 				"url": {
 					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/event-bus?connectorProvider=org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider&topicURLRoot=OMRSTopic",
@@ -356,7 +356,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/local-repository/event-mapper-details?connectorProvider=org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider&eventSource={{igc_host}}:59092",
+					"raw": "{{baseURL}}/open-metadata/admin-services/users/{{user}}/servers/{{server}}/local-repository/event-mapper-details?connectorProvider=org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider&eventSource={{igc_kafka}}",
 					"host": [
 						"{{baseURL}}"
 					],
@@ -377,7 +377,7 @@
 						},
 						{
 							"key": "eventSource",
-							"value": "{{igc_host}}:59092"
+							"value": "{{igc_kafka}}"
 						}
 					]
 				}
@@ -397,7 +397,7 @@
 							"});",
 							"pm.test(\"IGC endpoint configured\", function () {",
 							"    var jsonData = pm.response.json();",
-							"    pm.expect(jsonData.omagserverConfig.repositoryServicesConfig.localRepositoryConfig.localRepositoryLocalConnection.qualifiedName).to.equal(\"IBMIGCRepository.Connection.myserver\");",
+							"    pm.expect(jsonData.omagserverConfig.repositoryServicesConfig.localRepositoryConfig.localRepositoryLocalConnection.qualifiedName).to.equal(\"IBMIGCRepository.Connection.\" + environment.server);",
 							"    pm.expect(jsonData.omagserverConfig.repositoryServicesConfig.localRepositoryConfig.localRepositoryLocalConnection.additionalProperties.igcBaseURL).to.equal(\"https://\" + environment.igc_host + \":\" + environment.igc_port);",
 							"});"
 						],

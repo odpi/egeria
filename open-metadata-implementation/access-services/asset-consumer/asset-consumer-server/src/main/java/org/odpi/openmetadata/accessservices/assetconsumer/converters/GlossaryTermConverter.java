@@ -10,7 +10,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 public class GlossaryTermConverter extends ReferenceableHeaderConverter
 {
-    public static final String DISPLAY_NAME_PROPERTY_NAME = "displayName";
+    public  static final String DISPLAY_NAME_PROPERTY_NAME = "displayName";
 
     private static final String summaryPropertyName       = "summary";
     private static final String descriptionPropertyName   = "description";

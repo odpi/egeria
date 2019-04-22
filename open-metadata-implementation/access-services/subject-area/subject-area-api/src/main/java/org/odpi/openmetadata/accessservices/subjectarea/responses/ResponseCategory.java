@@ -35,8 +35,10 @@ public enum ResponseCategory {
     ValidValueRelationship,
     // term to glossary relationships
     TermAnchorRelationship,
-    // relationships
-    Relationships,
+    // category to glossary relationships
+    CategoryAnchorRelationship,
+    // Lines
+    Lines,
     // external glossary relationships
     LibraryCategoryReferenceRelationshipRelationship,
     LibraryTermReferenceRelationshipRelationship,
@@ -46,6 +48,7 @@ public enum ResponseCategory {
     TermCategorizationRelationship,
     // category relationships
     CategoryRelationships,
+
     // graph
     Graph,
 
@@ -63,5 +66,16 @@ public enum ResponseCategory {
     UnrecognizedNameException,
     UserNotAuthorizedException,
     MetadataServerUncontactableException,
-    UnexpectedException;
+    UnexpectedException,
+    // used internally
+    OmrsEntityDetail,
+    OmrsEntityDetails,
+    OmrsRelationship,
+    OmrsRelationships,
+    OmrsInstanceGraph,
+    GlossarySummary,
+    TermSummary,
+    CategorySummary,
+    IconSummarySet
+    ;
 }

@@ -20,7 +20,7 @@ public class TestVirtualConnection
 {
     private ElementType              type                 = new ElementType();
     private List<Classification>     classifications      = new ArrayList<>();
-    private Map<String, Object>      additionalProperties = new HashMap<>();
+    private Map<String, String>      additionalProperties = new HashMap<>();
     private Map<String, Object>      securedProperties    = new HashMap<>();
     private ConnectorType            connectorType        = new ConnectorType();
     private Endpoint                 endpoint             = new Endpoint();

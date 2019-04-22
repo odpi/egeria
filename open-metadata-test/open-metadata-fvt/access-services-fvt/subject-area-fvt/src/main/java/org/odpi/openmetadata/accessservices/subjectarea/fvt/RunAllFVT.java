@@ -26,7 +26,7 @@ public class RunAllFVT
             CategoryHierarchyFVT.runWith2Servers(url);
             RelationshipsFVT.runWith2Servers(url);
             SubjectAreaDefinitionCategoryFVT.runWith2Servers(url);
-            EffectiveDatesFVT.runWith2Servers(url);
+            //EffectiveDatesFVT.runWith2Servers(url);
             GraphFVT.runWith2Servers(url);
             System.out.println("FVT ran successfully");
         } catch (IOException e1)
