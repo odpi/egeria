@@ -7,6 +7,7 @@ package org.odpi.openmetadata.accessservices.governanceengine.client;
  *
  * Requires Mockito 2.x & JUnit 5
  */
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +18,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.ClassificationNotFoundException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.GuidNotFoundException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.MetadataServerException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.TypeNotFoundException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetListAPIResponse;
@@ -29,7 +35,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @SuiteDisplayName("Governance Engine Client Implementation")
 @ExtendWith(MockitoExtension.class)
@@ -139,7 +148,7 @@ public class GovernanceEngineImplTest {
         try {
             List<GovernedAsset> result = governanceEngineImpl.getGovernedAssetList(defaultUserId, "rootClassificationType", "rootType");
         } catch (InvalidParameterException | TypeNotFoundException | ClassificationNotFoundException | MetadataServerException | UserNotAuthorizedException e) {
-            log.error(e.getErrorMessage());
+            log.error("Unable to fetch the governed assets list");
         }
 
         verify(restTemplate, times(1)).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -158,7 +167,7 @@ public class GovernanceEngineImplTest {
         try {
             List<GovernedAsset> result = governanceEngineImpl.getGovernedAssetList(defaultUserId, defaultClassificationType, defaultRootType);
         } catch (InvalidParameterException | TypeNotFoundException | ClassificationNotFoundException | MetadataServerException | UserNotAuthorizedException e) {
-          log.error(e.getErrorMessage());
+            log.error("Unable to fetch the governed assets list");
         }
 
         // verify we actually used the mocked rest template once
@@ -242,7 +251,7 @@ public class GovernanceEngineImplTest {
         try {
             GovernedAsset result = governanceEngineImpl.getGovernedAsset(defaultUserId, defaultGUID);
         } catch (InvalidParameterException | GuidNotFoundException | MetadataServerException | UserNotAuthorizedException e) {
-           log.debug(e.getErrorMessage());
+            log.debug("unable to fetch the governed asset");
         }
 
         verify(restTemplate, times(1)).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());
@@ -260,7 +269,7 @@ public class GovernanceEngineImplTest {
         try {
             GovernedAsset result = governanceEngineImpl.getGovernedAsset(defaultUserId, defaultGUID);
         } catch (InvalidParameterException | GuidNotFoundException | MetadataServerException | UserNotAuthorizedException e) {
-            log.debug(e.getErrorMessage());
+            log.debug("unable to fetch the governed asset");
         }
 
         verify(restTemplate, times(1)).getForObject(ArgumentMatchers.anyString(), ArgumentMatchers.any(Class.class), ArgumentMatchers.<Object>any());

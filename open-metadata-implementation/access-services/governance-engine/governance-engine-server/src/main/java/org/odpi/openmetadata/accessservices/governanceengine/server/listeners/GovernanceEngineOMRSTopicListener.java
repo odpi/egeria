@@ -4,7 +4,12 @@ package org.odpi.openmetadata.accessservices.governanceengine.server.listeners;
 
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
-import org.odpi.openmetadata.repositoryservices.events.*;
+import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
+import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
+import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,11 +18,9 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
     private static final Logger log = LoggerFactory.getLogger(GovernanceEngineOMRSTopicListener.class);
     private String enterpriseOMRSTopic = "EnterpriseOMRSTopic";
     private OMRSInstanceEventProcessor instanceEventProcessor;
-    private OMRSAuditLog auditLog;
 
     public GovernanceEngineOMRSTopicListener(OMRSInstanceEventProcessor instanceEventProcessor, OMRSAuditLog auditLog) {
         this.instanceEventProcessor = instanceEventProcessor;
-        this.auditLog = auditLog;
     }
 
     @Override
@@ -66,9 +69,10 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
                             instanceEventOriginator.getServerType(),
                             instanceEventOriginator.getOrganizationName(),
                             instanceEvent.getEntity());
-
+                    break;
                 default:
-
+                    log.debug("Unknown instance event error code, ignoring event");
+                    break;
             }
         }
     }
