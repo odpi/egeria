@@ -43,6 +43,7 @@ public class DataViewCreator extends DataViewBasicOperation{
                                                                                              UserNotAuthorizedException,
                                                                                              RepositoryErrorException,
                                                                                              ClassificationErrorException {
+            String methodName = "createDataView";
             String qualifiedNameForComplexSchemaType = QualifiedNameUtils.buildQualifiedName(requestBody.getEndpointAddress(), Constants.COMPLEX_SCHEMA_TYPE, requestBody.getId() + Constants.TYPE_SUFFIX);
             InstanceProperties complexSchemaTypeProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
@@ -55,7 +56,8 @@ public class DataViewCreator extends DataViewBasicOperation{
                     dataViewEntity.getGUID(),
                     complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(),
                     new InstanceProperties());
-            String qualifiedNameForDataView = EntityPropertiesUtils.getStringValueForProperty(dataViewEntity.getProperties(), Constants.QUALIFIED_NAME);
+
+        String qualifiedNameForDataView = helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, dataViewEntity.getProperties(), methodName);
             addElements(qualifiedNameForDataView, complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), requestBody.getElements());
 
 

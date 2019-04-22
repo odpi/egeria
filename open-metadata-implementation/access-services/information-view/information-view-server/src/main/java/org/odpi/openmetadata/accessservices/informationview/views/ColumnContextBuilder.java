@@ -594,17 +594,18 @@ public class ColumnContextBuilder {
         if(log.isDebugEnabled()) {
             log.debug("Load endpoint details for entity with guid {}", endpointGuid);
         }
+        String methodName = "getEndpointDetails";
         EntityDetail endpointEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, endpointGuid);
         TableContextEvent tableContextEvent = new TableContextEvent();
         TableSource tableSource = new TableSource();
         tableContextEvent.setTableSource(tableSource);
-        String address = EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.NETWORK_ADDRESS);
+        String address = omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NETWORK_ADDRESS, endpointEntity.getProperties(), methodName);
         DatabaseSource databaseSource  = new DatabaseSource();
         EndpointSource  endpointSource = new EndpointSource();
         databaseSource.setEndpointSource(endpointSource);
         tableSource.setDatabaseSource( databaseSource );
         endpointSource.setNetworkAddress(address);
-        endpointSource.setProtocol(EntityPropertiesUtils.getStringValueForProperty(endpointEntity.getProperties(), Constants.PROTOCOL));
+        endpointSource.setProtocol(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.PROTOCOL, endpointEntity.getProperties(), methodName));
 
         return tableContextEvent;
     }
@@ -643,14 +644,16 @@ public class ColumnContextBuilder {
     public BusinessTerm buildBusinessTerm(EntityDetail businessTermEntity) {
         BusinessTerm businessTerm = new BusinessTerm();
         businessTerm.setGuid(businessTermEntity.getGUID());
-        businessTerm.setQualifiedName(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.QUALIFIED_NAME));
-        businessTerm.setSummary(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.SUMMARY));
-        businessTerm.setName(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.DISPLAY_NAME));
-        businessTerm.setExamples(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.EXAMPLES));
-        businessTerm.setAbbreviation(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.ABBREVIATION));
-        businessTerm.setQuery(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.QUERY));
-        businessTerm.setDescription(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.DESCRIPTION));
-        businessTerm.setUsage(EntityPropertiesUtils.getStringValueForProperty(businessTermEntity.getProperties(), Constants.USAGE));
+        String methodName = "buildBusinessTerm";
+        InstanceProperties properties = businessTermEntity.getProperties();
+        businessTerm.setQualifiedName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, properties, methodName));
+        businessTerm.setSummary(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.SUMMARY, properties, methodName));
+        businessTerm.setName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.DISPLAY_NAME, properties, methodName));
+        businessTerm.setExamples(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.EXAMPLES, properties, methodName));
+        businessTerm.setAbbreviation(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.ABBREVIATION, properties, methodName));
+        businessTerm.setQuery(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUERY, properties, methodName));
+        businessTerm.setDescription(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.DESCRIPTION, properties, methodName));
+        businessTerm.setUsage(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.USAGE, properties, methodName));
         return businessTerm;
     }
 
