@@ -499,7 +499,9 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
         boolean successFlag = false;
 
         log.info("Sending event {} to information view out topic", event.getClass());
-        log.debug("event: ", event);
+        if(log.isDebugEnabled()) {
+            log.debug("event: ", event);
+        }
 
         try {
 
