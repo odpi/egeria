@@ -7,7 +7,4 @@ FROM alpine:3.9
 RUN apk add bash curl git jq openldap-clients postgresql-client mariadb-client && apk update && apk upgrade
 COPY dist/check-availability.sh /check-availability.sh
 
-ENV CACERT /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-ENV NAMESPACE default
-
 ENTRYPOINT ["/check-availability.sh"]

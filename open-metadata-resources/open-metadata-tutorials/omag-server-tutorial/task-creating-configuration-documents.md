@@ -534,7 +534,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "14475820-7356-4b14-a560-128b4f6bdf87",
                     "qualifiedName": "InTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "InTopic",
@@ -589,7 +589,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "84689e40-b83a-4a8e-b172-e628ded4c77b",
                     "qualifiedName": "OutTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "OutTopic",
@@ -653,7 +653,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "96780526-2d8e-4334-9bfa-1dd86896913c",
                     "qualifiedName": "InTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "InTopic",
@@ -708,7 +708,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "82279a05-9310-4600-a03a-9dc70a41600f",
                     "qualifiedName": "OutTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "OutTopic",
@@ -772,7 +772,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "4f83087c-bd1c-455f-b809-1938cab03ecd",
                     "qualifiedName": "InTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "InTopic",
@@ -827,7 +827,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "84036aea-5055-427a-aa3d-ad3fa0aef255",
                     "qualifiedName": "OutTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "OutTopic",
@@ -891,7 +891,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "6bba6aa3-308e-41a3-bf01-51ef65028e60",
                     "qualifiedName": "InTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "InTopic",
@@ -946,7 +946,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "6d5a04c3-e216-42b0-9479-71ce4461e86d",
                     "qualifiedName": "OutTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "OutTopic",
@@ -1010,7 +1010,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "b7718cc6-da6a-4a9f-8f76-c5d4579f1c34",
                     "qualifiedName": "InTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "InTopic",
@@ -1065,7 +1065,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "826c314e-856d-4b2b-bcf1-0d11285a7610",
                     "qualifiedName": "OutTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "OutTopic",
@@ -1129,7 +1129,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "5d034bb8-133b-4dc8-b0db-712ae8a032d6",
                     "qualifiedName": "InTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "InTopic",
@@ -1184,7 +1184,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "c46fd6be-4377-4ef8-8ce4-82aa30a9f3bd",
                     "qualifiedName": "OutTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "OutTopic",
@@ -1248,7 +1248,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "2214b4ad-d1b8-4fd4-942c-4a5552688e91",
                     "qualifiedName": "InTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "InTopic",
@@ -1303,7 +1303,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "9c3332ce-b065-49dc-b22e-432277627cde",
                     "qualifiedName": "OutTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "OutTopic",
@@ -1367,7 +1367,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "5f6dc495-2b31-4ca0-8196-bb34a14e020b",
                     "qualifiedName": "InTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "InTopic",
@@ -1422,7 +1422,7 @@ which results in the final configuration (this is request **10.** in Postman).
                     },
                     "guid": "55a9dbb0-f756-4180-82d5-9b8c35af5fb0",
                     "qualifiedName": "OutTopic",
-                    "additionalProperties": {
+                    "configurationProperties": {
                         "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                     },
                     "displayName": "OutTopic",
@@ -1652,7 +1652,7 @@ which results in the final configuration (this is request **10.** in Postman).
                                 },
                                 "guid": "d2224d17-d55d-4029-b841-7b37f2fa3df3",
                                 "qualifiedName": "Enterprise OMRS Events",
-                                "additionalProperties": {
+                                "configurationProperties": {
                                     "local.server.id": "2a73902e-e691-43cc-b422-23b6b42992e2"
                                 },
                                 "displayName": "Enterprise OMRS Events",

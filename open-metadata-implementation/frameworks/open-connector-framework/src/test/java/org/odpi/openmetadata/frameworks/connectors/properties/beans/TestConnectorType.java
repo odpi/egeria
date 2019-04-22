@@ -18,11 +18,12 @@ import static org.testng.Assert.assertTrue;
  */
 public class TestConnectorType
 {
-    private ElementType          type                           = new ElementType();
-    private List<Classification> classifications                = new ArrayList<>();
-    private Map<String, Object>  additionalProperties           = new HashMap<>();
-    private List<String>         recognizedAdditionalProperties = new ArrayList<>();
-    private List<String>         recognizedSecuredProperties    = new ArrayList<>();
+    private ElementType          type                              = new ElementType();
+    private List<Classification> classifications                   = new ArrayList<>();
+    private Map<String, String>  additionalProperties              = new HashMap<>();
+    private List<String>         recognizedAdditionalProperties    = new ArrayList<>();
+    private List<String>         recognizedSecuredProperties       = new ArrayList<>();
+    private List<String>         recognizedConfigurationProperties = new ArrayList<>();
 
 
     /**
@@ -30,7 +31,9 @@ public class TestConnectorType
      */
     public TestConnectorType()
     {
-
+        recognizedAdditionalProperties.add("TestValue");
+        recognizedSecuredProperties.add("TestValue");
+        recognizedConfigurationProperties.add("TestValue");
     }
 
 
@@ -56,6 +59,7 @@ public class TestConnectorType
         testObject.setConnectorProviderClassName("TestConnectorProviderClassName");
         testObject.setRecognizedAdditionalProperties(recognizedAdditionalProperties);
         testObject.setRecognizedSecuredProperties(recognizedSecuredProperties);
+        testObject.setRecognizedSecuredProperties(recognizedConfigurationProperties);
 
         return testObject;
     }
@@ -113,6 +117,7 @@ public class TestConnectorType
         assertTrue(nullObject.getConnectorProviderClassName() == null);
         assertTrue(nullObject.getRecognizedAdditionalProperties() == null);
         assertTrue(nullObject.getRecognizedSecuredProperties() == null);
+        assertTrue(nullObject.getRecognizedConfigurationProperties() == null);
 
         nullObject = new ConnectorType(null);
 
@@ -129,6 +134,15 @@ public class TestConnectorType
         assertTrue(nullObject.getConnectorProviderClassName() == null);
         assertTrue(nullObject.getRecognizedAdditionalProperties() == null);
         assertTrue(nullObject.getRecognizedSecuredProperties() == null);
+        assertTrue(nullObject.getRecognizedConfigurationProperties() == null);
+
+        nullObject.setRecognizedAdditionalProperties(new ArrayList<>());
+        nullObject.setRecognizedSecuredProperties(new ArrayList<>());
+        nullObject.setRecognizedConfigurationProperties(new ArrayList<>());
+
+        assertTrue(nullObject.getRecognizedAdditionalProperties() == null);
+        assertTrue(nullObject.getRecognizedSecuredProperties() == null);
+        assertTrue(nullObject.getRecognizedConfigurationProperties() == null);
     }
 
 

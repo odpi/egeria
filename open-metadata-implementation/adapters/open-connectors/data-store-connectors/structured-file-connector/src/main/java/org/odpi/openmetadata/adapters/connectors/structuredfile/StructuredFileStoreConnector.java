@@ -14,10 +14,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 
 /**
@@ -50,14 +47,14 @@ public class StructuredFileStoreConnector extends ConnectorBase implements Struc
     {
         super.initialize(connectorInstanceId, connectionProperties);
 
-        AdditionalProperties additionalProperties = connectionProperties.getAdditionalProperties();
-        EndpointProperties   endpoint             = connectionProperties.getEndpoint();
+        Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+        EndpointProperties  endpoint                = connectionProperties.getEndpoint();
 
-        if (additionalProperties != null)
+        if (configurationProperties != null)
         {
-            Object  columnNamesProperty = additionalProperties.getProperty(StructuredFileStoreProvider.columnNamesProperty);
-            Object  delimiterCharProperty = additionalProperties.getProperty(StructuredFileStoreProvider.delimiterCharacterProperty);
-            Object  quoteCharProperty = additionalProperties.getProperty(StructuredFileStoreProvider.quoteCharacterProperty);
+            Object  columnNamesProperty = configurationProperties.get(StructuredFileStoreProvider.columnNamesProperty);
+            Object  delimiterCharProperty = configurationProperties.get(StructuredFileStoreProvider.delimiterCharacterProperty);
+            Object  quoteCharProperty = configurationProperties.get(StructuredFileStoreProvider.quoteCharacterProperty);
 
             if (columnNamesProperty != null)
             {

@@ -6,7 +6,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.localrepository.repositoryconnector.LocalOMRSRepositoryConnector;
 
 /**
- * OMRSConnectConsumer provides the interfaces for a connector consumer.  This is a component that needs to
+ * OMRSConnectorConsumer provides the interfaces for a connector consumer.  This is a component that needs to
  * maintain a current list of connectors to all of the remote repositories in the open metadata repository cohorts that
  * the local server is a member of.
  */

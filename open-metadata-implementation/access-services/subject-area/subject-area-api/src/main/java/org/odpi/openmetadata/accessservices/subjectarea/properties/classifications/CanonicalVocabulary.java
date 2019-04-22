@@ -99,7 +99,7 @@ public class CanonicalVocabulary extends Classification {
        private String scope;
        /**
         * {@literal Scope of influence for this canonical glossary. }
-        * @return {$$PropertyTypeJavadoc$$ }
+        * @return Scope of influence for this canonical glossary
         */
        public String getScope() {
            return this.scope;

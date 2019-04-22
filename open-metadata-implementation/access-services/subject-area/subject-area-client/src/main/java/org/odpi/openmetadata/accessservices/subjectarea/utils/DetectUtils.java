@@ -16,7 +16,8 @@ import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
 import java.util.List;
 
 /**
- * Created by david on 10/08/2018.
+ * Utility methods take a response and look for a particular type of response.
+ * For Exception response there are some detect and throw methods that throw, which look for a particular Exception and if it is found throws it.
  */
 public class DetectUtils {
      private static  String className = "DetectUtils";
@@ -196,29 +197,6 @@ public class DetectUtils {
     }
 
     /**
-     * Throw an UnrecognizedNameException if it is encoded in the REST response.
-     *
-     * @param methodName - name of the method called
-     * @param restResponse - response from the rest call.  This generated in the remote handlers.
-     * @throws UnrecognizedNameException - encoded exception from the handlers
-     */
-    public static void detectAndThrowUnrecognizedNameException(String methodName,
-                                                            SubjectAreaOMASAPIResponse restResponse) throws UnrecognizedNameException {
-        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.UnrecognizedNameException)) {
-
-            UnrecognizedNameExceptionResponse   unrecognizedNameExceptionResponse = ( UnrecognizedNameExceptionResponse) restResponse;
-            throw new UnrecognizedNameException(restResponse.getRelatedHTTPCode(),
-                    className,
-                    methodName,
-                    unrecognizedNameExceptionResponse.getExceptionErrorMessage(),
-                    unrecognizedNameExceptionResponse.getExceptionSystemAction(),
-                    unrecognizedNameExceptionResponse.getExceptionUserAction(),
-                    unrecognizedNameExceptionResponse.getName()
-                    );
-        }
-    }
-
-    /**
      * Throw an UserNotAuthorizedException if it is encoded in the REST response.
      *
      * @param methodName - name of the method called
@@ -334,18 +312,18 @@ public class DetectUtils {
      * Detect and return a List of relationships from the supplied response. If we do not find the expected response then throw an Exception
      * @param methodName - name of the method called
      * @param restResponse - response from the rest call.  This generated in the remote handlers.
-     * @return List<Line> list of Term relationships is the supplied response is Relationships response
+     * @return List<Line> list of Term relationships is the supplied response is Lines response
      * @throws UnexpectedResponseException - if the response is not a Term then throw this exception
      */
-    public static List<Line> detectAndReturnRelationships(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
-        List<Line> relationships = null;
-        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.Relationships)) {
-            RelationshipsResponse termRelationshipResponse = (RelationshipsResponse)restResponse;
-            relationships = termRelationshipResponse.getRelationships();
+    public static List<Line> detectAndReturnLines(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        List<Line> lines = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.Lines)) {
+            LinesResponse linesResponse = (LinesResponse)restResponse;
+            lines = linesResponse.getLines();
         } else {
             CategoryErrorResponse(methodName, restResponse);
         }
-        return relationships;
+        return lines;
 
     }
     /**
@@ -566,6 +544,30 @@ public class DetectUtils {
         return termCategorizationRelationship;
     }
 
+    public static TermAnchorRelationship detectAndReturnTermAnchorRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        TermAnchorRelationship termAnchorRelationship = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.TermAnchorRelationship)) {
+            TermAnchorRelationshipResponse relationshipResponse = (TermAnchorRelationshipResponse) restResponse;
+            termAnchorRelationship= relationshipResponse.getTermAnchorRelationship();
+        } else {
+            CategoryErrorResponse(methodName, restResponse);
+        }
+        return termAnchorRelationship;
+    }
+
+    public static CategoryAnchorRelationship detectAndReturnCategoryAnchorRelationship(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        CategoryAnchorRelationship categoryAnchorRelationship = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.CategoryAnchorRelationship)) {
+            CategoryAnchorRelationshipResponse relationshipResponse = (CategoryAnchorRelationshipResponse) restResponse;
+            categoryAnchorRelationship= relationshipResponse.getCategoryAnchorRelationship();
+        } else {
+            CategoryErrorResponse(methodName, restResponse);
+        }
+        return categoryAnchorRelationship;
+    }
+
+
+
     /**
      * Convert a subject area a checked exception to a response
      * @param e Exception to comnvert
@@ -592,4 +594,5 @@ public class DetectUtils {
         }
         return response;
     }
+
 }
