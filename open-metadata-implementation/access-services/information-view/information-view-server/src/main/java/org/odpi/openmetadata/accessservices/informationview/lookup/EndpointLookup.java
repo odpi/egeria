@@ -51,7 +51,9 @@ public class EndpointLookup extends EntityLookup<EndpointSource> {
 
     public EntityDetail findEndpoint(EndpointSource source) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException {
         EntityDetail entity = findEntity(getMatchingProperties(source), Constants.ENDPOINT);
-        log.debug("Endpoint found [{}]", entity);
+        if(log.isDebugEnabled()) {
+            log.debug("Endpoint found [{}]", entity);
+        }
         return entity;
     }
 

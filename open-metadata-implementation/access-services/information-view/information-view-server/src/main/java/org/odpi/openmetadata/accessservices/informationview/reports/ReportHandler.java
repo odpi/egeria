@@ -47,7 +47,9 @@ public class ReportHandler {
     public void submitReportModel(ReportRequestBody payload) throws ReportSubmitException {
 
         try {
-            log.debug("Creating report based on payload {}", payload);
+            if(log.isDebugEnabled()) {
+                log.debug("Creating report based on payload {}", payload);
+            }
             URL url = new URL(payload.getReportUrl());
             String networkAddress = url.getHost();
             if (url.getPort() > 0) {

@@ -30,7 +30,9 @@ public class LookupBasedOnDatabaseColumn implements LookupStrategy {
 
     @Override
     public EntityDetail lookup(Source source) {
-        log.debug("Lookup based on source {0}", source);
+        if(log.isDebugEnabled()) {
+            log.debug("Lookup based on source {0}", source);
+        }
         try {
             return lookupHelper.lookupDatabaseColumn((DatabaseColumnSource) source);
         } catch (EntityNotKnownException | UserNotAuthorizedException | FunctionNotSupportedException | InvalidParameterException | RepositoryErrorException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
