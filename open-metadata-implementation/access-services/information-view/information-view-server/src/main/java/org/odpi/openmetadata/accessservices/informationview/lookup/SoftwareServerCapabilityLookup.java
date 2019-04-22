@@ -48,7 +48,9 @@ public class SoftwareServerCapabilityLookup extends EntityLookup<SoftwareServerC
             String values = matchingProperties.getInstanceProperties().values().stream().map(v -> ((PrimitivePropertyValue)v).getPrimitiveValue().toString()).collect(Collectors.joining());
             throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(), SoftwareServerCapabilityLookup.class.getName(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(keys,values), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(), InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(), null);
         }
-        log.debug("SoftwareServerCapability found [{}]", entity);
+        if(log.isDebugEnabled()) {
+            log.debug("SoftwareServerCapability found [{}]", entity);
+        }
         return entity;
     }
 

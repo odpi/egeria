@@ -41,7 +41,9 @@ public class TableLookup extends EntityLookup<TableSource> {
         List<EntityDetail> allLinkedTablesList = getRelatedEntities(allSchemaTypeGuids, Constants.ATTRIBUTE_FOR_SCHEMA);
 
         EntityDetail tableEntity = lookupEntity(source, allLinkedTablesList);
-        log.debug("Table found [{}]", tableEntity);
+        if(log.isDebugEnabled()) {
+            log.debug("Table found [{}]", tableEntity);
+        }
         return tableEntity;
 
     }

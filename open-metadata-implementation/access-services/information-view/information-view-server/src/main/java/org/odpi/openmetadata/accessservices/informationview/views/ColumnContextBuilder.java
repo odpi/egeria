@@ -86,7 +86,9 @@ public class ColumnContextBuilder {
         for (Relationship relationship : enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, guidColumn, relationshipTypeGuid, 0, null, null, null, null, 0)) {
             tableContexts.addAll(getTableContext(relationship.getEntityOneProxy().getGUID(), Constants.START_FROM, Constants.PAGE_SIZE));
         }
-        log.debug("Context events: {}", tableContexts);
+        if(log.isDebugEnabled()) {
+            log.debug("Context events: {}", tableContexts);
+        }
         return tableContexts;
     }
 
