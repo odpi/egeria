@@ -25,10 +25,12 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
 
     @Override
     public void processRegistryEvent(OMRSRegistryEvent omrsRegistryEvent) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processTypeDefEvent(OMRSTypeDefEvent event) {
+        throw new UnsupportedOperationException();
     }
 
     /**
