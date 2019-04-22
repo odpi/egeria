@@ -3,9 +3,16 @@
 package org.odpi.openmetadata.accessservices.informationview.assets;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.informationview.events.*;
+import org.odpi.openmetadata.accessservices.informationview.events.DatabaseSource;
+import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
+import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
+import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.*;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ContextLoadException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.EntityNotFoundException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.IncorrectModelException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.IncorrectTypeException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveEntityException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.views.ColumnContextBuilder;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -14,7 +21,17 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

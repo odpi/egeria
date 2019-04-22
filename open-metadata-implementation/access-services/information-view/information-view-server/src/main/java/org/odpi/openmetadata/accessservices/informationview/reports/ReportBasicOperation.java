@@ -3,7 +3,10 @@
 package org.odpi.openmetadata.accessservices.informationview.reports;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.informationview.events.*;
+import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
+import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
+import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
+import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ReportElementCreationException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
