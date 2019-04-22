@@ -328,7 +328,7 @@ public class InformationViewOmasListenerTest {
         return instanceProperties;
     }
 
-    private void buildInstanceTypes() throws Exception {
+    private void buildInstanceTypes(){
 
         TypeDef typeDef = testDataHelper.buildInstanceType(Constants.SOFTWARE_SERVER, SOFTWARE_SERVER_TYPE_GUID);
         when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.SOFTWARE_SERVER)).thenReturn(typeDef);
@@ -376,7 +376,7 @@ public class InformationViewOmasListenerTest {
 
     }
 
-    private void buildRelationshipsTypes() throws Exception {
+    private void buildRelationshipsTypes()  {
 
         TypeDef typeDef = testDataHelper.buildRelationshipType(Constants.SERVER_ENDPOINT, TestDataHelper.SERVER_ENDPOINT_REL_TYPE_GUID);
         when(helper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeDef.getName())).thenReturn(typeDef);
@@ -412,12 +412,12 @@ public class InformationViewOmasListenerTest {
 
         verify(omrsMetadataCollection, Mockito.times(1)).addEntity(eq(Constants.INFORMATION_VIEW_USER_ID), eq(INFORMATION_VIEW_TYPE_GUID), informationViewInstanceProperties.capture(), any(ArrayList.class), eq(InstanceStatus.ACTIVE));
 
-        assertEquals(EntityPropertiesUtils.getStringValueForProperty(informationViewInstanceProperties.getValue(), Constants.QUALIFIED_NAME), INFORMATION_VIEW_QUALIFIED_NAME);
-        assertEquals(EntityPropertiesUtils.getStringValueForProperty(dbSchemaTypeInstanceProperties.getValue(), Constants.QUALIFIED_NAME), DB_SCHEMA_TYPE_QUALIFIED_NAME);
-        assertEquals(EntityPropertiesUtils.getStringValueForProperty(tableTypeInstanceProperties.getValue(), Constants.QUALIFIED_NAME), TABLE_TYPE_QUALIFIED_NAME);
-        assertEquals(EntityPropertiesUtils.getStringValueForProperty(tableInstanceProperties.getValue(), Constants.QUALIFIED_NAME), TABLE_QUALIFIED_NAME);
-        assertEquals(EntityPropertiesUtils.getStringValueForProperty(derivedColumnInstanceProperties.getValue(), Constants.QUALIFIED_NAME), DERIVED_COLUMN_QUALIFIED_NAME);
-        assertEquals(EntityPropertiesUtils.getStringValueForProperty(derivedColumnTypeInstanceProperties.getValue(), Constants.QUALIFIED_NAME), DERIVED_COLUMN_TYPE_QUALIFIED_NAME);
+        assertEquals(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, informationViewInstanceProperties.getValue(), "testListener"), INFORMATION_VIEW_QUALIFIED_NAME);
+        assertEquals(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, dbSchemaTypeInstanceProperties.getValue(), "testListener"), DB_SCHEMA_TYPE_QUALIFIED_NAME);
+        assertEquals(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, tableTypeInstanceProperties.getValue(), "testListener"), TABLE_TYPE_QUALIFIED_NAME);
+        assertEquals(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, tableInstanceProperties.getValue(), "testListener"), TABLE_QUALIFIED_NAME);
+        assertEquals(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, derivedColumnInstanceProperties.getValue(), "testListener"), DERIVED_COLUMN_QUALIFIED_NAME);
+        assertEquals(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, derivedColumnTypeInstanceProperties.getValue(), "testListener"), DERIVED_COLUMN_TYPE_QUALIFIED_NAME);
 
         verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.INFORMATION_VIEW_USER_ID), eq(TestDataHelper.DATA_CONTENT_DATASET_REL_TYPE_GUID), any(InstanceProperties.class), eq(DATABASE_GUID), eq(INFORMATION_VIEW_GUID), eq(InstanceStatus.ACTIVE));
         verify(omrsMetadataCollection, Mockito.times(1)).addRelationship(eq(Constants.INFORMATION_VIEW_USER_ID), eq(TestDataHelper.ASSET_SCHEMA_REL_TYPE_GUID), any(InstanceProperties.class), eq(INFORMATION_VIEW_GUID), eq(DB_SCHEMA_TYPE_GUID), eq(InstanceStatus.ACTIVE));

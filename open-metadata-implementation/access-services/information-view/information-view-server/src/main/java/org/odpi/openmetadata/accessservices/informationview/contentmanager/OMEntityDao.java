@@ -249,7 +249,7 @@ public class OMEntityDao {
      */
     private EntityDetail checkEntities(List<EntityDetail> existingEntities, String qualifiedName) {
         if (existingEntities != null && !existingEntities.isEmpty())
-            return existingEntities.stream().filter(e -> qualifiedName.equals(EntityPropertiesUtils.getStringValueForProperty(e.getProperties(), Constants.QUALIFIED_NAME))).findFirst().orElse(null);
+            return existingEntities.stream().filter(e -> qualifiedName.equals(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, e.getProperties(), "checkEntities"))).findFirst().orElse(null);
         return null;
     }
 

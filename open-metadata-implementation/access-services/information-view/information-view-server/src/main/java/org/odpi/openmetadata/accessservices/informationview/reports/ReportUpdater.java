@@ -105,7 +105,7 @@ public class ReportUpdater extends ReportBasicOperation {
             schemaTypeGuid = schemaTypeEntity.getGUID();
         }
 
-        String qualifiedNameForReport = EntityPropertiesUtils.getStringValueForProperty(reportEntity.getProperties(), Constants.QUALIFIED_NAME);
+        String qualifiedNameForReport = helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, reportEntity.getProperties(), "updateReport");
         createOrUpdateElements(qualifiedNameForReport, schemaTypeGuid, payload.getReportElements());
 
     }
@@ -203,7 +203,7 @@ public class ReportUpdater extends ReportBasicOperation {
      * @return
      */
     private boolean isReportElementDeleted(List<ReportElement> reportElements, InstanceProperties properties) {
-        String elementName = EntityPropertiesUtils.getStringValueForProperty(properties, Constants.NAME);
+        String elementName = helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, properties, "isReportElementDeleted");
         return reportElements != null && !reportElements.isEmpty() && reportElements.stream().noneMatch((e -> e.getName().equals(elementName)));
     }
 
@@ -260,7 +260,8 @@ public class ReportUpdater extends ReportBasicOperation {
         if (matchingSection != null) {
             List<Relationship> sectionTypeRelationships;
             String sectionTypeGuid;
-            String qualifiedNameForSection = EntityPropertiesUtils.getStringValueForProperty(matchingSection.getProperties(), Constants.QUALIFIED_NAME);
+            String methodName = "createOrUpdateReportSection";
+            String qualifiedNameForSection = helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, matchingSection.getProperties(), methodName);
             String qualifiedNameForSectionType = QualifiedNameUtils.buildQualifiedName(qualifiedNameForParent, Constants.DOCUMENT_SCHEMA_TYPE, reportSection.getName() + Constants.TYPE_SUFFIX);
             sectionTypeRelationships = omEntityDao.getRelationships(Constants.SCHEMA_ATTRIBUTE_TYPE, matchingSection.getGUID());
             if (sectionTypeRelationships == null || sectionTypeRelationships.isEmpty()) {
@@ -285,7 +286,10 @@ public class ReportUpdater extends ReportBasicOperation {
      * @return
      */
     private EntityDetail findMatchingEntityForElements(ReportElement reportElement, List<EntityDetail> existingElements) {
-        List<EntityDetail> matchingElements = existingElements.stream().filter(e -> EntityPropertiesUtils.getStringValueForProperty(e.getProperties(), Constants.NAME).contains(reportElement.getName())).collect(Collectors.toList());
+        List<EntityDetail> matchingElements = existingElements.stream().filter(e -> {
+            String methodName = "findMatchingEntityForElements";
+            return helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, e.getProperties(), methodName).contains(reportElement.getName());
+        }).collect(Collectors.toList());
         if (matchingElements != null && !matchingElements.isEmpty()) {
             return matchingElements.get(0);
         }
@@ -311,8 +315,7 @@ public class ReportUpdater extends ReportBasicOperation {
         EntityDetail matchingColumn = findMatchingEntityForElements(reportColumn, existingElements);
         List<Relationship> columnType;
         if (matchingColumn != null) {
-            String qualifiedNameForColumn = EntityPropertiesUtils.getStringValueForProperty(matchingColumn.getProperties(), Constants.QUALIFIED_NAME);
-
+            String qualifiedNameForColumn = helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, matchingColumn.getProperties(), "createOrUpdateReportColumn");
 
             InstanceProperties columnProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForColumn)
