@@ -12,7 +12,6 @@ public class RangerResource {
     private String op = Constants.ADD_OR_UPDATE;
     private String serviceName;
     private Long tagVersion;
-    private String tagUpdateTime;
     private Map<Long, RangerTag> tags;
     private List<RangerServiceResource> serviceResources;
     private Map<Long, List<Long>> resourceToTagIds;
@@ -40,14 +39,6 @@ public class RangerResource {
 
     public void setTagVersion(Long tagVersion) {
         this.tagVersion = tagVersion;
-    }
-
-    public String getTagUpdateTime() {
-        return tagUpdateTime;
-    }
-
-    public void setTagUpdateTime(String tagUpdateTime) {
-        this.tagUpdateTime = tagUpdateTime;
     }
 
     public Map<Long, RangerTag> getTags() {
@@ -88,7 +79,6 @@ public class RangerResource {
                 "op='" + op + '\'' +
                 ", serviceName='" + serviceName + '\'' +
                 ", tagVersion=" + tagVersion +
-                ", tagUpdateTime='" + tagUpdateTime + '\'' +
                 ", tags=" + tags +
                 ", serviceResources=" + serviceResources +
                 ", resourceToTagIds=" + resourceToTagIds +
