@@ -295,7 +295,9 @@ public class OMEntityDao {
                                                         .getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, relationshipType)
                                                         .getGUID();
         try {
-            log.debug("Retrieving relationships of type {} for entity {}", relationshipType,  guid2);
+            if(log.isDebugEnabled()) {
+                log.debug("Retrieving relationships of type {} for entity {}", relationshipType, guid2);
+            }
             relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
                                                                                                     guid2,
                                                                                                     relationshipTypeGuid,
@@ -405,11 +407,15 @@ public class OMEntityDao {
         if (entityDetail == null) {
             entityDetail = addEntity("", Constants.INFORMATION_VIEW_USER_ID, typeName, properties, classifications, zoneRestricted);
             log.info("Entity with qualified name {} added", qualifiedName);
-            log.debug("Entity: {}", entityDetail);
+            if(log.isDebugEnabled()) {
+                log.debug("Entity: {}", entityDetail);
+            }
             wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.NEW);
         } else {
             log.info("Entity with qualified name {} already exists", qualifiedName);
-            log.debug("Entity: {}", entityDetail);
+            if(log.isDebugEnabled()) {
+                log.debug("Entity: {}", entityDetail);
+            }
             if (update && !EntityPropertiesUtils.matchExactlyInstanceProperties(entityDetail.getProperties(), properties)) {//TODO should add validation
                 log.info("Updating entity with qualified name {} ", qualifiedName);
                 entityDetail = updateEntity(entityDetail, Constants.INFORMATION_VIEW_USER_ID, properties, zoneRestricted);
@@ -462,10 +468,14 @@ public class OMEntityDao {
         if (relationship == null) {
             relationship = addRelationship("", relationshipType, instanceProperties, guid1, guid2);
             log.info("Relationship {} added between: {} and {}", relationshipType, guid1, guid2);
-            log.debug("Relationship: {}", relationship);
+            if(log.isDebugEnabled()) {
+                log.debug("Relationship: {}", relationship);
+            }
         } else {
             log.info("Relationship {} already exists between: {} and {}", relationshipType, guid1, guid2);
-            log.debug("Relationship: {}", relationship);
+            if(log.isDebugEnabled()) {
+                log.debug("Relationship: {}", relationship);
+            }
         }
 
         return relationship;
