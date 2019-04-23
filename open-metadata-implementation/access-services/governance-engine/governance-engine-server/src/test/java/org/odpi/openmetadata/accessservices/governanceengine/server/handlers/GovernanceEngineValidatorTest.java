@@ -13,9 +13,6 @@ import org.mockito.quality.Strictness;
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
-import java.util.Arrays;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernanceEngineValidator.validateGUID;
@@ -30,7 +27,7 @@ public class GovernanceEngineValidatorTest {
     private static final String emptyString = "";
     private static final String defUserId = "ernie46";
     private static final String defParameterName = "parm1";
-    
+
     @InjectMocks
     GovernanceEngineValidator validator;
     @Mock
