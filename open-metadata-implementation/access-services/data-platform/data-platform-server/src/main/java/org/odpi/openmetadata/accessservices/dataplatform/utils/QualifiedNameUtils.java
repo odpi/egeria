@@ -35,16 +35,4 @@ public class QualifiedNameUtils {
         return QualifiedNameUtils.buildQualifiedName(databaseQualifiedName, Constants.RELATIONAL_DB_SCHEMA_TYPE, schemaName + Constants.TYPE_SUFFIX);
     }
 
-
-    public static String buildQualifiedNameForDataViewColumn(String hostAddress, String informationViewId, String columnName){
-        String endpointQualifiedName = "";
-        if(!StringUtils.isEmpty(hostAddress)){
-            endpointQualifiedName = QualifiedNameUtils.buildQualifiedName("", Constants.SOFTWARE_SERVER, hostAddress);
-        }
-        String informationViewQualifiedName = QualifiedNameUtils.buildQualifiedName(endpointQualifiedName, Constants.DATA_PLATFORM, informationViewId);
-        return QualifiedNameUtils.buildQualifiedName(informationViewQualifiedName, Constants.DERIVED_SCHEMA_ATTRIBUTE, columnName);
-
-    }
-
-
 }
