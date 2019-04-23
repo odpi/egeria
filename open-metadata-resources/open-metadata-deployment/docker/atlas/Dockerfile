@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project
 
-FROM ubuntu:18.04 AS build
+FROM ubuntu:18.10 AS build
 
 LABEL org.label-schema.name = "AtlasForEgeriaVDC"
 LABEL org.label-schema.description="Atlas service to support Egeria VDC demos" 
@@ -30,6 +30,13 @@ RUN git clone https://github.com/grahamwallis/atlas -b master
 
 WORKDIR /root/atlas
 
+# Appy any patches - temporary as per #922
+COPY dist/0001-EGERIA-github-922-upgrade-kafka-version.patch /root/0001-EGERIA-github-922-upgrade-kafka-version.patch
+COPY dist/0002-EGERIA-github-922-upgrade-findbugs.patch /root/0002-EGERIA-github-922-upgrade-findbugs.patch
+RUN git config --global user.email "you@example.com"
+RUN git config --global user.name "Your Name"
+RUN git am < /root/0001-EGERIA-github-922-upgrade-kafka-version.patch
+RUN git am < /root/0002-EGERIA-github-922-upgrade-findbugs.patch
 # Add reference to odpi repository for snapshots
 COPY dist/settings.xml /root/.m2/settings.xml
 WORKDIR /root
@@ -38,14 +45,18 @@ WORKDIR /root
 ENV JAVA_TOOL_OPTIONS="-Xmx1024m"
 
 # Remove -DskipTests if unit tests are to be included
-RUN mvn clean install -DskipTests -Pdist,embedded-hbase-solr -f ./atlas/pom.xml
+RUN mvn clean install -DskipTests -Pdist,embedded-hbase-solr -DskipEnunciate -f ./atlas/pom.xml
 RUN mkdir -p atlas-bin
 RUN tar xzf /root/atlas/distro/target/*bin.tar.gz --strip-components 1 -C /root/atlas-bin
+
+WORKDIR /root/atlas
+RUN git log > git.log && echo ${branch} > git.branch && git remote -v >> git.remote
 
 FROM openjdk:8-jdk-alpine
 
 RUN apk add python bash
 COPY --from=build /root/atlas-bin/ /root/atlas-bin/
+COPY --from=build /root/atlas/git.* /
 WORKDIR /root/atlas-bin/conf
 RUN sed -i "s|^atlas.graph.storage.lock.wait-time=10000|atlas.graph.storage.lock.wait-time=100|g" atlas-application.properties
 RUN echo "atlas.notification.relationships.enabled=true" >> atlas-application.properties
