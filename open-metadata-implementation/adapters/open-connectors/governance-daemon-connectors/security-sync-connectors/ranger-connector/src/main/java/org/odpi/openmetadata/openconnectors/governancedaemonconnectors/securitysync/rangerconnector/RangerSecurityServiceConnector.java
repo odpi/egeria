@@ -9,16 +9,30 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Governa
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.*;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerPolicyResource;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerResource;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerServiceResource;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerTag;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerTagDef;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.ResourceTagMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.MessageFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.*;
 
@@ -91,7 +105,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
 
     @Override
     public ResourceTagMapper createAssociationResourceToSecurityTag(String tagGUID, String resourceGUID) {
-        String rangerBaseURL = connection.getEndpoint().getURL();
+        String rangerBaseURL = connection.getEndpoint().getAddress();
         String createAssociation = MessageFormat.format("{0}/service/tags/tagresourcemaps?tag-guid={1}&resource-guid={2}", rangerBaseURL, tagGUID, resourceGUID);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -100,14 +114,14 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             ResponseEntity<ResourceTagMapper> result = restTemplate.exchange(createAssociation, HttpMethod.POST, entity, ResourceTagMapper.class);
             return result.getBody();
         } catch (HttpStatusCodeException exception) {
-            log.error(exception.getMessage());
+            log.error("Unable to create the association between tag and resource");
         }
         return null;
     }
 
     @Override
     public void deleteAssociationResourceToSecurityTag(ResourceTagMapper resourceTagMapper) {
-        String rangerBaseURL = connection.getEndpoint().getURL();
+        String rangerBaseURL = connection.getEndpoint().getAddress();
         String deleteAssociationURL = MessageFormat.format("{0}/service/tags/tagresourcemap/{1}", rangerBaseURL, resourceTagMapper.getId());
 
         RestTemplate restTemplate = new RestTemplate();
@@ -117,7 +131,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         try {
             restTemplate.delete(deleteAssociationURL, HttpMethod.DELETE, entity);
         } catch (HttpStatusCodeException exception) {
-            log.error(exception.getMessage());
+            log.error("Unable to delete the association between a tag and a resource");
         }
     }
 
@@ -133,7 +147,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             String createTagURL = getRangerURL("{0}/service/tags/");
             restTemplate.exchange(createTagURL, HttpMethod.POST, entity, String.class);
         } catch (HttpStatusCodeException exception) {
-            log.error(exception.getMessage());
+            log.error("Unable to create a security tag");
         }
     }
 
@@ -160,7 +174,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             });
             return response.getBody();
         } catch (HttpStatusCodeException exception) {
-            log.error(exception.getMessage());
+            log.error("Unable to get the security tags available on Ranger Server");
         }
         return Collections.emptyList();
     }
@@ -188,7 +202,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         rangerResource.setResourceToTagIds(resourceToTagIds);
         rangerResource.setOp(ADD_OR_UPDATE);
         if (connection.getAdditionalProperties() != null && connection.getAdditionalProperties().get("tagServiceName") != null) {
-            rangerResource.setServiceName((String) connection.getAdditionalProperties().get("tagServiceName"));
+            rangerResource.setServiceName(connection.getAdditionalProperties().get("tagServiceName"));
         }
         rangerResource.setTagVersion(1L);
 
@@ -237,7 +251,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
     }
 
     public RangerServiceResource getResourceByGUID(String resourceGuid) {
-        String rangerBaseURL = connection.getEndpoint().getURL();
+        String rangerBaseURL = connection.getEndpoint().getAddress();
         String resourceURL = MessageFormat.format(SERVICE_TAGS_RESOURCE_BY_GUID, rangerBaseURL, resourceGuid);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -247,7 +261,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             ResponseEntity<RangerServiceResource> result = restTemplate.exchange(resourceURL, HttpMethod.GET, entity, RangerServiceResource.class);
             return result.getBody();
         } catch (HttpStatusCodeException exception) {
-            log.error(exception.getMessage());
+            log.error("Unable to fetch the resourse with guid = {}", resourceGuid);
         }
         return null;
     }
@@ -261,7 +275,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             String url = getRangerURL(SERVICE_TAGS_IMPORT_SERVICE_TAGS);
             restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
         } catch (HttpStatusCodeException exception) {
-            log.error(exception.getMessage());
+            log.error("Unable to import the association between tags and resources");
         }
     }
 
@@ -276,7 +290,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             });
             return response.getBody();
         } catch (HttpStatusCodeException exception) {
-            log.error(exception.getMessage());
+            log.error("Unable to fetch the mapped resources");
         }
         return Collections.emptyList();
     }
@@ -350,7 +364,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
     }
 
     private String getRangerURL(String s) {
-        String rangerBaseURL = connection.getEndpoint().getURL();
+        String rangerBaseURL = connection.getEndpoint().getAddress();
         return MessageFormat.format(s, rangerBaseURL);
     }
 
@@ -358,7 +372,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         HttpHeaders headers = getBasicHTTPHeaders();
         if (connection != null && connection.getAdditionalProperties() != null
                 && connection.getAdditionalProperties().containsKey("securityServerAuthorization")) {
-            headers.set("Authorization", (String) connection.getAdditionalProperties().get("securityServerAuthorization"));
+            headers.set("Authorization", connection.getAdditionalProperties().get("securityServerAuthorization"));
         }
         return headers;
     }
