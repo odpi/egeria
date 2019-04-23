@@ -12,7 +12,6 @@ public class RangerTag {
     private Boolean isEnabled;
     private String createdBy;
     private String updatedBy;
-    private String createTime;
     private String type;
     private Map<String, String> attributes;
     private Map<String, Object> options;
@@ -55,14 +54,6 @@ public class RangerTag {
 
     public void setUpdatedBy(String updatedBy) {
         this.updatedBy = updatedBy;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
     }
 
     public String getType() {
@@ -111,7 +102,6 @@ public class RangerTag {
                 ", isEnabled=" + isEnabled +
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
-                ", createTime='" + createTime + '\'' +
                 ", type='" + type + '\'' +
                 ", attributes=" + attributes +
                 ", options=" + options +
