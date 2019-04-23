@@ -80,9 +80,11 @@ public class OMEntityDao {
                                    String typeName,
                                    InstanceProperties instanceProperties,
                                    List<Classification> classifications,
-                                   boolean zoneRestricted) throws ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, FunctionNotSupportedException {
+                                   boolean zoneRestricted) throws ClassificationErrorException, StatusNotSupportedException,
+                                                                  UserNotAuthorizedException, InvalidParameterException,
+                                                                  RepositoryErrorException, PropertyErrorException,
+                                                                  TypeErrorException, FunctionNotSupportedException {
         EntityDetail entity;
-        try {
             entity = enterpriseConnector.getRepositoryHelper().getSkeletonEntity(Constants.INFORMATION_VIEW_OMAS_NAME,
                                                                                 metadataCollectionId,
                                                                                 InstanceProvenanceType.LOCAL_COHORT,
@@ -97,19 +99,6 @@ public class OMEntityDao {
                                                                         instanceProperties,
                                                                         entity.getClassifications(),
                                                                         entity.getStatus());
-        } catch (Exception e) {
-
-            InformationViewErrorCode auditCode = InformationViewErrorCode.ADD_ENTITY_EXCEPTION;
-            auditLog.logException("addEntity",
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(typeName, e.getMessage()),
-                    "entity of type {" + typeName + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e);
-            throw e;
-        }
     }
 
     /**
@@ -384,7 +373,11 @@ public class OMEntityDao {
                                                 InstanceProperties properties,
                                                 List<Classification> classifications,
                                                 boolean update,
-                                                boolean zoneRestricted) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, ClassificationErrorException, StatusNotSupportedException, EntityNotKnownException {
+                                                boolean zoneRestricted) throws UserNotAuthorizedException, FunctionNotSupportedException,
+                                                                               InvalidParameterException, RepositoryErrorException,
+                                                                               PropertyErrorException, TypeErrorException,
+                                                                               PagingErrorException, ClassificationErrorException,
+                                                                               StatusNotSupportedException, EntityNotKnownException {
         EntityDetail entityDetail;
         OMEntityWrapper wrapper;
         entityDetail = getEntity(typeName, qualifiedName, zoneRestricted);
