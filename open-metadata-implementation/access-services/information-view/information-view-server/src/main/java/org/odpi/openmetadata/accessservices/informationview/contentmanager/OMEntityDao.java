@@ -263,42 +263,38 @@ public class OMEntityDao {
      */
     private Relationship getRelationship(String relationshipType,
                                          String guid1,
-                                         String guid2)  {
+                                         String guid2) throws UserNotAuthorizedException, EntityNotKnownException,
+                                                              FunctionNotSupportedException, InvalidParameterException,
+                                                              RepositoryErrorException, PropertyErrorException,
+                                                              TypeErrorException, PagingErrorException {
         List<Relationship> relationships;
-        try {
+
             relationships = getRelationships(relationshipType, guid2);
-        } catch (Exception e) {
-            InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
-            auditLog.logException("getRelationship",
-                                auditCode.getErrorMessageId(),
-                                OMRSAuditLogRecordSeverity.EXCEPTION,
-                                auditCode.getFormattedErrorMessage(relationshipType, e.getMessage()),
-                                "relationship with type" + relationshipType + " between {" + guid1 + ", " + guid2 + "}",
-                                auditCode.getSystemAction(),
-                                auditCode.getUserAction(),
-                                e);
-            return null;
-        }
+
         if (relationships != null && !relationships.isEmpty())
             for (Relationship relationship : relationships) {
-                if (relationship.getType().getTypeDefName().equals(relationshipType) && checkRelationshipEnds(relationship,
-                        guid1,
-                        guid2))
+                if (relationship.getType().getTypeDefName().equals(relationshipType) && checkRelationshipEnds(relationship, guid1, guid2))
                     return relationship;
             }
         return null;
     }
 
-    public List<Relationship> getRelationships(String relationshipType, String guid2)  {
-        List<Relationship> relationships = new ArrayList<>();
+    public List<Relationship> getRelationships(String relationshipType, String guid2) throws RepositoryErrorException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             EntityNotKnownException,
+                                                                                             FunctionNotSupportedException,
+                                                                                             InvalidParameterException,
+                                                                                             PropertyErrorException,
+                                                                                             TypeErrorException,
+                                                                                             PagingErrorException {
         String relationshipTypeGuid = enterpriseConnector.getRepositoryHelper()
                                                         .getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, relationshipType)
                                                         .getGUID();
-        try {
+
             if(log.isDebugEnabled()) {
                 log.debug("Retrieving relationships of type {} for entity {}", relationshipType, guid2);
             }
-            relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
+            return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
                                                                                                     guid2,
                                                                                                     relationshipTypeGuid,
                                                                                                     Constants.START_FROM,
@@ -307,18 +303,7 @@ public class OMEntityDao {
                                                                                                     null,
                                                                                                     null,
                                                                                                     PAGE_SIZE);
-        } catch (Exception e) {
-            InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
-            auditLog.logException("getRelationships",
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(relationshipType, e.getMessage()),
-                    "relationship with type" + relationshipType + " gor {" + guid2 + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e);
-        }
-        return relationships;
+
     }
 
     /**

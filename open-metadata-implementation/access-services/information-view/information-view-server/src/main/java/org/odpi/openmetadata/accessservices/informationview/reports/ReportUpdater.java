@@ -126,7 +126,10 @@ public class ReportUpdater extends ReportBasicOperation {
                                                                                                                               EntityNotKnownException,
                                                                                                                               FunctionNotSupportedException,
                                                                                                                               UserNotAuthorizedException,
-                                                                                                                              RepositoryErrorException {
+                                                                                                                              RepositoryErrorException,
+                                                                                                                              TypeErrorException,
+                                                                                                                              PropertyErrorException,
+                                                                                                                              PagingErrorException {
         List<Relationship> relationships = omEntityDao.getRelationships(Constants.ATTRIBUTE_FOR_SCHEMA, parentGuid);
         List<EntityDetail> matchingEntities = filterMatchingEntities(relationships, reportElements);
         if (reportElements != null && !reportElements.isEmpty()) {
@@ -150,7 +153,10 @@ public class ReportUpdater extends ReportBasicOperation {
                                                                                                                             RelationshipNotKnownException,
                                                                                                                             EntityProxyOnlyException,
                                                                                                                             EntityNotKnownException,
-                                                                                                                            EntityNotDeletedException {
+                                                                                                                            EntityNotDeletedException,
+                                                                                                                            TypeErrorException,
+                                                                                                                            PropertyErrorException,
+                                                                                                                            PagingErrorException {
         List<EntityDetail> matchingEntities = new ArrayList<>();
         if (relationships != null && !relationships.isEmpty()) {
             for (Relationship relationship : relationships) {
@@ -179,7 +185,11 @@ public class ReportUpdater extends ReportBasicOperation {
      * @throws EntityNotKnownException
      * @throws EntityNotDeletedException
      */
-    private void deleteSection(EntitySummary entity) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, FunctionNotSupportedException, EntityNotKnownException, EntityNotDeletedException {
+    private void deleteSection(EntitySummary entity) throws RepositoryErrorException, UserNotAuthorizedException,
+                                                            InvalidParameterException, FunctionNotSupportedException,
+                                                            EntityNotKnownException, EntityNotDeletedException,
+                                                            TypeErrorException, PropertyErrorException,
+                                                            PagingErrorException {
 
         List<Relationship> typeRelationships = omEntityDao.getRelationships(Constants.COMPLEX_SCHEMA_TYPE, entity.getGUID());
          if(typeRelationships != null && !typeRelationships.isEmpty()){
