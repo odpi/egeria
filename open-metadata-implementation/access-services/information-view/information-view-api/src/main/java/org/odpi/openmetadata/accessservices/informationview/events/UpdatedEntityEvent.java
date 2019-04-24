@@ -62,7 +62,7 @@ public class UpdatedEntityEvent extends InformationViewHeader{
 
     @Override
     public String toString() {
-        return "UpdatedEntity{" +
+        return "{" +
                 "guid='" + guid + '\'' +
                 ", type=" + type +
                 ", oldProperties=" + oldProperties +

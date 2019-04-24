@@ -31,7 +31,7 @@ public class DataViewTable extends DataViewElement {
 
     @Override
     public String toString() {
-        return "DataViewTable{" +
+        return "{" +
                 "elements=" + elements +
                 '}';
     }
