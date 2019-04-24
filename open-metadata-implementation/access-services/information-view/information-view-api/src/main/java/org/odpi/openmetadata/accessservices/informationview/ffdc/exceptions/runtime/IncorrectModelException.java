@@ -9,4 +9,11 @@ public class IncorrectModelException extends InformationViewUncheckedExceptionBa
                                    Throwable caughtError) {
         super(className, errorMessage, systemAction, userAction, caughtError);
     }
+
+    public IncorrectModelException(int httpErrorCode, String reportingClassName, String reportedErrorMessage,
+                                   String reportedSystemAction, String reportedUserAction,
+                                   Throwable reportedCaughtException) {
+        super(httpErrorCode, reportingClassName, reportedErrorMessage, reportedSystemAction, reportedUserAction,
+                reportedCaughtException);
+    }
 }

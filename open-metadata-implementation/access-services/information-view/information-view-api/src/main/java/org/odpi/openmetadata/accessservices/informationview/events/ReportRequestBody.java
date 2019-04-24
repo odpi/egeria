@@ -28,6 +28,7 @@ public class ReportRequestBody extends InformationViewHeader {
     private Long lastModifiedTime;
     private List<ReportElement> reportElements;
     private Map<String, Object> additionalProperties;
+    private String registrationGuid;
 
     /**
      *
@@ -217,13 +218,29 @@ public class ReportRequestBody extends InformationViewHeader {
     }
 
     /**
+     *
+     * @return guid associated to the external tool at registration step
+     */
+    public String getRegistrationGuid() {
+        return registrationGuid;
+    }
+
+    /**
+     *
+     * @param registrationGuid - guid of the external tool
+     */
+    public void setRegistrationGuid(String registrationGuid) {
+        this.registrationGuid = registrationGuid;
+    }
+
+    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
      */
     @Override
     public String toString() {
-        return "ReportRequestBody{" +
+        return "{" +
                 "sources=" + sources +
                 ", id='" + id + '\'' +
                 ", createdTime=" + createdTime +
@@ -235,6 +252,7 @@ public class ReportRequestBody extends InformationViewHeader {
                 ", lastModifiedTime=" + lastModifiedTime +
                 ", reportElements=" + reportElements +
                 ", additionalProperties=" + additionalProperties +
+                ", registrationGuid='" + registrationGuid + '\'' +
                 '}';
     }
 }
