@@ -4,9 +4,15 @@ package org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.run
 
 public class ContextLoadException extends InformationViewUncheckedExceptionBase {
 
-
     public ContextLoadException(String className, String errorMessage, String systemAction, String userAction,
                                 Throwable caughtError) {
         super(className, errorMessage, systemAction, userAction, caughtError);
+    }
+
+    public ContextLoadException(int httpErrorCode, String reportingClassName, String reportedErrorMessage,
+                                String reportedSystemAction, String reportedUserAction,
+                                Throwable reportedCaughtException) {
+        super(httpErrorCode, reportingClassName, reportedErrorMessage, reportedSystemAction, reportedUserAction,
+                reportedCaughtException);
     }
 }

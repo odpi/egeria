@@ -18,6 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataViewRequestBody extends InformationViewHeader{
 
+    private String registrationGuid;
     private List<DataViewElement> elements;
     private List<Source> sources;
     private String nativeClass;
@@ -25,7 +26,6 @@ public class DataViewRequestBody extends InformationViewHeader{
     private String name;
     private String author;
     private String id;
-
     private Long createdTime;
     private String lastModifier;
     private Long lastModifiedTime;
@@ -111,10 +111,28 @@ public class DataViewRequestBody extends InformationViewHeader{
         this.id = id;
     }
 
+    /**
+     *
+     * @return guid associated to the external tool at registration step
+     */
+    public String getRegistrationGuid() {
+        return registrationGuid;
+    }
+
+    /**
+     *
+     * @param registrationGuid - guid of the external tool
+     */
+    public void setRegistrationGuid(String registrationGuid) {
+        this.registrationGuid = registrationGuid;
+    }
+
+
     @Override
     public String toString() {
-        return "{" +
-                "elements=" + elements +
+        return "DataViewRequestBody{" +
+                "registrationGuid='" + registrationGuid + '\'' +
+                ", elements=" + elements +
                 ", sources=" + sources +
                 ", nativeClass='" + nativeClass + '\'' +
                 ", endpointAddress='" + endpointAddress + '\'' +

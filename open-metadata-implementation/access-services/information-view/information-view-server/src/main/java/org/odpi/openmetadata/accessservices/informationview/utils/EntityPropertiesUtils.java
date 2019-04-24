@@ -16,33 +16,6 @@ public class EntityPropertiesUtils {
 
     private static final Logger log = LoggerFactory.getLogger(EntityPropertiesUtils.class);
 
-    public static Boolean getBooleanValueForProperty(InstanceProperties instanceProperties, String name) {
-        if (instanceProperties != null && instanceProperties.getPropertyValue(name) instanceof PrimitivePropertyValue && ((PrimitivePropertyValue) instanceProperties.getPropertyValue(name)).getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_BOOLEAN) {
-            return (Boolean) ((PrimitivePropertyValue) instanceProperties.getPropertyValue(name)).getPrimitiveValue();
-        }
-        return false;
-    }
-
-    public static String getStringValueForProperty(InstanceProperties instanceProperties, String name) {
-        if (instanceProperties != null && instanceProperties.getPropertyValue(name) instanceof PrimitivePropertyValue && ((PrimitivePropertyValue) instanceProperties.getPropertyValue(name)).getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING) {
-            return (String) ((PrimitivePropertyValue) instanceProperties.getPropertyValue(name)).getPrimitiveValue();
-        }
-        return "";
-    }
-
-    public static Integer getIntegerValueForProperty(InstanceProperties properties, String name) {
-        if (properties != null && properties.getPropertyValue(name) instanceof PrimitivePropertyValue && ((PrimitivePropertyValue) properties.getPropertyValue(name)).getPrimitiveDefCategory() == PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT) {
-            return (Integer) ((PrimitivePropertyValue) properties.getPropertyValue(name)).getPrimitiveValue();
-        }
-        return 0;
-    }
-
-    public static MapPropertyValue getMapValueForProperty(InstanceProperties instanceProperties, String name) {
-        if (instanceProperties != null && instanceProperties.getPropertyValue(name) instanceof MapPropertyValue) {
-            return (MapPropertyValue) instanceProperties.getPropertyValue(name);
-        }
-        return null;
-    }
 
     public static PrimitivePropertyValue createPrimitiveStringPropertyValue(String value) {
         PrimitivePropertyValue propertyValue = new PrimitivePropertyValue();
