@@ -11,16 +11,36 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Governe
 import org.odpi.openmetadata.accessservices.governanceengine.server.processor.ContextBuilder;
 import org.odpi.openmetadata.accessservices.governanceengine.server.util.PropertyUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefLink;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.*;
@@ -187,7 +207,7 @@ public class GovernedAssetHandler {
 
     private List<GovernedAsset> addToAssetListByClassification(String type, String classification, String userId) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException, ClassificationErrorException {
         String typeGuid = null;
-        if(type != null) {
+        if (type != null) {
             typeGuid = getTypeGuidFromTypeName(type, userId);
         }
 
@@ -333,13 +353,13 @@ public class GovernedAssetHandler {
     }
 
     private String getTypeGuidFromTypeName(String typeName, String userId) throws UserNotAuthorizedException, RepositoryErrorException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, TypeDefNotKnownException {
-            if (knownTypeDefs.containsKey(typeName)) {
-                return knownTypeDefs.get(typeName);
-            } else {
-                final String typeDefGuid = metadataCollection.getTypeDefByName(userId, typeName).getGUID();
-                knownTypeDefs.put(typeName, typeDefGuid);
-                return typeDefGuid;
-            }
+        if (knownTypeDefs.containsKey(typeName)) {
+            return knownTypeDefs.get(typeName);
+        } else {
+            final String typeDefGuid = metadataCollection.getTypeDefByName(userId, typeName).getGUID();
+            knownTypeDefs.put(typeName, typeDefGuid);
+            return typeDefGuid;
+        }
     }
 
     private String getResourceValue(EntityDetail entityDetail, String propertyName) {
@@ -355,7 +375,7 @@ public class GovernedAssetHandler {
     }
 
     private EntityDetail getEntityDetailById(String userId, String assetGuid) throws UserNotAuthorizedException, RepositoryErrorException, EntityProxyOnlyException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, EntityNotKnownException {
-            return metadataCollection.getEntityDetail(userId, assetGuid);
+        return metadataCollection.getEntityDetail(userId, assetGuid);
     }
 
 }

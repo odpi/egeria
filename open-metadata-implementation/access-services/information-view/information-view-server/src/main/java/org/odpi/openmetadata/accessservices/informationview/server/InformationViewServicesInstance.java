@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.informationview.server;
 
 
 import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
+import org.odpi.openmetadata.accessservices.informationview.registration.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
 
@@ -17,6 +18,7 @@ public class InformationViewServicesInstance
     private ReportHandler reportHandler;
     private DataViewHandler dataViewHandler;
     private DatabaseContextHandler databaseContextHandler;
+    private RegistrationHandler registrationHandler;
     private String                 serverName;
 
 
@@ -28,10 +30,12 @@ public class InformationViewServicesInstance
     public InformationViewServicesInstance(ReportHandler reportHandler,
                                            DataViewHandler  dataViewHandler,
                                            DatabaseContextHandler databaseContextHandler,
+                                           RegistrationHandler registrationHandler,
                                            String        serverName)  {
         this.reportHandler = reportHandler;
         this.dataViewHandler = dataViewHandler;
         this.databaseContextHandler = databaseContextHandler;
+        this.registrationHandler = registrationHandler;
         this.serverName    = serverName;
 
         InformationViewServicesInstanceMap.setNewInstanceForJVM(serverName, this);
@@ -55,6 +59,8 @@ public class InformationViewServicesInstance
     public DatabaseContextHandler getDatabaseContextHandler() {
         return databaseContextHandler;
     }
+
+    public RegistrationHandler getRegistrationHandler(){return registrationHandler;}
 
     /**
      * Unregister this instance from the instance map.

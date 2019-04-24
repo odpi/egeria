@@ -54,7 +54,9 @@ public class InformationViewEnterpriseOmrsEventListener implements OMRSTopicList
                     break;
 
                 default:
-                    log.debug("This event should not be handled by iv omas: " + event.getEventCategory());
+                    if(log.isDebugEnabled()) {
+                        log.debug("This event should not be handled by iv omas:{0} ", event.getEventCategory());
+                    }
             }
         } else {
             /*
@@ -92,7 +94,9 @@ public class InformationViewEnterpriseOmrsEventListener implements OMRSTopicList
      */
     public void processInstanceEvent(OMRSInstanceEvent instanceEvent) {
 
-        log.debug("Processing instance event", instanceEvent);
+        if(log.isDebugEnabled()) {
+            log.debug("Processing instance event", instanceEvent);
+        }
 
         if (instanceEvent == null) {
             log.debug("Null instance event - ignoring event");
