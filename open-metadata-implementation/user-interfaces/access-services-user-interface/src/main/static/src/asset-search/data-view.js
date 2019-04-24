@@ -8,7 +8,7 @@ import '@polymer/paper-listbox';
 import '@polymer/paper-item';
 import '@polymer/neon-animation/animations/ripple-animation';
 
-import './shared-styles.js';
+import '../shared-styles.js';
 
 class DataView extends PolymerElement {
     static get template() {

@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
-import './shared-styles.js';
+import '../shared-styles.js';
 
 class MyView3 extends PolymerElement {
   static get template() {
