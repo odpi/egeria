@@ -40,7 +40,7 @@ public class ALOutTopicListener implements OpenMetadataTopicListener {
         try {
             event = OBJECT_MAPPER.readValue(eventAsString, OMRSEventV1.class);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
             OpenLineageErrorCode auditCode = OpenLineageErrorCode.PARSE_EVENT;
 
             auditLog.logException("processEvent",

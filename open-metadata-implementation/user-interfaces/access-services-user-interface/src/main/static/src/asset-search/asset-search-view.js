@@ -14,7 +14,7 @@ import '@vaadin/vaadin-grid/vaadin-grid-selection-column.js';
 import '@vaadin/vaadin-grid/vaadin-grid-sort-column.js';
 
 import {PolymerElement, html} from '@polymer/polymer/polymer-element.js';
-import './shared-styles.js';
+import '../shared-styles.js';
 
 
 class AssetSearchView extends PolymerElement {
