@@ -37,7 +37,7 @@ public abstract class ReportElement {
 
     @Override
     public String toString() {
-        return "ReportElement{" +
+        return "{" +
                 "name='" + name + '\'' +
                 '}';
     }

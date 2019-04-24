@@ -5,21 +5,39 @@ package org.odpi.openmetadata.accessservices.informationview.eventprocessor;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.informationview.events.*;
-import org.odpi.openmetadata.accessservices.informationview.views.ColumnContextBuilder;
+import org.odpi.openmetadata.accessservices.informationview.events.InformationViewHeader;
+import org.odpi.openmetadata.accessservices.informationview.events.SemanticAssignment;
 import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
+import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
+import org.odpi.openmetadata.accessservices.informationview.events.UpdatedEntityEvent;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
+import org.odpi.openmetadata.accessservices.informationview.views.ColumnContextBuilder;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,8 +111,8 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
                 if(assignedColumns != null && !assignedColumns.isEmpty()) {
                     assignedColumns.parallelStream().forEach(s -> publishColumnContextEvent(s.getGUID()));
                 }
-            } catch (Exception e) {
-                log.error(e.getMessage(), e);
+            }  catch (UserNotAuthorizedException | PagingErrorException | RepositoryErrorException | TypeErrorException | EntityNotKnownException | InvalidParameterException | PropertyErrorException | FunctionNotSupportedException e) {
+               log.error(e.getMessage(), e);
             }
         }
 
@@ -251,7 +269,7 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
             log.info("Processing semantic assignment relationship event for a column");
             try {
                 publishSemanticAssignment(relationship);
-            } catch (Exception e) {
+            } catch (EntityProxyOnlyException | EntityNotKnownException | UserNotAuthorizedException | InvalidParameterException | RepositoryErrorException e) {
                 log.error("Exception building events", e);
                 InformationViewErrorCode auditCode = InformationViewErrorCode.PUBLISH_EVENT_EXCEPTION;
                 auditLog.logException("processNewRelationshipEvent",
@@ -267,11 +285,15 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
         }
     }
 
+    /**
+     *
+     * @param guid -
+     */
     private void publishColumnContextEvent(String guid) {
         List<TableContextEvent> events = new ArrayList<>();
         try {
             events = columnContextBuilder.buildContexts(guid);
-        } catch (Exception e) {
+        } catch (PagingErrorException | TypeDefNotKnownException | PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | RelationshipNotKnownException | EntityProxyOnlyException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException e) {
             log.error("Exception building events", e);
             InformationViewErrorCode auditCode = InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION;
 
@@ -288,47 +310,21 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
         sendColumnContextEvents(events);
     }
 
-    private void publishSemanticAssignment(Relationship relationship) throws Exception {
+    private void publishSemanticAssignment(Relationship relationship) throws RepositoryErrorException,
+                                                                             UserNotAuthorizedException,
+                                                                             EntityProxyOnlyException,
+                                                                             InvalidParameterException,
+                                                                             EntityNotKnownException {
         SemanticAssignment semanticAssignment = new SemanticAssignment();
-        EntityDetail businessTerm = retrieveEntity(relationship.getEntityTwoProxy().getGUID());
+        EntityDetail businessTerm = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, relationship.getEntityTwoProxy().getGUID());
         semanticAssignment.setBusinessTerm(columnContextBuilder.buildBusinessTerm(businessTerm));
         TableColumn databaseColumn = new TableColumn();
-        EntityDetail columnEntity = retrieveEntity(relationship.getEntityOneProxy().getGUID());
+        EntityDetail columnEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, relationship.getEntityOneProxy().getGUID());
         databaseColumn.setGuid(columnEntity.getGUID());
         databaseColumn.setName(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, columnEntity.getProperties(), "publishSemanticAssignment"));
         databaseColumn.setQualifiedName(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, columnEntity.getProperties(), "publishSemanticAssignment"));
         semanticAssignment.setTableColumn(databaseColumn);
         sendEvent(semanticAssignment);
-    }
-
-    /**
-     *
-     * @param entityGuid
-     * @return
-     * @throws Exception
-     */
-    public EntityDetail retrieveEntity(String entityGuid) throws Exception {
-        try {
-            EntityDetail entity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, entityGuid);
-            if (entity != null) {
-               return entity;
-            } else {
-                log.error("Entity with guid {} not found", entityGuid);
-                throw new Exception(String.format("Entity with guid %s not found", entityGuid));
-            }
-        } catch (Exception e) {
-            InformationViewErrorCode auditCode = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
-            auditLog.logException("retrieveEntity",
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage("guid", entityGuid, e.getMessage()),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    "",
-                    e);
-
-            throw new Exception(e);
-        }
     }
 
 
@@ -503,7 +499,9 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
         boolean successFlag = false;
 
         log.info("Sending event {} to information view out topic", event.getClass());
-        log.debug("event: ", event);
+        if(log.isDebugEnabled()) {
+            log.debug("event: ", event);
+        }
 
         try {
 

@@ -39,7 +39,7 @@ public class SemanticAssignment extends InformationViewHeader{
 
     @Override
     public String toString() {
-        return "SemanticAssignment{" +
+        return "{" +
                 "businessTerm=" + businessTerm +
                 ", tableColumn=" + tableColumn +
                 '}';
