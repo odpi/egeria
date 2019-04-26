@@ -484,28 +484,24 @@ class GraphOMRSMetadataStore {
                     }
                     else {
                         // We know this is a proxy - throw the appropraite exception
+                        log.error("{} found entity but it is only a proxy, guid {}", methodName, guid);
+                        g.tx().rollback();
+                        GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROXY_ONLY;
 
+                        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid, methodName,
+                                this.getClass().getName(),
+                                repositoryName);
+
+                        throw new EntityProxyOnlyException(errorCode.getHTTPErrorCode(),
+                                this.getClass().getName(),
+                                methodName,
+                                errorMessage,
+                                errorCode.getSystemAction(),
+                                errorCode.getUserAction());
                     }
 
                 }
 
-            }
-            catch (EntityProxyOnlyException e) {
-
-                log.error("{} found entity but it is only a proxy {}", methodName, e.getMessage());
-                g.tx().rollback();
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROXY_ONLY;
-
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid, methodName,
-                        this.getClass().getName(),
-                        repositoryName);
-
-                throw new EntityProxyOnlyException(errorCode.getHTTPErrorCode(),
-                        this.getClass().getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
             }
             catch (RepositoryErrorException e) {
 
