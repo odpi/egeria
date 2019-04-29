@@ -35,11 +35,6 @@ public class OMRSEventListener implements OMRSTopicListener
     private OMRSTypeDefEventProcessorInterface  typeDefEventProcessor;
     private OMRSInstanceEventProcessorInterface instanceEventProcessor;
 
-    /*
-     * The audit log is used for recording events, decisions, errors and exceptions
-     */
-    private  OMRSAuditLog  auditLog;
-
     private static final Logger log = LoggerFactory.getLogger(OMRSEventListener.class);
 
 
@@ -63,7 +58,6 @@ public class OMRSEventListener implements OMRSTopicListener
         this.registryEventProcessor    = registryEventProcessor;
         this.typeDefEventProcessor     = repositoryEventProcessor;
         this.instanceEventProcessor    = repositoryEventProcessor;
-        this.auditLog                  = auditLog;
 
         final String   actionDescription = "Initialize OMRS Event Listener";
 
@@ -115,10 +109,10 @@ public class OMRSEventListener implements OMRSTopicListener
                     case REGISTRATION_EVENT:
                         registryEventProcessor.processRegistrationEvent(cohortName,
                                                                         registryEventOriginator.getMetadataCollectionId(),
+                                                                        registryEvent.getMetadataCollectionName(),
                                                                         registryEventOriginator.getServerName(),
                                                                         registryEventOriginator.getServerType(),
                                                                         registryEventOriginator.getOrganizationName(),
-                                                                        registryEvent.getMetadataCollectionName(),
                                                                         registryEvent.getRegistrationTimestamp(),
                                                                         registryEvent.getRemoteConnection());
                         break;
@@ -126,10 +120,10 @@ public class OMRSEventListener implements OMRSTopicListener
                     case RE_REGISTRATION_EVENT:
                         registryEventProcessor.processReRegistrationEvent(cohortName,
                                                                           registryEventOriginator.getMetadataCollectionId(),
+                                                                          registryEvent.getMetadataCollectionName(),
                                                                           registryEventOriginator.getServerName(),
                                                                           registryEventOriginator.getServerType(),
                                                                           registryEventOriginator.getOrganizationName(),
-                                                                          registryEvent.getMetadataCollectionName(),
                                                                           registryEvent.getRegistrationTimestamp(),
                                                                           registryEvent.getRemoteConnection());
                         break;
@@ -160,10 +154,10 @@ public class OMRSEventListener implements OMRSTopicListener
                                 case BAD_REMOTE_CONNECTION:
                                     registryEventProcessor.processBadConnectionEvent(cohortName,
                                                                                      registryEventOriginator.getMetadataCollectionId(),
+                                                                                     registryEvent.getMetadataCollectionName(),
                                                                                      registryEventOriginator.getServerName(),
                                                                                      registryEventOriginator.getServerType(),
                                                                                      registryEventOriginator.getOrganizationName(),
-                                                                                     registryEvent.getMetadataCollectionName(),
                                                                                      registryEvent.getTargetMetadataCollectionId(),
                                                                                      registryEvent.getTargetRemoteConnection(),
                                                                                      registryEvent.getErrorMessage());
@@ -172,10 +166,10 @@ public class OMRSEventListener implements OMRSTopicListener
                                 case CONFLICTING_COLLECTION_ID:
                                     registryEventProcessor.processConflictingCollectionIdEvent(cohortName,
                                                                                                registryEventOriginator.getMetadataCollectionId(),
+                                                                                               registryEvent.getMetadataCollectionName(),
                                                                                                registryEventOriginator.getServerName(),
                                                                                                registryEventOriginator.getServerType(),
                                                                                                registryEventOriginator.getOrganizationName(),
-                                                                                               registryEvent.getMetadataCollectionName(),
                                                                                                registryEvent.getTargetMetadataCollectionId(),
                                                                                                registryEvent.getErrorMessage());
                                     break;
@@ -254,16 +248,13 @@ public class OMRSEventListener implements OMRSTopicListener
         }
         else if (instanceEventProcessor == null)
         {
-
+            log.debug("Ignoring event as have not processor");
         }
         else
         {
             instanceEventProcessor.sendInstanceEvent(cohortName, instanceEvent);
         }
     }
-
-
-
 }
 
 

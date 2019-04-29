@@ -20,7 +20,7 @@ public class TestAssetSchemaType
 {
     private ElementType          type                 = new ElementType();
     private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, Object>  additionalProperties = new HashMap<>();
+    private Map<String, String>  additionalProperties = new HashMap<>();
 
 
     /**
@@ -228,7 +228,7 @@ public class TestAssetSchemaType
     /**
      * Validate that schema properties are handled properly.
      */
-    @Test public void testSchemaProperties()
+    @Test public void testExtendedProperties()
     {
         Map<String, Object>  propertyMap = new HashMap<>();
 
@@ -236,25 +236,25 @@ public class TestAssetSchemaType
         propertyMap.put("property2", new Integer(2));
 
         SchemaType testBean = new SchemaType();
-        testBean.setSchemaProperties(propertyMap);
+        testBean.setExtendedProperties(propertyMap);
 
         AssetSchemaType testObject = new AssetSchemaType(testBean);
 
-        AdditionalProperties schemaProperties = testObject.getSchemaProperties();
+        Map<String, Object> schemaProperties = testObject.getExtendedProperties();
 
-        assertTrue(schemaProperties.getPropertyNames() != null);
+        assertTrue(schemaProperties.keySet() != null);
 
-        Iterator<String> iterator = schemaProperties.getPropertyNames();
+        Iterator<String> iterator = schemaProperties.keySet().iterator();
 
         String propertyName;
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property2"));
-        assertTrue(schemaProperties.getProperty(propertyName).equals(new Integer(2)));
+        assertTrue(schemaProperties.get(propertyName).equals(new Integer(2)));
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property1"));
-        assertTrue(schemaProperties.getProperty(propertyName).equals("TestString"));
+        assertTrue(schemaProperties.get(propertyName).equals("TestString"));
 
         try
         {
@@ -269,16 +269,16 @@ public class TestAssetSchemaType
         testBean = new SchemaType();
         testObject = new AssetSchemaType(testBean);
 
-        schemaProperties = testObject.getSchemaProperties();
+        schemaProperties = testObject.getExtendedProperties();
 
         assertTrue(schemaProperties == null);
 
         propertyMap = new HashMap<>();
         testBean = new SchemaType();
-        testBean.setSchemaProperties(propertyMap);
+        testBean.setExtendedProperties(propertyMap);
         testObject = new AssetSchemaType(testBean);
 
-        schemaProperties = testObject.getSchemaProperties();
+        schemaProperties = testObject.getExtendedProperties();
 
         assertTrue(schemaProperties == null);
     }

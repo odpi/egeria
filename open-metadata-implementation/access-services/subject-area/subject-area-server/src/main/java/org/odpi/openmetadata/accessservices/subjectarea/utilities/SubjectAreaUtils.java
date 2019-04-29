@@ -5,41 +5,32 @@ package org.odpi.openmetadata.accessservices.subjectarea.utilities;
 
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.SubjectAreaErrorCode;
 import org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions.*;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryCategory.GlossaryCategory;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.entities.RelatedMedia.RelatedMedia;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.enums.MediaUsage;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.CategoryAnchor.CategoryAnchor;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.CategoryHierarchyLink.CategoryHierarchyLink;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ISARelationship.ISARelationship;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.MediaReference.MediaReference;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.PreferredTerm.PreferredTerm;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.RelatedTerm.RelatedTerm;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ReplacementTerm.ReplacementTerm;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.SemanticAssignment.SemanticAssignment;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Synonym.Synonym;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Antonym.Antonym;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermAnchor.TermAnchor;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermCategorization.TermCategorization;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermHASARelationship.TermHASARelationship;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermISATypeOFRelationship.TermISATypeOFRelationship;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.TermTYPEDBYRelationship.TermTYPEDBYRelationship;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.Translation.Translation;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.UsedInContext.UsedInContext;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.relationships.ValidValue.ValidValue;
-import org.odpi.openmetadata.accessservices.subjectarea.generated.server.SubjectAreaBeansToAccessOMRS;
+import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.EntityDetailResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.GlossarySummaryResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.internalresponse.IconSummarySetResponse;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.enums.Status;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.category.Category;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.common.SystemAttributes;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Node;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.CategorySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.GlossarySummary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.IconSummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary.NodeSummary;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryAnchorRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.CategoryHierarchyLink;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.TermAnchorRelationship;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.LinesResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.OMASExceptionToResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.responses.ResponseCategory;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.SubjectAreaOMASAPIResponse;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.CategoryMapper;
+import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.entities.GlossaryMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.relationships.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.PrimitiveDefCategory;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.slf4j.Logger;
@@ -125,150 +116,90 @@ public class SubjectAreaUtils {
     /**
      * Set icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
      *
-     * Note that we shoukd only return the icons that are effective - by checking the effective From and To dates against the current time
+     * Note that we should only return the icons that are effective - by checking the effective From and To dates against the current time
      * @param userId userid under which to issue to the get of the related media
-     * @param subjectAreaBeansToAccessOMRS bean to access OMRS
-     * @param mediaReferenceRelationshipSet set of related media Relationships
-     * @return Set of IconSummary objects.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
-     * @throws MetadataServerUncontactableException  not able to communicate with a Metadata respository service.
+     * @param oMRSAPIHelper interface to  OMRS
+     * @param guid to get associated icons from
+     * @return response with Set of IconSummary objects or an Exception response.
      */
-    public static Set<IconSummary> getIconSummarySet(String userId, SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS, Set<Line> mediaReferenceRelationshipSet) throws UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, MetadataServerUncontactableException
+    public static SubjectAreaOMASAPIResponse  getIconSummarySet(String userId, OMRSAPIHelper oMRSAPIHelper, String guid)
     {
+        // if there are no icons then return an empty set
+
+        //TODO implement icon logic
+        SubjectAreaOMASAPIResponse response;
         Set<IconSummary> icons = new HashSet<>();
-        Set<String> relatedMediaGuidSet =new HashSet<>();
-        if (mediaReferenceRelationshipSet !=null && !mediaReferenceRelationshipSet.isEmpty()) {
-            for (Line line :mediaReferenceRelationshipSet) {
-                MediaReference mediaReference= (MediaReference)line;
-                if (isEffective(line))
-                {
-                    String mediaGuid = mediaReference.getEntity2Guid();
-                    relatedMediaGuidSet.add(mediaGuid);
-                }
-            }
-        }
-        for (String relatedMediaguid : relatedMediaGuidSet)
-        {
-            org.odpi.openmetadata.accessservices.subjectarea.generated.entities.RelatedMedia.RelatedMedia relatedMedia = subjectAreaBeansToAccessOMRS.getRelatedMediaById(userId, relatedMediaguid);
-           if (isEffective(relatedMedia))
-           {
-               IconSummary icon = SubjectAreaUtils.extractIconSummaryFromRelatedMedia(relatedMedia);
-               if (icon != null)
-               {
-                   icons.add(icon);
-               }
-           }
-        }
-        return icons;
-    }
+        response = new IconSummarySetResponse(icons);
+        return response;
 
-    /**
-     *
-     * @param relatedMedia to check
-     * @return boolean indicating whether this Related Media is effective
-     */
-    private static boolean isEffective(RelatedMedia relatedMedia)
-    {
-        return isEffective(relatedMedia.getEffectiveFromTime(),relatedMedia.getEffectiveToTime() ) ;
-    }
-
-    /**
-     *
-     * @param line line to check
-     * @return boolean indicating whether this line is effective
-     */
-    public static boolean isEffective(Line line)
-    {
-        return isEffective(line.getEffectiveFromTime(), line.getEffectiveToTime());
-    }
-
-    /**
-     * check check whether the current time lies between the from and to
-     * @param from Date from which effective
-     * @param to Date to which effective
-     * @return whether effective.
-     */
-    public static boolean isEffective(Date from, Date to) {
-        boolean isEffective= true;
-        long currentDate = new Date().getTime();
-        if (from != null) {
-            if (currentDate<from.getTime()) {
-                isEffective = false;
-            }
-        }
-        if (to != null) {
-            if (currentDate>to.getTime()) {
-                isEffective = false;
-            }
-        }
-        return isEffective;
     }
 
     /**
      * Get a Term's icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
+     * @param restAPIName rest API Name
      * @param userId userid under which to issue to the get of the related media
-     * @param subjectAreaBeansToAccessOMRS bean to access OMRS
-     * @param line glossary relationship
-     * @return Set of IconSummary objects.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
-     * @throws MetadataServerUncontactableException  not able to communicate with a Metadata respository service.
-     * @throws FunctionNotSupportedException   Function not supported
+     * @param omrsapiHelper helper to access OMRS
+     * @param termAnchorRelationship term glossary relationship
+     * @param term supplied term
+     * @return response object - glossary summary or an error
      */
-    public static GlossarySummary getGlossarySummaryForTerm(String userId, SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS, Line line) throws UserNotAuthorizedException,
-                                                                                                                                                        InvalidParameterException,
-                                                                                                                                                        UnrecognizedGUIDException,
-                                                                                                                                                        MetadataServerUncontactableException,
-                                                                                                                                                        FunctionNotSupportedException
-    {
-        TermAnchor termAnchorRelationship = (TermAnchor)line;
-        String glossaryGuid = termAnchorRelationship.getEntity1Guid();
-        org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary glossary = subjectAreaBeansToAccessOMRS.getGlossaryById(userId, glossaryGuid);
-        GlossarySummary glossarySummary =extractGlossarySummaryFromGlossary(glossary);
-        if (glossarySummary !=null) {
-            //get glossary icons
-            String mediaReferenceTypeGuid = TypeGuids.getMediaReferenceTypeGuid();
-            Set<Line> mediaReferenceRelationships = subjectAreaBeansToAccessOMRS.getGlossaryRelationships(userId, glossaryGuid, mediaReferenceTypeGuid, 0, null, null, null, 0);
-            Set<IconSummary> icons = getIconSummarySet(userId, subjectAreaBeansToAccessOMRS, mediaReferenceRelationships);
-            glossarySummary.setIcons(icons);
+    public static  SubjectAreaOMASAPIResponse  getGlossarySummaryForTerm(String restAPIName, String userId, OMRSAPIHelper omrsapiHelper, TermAnchorRelationship termAnchorRelationship,Term term)  {
+        String glossaryGuid = termAnchorRelationship.getGlossaryGuid();
+        SubjectAreaOMASAPIResponse response = omrsapiHelper.callOMRSGetEntityByGuid(restAPIName, userId,glossaryGuid);
+        if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
+            EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
+            EntityDetail glossaryEntity = entityDetailResponse.getEntityDetail();
+            Glossary glossary = null;
+            try {
+                glossary = new GlossaryMapper(omrsapiHelper).mapEntityDetailToNode(glossaryEntity);
+
+                GlossarySummary glossarySummary = extractGlossarySummaryFromGlossary(glossary,termAnchorRelationship);
+                response = new GlossarySummaryResponse(glossarySummary);
+                // TODO sort out icons
+            } catch (InvalidParameterException e) {
+                response = OMASExceptionToResponse.convertInvalidParameterException(e);
+            }
         }
-        return glossarySummary;
+        return response;
     }
     /**
      * Get a Categories icon summaries from related media relationships by issuing a call to omrs using the related media guid - which is at one end of the relationship.
+     * @param restAPIName rest API Name
      * @param userId userid under which to issue to the get of the related media
-     * @param subjectAreaBeansToAccessOMRS bean to access OMRS
+     * @param omrsapiHelper helper to access OMRS
      * @param line glossary relationship
-     * @return Set of IconSummary objects.
-     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
-     * @throws InvalidParameterException  one of the parameters is null or invalid.
-     * @throws UnrecognizedGUIDException the supplied guid was not recognised
-     * @throws MetadataServerUncontactableException  not able to communicate with a Metadata respository service.
-     * @throws FunctionNotSupportedException   Function not supported
+     * @return Glossary summary for Category
      */
-    public static GlossarySummary getGlossarySummaryForCategory(String userId, SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS, Line line) throws UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, MetadataServerUncontactableException, FunctionNotSupportedException
-    {
-        CategoryAnchor categoryAnchorRelationship = (CategoryAnchor)line;
-        String glossaryGuid = categoryAnchorRelationship.getEntity1Guid();
-        org.odpi.openmetadata.accessservices.subjectarea.generated.entities.Glossary.Glossary glossary = subjectAreaBeansToAccessOMRS.getGlossaryById(userId, glossaryGuid);
-        GlossarySummary glossarySummary =extractGlossarySummaryFromGlossary(glossary);
-        //get glossary icons
-        String mediaReferenceTypeGuid = TypeGuids.getMediaReferenceTypeGuid();
-        Set<Line> mediaReferenceRelationships = subjectAreaBeansToAccessOMRS.getGlossaryRelationships(userId, glossaryGuid, mediaReferenceTypeGuid, 0, null, null, null, 0);
-        Set<IconSummary> icons =getIconSummarySet(userId,subjectAreaBeansToAccessOMRS,mediaReferenceRelationships);
-        glossarySummary.setIcons(icons);
-        return glossarySummary;
-    }
+    public static  SubjectAreaOMASAPIResponse  getGlossarySummaryForCategory(String restAPIName, String userId, OMRSAPIHelper omrsapiHelper, Line line)  {
+        CategoryAnchorRelationship categoryAnchorRelationship = (CategoryAnchorRelationship) line;
+        String glossaryGuid = categoryAnchorRelationship.getGlossaryGuid();
+        SubjectAreaOMASAPIResponse response = omrsapiHelper.callOMRSGetEntityByGuid(restAPIName, userId, glossaryGuid);
+        if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetail)) {
+            EntityDetailResponse entityDetailResponse = (EntityDetailResponse) response;
+            EntityDetail glossaryEntity = entityDetailResponse.getEntityDetail();
+            Glossary glossary = null;
+            try {
+                glossary = new GlossaryMapper(omrsapiHelper).mapEntityDetailToNode(glossaryEntity);
 
+                GlossarySummary glossarySummary = extractGlossarySummaryFromGlossary(glossary,categoryAnchorRelationship);
+
+                if (glossarySummary != null) {
+                    response = new GlossarySummaryResponse(glossarySummary);
+// TODO sort out icons
+                }
+            } catch (InvalidParameterException e) {
+                response = OMASExceptionToResponse.convertInvalidParameterException(e);
+            }
+        }
+        return response;
+    }
     /**
      * Get a summary of the parent category. The parent category is optional. We might validly have more than one parent category. this can occur if effectivity dates are being used
-     * The parent category is the first relationship we find of the rigght type that is effective.
+     * The parent category is the first relationship we find of the right type that is effective.
+     * @param restAPIName rest API Name
      * @param userId userid that the requests are issued under
-     * @param subjectAreaBeansToAccessOMRS service
-     * @param lines set of lines that are of the right type.
+     * @param omrsapiHelper helper to access OMRS
+     * @param lines set of Lines that are of the right type.
      * @return a parent category as a CategorySummary
      * @throws UserNotAuthorizedException  the requesting user is not authorized to issue this request.
      * @throws InvalidParameterException one of the parameters is null or invalid.
@@ -276,43 +207,50 @@ public class SubjectAreaUtils {
      * @throws MetadataServerUncontactableException Unable to contact the server
      * @throws FunctionNotSupportedException   Function not supported
      */
-    public static CategorySummary getParentCategorySummary(String userId, SubjectAreaBeansToAccessOMRS subjectAreaBeansToAccessOMRS, Set<Line> lines) throws UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, MetadataServerUncontactableException, FunctionNotSupportedException
+    public static CategorySummary getParentCategorySummary(String restAPIName, String userId, OMRSAPIHelper omrsapiHelper,  Set<Line> lines) throws UserNotAuthorizedException, InvalidParameterException, UnrecognizedGUIDException, MetadataServerUncontactableException, FunctionNotSupportedException
     {
         CategorySummary parentCategorySummary =null;
+        SubjectAreaOMASAPIResponse response = null;
         final Iterator<Line> iterator = lines.iterator();
         while (iterator.hasNext() && parentCategorySummary ==null)
         {
             CategoryHierarchyLink parentRelationship = (CategoryHierarchyLink) iterator.next();
-            if (isEffective(parentRelationship))
-            {
-                String parentCategoryGuid = parentRelationship.getEntity1Guid();
-                org.odpi.openmetadata.accessservices.subjectarea.generated.entities.GlossaryCategory.GlossaryCategory glossaryCategory = subjectAreaBeansToAccessOMRS.getGlossaryCategoryById(userId, parentCategoryGuid);
-                parentCategorySummary = extractCategorySummaryFromGlossaryCategory(glossaryCategory);
-                //get parent category icons
-                String mediaReferenceTypeGuid = TypeGuids.getMediaReferenceTypeGuid();
-                Set<Line> mediaReferenceRelationships = subjectAreaBeansToAccessOMRS.getGlossaryCategoryRelationships(userId, parentCategoryGuid, mediaReferenceTypeGuid, 0, null, null, null, 0);
-                // the following call checks the icon effectivity
-                Set<IconSummary> icons = getIconSummarySet(userId, subjectAreaBeansToAccessOMRS, mediaReferenceRelationships);
-                parentCategorySummary.setIcons(icons);
+            String parentCategoryGuid = parentRelationship.getSuperCategoryGuid();
+            response = omrsapiHelper.callOMRSGetEntityByGuid(restAPIName, userId, parentCategoryGuid);
+            if (response.getResponseCategory() == ResponseCategory.OmrsEntityDetail) {
+                EntityDetailResponse parentCategoryEntityResponse  = (EntityDetailResponse)response;
+                EntityDetail parentCategoryEntity = parentCategoryEntityResponse.getEntityDetail();
+                Category category = (Category) new CategoryMapper(omrsapiHelper).mapEntityDetailToNode(parentCategoryEntity);
+                parentCategorySummary = extractCategorySummaryFromCategory(category,parentRelationship);
+                // TODO implement icon logic
             }
         }
-
 
         return parentCategorySummary;
     }
 
     /**
-     * Convert a GlossaryCategory to a Categorysummary
-     * @param glossaryCategory to convert
+     * Convert a Category to a CategorySummary
+     * @param category to convert
+     * @param line
      * @return CategorySummary
      */
-    private static CategorySummary extractCategorySummaryFromGlossaryCategory(GlossaryCategory glossaryCategory)
+    private static CategorySummary extractCategorySummaryFromCategory(Category category,Line line )
     {
         CategorySummary categorySummary = new CategorySummary();
-        categorySummary.setQualifiedName(glossaryCategory.getQualifiedName());
-        categorySummary.setName(glossaryCategory.getDisplayName());
-        categorySummary.setGuid(glossaryCategory.getSystemAttributes().getGUID());
+        extractNodeSummary(category, line, categorySummary);
         return categorySummary;
+    }
+
+    private static void extractNodeSummary(Node node, Line line, NodeSummary nodeSummary) {
+        nodeSummary.setQualifiedName(node.getQualifiedName());
+        nodeSummary.setName(node.getName());
+        nodeSummary.setGuid(node.getSystemAttributes().getGUID());
+        nodeSummary.setFromEffectivityTime(node.getEffectiveFromTime());
+        nodeSummary.setToEffectivityTime(node.getEffectiveToTime());
+        nodeSummary.setRelationshipguid(line.getGuid());
+        nodeSummary.setFromRelationshipEffectivityTime(line.getEffectiveFromTime());
+        nodeSummary.setToRelationshipEffectivityTime(line.getEffectiveToTime());
     }
 
     /**
@@ -320,33 +258,27 @@ public class SubjectAreaUtils {
      * @param relatedMedia related media
      * @return iconSummaru or null
      */
-    public static IconSummary extractIconSummaryFromRelatedMedia(RelatedMedia relatedMedia)
+    public static IconSummary extractIconSummaryFromRelatedMedia(EntityDetail relatedMedia)
     {
         IconSummary icon = null;
-        if (relatedMedia.getMediaUsage().contains(MediaUsage.Icon.getOrdinal()))
+        // if (relatedMedia.getMediaUsage().contains(MediaUsage.Icon.getOrdinal()))
         {
             icon = new IconSummary();
-            icon.setGuid(relatedMedia.getSystemAttributes().getGUID());
-            icon.setQualifiedName(relatedMedia.getQualifiedName());
-            icon.setUrl(relatedMedia.getUrl());
-            icon.setQualifiedName(relatedMedia.getQualifiedName());
-            icon.setLabel(relatedMedia.getDisplayName());
+            //TODO sort out icons - add a mapper ?
         }
         return icon;
     }
     /**
      * Extract glossarySummary
-     * @param glossary to extract
+     * @param glossary the glossary that is to be summarised
+     * @param line the line to the glossary, which feeds part of the node summary
      * @return Glossary Summary or null
      */
-    public static GlossarySummary extractGlossarySummaryFromGlossary(Glossary glossary)
+    public static GlossarySummary extractGlossarySummaryFromGlossary(Glossary glossary,Line line)
     {
         if (glossary ==null) return null;
         GlossarySummary glossarySummary = new GlossarySummary();
-
-        glossarySummary.setGuid(glossary.getSystemAttributes().getGUID());
-        glossarySummary.setQualifiedName(glossary.getQualifiedName());
-        glossarySummary.setName(glossary.getDisplayName());
+        extractNodeSummary(glossary,line, glossarySummary);
         return glossarySummary;
     }
     public static void checkStatusNotDeleted(Status status, SubjectAreaErrorCode errorCode) throws InvalidParameterException
@@ -443,82 +375,84 @@ public class SubjectAreaUtils {
     }
 
     /**
-     * Convert the OMRS Line objects to the equivalent OMAS objects and return them in a list.
-     * @param omrsLines - these are Lines generated by hte generator from the omrs relationships
-     * @return omasLines - these are the Lines that exposed in the OMAS API
+     * Convert the OMRS Lines to their equivalent OMAS objects and return them in a Response of type lines.
+     * @param  omrsapiHelper OMRS API helper - used to construct the mappers
+     * @param omrsRelationships - these are OMRS relationships
+     * @return omasLines - these are the Lines (the OMAS relationships) that are exposed in the OMAS API - note the list in the response can be empty
      */
-     public static List<Line> convertOMRSLinesToOMASLines(Set<Line> omrsLines) {
+    public static  SubjectAreaOMASAPIResponse convertOMRSRelationshipsToOMASLines(OMRSAPIHelper omrsapiHelper, List<Relationship> omrsRelationships)
+    {
         List omasLines = new ArrayList();
-        for (Line omrsLine:omrsLines) {
-            String omrsName = omrsLine.getName();
+        for (Relationship omrsRelationship : omrsRelationships) {
+            String omrsName = omrsRelationship.getType().getTypeDefName();
             Line omasLine = null;
             switch (omrsName) {
-               case "TermHASARelationship":
-                   omasLine =HasAMapper.mapOMRSRelationshipBeanToTermHASARelationship((TermHASARelationship) omrsLine);
-                break;
+                case "TermHASARelationship":
+                    omasLine = new TermHASARelationshipMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
+                    break;
                 case "RelatedTerm":
-                    omasLine =RelatedTermMapper.mapOMRSRelationshipBeanToRelatedTerm((RelatedTerm) omrsLine);
-                break;
+                    omasLine = new RelatedTermMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
+                    break;
                 case "Synonym":
-                    omasLine =SynonymMapper.mapOMRSRelationshipBeanToSynonym((Synonym) omrsLine);
-                break;
+                    omasLine = new SynonymMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
+                    break;
                 case "Antonym":
-                    omasLine =AntonymMapper.mapOMRSRelationshipBeanToAntonym((Antonym) omrsLine);
-                break;
+                    omasLine = new AntonymMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
+                    break;
                 case "Translation":
-                    omasLine =TranslationMapper.mapOMRSRelationshipBeanToTranslation((Translation) omrsLine);
-                break;
+                    omasLine = new TranslationMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
+                    break;
                 case "ISARelationship":
-                    omasLine = IsaMapper.mapOMRSRelationshipBeanToISARelationship((ISARelationship) omrsLine);
-                break;
+                    omasLine = new ISARelationshipMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
+                    break;
                 case "PreferredTerm":
-                    omasLine =PreferredTermMapper.mapOMRSRelationshipBeanToPreferredTerm((PreferredTerm) omrsLine);
-                break;
+                    omasLine = new PreferredTermMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
+                    break;
                 case "TermISATypeOFRelationship":
-                    omasLine =IsaTypeOfMapper.mapOMRSRelationshipBeanToTermISATypeOFRelationship((TermISATypeOFRelationship) omrsLine);
-                break;
+                    omasLine = new TermISATypeOFRelationshipMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
+                    break;
                 case "ReplacementTerm":
-                    omasLine =TermReplacementMapper.mapOMRSRelationshipBeanToReplacementTerm((ReplacementTerm) omrsLine);
-                break;
+                    omasLine = new ReplacementTermMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
+                    break;
                 case "TermTYPEDBYRelationship":
-                    omasLine =TypedByMapper.mapOMRSRelationshipBeanToTermTYPEDBYRelationship((TermTYPEDBYRelationship) omrsLine);
-                break;
+                    omasLine = new TermTYPEDBYRelationshipMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
+                    break;
                 case "UsedInContext":
-                    omasLine =UsedInContextMapper.mapOMRSRelationshipBeanToUsedInContext((UsedInContext) omrsLine);
-                break;
+                    omasLine = new UsedInContextMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
+                    break;
                 case "ValidValue":
-                    omasLine =ValidValueMapper.mapOMRSRelationshipBeanToValidValue((ValidValue) omrsLine);
-                break;
+                    omasLine = new ValidValueMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
+                    break;
                 // external glossary relationships
                 case "LibraryCategoryReferenceRelationshipRelationship":
                     // TODO
-                break;
+                    break;
                 case "LibraryTermReferenceRelationshipRelationship":
                     // TODO
-                break;
-                        // term to asset
+                    break;
+                // term to asset
                 case "SemanticAssignment":
-                    omasLine =SemanticAssignmentMapper.mapOMRSRelationshipBeanToSemanticAssignment((SemanticAssignment) omrsLine);
-                break;
-                        // category to term
+                    omasLine = new SemanticAssignmentMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
+                    break;
+                // category to term
                 case "TermCategorization":
-                   omasLine = TermCategorizationMapper.mapOMRSRelationshipBeanToTermCategorization((TermCategorization) omrsLine);
-                break;
+                    omasLine = new TermCategorizationMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
+                    break;
                 // Term to glossary
                 case "TermAnchor":
-                    omasLine =TermAnchorMapper.mapOMRSRelationshipBeanToTermAnchor((TermAnchor) omrsLine);
+                    omasLine = new TermAnchorMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
                     break;
                 // Category to glossary
                 case "CategoryAnchor":
-                    omasLine = CategoryAnchorMapper.mapOMRSRelationshipBeanToCategoryAnchor((CategoryAnchor) omrsLine);
+                    omasLine = new CategoryAnchorMapper(omrsapiHelper).mapRelationshipToLine(omrsRelationship);
                     break;
             }
-            if (omasLine!=null) {
+            if (omasLine != null) {
                 omasLines.add(omasLine);
             }
         }
-        return omasLines;
-     }
+        return  new LinesResponse(omasLines);
+    }
     /**
      * convert omas sequencing order to omrs sequencing order
      * @param sequencingOrder supplied omas sequencing order
@@ -546,5 +480,64 @@ public class SubjectAreaUtils {
             omrsSequencingOrder = SequencingOrder.GUID;
         }
         return  omrsSequencingOrder;
+    }
+    /**
+     * create SystemAttributes instance from an insance header object
+     * @param instanceHeader omrs instance header
+     * @return SystemAttributes
+     */
+    public static SystemAttributes createSystemAttributes(InstanceHeader instanceHeader) {
+        //set core attributes
+        SystemAttributes systemAttributes = new SystemAttributes();
+
+        InstanceStatus instanceStatus =  instanceHeader.getStatus();
+        Status omas_status = SubjectAreaUtils.convertInstanceStatusToStatus(instanceStatus);
+        systemAttributes.setStatus(omas_status);
+
+        systemAttributes.setCreatedBy(instanceHeader.getCreatedBy());
+        systemAttributes.setUpdatedBy(instanceHeader.getUpdatedBy());
+        systemAttributes.setCreateTime(instanceHeader.getCreateTime());
+        systemAttributes.setUpdateTime(instanceHeader.getUpdateTime());
+        systemAttributes.setVersion(instanceHeader.getVersion());
+        systemAttributes.setGUID(instanceHeader.getGUID());
+        return systemAttributes;
+    }
+    static public void populateSystemAttributesForInstanceAuditHeader(SystemAttributes systemAttributes, InstanceAuditHeader instanceAuditHeader) {
+        if (systemAttributes != null) {
+            if (systemAttributes.getCreatedBy() != null)
+                instanceAuditHeader.setCreatedBy(systemAttributes.getCreatedBy());
+            if (systemAttributes.getUpdatedBy() != null)
+                instanceAuditHeader.setUpdatedBy(systemAttributes.getUpdatedBy());
+            if (systemAttributes.getCreateTime() != null)
+                instanceAuditHeader.setCreateTime(systemAttributes.getCreateTime());
+            if (systemAttributes.getUpdateTime() != null)
+                instanceAuditHeader.setUpdateTime(systemAttributes.getUpdateTime());
+            if (systemAttributes.getVersion() != null)
+                instanceAuditHeader.setVersion(systemAttributes.getVersion());
+        }
+    }
+    /**
+     * Set the String value into the InstanceProperties.
+     * @param instanceProperties supplied instanceproperties
+     * @param stringValue string value
+     * @param propertyName property name.
+     */
+    public static void setStringPropertyInInstanceProperties(InstanceProperties instanceProperties, String stringValue, String propertyName) {
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_STRING);
+        primitivePropertyValue.setPrimitiveValue(stringValue);
+        instanceProperties.setProperty(propertyName, primitivePropertyValue);
+    }
+    /**
+     * Set the Integer value into the InstanceProperties.
+     * @param instanceProperties supplied instanceproperties
+     * @param integerValue integer value
+     * @param propertyName property name.
+     */
+    public static void setIntegerPropertyInInstanceProperties(InstanceProperties instanceProperties, Integer integerValue, String propertyName) {
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_INT);
+        primitivePropertyValue.setPrimitiveValue(integerValue);
+        instanceProperties.setProperty(propertyName, primitivePropertyValue);
     }
 }

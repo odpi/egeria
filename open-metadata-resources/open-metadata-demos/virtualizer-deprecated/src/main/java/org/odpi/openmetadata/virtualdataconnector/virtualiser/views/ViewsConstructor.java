@@ -4,16 +4,11 @@ package org.odpi.openmetadata.virtualdataconnector.virtualiser.views;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.informationview.events.DerivedColumn;
-import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
-import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
 import org.odpi.openmetadata.accessservices.informationview.events.*;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.ffdc.VirtualiserCheckedException;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.ffdc.VirtualiserErrorCode;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.gaian.GaianQueryConstructor;
 import org.odpi.openmetadata.virtualdataconnector.virtualiser.kafka.KafkaVirtualiserProducer;
-import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumn;
-import org.odpi.openmetadata.accessservices.informationview.events.InformationViewEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -106,7 +101,7 @@ public class ViewsConstructor {
         InformationViewEvent view = addConnectionDetailsAndTableContext(new InformationViewEvent(), tableName);
         view.setOriginalTableSource(tableContextEvent.getTableSource());
         List<DerivedColumn> derivedColumn = new ArrayList<>();
-        for (DatabaseColumn databaseColumn : tableContextEvent.getTableColumns()) {
+        for (TableColumn databaseColumn : tableContextEvent.getTableColumns()) {
             if (databaseColumn.getBusinessTerm() != null) {
                 DerivedColumn column = new DerivedColumn();
                 if (viewType.equals(GaianQueryConstructor.BUSINESS_PREFIX)) {
@@ -130,13 +125,17 @@ public class ViewsConstructor {
     private InformationViewEvent addConnectionDetailsAndTableContext(InformationViewEvent informationViewEvent, String tableName) {
 
         TableSource tableSource = new TableSource();
+        DatabaseSource databaseSource = new DatabaseSource();
+        tableSource.setDatabaseSource(databaseSource);
+        EndpointSource endpointSource = new EndpointSource();
+        databaseSource.setEndpointSource(endpointSource);
         int lastIndexOf = connectorProviderName.lastIndexOf(".");
-        tableSource.setConnectorProviderName(connectorProviderName.substring(lastIndexOf + 1, connectorProviderName.length()));
-        tableSource.setProtocol(gaianUrlPrefix);
-        tableSource.setNetworkAddress(gaianServer + ":" + gaianPort);
-        tableSource.setUser(gaianProxyUsername);
-        tableSource.setTableName(tableName);
-        tableSource.setDatabaseName(gaianDb);
+        endpointSource.setConnectorProviderName(connectorProviderName.substring(lastIndexOf + 1, connectorProviderName.length()));
+        endpointSource.setProtocol(gaianUrlPrefix);
+        endpointSource.setNetworkAddress(gaianServer + ":" + gaianPort);
+        endpointSource.setUser(gaianProxyUsername);
+        tableSource.setName(tableName);
+        databaseSource.setName(gaianDb);
         tableSource.setSchemaName(gaianSchema);
         informationViewEvent.setTableSource(tableSource);
         return informationViewEvent;

@@ -6,11 +6,11 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import java.io.Serializable;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
-
 
 /**
  * TagMapResponse is the response structure used on the Governance Engine OMAS REST API calls that returns a
@@ -19,16 +19,10 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class GovernedAssetListAPIResponse extends GovernanceEngineOMASAPIResponse {
+public class GovernedAssetListAPIResponse extends GovernanceEngineOMASAPIResponse implements Serializable {
 
+    private static final long serialVersionUID = 1L;
     private List<GovernedAsset> assetList;
-
-    /**
-     * Default constructor
-     */
-    public GovernedAssetListAPIResponse() {
-    }
-
 
     /**
      * Return the Connection object.
@@ -47,7 +41,5 @@ public class GovernedAssetListAPIResponse extends GovernanceEngineOMASAPIRespons
     public void setGovernedAssetList(List<GovernedAsset> assetList) {
         this.assetList = assetList;
     }
-
-
 
 }

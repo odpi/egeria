@@ -2,13 +2,16 @@
 
 package org.odpi.openmetadata.accessservices.subjectarea.properties.objects.nodesummary;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.NodeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Set;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -32,7 +35,11 @@ public class NodeSummary implements Serializable {
     private String qualifiedName = null;
     private Set<IconSummary> icons = null;
     private String guid = null;
+    private Date fromEffectivityTime = null;
+    private Date toEffectivityTime = null;
     private String relationshipguid = null;
+    private Date fromRelationshipEffectivityTime = null;
+    private Date toRelationshipEffectivityTime = null;
 
     /**
      * Type of the other end of this relationship
@@ -105,17 +112,78 @@ public class NodeSummary implements Serializable {
     public void setGuid(String guid) {
         this.guid = guid;
     }
-
     /**
-     * The unique identifer of the associated Line (relationship)
+     * get the date effective from which this node is effective
+     * @return Date date effective from which this node is effective
+     */
+    public Date getFromEffectivityTime() {
+        return fromEffectivityTime;
+    }
+    /**
+     * set the date from which this node is effective
+     * @param fromEffectivityTime date from which this node is effective
+     */
+    public void setFromEffectivityTime(Date fromEffectivityTime) {
+        this.fromEffectivityTime = fromEffectivityTime;
+    }
+    /**
+     * get the date to which this node is effective
+     * @return Date to which this node is effective
+     */
+
+    public Date getToEffectivityTime() {
+        return toEffectivityTime;
+    }
+    /**
+     * set the date to which this node is effective
+     * @param toEffectivityTime date to which this node is effective
+     */
+    public void setToEffectivityTime(Date toEffectivityTime) {
+        this.toEffectivityTime = toEffectivityTime;
+    }
+    /**
+     * The unique identifier of the associated Line (relationship)
      * @return relationship guid
      */
     public String getRelationshipguid() {
         return relationshipguid;
     }
-
+    /**
+     * The set the unique identifier of the associated Line (relationship)
+     * @param relationshipguid relationship guid
+     */
     public void setRelationshipguid(String relationshipguid) {
         this.relationshipguid = relationshipguid;
+    }
+    /**
+     * get when date from which the relationship is effective
+     * @return Date date from which the relationship is effective
+     */
+    public Date getFromRelationshipEffectivityTime() {
+        return fromRelationshipEffectivityTime;
+    }
+
+    /**
+     * set date from which the relationship is effective
+     * @param fromRelationshipEffectivityTime date from which the relationship is effective
+     */
+    public void setFromRelationshipEffectivityTime(Date fromRelationshipEffectivityTime) {
+        this.fromRelationshipEffectivityTime = fromRelationshipEffectivityTime;
+    }
+
+    /**
+     * get date from which the relationship is effective
+     * @return date from which the relationship is effective
+     */
+    public Date getToRelationshipEffectivityTime() {
+        return toRelationshipEffectivityTime;
+    }
+    /**
+     * set date to which the relationship is effective
+     * @param toRelationshipEffectivityTime date to which the relationship is effective
+     */
+    public void setToRelationshipEffectivityTime(Date toRelationshipEffectivityTime) {
+        this.toRelationshipEffectivityTime = toRelationshipEffectivityTime;
     }
 
     public StringBuilder toString(StringBuilder sb) {
@@ -133,6 +201,12 @@ public class NodeSummary implements Serializable {
 //TODO Icons
         if (guid != null) {
             sb.append(", guid='").append(guid).append('\'');
+        }
+        if (fromEffectivityTime !=null) {
+            sb.append(", fromEffectivityTime='").append(fromEffectivityTime.getTime()).append('\'');
+        }
+        if (toEffectivityTime !=null) {
+            sb.append(", toEffectivityTime='").append(toEffectivityTime.getTime()).append('\'');
         }
 
         sb.append('}');
@@ -154,6 +228,8 @@ public class NodeSummary implements Serializable {
         NodeSummary node = (NodeSummary) o;
 
         if (name != null ? !name.equals(node.name) : node.name != null) return false;
+        if (fromEffectivityTime != null ? !fromEffectivityTime.equals(node.fromEffectivityTime) : node.fromEffectivityTime != null) return false;
+        if (toEffectivityTime != null ? !toEffectivityTime.equals(node.toEffectivityTime) : node.toEffectivityTime != null) return false;
         if (qualifiedName != null ? !qualifiedName.equals(node.qualifiedName) : node.qualifiedName != null)
             return false;
         //TODO Icons
@@ -164,6 +240,8 @@ public class NodeSummary implements Serializable {
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
         result = 31 * result + (qualifiedName != null ? qualifiedName.hashCode() : 0);
+        result = 31 * result + (fromEffectivityTime != null ? fromEffectivityTime.hashCode() : 0);
+        result = 31 * result + (toEffectivityTime != null ? toEffectivityTime.hashCode() : 0);
 //        result = 31 * result + (icon != null ? icon.hashCode() : 0);
         //TODO Icons
         return result;

@@ -2,10 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.spring;
 
-import org.odpi.openmetadata.adminservices.OMAGServerConfigDiscoveryEngine;
+import org.odpi.openmetadata.adminservices.OMAGServerConfigDiscoveryServer;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * ConfigDiscoveryEngineResource provides the API for configuring a discovery engine in an OMAG
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}/discovery-engine")
 public class ConfigDiscoveryEngineResource
 {
-    private OMAGServerConfigDiscoveryEngine adminAPI = new OMAGServerConfigDiscoveryEngine();
+    private OMAGServerConfigDiscoveryServer adminAPI = new OMAGServerConfigDiscoveryServer();
 
     /**
      * Set up the root URL of the access service.
@@ -62,18 +64,18 @@ public class ConfigDiscoveryEngineResource
      *
      * @param userId  user that is issuing the request.
      * @param serverName  local server name.
-     * @param connection  connection for topic.
+     * @param discoveryEngines  discoveryEngines for topic.
      * @return void response or
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    @RequestMapping(method = RequestMethod.POST, path = "inbound-request-connection")
+    @RequestMapping(method = RequestMethod.POST, path = "set-discovery-engines")
 
-    public VoidResponse setInboundRequestConnection(@PathVariable String     userId,
-                                                    @PathVariable String     serverName,
-                                                    @RequestBody  Connection connection)
+    public VoidResponse setDiscoveryEngines(@PathVariable String       userId,
+                                            @PathVariable String       serverName,
+                                            @RequestBody  List<String> discoveryEngines)
     {
-        return adminAPI.setInboundRequestConnection(userId, serverName, connection);
+        return adminAPI.setDiscoveryEngines(userId, serverName, discoveryEngines);
     }
 
 

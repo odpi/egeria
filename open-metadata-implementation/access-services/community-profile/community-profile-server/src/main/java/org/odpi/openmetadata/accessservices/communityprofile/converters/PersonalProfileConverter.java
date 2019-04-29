@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * PersonalProfileConverter generates an PersonalProfile bean from an PersonalProfile entity.
+ * PersonalProfileConverter generates a PersonalProfile bean from a PersonalProfile entity.
  */
 public class PersonalProfileConverter extends CommonHeaderConverter
 {

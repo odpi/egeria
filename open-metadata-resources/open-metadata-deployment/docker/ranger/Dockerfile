@@ -33,7 +33,7 @@ ENV		 mavenver		 ${mavenver:-3.6.0}
 ARG		 dockerizever		 
 ENV		 dockerizever		 ${dockerizever:-0.6.1}
 ARG		 solrver		 
-ENV		 solrver		 ${solrver:-7.7.0}
+ENV		 solrver		 ${solrver:-7.7.1}
 
 # Let's start with some core packages we need
 RUN apt-get update && apt-get install -y wget libmysql-java python openjdk-8-jdk maven git iputils-ping net-tools vim lsof apt-utils build-essential lsb-core lsb-release
@@ -63,6 +63,7 @@ WORKDIR /root/ranger
 # is currently pulling in a later maven assembly plugin as of 2018.11.05 which is breaking the build/packaging for
 # the 1.2 branch....
 RUN mvn -Pall -DskipTests=true clean compile package install assembly:assembly
+RUN git log > /git.log && echo ${branch} > /git.branch && git remote -v > /git.remote
 
 # We have now built the latest ranger from source - let's unpack and setup the admin server & UI
 

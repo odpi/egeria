@@ -2085,7 +2085,7 @@ public interface SubjectAreaRelationship
             UnrecognizedGUIDException
     ;
     /**
-     * Get a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized. 
+     * Get a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
@@ -2108,7 +2108,7 @@ public interface SubjectAreaRelationship
             UnrecognizedGUIDException
     ;
     /**
-     * Update a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized. 
+     * Update a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
      * <p>
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -2179,7 +2179,7 @@ public interface SubjectAreaRelationship
             UnexpectedResponseException
     ;
     /**
-     * Purge a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized. 
+     * Purge a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
      * A purge means that the relationship will not exist after the operation.
      *
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
@@ -2204,12 +2204,12 @@ public interface SubjectAreaRelationship
             UnexpectedResponseException
     ;
     /**
-     * Restore a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized. 
+     * Restore a Term Categorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
      *
-     * Restore allows the deleted has a relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * Restore allows the deleted Term Categorization relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId     unique identifier for requesting user, under which the request is performed
-     * @param guid       guid of the has a relationship to delete
+     * @param guid       guid of the Term Categorization relationship to delete
      * @return response which when successful contains the restored has a relationship
      * when not successful the following Exception responses can occur
      * Exceptions returned by the server
@@ -2228,7 +2228,312 @@ public interface SubjectAreaRelationship
             UnexpectedResponseException,
             UnrecognizedGUIDException
     ;
-    
+
+    /**
+     * Create a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.
+     * This method does not error if the relationship ends are not spine objects or spine attributes.
+     * Terms created using the Subject Area OMAS cannot be created without a glossary and there can only be one glossary associated with a
+     * Term. This method is to allow glossaries to be associated with Terms that have not been created via the Subject Area OMAS or to recreate
+     * the TermAnchor relationship if it has been purged.
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param termAnchorRelationship the TermAnchor relationship
+     * @return the created TermAnchor relationship
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    TermAnchorRelationship createTermAnchorRelationship(String serverName, String userId, TermAnchorRelationship termAnchorRelationship) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+    /**
+     * Get a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the TermAnchorRelationship relationship to get
+     * @return TermAnchorRelationship
+     * Exceptions returned by the server
+     * @throws  UserNotAuthorizedException          the requesting user is not authorized to issue this request.
+     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     *
+     */
+    TermAnchorRelationship getTermAnchorRelationship(String serverName, String userId,String guid) throws InvalidParameterException,
+            MetadataServerUncontactableException,
+            UserNotAuthorizedException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+
+    /**
+     * Replace a Term HASA Relationship.
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param termAnchorRelationship the TermAnchor relationship
+     * @return the updated TermAnchor relationship
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    TermAnchorRelationship replaceTermAnchorRelationship(String serverName, String userId, TermAnchorRelationship termAnchorRelationship) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+    /**
+     * Delete a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
+     * that it is possible to undo the delete.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the TermAnchorRelationship relationship to delete
+     * @return Deleted TermAnchorRelationship
+     *
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
+     * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    TermAnchorRelationship deleteTermAnchorRelationship(String serverName, String userId,String guid) throws
+            InvalidParameterException,
+            MetadataServerUncontactableException,
+            UserNotAuthorizedException,
+            UnrecognizedGUIDException,
+            FunctionNotSupportedException,
+            RelationshipNotDeletedException,
+            UnexpectedResponseException
+    ;
+    /**
+     * Purge a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.
+     * A purge means that the relationship will not exist after the operation.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the TermAnchorRelationship relationship to delete
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
+     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    void purgeTermAnchorRelationship(String serverName, String userId,String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            GUIDNotPurgedException,
+            UnrecognizedGUIDException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException
+    ;
+    /**
+     * Restore a Term Anchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a glossary.
+     *
+     * Restore allows the deleted Term Categorization relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Term Anchor relationship to delete
+     * @return response which when successful contains the restored Term Anchor relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    TermAnchorRelationship restoreTermAnchorRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+
+    /**
+     * Create a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.
+     * Categories created using the Subject Area OMAS cannot be created without a glossary and there can only be one glossary associated with a
+     * Category. This method is to allow glossaries to be associated with Categories that have not been created via the Subject Area OMAS or to recreate
+     * the CategoryAnchor relationship if it has been purged.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param categoryAnchorRelationship the category anchor relationship
+     * @return the created term categorization relationship
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    CategoryAnchorRelationship createCategoryAnchorRelationship(String serverName, String userId, CategoryAnchorRelationship categoryAnchorRelationship) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+    /**
+     * Get a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the CategoryAnchorRelationship relationship to get
+     * @return CategoryAnchorRelationship
+     * Exceptions returned by the server
+     * @throws  UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     *
+     */
+    CategoryAnchorRelationship getCategoryAnchorRelationship(String serverName, String userId,String guid) throws InvalidParameterException,
+            MetadataServerUncontactableException,
+            UserNotAuthorizedException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+
+    /**
+     * Replace a Category Anhor Relationship.
+     * <p>
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId               userId under which the request is performed
+     * @param categoryAnchorRelationship the category anchor relationship
+     * @return the created category anchor relationship
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    CategoryAnchorRelationship replaceCategoryAnchorRelationship(String serverName, String userId, CategoryAnchorRelationship categoryAnchorRelationship) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
+    /**
+     * Delete a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.     * A delete (also known as a soft delete) means that the relationship instance will exist in a deleted state in the repository after the delete operation. This means
+     * that it is possible to undo the delete.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the CategoryAnchorRelationship relationship to delete
+     * @return Deleted CategoryAnchorRelationship
+     *
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws FunctionNotSupportedException        Function not supported this indicates that a soft delete was issued but the repository does not support it.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
+     * @throws RelationshipNotDeletedException      a soft delete was issued but the relationship was not deleted.
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    CategoryAnchorRelationship deleteCategoryAnchorRelationship(String serverName, String userId,String guid) throws
+            InvalidParameterException,
+            MetadataServerUncontactableException,
+            UserNotAuthorizedException,
+            UnrecognizedGUIDException,
+            FunctionNotSupportedException,
+            RelationshipNotDeletedException,
+            UnexpectedResponseException
+    ;
+    /**
+     * Purge a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.
+     * A purge means that the relationship will not exist after the operation.
+     *
+     * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId unique identifier for requesting user, under which the request is performed
+     * @param guid   guid of the CategoryAnchorRelationship relationship to delete
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException           the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException            one of the parameters is null or invalid.
+     * @throws MetadataServerUncontactableException not able to communicate with a Metadata respository service. There is a problem retrieving properties from the metadata repository.
+     * @throws GUIDNotPurgedException               a hard delete was issued but the relationship was not purged
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+    void purgeCategoryAnchorRelationship(String serverName, String userId,String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            GUIDNotPurgedException,
+            UnrecognizedGUIDException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException
+    ;
+    /**
+     * Restore a Category Anchor Relationship. A relationship between a Glossary and a Category. This relationship allows categoriess to be owned by a glossary.
+     *
+     * Restore allows the deleted Category Anchor relationship to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
+     * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
+     * @param userId     unique identifier for requesting user, under which the request is performed
+     * @param guid       guid of the Category Anchor relationship to delete
+     * @return response which when successful contains the restored category anchor relationship
+     * when not successful the following Exception responses can occur
+     * Exceptions returned by the server
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     * @throws InvalidParameterException one of the parameters is null or invalid
+     * @throws UnrecognizedGUIDException            the supplied guid was not recognised
+     *
+     * Client library Exceptions
+     * @throws MetadataServerUncontactableException Unable to contact the server
+     * @throws UnexpectedResponseException an unexpected response was returned from the server
+     */
+
+    CategoryAnchorRelationship restoreCategoryAnchorRelationship( String serverName,  String userId, String guid) throws InvalidParameterException,
+            UserNotAuthorizedException,
+            MetadataServerUncontactableException,
+            UnexpectedResponseException,
+            UnrecognizedGUIDException
+    ;
     
     /**
      * Get a SemanticAssignment relationship,  Links a glossary term to another element such as an asset or schema element to define its meaning.
@@ -2252,4 +2557,5 @@ public interface SubjectAreaRelationship
             UnexpectedResponseException,
             UnrecognizedGUIDException
     ;
+
 }

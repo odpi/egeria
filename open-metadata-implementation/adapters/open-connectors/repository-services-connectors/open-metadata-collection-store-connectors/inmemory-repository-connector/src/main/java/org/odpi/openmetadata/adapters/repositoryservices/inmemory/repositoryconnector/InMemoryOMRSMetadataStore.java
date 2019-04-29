@@ -159,7 +159,7 @@ class InMemoryOMRSMetadataStore
     {
         if (asOfTime == null)
         {
-            return entityStore;
+            return new HashMap<>(entityStore);
         }
 
         Map<String, EntityDetail>  timeWarpedEntityStore = new HashMap<>();
@@ -265,7 +265,7 @@ class InMemoryOMRSMetadataStore
     {
         if (asOfTime == null)
         {
-            return relationshipStore;
+            return new HashMap<>(relationshipStore);
         }
 
         Map<String, Relationship>  timeWarpedRelationshipStore = new HashMap<>();

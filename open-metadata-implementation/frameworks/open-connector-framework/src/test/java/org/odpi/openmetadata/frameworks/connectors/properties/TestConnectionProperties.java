@@ -17,7 +17,7 @@ public class TestConnectionProperties
 {
     private ElementType          type                 = new ElementType();
     private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, Object>  additionalProperties = new HashMap<>();
+    private Map<String, String>  additionalProperties = new HashMap<>();
     private Map<String, Object>  securedProperties    = new HashMap<>();
     private ConnectorType        connectorType        = new ConnectorType();
     private Endpoint             endpoint             = new Endpoint();
@@ -219,21 +219,21 @@ public class TestConnectionProperties
 
         ConnectionProperties testObject = new ConnectionProperties(connectionBean);
 
-        AdditionalProperties securedProperties = testObject.getSecuredProperties();
+        Map<String, Object> securedProperties = testObject.getSecuredProperties();
 
-        assertTrue(securedProperties.getPropertyNames() != null);
+        assertTrue(securedProperties.keySet() != null);
 
-        Iterator<String> iterator = securedProperties.getPropertyNames();
+        Iterator<String> iterator = securedProperties.keySet().iterator();
 
         String propertyName;
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property2"));
-        assertTrue(securedProperties.getProperty(propertyName).equals(new Integer(2)));
+        assertTrue(securedProperties.get(propertyName).equals(new Integer(2)));
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property1"));
-        assertTrue(securedProperties.getProperty(propertyName).equals("TestString"));
+        assertTrue(securedProperties.get(propertyName).equals("TestString"));
 
         try
         {

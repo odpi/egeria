@@ -241,18 +241,9 @@ public class VirtualConnectionProperties extends ConnectionProperties
      *
      * @return secured properties typically user credentials for the connection
      */
-    protected AdditionalProperties getSecuredProperties()
+    protected Map<String, Object> getSecuredProperties()
     {
-        Map<String, Object>   securedProperties = connectionBean.getSecuredProperties();
-
-        if (securedProperties == null)
-        {
-            return null;
-        }
-        else
-        {
-            return new AdditionalProperties(super.getParentAsset(), securedProperties);
-        }
+        return connectionBean.getSecuredProperties();
     }
 
 

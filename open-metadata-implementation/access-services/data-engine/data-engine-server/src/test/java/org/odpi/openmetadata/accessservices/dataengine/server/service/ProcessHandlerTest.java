@@ -20,6 +20,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.testng.collections.CollectionUtils;
 
 import java.util.Collections;
 import java.util.List;
@@ -43,9 +44,8 @@ class ProcessHandlerTest {
     private static final String LATEST_CHANGE = "latestChange";
     private static final String PROCESS_NAME = "processName";
     private static final List<String> ZONE_MEMBERSHIP = Collections.singletonList("zone");
-    private static final String PARENT_PROCESS_ID = "parentProcessId";
     private static final String ENTITY_GUID = "entityGuid";
-    private static final String DATA_SET_GUID = "dataSetGuid";
+    private static final String PORT_GUID = "portGuid";
 
     @Mock
     private OMRSMetadataCollection metadataCollection;
@@ -77,7 +77,7 @@ class ProcessHandlerTest {
         mockCreatedEntity();
 
         String createdEntityGuid = processHandler.createProcess(USER_ID, PROCESS_NAME, DESCRIPTION, LATEST_CHANGE,
-                ZONE_MEMBERSHIP, DISPLAY_NAME, PARENT_PROCESS_ID);
+                ZONE_MEMBERSHIP, DISPLAY_NAME);
 
         assertEquals(ENTITY_GUID, createdEntityGuid);
     }
@@ -87,76 +87,29 @@ class ProcessHandlerTest {
 
         Throwable thrown = assertThrows(UserNotAuthorizedException.class, () ->
                 processHandler.createProcess(null, PROCESS_NAME, DESCRIPTION, LATEST_CHANGE, ZONE_MEMBERSHIP,
-                        DISPLAY_NAME, PARENT_PROCESS_ID));
+                        DISPLAY_NAME));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-400-001"));
     }
 
-
     @Test
-    void testAddInputRelationships() throws StatusNotSupportedException, UserNotAuthorizedException,
+    void testAddPortsToProcess() throws StatusNotSupportedException, UserNotAuthorizedException,
             org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, InvalidParameterException,
             FunctionNotSupportedException, RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
 
-        mockSkeletonRelationship("ProcessInput");
+        mockSkeletonRelationship("ProcessPort");
 
-        processHandler.addInputRelationships(USER_ID, ENTITY_GUID, Collections.singletonList(DATA_SET_GUID));
+        processHandler.addProcessPortRelationships(USER_ID, ENTITY_GUID, Collections.singletonList(PORT_GUID));
 
         verify(metadataCollection, times(1)).addRelationship(USER_ID, TYPE_DEF_GUID,
-                null, ENTITY_GUID, DATA_SET_GUID, InstanceStatus.ACTIVE);
-    }
-
-    @Test
-    void testAddInputRelationshipsNoInput() throws StatusNotSupportedException, UserNotAuthorizedException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, InvalidParameterException,
-            FunctionNotSupportedException,
-            RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
-
-        processHandler.addInputRelationships(USER_ID, ENTITY_GUID, null);
-
-        verify(metadataCollection, times(0)).addRelationship(USER_ID, TYPE_DEF_GUID,
-                null, ENTITY_GUID, DATA_SET_GUID, InstanceStatus.ACTIVE);
+                null, ENTITY_GUID, PORT_GUID, InstanceStatus.ACTIVE);
     }
 
     @Test
     void testAddInputRelationshipsThrowsUserNotAuthorizedException() {
 
         Throwable thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                processHandler.addInputRelationships(null, ENTITY_GUID, Collections.singletonList(DATA_SET_GUID)));
-
-        assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-400-001"));
-    }
-
-
-    @Test
-    void testAddOutputRelationships() throws StatusNotSupportedException, UserNotAuthorizedException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, InvalidParameterException,
-            FunctionNotSupportedException, RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
-
-        mockSkeletonRelationship("ProcessOutput");
-
-        processHandler.addOutputRelationships(USER_ID, ENTITY_GUID, Collections.singletonList(DATA_SET_GUID));
-
-        verify(metadataCollection, times(1)).addRelationship(USER_ID, TYPE_DEF_GUID,
-                null, ENTITY_GUID, DATA_SET_GUID, InstanceStatus.ACTIVE);
-    }
-
-    @Test
-    void testAddOutputRelationshipsNoInput() throws StatusNotSupportedException, UserNotAuthorizedException,
-            org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException, InvalidParameterException,
-            FunctionNotSupportedException, RepositoryErrorException, EntityNotKnownException, TypeErrorException, PropertyErrorException {
-
-        processHandler.addOutputRelationships(USER_ID, ENTITY_GUID, null);
-
-        verify(metadataCollection, times(0)).addRelationship(USER_ID, TYPE_DEF_GUID,
-                null, ENTITY_GUID, DATA_SET_GUID, InstanceStatus.ACTIVE);
-    }
-
-    @Test
-    void testAddOutputRelationshipsThrowsUserNotAuthorizedException() {
-
-        Throwable thrown = assertThrows(UserNotAuthorizedException.class, () ->
-                processHandler.addOutputRelationships(null, ENTITY_GUID, Collections.singletonList(DATA_SET_GUID)));
+                processHandler.addProcessPortRelationships(null, ENTITY_GUID, Collections.singletonList(PORT_GUID)));
 
         assertTrue(thrown.getMessage().contains("OMAS-DATA-ENGINE-400-001"));
     }

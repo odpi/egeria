@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server.listeners;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
@@ -11,55 +10,27 @@ import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcesso
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
 import org.odpi.openmetadata.repositoryservices.events.OMRSRegistryEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSTypeDefEvent;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
 
     private static final Logger log = LoggerFactory.getLogger(GovernanceEngineOMRSTopicListener.class);
-
+    private String enterpriseOMRSTopic = "EnterpriseOMRSTopic";
     private OMRSInstanceEventProcessor instanceEventProcessor;
-    private OMRSAuditLog auditLog;
 
     public GovernanceEngineOMRSTopicListener(OMRSInstanceEventProcessor instanceEventProcessor, OMRSAuditLog auditLog) {
         this.instanceEventProcessor = instanceEventProcessor;
-        this.auditLog = auditLog;
     }
 
     @Override
     public void processRegistryEvent(OMRSRegistryEvent omrsRegistryEvent) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processTypeDefEvent(OMRSTypeDefEvent event) {
-    }
-
-    public void processEvent(OMRSEventV1 event) {
-        String actionDescription = "processEvent";
-
-        if (event != null) {
-            switch (event.getEventCategory()) {
-                case INSTANCE:
-                    this.processInstanceEvent(new OMRSInstanceEvent(event));
-                    break;
-                case REGISTRY:
-                case TYPEDEF:
-                default:
-                    break;
-
-            }
-        } else {
-            OMRSAuditCode auditCode = OMRSAuditCode.NULL_OMRS_EVENT_RECEIVED;
-
-            auditLog.logRecord(actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
-        }
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -78,7 +49,7 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
 
             switch (instanceEventType) {
                 case NEW_RELATIONSHIP_EVENT:
-                    instanceEventProcessor.processNewRelationshipEvent("EnterpriseOMRSTopic",
+                    instanceEventProcessor.processNewRelationshipEvent(enterpriseOMRSTopic,
                             instanceEventOriginator.getMetadataCollectionId(),
                             instanceEventOriginator.getServerName(),
                             instanceEventOriginator.getServerType(),
@@ -86,7 +57,7 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
                             instanceEvent.getRelationship());
                     break;
                 case CLASSIFIED_ENTITY_EVENT:
-                    instanceEventProcessor.processClassifiedEntityEvent("EnterpriseOMRSTopic",
+                    instanceEventProcessor.processClassifiedEntityEvent(enterpriseOMRSTopic,
                             instanceEventOriginator.getMetadataCollectionId(),
                             instanceEventOriginator.getServerName(),
                             instanceEventOriginator.getServerType(),
@@ -94,15 +65,16 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
                             instanceEvent.getEntity());
                     break;
                 case RECLASSIFIED_ENTITY_EVENT:
-                    instanceEventProcessor.processReclassifiedEntityEvent("EnterpriseOMRSTopic",
+                    instanceEventProcessor.processReclassifiedEntityEvent(enterpriseOMRSTopic,
                             instanceEventOriginator.getMetadataCollectionId(),
                             instanceEventOriginator.getServerName(),
                             instanceEventOriginator.getServerType(),
                             instanceEventOriginator.getOrganizationName(),
                             instanceEvent.getEntity());
-
+                    break;
                 default:
-
+                    log.debug("Unknown instance event error code, ignoring event");
+                    break;
             }
         }
     }

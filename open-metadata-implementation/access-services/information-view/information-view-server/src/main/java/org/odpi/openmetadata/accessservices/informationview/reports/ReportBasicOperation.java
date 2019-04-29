@@ -3,11 +3,15 @@
 package org.odpi.openmetadata.accessservices.informationview.reports;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.informationview.events.*;
+import org.odpi.openmetadata.accessservices.informationview.events.ReportColumn;
+import org.odpi.openmetadata.accessservices.informationview.events.ReportElement;
+import org.odpi.openmetadata.accessservices.informationview.events.ReportSection;
+import org.odpi.openmetadata.accessservices.informationview.events.Source;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ReportElementCreationException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
-import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -72,9 +76,14 @@ public abstract class ReportBasicOperation extends BasicOperation{
             } else if (element instanceof ReportColumn) {
                 addReportColumn(qualifiedNameForParent, parentGuid, (ReportColumn) element);
             }
-        } catch (Exception e) {
+        } catch (PagingErrorException | TypeDefNotKnownException | PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException e) {
             log.error("Exception creating report element", e);
-            throw new RuntimeException("Unable to create Report Element due to exception: " + e.getClass().getName() + " and message " + e.getMessage(), e);//TODO throw specific exception
+            throw new ReportElementCreationException(ReportBasicOperation.class.getName(),
+                                                    InformationViewErrorCode.REPORT_ELEMENT_CREATION_EXCEPTION.getFormattedErrorMessage(element.toString(), e.getMessage()),
+                                                    InformationViewErrorCode.REPORT_ELEMENT_CREATION_EXCEPTION.getSystemAction(),
+                                                    InformationViewErrorCode.REPORT_ELEMENT_CREATION_EXCEPTION.getUserAction(),
+                                                    e);
+
         }
     }
 
@@ -129,14 +138,14 @@ public abstract class ReportBasicOperation extends BasicOperation{
                 .build();
         EntityDetail sectionEntity = omEntityDao.addEntity(Constants.DOCUMENT_SCHEMA_ATTRIBUTE,
                                                                     qualifiedNameForSection,
-                                                                    sectionProperties);
+                                                                    sectionProperties,
+                                                        false);
 
 
         omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
                                             parentGuid,
                                             sectionEntity.getGUID(),
-                                            Constants.INFORMATION_VIEW_OMAS_NAME,
-                                            new InstanceProperties());
+                new InstanceProperties());
 
         String qualifiedNameForSectionType = buildQualifiedNameForSchemaType(qualifiedNameForParent, Constants.DOCUMENT_SCHEMA_TYPE, reportSection);
         return addSchemaType(qualifiedNameForSectionType, sectionEntity, Constants.DOCUMENT_SCHEMA_TYPE);
@@ -171,13 +180,13 @@ public abstract class ReportBasicOperation extends BasicOperation{
                 .withStringProperty(Constants.FORMULA, reportColumn.getFormula())
                 .build();
         EntityDetail derivedColumnEntity = omEntityDao.addEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE,
-                qualifiedNameForColumn,
-                columnProperties);
+                                                                qualifiedNameForColumn,
+                                                                columnProperties,
+                                                    false);
 
         omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
                 parentGuid,
                 derivedColumnEntity.getGUID(),
-                Constants.INFORMATION_VIEW_OMAS_NAME,
                 new InstanceProperties());
 
         addBusinessTerm(reportColumn, derivedColumnEntity);
@@ -211,7 +220,7 @@ public abstract class ReportBasicOperation extends BasicOperation{
      * @throws RepositoryErrorException
      * @throws ClassificationErrorException
      */
-    protected EntityDetail addSchemaType(String qualifiedNameForType, EntityDetail schemaAttributeEntity, String schemaAttributeTypeName) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
+    protected EntityDetail addSchemaType(String qualifiedNameForType, EntityDetail schemaAttributeEntity, String schemaAttributeTypeName) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException, ClassificationErrorException {
 
 
         InstanceProperties typeProperties = new EntityPropertiesBuilder()
@@ -220,12 +229,12 @@ public abstract class ReportBasicOperation extends BasicOperation{
 
         EntityDetail schemaTypeEntity = omEntityDao.addEntity(schemaAttributeTypeName,
                                                                         qualifiedNameForType,
-                                                                        typeProperties);
+                                                                        typeProperties,
+                                                                        false);
 
         omEntityDao.addRelationship(Constants.SCHEMA_ATTRIBUTE_TYPE,
                                             schemaAttributeEntity.getGUID(),
                                             schemaTypeEntity.getGUID(),
-                                            Constants.INFORMATION_VIEW_OMAS_NAME,
                                             new InstanceProperties());
         return schemaTypeEntity;
     }
@@ -245,14 +254,13 @@ public abstract class ReportBasicOperation extends BasicOperation{
      * @throws TypeDefNotKnownException
      * @throws EntityNotKnownException
      */
-    private void addBusinessTerm(ReportColumn reportColumn, EntityDetail derivedColumnEntity) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, StatusNotSupportedException, TypeDefNotKnownException, EntityNotKnownException {
+    private void addBusinessTerm(ReportColumn reportColumn, EntityDetail derivedColumnEntity) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, StatusNotSupportedException, EntityNotKnownException {
         String businessTermGuid = entityReferenceResolver.getBusinessTermGuid(reportColumn.getBusinessTerm());
             if (!StringUtils.isEmpty(businessTermGuid)) {
                 omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
                                             derivedColumnEntity.getGUID(),
                                             businessTermGuid,
-                                            Constants.INFORMATION_VIEW_OMAS_NAME,
-                                            new InstanceProperties());
+                        new InstanceProperties());
             }
     }
 
@@ -271,7 +279,7 @@ public abstract class ReportBasicOperation extends BasicOperation{
      * @throws UserNotAuthorizedException
      * @throws RepositoryErrorException
      */
-    private void addQueryTargets(ReportColumn reportColumn, EntityDetail derivedColumnEntity) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException {
+    private void addQueryTargets(ReportColumn reportColumn, EntityDetail derivedColumnEntity) throws InvalidParameterException, StatusNotSupportedException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, PagingErrorException, UserNotAuthorizedException, RepositoryErrorException {
         for (Source source : reportColumn.getSources()) {
 
             String sourceColumnGUID = entityReferenceResolver.getSourceGuid(source);
@@ -284,7 +292,6 @@ public abstract class ReportBasicOperation extends BasicOperation{
                 omEntityDao.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
                                                     derivedColumnEntity.getGUID(),
                                                     sourceColumnGUID,
-                                                    Constants.INFORMATION_VIEW_OMAS_NAME,
                                                     schemaQueryImplProperties);
 
             } else {
@@ -319,13 +326,13 @@ public abstract class ReportBasicOperation extends BasicOperation{
         complexSchemaTypeEntity = omEntityDao.addEntity(Constants.COMPLEX_SCHEMA_TYPE,
                                                                   qualifiedNameForComplexSchemaType,
                                                                   complexSchemaTypeProperties,
-                                                       null);
+                                                       null,
+                                                    false);
 
         omEntityDao.addRelationship(Constants.ASSET_SCHEMA_TYPE,
                                                 reportEntity.getGUID(),
                                                 complexSchemaTypeEntity.getGUID(),
-                                                Constants.INFORMATION_VIEW_OMAS_NAME,
-                                                new InstanceProperties());
+                new InstanceProperties());
         return complexSchemaTypeEntity;
     }
 

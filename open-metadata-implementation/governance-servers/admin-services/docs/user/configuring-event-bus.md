@@ -3,7 +3,7 @@
 
 # Setting up the default event bus
 
-A [OMAG server](../concepts/logical-omag-server.md) uses an event bus to exchange events with other
+A [OMAG server](../concepts/omag-server.md) uses an event bus to exchange events with other
 servers and tools.  ODPi Egeria manages the specific topic names;
 however, it needs to know where the event bus implementation is and
 any properties needed to configure it.
@@ -17,11 +17,11 @@ request body.  The correct properties to use are defined in the connector type f
 
 ```
 
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/event-bus
+POST http://localhost:8080/open-metadata/admin-services/users/{adminUserId}/servers/{serverName}/event-bus
 
 ```
 
-For example, when using Kafka as your event bus you may want to configure properties such as:
+For example, when using Apache Kafka as your event bus you may want to configure properties such as:
 
 ```json
 {

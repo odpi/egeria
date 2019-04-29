@@ -3,11 +3,25 @@
 package org.odpi.openmetadata.accessservices.informationview.reports;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
-import org.odpi.openmetadata.accessservices.informationview.events.*;
-import org.odpi.openmetadata.accessservices.informationview.lookup.*;
+import org.odpi.openmetadata.accessservices.informationview.events.BusinessTerm;
+import org.odpi.openmetadata.accessservices.informationview.events.DataViewColumnSource;
+import org.odpi.openmetadata.accessservices.informationview.events.DatabaseColumnSource;
+import org.odpi.openmetadata.accessservices.informationview.events.ReportColumnSource;
+import org.odpi.openmetadata.accessservices.informationview.events.Source;
+import org.odpi.openmetadata.accessservices.informationview.lookup.LookupBasedOnDataView;
+import org.odpi.openmetadata.accessservices.informationview.lookup.LookupBasedOnDatabaseColumn;
+import org.odpi.openmetadata.accessservices.informationview.lookup.LookupBasedOnReportColumn;
+import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
+import org.odpi.openmetadata.accessservices.informationview.lookup.LookupStrategy;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
@@ -59,7 +73,7 @@ public class EntityReferenceResolver {
         }
         String sourceName = source.getClass().getName();
         if (!StringUtils.isEmpty(source.getQualifiedName())) {
-            EntityDetail entity = omEntityDao.getEntity(sourceName, source.getQualifiedName());
+            EntityDetail entity = omEntityDao.getEntity(sourceName, source.getQualifiedName(), false);
             return entity.getGUID();
         }
         LookupStrategy strategy = strategies.get(sourceName);
@@ -97,7 +111,8 @@ public class EntityReferenceResolver {
         }
 
         if (!StringUtils.isEmpty(businessTerm.getQualifiedName())) {
-            EntityDetail entity = omEntityDao.getEntity(Constants.BUSINESS_TERM, businessTerm.getQualifiedName());
+            EntityDetail entity = omEntityDao.getEntity(Constants.BUSINESS_TERM, businessTerm.getQualifiedName(),
+                    false);
             return entity.getGUID();
         }
         return null;

@@ -222,25 +222,25 @@ public enum OMRSAuditCode
 
     NEW_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0040",
                       OMRSAuditLogRecordSeverity.INFO,
-                      "An enterprise OMRS connector has been created for the {0} open metadata access service",
+                      "An enterprise OMRS connector has been created for the {0} Open Metadata Access Service (OMAS)",
                       "The connector will support access to the connected open metadata repositories.",
                       "No action is required.  This is part of the normal operation of the server."),
 
     STARTING_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0041",
                       OMRSAuditLogRecordSeverity.INFO,
-                      "The enterprise OMRS connector for the {0} open metadata access service has started",
+                      "The enterprise OMRS connector for the {0} Open Metadata Access Service (OMAS) has started",
                       "The connector will support access to the connected open metadata repositories.",
                       "No action is required.  This is part of the normal operation of the server."),
 
     DISCONNECTING_ENTERPRISE_CONNECTOR("OMRS-AUDIT-0042",
                       OMRSAuditLogRecordSeverity.INFO,
-                      "The enterprise OMRS Connector for the {0} open metadata access service has shutdown",
+                      "The enterprise OMRS Connector for the {0} Open Metadata Access Service (OMAS) has shutdown",
                       "The connector will support access to the connected open metadata repositories.",
                       "No action is required.  This is part of the normal operation of the server."),
 
     ENTERPRISE_CONNECTOR_FAILED("OMRS-AUDIT-0043",
                       OMRSAuditLogRecordSeverity.INFO,
-                      "The create of an enterprise OMRS Connector for the {0} open metadata access service failed with this error message: {1}",
+                      "The create of an enterprise OMRS Connector for the {0} Open Metadata Access Service (OMAS) failed with this error message: {1}",
                       "The connector will support access to the connected open metadata repositories.",
                       "No action is required.  This is part of the normal operation of the server."),
 
@@ -393,7 +393,7 @@ public enum OMRSAuditCode
                       OMRSAuditLogRecordSeverity.ACTION,
                       "Registration error occurred in cohort {0} because the local server is not able to use " +
                                     "the remote connection {1} supplied by server {2} that hosts metadata " +
-                                    "collection {3} to create a connector to its metadata repository",
+                                    "collection {3} to create a connector to its metadata repository.  Error message is {4}",
                       "The local server is not able to query metadata from the remote server.",
                       "This error may be caused because the connection is incorrectly " +
                                     "configured, or that the jar file for the connector is not available in the " +

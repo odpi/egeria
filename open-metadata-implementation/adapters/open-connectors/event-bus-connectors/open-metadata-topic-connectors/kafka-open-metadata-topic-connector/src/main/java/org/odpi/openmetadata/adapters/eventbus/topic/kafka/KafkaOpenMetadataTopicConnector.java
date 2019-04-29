@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
-import org.odpi.openmetadata.frameworks.connectors.properties.AdditionalProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
 
 import java.util.*;
@@ -21,7 +20,10 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 {
     private static final Logger       log      = LoggerFactory.getLogger(KafkaOpenMetadataTopicConnector.class);
 
+    
     private Properties producerProperties = new Properties();
+    
+    private Properties consumerEgeriaProperties = new Properties();
     private Properties consumerProperties = new Properties();
 
     private KafkaOpenMetadataEventConsumer consumer = null;
@@ -76,17 +78,17 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         {
             topicName = endpoint.getAddress();
 
-            AdditionalProperties additionalProperties = connectionProperties.getAdditionalProperties();
-            if (additionalProperties != null)
+            Map<String, Object> configurationProperties = connectionProperties.getConfigurationProperties();
+            if (configurationProperties != null)
             {
-                this.initializeKafkaProperties(additionalProperties);
+                this.initializeKafkaProperties(configurationProperties);
 
                 /*
                  * The consumer group defines which list of events that this connector is processing.  A particular server
                  * wants to keep reading from the same list.  Thus it needs to be passed the group.id it used
                  * the last time it ran.  This is supplied in the connection object as the serverIdProperty.
                  */
-                serverId = (String) additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.serverIdPropertyName);
+                serverId = (String) configurationProperties.get(KafkaOpenMetadataTopicProvider.serverIdPropertyName);
                 consumerProperties.put("group.id", serverId);
 
                 if (auditLog != null)
@@ -139,19 +141,19 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
      * This method overrides the initial values with properties configured on the event bus admin service.
      * For most environments, the only properties needed are the bootstrap servers.
      *
-     * @param additionalProperties additional properties from the connection.
+     * @param configurationProperties additional properties from the connection.
      */
-    private void  initializeKafkaProperties(AdditionalProperties additionalProperties)
+    private void  initializeKafkaProperties(Map<String, Object> configurationProperties)
     {
-        final String           actionDescription = "initializeKafkaProperties";
+        final String                             actionDescription = "initializeKafkaProperties";
         KafkaOpenMetadataTopicConnectorAuditCode auditCode;
+        Map<String, Object>   propertiesMap;
 
         try
         {
             Object              propertiesObject;
-            Map<String, Object> propertiesMap;
 
-            propertiesObject = additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.producerPropertyName);
+            propertiesObject = configurationProperties.get(KafkaOpenMetadataTopicProvider.producerPropertyName);
             if (propertiesObject != null)
             {
                 propertiesMap = (Map<String, Object>)propertiesObject;
@@ -161,7 +163,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                 }
             }
 
-            propertiesObject = additionalProperties.getProperty(KafkaOpenMetadataTopicProvider.consumerPropertyName);
+            propertiesObject = configurationProperties.get(KafkaOpenMetadataTopicProvider.consumerPropertyName);
             if (propertiesObject != null)
             {
                 propertiesMap = (Map<String, Object>)propertiesObject;
@@ -173,7 +175,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         }
         catch (Throwable   error)
         {
-            auditCode = KafkaOpenMetadataTopicConnectorAuditCode.UNABLE_TO_PARSE_ADDITIONAL_PROPERTIES;
+            auditCode = KafkaOpenMetadataTopicConnectorAuditCode.UNABLE_TO_PARSE_CONFIG_PROPERTIES;
             auditLog.logRecord(actionDescription,
                                auditCode.getLogMessageId(),
                                auditCode.getSeverity(),
@@ -184,6 +186,19 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         }
     }
 
+
+	private void copyProperties(Object propertiesObject, Properties target)
+    {
+		Map<String, Object> propertiesMap;
+		if (propertiesObject != null)
+		{
+		    propertiesMap = (Map<String, Object>)propertiesObject;
+		    for (Map.Entry<String, Object> entry : propertiesMap.entrySet())
+		    {
+		        target.setProperty(entry.getKey(), (String) entry.getValue());
+		    }
+		}
+	}
 
     /**
      * Indicates that the connector is completely configured and can begin processing.
@@ -199,8 +214,9 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
         Thread                         producerThread;
 
         this.initializeTopic();
-
-        consumer = new KafkaOpenMetadataEventConsumer(topicName, serverId, consumerProperties, this, auditLog);
+        
+        KafkaOpenMetadataEventConsumerConfiguration consumerConfig = new KafkaOpenMetadataEventConsumerConfiguration(consumerEgeriaProperties, auditLog);
+        consumer = new KafkaOpenMetadataEventConsumer(topicName, serverId, consumerConfig, consumerProperties, this, auditLog);
         consumerThread = new Thread(consumer, threadHeader + "Consumer-" + topicName);
         consumerThread.start();
 
@@ -243,7 +259,7 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
 
         if ((incomingEventsList != null) && (!incomingEventsList.isEmpty()))
         {
-            log.debug("checking for events {0}" + incomingEventsList);
+            log.debug("Checking for events.  Number of found events: {0}", incomingEventsList.size());
             newEvents = new ArrayList<>(incomingEventsList);
 
             // empty incomingEventsList otherwise same events will be sent again
@@ -289,5 +305,14 @@ public class KafkaOpenMetadataTopicConnector extends OpenMetadataTopicConnector
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
+    }
+    
+    /**
+     * Gets the number of events that have not been processed yet.
+     * 
+     * @return
+     */
+    public int getNumberOfUnprocessedEvents() {
+    	return incomingEventsList.size();
     }
 }

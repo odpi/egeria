@@ -3,14 +3,16 @@
 
 # Open Metadata and Governance (OMAG) Server Platform
 
-The OMAG server platform provides the server environment for running open metadata
-and governance services.
+The **OMAG server platform** provides the server environment for running open metadata
+and governance services.  It hosts one or more **OMAG servers**.  Each server is configured to support specific
+open metadata and governance services.  Thus each server performance a specific role in an deployment landscape.
 
-It is included in the [ODPi Egeria Distribution TAR file](../../../open-metadata-distribution/open-metadata-assemblies)
+The OMAG server platform is included in the [ODPi Egeria Distribution TAR file](../../../open-metadata-distribution/open-metadata-assemblies)
 which can be installed on your machine by following the [Installing ODPi Egeria Tutorial](../../../open-metadata-resources/open-metadata-tutorials/building-egeria-tutorial/task-installing-egeria.md).
 
-The OMAG server platform supports two broad groups of services:
+The OMAG server platform supports three broad groups of services:
 
+* **Server Origin Service** - used to determine the type and level of the OMAG server platform.
 * **Administration Services** - used to configure and manage logical OMAG servers running inside the OMAG server platform.
 * **Open Metadata and Governance Services** - used to work with metadata and govern the assets of an organization.
 
@@ -18,6 +20,9 @@ Figure 1 shows the OMAG server platform when it first starts up.
 
 ![Figure 1](omag-server-platform-start-up.png)
 > Figure 1: OMAG server platform at start up
+
+The server origin service is operational at this point.  It can be used by operational scripts to determine if the 
+OMAG server platform is still running.
 
 The administration services are active at this point, while the open metadata and governance services
 will return an error if called since there are no [logical OMAG servers](../../../open-metadata-implementation/governance-servers/admin-services/docs/concepts/logical-omag-server.md) running.
@@ -31,15 +36,15 @@ Figure 2 shows the configuration services creating three configuration documents
 * one for the **dataLakeDiscoveryEngine** OMAG Server
 
 ![Figure 2](omag-server-platform-configure.png)
-> Figure 2: Creating configuration documents for logical OMAG Servers
+> Figure 2: Creating configuration documents for OMAG Servers
 
 The [Administration Services User Guide](../../../open-metadata-implementation/governance-servers/admin-services/Using-the-Admin-Services.md)
 provides detailed instructions on creating configuration documents.
 
-Once a configuration document for a logical OMAG server is defined,
-the operational services use it to initialize a logical OMAG server.
-The logical OMAG server can be started in any OMAG server platform.
-It does not have to be the OMAG server platform that created the configuration document.
+Once a configuration document for an OMAG server is used by
+the operational services initialize the requested services in the OMAG server.
+The OMAG server can be started in any OMAG server platform.
+It does not have to be the same OMAG server platform that created the configuration document.
 
 Figure 3 shows an OMAG server platform with the **cdoMetadataRepository** local OMAG server
 running.

@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.subjectarea.responses;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.Synonym;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
@@ -45,9 +46,9 @@ public class SynonymRelationshipResponse extends SubjectAreaOMASAPIResponse
         return synonym;
     }
 
-    public void setSynonym(Synonym synonym)
+    public void setSynonym(Line line)
     {
-        this.synonym = synonym;
+        this.synonym = (Synonym)line;
     }
 
 

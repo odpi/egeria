@@ -48,7 +48,7 @@ public class GovernanceEngineEventProcessor {
         try {
             governedAssetHandler = new GovernedAssetHandler(enterpriseOMRSRepositoryConnector);
         } catch (MetadataServerException e) {
-            log.error(e.getErrorMessage());
+            log.error("Metadata Server is not available.");
         }
 
     }
@@ -74,7 +74,6 @@ public class GovernanceEngineEventProcessor {
         }
 
         GovernanceEngineEvent governanceEvent = getGovernanceEngineEvent(entityDetail, GovernanceEngineEventType.NEW_CLASSIFIED_ASSET);
-
         sendEvent(governanceEvent);
     }
 
@@ -111,7 +110,7 @@ public class GovernanceEngineEventProcessor {
         } catch (JsonProcessingException e) {
             log.error("[Governance Engine] Unable to map the json to string");
         } catch (ConnectorCheckedException e) {
-            log.error("[Governance Engine] Unable to send event %s", event);
+            log.error("[Governance Engine] Unable to send event {}", event);
         }
     }
 

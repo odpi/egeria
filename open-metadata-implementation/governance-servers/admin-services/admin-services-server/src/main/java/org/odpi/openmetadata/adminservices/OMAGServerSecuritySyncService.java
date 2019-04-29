@@ -9,10 +9,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySync
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class OMAGServerSecuritySyncService {
 
@@ -32,19 +29,19 @@ public class OMAGServerSecuritySyncService {
         try {
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
-            List<String> configAuditLog = serverConfig.getAuditTrail();
+            List<String> configAuditTrail = serverConfig.getAuditTrail();
 
-            if (configAuditLog == null) {
-                configAuditLog = new ArrayList<>();
+            if (configAuditTrail == null) {
+                configAuditTrail = new ArrayList<>();
             }
 
             if (securitySyncConfig == null) {
-                configAuditLog.add(new Date().toString() + " " + userId + " removed configuration for security sync services.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for security sync services.");
             } else {
-                configAuditLog.add(new Date().toString() + " " + userId + " updated configuration for security sync services.");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for security sync services.");
             }
 
-            serverConfig.setAuditTrail(configAuditLog);
+            serverConfig.setAuditTrail(configAuditTrail);
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
 
             EventBusConfig eventBusConfig = serverConfig.getEventBusConfig();
@@ -56,7 +53,7 @@ public class OMAGServerSecuritySyncService {
                                 eventBusConfig.getTopicURLRoot() + ".server." + serverName,
                                 securitySyncConfig.getSecuritySyncInTopicName(),
                                 UUID.randomUUID().toString(),
-                                eventBusConfig.getAdditionalProperties()));
+                                eventBusConfig.getConfigurationProperties()));
             }
 
             if(securitySyncConfig != null && securitySyncConfig.getSecurityServerType() != null) {
@@ -64,9 +61,20 @@ public class OMAGServerSecuritySyncService {
                         connectorConfigurationFactory.getDefaultEventBusConnection(defaultOutTopicName,
                                 eventBusConfig.getConnectorProvider(),
                                 eventBusConfig.getTopicURLRoot() + ".server." + serverName,
-                                getOutputTopicName(securitySyncConfig.getSecurityServerType()),
+                                getOutputTopicName(securitySyncConfig.getSecuritySyncOutTopicName()),
                                 serverConfig.getLocalServerId(),
-                                eventBusConfig.getAdditionalProperties()));
+                                eventBusConfig.getConfigurationProperties()));
+            }
+
+            if(securitySyncConfig.getSecurityServerURL() != null && securitySyncConfig.getSecurityServerAuthorization() != null){
+                Map<String, Object> additionalProperties = new HashMap<>();
+                additionalProperties.put("securityServerAuthorization", securitySyncConfig.getSecurityServerAuthorization());
+                additionalProperties.put("tagServiceName", securitySyncConfig.getTagServiceName());
+
+                securitySyncConfig.setSecurityServerConnection(
+                        connectorConfigurationFactory.getSecuritySyncServerConnection(serverName,
+                                securitySyncConfig.getSecurityServerURL(),
+                                additionalProperties));
             }
 
             serverConfig.setSecuritySyncConfig(securitySyncConfig);

@@ -43,22 +43,22 @@ public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
 
     @Override
     public void sendInstanceEvent(String sourceName, OMRSInstanceEvent instanceEvent) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processNewEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processUpdatedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail oldEntity, EntityDetail newEntity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processUndoneEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -72,13 +72,13 @@ public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
         try {
             governanceEngineEventProcessor.processClassifiedEntity(entity);
         } catch (RepositoryErrorException | EntityProxyOnlyException | InvalidParameterException | UserNotAuthorizedException | PagingErrorException | TypeDefNotKnownException | EntityNotKnownException | PropertyErrorException | FunctionNotSupportedException | TypeErrorException e) {
-            log.error(e.getErrorMessage());
+            log.debug("Governance Engine OMAS is unable to process a Classified Entity event");
         }
     }
 
     @Override
     public void processDeclassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -92,48 +92,48 @@ public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
         try {
             governanceEngineEventProcessor.processReclassifiedEntity(entity);
         } catch (EntityProxyOnlyException | RepositoryErrorException | InvalidParameterException | UserNotAuthorizedException | PagingErrorException | TypeDefNotKnownException | EntityNotKnownException | PropertyErrorException | FunctionNotSupportedException | TypeErrorException e) {
-            log.error(e.getErrorMessage());
+            log.debug("Governance Engine OMAS is unable to process a Re-Classified Entity event");
         }
     }
 
     @Override
     public void processDeletedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processPurgedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, String typeDefGUID, String typeDefName, String instanceGUID) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processRestoredEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processReTypedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, TypeDefSummary originalTypeDef, EntityDetail entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processReHomedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, String originalHomeMetadataCollectionId, EntityDetail entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processReIdentifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, String originalEntityGUID, EntityDetail entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processRefreshEntityRequested(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, String typeDefGUID, String typeDefName, String instanceGUID, String homeMetadataCollectionId) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processRefreshEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -150,68 +150,73 @@ public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
         try {
             governanceEngineEventProcessor.processSemanticAssignmentRelationshipCreation(relationship);
         } catch (RepositoryErrorException | UserNotAuthorizedException | EntityProxyOnlyException | PropertyErrorException | FunctionNotSupportedException | PagingErrorException | TypeDefNotKnownException | TypeErrorException | EntityNotKnownException | InvalidParameterException e) {
-            log.debug(e.getErrorMessage());
+            log.debug("Governance Engine OMAS is unable to process a New Relationship Event");
         }
     }
 
     @Override
     public void processUpdatedRelationshipEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, Relationship oldRelationship, Relationship newRelationship) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processUndoneRelationshipEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, Relationship relationship) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processDeletedRelationshipEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, Relationship relationship) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processPurgedRelationshipEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, String typeDefGUID, String typeDefName, String instanceGUID) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processRestoredRelationshipEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, Relationship relationship) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processReTypedRelationshipEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, TypeDefSummary originalTypeDef, Relationship relationship) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processReHomedRelationshipEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, String originalHomeMetadataCollectionId, Relationship relationship) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processReIdentifiedRelationshipEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, String originalRelationshipGUID, Relationship relationship) {
-
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processRefreshRelationshipRequest(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, String typeDefGUID, String typeDefName, String instanceGUID, String homeMetadataCollectionId) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processRefreshRelationshipEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, Relationship relationship) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processInstanceBatchEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, InstanceGraph instances) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processConflictingInstancesEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, String targetMetadataCollectionId, TypeDefSummary targetTypeDef, String targetInstanceGUID, String otherMetadataCollectionId, InstanceProvenanceType otherOrigin, TypeDefSummary otherTypeDef, String otherInstanceGUID, String errorMessage) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public void processConflictingTypeEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, String targetMetadataCollectionId, TypeDefSummary targetTypeDef, String targetInstanceGUID, TypeDefSummary otherTypeDef, String errorMessage) {
+        throw new UnsupportedOperationException();
     }
 
     private boolean validateEntityType(EntityDetail entity) {

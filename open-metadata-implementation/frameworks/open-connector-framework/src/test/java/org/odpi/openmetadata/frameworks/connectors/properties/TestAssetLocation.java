@@ -17,7 +17,7 @@ public class TestAssetLocation
 {
     private ElementType          type                 = new ElementType();
     private List<Classification> classifications      = new ArrayList<>();
-    private Map<String, Object>  additionalProperties = new HashMap<>();
+    private Map<String, String>  additionalProperties = new HashMap<>();
 
     private Date                 startDate    = new Date(27);
     private Date                 endDate      = new Date(1234);
