@@ -219,7 +219,6 @@ public abstract class DataViewBasicOperation extends BasicOperation{
             omEntityDao.addRelationship(Constants.SEMANTIC_ASSIGNMENT,
                     derivedColumnEntity.getGUID(),
                     businessTermGuid,
-                    Constants.INFORMATION_VIEW_OMAS_NAME,
                     new InstanceProperties());
         }
     }
@@ -249,7 +248,6 @@ public abstract class DataViewBasicOperation extends BasicOperation{
             omEntityDao.addRelationship(Constants.SCHEMA_QUERY_IMPLEMENTATION,
                     derivedColumnEntity.getGUID(),
                     sourceColumnGUID,
-                    Constants.INFORMATION_VIEW_OMAS_NAME,
                     schemaQueryImplProperties);
 
     }

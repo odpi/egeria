@@ -24,7 +24,7 @@ import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-menu-button';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
-import './my-icons.js';
+import './asset-search/my-icons.js';
 import './token-ajax.js';
 import './login-view.js';
 import './user-options-menu';
@@ -46,6 +46,8 @@ class MyApp extends PolymerElement {
           --app-secondary-color: #24272a;
           display: block;
         }
+        
+        
         
         app-drawer-layout:not([narrow]) [drawer-toggle] {
           display: none;
@@ -89,7 +91,7 @@ class MyApp extends PolymerElement {
             <login-view id="loginView" token="{{token}}"></login-view>
         </template>
       
-        <template id="v" is="dom-if" if="[[token]]"  restamp="true">
+        <template is="dom-if" if="[[token]]"  restamp="true">
             <app-drawer-layout fullbleed="" narrow="{{narrow}}">
             <!-- Drawer content -->
             <app-drawer id="drawer" slot="drawer" swipe-open="[[narrow]]">
@@ -109,7 +111,7 @@ class MyApp extends PolymerElement {
                     <app-toolbar>
                       <paper-icon-button icon="my-icons:menu" drawer-toggle=""></paper-icon-button>
                       <div main-title="">Asset Catalog search</div>
-                      <user-options></user-options>
+                      <user-options token="[[token]]"></user-options>
                     </app-toolbar>
                   </app-header>
         
@@ -144,6 +146,11 @@ class MyApp extends PolymerElement {
             pages: {
                 type: Array,
                 value: ['search', 'data', 'view2', 'view3']
+            },
+            feedback: {
+                type: Object,
+                notify: true,
+                observer: '_feedbackChanged'
             }
         };
     }
@@ -158,6 +165,7 @@ class MyApp extends PolymerElement {
         super.ready();
         this.addEventListener('logout', this._onLogout);
         this.addEventListener('open-page', this._onPageChanged);
+        this.addEventListener('show-feedback', this._onFeedbackChanged);
     }
 
     _routePageChanged(page) {
@@ -186,6 +194,11 @@ class MyApp extends PolymerElement {
         console.log("_onPageChanged... " + this.page);
     }
 
+    _onPageChanged(event) {
+        this.page = event.model.item.page;
+        console.log("_onPageChanged... " + this.page);
+    }
+
     _onLogout(event) {
         //TODO invalidate token from server
         this.token = null;
@@ -202,19 +215,19 @@ class MyApp extends PolymerElement {
         // statement, so break it up.
         switch (page) {
             case 'data':
-                import('./data-view.js');
+                import('./asset-search/data-view.js');
                 break;
             case 'view2':
-                import('./my-view2.js');
+                import('./asset-search/my-view2.js');
                 break;
             case 'view3':
-                import('./my-view3.js');
+                import('./asset-search/my-view3.js');
                 break;
             case 'view404':
-                import('./my-view404.js');
+                import('./asset-search/my-view404.js');
                 break;
             case 'search' :
-                import('./asset-search-view.js');
+                import('./asset-search/asset-search-view.js');
                 break;
         }
     }

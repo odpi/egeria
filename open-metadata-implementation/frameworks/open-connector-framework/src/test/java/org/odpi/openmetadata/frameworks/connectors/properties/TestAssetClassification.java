@@ -174,7 +174,7 @@ public class TestAssetClassification
         Map<String, Object>  propertyMap = new HashMap<>();
 
         propertyMap.put("property1", "TestString");
-        propertyMap.put("property2", new Integer(2));
+        propertyMap.put("property2", "Two");
 
         Classification classificationBean = new Classification();
         classificationBean.setClassificationName("TestClassificationName");
@@ -182,21 +182,21 @@ public class TestAssetClassification
 
         AssetClassification testObject = new AssetClassification(classificationBean);
 
-        AdditionalProperties classificationProperties = testObject.getProperties();
+        Map<String, Object> classificationProperties = testObject.getProperties();
 
-        assertTrue(classificationProperties.getPropertyNames() != null);
+        assertTrue(classificationProperties.keySet() != null);
 
-        Iterator<String> iterator = classificationProperties.getPropertyNames();
+        Iterator<String> iterator = classificationProperties.keySet().iterator();
 
         String propertyName;
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property2"));
-        assertTrue(classificationProperties.getProperty(propertyName).equals(new Integer(2)));
+        assertTrue(classificationProperties.get(propertyName).equals("Two"));
 
         propertyName = iterator.next();
         assertTrue(propertyName.equals("property1"));
-        assertTrue(classificationProperties.getProperty(propertyName).equals("TestString"));
+        assertTrue(classificationProperties.get(propertyName).equals("TestString"));
 
         try
         {

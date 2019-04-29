@@ -16,12 +16,22 @@ import org.odpi.openmetadata.accessservices.informationview.views.beans.View;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -34,11 +44,13 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
     private final OMRSAuditLog auditLog;
     private EventPublisher eventPublisher;
     private OMRSRepositoryHelper helper;
+    private List<String> supportedZones;
 
-    public InformationViewInTopicListener(OMEntityDao omEntityDao, EventPublisher eventPublisher, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
+    public InformationViewInTopicListener(OMEntityDao omEntityDao, EventPublisher eventPublisher, OMRSRepositoryHelper helper, List<String> supportedZones, OMRSAuditLog auditLog) {
         this.omEntityDao = omEntityDao;
         this.auditLog = auditLog;
         this.eventPublisher =  eventPublisher;
+        this.supportedZones = supportedZones;
         this.helper = helper;
     }
 
@@ -79,23 +91,22 @@ public class InformationViewInTopicListener implements OpenMetadataTopicListener
                     omEntityDao.addRelationship(Constants.ATTRIBUTE_FOR_SCHEMA,
                             informationViewAsset.getRelationalDbSchemaType().getGUID(),
                             view.getViewEntity().getGUID(),
-                            Constants.INFORMATION_VIEW_OMAS_NAME,
                             new InstanceProperties());
-                    event.getTableSource().setTableGuid(view.getViewEntity().getGUID());
+                    event.getTableSource().setGuid(view.getViewEntity().getGUID());
                 }
                 eventPublisher.sendEvent(event);
-            } catch (Exception e) {
-                log.error("Exception processing event from in topic", e);
-                InformationViewErrorCode auditCode = InformationViewErrorCode.PROCESS_EVENT_EXCEPTION;
+            } catch (PagingErrorException | ExecutionException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | PropertyErrorException | RepositoryErrorException | InvalidParameterException | FunctionNotSupportedException | InterruptedException | TypeErrorException e) {
+                    log.error("Exception processing event from in topic", e);
+                    InformationViewErrorCode auditCode = InformationViewErrorCode.PROCESS_EVENT_EXCEPTION;
 
-                auditLog.logException("processEvent",
-                        auditCode.getErrorMessageId(),
-                        OMRSAuditLogRecordSeverity.EXCEPTION,
-                        auditCode.getFormattedErrorMessage(eventAsString, e.getMessage()),
-                        e.getMessage(),
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction(),
-                        e);
+                    auditLog.logException("processEvent",
+                            auditCode.getErrorMessageId(),
+                            OMRSAuditLogRecordSeverity.EXCEPTION,
+                            auditCode.getFormattedErrorMessage(eventAsString, e.getMessage()),
+                            e.getMessage(),
+                            auditCode.getSystemAction(),
+                            auditCode.getUserAction(),
+                            e);
             }
 
         }

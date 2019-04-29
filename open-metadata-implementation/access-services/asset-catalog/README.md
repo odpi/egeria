@@ -32,3 +32,12 @@ The module structure for the Asset Catalog OMAS is as follows:
 * [asset-catalog-server](asset-catalog-server) supports in implementation of the access service and its related event management.
 * [asset-catalog-spring](asset-catalog-spring) supports the REST API using the [Spring]__(../../../developer-resources/Spring.md)__ libraries.
 
+###Search solution
+The search will return Assets and Glossary terms that match the search criteria.
+As the asset search is to be performed against on one or more repositories a search engine will be used. 
+The search will be performed using name/displayName, descriptions and qualifiedName of the asset and/or Glossary terms.
+Indexing will be performed by the Asset Catalog OMAS according to supported zones.
+The search result will contain: guid, name (name or displayName), description, qualifiedName, classifications, zoneMembership.
+    
+![Figure 1: Search](docs/egeria-asset-search.png)
+> Figure 1:Integration of search engine

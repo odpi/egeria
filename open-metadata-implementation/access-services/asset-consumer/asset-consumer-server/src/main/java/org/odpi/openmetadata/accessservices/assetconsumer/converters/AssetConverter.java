@@ -14,7 +14,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 public class AssetConverter extends ReferenceableHeaderConverter
 {
-    public static final String DISPLAY_NAME_PROPERTY_NAME = "name";
+    public  static final String DISPLAY_NAME_PROPERTY_NAME = "name";
     private static final String ownerPropertyName          = "owner";
     private static final String descriptionPropertyName    = "description";
     private static final String zoneMembershipPropertyName = "zoneMembership";

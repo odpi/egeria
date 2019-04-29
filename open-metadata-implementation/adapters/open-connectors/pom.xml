@@ -33,6 +33,7 @@
         <module>data-store-connectors</module>
         <module>governance-daemon-connectors</module>
         <module>configuration-store-connectors</module>
+        <module>rest-client-connectors</module>
         <module>connector-configuration-factory</module>
     </modules>
 

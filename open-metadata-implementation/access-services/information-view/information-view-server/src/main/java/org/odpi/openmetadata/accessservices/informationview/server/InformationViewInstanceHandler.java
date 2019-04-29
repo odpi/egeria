@@ -2,10 +2,12 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.informationview.server;
 
+import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.PropertyServerException;
+import org.odpi.openmetadata.accessservices.informationview.registration.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandler;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.PropertyServerException;
 
 /**
  * InformationViewInstanceHandler retrieves information from the instance map for the
@@ -62,13 +64,48 @@ class InformationViewInstanceHandler
             return null;
         }
     }
+    /**
+     * Retrieve the handler for retrieving assets details for the access service.
+     *
+     * @param serverName name of the server tied to the request
+     * @return assetsHandler for exclusive use by the requested instance
+     * @throws PropertyServerException no instance for this server
+     */
+     DatabaseContextHandler getAssetContextHandler(String serverName) throws PropertyServerException {
+        InformationViewServicesInstance instance = instanceMap.getInstance(serverName);
+
+        if (instance != null) {
+            return instance.getDatabaseContextHandler();
+        } else {
+            final String methodName = "getDatabaseContextHandler";
+            throwError(serverName, methodName);
+            return null;
+        }
+    }
+
+    /**
+     *
+     * @param serverName name of the server tied to the request
+     * @return registration handler for exclusive use by the requested instance
+     * @throws PropertyServerException
+     */
+     RegistrationHandler getRegistrationHandler(String serverName) throws PropertyServerException {
+        InformationViewServicesInstance instance = instanceMap.getInstance(serverName);
+
+        if (instance != null) {
+            return instance.getRegistrationHandler();
+        } else {
+            final String methodName = "getRegistrationHandler";
+            throwError(serverName, methodName);
+            return null;
+        }
+    }
 
     private void throwError(String serverName, String methodName) throws PropertyServerException {
         InformationViewErrorCode errorCode = InformationViewErrorCode.SERVICE_NOT_INITIALIZED;
         String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
 
         throw new PropertyServerException(this.getClass().getName(),
-                methodName,
                 errorMessage,
                 errorCode.getSystemAction(),
                 errorCode.getUserAction());

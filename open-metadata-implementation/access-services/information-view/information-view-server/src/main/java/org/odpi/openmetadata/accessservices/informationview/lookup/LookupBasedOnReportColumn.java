@@ -36,7 +36,7 @@ public class LookupBasedOnReportColumn implements LookupStrategy {
             return null;
         } else {
             String qualifiedName = buildQualifiedName((ReportColumnSource) source);
-            return omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedName);
+            return omEntityDao.getEntity(Constants.DERIVED_SCHEMA_ATTRIBUTE, qualifiedName, false);
         }
     }
 
@@ -46,7 +46,7 @@ public class LookupBasedOnReportColumn implements LookupStrategy {
         while (parentReportSection != null) {
             builder = builder.insert(0, parentReportSection.getName() + SEPARATOR);
             if (parentReportSection.getParentReportSection() == null) {
-                builder = builder.insert(0, parentReportSection.getReportSource().getNetworkAddress() + SEPARATOR + parentReportSection.getReportSource().getReportId() + SEPARATOR);
+                builder = builder.insert(0, parentReportSection.getReportSource().getEndpointSource().getNetworkAddress() + SEPARATOR + parentReportSection.getReportSource().getReportId() + SEPARATOR);
             }
             parentReportSection = parentReportSection.getParentReportSection();
         }

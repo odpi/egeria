@@ -3,47 +3,36 @@
   
 # Open Metadata Conformance Suite
 
-The open metadata conformance suite provides a test suite to help the developers
+The open metadata conformance suite provides a testing framework to help the developers
 integrate a specific technology into the open metadata ecosystem.
 
-The first suite of conformance tests focuses on functional
-behavior of a metadata repository.  Future test suites will
+The initial focus of the conformance suite is on the
+behavior of an open metadata repository. 
+Future test suites will cover other APIs and event types as well
 demonstrate the ability to handle various workloads and also
 a performance benchmark test.
 
-Each conformance test suite is implemented by an 
-**Open Metadata Test Lab**.  The test lab is a client program
-that is given the URL root of the open metadata APIs for the
-server to test. The example below tests a server running at http://localhost:8080
+Information on how to run the open metadata conformance suite is located in the [docs section](docs).
 
-```bash
-$ OpenMetadataTestLab http://localhost:8080
-```
+The implementation of the open metadata conformance suite is typical of an ODPi Egeria capability.
+It has four modules:
 
-The test lab then creates one or more specialized
-**Open Metadata Test Workbenches** that are able to set up
-and run batches of **Open Metadata Test Cases**.
+* **[open-metadata-conformance-suite-api](open-metadata-conformance-suite-api)** - common components
+used in both the client and the server.  This includes the beans passed in the REST API and
+exceptions.
 
-Each workbench implementation provides a specific environment
-to the test cases to run in.
+* **[open-metadata-conformance-suite-client](open-metadata-conformance-suite-client)** - implementation
+of a client to retrieve the test case results from the open metadata conformance suite server.
 
-The test cases will issue calls to the server and assess the
-response.  This is an "imitation game".
-The aim of the tests is to get the same result from any
-compliant open metadata repository.  If the test case
-cannot tell the difference from the reference implementation
-then the server being tested **is** an open metadata repository.
+* **[open-metadata-conformance-suite-server](open-metadata-conformance-suite-server)** - implementation
+of the test framework, workbenches and test cases used to validate the behavior of the technology
+under test.  The tests run automatically in the server based on the server's configuration.
+The server also provides a REST API to retrieve the results.  This REST API is called
+by the client.
 
-As the workbenches run the test cases, results are accumulated
-into a test results document called
-<code>openmetadata.<i>type</i>.testlab.results</code>.
-For example, the `functional` test results document is
-`openmetadata.functional.testlab.results`.
-
-Each workbench and test has its own documentation page located
-in the [docs](docs/README.md) directory.  Links to the
-individual test's documentation is included in the test results document.
-
+* **[open-metadata-conformance-suite-spring](open-metadata-conformance-suite-spring)** - uses
+[Spring](../developer-resources/Spring.md) to provide the REST endpoints for the server's REST API.
+This is separated to allow another REST framework to be used for the server.
 
 
 ----

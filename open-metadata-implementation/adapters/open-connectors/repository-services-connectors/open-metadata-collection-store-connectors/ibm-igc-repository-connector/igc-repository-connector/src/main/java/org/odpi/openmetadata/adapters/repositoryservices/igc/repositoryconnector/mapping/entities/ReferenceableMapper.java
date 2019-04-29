@@ -355,7 +355,7 @@ public class ReferenceableMapper extends EntityMapping {
                 }
 
                 // and finally setup the 'additionalProperties' attribute using this map
-                instanceProperties = omrsRepositoryHelper.addMapPropertyToInstance(
+                instanceProperties = omrsRepositoryHelper.addStringMapPropertyToInstance(
                         repositoryName,
                         instanceProperties,
                         "additionalProperties",

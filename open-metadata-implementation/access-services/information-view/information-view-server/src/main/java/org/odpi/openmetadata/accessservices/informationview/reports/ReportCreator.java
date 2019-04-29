@@ -7,11 +7,11 @@ import org.odpi.openmetadata.accessservices.informationview.events.ReportRequest
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
-import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,7 @@ public class ReportCreator extends ReportBasicOperation {
     private static final Logger log = LoggerFactory.getLogger(ReportCreator.class);
 
     public ReportCreator(org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao omEntityDao, LookupHelper lookupHelper, OMRSRepositoryHelper helper, OMRSAuditLog auditLog) {
-        super(omEntityDao, lookupHelper,helper, auditLog);
+        super(omEntityDao, lookupHelper, helper, auditLog);
     }
 
 
@@ -31,22 +31,30 @@ public class ReportCreator extends ReportBasicOperation {
      * @param reportEntity entity describing the report
      * @throws Exception
      */
-    public void createReport(ReportRequestBody payload, EntityDetail reportEntity) throws Exception {
-        String qualifiedNameForComplexSchemaType = EntityPropertiesUtils.getStringValueForProperty(reportEntity.getProperties(), Constants.QUALIFIED_NAME) + Constants.TYPE_SUFFIX;
+    public void createReport(ReportRequestBody payload, EntityDetail reportEntity) throws InvalidParameterException,
+                                                                                          StatusNotSupportedException,
+                                                                                          PropertyErrorException,
+                                                                                          EntityNotKnownException,
+                                                                                          TypeErrorException,
+                                                                                          FunctionNotSupportedException,
+                                                                                          PagingErrorException,
+                                                                                          ClassificationErrorException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          RepositoryErrorException {
+        String qualifiedNameForComplexSchemaType = helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, reportEntity.getProperties(), "createReport") + Constants.TYPE_SUFFIX;
         InstanceProperties complexSchemaTypeProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
                 .build();
         OMEntityWrapper complexSchemaTypeEntityWrapper = omEntityDao.createOrUpdateEntity(Constants.COMPLEX_SCHEMA_TYPE,
-                qualifiedNameForComplexSchemaType, complexSchemaTypeProperties, null, true);
+                qualifiedNameForComplexSchemaType, complexSchemaTypeProperties, null, true, false);
 
         log.debug("Created report schema type {}", complexSchemaTypeEntityWrapper.getEntityDetail().getGUID());
         omEntityDao.addRelationship(Constants.ASSET_SCHEMA_TYPE,
                 reportEntity.getGUID(),
                 complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(),
-                Constants.INFORMATION_VIEW_OMAS_NAME,
                 new InstanceProperties());
 
-        addElements(EntityPropertiesUtils.getStringValueForProperty(reportEntity.getProperties(), Constants.QUALIFIED_NAME), complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), payload.getReportElements());
+        addElements(helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, reportEntity.getProperties(), "createReport"), complexSchemaTypeEntityWrapper.getEntityDetail().getGUID(), payload.getReportElements());
     }
 
 

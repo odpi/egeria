@@ -42,12 +42,12 @@ public class StructuredFileStoreProvider extends ConnectorProviderBase
         connectorType.setDescription(connectorTypeDescription);
         connectorType.setConnectorProviderClassName(this.getClass().getName());
 
-        List<String> recognizedAdditionalProperties = new ArrayList<>();
-        recognizedAdditionalProperties.add(columnNamesProperty);
-        recognizedAdditionalProperties.add(delimiterCharacterProperty);
-        recognizedAdditionalProperties.add(quoteCharacterProperty);
+        List<String> recognizedConfigurationProperties = new ArrayList<>();
+        recognizedConfigurationProperties.add(columnNamesProperty);
+        recognizedConfigurationProperties.add(delimiterCharacterProperty);
+        recognizedConfigurationProperties.add(quoteCharacterProperty);
 
-        connectorType.setRecognizedAdditionalProperties(recognizedAdditionalProperties);
+        connectorType.setRecognizedConfigurationProperties(recognizedConfigurationProperties);
 
         super.connectorTypeBean = connectorType;
     }
