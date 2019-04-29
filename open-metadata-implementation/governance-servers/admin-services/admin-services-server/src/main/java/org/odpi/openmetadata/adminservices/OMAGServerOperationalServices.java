@@ -4,7 +4,15 @@ package org.odpi.openmetadata.adminservices;
 
 
 import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationFactory;
-import org.odpi.openmetadata.adminservices.configuration.properties.*;
+import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.ConformanceSuiteConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryServerConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.RepositoryServicesConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipServicesConfig;
+import org.odpi.openmetadata.adminservices.configuration.properties.VirtualizationConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServersDescription;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGErrorCode;
@@ -14,14 +22,14 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedExcep
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.VoidResponse;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalServices;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
+import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.securitysyncservices.registration.SecuritySyncOperationalServices;
-import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -506,7 +514,7 @@ public class OMAGServerOperationalServices
          */
         if (instance.getOperationalSecuritySyncServices() != null)
         {
-            instance.getOperationalSecuritySyncServices().disconnect(permanentDeactivation);
+            instance.getOperationalSecuritySyncServices().disconnect();
         }
 
 
