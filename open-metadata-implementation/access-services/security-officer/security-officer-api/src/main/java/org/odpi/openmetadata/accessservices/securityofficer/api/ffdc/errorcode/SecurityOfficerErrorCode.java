@@ -2,8 +2,6 @@
  *  SPDX-License-Identifier: Apache-2.0
  *  Copyright Contributors to the ODPi Egeria project.
  */
-
-/* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.securityofficer.api.ffdc.errorcode;
 
 import java.text.MessageFormat;
