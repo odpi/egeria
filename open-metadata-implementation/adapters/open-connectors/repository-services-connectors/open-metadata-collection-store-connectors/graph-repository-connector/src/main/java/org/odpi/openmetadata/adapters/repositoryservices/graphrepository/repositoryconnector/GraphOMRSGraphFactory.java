@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 
@@ -37,8 +38,12 @@ public class GraphOMRSGraphFactory {
 
     private static JanusGraph   graph;
     private static String       thisRepositoryName;
-    private static final String INDEX_NAME    = "search";
-    private static OMRSAuditLog thisAuditLog  = null;
+    private static String       thisMetadataCollectionId;
+    private static String       INDEX_NAME                   = "search";
+    private static OMRSAuditLog thisAuditLog                 = null;
+    private static String       controlVertexIdPropertyName  = "ControlVertexIdentifier";
+    private static String       controlVertexIdPropertyValue = "ControlVertexIdentifier";
+
 
     public enum MixedIndexMapping {
         Default,
@@ -46,17 +51,18 @@ public class GraphOMRSGraphFactory {
         String
     }
 
-    public static JanusGraph open(String         metadataCollectionId,
-                                  String         repositoryName,
-                                  OMRSAuditLog   auditLog)
+    public static JanusGraph open(String       metadataCollectionId,
+                                  String       repositoryName,
+                                  OMRSAuditLog auditLog)
             throws
             RepositoryErrorException
     {
 
         final String methodName = "open";
 
-        thisRepositoryName = repositoryName;
-        thisAuditLog = auditLog;
+        thisMetadataCollectionId = metadataCollectionId;
+        thisRepositoryName       = repositoryName;
+        thisAuditLog             = auditLog;
 
         // Open method is called from within synchronized block in graph repository metadata store class.
 
@@ -69,27 +75,26 @@ public class GraphOMRSGraphFactory {
         // REST client which fails (on HttpHost).
 
         final String storageBackend = "berkeleyje";
-        final String storagePath    = "./egeria-graph-repository/berkeley";
+        final String storagePath = "./egeria-graph-repository/berkeley";
 
         final String indexBackend = "lucene";
-        final String indexPath    = "./egeria-graph-repository/searchindex";
+        final String indexPath = "./egeria-graph-repository/searchindex";
 
         JanusGraphFactory.Builder config = JanusGraphFactory.build().
-            set("storage.backend",storageBackend).
-            set("storage.directory",storagePath).
-            set("index.search.backend",indexBackend).
-            set("index.search.directory",indexPath);
+                set("storage.backend", storageBackend).
+                set("storage.directory", storagePath).
+                set("index.search.backend", indexBackend).
+                set("index.search.directory", indexPath);
 
         try {
+
             graph = config.open();
-        }
-        catch (Exception e) {
-            log.error("{} could not open graph stored at {}", methodName, storagePath );
+
+        } catch (Exception e) {
+            log.error("{} could not open graph stored at {}", methodName, storagePath);
             GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.CANNOT_OPEN_GRAPH_DB;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(storagePath,methodName,
-                    GraphOMRSGraphFactory.class.getName(),
-                    repositoryName);
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(storagePath, methodName, GraphOMRSGraphFactory.class.getName(), repositoryName);
 
             throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
                     GraphOMRSGraphFactory.class.getName(),
@@ -106,157 +111,144 @@ public class GraphOMRSGraphFactory {
          *  The following start logic is performed:
          *
          *    Look for the control vertex:
-         *    If no control vertex exists then the graph is new - add a control vertex stamping into it the mdcId and creation/open date. Generate an audit log entry recording creation.
-         *    If the control vertex does exist the graph already existed - check the control vertex mdcId matches the configured mdcId of this repository
-         *    If they do not match then STOP - generate audit log entry recording creation. The user will need to consciously adopt the graph database.
-         *    If they do match then record the open time in the control vertex and generate an audit log entry to record the open.
+         *    If no control vertex exists then the graph is new:
+         *        add a control index and a control vertex stamping into it the mdcId and creation/open date.
+         *        generate an audit log entry recording creation.
+         *    If the control vertex does exist the graph had already been created:
+         *        check the control vertex mdcId matches the configured mdcId of this repository
+         *        if they do not match:
+         *            STOP - generate audit log entry recording creation. The user will need to consciously adopt the graph database.
+         *        if they do match:
+         *            record the open time in the control vertex
+         *            generate an audit log entry to record the open.
          */
 
 
         GraphTraversalSource g = graph.traversal();
-        // This traversal will unfortunately generate an index warning. Try to find a better bootstrap trigger mechanism.
-        // TODO Maybe use reserved GUID (it is indexed)
+        boolean success = true;
+
+        // Look for control vertex
+        Vertex controlVertex;
+
+        Iterator<Vertex> vi = g.V().hasLabel("Control").has(controlVertexIdPropertyName, controlVertexIdPropertyValue);
+        if (!vi.hasNext()) {
+            controlVertex = null;
+        }
+        else {
+            controlVertex = vi.next();
+            if (controlVertex == null) {
+                // Belt and braces protection...
+                log.error("Graph initialization failed because valid controlVertex could not be located");
+                success = false;
+
+            }
+        }
+
+        // Complete the current transaction and give up now if failed already
+        if (success) {
+            g.tx().commit();
+        }
+        else {
+            g.tx().rollback();
+            graph = null;
+            return graph;
+        }
 
 
-        if (g.V().hasLabel("Control").count().next() == 0) {
 
-            // graph is new
+        // Method has been successful to this point - but controlVertex may be null (new) or non-null (existing)
+
+        // Get a new traversal source - initiating a new transaction. The control vertex will be
+        // created and / or updated under this transaction.
+        g = graph.traversal();
+
+        if (controlVertex == null) {
+
+            // Graph is new - create control index thern create control vertex
+
+            // Create control index
+            success = createControlIndex();
+
+            if (success) {
+
+                // Create control vertex
+                try {
+                    // Add a control vertex, initialize the schema and update the control vertex...
+
+                    Date now = new Date();
+                    controlVertex = g.addV("Control").
+                            property(controlVertexIdPropertyName, controlVertexIdPropertyValue).
+                            property("creationDate", now).
+                            property("lastOpenDate", now).
+                            property("metadataCollectionId", metadataCollectionId).
+                            next();
+
+                    // Update the lastOpenDate
+                    now = new Date();
+                    controlVertex.property("lastOpenDate", now);
+                    success = true;
+
+                } catch (Exception e) {
+                    log.error("{} Creation of control vertex failed, exception {}", methodName, e.getMessage());
+                    g.tx().rollback();
+                    throw e;
+                }
+
+                GraphOMRSAuditCode auditCode = GraphOMRSAuditCode.GRAPH_REPOSITORY_CREATED;
+                String actionDescription = "openGraphRepository";
+                thisAuditLog.logRecord(
+                        actionDescription,
+                        auditCode.getLogMessageId(),
+                        auditCode.getSeverity(),
+                        auditCode.getFormattedLogMessage(),
+                        null,
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction());
+            }
+
+        }
+
+
+        else {  // controlVertex != null
+
+            // Graph is pre-existing - check and update control vertex
 
             try {
-                // Add a control vertex, initialize the schema and update the control vertex...
-                g = graph.traversal();
-                Date now = new Date();
-                Vertex controlVertex = g.addV("Control").
-                        property("creationDate", now).
-                        property("lastOpenDate", now).
-                        property("metadataCollectionId", metadataCollectionId).
-                        next();
+                success = checkAndUpdateControlInformation(controlVertex, storagePath);
 
-                // Ensure graph schema is up to date
+            }
+            catch (RepositoryErrorException e) {
+                log.error("{} Check and update of control vertex failed, exception {}", methodName, e.getMessage());
+                // rollback and re-throw
+                g.tx().rollback();
+                throw e;
+            }
+        }
+
+
+        if (success) {
+            // Whether graph was new or existed, ensure the graph schema is up to date
+            try {
                 log.info("Updating graph schema, if necessary");
                 GraphOMRSGraphFactory.initialize(graph);
-                // Update the lastOpenDate
-                now = new Date();
-                controlVertex.property("lastOpenDate", now);
-                g.tx().commit();
-
             }
-            catch (Exception e) {
-                log.error("Graph initialization failed, exception {}",e.getMessage());
+            catch (RepositoryErrorException e) {
+                // rollback and re-throw
                 g.tx().rollback();
-                return null;
+                throw e;
             }
+        }
 
-            GraphOMRSAuditCode  auditCode = GraphOMRSAuditCode.GRAPH_REPOSITORY_CREATED;
-            String actionDescription = "openGraphRepository";
-            thisAuditLog.logRecord(
-                    actionDescription,
-                    auditCode.getLogMessageId(),
-                    auditCode.getSeverity(),
-                    auditCode.getFormattedLogMessage(),
-                    null,
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction());
 
+        // Re-check whether method succeeded and complete open transaction
+        if (success) {
+            g.tx().commit();
         }
         else {
 
-            // Control vertex was found...so graph is not new
-
-            // Check metadataCollectionId matches and fail if not; make audit entry
-
-            // Display control vertex contents, update last open date; make audit entry
-
-            Vertex controlVertex = g.V().hasLabel("Control").next();
-
-            String creationDateString = null;
-            String metadataCollectionIdString = null;
-            String lastOpenDateString = null;
-
-            VertexProperty creationDateProperty = controlVertex.property("creationDate");
-            if (creationDateProperty != null && creationDateProperty.isPresent()) {
-                creationDateString = creationDateProperty.value().toString();
-            }
-
-            VertexProperty metadataCollectionIdProperty = controlVertex.property("metadataCollectionId");
-            if (metadataCollectionIdProperty != null && metadataCollectionIdProperty.isPresent()) {
-                metadataCollectionIdString = (String) metadataCollectionIdProperty.value();
-            }
-
-            VertexProperty lastOpenDateProperty = controlVertex.property("lastOpenDate");
-            if (lastOpenDateProperty != null && lastOpenDateProperty.isPresent()) {
-                lastOpenDateString = lastOpenDateProperty.value().toString();
-            }
-
-
-            if (metadataCollectionIdString != null && !metadataCollectionIdString.equals(metadataCollectionId)) {
-
-                // Graph database does not have matching metadataCollectionId - abort!
-
-                log.error("{} The graph database for repository {} has metadataCollectionId {}, and cannot be opened using metadataCollectionId {} ",
-                        methodName, repositoryName, metadataCollectionIdString, metadataCollectionId);
-
-                g.tx().rollback();
-
-                GraphOMRSAuditCode auditCode = GraphOMRSAuditCode.GRAPH_REPOSITORY_HAS_DIFFERENT_METADATA_COLLECTION_ID;
-                String actionDescription = "openGraphRepository";
-                thisAuditLog.logRecord(
-                        actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
-
-
-                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.GRAPH_DB_HAS_DIFFERENT_METADATACOLLECTION_ID;
-
-                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(storagePath, methodName,
-                        GraphOMRSGraphFactory.class.getName(),
-                        repositoryName);
-
-                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
-                        GraphOMRSGraphFactory.class.getName(),
-                        methodName,
-                        errorMessage,
-                        errorCode.getSystemAction(),
-                        errorCode.getUserAction());
-
-            } else {
-
-                // Graph database has matching metadataCollectionId - ok to proceed
-
-                log.info("Opened graph repository: graph created at {} by metadataCollectionId {}, last opened at {}",
-                        creationDateString, metadataCollectionIdString, lastOpenDateString);
-
-                // Ensure graph schema is up to date
-                log.info("Ensuring graph schema is up to date");
-                try {
-                    GraphOMRSGraphFactory.initialize(graph);
-                    // Update the lastOpenDate
-                    Date now = new Date();
-                    controlVertex.property("lastOpenDate", now);
-                    g.tx().commit();
-                }
-                catch (Exception e) {
-                    log.error("Graph initialization failed, exception {}",e.getMessage());
-                    g.tx().rollback();
-                    return null;
-                }
-
-                GraphOMRSAuditCode auditCode = GraphOMRSAuditCode.GRAPH_REPOSITORY_OPENED;
-                String actionDescription = "openGraphRepository";
-                thisAuditLog.logRecord(
-                        actionDescription,
-                        auditCode.getLogMessageId(),
-                        auditCode.getSeverity(),
-                        auditCode.getFormattedLogMessage(),
-                        null,
-                        auditCode.getSystemAction(),
-                        auditCode.getUserAction());
-
-            }
+            // A failure occurred
+            g.tx().rollback();
+            graph = null;
         }
 
         return graph;
@@ -795,5 +787,171 @@ public class GraphOMRSGraphFactory {
             management.rollback();
         }
 
+    }
+
+
+    private static boolean createControlIndex() {
+
+        final String methodName = "createControlIndex";
+
+
+        // Prior to creating the control vertex - create an index to allow us to find it without a full scan
+        JanusGraphManagement management = graph.openManagement();
+        String indexName = "controlIndex";
+
+        try {
+
+            // Check if index exists
+            JanusGraphIndex controlIndex = management.getGraphIndex(indexName);
+            if (controlIndex == null) {
+                log.info("{} index create {} for control vertex", methodName, indexName);
+                // Property key should not already exist - but check it anyway.
+                PropertyKey propertyKey = management.getPropertyKey(controlVertexIdPropertyName);
+
+                if (propertyKey != null) {
+                    // Somehow - despite this being a new graph - the property key already exists. Stop.
+                    log.error("{} property key {} already exists", methodName, controlVertexIdPropertyName);
+                    management.rollback();
+                    return false;
+                } else {
+                    log.info("{} make property key {}", methodName, controlVertexIdPropertyName);
+                    propertyKey = management.makePropertyKey(controlVertexIdPropertyName).dataType(String.class).make();
+                }
+
+                if (propertyKey == null) {
+                    // Could not create property key. Stop.
+                    log.error("{} property key {} could not be created", methodName, controlVertexIdPropertyName);
+                    management.rollback();
+                    return false;
+                } else {
+                    log.info("{} create index {}", methodName, indexName);
+                    JanusGraphManagement.IndexBuilder indexBuilder = management.buildIndex(indexName, Vertex.class).addKey(propertyKey).unique();
+                    JanusGraphIndex index = indexBuilder.buildCompositeIndex();
+                    management.setConsistency(index, ConsistencyModifier.LOCK);
+                    management.commit();
+                    // Enable the index - set a relatively short timeout (10 s vs the default of 1 minute)
+                    log.info("{} await ENABLED for {}", methodName, indexName);
+                    ManagementSystem.awaitGraphIndexStatus(graph, indexName).status(SchemaStatus.ENABLED).timeout(10, ChronoUnit.SECONDS).call();
+                    return true;
+                }
+            } else {
+                // That really should not be possible - a new graph should not have the index. Stop.
+                log.error("{} control index already exists", methodName);
+                management.rollback();
+                return false;
+            }
+        } catch (Exception e) {
+            log.error("{} caught interrupted exception from awaitGraphIndexStatus ENABLED {}", methodName, e);
+            management.rollback();
+            return false;
+        }
+
+    }
+
+
+
+    private static boolean checkAndUpdateControlInformation(Vertex controlVertex, String storagePath)
+        throws
+        RepositoryErrorException
+    {
+
+        final String methodName = "checkAndUpdateControlInformation";
+
+        boolean ret = true;
+
+        // Check metadataCollectionId matches and fail if not; make audit entry
+
+        // Display control vertex contents, update last open date; make audit entry
+
+        //Vertex controlVertex = g.V().hasLabel("Control").next();
+
+        String creationDateString = null;
+        String metadataCollectionIdString = null;
+        String lastOpenDateString = null;
+
+        VertexProperty creationDateProperty = controlVertex.property("creationDate");
+        if (creationDateProperty != null && creationDateProperty.isPresent()) {
+            creationDateString = creationDateProperty.value().toString();
+        }
+
+        VertexProperty metadataCollectionIdProperty = controlVertex.property("metadataCollectionId");
+        if (metadataCollectionIdProperty != null && metadataCollectionIdProperty.isPresent()) {
+            metadataCollectionIdString = (String) metadataCollectionIdProperty.value();
+        }
+
+        VertexProperty lastOpenDateProperty = controlVertex.property("lastOpenDate");
+        if (lastOpenDateProperty != null && lastOpenDateProperty.isPresent()) {
+            lastOpenDateString = lastOpenDateProperty.value().toString();
+        }
+
+
+        if (metadataCollectionIdString != null && !metadataCollectionIdString.equals(thisMetadataCollectionId)) {
+
+            // Graph database does not have matching metadataCollectionId - abort!
+
+            log.error("{} The graph database for repository {} has metadataCollectionId {}, and cannot be opened using metadataCollectionId {} ",
+                    methodName, thisRepositoryName, metadataCollectionIdString, thisMetadataCollectionId);
+
+            GraphOMRSAuditCode auditCode = GraphOMRSAuditCode.GRAPH_REPOSITORY_HAS_DIFFERENT_METADATA_COLLECTION_ID;
+            String actionDescription = "openGraphRepository";
+            thisAuditLog.logRecord(
+                    actionDescription,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
+
+
+            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.GRAPH_DB_HAS_DIFFERENT_METADATACOLLECTION_ID;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(storagePath, methodName,
+                    GraphOMRSGraphFactory.class.getName(),
+                    thisRepositoryName);
+
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    GraphOMRSGraphFactory.class.getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+
+        } else {
+
+            // Graph database has matching metadataCollectionId - ok to proceed
+
+            log.info("Opened graph repository: graph created at {} by metadataCollectionId {}, last opened at {}",
+                    creationDateString, metadataCollectionIdString, lastOpenDateString);
+
+            // Ensure graph schema is up to date
+            log.info("Ensuring graph schema is up to date");
+            try {
+                GraphOMRSGraphFactory.initialize(graph);
+                // Update the lastOpenDate
+                Date now = new Date();
+                controlVertex.property("lastOpenDate", now);
+                ret = true;
+
+            }
+            catch (Exception e) {
+                log.error("Graph initialization failed, exception {}", e.getMessage());
+                ret = false;
+            }
+
+            GraphOMRSAuditCode auditCode = GraphOMRSAuditCode.GRAPH_REPOSITORY_OPENED;
+            String actionDescription = "openGraphRepository";
+            thisAuditLog.logRecord(
+                    actionDescription,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
+
+        }
+
+        return ret;
     }
 }

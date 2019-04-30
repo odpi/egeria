@@ -17,7 +17,11 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 import org.odpi.openmetadata.securitysyncservices.auditlog.SecuritySyncAuditCode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
@@ -26,16 +30,18 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Optional;
 
-import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.*;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.CONFIDENTIALITY;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.GOVERNED_ASSETS;
+import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.LEVEL;
 
-public class GovernanceEventProcessor {
+public class SecuritySyncEventProcessor {
 
-    private static final Logger log = LoggerFactory.getLogger(GovernanceEventProcessor.class);
+    private static final Logger log = LoggerFactory.getLogger(SecuritySyncEventProcessor.class);
     private OMRSAuditLog auditLog;
     private SecuritySyncConfig securitySyncConfig;
     private RangerSecurityServiceConnector rangerOpenConnector;
 
-    public GovernanceEventProcessor(SecuritySyncConfig securitySyncConfig, OMRSAuditLog auditLog) {
+    public SecuritySyncEventProcessor(SecuritySyncConfig securitySyncConfig, OMRSAuditLog auditLog) {
         this.auditLog = auditLog;
         this.securitySyncConfig = securitySyncConfig;
         rangerOpenConnector = new RangerSecurityServiceConnector(securitySyncConfig.getSecurityServerConnection());
