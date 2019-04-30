@@ -102,7 +102,8 @@ public class EntityReferenceResolver {
                                                                         FunctionNotSupportedException,
                                                                         InvalidParameterException,
                                                                         RepositoryErrorException,
-                                                                        PropertyErrorException, TypeErrorException,
+                                                                        PropertyErrorException,
+                                                                        TypeErrorException,
                                                                         PagingErrorException {
         if (businessTerm == null)
             return null;

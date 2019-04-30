@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.informationview.events.ReportRequest
 import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewUncheckedExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.registration.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
@@ -22,6 +23,8 @@ import org.odpi.openmetadata.accessservices.informationview.responses.TableConte
 import org.odpi.openmetadata.accessservices.informationview.responses.TableListResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.VoidResponse;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -29,6 +32,10 @@ import java.util.List;
 public class InformationViewRestServices {
 
     InformationViewInstanceHandler  instanceHandler = new InformationViewInstanceHandler();
+
+
+    private static final Logger log = LoggerFactory.getLogger(InformationViewRestServices.class);
+
 
     /**
      *
@@ -48,6 +55,7 @@ public class InformationViewRestServices {
             reportCreator.submitReportModel(requestBody);
         }
         catch (InformationViewUncheckedExceptionBase e) {
+            log.error(e.getMessage(), e);
             return handleErrorResponse(e);
         }
 
@@ -72,6 +80,7 @@ public class InformationViewRestServices {
             dataViewHandler.createDataView(requestBody);
         }
         catch (InformationViewUncheckedExceptionBase e) {
+             log.error(e.getMessage(), e);
              return handleErrorResponse(e);
         }
 
@@ -98,6 +107,7 @@ public class InformationViewRestServices {
             response.setDatabasesList(databases);
         }
         catch (InformationViewUncheckedExceptionBase e) {
+             log.error(e.getMessage(), e);
              return handleErrorResponse(e);
         }
         return response;
@@ -126,6 +136,7 @@ public class InformationViewRestServices {
             response.setTableList(tables);
         }
         catch (InformationViewUncheckedExceptionBase e) {
+             log.error(e.getMessage(), e);
              return handleErrorResponse(e);
         }
 
@@ -143,6 +154,7 @@ public class InformationViewRestServices {
             response.setTableContexts(tables);
         }
         catch (InformationViewUncheckedExceptionBase e) {
+             log.error(e.getMessage(), e);
              return handleErrorResponse(e);
         }
         return response;
@@ -161,6 +173,7 @@ public class InformationViewRestServices {
             response.setTableColumns(columns);
         }
         catch (InformationViewUncheckedExceptionBase e) {
+            log.error(e.getMessage(), e);
              return handleErrorResponse(e);
         }
 
@@ -176,6 +189,7 @@ public class InformationViewRestServices {
              EntityDetail entityDetail  = registrationHandler.registerTool(requestBody);
              response.setGuid(entityDetail.getGUID());
          } catch (InformationViewUncheckedExceptionBase e) {
+             log.error(e.getMessage(), e);
               return handleErrorResponse(e);
          }
          return response;
@@ -191,6 +205,7 @@ public class InformationViewRestServices {
              EntityDetail entityDetail  = registrationHandler.lookupSoftwareServerCapability(requestBody);
              response.setGuid(entityDetail.getGUID());
          } catch (InformationViewUncheckedExceptionBase e) {
+             log.error(e.getMessage(), e);
              return handleErrorResponse(e);
          }
          return response;

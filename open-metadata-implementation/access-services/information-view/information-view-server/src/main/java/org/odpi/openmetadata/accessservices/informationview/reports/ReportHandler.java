@@ -84,11 +84,10 @@ public class ReportHandler {
             }
 
         } catch (PagingErrorException |  PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | MalformedURLException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException | EntityProxyOnlyException | RelationshipNotDeletedException | RelationshipNotKnownException | EntityNotDeletedException | TypeDefNotKnownException e) {
-            log.error(e.getMessage(), e);
 
             throw new ReportSubmitException(500,
                     ReportHandler.class.getName(),
-                    REPORT_SUBMIT_EXCEPTION.getFormattedErrorMessage(payload.toString(), e.getMessage()),
+                    REPORT_SUBMIT_EXCEPTION.getFormattedErrorMessage( e.getMessage()),
                     REPORT_SUBMIT_EXCEPTION.getUserAction(),
                     REPORT_SUBMIT_EXCEPTION.getSystemAction(),
                     e,

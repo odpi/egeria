@@ -136,7 +136,7 @@ public abstract class EntityLookup<T extends Source> {
             InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
             throw new RetrieveRelationshipException(auditCode.getHttpErrorCode(),
                     OMEntityDao.class.getName(),
-                    auditCode.getFormattedErrorMessage(relationshipType, e.getMessage()),
+                    auditCode.getFormattedErrorMessage(relationshipType, guid, e.getMessage()),
                     auditCode.getSystemAction(),
                     auditCode.getUserAction(),
                     e);

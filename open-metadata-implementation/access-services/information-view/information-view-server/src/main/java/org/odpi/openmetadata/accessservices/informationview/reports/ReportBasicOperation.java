@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.informationview.events.ReportSection
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ReportElementCreationException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.SourceNotFoundException;
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
@@ -295,9 +296,13 @@ public abstract class ReportBasicOperation extends BasicOperation{
                                                     schemaQueryImplProperties);
 
             } else {
-                String message = MessageFormat.format("source column not found, unable to add relationship between column {0} and source {1}", reportColumn.getName(), source.toString());
-                log.error(message);
-                throw new RuntimeException(message);
+                InformationViewErrorCode code = InformationViewErrorCode.SOURCE_NOT_FOUND_EXCEPTION;
+                throw new SourceNotFoundException(code.getHttpErrorCode(),
+                                                    ReportBasicOperation.class.getName(),
+                                                    code.getFormattedErrorMessage(source.toString()),
+                                                    code.getSystemAction(),
+                                                    code.getUserAction(),
+                                                    null);
             }
         }
     }
