@@ -72,19 +72,7 @@ public class SecuritySyncEventProcessor {
     public void processReClassifiedGovernedAssetEvent(GovernedAsset governedAsset) {
         logProcessing("processReClassifiedGovernedAssetEvent", SecuritySyncAuditCode.RE_CLASSIFIED_GOVERNED_ASSET_EVENT_RECEIVED);
 
-        if (governedAsset == null) {
-            return;
-        }
-        RangerServiceResource resource = rangerOpenConnector.getResourceByGUID(governedAsset.getGuid());
-        if (resource == null) {
-            return;
-
-        }
-        ResourceTagMapper resourceTagMapper = rangerOpenConnector.getTagAssociatedWithTheResource(resource.getId());
-
-        if (resourceTagMapper != null) {
-            rangerOpenConnector.deleteAssociationResourceToSecurityTag(resourceTagMapper);
-        }
+        RangerServiceResource resource = declassifiedGovernedAsset(governedAsset);
 
         if (governedAsset.getAssignedGovernanceClassifications() == null || governedAsset.getAssignedGovernanceClassifications().isEmpty()) {
             return;
@@ -104,7 +92,25 @@ public class SecuritySyncEventProcessor {
             rangerOpenConnector.createSecurityTag(classification);
         }
 
-        rangerOpenConnector.createAssociationResourceToSecurityTag(newTagGuid, resource.getGuid());
+        if(resource != null && resource.getGuid() != null) {
+            rangerOpenConnector.createAssociationResourceToSecurityTag(newTagGuid, resource.getGuid());
+        }
+    }
+
+    public void processDeClassifiedGovernedAssetEvent(GovernedAsset governedAsset) {
+        logProcessing("processDeclassifiedGovernedAssetEvent", SecuritySyncAuditCode.DE_CLASSIFIED_GOVERNED_ASSET_EVENT_RECEIVED);
+
+        declassifiedGovernedAsset(governedAsset);
+    }
+
+    public void processDeletedGovernedAssetEvent(GovernedAsset governedAsset) {
+        logProcessing("processDeclassifiedGovernedAssetEvent", SecuritySyncAuditCode.DELETED_GOVERNED_ASSET_EVENT_RECEIVED);
+
+        RangerServiceResource resource =  declassifiedGovernedAsset(governedAsset);
+
+        if(resource != null && resource.getGuid() != null) {
+            rangerOpenConnector.deleteResourceByGUID(resource.getGuid());
+        }
     }
 
     private void logProcessing(String action, SecuritySyncAuditCode auditCode) {
@@ -157,5 +163,23 @@ public class SecuritySyncEventProcessor {
         }
 
         return null;
+    }
+
+    private RangerServiceResource declassifiedGovernedAsset(GovernedAsset governedAsset) {
+        if (governedAsset == null) {
+            return null;
+        }
+
+        RangerServiceResource resource = rangerOpenConnector.getResourceByGUID(governedAsset.getGuid());
+        if (resource == null) {
+            return null;
+        }
+
+        ResourceTagMapper resourceTagMapper = rangerOpenConnector.getTagAssociatedWithTheResource(resource.getId());
+
+        if (resourceTagMapper != null) {
+            rangerOpenConnector.deleteAssociationResourceToSecurityTag(resourceTagMapper);
+        }
+        return resource;
     }
 }

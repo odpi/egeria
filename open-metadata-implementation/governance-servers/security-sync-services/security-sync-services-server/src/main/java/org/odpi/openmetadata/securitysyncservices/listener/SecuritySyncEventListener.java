@@ -32,7 +32,14 @@ public class SecuritySyncEventListener implements OpenMetadataTopicListener {
                 case RE_CLASSIFIED_ASSET:
                     securitySyncEventProcessor.processReClassifiedGovernedAssetEvent(event.getGovernedAsset());
                     break;
+                case DE_CLASSIFIED_ASSET:
+                    securitySyncEventProcessor.processDeClassifiedGovernedAssetEvent(event.getGovernedAsset());
+                break;
+                case DELETED_ASSET:
+                    securitySyncEventProcessor.processDeletedGovernedAssetEvent(event.getGovernedAsset());
+                    break;
                 default:
+                    log.debug("Unknown event type");
                     break;
             }
         } catch (Exception e) {

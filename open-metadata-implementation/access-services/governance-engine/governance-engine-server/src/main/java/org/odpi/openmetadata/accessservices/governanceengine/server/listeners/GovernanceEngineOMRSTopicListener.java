@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server.listeners;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
@@ -19,7 +18,7 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
     private String enterpriseOMRSTopic = "EnterpriseOMRSTopic";
     private OMRSInstanceEventProcessor instanceEventProcessor;
 
-    public GovernanceEngineOMRSTopicListener(OMRSInstanceEventProcessor instanceEventProcessor, OMRSAuditLog auditLog) {
+    public GovernanceEngineOMRSTopicListener(OMRSInstanceEventProcessor instanceEventProcessor) {
         this.instanceEventProcessor = instanceEventProcessor;
     }
 
@@ -66,6 +65,22 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
                     break;
                 case RECLASSIFIED_ENTITY_EVENT:
                     instanceEventProcessor.processReclassifiedEntityEvent(enterpriseOMRSTopic,
+                            instanceEventOriginator.getMetadataCollectionId(),
+                            instanceEventOriginator.getServerName(),
+                            instanceEventOriginator.getServerType(),
+                            instanceEventOriginator.getOrganizationName(),
+                            instanceEvent.getEntity());
+                    break;
+                case DELETED_ENTITY_EVENT:
+                    instanceEventProcessor.processDeletePurgedEntityEvent(enterpriseOMRSTopic,
+                            instanceEventOriginator.getMetadataCollectionId(),
+                            instanceEventOriginator.getServerName(),
+                            instanceEventOriginator.getServerType(),
+                            instanceEventOriginator.getOrganizationName(),
+                            instanceEvent.getEntity());
+                    break;
+                case DECLASSIFIED_ENTITY_EVENT:
+                    instanceEventProcessor.processDeclassifiedEntityEvent(enterpriseOMRSTopic,
                             instanceEventOriginator.getMetadataCollectionId(),
                             instanceEventOriginator.getServerName(),
                             instanceEventOriginator.getServerType(),
