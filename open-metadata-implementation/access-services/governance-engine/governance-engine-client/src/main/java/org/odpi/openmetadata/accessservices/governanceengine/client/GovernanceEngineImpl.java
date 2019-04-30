@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -81,7 +82,11 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowTypeNotFoundException(methodName, restResult);
 
-        return restResult.getGovernedAssetList();
+        if (restResult != null) {
+            return restResult.getGovernedAssetList();
+        }
+
+        return Collections.emptyList();
     }
 
     /**
@@ -116,7 +121,11 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowGuidNotFoundException(methodName, restResult);
 
-        return restResult.getAsset();
+        if (restResult != null) {
+            return restResult.getAsset();
+        }
+
+        return null;
     }
 
     private void validateOMASServerURL(String methodName) throws InvalidParameterException {
