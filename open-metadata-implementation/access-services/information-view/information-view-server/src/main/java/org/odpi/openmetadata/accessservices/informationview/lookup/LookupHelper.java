@@ -52,7 +52,9 @@ public class LookupHelper {
                                                                                  PropertyErrorException,
                                                                                  TypeErrorException,
                                                                                  PagingErrorException {
-        log.debug(MessageFormat.format("lookup database column {0}", source));
+        if(log.isDebugEnabled()) {
+            log.debug(MessageFormat.format("lookup database column {0}", source));
+        }
         return columnLookup.lookupEntity(source);
     }
 

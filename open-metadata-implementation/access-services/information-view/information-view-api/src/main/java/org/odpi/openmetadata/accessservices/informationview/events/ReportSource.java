@@ -39,7 +39,7 @@ public class ReportSource extends Source {
 
     @Override
     public String toString() {
-        return "ReportSource{" +
+        return "{" +
                 "endpointSource=" + endpointSource +
                 ", reportId='" + reportId + '\'' +
                 '}';
