@@ -5,11 +5,21 @@ package org.odpi.openmetadata.accessservices.informationview.lookup;
 
 import org.odpi.openmetadata.accessservices.informationview.contentmanager.OMEntityDao;
 import org.odpi.openmetadata.accessservices.informationview.events.Source;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.EntityNotFoundException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.MultipleEntitiesMatching;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.NoMatchingEntityException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveRelationshipException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstancePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.PrimitivePropertyValue;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
@@ -66,10 +76,20 @@ public abstract class EntityLookup<T extends Source> {
         if (entities != null && !entities.isEmpty()) {
             List<EntityDetail> filteredEntities = entities.stream().filter(e -> matchProperties(e, matchingProperties)).collect(Collectors.toList());
             if (filteredEntities == null || filteredEntities.isEmpty()) {
-                throw new RuntimeException("No entity matches the criteria.");
+                throw new NoMatchingEntityException(InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getHttpErrorCode(),
+                                                    EntityLookup.class.getName(),
+                                                    InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getFormattedErrorMessage(matchingProperties.toString()),
+                                                    InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getSystemAction(),
+                                                    InformationViewErrorCode.NO_MATCHING_ENTITY_EXCEPTION.getUserAction(),
+                                                    null);
             }
             if (filteredEntities.size() > 1) {
-                throw new RuntimeException("Too many entities are matching the criteria.");//TODO exception
+                throw new MultipleEntitiesMatching(InformationViewErrorCode.MULTIPLE_MATCHING_ENTITIES_EXCEPTION.getHttpErrorCode(),
+                        EntityLookup.class.getName(),
+                        InformationViewErrorCode.MULTIPLE_MATCHING_ENTITIES_EXCEPTION.getFormattedErrorMessage(matchingProperties.toString()),
+                        InformationViewErrorCode.MULTIPLE_MATCHING_ENTITIES_EXCEPTION.getSystemAction(),
+                        InformationViewErrorCode.MULTIPLE_MATCHING_ENTITIES_EXCEPTION.getUserAction(),
+                        null);
             }
             return filteredEntities.get(0);
         }
@@ -89,7 +109,15 @@ public abstract class EntityLookup<T extends Source> {
     }
 
 
-    protected List<String> getRelatedEntities(String parentEntityGuid, String relationshipTypeName) {
+    protected List<String> getRelatedEntities(String parentEntityGuid, String relationshipTypeName) throws
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    EntityNotKnownException,
+                                                                                                    FunctionNotSupportedException,
+                                                                                                    InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    PropertyErrorException,
+                                                                                                    TypeErrorException,
+                                                                                                    PagingErrorException {
         List<Relationship> relationships = omEntityDao.getRelationships(relationshipTypeName, parentEntityGuid);
         return relationships.stream().map(e -> e.getEntityTwoProxy().getGUID()).collect(Collectors.toList());
     }
@@ -101,7 +129,18 @@ public abstract class EntityLookup<T extends Source> {
     }
 
     private List<Relationship> getRelationships(String guid, String relationshipType) {
-        List<Relationship> relationships = omEntityDao.getRelationships(relationshipType, guid);
+        List<Relationship> relationships = null;
+        try {
+            relationships = omEntityDao.getRelationships(relationshipType, guid);
+        } catch (RepositoryErrorException | UserNotAuthorizedException | EntityNotKnownException | FunctionNotSupportedException | InvalidParameterException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
+            InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
+            throw new RetrieveRelationshipException(auditCode.getHttpErrorCode(),
+                    OMEntityDao.class.getName(),
+                    auditCode.getFormattedErrorMessage(relationshipType, e.getMessage()),
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction(),
+                    e);
+        }
         if(relationships != null && !relationships.isEmpty()){
             return relationships;
         }
@@ -116,9 +155,14 @@ public abstract class EntityLookup<T extends Source> {
 
     protected EntityDetail getEntity(String guid) {
         try {
-            return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);
-        } catch (Exception e) {
-            throw new RuntimeException(e.getMessage(), e);
+            return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, guid);
+        } catch (InvalidParameterException | EntityProxyOnlyException | EntityNotKnownException | UserNotAuthorizedException | RepositoryErrorException e) {
+            throw new EntityNotFoundException(InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getHttpErrorCode(),
+                    EntityLookup.class.getName(),
+                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getFormattedErrorMessage(Constants.GUID, guid),
+                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getSystemAction(),
+                    InformationViewErrorCode.ENTITY_NOT_FOUND_EXCEPTION.getUserAction(),
+                    null);
         }
     }
 }

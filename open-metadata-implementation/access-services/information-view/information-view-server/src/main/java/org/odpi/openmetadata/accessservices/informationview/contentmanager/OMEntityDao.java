@@ -20,11 +20,28 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotDeletedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.StatusNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.odpi.openmetadata.accessservices.informationview.utils.Constants.PAGE_SIZE;
 
@@ -63,9 +80,11 @@ public class OMEntityDao {
                                    String typeName,
                                    InstanceProperties instanceProperties,
                                    List<Classification> classifications,
-                                   boolean zoneRestricted) throws ClassificationErrorException, StatusNotSupportedException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, FunctionNotSupportedException {
+                                   boolean zoneRestricted) throws ClassificationErrorException, StatusNotSupportedException,
+                                                                  UserNotAuthorizedException, InvalidParameterException,
+                                                                  RepositoryErrorException, PropertyErrorException,
+                                                                  TypeErrorException, FunctionNotSupportedException {
         EntityDetail entity;
-        try {
             entity = enterpriseConnector.getRepositoryHelper().getSkeletonEntity(Constants.INFORMATION_VIEW_OMAS_NAME,
                                                                                 metadataCollectionId,
                                                                                 InstanceProvenanceType.LOCAL_COHORT,
@@ -80,19 +99,6 @@ public class OMEntityDao {
                                                                         instanceProperties,
                                                                         entity.getClassifications(),
                                                                         entity.getStatus());
-        } catch (Exception e) {
-
-            InformationViewErrorCode auditCode = InformationViewErrorCode.ADD_ENTITY_EXCEPTION;
-            auditLog.logException("addEntity",
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(typeName, e.getMessage()),
-                    "entity of type{" + typeName + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e);
-            throw e;
-        }
     }
 
     /**
@@ -124,10 +130,10 @@ public class OMEntityDao {
                     .getSkeletonRelationship(Constants.INFORMATION_VIEW_OMAS_NAME,
                             metadataCollectionId,
                             InstanceProvenanceType.LOCAL_COHORT,
-                            Constants.USER_ID,
+                            Constants.INFORMATION_VIEW_USER_ID,
                             typeName);
             return enterpriseConnector.getMetadataCollection()
-                    .addRelationship(Constants.USER_ID,
+                    .addRelationship(Constants.INFORMATION_VIEW_USER_ID,
                             relationship.getType().getTypeDefGUID(),
                             instanceProperties,
                             entityOneGUID,
@@ -181,11 +187,11 @@ public class OMEntityDao {
                                                                                                 RepositoryErrorException,
                                                                                                 PropertyErrorException,
                                                                                                 TypeErrorException {
-        TypeDef typeDef = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.USER_ID, typeName);
+        TypeDef typeDef = enterpriseConnector.getRepositoryHelper().getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, typeName);
         List<EntityDetail> existingEntities;
         try {
             log.info("Retrieving entities of type {} with properties {}", typeDef.getName(),  matchProperties);
-            existingEntities = enterpriseConnector.getMetadataCollection().findEntitiesByProperty(Constants.USER_ID,
+            existingEntities = enterpriseConnector.getMetadataCollection().findEntitiesByProperty(Constants.INFORMATION_VIEW_USER_ID,
                                                                                                     typeDef.getGUID(),
                                                                                                     matchProperties,
                                                                                                     MatchCriteria.ALL,
@@ -218,7 +224,7 @@ public class OMEntityDao {
                                                             EntityProxyOnlyException,
                                                             InvalidParameterException,
                                                             EntityNotKnownException {
-        return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.USER_ID, guid);
+        return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, guid);
 
     }
 
@@ -231,7 +237,7 @@ public class OMEntityDao {
      */
     private EntityDetail checkEntities(List<EntityDetail> existingEntities, String qualifiedName) {
         if (existingEntities != null && !existingEntities.isEmpty())
-            return existingEntities.stream().filter(e -> qualifiedName.equals(EntityPropertiesUtils.getStringValueForProperty(e.getProperties(), Constants.QUALIFIED_NAME))).findFirst().orElse(null);
+            return existingEntities.stream().filter(e -> qualifiedName.equals(enterpriseConnector.getRepositoryHelper().getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, e.getProperties(), "checkEntities"))).findFirst().orElse(null);
         return null;
     }
 
@@ -245,40 +251,38 @@ public class OMEntityDao {
      */
     private Relationship getRelationship(String relationshipType,
                                          String guid1,
-                                         String guid2)  {
+                                         String guid2) throws UserNotAuthorizedException, EntityNotKnownException,
+                                                              FunctionNotSupportedException, InvalidParameterException,
+                                                              RepositoryErrorException, PropertyErrorException,
+                                                              TypeErrorException, PagingErrorException {
         List<Relationship> relationships;
-        try {
+
             relationships = getRelationships(relationshipType, guid2);
-        } catch (Exception e) {
-            InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
-            auditLog.logException("getRelationship",
-                                auditCode.getErrorMessageId(),
-                                OMRSAuditLogRecordSeverity.EXCEPTION,
-                                auditCode.getFormattedErrorMessage(relationshipType, e.getMessage()),
-                                "relationship with type" + relationshipType + " between {" + guid1 + ", " + guid2 + "}",
-                                auditCode.getSystemAction(),
-                                auditCode.getUserAction(),
-                                e);
-            return null;
-        }
+
         if (relationships != null && !relationships.isEmpty())
             for (Relationship relationship : relationships) {
-                if (relationship.getType().getTypeDefName().equals(relationshipType) && checkRelationshipEnds(relationship,
-                        guid1,
-                        guid2))
+                if (relationship.getType().getTypeDefName().equals(relationshipType) && checkRelationshipEnds(relationship, guid1, guid2))
                     return relationship;
             }
         return null;
     }
 
-    public List<Relationship> getRelationships(String relationshipType, String guid2)  {
-        List<Relationship> relationships = new ArrayList<>();
+    public List<Relationship> getRelationships(String relationshipType, String guid2) throws RepositoryErrorException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             EntityNotKnownException,
+                                                                                             FunctionNotSupportedException,
+                                                                                             InvalidParameterException,
+                                                                                             PropertyErrorException,
+                                                                                             TypeErrorException,
+                                                                                             PagingErrorException {
         String relationshipTypeGuid = enterpriseConnector.getRepositoryHelper()
-                                                        .getTypeDefByName(Constants.USER_ID, relationshipType)
+                                                        .getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, relationshipType)
                                                         .getGUID();
-        try {
-            log.debug("Retrieving relationships of type {} for entity {}", relationshipType,  guid2);
-            relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.USER_ID,
+
+            if(log.isDebugEnabled()) {
+                log.debug("Retrieving relationships of type {} for entity {}", relationshipType, guid2);
+            }
+            return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
                                                                                                     guid2,
                                                                                                     relationshipTypeGuid,
                                                                                                     Constants.START_FROM,
@@ -287,18 +291,7 @@ public class OMEntityDao {
                                                                                                     null,
                                                                                                     null,
                                                                                                     PAGE_SIZE);
-        } catch (Exception e) {
-            InformationViewErrorCode auditCode = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
-            auditLog.logException("getRelationships",
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(relationshipType, e.getMessage()),
-                    "relationship with type" + relationshipType + " gor {" + guid2 + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e);
-        }
-        return relationships;
+
     }
 
     /**
@@ -380,21 +373,29 @@ public class OMEntityDao {
                                                 InstanceProperties properties,
                                                 List<Classification> classifications,
                                                 boolean update,
-                                                boolean zoneRestricted) throws UserNotAuthorizedException, FunctionNotSupportedException, InvalidParameterException, RepositoryErrorException, PropertyErrorException, TypeErrorException, PagingErrorException, ClassificationErrorException, StatusNotSupportedException, EntityNotKnownException {
+                                                boolean zoneRestricted) throws UserNotAuthorizedException, FunctionNotSupportedException,
+                                                                               InvalidParameterException, RepositoryErrorException,
+                                                                               PropertyErrorException, TypeErrorException,
+                                                                               PagingErrorException, ClassificationErrorException,
+                                                                               StatusNotSupportedException, EntityNotKnownException {
         EntityDetail entityDetail;
         OMEntityWrapper wrapper;
         entityDetail = getEntity(typeName, qualifiedName, zoneRestricted);
         if (entityDetail == null) {
-            entityDetail = addEntity("", Constants.USER_ID, typeName, properties, classifications, zoneRestricted);
+            entityDetail = addEntity("", Constants.INFORMATION_VIEW_USER_ID, typeName, properties, classifications, zoneRestricted);
             log.info("Entity with qualified name {} added", qualifiedName);
-            log.debug("Entity: {}", entityDetail);
+            if(log.isDebugEnabled()) {
+                log.debug("Entity: {}", entityDetail);
+            }
             wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.NEW);
         } else {
             log.info("Entity with qualified name {} already exists", qualifiedName);
-            log.debug("Entity: {}", entityDetail);
+            if(log.isDebugEnabled()) {
+                log.debug("Entity: {}", entityDetail);
+            }
             if (update && !EntityPropertiesUtils.matchExactlyInstanceProperties(entityDetail.getProperties(), properties)) {//TODO should add validation
                 log.info("Updating entity with qualified name {} ", qualifiedName);
-                entityDetail = updateEntity(entityDetail, Constants.USER_ID, properties, zoneRestricted);
+                entityDetail = updateEntity(entityDetail, Constants.INFORMATION_VIEW_USER_ID, properties, zoneRestricted);
                 wrapper = new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.UPDATED);
             }
             else{
@@ -406,8 +407,7 @@ public class OMEntityDao {
         return wrapper;
     }
 
-    private EntityDetail updateEntity(EntityDetail entityDetail, String userId, InstanceProperties instanceProperties,
-                                      boolean zoneRestricted) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, EntityNotKnownException, PropertyErrorException, FunctionNotSupportedException {
+    private EntityDetail updateEntity(EntityDetail entityDetail, String userId, InstanceProperties instanceProperties, boolean zoneRestricted) throws RepositoryErrorException, UserNotAuthorizedException, InvalidParameterException, EntityNotKnownException, PropertyErrorException, FunctionNotSupportedException {
         //TODO add validation to new instance properties
         if(zoneRestricted){
             instanceProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, instanceProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "addEntity");
@@ -445,10 +445,14 @@ public class OMEntityDao {
         if (relationship == null) {
             relationship = addRelationship("", relationshipType, instanceProperties, guid1, guid2);
             log.info("Relationship {} added between: {} and {}", relationshipType, guid1, guid2);
-            log.debug("Relationship: {}", relationship);
+            if(log.isDebugEnabled()) {
+                log.debug("Relationship: {}", relationship);
+            }
         } else {
             log.info("Relationship {} already exists between: {} and {}", relationshipType, guid1, guid2);
-            log.debug("Relationship: {}", relationship);
+            if(log.isDebugEnabled()) {
+                log.debug("Relationship: {}", relationship);
+            }
         }
 
         return relationship;
@@ -481,7 +485,7 @@ public class OMEntityDao {
                                               InstanceProperties classificationProperties) throws TypeErrorException {
         try {
             Classification classification = enterpriseConnector.getRepositoryHelper().getSkeletonClassification(Constants.INFORMATION_VIEW_OMAS_NAME,
-                                                                                                                Constants.USER_ID,
+                                                                                                                Constants.INFORMATION_VIEW_USER_ID,
                                                                                                                 classificationTypeName,
                                                                                                                 entityTypeName);
             classification.setProperties(classificationProperties);
@@ -507,8 +511,8 @@ public class OMEntityDao {
             log.info("Nothing will be purged, invalid relationship passed as argument: {}", relationship);
         } else {
             log.info("Purge relationship with guid {}", relationship.getGUID());
-            enterpriseConnector.getMetadataCollection().deleteRelationship(Constants.USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
-            enterpriseConnector.getMetadataCollection().purgeRelationship(Constants.USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
+            enterpriseConnector.getMetadataCollection().deleteRelationship(Constants.INFORMATION_VIEW_USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
+            enterpriseConnector.getMetadataCollection().purgeRelationship(Constants.INFORMATION_VIEW_USER_ID, relationship.getType().getTypeDefGUID(), relationship.getType().getTypeDefName(), relationship.getGUID());
         }
     }
 
@@ -517,8 +521,8 @@ public class OMEntityDao {
             log.info("Nothing will be purged, invalid entity passed as argument: {}", entitySummary);
         } else {
             log.info("Purge entity with guid {}", entitySummary.getGUID());
-            enterpriseConnector.getMetadataCollection().deleteEntity(Constants.USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
-            enterpriseConnector.getMetadataCollection().purgeEntity(Constants.USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
+            enterpriseConnector.getMetadataCollection().deleteEntity(Constants.INFORMATION_VIEW_USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
+            enterpriseConnector.getMetadataCollection().purgeEntity(Constants.INFORMATION_VIEW_USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
         }
     }
 }
