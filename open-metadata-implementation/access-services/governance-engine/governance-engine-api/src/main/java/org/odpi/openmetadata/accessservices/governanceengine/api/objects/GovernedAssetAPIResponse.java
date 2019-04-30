@@ -24,12 +24,6 @@ public class GovernedAssetAPIResponse extends GovernanceEngineOMASAPIResponse im
     private GovernedAsset asset;
 
     /**
-     * Default constructor
-     */
-    public GovernedAssetAPIResponse() {
-    }
-
-    /**
      * Return the Connection object.
      *
      * @return connection

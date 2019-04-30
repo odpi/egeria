@@ -49,7 +49,7 @@ public class DataViewSource extends Source{
 
     @Override
     public String toString() {
-        return "DataViewSource{" +
+        return "{" +
                 "endpointSource=" + endpointSource +
                 ", id='" + id + '\'' +
                 ", name='" + name + '\'' +

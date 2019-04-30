@@ -40,7 +40,10 @@ public class ViewHandler implements Callable<View> {
     }
 
     @Override
-    public View call() throws Exception {
+    public View call() throws InvalidParameterException, TypeErrorException, EntityNotDeletedException,
+                              EntityNotKnownException, FunctionNotSupportedException, PagingErrorException,
+                              PropertyErrorException, UserNotAuthorizedException, RepositoryErrorException,
+                              ClassificationErrorException, StatusNotSupportedException {
 
         View view = new View();
 

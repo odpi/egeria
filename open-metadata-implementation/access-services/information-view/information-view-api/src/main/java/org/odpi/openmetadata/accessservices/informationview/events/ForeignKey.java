@@ -55,7 +55,7 @@ public class ForeignKey {
 
     @Override
     public String toString() {
-        return "ForeignKey{" +
+        return "{" +
                 "columnGuid='" + columnGuid + '\'' +
                 ", foreignKeyName='" + foreignKeyName + '\'' +
                 ", columnName='" + columnName + '\'' +
