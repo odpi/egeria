@@ -13,15 +13,15 @@ import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.Ope
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 import org.odpi.openmetadata.securitysyncservices.auditlog.SecuritySyncAuditCode;
-import org.odpi.openmetadata.securitysyncservices.listener.GovernanceEventListener;
-import org.odpi.openmetadata.securitysyncservices.processor.GovernanceEventProcessor;
+import org.odpi.openmetadata.securitysyncservices.listener.SecuritySyncEventListener;
+import org.odpi.openmetadata.securitysyncservices.processor.SecuritySyncEventProcessor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class SecuritySyncOperationalServices {
 
     private static final Logger log = LoggerFactory.getLogger(SecuritySyncOperationalServices.class);
-    OpenMetadataTopicConnector inTopic;
+    private OpenMetadataTopicConnector inTopic;
     private String localServerName;               /* Initialized in constructor */
     private String localServerType;               /* Initialized in constructor */
     private String localMetadataCollectionName;   /* Initialized in constructor */
@@ -62,15 +62,15 @@ public class SecuritySyncOperationalServices {
 
             logAudit(SecuritySyncAuditCode.SERVICE_INITIALIZING, actionDescription);
 
-            GovernanceEventProcessor governanceEventProcessor = new GovernanceEventProcessor(securitySyncConfig, auditLog);
+            SecuritySyncEventProcessor securitySyncEventProcessor = new SecuritySyncEventProcessor(securitySyncConfig, auditLog);
 
             inTopic = getTopicConnector(securitySyncConfig.getSecuritySyncInTopic(), auditLog);
-            OpenMetadataTopicListener governanceEventListener = new GovernanceEventListener(governanceEventProcessor);
+            OpenMetadataTopicListener governanceEventListener = new SecuritySyncEventListener(securitySyncEventProcessor);
             inTopic.registerListener(governanceEventListener);
 
             startTopic(inTopic);
 
-            governanceEventProcessor.processExistingGovernedAssetsFromRepository();
+            securitySyncEventProcessor.processExistingGovernedAssetsFromRepository();
             logAudit(SecuritySyncAuditCode.SERVICE_INITIALIZED, actionDescription);
         }
     }
@@ -111,10 +111,9 @@ public class SecuritySyncOperationalServices {
     /**
      * Shutdown the Security Sync Services.
      *
-     * @param permanent boolean flag indicating whether this server permanently shutting down or not
      * @return boolean indicated whether the disconnect was successful.
      */
-    public boolean disconnect(boolean permanent) {
+    public boolean disconnect() {
 
         try {
             inTopic.disconnect();

@@ -23,7 +23,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
           @JsonSubTypes.Type(value = VoidResponse.class, name = "VoidResponse"),
           @JsonSubTypes.Type(value = DatabaseListResponse.class, name = "DatabaseListResponse"),
           @JsonSubTypes.Type(value = TableListResponse.class, name = "TableListResponse"),
-          @JsonSubTypes.Type(value = TableColumnsResponse.class, name = "TableColumnsResponse")
+          @JsonSubTypes.Type(value = TableColumnsResponse.class, name = "TableColumnsResponse"),
+          @JsonSubTypes.Type(value = RegistrationResponse.class, name = "RegistrationResponse")
         })
 public class InformationViewOMASAPIResponse{
 

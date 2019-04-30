@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.informationview.server.spring;
 
 
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewRequestBody;
+import org.odpi.openmetadata.accessservices.informationview.events.RegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.responses.InformationViewOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.informationview.server.InformationViewRestServices;
@@ -28,8 +29,8 @@ public class InformationViewOMASResource {
      */
     @PostMapping(path = "/report")
     public InformationViewOMASAPIResponse submitReport(@PathVariable("serverName") String serverName,
-                                                         @PathVariable("userId") String userId,
-                                                         @RequestBody ReportRequestBody requestBody) {
+                                                       @PathVariable("userId") String userId,
+                                                       @RequestBody ReportRequestBody requestBody) {
         return restAPI.submitReport(serverName, userId, requestBody);
     }
 
@@ -51,33 +52,50 @@ public class InformationViewOMASResource {
     @GetMapping(path = "/databases")
     public InformationViewOMASAPIResponse retrieveDatabases(@PathVariable("serverName") String serverName,
                                                             @PathVariable("userId") String userId,
-                                                            @RequestParam int     startFrom,
-                                                            @RequestParam int     pageSize) {
+                                                            @RequestParam int startFrom,
+                                                            @RequestParam int pageSize) {
         return restAPI.getDatabases(serverName, userId, startFrom, pageSize);
     }
+
     @GetMapping(path = "database/{database}/tables")
     public InformationViewOMASAPIResponse retrieveTablesForDatabase(@PathVariable("serverName") String serverName,
-                                                            @PathVariable("userId") String userId,
-                                                            @PathVariable("database") String database,
-                                                            @RequestParam int     startFrom,
-                                                            @RequestParam int     pageSize) {
+                                                                    @PathVariable("userId") String userId,
+                                                                    @PathVariable("database") String database,
+                                                                    @RequestParam int startFrom,
+                                                                    @RequestParam int pageSize) {
         return restAPI.getTablesForDatabase(serverName, userId, database, startFrom, pageSize);
     }
 
     @GetMapping(path = "table/{table}")
     public InformationViewOMASAPIResponse retrieveTableContext(@PathVariable("serverName") String serverName,
-                                                                @PathVariable("userId") String userId,
-                                                                @PathVariable("table") String table) {
+                                                               @PathVariable("userId") String userId,
+                                                               @PathVariable("table") String table) {
         return restAPI.getTableContext(serverName, userId, table);
     }
 
     @GetMapping(path = "table/{table}/columns")
     public InformationViewOMASAPIResponse retrieveTableColumns(@PathVariable("serverName") String serverName,
-                                                                @PathVariable("userId") String userId,
-                                                                @PathVariable("table") String table,
-                                                                @RequestParam int     startFrom,
-                                                                @RequestParam int     pageSize) {
+                                                               @PathVariable("userId") String userId,
+                                                               @PathVariable("table") String table,
+                                                               @RequestParam int startFrom,
+                                                               @RequestParam int pageSize) {
         return restAPI.getTableColumns(serverName, userId, table, startFrom, pageSize);
     }
+
+    @PostMapping(path = "register")
+    public InformationViewOMASAPIResponse registerExternalTool(@PathVariable("serverName") String serverName,
+                                                               @PathVariable("userId") String userId,
+                                                               @RequestBody RegistrationRequestBody requestBody) {
+        return restAPI.registerExternalTool(serverName, userId, requestBody);
+    }
+
+
+    @PostMapping(path = "registration/lookup")
+    public InformationViewOMASAPIResponse lookupExternalTool(@PathVariable("serverName") String serverName,
+                                                             @PathVariable("userId") String userId,
+                                                             @RequestBody RegistrationRequestBody requestBody) {
+        return restAPI.lookupRegistration(serverName, userId, requestBody);
+    }
+
 
 }

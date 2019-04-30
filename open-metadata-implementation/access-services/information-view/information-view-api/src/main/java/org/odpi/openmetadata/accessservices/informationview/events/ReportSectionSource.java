@@ -34,7 +34,7 @@ public class ReportSectionSource extends Source {
 
     @Override
     public String toString() {
-        return "ReportSectionSource{" +
+        return "{" +
                 "reportSource=" + reportSource +
                 ", parentReportSection=" + parentReportSection +
                 ", name='" + name + '\'' +
