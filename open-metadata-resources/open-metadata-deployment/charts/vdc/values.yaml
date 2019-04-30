@@ -45,6 +45,15 @@ service:
     externalip: 10.10.1.30
     # KAFKA is not exposed externally (issues in chart, complexity)
 
+istio:
+  # If true, will include the sidecar.istio.io/inject: "true" annotation in each
+  # pod, so as to inject the istio sidecar into each pod.
+  # This will not occur for ldap or embedded kafka as these are deployed via
+  # an independent kafka chart.
+  # Ensure you have the namespace being deployed into labelled for injection via
+  # kubectl label namespace MYNAMESPACE istio-injection=enabled
+  enabled: false
+
 # Debug support for Egeria - set to true to enable JVM debug for Egeria images on port 5005
 debug:
   egeriaJVM: false
