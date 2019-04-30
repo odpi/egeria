@@ -83,6 +83,26 @@ public class GovernanceEngineEventProcessor {
         sendEvent(governanceEvent);
     }
 
+    public void processDeletedEntityEvent(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
+        if(!governedAssetHandler.containsGovernedClassification(entity)){
+            return;
+        }
+
+        GovernanceEngineEvent governanceEngineEvent = getGovernanceEngineEvent(entity, GovernanceEngineEventType.DELETED_ASSET);
+
+        sendEvent(governanceEngineEvent);
+    }
+
+    public void processDeclassifiedEntityEvent(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
+        if(!governedAssetHandler.containsGovernedClassification(entity)){
+            return;
+        }
+
+        GovernanceEngineEvent governanceEngineEvent = getGovernanceEngineEvent(entity, GovernanceEngineEventType.DE_CLASSIFIED_ASSET);
+
+        sendEvent(governanceEngineEvent);
+    }
+
     private GovernanceEngineEvent getGovernanceEngineEvent(EntityDetail entityDetail, GovernanceEngineEventType governanceEngineEventType) throws EntityProxyOnlyException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
         GovernanceEngineEvent governanceEvent = new GovernanceEngineEvent();
 

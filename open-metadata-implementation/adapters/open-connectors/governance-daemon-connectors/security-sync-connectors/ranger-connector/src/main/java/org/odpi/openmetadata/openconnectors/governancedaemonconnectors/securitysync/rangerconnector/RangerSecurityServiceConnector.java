@@ -122,7 +122,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
     @Override
     public void deleteAssociationResourceToSecurityTag(ResourceTagMapper resourceTagMapper) {
         String rangerBaseURL = connection.getEndpoint().getAddress();
-        String deleteAssociationURL = MessageFormat.format("{0}/service/tags/tagresourcemap/{1}", rangerBaseURL, resourceTagMapper.getId());
+        String deleteAssociationURL = MessageFormat.format(TAG_RESOURCE_ASSOCIATION, rangerBaseURL, resourceTagMapper.getId());
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = getHttpHeaders();
@@ -177,6 +177,41 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             log.error("Unable to get the security tags available on Ranger Server");
         }
         return Collections.emptyList();
+    }
+
+    @Override
+    public RangerServiceResource getResourceByGUID(String resourceGuid) {
+        String resourceURL = getResourceURL(resourceGuid, SERVICE_TAGS_RESOURCE_BY_GUID);
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
+
+        try {
+            ResponseEntity<RangerServiceResource> result = restTemplate.exchange(resourceURL, HttpMethod.GET, entity, RangerServiceResource.class);
+            return result.getBody();
+        } catch (HttpStatusCodeException exception) {
+            log.error("Unable to fetch the resource with guid = {}", resourceGuid);
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteResourceByGUID(String resourceGuid) {
+        String resourceURL = getResourceURL(resourceGuid, SERVICE_TAGS_RESOURCE_BY_GUID);
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
+
+        try {
+            restTemplate.delete(resourceURL, HttpMethod.DELETE, entity);
+            log.info("The resource with guid = {} has been deleted", resourceGuid);
+        } catch (HttpStatusCodeException exception) {
+            log.error("Unable to delete the resourse with guid = {}", resourceGuid);
+        }
+    }
+
+    private String getResourceURL(String resourceGuid, String serviceTagsResourceByGuid) {
+        String rangerBaseURL = connection.getEndpoint().getAddress();
+        return MessageFormat.format(serviceTagsResourceByGuid, rangerBaseURL, resourceGuid);
     }
 
     private RangerResource processGovernedAsset(GovernedAsset governedAsset) {
@@ -248,22 +283,6 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         }
 
         return resourceToTagIds;
-    }
-
-    public RangerServiceResource getResourceByGUID(String resourceGuid) {
-        String rangerBaseURL = connection.getEndpoint().getAddress();
-        String resourceURL = MessageFormat.format(SERVICE_TAGS_RESOURCE_BY_GUID, rangerBaseURL, resourceGuid);
-
-        RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
-
-        try {
-            ResponseEntity<RangerServiceResource> result = restTemplate.exchange(resourceURL, HttpMethod.GET, entity, RangerServiceResource.class);
-            return result.getBody();
-        } catch (HttpStatusCodeException exception) {
-            log.error("Unable to fetch the resourse with guid = {}", resourceGuid);
-        }
-        return null;
     }
 
     private void importTaggedResources(RangerResource resource) {

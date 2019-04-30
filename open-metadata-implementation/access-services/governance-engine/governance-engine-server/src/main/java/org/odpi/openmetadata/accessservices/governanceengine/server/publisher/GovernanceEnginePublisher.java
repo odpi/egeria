@@ -78,7 +78,17 @@ public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
 
     @Override
     public void processDeclassifiedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
-        throw new UnsupportedOperationException();
+        log.info("GE Process De-Classified Entity");
+
+        if (validateEntityType(entity)) return;
+
+        if (validateClassifications(entity)) return;
+
+        try {
+            governanceEngineEventProcessor.processDeclassifiedEntityEvent(entity);
+        } catch (EntityProxyOnlyException | RepositoryErrorException | InvalidParameterException | UserNotAuthorizedException | PagingErrorException | TypeDefNotKnownException | EntityNotKnownException | PropertyErrorException | FunctionNotSupportedException | TypeErrorException e) {
+            log.debug("Governance Engine OMAS is unable to process Declassified Entity event");
+        }
     }
 
     @Override
@@ -98,7 +108,16 @@ public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
 
     @Override
     public void processDeletedEntityEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName, String originatorServerType, String originatorOrganizationName, EntityDetail entity) {
-        throw new UnsupportedOperationException();
+        log.info("GE Process Deleted Entity Event");
+        if (validateEntityType(entity)) return;
+
+        if (validateClassifications(entity)) return;
+
+        try {
+            governanceEngineEventProcessor.processDeletedEntityEvent(entity);
+        } catch (EntityProxyOnlyException | RepositoryErrorException | InvalidParameterException | UserNotAuthorizedException | PagingErrorException | TypeDefNotKnownException | EntityNotKnownException | PropertyErrorException | FunctionNotSupportedException | TypeErrorException e) {
+            log.debug("Governance Engine OMAS is unable to process Deleted Entity event");
+        }
     }
 
     @Override
@@ -228,7 +247,13 @@ public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
         return false;
     }
 
+    /**
+     * Should check if the entity has a "Security Tag"
+     * @param entity - asset received contains classifications that needs to be validated
+     * @return boolean
+     */
     private boolean validateClassifications(EntityDetail entity) {
+
         if (entity.getClassifications() == null || entity.getClassifications().isEmpty()) {
             log.info("GE OMAS does not processes entities without classifications, this is a wrong event!");
             return true;
