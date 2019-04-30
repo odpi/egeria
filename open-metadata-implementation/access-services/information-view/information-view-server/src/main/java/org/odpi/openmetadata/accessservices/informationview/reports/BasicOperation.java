@@ -58,8 +58,7 @@ public abstract class BasicOperation {
                                                                                ClassificationErrorException,
                                                                                UserNotAuthorizedException,
                                                                                TypeErrorException,
-                                                                               RepositoryErrorException,
-                                                                               TypeDefNotKnownException {
+                                                                               RepositoryErrorException{
         EntityDetail schemaTypeEntity = omEntityDao.addEntity(schemaAttributeTypeName,
                 qualifiedNameForSchemaType,
                 schemaAttributeTypeProperties,

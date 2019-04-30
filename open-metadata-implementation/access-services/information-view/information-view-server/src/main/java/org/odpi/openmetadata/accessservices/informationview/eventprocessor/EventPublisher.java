@@ -11,6 +11,8 @@ import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.UpdatedEntityEvent;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ContextLoadException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewUncheckedExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.views.ColumnContextBuilder;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -41,7 +43,6 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.odpi.openmetadata.accessservices.informationview.utils.Constants.RELATIONAL_COLUMN;
@@ -111,7 +112,7 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
                 if(assignedColumns != null && !assignedColumns.isEmpty()) {
                     assignedColumns.parallelStream().forEach(s -> publishColumnContextEvent(s.getGUID()));
                 }
-            }  catch (UserNotAuthorizedException | PagingErrorException | RepositoryErrorException | TypeErrorException | EntityNotKnownException | InvalidParameterException | PropertyErrorException | FunctionNotSupportedException e) {
+            }  catch (InformationViewUncheckedExceptionBase e) {
                log.error(e.getMessage(), e);
             }
         }
@@ -290,24 +291,14 @@ public class EventPublisher extends OMRSInstanceEventProcessor {
      * @param guid -
      */
     private void publishColumnContextEvent(String guid) {
-        List<TableContextEvent> events = new ArrayList<>();
+        List<TableContextEvent> events = null;
         try {
             events = columnContextBuilder.buildContexts(guid);
-        } catch (PagingErrorException | TypeDefNotKnownException | PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | RelationshipNotKnownException | EntityProxyOnlyException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException e) {
-            log.error("Exception building events", e);
-            InformationViewErrorCode auditCode = InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION;
-
-            auditLog.logException("processNewRelationshipEvent",
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(guid, e.getMessage()),
-                    e.getMessage(),
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    e);
+            sendColumnContextEvents(events);
         }
-
-        sendColumnContextEvents(events);
+        catch(InformationViewUncheckedExceptionBase e){
+            log.error(e.getMessage(), e);
+        }
     }
 
     private void publishSemanticAssignment(Relationship relationship) throws RepositoryErrorException,

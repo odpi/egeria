@@ -234,9 +234,10 @@ public class ReportUpdater extends ReportBasicOperation {
             }
         } catch (TypeDefNotKnownException | InvalidParameterException | RelationshipNotDeletedException | FunctionNotSupportedException | EntityNotDeletedException | EntityProxyOnlyException | PagingErrorException | ClassificationErrorException | UserNotAuthorizedException | TypeErrorException | EntityNotKnownException | RepositoryErrorException | RelationshipNotKnownException | StatusNotSupportedException | PropertyErrorException e) {
             throw new ReportElementCreationException(ReportUpdater.class.getName(),
-                                                    InformationViewErrorCode.REPORT_ELEMENT_CREATION_EXCEPTION.getFormattedErrorMessage(),
+                                                    InformationViewErrorCode.REPORT_ELEMENT_CREATION_EXCEPTION.getFormattedErrorMessage(element.getName(), e.getMessage()),
                                                     InformationViewErrorCode.REPORT_ELEMENT_CREATION_EXCEPTION.getSystemAction(),
-                                                    InformationViewErrorCode.REPORT_ELEMENT_CREATION_EXCEPTION.getUserAction(), e);
+                                                    InformationViewErrorCode.REPORT_ELEMENT_CREATION_EXCEPTION.getUserAction(),
+                                                    e);
         }
     }
 

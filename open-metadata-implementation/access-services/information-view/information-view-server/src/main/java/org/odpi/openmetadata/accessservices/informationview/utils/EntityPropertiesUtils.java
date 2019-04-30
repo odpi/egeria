@@ -79,7 +79,7 @@ public class EntityPropertiesUtils {
                 if(primitiveValue1 == null && primitiveValue2 == null){
                     return true;
                 }
-                if(primitiveValue1 == null || primitiveValue2 != null){
+                if(primitiveValue1 == null && primitiveValue2 != null){
                     return false;
                 }
 
