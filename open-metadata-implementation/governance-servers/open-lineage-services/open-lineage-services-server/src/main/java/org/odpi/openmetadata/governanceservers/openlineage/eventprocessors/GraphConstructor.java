@@ -26,7 +26,6 @@ import static org.odpi.openmetadata.governanceservers.openlineage.util.Constants
 
 public class GraphConstructor {
 
-
     private static final Logger log = LoggerFactory.getLogger(GraphConstructor.class);
     private Graph graph;
     private GraphTraversalSource g;
@@ -64,8 +63,6 @@ public class GraphConstructor {
         addEdge(ATTRIBUTE_FOR_SCHEMA, relationalTableTypeVertex, relationalColumnVertex);
     }
 
-
-
     private void addEdge(String relationship, Vertex v1, Vertex v2) {
         v1.addEdge(relationship, v2);
     }
@@ -82,6 +79,11 @@ public class GraphConstructor {
     }
 
 
+    /**
+     * DEPRECATED
+     *  Add vertices and edges for semantic relationships
+     * @param omrsInstanceEvent 1:1 copy of the OMRS topic event
+     */
     public void addNewRelationship(OMRSInstanceEvent omrsInstanceEvent) {
         EntityProxy proxy1 = omrsInstanceEvent.getRelationship().getEntityOneProxy();
         EntityProxy proxy2 = omrsInstanceEvent.getRelationship().getEntityTwoProxy();
@@ -95,6 +97,10 @@ public class GraphConstructor {
         v1.addEdge(SEMANTIC_ASSIGNMENT, v2);
     }
 
+    /**
+     * Connection is part of the event json
+     * @param connection
+     */
     private void addConnection(Connection connection) {
         String GUID = connection.getGuid();
         String qualifiedName = connection.getQualifiedName();
