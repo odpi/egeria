@@ -75,33 +75,32 @@ public class GraphOMRSRelationshipMapper {
 
         // Some properties are mandatory. If any of these are null then throw exception
         boolean missingAttribute = false;
+        String  missingAttributeName = null;
 
         if (relationship.getGUID() != null)
             edge.property(PROPERTY_KEY_RELATIONSHIP_GUID, relationship.getGUID());
-        else
+        else {
             missingAttribute = true;
+            missingAttributeName = "guid";
+        }
 
         InstanceType instanceType = relationship.getType();
         if (instanceType != null && instanceType.getTypeDefName() != null)
             edge.property(PROPERTY_KEY_RELATIONSHIP_TYPE_NAME, instanceType.getTypeDefName());
-        else
+        else {
             missingAttribute = true;
+            missingAttributeName = "type or typeName";
+        }
 
         if (this.metadataCollectionId != null)
             edge.property(PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_ID, this.metadataCollectionId);
-        else
+        else {
             missingAttribute = true;
-
-        if (this.repositoryName != null)
-            edge.property(PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME, this.repositoryName);
-        else
-            missingAttribute = true;
-
-        edge.property(PROPERTY_KEY_RELATIONSHIP_VERSION, relationship.getVersion());
-
+            missingAttributeName = "metadataCollectionId";
+        }
 
         if (missingAttribute) {
-            log.error("{} relationship is missing a core attribute{}", methodName);
+            log.error("{} relationship is missing a core attribute {}", methodName, missingAttributeName);
             GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_PROPERTIES_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
                     this.getClass().getName(),
@@ -114,8 +113,18 @@ public class GraphOMRSRelationshipMapper {
                     errorCode.getUserAction());
         }
 
+        edge.property(PROPERTY_KEY_RELATIONSHIP_VERSION, relationship.getVersion());
 
         // Other properties can be removed if set to null
+
+        if (relationship.getMetadataCollectionName() != null) {
+            edge.property(PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME, relationship.getMetadataCollectionName());
+        }
+        else {
+            Property ep = edge.property(PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_NAME);
+            if (ep != null)
+                ep.remove();
+        }
 
         if (relationship.getCreatedBy() != null) {
             edge.property(PROPERTY_KEY_RELATIONSHIP_CREATED_BY, relationship.getCreatedBy());
@@ -431,5 +440,10 @@ public class GraphOMRSRelationshipMapper {
     }
 
 
+    public String getRelationshipMetadataCollectionId(Edge edge) {
+        String metadataCollectionId = null;
+        metadataCollectionId = (String) getEdgeProperty(edge, PROPERTY_KEY_RELATIONSHIP_METADATACOLLECTION_ID);
+        return metadataCollectionId;
+    }
 
 }

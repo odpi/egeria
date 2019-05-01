@@ -121,6 +121,10 @@ public enum GraphOMRSErrorCode
             "It is not possible to open the graph database at path {0} and metadataCollectionId {1}, because the repository connector has metadataCollectionId {2}",
             "The system was unable to open the graph repository graph database",
             "Please check the configuration of the repository connection and update it if necessary."),
+    RELATIONSHIP_ALREADY_EXISTS(400, "OMRS-GRAPH-REPOSITORY-400-023 ",
+            "There is an already a relationship with GUID {0} so cannot honour request to create relationship in {1} method of class {2} to open metadata repository {3}",
+            "The system is unable to perform the request because there is already a relationship with the same GUID.",
+            "Correct the caller's code and retry the request."),
 
     ;
 
