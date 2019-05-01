@@ -331,6 +331,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
 
         tag.setCreatedBy(RANGER_CONNECTOR);
         tag.setType(CONFIDENTIALITY);
+        tag.setOwner(OPEN_METADATA_OWNER);
         if (classification.getAttributes().containsKey(LEVEL)) {
             tag.setGuid(classification.getAttributes().get(LEVEL));
         }
