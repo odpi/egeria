@@ -25,12 +25,6 @@ public class GovernedAssetListAPIResponse extends GovernanceEngineOMASAPIRespons
     private List<GovernedAsset> assetList;
 
     /**
-     * Default constructor
-     */
-    public GovernedAssetListAPIResponse() {
-    }
-
-    /**
      * Return the Connection object.
      *
      * @return connection
