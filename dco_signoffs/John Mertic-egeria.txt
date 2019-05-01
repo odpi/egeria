@@ -1,0 +1,4 @@
+I, John Mertic hereby sign-off-by all of my past commits to this repo subject to the Developer Certificate of Origin (DCO), Version 1.1. In the past I have used emails: jmertic@linuxfoundation.org
+
+b838cdf2f11ce4f850c3c2673a6bb1c2294bf10b Create CNAME
+77965fbb1b58e9f3ed6fcd64de14887648f64e27 Initial commit
