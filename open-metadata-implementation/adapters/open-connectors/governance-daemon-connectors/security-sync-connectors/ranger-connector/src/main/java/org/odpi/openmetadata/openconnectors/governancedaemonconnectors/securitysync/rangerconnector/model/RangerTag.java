@@ -13,6 +13,7 @@ public class RangerTag {
     private String createdBy;
     private String updatedBy;
     private String type;
+    private Short owner;
     private Map<String, String> attributes;
     private Map<String, Object> options;
 
@@ -64,6 +65,14 @@ public class RangerTag {
         this.type = type;
     }
 
+    public Short getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Short owner) {
+        this.owner = owner;
+    }
+
     public Map<String, String> getAttributes() {
         return attributes;
     }
@@ -103,6 +112,7 @@ public class RangerTag {
                 ", createdBy='" + createdBy + '\'' +
                 ", updatedBy='" + updatedBy + '\'' +
                 ", type='" + type + '\'' +
+                ", owner='" + owner + '\'' +
                 ", attributes=" + attributes +
                 ", options=" + options +
                 '}';
