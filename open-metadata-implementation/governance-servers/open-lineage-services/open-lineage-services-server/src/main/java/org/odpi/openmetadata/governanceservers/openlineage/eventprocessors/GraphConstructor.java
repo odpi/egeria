@@ -109,21 +109,21 @@ public class GraphConstructor {
         v1.property(QUALIFIED_NAME, qualifiedName);
     }
 
-    public void exportGraph() {
+    public void exportGraph() throws IOException {
         File file = new File(GRAPHML);
 
-        FileOutputStream fos;
+       FileOutputStream fos;
 
         try {
-            fos = new FileOutputStream(file, true);
+           fos = new FileOutputStream(file, true);
             try {
                 GraphMLWriter.build().create().writeGraph(fos, graph);
                 log.info("Graph saved to lineageGraph.graphml");
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
             }
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
     }
 }
