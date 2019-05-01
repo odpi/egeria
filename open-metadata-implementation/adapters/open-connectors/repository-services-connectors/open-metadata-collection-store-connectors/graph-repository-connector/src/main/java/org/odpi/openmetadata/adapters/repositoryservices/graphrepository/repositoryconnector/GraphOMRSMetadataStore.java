@@ -302,13 +302,157 @@ class GraphOMRSMetadataStore {
     }
 
 
-    synchronized EntityDetail getEntityFromStore(String guid)
+
+
+    /*
+     *  If there is no entity that has the GUID of the entity to be saved, create an entity detail using the passed entity.
+     *
+     *  If there is an entity with the same GUID this is not always an error condition: There may already be an
+     *  entity in the store that has the same GUID, for either of the following reasons:
+     *  1) A request to save a reference copy pertains to either creation of a ref copy or update of a ref copy. It would
+     *     be an error if the existing entity has a different metadataCollectionId to the entity to be saved. In this case
+     *     an exception is thrown.
+     *  2) There may already be a proxy (e.g. from earlier creation of a relationship). Because we are being passed a
+     *     full entity detail to save as a reference copy, the ref copy replaces the proxy. But the reference copy must
+     *     have the same metadataCollectionId as the proxy, else there has been confusion as to who owns the entity
+     *
+     *  In summary
+     *  - if no entity, create the ref copy
+     *  - if existing entity,
+     *     - if its a proxy
+     *           check the metadataCollectionId matches the one passed.
+     *           if matching metadataCollectionId
+     *               update the existing entity, replacing the proxy with the ref copy; the proxy flag will be cleared.
+     *           else
+     *               error
+     *     - else not a proxy
+     *           if matching metadataCollectionId
+     *               update the existing entity
+     *           else
+     *               error
+     *
+     *  This can be simplified to:
+     *  - if no entity
+     *        create the ref copy
+     *  - if existing entity,
+     *        if matching metadataCollectionId
+     *             update the existing entity, clearing proxy flag if it was set
+     *         else
+     *             error
+     */
+    synchronized void saveEntityReferenceCopyToStore(EntityDetail entity)
+        throws
+            InvalidParameterException,
+            RepositoryErrorException
+
+    {
+
+        final String methodName = "saveEntityReferenceCopyToStore";
+
+        Vertex vertex;
+
+        GraphTraversalSource g = instanceGraph.traversal();
+        Iterator<Vertex> vertexIt = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entity.getGUID());
+
+        if (vertexIt.hasNext()) {
+
+            vertex = vertexIt.next();
+            log.debug("{} found existing vertex {}", methodName, vertex);
+
+            /*
+             * Check the metadataCollectionId is not local and that it matches the metadataCollectionId of the
+             * passed entity
+             */
+            String vertexMetadataCollectionId = entityMapper.getEntityMetadataCollectionId(vertex);
+
+            if (   metadataCollectionId.equals(entity.getMetadataCollectionId())
+                || !vertexMetadataCollectionId.equals(entity.getMetadataCollectionId()) ) {
+
+                /*
+                 *  Error condition
+                 *  Either the locsl repository is being asked to save a reference copy of something it already owns,
+                 *  or it already has a proxy or reference copy of an entity from a repository other than the one that
+                 *  submitted this reference copy.
+                 */
+
+                log.error("{} found an existing vertex from a different source, with metadataCollectionId {}", methodName, vertexMetadataCollectionId);
+                g.tx().rollback();
+                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS;
+
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+                        this.getClass().getName(),
+                        repositoryName);
+
+                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+
+        } else {
+
+            // No existing vertex found - create one
+            log.debug("{} create vertex for entity {}", methodName, entity.getGUID());
+            vertex = g.addV("Entity").next();
+        }
+
+        /*
+         * Whether this just created a new vertex or is reusing an existing vertex (for a reference copy or proxy),
+         * populate the vertex.
+         * The mapping of an entity detail to the vertex will clear the proxy flag, even if previously set.
+         */
+
+
+        try {
+            entityMapper.mapEntityDetailToVertex(entity, vertex);
+
+            // Create a vertex per classification and link them to the entity vertex
+            List<Classification> classifications = entity.getClassifications();
+            if (classifications != null) {
+                for (Classification classification : classifications) {
+                    log.debug("{} add classification: {} ", methodName, classification.getName());
+                    Vertex classificationVertex = g.addV("Classification").next();
+                    classificationMapper.mapClassificationToVertex(classification, classificationVertex);
+                    Edge classifierEdge = vertex.addEdge("Classifier", classificationVertex);
+                }
+            }
+
+        } catch (Exception e) {
+            log.error("{} Caught exception from entity mapper {}", methodName, e.getMessage());
+            g.tx().rollback();
+
+            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_CREATED;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
+                    this.getClass().getName(),
+                    repositoryName);
+
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+
+        g.tx().commit();
+
+        return;
+    }
+
+
+
+    synchronized EntityDetail getEntityDetailFromStore(String guid)
             throws
             EntityNotKnownException,
+            EntityProxyOnlyException,
             RepositoryErrorException
     {
 
-        String methodName = "getEntityFromStore";
+        String methodName = "getEntityDetailFromStore";
 
 
         EntityDetail entity = null;
@@ -318,8 +462,10 @@ class GraphOMRSMetadataStore {
 
         GraphTraversal<Vertex, Vertex> gt = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, guid);
 
-        // Only looking for non-proxy entities:
-        gt = gt.has(PROPERTY_KEY_ENTITY_IS_PROXY, false);
+        // Although this traversal could only look for non-proxy entities, e.g. by adding
+        //   gt = gt.has(PROPERTY_KEY_ENTITY_IS_PROXY, false);
+        // it is better to get the entity whether a proxy or not because we need to throw a
+        // different exception if a proxy is found, compared to no entity being found
 
         if (gt.hasNext()) {
             Vertex vertex = gt.next();
@@ -331,16 +477,33 @@ class GraphOMRSMetadataStore {
 
                     // Check if we have stumbled on a proxy somehow, and if so avoid processing it.
                     Boolean isProxy = entityMapper.isProxy(vertex);
+
                     if (!isProxy) {
-
                         entity = new EntityDetail();
-
                         entityMapper.mapVertexToEntityDetail(vertex, entity);
+                    }
+                    else {
+                        // We know this is a proxy - throw the appropraite exception
+                        log.error("{} found entity but it is only a proxy, guid {}", methodName, guid);
+                        g.tx().rollback();
+                        GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROXY_ONLY;
+
+                        String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid, methodName,
+                                this.getClass().getName(),
+                                repositoryName);
+
+                        throw new EntityProxyOnlyException(errorCode.getHTTPErrorCode(),
+                                this.getClass().getName(),
+                                methodName,
+                                errorMessage,
+                                errorCode.getSystemAction(),
+                                errorCode.getUserAction());
                     }
 
                 }
 
-            } catch (EntityProxyOnlyException | RepositoryErrorException e) {
+            }
+            catch (RepositoryErrorException e) {
 
                 log.error("{} Caught exception {}", methodName, e.getMessage());
                 g.tx().rollback();
@@ -357,6 +520,78 @@ class GraphOMRSMetadataStore {
                         errorCode.getSystemAction(),
                         errorCode.getUserAction());
             }
+
+        } else {
+
+            // Entity was not found by GUID
+            log.error("{} entity with GUID {} not found {}", methodName, guid);
+            g.tx().rollback();
+            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid, methodName,
+                    this.getClass().getName(),
+                    repositoryName);
+
+            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+
+        g.tx().commit();
+
+        return entity;
+    }
+
+    synchronized EntitySummary getEntitySummaryFromStore(String guid)
+            throws
+            EntityNotKnownException,
+            RepositoryErrorException
+    {
+
+        String methodName = "getEntitySummaryFromStore";
+
+
+        EntitySummary entity = null;
+
+        // Look in the graph
+        GraphTraversalSource g = instanceGraph.traversal();
+
+        GraphTraversal<Vertex, Vertex> gt = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, guid);
+
+        if (gt.hasNext()) {
+            Vertex vertex = gt.next();
+            log.debug("{} found vertex {}", methodName, vertex);
+
+            try {
+                if (vertex != null) {
+                    log.debug("{} found entity vertex {}", methodName, vertex);
+                    entity = new EntitySummary();
+                    entityMapper.mapVertexToEntitySummary(vertex, entity);
+                }
+
+            }
+            catch (RepositoryErrorException e) {
+
+                log.error("{} Caught exception {}", methodName, e.getMessage());
+                g.tx().rollback();
+                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_NOT_FOUND;
+
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid, methodName,
+                        this.getClass().getName(),
+                        repositoryName);
+
+                throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+
         } else {
 
             // Entity was not found by GUID
@@ -536,6 +771,270 @@ class GraphOMRSMetadataStore {
         g.tx().commit();
 
     }
+
+
+    /*
+     *  Need to perform some checks on both the relationship and the entities referred to by the relationship ends.
+     *
+     *  First, on each of the relationship ends, check for the existence of an entity with the GUID of the proxy in
+     *  the passed relationship. For eac h end:
+     *
+     *  If there is no entity that has the GUID of the passed entity, create a proxy entity using the passed entity.
+     *
+     *  If there is an entity with the same GUID then it is reused. This is currently true for any of the following
+     *  cases:
+     *     * An existing EntityDetail for a locally homed entity
+     *     * An existing EntityDetail for a remotely homed entity - i.e. a reference copy
+     *     * An existing EntityProxy
+     *
+     *  Note that in the last case (only) it is possible that the repository should perform a detailed comparison of
+     *  the stored proxy versus the passed proxy. It is not clear what to do if certain fields differ. For example,
+     *  the core properties of the two proxies could differ - they could have been created/updated at different times by
+     *  different users. But their unique attributes should match. If they differ it is not clear which is 'correct'. For
+     *  this reason the repository will currently treat a procxy the same as the other two cases, and will use what it
+     *  alreday has stored, ignoring the specific content of the proxy passed in the relationship.
+     *
+     *
+     *  In summary
+     *  - for each end:
+     *      - if no entity, create a proxy
+     *      - if existing entity,
+     *           check the metadataCollectionId matches the one passed.
+     *           if ! matching metadataCollectionId
+     *               error
+     *           else
+     *               proceed to create the relationship reference copy
+     *  - if relationship GUID does not exist
+     *       create edge and map relationship
+     *  - else relationship GUID exists
+     *       - if metadataCollectionId is local or stored vs passed metadataCollectionIds differ
+     *             error
+     *       - else metadataCollectionId is not local and values match
+     *             update existing edge by mapping relationship
+     */
+    synchronized void saveRelationshipReferenceCopyToStore(Relationship relationship)
+            throws
+            InvalidParameterException,
+            RepositoryErrorException
+
+    {
+
+        final String methodName = "saveRelationshipReferenceCopyToStore";
+
+        GraphTraversalSource g = instanceGraph.traversal();
+
+        Vertex vertex;
+
+        // Process end 1
+        EntityProxy entityOne = relationship.getEntityOneProxy();
+        Iterator<Vertex> vertexIt = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityOne.getGUID());
+
+        if (vertexIt.hasNext()) {
+
+            vertex = vertexIt.next();
+            log.debug("{} found existing vertex {}", methodName, vertex);
+
+            /*
+             * Check the metadataCollectionId matches the metadataCollectionId of the
+             * passed entity. It does not matter if it is the local metadataCollectionId
+             * or not - the entity will be reused in either case.
+             */
+            String vertexMetadataCollectionId = entityMapper.getEntityMetadataCollectionId(vertex);
+
+            if (!vertexMetadataCollectionId.equals(entityOne.getMetadataCollectionId())) {
+
+                /*
+                 *  Error condition
+                 *  The passed entity proxy does not match the locally stored entity (in terms of home).
+                 *
+                 */
+
+                log.error("{} found an existing vertex from a different source, with metadataCollectionId {}", methodName, vertexMetadataCollectionId);
+                g.tx().rollback();
+                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS;
+
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityOne.getGUID(), methodName,
+                        this.getClass().getName(),
+                        repositoryName);
+
+                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+        }
+        else {
+            // Entity does not exist, create proxy
+            createEntityProxyInStore(entityOne);
+        }
+
+        // Process end 2
+        EntityProxy entityTwo = relationship.getEntityTwoProxy();
+        vertexIt = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityTwo.getGUID());
+
+        if (vertexIt.hasNext()) {
+
+            vertex = vertexIt.next();
+            log.debug("{} found existing vertex {}", methodName, vertex);
+
+            /*
+             * Check the metadataCollectionId matches the metadataCollectionId of the
+             * passed entity. It does not matter if it is the local metadataCollectionId
+             * or not - the entity will be reused in either case.
+             */
+            String vertexMetadataCollectionId = entityMapper.getEntityMetadataCollectionId(vertex);
+
+            if (!vertexMetadataCollectionId.equals(entityOne.getMetadataCollectionId())) {
+
+                /*
+                 *  Error condition
+                 *  The passed entity proxy does not match the locally stored entity (in terms of home).
+                 *
+                 */
+
+                log.error("{} found an existing vertex from a different source, with metadataCollectionId {}", methodName, vertexMetadataCollectionId);
+                g.tx().rollback();
+                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_ALREADY_EXISTS;
+
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityOne.getGUID(), methodName,
+                        this.getClass().getName(),
+                        repositoryName);
+
+                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+        }
+        else {
+            // Entity does not exist, create proxy
+            createEntityProxyInStore(entityTwo);
+        }
+
+
+        /*
+         * Both ends have been checked and there are vertices for both.
+         * Because we might have either created or retrieved the vertices for the entities, re-fetch them here
+         * and throw an exception on any error.
+         */
+
+        Vertex vertexOne = null;
+        Vertex vertexTwo = null;
+
+        vertexIt = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityOne.getGUID());
+        if (vertexIt.hasNext()) {
+            vertexOne = vertexIt.next();
+        }
+        vertexIt = g.V().hasLabel("Entity").has(PROPERTY_KEY_ENTITY_GUID, entityTwo.getGUID());
+        if (vertexIt.hasNext()) {
+            vertexTwo = vertexIt.next();
+        }
+        if (vertexOne == null || vertexTwo == null) {
+
+            // Error!!
+            log.error("{} Could not locate or create vertex for entity with guid {} used in relationship {}", methodName, vertexOne==null?entityOne.getGUID():entityTwo.getGUID(),relationship.getGUID());
+            g.tx().rollback();
+            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_NOT_CREATED;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
+                    this.getClass().getName(),
+                    repositoryName);
+
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+
+
+        // Process relationship
+        Edge  edge;
+
+        Iterator<Edge> edgeIt = g.E().hasLabel("Relationship").has(PROPERTY_KEY_RELATIONSHIP_GUID, relationship.getGUID());
+
+        if (edgeIt.hasNext()) {
+
+            edge = edgeIt.next();
+            log.debug("{} found existing edge {}", methodName, edge);
+
+            /*
+             * Check the metadataCollectionId is not local and that it matches the metadataCollectionId of the
+             * passed relationship
+             */
+            String edgeMetadataCollectionId = relationshipMapper.getRelationshipMetadataCollectionId(edge);
+
+            if (    metadataCollectionId.equals(relationship.getMetadataCollectionId())
+                || !edgeMetadataCollectionId.equals(relationship.getMetadataCollectionId()) ) {
+
+                /*
+                 *  Error condition
+                 *  Either the local repository is being asked to save a reference copy of something it already owns,
+                 *  or it already has a reference copy of a relationship from a repository other than the one that
+                 *  submitted this reference copy.
+                 */
+
+                log.error("{} found an existing edge from a different source, with metadataCollectionId {}", methodName, edgeMetadataCollectionId);
+                g.tx().rollback();
+                GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_ALREADY_EXISTS;
+
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
+                        this.getClass().getName(),
+                        repositoryName);
+
+                throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+
+
+        }
+        else {
+            // No existing edge found. Create an edge for the relationship
+            edge = vertexOne.addEdge("Relationship", vertexTwo);
+        }
+
+
+
+        // Populate the edge with the relationship
+        try {
+
+            relationshipMapper.mapRelationshipToEdge(relationship, edge);
+
+        }
+        catch (Exception e) {
+            log.error("{} Caught exception from relationship mapper {}", methodName, e.getMessage());
+            g.tx().rollback();
+            GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.RELATIONSHIP_NOT_CREATED;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(relationship.getGUID(), methodName,
+                    this.getClass().getName(),
+                    repositoryName);
+
+            throw new RepositoryErrorException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+        log.debug("{} Commit tx containing creation of edge", methodName);
+        g.tx().commit();
+
+        return;
+    }
+
+
 
 
     protected synchronized Relationship getRelationshipFromStore(String guid)
