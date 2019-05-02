@@ -4,7 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.listeners;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.InvalidTypeIdException;
-import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphConstructor;
+import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
 import org.odpi.openmetadata.governanceservers.openlineage.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -22,11 +22,11 @@ public class ALOutTopicListener implements OpenMetadataTopicListener {
     private static final Logger log = LoggerFactory.getLogger(ALOutTopicListener.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private final OMRSAuditLog auditLog;
-    private GraphConstructor graphConstructor;
+    private GraphBuilder graphBuilder;
 
-    public ALOutTopicListener(GraphConstructor gremlinBuilder, OMRSAuditLog auditLog) {
+    public ALOutTopicListener(GraphBuilder gremlinBuilder, OMRSAuditLog auditLog) {
 
-        this.graphConstructor = gremlinBuilder;
+        this.graphBuilder = gremlinBuilder;
         this.auditLog = auditLog;
 
     }
@@ -45,9 +45,11 @@ public class ALOutTopicListener implements OpenMetadataTopicListener {
             OMRSInstanceEventType instanceEventType = omrsInstanceEvent.getInstanceEventType();
             switch (instanceEventType) {
                 case NEW_RELATIONSHIP_EVENT:
-                    graphConstructor.addNewRelationship(omrsInstanceEvent);
+                    graphBuilder.addNewRelationship(omrsInstanceEvent);
                     break;
                 case UPDATED_RELATIONSHIP_EVENT:
+                    break;
+                default:
                     break;
             }
         } catch (InvalidTypeIdException e) {
@@ -69,7 +71,7 @@ public class ALOutTopicListener implements OpenMetadataTopicListener {
         try {
             AssetResponse event = OBJECT_MAPPER.readValue(eventAsString, AssetResponse.class);
             log.info("Started processing OpenLineageEvent");
-            graphConstructor.addAsset(event);
+            graphBuilder.addAsset(event);
         }
         catch (Exception e){
             log.error("Exception processing event from in topic", e);

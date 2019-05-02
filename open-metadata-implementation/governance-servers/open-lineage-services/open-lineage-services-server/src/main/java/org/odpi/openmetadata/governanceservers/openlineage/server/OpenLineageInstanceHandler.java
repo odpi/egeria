@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
-import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphConstructor;
+import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.PropertyServerException;
 
@@ -13,11 +13,11 @@ class OpenLineageInstanceHandler
     private static OpenLineageServicesInstanceMap   instanceMap = new OpenLineageServicesInstanceMap();
 
 
-    public GraphConstructor graphConstructor(String serverName) throws PropertyServerException {
+    public GraphBuilder graphConstructor(String serverName) throws PropertyServerException {
         OpenLineageServicesInstance instance = instanceMap.getInstance(serverName);
 
         if (instance != null) {
-            return instance.getGraphConstructor();
+            return instance.getGraphBuilder();
         } else {
             final String methodName = "graphConstructor";
             throwError(serverName, methodName);
