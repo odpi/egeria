@@ -37,7 +37,7 @@ public class OpenLineageOperationalServices {
     private int maxPageSize;
 
     private OMRSAuditLog auditLog;
-    private OpenMetadataTopicConnector assetLineageOutTopicConnector;
+    private OpenMetadataTopicConnector inTopicConnector;
     private GraphBuilder graphBuilder;
     private OpenLineageServicesInstance instance;
 
@@ -84,15 +84,15 @@ public class OpenLineageOperationalServices {
             this.auditLog = auditLog;
             this.graphBuilder = new GraphBuilder();
 
-            Connection assetLineageOutTopicConnection = openLineageConfig.getAssetLineageOutTopicConnection();
-            String ALOutTopicName = getTopicName(assetLineageOutTopicConnection);
+            Connection inTopicConnection = openLineageConfig.getInTopicConnection();
+            String ALOutTopicName = getTopicName(inTopicConnection);
 
-            assetLineageOutTopicConnector = initializeOpenLineageTopicConnector(assetLineageOutTopicConnection);
+            inTopicConnector = initializeOpenLineageTopicConnector(inTopicConnection);
 
-            if (assetLineageOutTopicConnector != null) {
+            if (inTopicConnector != null) {
                 OpenMetadataTopicListener ALOutTopicListener = new ALOutTopicListener(graphBuilder, auditLog);
-                this.assetLineageOutTopicConnector.registerListener(ALOutTopicListener);
-                startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, ALOutTopicName, assetLineageOutTopicConnector);
+                this.inTopicConnector.registerListener(ALOutTopicListener);
+                startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, ALOutTopicName, inTopicConnector);
             }
 
             this.instance = new OpenLineageServicesInstance(graphBuilder, localServerName);
@@ -227,7 +227,7 @@ public class OpenLineageOperationalServices {
     public boolean disconnect(boolean permanent) {
 
         try {
-            assetLineageOutTopicConnector.disconnect();
+            inTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {
             log.error("Error disconnecting Asset Lineage Out Topic Connector");
             return false;
