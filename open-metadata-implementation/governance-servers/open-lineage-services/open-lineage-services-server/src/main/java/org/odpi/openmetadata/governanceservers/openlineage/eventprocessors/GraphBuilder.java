@@ -24,13 +24,13 @@ import java.io.IOException;
 
 import static org.odpi.openmetadata.governanceservers.openlineage.util.Constants.*;
 
-public class GraphConstructor {
+public class GraphBuilder {
 
-    private static final Logger log = LoggerFactory.getLogger(GraphConstructor.class);
+    private static final Logger log = LoggerFactory.getLogger(GraphBuilder.class);
     private Graph graph;
     private GraphTraversalSource g;
 
-    public GraphConstructor() {
+    public GraphBuilder() {
         this.graph = TinkerGraph.open();
         this.g = graph.traversal();
     }
