@@ -88,10 +88,10 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
     private void getAssetContext(EntityDetail entity) {
         String assetGUID = entity.getGUID();
         AssetContext assetContext = new AssetContext();
-        AssetResponse assetResponse = assetContext.buildAssetContext(serverName, serverUsername, "b1c497ce.60641b50.0v9mgsb23.p9i9d64.5qdc19.d6ntnlgms84k93kd4p6bp");
+        AssetResponse assetResponse = assetContext.buildAssetContext(serverName, serverUsername, assetGUID);
 
         try {
-            assetLineageTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(assetResponse));
+            assetLineageßTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(assetResponse));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
