@@ -2,6 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.server.spring;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetlineage.service.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.service.AssetLineageRestServices;
@@ -15,6 +17,7 @@ public class AssetLineageOMASResource {
 
     private final AssetLineageRestServices restAPI = new AssetLineageRestServices();
     private AssetContext assetContext = new AssetContext();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     public AssetLineageOMASResource() {
 
