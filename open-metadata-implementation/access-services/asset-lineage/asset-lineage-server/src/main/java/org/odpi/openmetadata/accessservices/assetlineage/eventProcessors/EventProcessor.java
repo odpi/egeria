@@ -19,6 +19,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,28 +43,7 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
 
 
     @Override
-    public void sendInstanceEvent(String sourceName, OMRSInstanceEvent instanceEvent) {
-        String actionDescription = "Send New Event";
-        log.info("Sending event to asset lineage out topic");
-        log.debug("event: ", instanceEvent);
-
-        try {
-            assetLineageTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(instanceEvent.getOMRSEventV1()));
-
-        } catch (Throwable error) {
-            log.error("Exception publishing event", error);
-            AssetLineageErrorCode auditCode = AssetLineageErrorCode.PUBLISH_EVENT_EXCEPTION;
-
-            auditLog.logException(actionDescription,
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(instanceEvent.getClass().getName(), error.getMessage()),
-                    "event {" + instanceEvent.toString() + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    error);
-        }
-    }
+    public void sendInstanceEvent(String sourceName, OMRSInstanceEvent instanceEvent) { }
 
     public void processNewEntityEvent(String sourceName,
                                       String originatorMetadataCollectionId,
@@ -72,7 +52,8 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                       String originatorOrganizationName,
                                       EntityDetail entity) {
 
-        getAssetContext(entity);
+
+        getAssetContext(entity, OMRSInstanceEventType.NEW_ENTITY_EVENT);
     }
 
     public void processUpdatedEntityEvent(String sourceName,
@@ -82,33 +63,11 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                           String originatorOrganizationName,
                                           EntityDetail oldEntity,
                                           EntityDetail entity) {
-        getAssetContext(entity);
+
+        getAssetContext(entity, OMRSInstanceEventType.UPDATED_ENTITY_EVENT);
     }
 
-    private void getAssetContext(EntityDetail entity) {
-        String actionDescription = "Send New Event";
-        log.info("Sending event to asset lineage out topic");
-        log.debug("event: ", entity);
-        String assetGUID = entity.getGUID();
-        AssetContextBuilder assetContextBuilder = new AssetContextBuilder(auditLog);
-        AssetContext assetResponse = assetContextBuilder.buildAssetContext(serverName, serverUsername, assetGUID);
 
-        try {
-            assetLineageTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(assetResponse));
-        } catch (Throwable error) {
-            log.error("Exception publishing event", error);
-            AssetLineageErrorCode auditCode = AssetLineageErrorCode.PUBLISH_EVENT_EXCEPTION;
-
-            auditLog.logException(actionDescription,
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(entity.getClass().getName(), error.getMessage()),
-                    "event {" + entity.toString() + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    error);
-        }
-    }
 
     public void processUndoneEntityEvent(String sourceName,
                                          String originatorMetadataCollectionId,
@@ -243,6 +202,7 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                             String originatorServerType,
                                             String originatorOrganizationName,
                                             Relationship relationship) {
+
     }
 
 
@@ -376,6 +336,34 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
     }
 
 
+     private void getAssetContext(EntityDetail entity,OMRSInstanceEventType  omrsInstanceEventType) {
+        String actionDescription = "Send New Event";
+        log.info("Sending event to asset lineage out topic");
+        log.debug("event: ", entity);
+
+        AssetContextBuilder assetContextBuilder = new AssetContextBuilder(auditLog);
+        AssetContext assetContext = assetContextBuilder.buildAssetContext(serverName, serverUsername, entity.getGUID());
+        assetContext.setOmrsInstanceEventType(omrsInstanceEventType);
+
+        try {
+
+            assetLineageTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(assetContext));
+
+        } catch (Throwable error) {
+            log.error("Exception publishing event", error);
+            AssetLineageErrorCode auditCode = AssetLineageErrorCode.PUBLISH_EVENT_EXCEPTION;
+
+            auditLog.logException(actionDescription,
+                    auditCode.getErrorMessageId(),
+                    OMRSAuditLogRecordSeverity.EXCEPTION,
+                    auditCode.getFormattedErrorMessage(entity.getClass().getName(), error.getMessage()),
+                    "event {" + entity.toString() + "}",
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction(),
+                    error);
+        }
+    }
+
     /**
      * Returns true if the event was published successfully, false otherwise
      *
@@ -390,6 +378,7 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
         log.debug("event: ", event);
 
         try {
+
             assetLineageTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(event));
             successFlag = true;
 
