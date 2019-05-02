@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 
 
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.IllegalUpdateException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
