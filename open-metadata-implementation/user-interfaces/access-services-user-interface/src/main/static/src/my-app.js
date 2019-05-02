@@ -24,7 +24,7 @@ import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-menu-button';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
-import './my-icons.js';
+import './asset-search/my-icons.js';
 import './token-ajax.js';
 import './login-view.js';
 import './user-options-menu';
@@ -215,19 +215,19 @@ class MyApp extends PolymerElement {
         // statement, so break it up.
         switch (page) {
             case 'data':
-                import('./data-view.js');
+                import('./asset-search/data-view.js');
                 break;
             case 'view2':
-                import('./my-view2.js');
+                import('./asset-search/my-view2.js');
                 break;
             case 'view3':
-                import('./my-view3.js');
+                import('./asset-search/my-view3.js');
                 break;
             case 'view404':
-                import('./my-view404.js');
+                import('./asset-search/my-view404.js');
                 break;
             case 'search' :
-                import('./asset-search-view.js');
+                import('./asset-search/asset-search-view.js');
                 break;
         }
     }
