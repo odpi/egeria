@@ -47,7 +47,7 @@ public class GraphBuilder {
 
         Connection connection = database.getConnections().get(0);
 
-        //TODO Relationships should be obtained from the Asset Lineage Out event instead
+        //TODO Open Metadata forat should not be used in graph, e.g. column/table types should be properties instead
 
         Vertex relationalColumnVertex = addVertex(relationalColumn);
         Vertex databaseVertex = addVertex(database);
@@ -63,8 +63,16 @@ public class GraphBuilder {
         addEdge(ATTRIBUTE_FOR_SCHEMA, relationalTableTypeVertex, relationalColumnVertex);
     }
 
-    private void addEdge(String relationship, Vertex v1, Vertex v2) {
-        v1.addEdge(relationship, v2);
+    /**
+     * Connection is part of the event json
+     * @param connection
+     */
+    private void addConnection(Connection connection) {
+        String GUID = connection.getGuid();
+        String qualifiedName = connection.getQualifiedName();
+
+        Vertex v1 = g.addV(GUID).next();
+        v1.property(QUALIFIED_NAME, qualifiedName);
     }
 
     private Vertex addVertex(Element assetElement) {
@@ -76,6 +84,10 @@ public class GraphBuilder {
         v1.property(QUALIFIED_NAME, qualifiedName);
         v1.property(TYPE, type);
         return v1;
+    }
+
+    private void addEdge(String relationship, Vertex v1, Vertex v2) {
+        v1.addEdge(relationship, v2);
     }
 
 
@@ -95,18 +107,6 @@ public class GraphBuilder {
         Vertex v2 = g.V().hasLabel(GUID2).next();
 
         v1.addEdge(SEMANTIC_ASSIGNMENT, v2);
-    }
-
-    /**
-     * Connection is part of the event json
-     * @param connection
-     */
-    private void addConnection(Connection connection) {
-        String GUID = connection.getGuid();
-        String qualifiedName = connection.getQualifiedName();
-
-        Vertex v1 = g.addV(GUID).next();
-        v1.property(QUALIFIED_NAME, qualifiedName);
     }
 
     public void exportGraph() {
