@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetlineage.events;
+package org.odpi.openmetadata.accessservices.assetlineage.model;
 
 import com.fasterxml.jackson.annotation.*;
 
@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonSubTypes({
         @JsonSubTypes.Type(value = AssetLineageEvent.class, name = "AssetLineageEvent"),
 })
-public abstract class AssetLineageHeader {
+public abstract class AssetLineageEvent {
 
     private long eventVersionId = 1L;
 
@@ -32,7 +32,7 @@ public abstract class AssetLineageHeader {
 
     @Override
     public String toString() {
-        return "AssetLineageHeader{" +
+        return "AssetLineageEvent{" +
                 "eventVersionId=" + eventVersionId +
                 '}';
     }
