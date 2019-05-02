@@ -133,6 +133,4 @@ public abstract class GovernanceEngineOMASAPIResponse implements Serializable {
     public void setExceptionUserAction(String exceptionUserAction) {
         this.exceptionUserAction = exceptionUserAction;
     }
-
-
 }
