@@ -14,13 +14,9 @@ public interface SecurityServiceConnector {
 
     void importTaggedResources(List<GovernedAsset> governedAssets);
 
-    void createAssociationResourceToSecurityTag(GovernedAsset governedAsset);
-
     void deleteAssociationResourceToSecurityTag(ResourceTagMapper resourceTagMapper);
 
-    void createSecurityTag(GovernanceClassification classification);
-
-    List<RangerTag> getSecurityTags();
+    RangerTag createSecurityTag(GovernanceClassification classification);
 
     ResourceTagMapper getTagAssociatedWithTheResource(Long id);
 
@@ -29,4 +25,6 @@ public interface SecurityServiceConnector {
     RangerServiceResource getResourceByGUID(String resourceGuid);
 
     void deleteResourceByGUID(String resourceGuid);
+
+    RangerServiceResource createResource(GovernedAsset governedAsset);
 }
