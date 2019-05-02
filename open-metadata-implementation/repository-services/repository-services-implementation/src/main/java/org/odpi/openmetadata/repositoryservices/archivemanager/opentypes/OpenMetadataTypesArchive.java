@@ -1877,7 +1877,7 @@ public class OpenMetadataTypesArchive
         /*
          * Set up end 2.
          */
-        final String                     end2EntityType               = "Location";
+        final String                     end2EntityType               = "Asset";
         final String                     end2AttributeName            = "localAssets";
         final String                     end2AttributeDescription     = "Assets sited at this location.";
         final String                     end2AttributeDescriptionGUID = null;
@@ -4186,31 +4186,6 @@ public class OpenMetadataTypesArchive
                                                                  end2AttributeDescriptionGUID,
                                                                  end2Cardinality);
         relationshipDef.setEndDef2(relationshipEndDef);
-
-        /*
-         * Build the attributes
-         */
-        List<TypeDefAttribute> properties = new ArrayList<>();
-        TypeDefAttribute       property;
-
-        final String attribute1Name            = "contactMethodType";
-        final String attribute1Description     = "Mechanism to use.";
-        final String attribute1DescriptionGUID = null;
-        final String attribute2Name            = "contactMethodValue";
-        final String attribute2Description     = "Contact address.";
-        final String attribute2DescriptionGUID = null;
-
-        property = archiveHelper.getEnumTypeDefAttribute("ContactMethodType",
-                                                         attribute1Name,
-                                                         attribute1Description,
-                                                         attribute1DescriptionGUID);
-        properties.add(property);
-        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
-                                                           attribute2Description,
-                                                           attribute2DescriptionGUID);
-        properties.add(property);
-
-        relationshipDef.setPropertiesDefinition(properties);
 
         return relationshipDef;
     }
@@ -7569,7 +7544,7 @@ public class OpenMetadataTypesArchive
         TypeDefAttribute       property;
 
         final String attribute1Name            = "isPublic";
-        final String attribute1Description     = "Is the attached note visible to more than the originator?";
+        final String attribute1Description     = "Is the attached note log visible to more than the originator?";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getBooleanTypeDefAttribute(attribute1Name,
@@ -8318,8 +8293,7 @@ public class OpenMetadataTypesArchive
                                                                                  null,
                                                                                  description,
                                                                                  descriptionGUID,
-                                                                                 this.archiveBuilder.getEntityDef(
-                                                                                         linkedToEntity),
+                                                                                 this.archiveBuilder.getEntityDef(linkedToEntity),
                                                                                  false);
 
         /*
@@ -8564,6 +8538,8 @@ public class OpenMetadataTypesArchive
     {
         this.archiveBuilder.addEntityDef(getFileFolderEntity());
         this.archiveBuilder.addEntityDef(getDataFileEntity());
+        this.archiveBuilder.addEntityDef(getCSVFileEntity());
+        this.archiveBuilder.addEntityDef(getAvroFileEntity());
 
         this.archiveBuilder.addRelationshipDef(getFolderHierarchyRelationship());
         this.archiveBuilder.addRelationshipDef(getNestedFileRelationship());
@@ -8604,6 +8580,66 @@ public class OpenMetadataTypesArchive
                                                  this.archiveBuilder.getEntityDef(superTypeName),
                                                  description,
                                                  descriptionGUID);
+    }
+
+
+    private EntityDef getCSVFileEntity()
+    {
+        final String guid            = "2ccb2117-9cee-47ca-8150-9b3a543adcec";
+        final String name            = "CSVFile";
+        final String description     = "A description of a comma separated value (CSV) file";
+        final String descriptionGUID = null;
+        final String superTypeName = "DataFile";
+
+        EntityDef entityDef =  archiveHelper.getDefaultEntityDef(guid,
+                                                                 name,
+                                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                                 description,
+                                                                 descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "delimiterCharacter";
+        final String attribute1Description     = "Character used between each column.";
+        final String attribute1DescriptionGUID = null;
+        final String attribute2Name            = "quoteCharacter";
+        final String attribute2Description     = "The character used to group the content of the column that contains one or more delimiter characters.";
+        final String attribute2DescriptionGUID = null;
+
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute1Name,
+                                                            attribute1Description,
+                                                            attribute1DescriptionGUID);
+        properties.add(property);
+
+        property = archiveHelper.getStringTypeDefAttribute(attribute2Name,
+                                                           attribute2Description,
+                                                           attribute2DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+
+    private EntityDef getAvroFileEntity()
+    {
+        final String guid            = "75293260-3373-4777-af7d-7274d5c0b9a5";
+        final String name            = "AvroFile";
+        final String description     = "A description of a file that follows the Apache Avro specification.";
+        final String descriptionGUID = null;
+        final String superTypeName = "DataFile";
+
+        return  archiveHelper.getDefaultEntityDef(guid,
+                                                  name,
+                                                  this.archiveBuilder.getEntityDef(superTypeName),
+                                                  description,
+                                                  descriptionGUID);
     }
 
 
@@ -17125,7 +17161,7 @@ public class OpenMetadataTypesArchive
         final String attribute5Description     = "Person or organization awarded the certification.";
         final String attribute5DescriptionGUID = null;
         final String attribute6Name            = "custodian";
-        final String attribute6Description     = "The person, engine or organization tht will ensure the certification is honored.";
+        final String attribute6Description     = "The person, engine or organization that will ensure the certification is honored.";
         final String attribute6DescriptionGUID = null;
         final String attribute7Name            = "recipient";
         final String attribute7Description     = "The person or organization that received the certification.";
@@ -22332,8 +22368,7 @@ public class OpenMetadataTypesArchive
         // TODO
 
         /* Spare GUIDs
-        final String guid = "2ccb2117-9cee-47ca-8150-9b3a543adcec";
-        final String guid = "75293260-3373-4777-af7d-7274d5c0b9a5";
+
         final String guid = "7de10805-7c44-40e3-a410-ffc51306801b";
         final String guid = "09b2133a-f045-42cc-bb00-ee602b74c618";
         final String guid = "55e5ae33-39c6-4834-9d05-ef0ae4e0163b";
