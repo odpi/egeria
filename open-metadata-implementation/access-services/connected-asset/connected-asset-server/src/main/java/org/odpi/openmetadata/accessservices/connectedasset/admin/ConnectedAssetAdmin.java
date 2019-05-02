@@ -12,6 +12,8 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
+import java.util.List;
+
 
 /**
  * ConnectedAssetAdmin is the class that is called by the OMAG Server to initialize and terminate
@@ -19,7 +21,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Open Metadata Repository Services.
  *
  */
-public class ConnectedAssetAdmin implements AccessServiceAdmin
+public class ConnectedAssetAdmin extends AccessServiceAdmin
 {
     private OMRSRepositoryConnector        repositoryConnector = null;
     private OMRSTopicConnector             omrsTopicConnector  = null;
@@ -76,6 +78,10 @@ public class ConnectedAssetAdmin implements AccessServiceAdmin
             this.accessServiceConfig = accessServiceConfigurationProperties;
             this.omrsTopicConnector = enterpriseOMRSTopicConnector;
 
+            List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                     accessServiceConfig.getAccessServiceName(),
+                                                                     auditLog);
+
             if (omrsTopicConnector != null)
             {
                 auditCode = ConnectedAssetAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
@@ -106,6 +112,10 @@ public class ConnectedAssetAdmin implements AccessServiceAdmin
                                null,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
+        }
+        catch (OMAGConfigurationErrorException error)
+        {
+            throw error;
         }
         catch (Throwable error)
         {

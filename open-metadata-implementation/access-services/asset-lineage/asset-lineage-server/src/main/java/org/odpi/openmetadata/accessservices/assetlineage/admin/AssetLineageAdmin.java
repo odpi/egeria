@@ -27,7 +27,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AssetLineageAdmin implements AccessServiceAdmin {
+public class AssetLineageAdmin extends AccessServiceAdmin {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineageAdmin.class);
     private OpenMetadataTopicConnector assetLineageInTopicConnector;
@@ -114,6 +114,8 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
                     null,
                     auditCode.getSystemAction(),
                     auditCode.getUserAction());
+        } catch (OMAGConfigurationErrorException error) {
+            throw error;
         } catch (Exception error) {
             auditCode = AssetLineageAuditCode.SERVICE_INSTANCE_FAILURE;
             auditLog.logRecord(actionDescription,

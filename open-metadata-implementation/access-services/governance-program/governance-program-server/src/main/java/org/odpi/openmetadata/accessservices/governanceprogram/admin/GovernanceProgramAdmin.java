@@ -13,7 +13,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
-public class GovernanceProgramAdmin implements AccessServiceAdmin
+public class GovernanceProgramAdmin extends AccessServiceAdmin
 {
     private OMRSRepositoryConnector           repositoryConnector = null;
     private OMRSTopicConnector                omrsTopicConnector  = null;

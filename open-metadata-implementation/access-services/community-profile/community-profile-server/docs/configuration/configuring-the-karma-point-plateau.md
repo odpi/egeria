@@ -3,7 +3,10 @@
 
 # Configuring the Karma Point Notification Threshold
 
-The Community Profile OMAS will send a  
+The Community Profile OMAS will send an event indicating that an individual has
+reached a multiple of the karma point threshold.  This threshold is set up in the
+
+
 
 
 
