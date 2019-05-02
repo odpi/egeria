@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 ---
+{{ if .Values.atlas.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
@@ -87,4 +88,4 @@ spec:
       restartPolicy: Always
 
 status: {}
-...
+{{ end }}
