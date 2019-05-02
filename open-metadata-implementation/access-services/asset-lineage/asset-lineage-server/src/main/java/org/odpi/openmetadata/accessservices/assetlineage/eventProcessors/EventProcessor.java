@@ -91,7 +91,7 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
         AssetResponse assetResponse = assetContext.buildAssetContext(serverName, serverUsername, assetGUID);
 
         try {
-            assetLineageßTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(assetResponse));
+            assetLineageTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(assetResponse));
         } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
