@@ -77,6 +77,7 @@ public class AssetLineageEnterpriseOmrsEventListener implements OMRSTopicListene
 
                     case NEW_RELATIONSHIP_EVENT:
                         instanceEventProcessor.sendInstanceEvent("EnterpriseOMRSTopic", instanceEvent);
+
                         break;
 
                     case UPDATED_RELATIONSHIP_EVENT:

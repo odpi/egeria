@@ -24,13 +24,13 @@ import java.io.IOException;
 
 import static org.odpi.openmetadata.governanceservers.openlineage.util.Constants.*;
 
-public class GraphConstructor {
+public class GraphBuilder {
 
-    private static final Logger log = LoggerFactory.getLogger(GraphConstructor.class);
+    private static final Logger log = LoggerFactory.getLogger(GraphBuilder.class);
     private Graph graph;
     private GraphTraversalSource g;
 
-    public GraphConstructor() {
+    public GraphBuilder() {
         this.graph = TinkerGraph.open();
         this.g = graph.traversal();
     }
@@ -47,7 +47,7 @@ public class GraphConstructor {
 
         Connection connection = database.getConnections().get(0);
 
-        //TODO Relationships should be obtained from the Asset Lineage Out event instead
+        //TODO Open Metadata forat should not be used in graph, e.g. column/table types should be properties instead
 
         Vertex relationalColumnVertex = addVertex(relationalColumn);
         Vertex databaseVertex = addVertex(database);
@@ -63,8 +63,16 @@ public class GraphConstructor {
         addEdge(ATTRIBUTE_FOR_SCHEMA, relationalTableTypeVertex, relationalColumnVertex);
     }
 
-    private void addEdge(String relationship, Vertex v1, Vertex v2) {
-        v1.addEdge(relationship, v2);
+    /**
+     * Connection is part of the event json
+     * @param connection
+     */
+    private void addConnection(Connection connection) {
+        String GUID = connection.getGuid();
+        String qualifiedName = connection.getQualifiedName();
+
+        Vertex v1 = g.addV(GUID).next();
+        v1.property(QUALIFIED_NAME, qualifiedName);
     }
 
     private Vertex addVertex(Element assetElement) {
@@ -76,6 +84,10 @@ public class GraphConstructor {
         v1.property(QUALIFIED_NAME, qualifiedName);
         v1.property(TYPE, type);
         return v1;
+    }
+
+    private void addEdge(String relationship, Vertex v1, Vertex v2) {
+        v1.addEdge(relationship, v2);
     }
 
 
@@ -97,33 +109,21 @@ public class GraphConstructor {
         v1.addEdge(SEMANTIC_ASSIGNMENT, v2);
     }
 
-    /**
-     * Connection is part of the event json
-     * @param connection
-     */
-    private void addConnection(Connection connection) {
-        String GUID = connection.getGuid();
-        String qualifiedName = connection.getQualifiedName();
-
-        Vertex v1 = g.addV(GUID).next();
-        v1.property(QUALIFIED_NAME, qualifiedName);
-    }
-
-    public void exportGraph() throws IOException {
+    public void exportGraph() {
         File file = new File(GRAPHML);
 
-       FileOutputStream fos;
+        FileOutputStream fos;
 
         try {
-           fos = new FileOutputStream(file, true);
+            fos = new FileOutputStream(file, true);
             try {
                 GraphMLWriter.build().create().writeGraph(fos, graph);
                 log.info("Graph saved to lineageGraph.graphml");
             } catch (IOException e) {
-                log.error(e.getMessage());
+                e.printStackTrace();
             }
         } catch (FileNotFoundException e) {
-            log.error(e.getMessage());
+            e.printStackTrace();
         }
     }
 }
