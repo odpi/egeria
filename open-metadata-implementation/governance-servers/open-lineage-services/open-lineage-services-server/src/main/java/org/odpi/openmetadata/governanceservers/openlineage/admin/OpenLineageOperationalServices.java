@@ -9,7 +9,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
-import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphConstructor;
+import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
 import org.odpi.openmetadata.governanceservers.openlineage.listeners.ALOutTopicListener;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServicesInstance;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -38,7 +38,7 @@ public class OpenLineageOperationalServices {
 
     private OMRSAuditLog auditLog;
     private OpenMetadataTopicConnector assetLineageOutTopicConnector;
-    private GraphConstructor graphConstructor;
+    private GraphBuilder graphBuilder;
     private OpenLineageServicesInstance instance;
 
 
@@ -82,7 +82,7 @@ public class OpenLineageOperationalServices {
 
 
             this.auditLog = auditLog;
-            this.graphConstructor = new GraphConstructor();
+            this.graphBuilder = new GraphBuilder();
 
             Connection assetLineageOutTopicConnection = openLineageConfig.getAssetLineageOutTopicConnection();
             String ALOutTopicName = getTopicName(assetLineageOutTopicConnection);
@@ -90,12 +90,12 @@ public class OpenLineageOperationalServices {
             assetLineageOutTopicConnector = initializeOpenLineageTopicConnector(assetLineageOutTopicConnection);
 
             if (assetLineageOutTopicConnector != null) {
-                OpenMetadataTopicListener ALOutTopicListener = new ALOutTopicListener(graphConstructor, auditLog);
+                OpenMetadataTopicListener ALOutTopicListener = new ALOutTopicListener(graphBuilder, auditLog);
                 this.assetLineageOutTopicConnector.registerListener(ALOutTopicListener);
                 startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, ALOutTopicName, assetLineageOutTopicConnector);
             }
 
-            this.instance = new OpenLineageServicesInstance(graphConstructor, localServerName);
+            this.instance = new OpenLineageServicesInstance(graphBuilder, localServerName);
 
             auditCode = OpenLineageAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
@@ -175,7 +175,6 @@ public class OpenLineageOperationalServices {
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage("getTopicConnector");
-
             throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
