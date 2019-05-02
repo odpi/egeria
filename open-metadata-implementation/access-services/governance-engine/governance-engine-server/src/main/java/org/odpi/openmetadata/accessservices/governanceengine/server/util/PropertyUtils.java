@@ -9,6 +9,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 
 public class PropertyUtils {
 
+    private PropertyUtils() {
+    }
+
     public static String getStringForPropertyValue(InstancePropertyValue ipv) {
 
         if (ipv instanceof PrimitivePropertyValue) {
@@ -42,6 +45,4 @@ public class PropertyUtils {
         }
 
     }
-
-
 }

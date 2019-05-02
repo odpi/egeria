@@ -12,6 +12,10 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: ibm-igc-service
+  annotations:
+    {{ if .Values.istio.enabled }}
+    sidecar.istio.io/inject: "true"
+    {{- end }}
   name: {{ include "myapp.fullname" . }}-ibm-igc-service
 
 spec:
