@@ -1,10 +1,10 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# Cohort Manager
+# Repository Validator
 
-The OMRS Cohort Manager manages the initialization and shutdown of the server's
-connectivity to a cohort.  This includes the management of the **[cohort registry](cohort-registry.md)**.
+The repository validator provides common validation functions for use when working
+with repository services property objects.
 
 
 
