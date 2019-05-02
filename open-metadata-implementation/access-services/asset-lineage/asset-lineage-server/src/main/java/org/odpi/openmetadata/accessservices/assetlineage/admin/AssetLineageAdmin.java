@@ -70,9 +70,6 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
                 serverName = enterpriseConnector.getServerName();
             }
 
-            Connection inTopicConnection = accessServiceConfigurationProperties.getAccessServiceInTopic();
-            String inTopicName = getTopicName(inTopicConnection);
-
             Connection outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
             String outTopicName = getTopicName(outTopicConnection);
 
