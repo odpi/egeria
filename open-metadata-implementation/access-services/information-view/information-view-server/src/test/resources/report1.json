@@ -1,5 +1,6 @@
 {
   "class": "ReportRequestBody",
+  "registrationGuid": "registration-guid",
   "sources": [{
     "@id": "0",
     "class": "TableSource",

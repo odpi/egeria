@@ -10,6 +10,7 @@ import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runt
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
+import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
@@ -56,7 +57,7 @@ public class ReportHandler {
                 networkAddress = networkAddress + ":" + url.getPort();
             }
 
-            String qualifiedNameForReport = networkAddress + BasicOperation.SEPARATOR + payload.getId();
+            String qualifiedNameForReport = QualifiedNameUtils.buildQualifiedName("",Constants.DEPLOYED_REPORT,networkAddress + BasicOperation.SEPARATOR + payload.getId());
             InstanceProperties reportProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForReport)
                     .withStringProperty(Constants.NAME, payload.getReportName())
@@ -83,7 +84,7 @@ public class ReportHandler {
                 reportUpdater.updateReport(payload, reportWrapper.getEntityDetail());
             }
 
-        } catch (PagingErrorException |  PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | MalformedURLException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException | EntityProxyOnlyException | RelationshipNotDeletedException | RelationshipNotKnownException | EntityNotDeletedException | TypeDefNotKnownException e) {
+        } catch (PagingErrorException |  PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | MalformedURLException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException | EntityProxyOnlyException | RelationshipNotDeletedException | RelationshipNotKnownException | EntityNotDeletedException | TypeDefNotKnownException | InvalidEntityException | EntityConflictException | HomeEntityException e) {
 
             throw new ReportSubmitException(500,
                     ReportHandler.class.getName(),
