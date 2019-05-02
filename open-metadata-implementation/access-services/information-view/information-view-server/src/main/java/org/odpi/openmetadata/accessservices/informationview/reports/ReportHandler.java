@@ -70,12 +70,12 @@ public class ReportHandler {
                     .build();
 
 
-            OMEntityWrapper reportWrapper = omEntityDao.createOrUpdateEntity(Constants.DEPLOYED_REPORT,
-                                                                            qualifiedNameForReport,
-                                                                            reportProperties,
-                                                                            null,
-                                                                            true,
-                                                                            true);
+            OMEntityWrapper reportWrapper = omEntityDao.saveEntityReferenceCopy(payload.getRegistrationGuid(),
+                                                                                Constants.DEPLOYED_REPORT,
+                                                                                qualifiedNameForReport,
+                                                                                reportProperties,
+                                                                                true,
+                                                                                true);
 
 
             if (reportWrapper.getEntityStatus().equals(OMEntityWrapper.EntityStatus.NEW)) {
