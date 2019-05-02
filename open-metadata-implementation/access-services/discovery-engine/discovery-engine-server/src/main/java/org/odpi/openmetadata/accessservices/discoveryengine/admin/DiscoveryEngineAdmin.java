@@ -19,7 +19,7 @@ import java.util.Map;
  * DiscoveryEngineAdmin manages the start up and shutdown of the Discovery Engine OMAS.   During start up,
  * it validates the parameters and options it receives and sets up the service as requested.
  */
-public class DiscoveryEngineAdmin implements AccessServiceAdmin
+public class DiscoveryEngineAdmin extends AccessServiceAdmin
 {
     private OMRSAuditLog                    auditLog   = null;
     private DiscoveryEngineServicesInstance instance   = null;

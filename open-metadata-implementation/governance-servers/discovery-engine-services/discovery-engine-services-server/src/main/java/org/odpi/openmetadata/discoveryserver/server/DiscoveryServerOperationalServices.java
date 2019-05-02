@@ -61,8 +61,10 @@ public class DiscoveryServerOperationalServices
         this.auditLog              = auditLog;
 
         DiscoveryConfigurationClient configurationClient;
+        /*
         if ((localServerName != null) && (localServerPassword != null))
         {
+
             configurationClient = new DiscoveryConfigurationClient(configuration.getAccessServiceServerName(),
                                                                    configuration.getAccessServiceRootURL(),
                                                                    localServerUserId,
@@ -74,6 +76,7 @@ public class DiscoveryServerOperationalServices
                                                                     configuration.getAccessServiceRootURL());
         }
 
+        */
         // TODO
     }
 

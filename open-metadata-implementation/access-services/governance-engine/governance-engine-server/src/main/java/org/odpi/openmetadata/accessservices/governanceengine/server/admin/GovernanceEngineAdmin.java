@@ -19,7 +19,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
 
-public class GovernanceEngineAdmin implements AccessServiceAdmin {
+public class GovernanceEngineAdmin extends AccessServiceAdmin {
 
     private OMRSAuditLog auditLog;
     private GovernanceEngineServicesInstance instance;
