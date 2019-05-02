@@ -34,7 +34,7 @@ public class SecuritySyncEventListener implements OpenMetadataTopicListener {
                     break;
                 case DE_CLASSIFIED_ASSET:
                     securitySyncEventProcessor.processDeClassifiedGovernedAssetEvent(event.getGovernedAsset());
-                break;
+                    break;
                 case DELETED_ASSET:
                     securitySyncEventProcessor.processDeletedGovernedAssetEvent(event.getGovernedAsset());
                     break;

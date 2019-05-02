@@ -28,7 +28,6 @@ import org.springframework.web.client.RestTemplate;
 import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Optional;
 
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.CONFIDENTIALITY;
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.GOVERNED_ASSETS;
@@ -66,7 +65,11 @@ public class SecuritySyncEventProcessor {
     public void processClassifiedGovernedAssetEvent(GovernedAsset governedAsset) {
         logProcessing("processClassifiedGovernedAssetEvent", SecuritySyncAuditCode.CLASSIFIED_GOVERNED_ASSET_EVENT_RECEIVED);
 
-        rangerOpenConnector.createAssociationResourceToSecurityTag(governedAsset);
+        RangerTag tag = rangerOpenConnector.createSecurityTag(governedAsset.getAssignedGovernanceClassifications().get(0));
+        RangerServiceResource resource = rangerOpenConnector.createResource(governedAsset);
+
+        rangerOpenConnector.createAssociationResourceToSecurityTag(tag.getGuid(), resource.getGuid());
+
     }
 
     public void processReClassifiedGovernedAssetEvent(GovernedAsset governedAsset) {
@@ -83,17 +86,10 @@ public class SecuritySyncEventProcessor {
             return;
         }
 
-        String newTagGuid = classification.getAttributes().get(LEVEL);
+        RangerTag securityTag = rangerOpenConnector.createSecurityTag(classification);
 
-        List<RangerTag> allTags = rangerOpenConnector.getSecurityTags();
-        RangerTag existingTag = existingTag(allTags, newTagGuid);
-
-        if (existingTag == null) {
-            rangerOpenConnector.createSecurityTag(classification);
-        }
-
-        if(resource != null && resource.getGuid() != null) {
-            rangerOpenConnector.createAssociationResourceToSecurityTag(newTagGuid, resource.getGuid());
+        if (resource != null && resource.getGuid() != null) {
+            rangerOpenConnector.createAssociationResourceToSecurityTag(securityTag.getGuid(), resource.getGuid());
         }
     }
 
@@ -106,9 +102,9 @@ public class SecuritySyncEventProcessor {
     public void processDeletedGovernedAssetEvent(GovernedAsset governedAsset) {
         logProcessing("processDeclassifiedGovernedAssetEvent", SecuritySyncAuditCode.DELETED_GOVERNED_ASSET_EVENT_RECEIVED);
 
-        RangerServiceResource resource =  declassifiedGovernedAsset(governedAsset);
+        RangerServiceResource resource = declassifiedGovernedAsset(governedAsset);
 
-        if(resource != null && resource.getGuid() != null) {
+        if (resource != null && resource.getGuid() != null) {
             rangerOpenConnector.deleteResourceByGUID(resource.getGuid());
         }
     }
@@ -122,11 +118,6 @@ public class SecuritySyncEventProcessor {
                 null,
                 auditCode.getSystemAction(),
                 auditCode.getUserAction());
-    }
-
-    private RangerTag existingTag(List<RangerTag> rangerTags, String tagGuid) {
-        Optional<RangerTag> any = rangerTags.stream().filter(tag -> tag.getGuid().equals(tagGuid)).findAny();
-        return any.orElse(null);
     }
 
     private GovernedAssetListAPIResponse getGovernedAssets() {
