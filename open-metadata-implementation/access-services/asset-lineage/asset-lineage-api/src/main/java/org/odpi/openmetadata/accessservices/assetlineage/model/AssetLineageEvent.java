@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetlineage.model;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -21,6 +22,8 @@ public abstract class AssetLineageEvent {
 
     private long eventVersionId = 1L;
 
+    private OMRSInstanceEventType omrsInstanceEventType;
+
     public long getEventVersionId() {
         return eventVersionId;
     }
@@ -29,6 +32,13 @@ public abstract class AssetLineageEvent {
         this.eventVersionId = eventVersionId;
     }
 
+    public OMRSInstanceEventType getOmrsInstanceEventType() {
+        return omrsInstanceEventType;
+    }
+
+    public void setOmrsInstanceEventType(OMRSInstanceEventType omrsInstanceEventType) {
+        this.omrsInstanceEventType = omrsInstanceEventType;
+    }
 
     @Override
     public String toString() {
