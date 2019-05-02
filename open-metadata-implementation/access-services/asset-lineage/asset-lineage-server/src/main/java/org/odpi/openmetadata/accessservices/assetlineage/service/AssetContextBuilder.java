@@ -5,10 +5,10 @@ package org.odpi.openmetadata.accessservices.assetlineage.service;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.*;
 import org.odpi.openmetadata.accessservices.assetlineage.model.*;
-import org.odpi.openmetadata.accessservices.assetlineage.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Constants;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.accessservices.assetlineage.util.ExceptionHandler;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -24,18 +24,24 @@ import java.util.stream.Collectors;
 
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
-public class AssetContext {
+public class AssetContextBuilder {
 
     private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private OMRSMetadataCollection metadataCollectionForSearch;
     private Converter converter = new Converter();
     private TypeDefGallery allTypes = new TypeDefGallery();
     private String serverName;
-    private ExceptionHandler exceptionUtil = new ExceptionHandler();
+    private ExceptionHandler exceptionUtil;
+    private OMRSAuditLog auditLog;
 
+    public AssetContextBuilder(OMRSAuditLog auditLog){
+        this.auditLog = auditLog;
+        this.exceptionUtil = new ExceptionHandler(auditLog);
 
-    public AssetResponse buildAssetContext(String serverName, String userId, String assetId){
-        AssetResponse response = new AssetResponse();
+    }
+
+    public org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext buildAssetContext(String serverName, String userId, String assetId){
+        org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext response = new org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext();
 
         try {
             setMetadataRepositoryDetails(serverName, userId);
@@ -100,7 +106,7 @@ public class AssetContext {
 
         return entityDetail;
     }
-    
+
     private Term getStructureForGlossaryTerm(String userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail glossaryTerm) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
         Term term = buildTerm(glossaryTerm);
 
