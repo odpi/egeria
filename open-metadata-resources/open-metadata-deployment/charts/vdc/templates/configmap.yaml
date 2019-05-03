@@ -52,6 +52,8 @@ data:
   {{ end }}
   IBMIGC_USER: {{ .Values.ibmigc.user }}
   IBMIGC_PASS: {{ .Values.ibmigc.password }}
+  {{ end }}
+
   # Used by User Interface
   {{ if .Values.ui.enabled }}
   OMAS_SERVER_URL: http://{{ include "myapp.fullname" . }}-egeria-service:8080
