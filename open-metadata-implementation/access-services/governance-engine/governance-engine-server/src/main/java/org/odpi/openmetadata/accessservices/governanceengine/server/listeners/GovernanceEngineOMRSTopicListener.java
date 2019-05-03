@@ -47,14 +47,6 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
             }
 
             switch (instanceEventType) {
-                case NEW_RELATIONSHIP_EVENT:
-                    instanceEventProcessor.processNewRelationshipEvent(enterpriseOMRSTopic,
-                            instanceEventOriginator.getMetadataCollectionId(),
-                            instanceEventOriginator.getServerName(),
-                            instanceEventOriginator.getServerType(),
-                            instanceEventOriginator.getOrganizationName(),
-                            instanceEvent.getRelationship());
-                    break;
                 case CLASSIFIED_ENTITY_EVENT:
                     instanceEventProcessor.processClassifiedEntityEvent(enterpriseOMRSTopic,
                             instanceEventOriginator.getMetadataCollectionId(),

@@ -65,7 +65,7 @@ public class SecuritySyncEventProcessor {
     public void processClassifiedGovernedAssetEvent(GovernedAsset governedAsset) {
         logProcessing("processClassifiedGovernedAssetEvent", SecuritySyncAuditCode.CLASSIFIED_GOVERNED_ASSET_EVENT_RECEIVED);
 
-        RangerTag tag = rangerOpenConnector.createSecurityTag(governedAsset.getAssignedGovernanceClassifications().get(0));
+        RangerTag tag = rangerOpenConnector.createSecurityTag(governedAsset.getAssignedGovernanceClassification());
         RangerServiceResource resource = rangerOpenConnector.createResource(governedAsset);
 
         rangerOpenConnector.createAssociationResourceToSecurityTag(tag.getGuid(), resource.getGuid());
@@ -77,11 +77,11 @@ public class SecuritySyncEventProcessor {
 
         RangerServiceResource resource = declassifiedGovernedAsset(governedAsset);
 
-        if (governedAsset.getAssignedGovernanceClassifications() == null || governedAsset.getAssignedGovernanceClassifications().isEmpty()) {
+        if (governedAsset.getAssignedGovernanceClassification() == null) {
             return;
         }
 
-        GovernanceClassification classification = governedAsset.getAssignedGovernanceClassifications().get(0);
+        GovernanceClassification classification = governedAsset.getAssignedGovernanceClassification();
         if (!classification.getAttributes().containsKey(LEVEL)) {
             return;
         }

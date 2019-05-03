@@ -26,7 +26,6 @@ import org.slf4j.LoggerFactory;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.GLOSSARY_TERM;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_COLUMN;
 import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.RELATIONAL_TABLE;
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.SEMANTIC_ASSIGNMENT;
 
 /**
  * GovernanceEnginePublisher is responsible for publishing events about governed asset components .  It is called
@@ -159,18 +158,6 @@ public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
     public void processNewRelationshipEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName,
                                             String originatorServerType, String originatorOrganizationName,
                                             Relationship relationship) {
-        log.info("GE Process New Relationship");
-
-        if (!(relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT)
-                && relationship.getEntityTwoProxy().getType().getTypeDefName().equals(GLOSSARY_TERM))) {
-            return;
-        }
-
-        try {
-            governanceEngineEventProcessor.processSemanticAssignmentRelationshipCreation(relationship);
-        } catch (RepositoryErrorException | UserNotAuthorizedException | EntityProxyOnlyException | PropertyErrorException | FunctionNotSupportedException | PagingErrorException | TypeDefNotKnownException | TypeErrorException | EntityNotKnownException | InvalidParameterException e) {
-            log.debug("Governance Engine OMAS is unable to process a New Relationship Event");
-        }
     }
 
     @Override

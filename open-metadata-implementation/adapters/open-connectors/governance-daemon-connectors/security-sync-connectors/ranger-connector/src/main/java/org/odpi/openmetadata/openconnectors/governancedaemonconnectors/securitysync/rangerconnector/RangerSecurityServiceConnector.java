@@ -54,11 +54,11 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
 
         for (GovernedAsset governedAsset : governedAssets) {
 
-            if (governedAsset.getAssignedGovernanceClassifications().isEmpty()) {
+            if (governedAsset.getAssignedGovernanceClassification() == null) {
                 continue;
             }
 
-            RangerTag rangerTag = buildTag(governedAsset.getAssignedGovernanceClassifications().get(0));
+            RangerTag rangerTag = buildTag(governedAsset.getAssignedGovernanceClassification());
             tags.add(rangerTag);
 
             RangerServiceResource resource = createResource(governedAsset);
@@ -174,7 +174,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         serviceResource.setGuid(governedAsset.getGuid());
         serviceResource.setServiceName(DEFAULT_SCHEMA_NAME);
         serviceResource.setCreatedBy(RANGER_CONNECTOR);
-        Map<String, RangerPolicyResource> resourceElements = getRangerPolicyResourceMap(governedAsset.getContexts().get(0));
+        Map<String, RangerPolicyResource> resourceElements = getRangerPolicyResourceMap(governedAsset.getContext());
         serviceResource.setResourceElements(resourceElements);
 
         return serviceResource;
