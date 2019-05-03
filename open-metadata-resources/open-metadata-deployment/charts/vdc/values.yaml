@@ -54,6 +54,25 @@ istio:
   # kubectl label namespace MYNAMESPACE istio-injection=enabled
   enabled: false
 
+# Options to switch off certain components (not egeria)
+ranger:
+  enabled: true
+
+gaian:
+  enabled: true
+
+atlas:
+  enabled: true
+
+postgresql:
+  enabled: true
+
+omrsmonitor:
+  enabled: true
+
+ui:
+  enabled: true
+
 # Debug support for Egeria - set to true to enable JVM debug for Egeria images on port 5005
 debug:
   egeriaJVM: false
@@ -69,7 +88,11 @@ imageDefaults:
   pullPolicy: IfNotPresent
 
 # supported values are in-memory-repository & local-graph-repository
-egeriarepomode: in-memory-repository
+egeria:
+  repomode: in-memory-repository
+  user: myuser
+  cohort: coco
+  server: myserver
 
 # The following section defines all of the DOCKER images being used by this chart. Normally they should be left as is,
 # but are exposed here in case the user wishes to extend. By default, each will use the 'imageDefaults' above, but
@@ -193,3 +216,4 @@ openldap:
   adminPassword: passw0rd
   configPassword: passw0rd
   servicePort: 389
+  enabled: true
