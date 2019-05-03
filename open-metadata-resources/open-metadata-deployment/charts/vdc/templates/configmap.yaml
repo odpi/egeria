@@ -1,6 +1,6 @@
----
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -11,40 +11,59 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
-  # General cluster configuration
-  ATLAS_ENDPOINT: http://{{ include "myapp.fullname" . }}-atlas-service:21000
-  EGERIA_ENDPOINT: http://{{ include "myapp.fullname" . }}-egeria-service:8080
-  IGCPROXY_ENDPOINT: http://{{ include "myapp.fullname" . }}-ibm-igc-service:8080
-{{ if .Values.kafka.internal.enabled }}
-  KAFKA_ENDPOINT: {{ .Release.Name }}-cp-kafka:9092
-{{ else }}
-  # If using external kafka this is typically a comma seperated list of brokers
-  # It is also likely insufficient to connect without additional authentication information
-  KAFKA_ENDPOINT: {{ .Values.kafka.external.brokers }}
-{{ end }}
-  EGERIA_USER: myuser
-  EGERIA_COHORT: coco
-  EGERIA_SERVER: myserver
-  KAFKA_TOPIC: {{ .Values.kafka.topicroot}}.open-metadata.repository-services.cohort.coco.OMRSTopic
+  # General cluster configuration - for core egeria, kafka - these must be used
+  EGERIA_USER: {{ .Values.egeria.user }}
+  EGERIA_COHORT: {{ .Values.egeria.cohort }}
+  EGERIA_SERVER: {{ .Values.egeria.server }}
   # Used by IGC/Postgres & initialization
   STRICT_SSL: "false"
   LOGGING_LEVEL_ROOT: {{ .Values.logging.level }}
+  EGERIA_ENDPOINT: http://{{ include "myapp.fullname" . }}-egeria-service:8080
+
+  {{ if .Values.kafka.internal.enabled }}
+  KAFKA_TOPIC: {{ .Values.kafka.topicroot}}.open-metadata.repository-services.cohort.coco.OMRSTopic
+  KAFKA_ENDPOINT: {{ .Release.Name }}-cp-kafka:9092
+  {{ else }}
+  # If using external kafka this is typically a comma seperated list of brokers
+  # It is also likely insufficient to connect without additional authentication information
+  KAFKA_ENDPOINT: {{ .Values.kafka.external.brokers }}
+  {{ end }}
+
+  {{ if .Values.atlas.enabled }}
+  ATLAS_ENDPOINT: http://{{ include "myapp.fullname" . }}-atlas-service:21000
+  {{ end }}
+
+  {{ if .Values.postgresql.enabled }}
   POSTGRESQL_PASSWORD: passw0rd
+  {{ end }}
+
+  {{ if .Values.ibmigc.enabled }}
+  IGCPROXY_ENDPOINT: http://{{ include "myapp.fullname" . }}-ibm-igc-service:8080
   # Below values for IBMIGC need to reference either your container or external environment
   # See also: ibmigc... in values.yaml
-{{ if .Values.ibmigc.internal.enabled }}
+  {{ if .Values.ibmigc.internal.enabled }}
   IBMIGC_ENDPOINT: https://infosvr:9446
   IBMIGC_KAFKA_ENDPOINT: infosvr:59092
-{{ else }}
+  {{ else }}
   IBMIGC_ENDPOINT: https://{{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.https }}
   IBMIGC_KAFKA_ENDPOINT: {{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.broker }}
-{{ end }}
+  {{ end }}
   IBMIGC_AUTH: {{ .Values.ibmigc.cred }}
+  {{ end }}
+
   # Used by User Interface
+  {{ if .Values.ui.enabled }}
   OMAS_SERVER_URL: http://{{ include "myapp.fullname" . }}-egeria-service:8080
   OMAS_SERVER_NAME: myserver
+  {{ end }}
+
+  {{ if .Values.gaian.enabled }}
   GAIAN_HOST: {{ include "myapp.fullname" . }}-gaian-service
+  {{ end }}
+
+  {{ if .Values.openldap.enabled }}
   LDAP_SERVER: {{ .Release.Name }}-openldap
   LDAP_PORT: {{ .Values.openldap.servicePort | quote }}
   LDAP_USER: cn=admin,dc=example,dc=org
   LDAP_PASS: {{ .Values.openldap.adminPassword | quote }}
+  {{ end }}
