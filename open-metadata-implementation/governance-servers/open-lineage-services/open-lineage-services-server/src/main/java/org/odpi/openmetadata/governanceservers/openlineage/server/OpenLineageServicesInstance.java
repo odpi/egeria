@@ -3,24 +3,24 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
-import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphConstructor;
+import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
 
 public class OpenLineageServicesInstance
 {
     private String serverName;
-    private GraphConstructor graphConstructor;
+    private GraphBuilder graphBuilder;
 
-    public OpenLineageServicesInstance(GraphConstructor graphConstructor,
+    public OpenLineageServicesInstance(GraphBuilder graphBuilder,
                                        String serverName)  {
-        this.graphConstructor = graphConstructor;
+        this.graphBuilder = graphBuilder;
         this.serverName    = serverName;
 
         OpenLineageServicesInstanceMap.setNewInstanceForJVM(serverName, this);
     }
 
 
-    public GraphConstructor getGraphConstructor()  {
-        return this.graphConstructor;
+    public GraphBuilder getGraphBuilder()  {
+        return this.graphBuilder;
     }
 
 

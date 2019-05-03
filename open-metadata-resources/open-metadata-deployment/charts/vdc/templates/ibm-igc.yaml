@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
+---
 {{ if .Values.ibmigc.enabled }}
 # Only deploy any of this if IGC is enabled
----
 apiVersion: v1
 kind: Service
 metadata:
