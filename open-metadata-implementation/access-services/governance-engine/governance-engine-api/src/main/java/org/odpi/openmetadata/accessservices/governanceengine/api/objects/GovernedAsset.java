@@ -7,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.io.Serializable;
-import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -22,8 +21,8 @@ public class GovernedAsset implements Serializable {
     private String name;
     private String type;
     private String owner;
-    private List<Context> contexts;
-    private List<GovernanceClassification> assignedGovernanceClassifications;
+    private Context context;
+    private GovernanceClassification assignedGovernanceClassification;
 
     public String getGuid() {
         return guid;
@@ -65,19 +64,32 @@ public class GovernedAsset implements Serializable {
         this.owner = owner;
     }
 
-    public List<Context> getContexts() {
-        return contexts;
+    public Context getContext() {
+        return context;
     }
 
-    public void setContexts(List<Context> contexts) {
-        this.contexts = contexts;
+    public void setContext(Context context) {
+        this.context = context;
     }
 
-    public List<GovernanceClassification> getAssignedGovernanceClassifications() {
-        return assignedGovernanceClassifications;
+    public GovernanceClassification getAssignedGovernanceClassification() {
+        return assignedGovernanceClassification;
     }
 
-    public void setAssignedGovernanceClassifications(List<GovernanceClassification> assignedGovernanceClassifications) {
-        this.assignedGovernanceClassifications = assignedGovernanceClassifications;
+    public void setAssignedGovernanceClassification(GovernanceClassification assignedGovernanceClassification) {
+        this.assignedGovernanceClassification = assignedGovernanceClassification;
+    }
+
+    @Override
+    public String toString() {
+        return "GovernedAsset{" +
+                "guid='" + guid + '\'' +
+                ", fullQualifiedName='" + fullQualifiedName + '\'' +
+                ", name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", owner='" + owner + '\'' +
+                ", context=" + context +
+                ", assignedGovernanceClassification=" + assignedGovernanceClassification +
+                '}';
     }
 }
