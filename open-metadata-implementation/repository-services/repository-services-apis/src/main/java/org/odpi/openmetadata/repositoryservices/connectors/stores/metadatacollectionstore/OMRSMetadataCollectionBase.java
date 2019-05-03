@@ -3172,6 +3172,39 @@ public abstract class OMRSMetadataCollectionBase extends OMRSMetadataCollection
         return typeDef;
     }
 
+        protected TypeDef saveEntityReferenceParameterValidation(String              userId,
+                                                                 EntityDetail        entity) throws InvalidParameterException,
+                                                                                                    RepositoryErrorException,
+                                                                                                    TypeErrorException,
+                                                                                                    PropertyErrorException,
+                                                                                                    UserNotAuthorizedException
+            {
+                final String  methodName                    = "saveEntityReferenceCopy";
+                final String  entityGUIDParameterName       = "entityTypeGUID";
+                final String  propertiesParameterName       = "initialProperties";
+
+                /*
+                 * Validate parameters
+                 */
+                super.validateRepositoryConnector(methodName);
+                parentConnector.validateRepositoryIsActive(methodName);
+
+                repositoryValidator.validateUserId(repositoryName, userId, methodName);
+                repositoryValidator.validateTypeGUID(repositoryName, entityGUIDParameterName, entity.getType().getTypeDefGUID(), methodName);
+
+                TypeDef  typeDef = repositoryHelper.getTypeDef(repositoryName, entityGUIDParameterName, entity.getType().getTypeDefGUID(), methodName);
+
+                repositoryValidator.validateTypeDefForInstance(repositoryName, entityGUIDParameterName, typeDef, methodName);
+
+                repositoryValidator.validatePropertiesForType(repositoryName,
+                                                              propertiesParameterName,
+                                                              typeDef,
+                                                              entity.getProperties(),
+                                                              methodName);
+
+                return typeDef;
+            }
+
 
     /**
      * Create a new entity and put it in the requested state.  The new entity is returned.
