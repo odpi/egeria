@@ -147,8 +147,8 @@ public class AssetContext {
 
 
     private void setMetadataRepositoryDetails(String serverName, String userId) throws PropertyServerException, RepositoryErrorException, UserNotAuthorizedException {
-        metadataCollectionForSearch = instanceHandler.getMetadataCollection(serverName);
-        allTypes = metadataCollectionForSearch.getAllTypes(userId);
+        this.metadataCollectionForSearch = instanceHandler.getMetadataCollection(serverName);
+        this.allTypes = metadataCollectionForSearch.getAllTypes(userId);
         this.serverName = serverName;
     }
 

@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
+---
 {{ if .Values.ibmigc.enabled }}
 # Only deploy any of this if IGC is enabled
----
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -16,6 +16,9 @@ metadata:
     "helm.sh/hook": post-install
     "helm.sh/hook-weight": "0"
     "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation"
+    {{ if .Values.istio.enabled -}}
+    sidecar.istio.io/inject: "true"
+    {{- end }}
 spec:
   template:
     metadata:
