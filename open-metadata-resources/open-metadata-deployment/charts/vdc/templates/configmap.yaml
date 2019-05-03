@@ -33,13 +33,16 @@ data:
   # Below values for IBMIGC need to reference either your container or external environment
   # See also: ibmigc... in values.yaml
 {{ if .Values.ibmigc.internal.enabled }}
-  IBMIGC_ENDPOINT: https://infosvr:9446
+  IBMIGC_HOST: infosvr
+  IBMIGC_PORT: 9446
   IBMIGC_KAFKA_ENDPOINT: infosvr:59092
 {{ else }}
-  IBMIGC_ENDPOINT: https://{{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.https }}
+  IBMIGC_HOST: {{ .Values.ibmigc.external.hostname }}
+  IBMIGC_PORT: {{ .Values.ibmigc.external.ports.https }}
   IBMIGC_KAFKA_ENDPOINT: {{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.broker }}
 {{ end }}
-  IBMIGC_AUTH: {{ .Values.ibmigc.cred }}
+  IBMIGC_USER: {{ .Values.ibmigc.user }}
+  IBMIGC_PASS: {{ .Values.ibmigc.password }}
   # Used by User Interface
   OMAS_SERVER_URL: http://{{ include "myapp.fullname" . }}-egeria-service:8080
   OMAS_SERVER_NAME: myserver
