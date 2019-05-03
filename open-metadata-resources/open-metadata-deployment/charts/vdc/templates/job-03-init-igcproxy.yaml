@@ -117,14 +117,14 @@ spec:
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 --header "Content-Type: application/json"
-                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/local-repository/mode/ibm-igc/details
-                --data '{"igcBaseURL": "'"${IBMIGC_ENDPOINT}"'", "igcAuthorization": "'"${IBMIGC_AUTH}"'"}'
+                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/local-repository/mode/repository-proxy/details?connectorProvider=org.odpi.egeria.connectors.ibm.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider
+                --data '{"ibm.igc.services.host": "'"${IBMIGC_HOST}"'", "ibm.igc.services.port": "'"${IBMIGC_PORT}"'", "ibm.igc.username": "'"${IBMIGC_USER}"'", "ibm.igc.password": "'"${IBMIGC_PASS}"'"}'
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/cohorts/${EGERIA_COHORT}
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                "${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/local-repository/event-mapper-details?connectorProvider=org.odpi.openmetadata.adapters.repositoryservices.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider&eventSource=${IBMIGC_KAFKA_ENDPOINT}"
+                "${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/local-repository/event-mapper-details?connectorProvider=org.odpi.egeria.connectors.ibm.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider&eventSource=${IBMIGC_KAFKA_ENDPOINT}"
                 &&
                 curl -f --verbose --basic admin:admin -X POST --max-time 900
                 ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/instance
