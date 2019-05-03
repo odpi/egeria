@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.admin;
 
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
 import org.odpi.openmetadata.accessservices.assetlineage.eventProcessors.EventProcessor;
-import org.odpi.openmetadata.accessservices.assetlineage.listeners.AssetLineageEnterpriseOmrsEventListener;
+import org.odpi.openmetadata.accessservices.assetlineage.listeners.EnterpriseTopicListener;
 import org.odpi.openmetadata.accessservices.assetlineage.service.AssetLineageServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
@@ -19,7 +19,6 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorException;
@@ -85,8 +84,8 @@ public class AssetLineageAdmin implements AccessServiceAdmin {
                         auditCode.getSystemAction(),
                         auditCode.getUserAction());
                 EventProcessor eventProcessor = new EventProcessor(this.serverName, this.serverUserName, assetLineageOutTopicConnector, auditLog);
-                AssetLineageEnterpriseOmrsEventListener assetLineageEnterpriseOmrsEventListener = new AssetLineageEnterpriseOmrsEventListener(eventProcessor, auditLog);
-                enterpriseOMRSTopicConnector.registerListener(assetLineageEnterpriseOmrsEventListener);
+                EnterpriseTopicListener enterpriseTopicListener = new EnterpriseTopicListener(eventProcessor, auditLog);
+                enterpriseOMRSTopicConnector.registerListener(enterpriseTopicListener);
             }
 
 

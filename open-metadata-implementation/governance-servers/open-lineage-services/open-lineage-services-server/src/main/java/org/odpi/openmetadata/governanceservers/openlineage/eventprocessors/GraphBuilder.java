@@ -11,7 +11,7 @@ import org.odpi.openmetadata.governanceservers.openlineage.model.AssetElement;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Connection;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Element;
 import org.odpi.openmetadata.governanceservers.openlineage.model.Term;
-import org.odpi.openmetadata.governanceservers.openlineage.model.rest.responses.AssetResponse;
+import org.odpi.openmetadata.governanceservers.openlineage.model.AssetContext;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.slf4j.Logger;
@@ -36,7 +36,7 @@ public class GraphBuilder {
     }
 
 
-    public void addAsset(AssetResponse event) {
+    public void addAsset(AssetContext event) {
         Term relationalColumn = event.getAssets().get(0);
         AssetElement database = event.getAssets().get(0).getElements().get(0);
 
@@ -47,7 +47,7 @@ public class GraphBuilder {
 
         Connection connection = database.getConnections().get(0);
 
-        //TODO Open Metadata forat should not be used in graph, e.g. column/table types should be properties instead
+        //TODO Open Metadata format should not be used in graph, e.g. column/table types should be properties instead. TBD.
 
         Vertex relationalColumnVertex = addVertex(relationalColumn);
         Vertex databaseVertex = addVertex(database);

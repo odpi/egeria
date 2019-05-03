@@ -3,18 +3,16 @@
 package org.odpi.openmetadata.accessservices.assetlineage.listeners;
 
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.events.*;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AssetLineageEnterpriseOmrsEventListener implements OMRSTopicListener {
+public class EnterpriseTopicListener implements OMRSTopicListener {
 
 
-    private static final Logger log = LoggerFactory.getLogger(AssetLineageEnterpriseOmrsEventListener.class);
+    private static final Logger log = LoggerFactory.getLogger(EnterpriseTopicListener.class);
     private OMRSInstanceEventProcessor instanceEventProcessor;
     private OMRSAuditLog auditLog;
 
@@ -23,7 +21,7 @@ public class AssetLineageEnterpriseOmrsEventListener implements OMRSTopicListene
      * @param instanceEventProcessor
      * @param auditLog
      */
-    public AssetLineageEnterpriseOmrsEventListener(OMRSInstanceEventProcessor instanceEventProcessor, OMRSAuditLog auditLog) {
+    public EnterpriseTopicListener(OMRSInstanceEventProcessor instanceEventProcessor, OMRSAuditLog auditLog) {
 
         this.instanceEventProcessor = instanceEventProcessor;
         this.auditLog = auditLog;
@@ -55,13 +53,7 @@ public class AssetLineageEnterpriseOmrsEventListener implements OMRSTopicListene
             if ((instanceEventType != null) && (instanceEventOriginator != null)) {
                 switch (instanceEventType) {
                     case NEW_ENTITY_EVENT:
-                        instanceEventProcessor.processNewEntityEvent(
-                                "EnterpriseOMRSTopic",
-                                instanceEventOriginator.getMetadataCollectionId(),
-                                instanceEventOriginator.getServerName(),
-                                instanceEventOriginator.getServerType(),
-                                instanceEventOriginator.getOrganizationName(),
-                                instanceEvent.getEntity());
+                        //Do nothing. New entities can only be introduced via New_Relationship_event
                         break;
 
                     case UPDATED_ENTITY_EVENT:
