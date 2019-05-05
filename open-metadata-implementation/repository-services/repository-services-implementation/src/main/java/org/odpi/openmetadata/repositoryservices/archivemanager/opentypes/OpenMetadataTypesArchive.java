@@ -17461,7 +17461,7 @@ public class OpenMetadataTypesArchive
         final String description     = "The structure of an asset.";
         final String descriptionGUID = null;
 
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.TWO_TO_ONE;
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
                                                                                 name,
@@ -17479,7 +17479,7 @@ public class OpenMetadataTypesArchive
         final String                     end1AttributeName            = "describesAssets";
         final String                     end1AttributeDescription     = "Asset that conforms to the schema type.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
                                                                  end1AttributeName,
@@ -17778,7 +17778,7 @@ public class OpenMetadataTypesArchive
         TypeDefAttribute       property;
 
         final String attribute1Name            = "maximumElements";
-        final String attribute1Description     = "Maximum number of values that can be stored.";
+        final String attribute1Description     = "Maximum number of values that can be stored - zero for no limit.";
         final String attribute1DescriptionGUID = null;
 
         property = archiveHelper.getIntTypeDefAttribute(attribute1Name,
@@ -17833,7 +17833,7 @@ public class OpenMetadataTypesArchive
         final String description     = "Link between a complex schema type and its attributes.";
         final String descriptionGUID = null;
 
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.ONE_TO_TWO;
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
                                                                                 name,
@@ -17851,7 +17851,7 @@ public class OpenMetadataTypesArchive
         final String                     end1AttributeName            = "parentSchemas";
         final String                     end1AttributeDescription     = "Schema types using this attribute.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
                                                                  end1AttributeName,
@@ -17888,7 +17888,7 @@ public class OpenMetadataTypesArchive
         final String description     = "The schema type for an attribute.";
         final String descriptionGUID = null;
 
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.ONE_TO_TWO;
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
 
         RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
                                                                                 name,
@@ -17906,7 +17906,7 @@ public class OpenMetadataTypesArchive
         final String                     end1AttributeName            = "usedInSchemas";
         final String                     end1AttributeDescription     = "Occurrences of this schema type in other schemas.";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
                                                                  end1AttributeName,
