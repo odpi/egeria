@@ -40,6 +40,8 @@ public enum AccessServiceDescription implements Serializable
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/digital-architecture/"),
     DISCOVERY_ENGINE_OMAS            (1015,   "Discovery Engine", "Support for automated metadata discovery engines",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/discovery-engine/"),
+    GLOSSARY_VIEW_OMAS               (1022,   "Glossary View", "Support glossary terms visualization",
+                                              "https://odpi.github.io/egeria/open-metadata-implementation/access-services/glossary-view/"),
     GOVERNANCE_ENGINE_OMAS           (1008,   "Governance Engine", "Set up an operational governance engine",
                                               "https://odpi.github.io/egeria/open-metadata-implementation/access-services/governance-engine/"),
     GOVERNANCE_PROGRAM_OMAS          (1009,   "Governance Program", "Manage the governance program",
