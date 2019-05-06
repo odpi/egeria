@@ -70,7 +70,7 @@ public class GovernanceEngineAdmin implements AccessServiceAdmin {
                         auditCode.getSystemAction(),
                         auditCode.getUserAction());
 
-                GovernanceEngineOMRSTopicListener omrsTopicListener = new GovernanceEngineOMRSTopicListener(governanceEnginePublisher, auditLog);
+                GovernanceEngineOMRSTopicListener omrsTopicListener = new GovernanceEngineOMRSTopicListener(governanceEnginePublisher);
                 enterpriseOMRSTopicConnector.registerListener(omrsTopicListener);
             }
 
