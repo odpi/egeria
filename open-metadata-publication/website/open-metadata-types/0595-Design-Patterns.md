@@ -1,12 +1,14 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# 0223 Events and Logs
+# 0595 Design Patterns
 
-![UML](0223-Events-and-Logs.png)
+Design patterns document proven approaches to solving well known problems.
+
+![UML](0595-Design-Patterns.png)
 
 
-Return to [Area 2](Area-2-models.md).
+Return to [Area 5](Area-5-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
