@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
+---
+{{ if .Values.atlas.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -89,3 +91,4 @@ spec:
                 &&
                 curl -f --verbose --anyauth --user admin:admin -X POST --max-time 900
                 ${ATLAS_ENDPOINT}/egeria/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/instance
+{{ end }}
