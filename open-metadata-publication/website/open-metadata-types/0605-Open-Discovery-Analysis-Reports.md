@@ -27,6 +27,8 @@ It identifies the date of the report and the parameters used.
 It may also include a name and description that is supplied
 by the initiator of the discovery service run.
 
+Return to [Area 6](Area-6-models.md).
+
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
 Copyright Contributors to the ODPi Egeria project.

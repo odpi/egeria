@@ -1,12 +1,18 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 <!-- Copyright Contributors to the ODPi Egeria project. -->
 
-# 0223 Events and Logs
+# 507 Bounded Schema Types
 
-![UML](0223-Events-and-Logs.png)
+Bounded schema types define elements where there is a repeating structure.
+Examples include sets and arrays.
 
 
-Return to [Area 2](Area-2-models.md).
+![UML](0507-Bounded-Schema-Types.png)
+
+Return to [Area 5](Area-5-models.md).
+
+
+
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
