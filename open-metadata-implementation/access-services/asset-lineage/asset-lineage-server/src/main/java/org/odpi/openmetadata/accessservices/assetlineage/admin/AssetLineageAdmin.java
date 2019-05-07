@@ -159,18 +159,6 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
         }
     }
 
-    private String getTopicName(Connection connection) {
-        String topicName = null;
-        if (connection != null) {
-            Endpoint outTopicEndpoint = connection.getEndpoint();
-
-            if (outTopicEndpoint != null) {
-                topicName = outTopicEndpoint.getAddress();
-            }
-        }
-        return topicName;
-    }
-
 
     /**
      * Returns the topic created based on connection properties
