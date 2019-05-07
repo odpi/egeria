@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetLineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.service.AssetContextBuilder;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
@@ -53,7 +54,7 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                       EntityDetail entity) {
 
 
-        getAssetContext(entity, OMRSInstanceEventType.NEW_ENTITY_EVENT);
+//        getAssetContext(entity, OMRSInstanceEventType.NEW_ENTITY_EVENT);
     }
 
     public void processUpdatedEntityEvent(String sourceName,
@@ -64,7 +65,7 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                           EntityDetail oldEntity,
                                           EntityDetail entity) {
 
-        getAssetContext(entity, OMRSInstanceEventType.UPDATED_ENTITY_EVENT);
+//        getAssetContext(entity, OMRSInstanceEventType.UPDATED_ENTITY_EVENT);
     }
 
 
@@ -112,6 +113,7 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                           String originatorServerType,
                                           String originatorOrganizationName,
                                           EntityDetail entity) {
+//        getAssetContext(entity, OMRSInstanceEventType.DELETED_ENTITY_EVENT);
 
     }
 
@@ -202,6 +204,19 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                             String originatorServerType,
                                             String originatorOrganizationName,
                                             Relationship relationship) {
+
+        AssetContextBuilder assetContextBuilder = new AssetContextBuilder(auditLog);
+        AssetContext assetContext = assetContextBuilder.buildAssetContext(serverName, serverUsername, relationship.getEntityTwoProxy().getGUID());
+        System.out.println(assetContext.getAssets());
+        System.out.println(assetContext);
+
+        RelationshipEvent relationshipEvent = new RelationshipEvent();
+        relationshipEvent.setEntityProxyOne(relationship.getEntityOneProxy());
+        relationshipEvent.setEntityProxyTwo(relationship.getEntityTwoProxy());
+        relationshipEvent.setTypeDefName(relationship.getType().getTypeDefName());
+
+        relationshipEvent.setOmrsInstanceEventType(OMRSInstanceEventType.NEW_RELATIONSHIP_EVENT);
+        sendEvent(relationshipEvent);
 
     }
 
@@ -335,34 +350,34 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
 
     }
 
-
-     private void getAssetContext(EntityDetail entity,OMRSInstanceEventType  omrsInstanceEventType) {
-        String actionDescription = "Send New Event";
-        log.info("Sending event to asset lineage out topic");
-        log.debug("event: ", entity);
-
-        AssetContextBuilder assetContextBuilder = new AssetContextBuilder(auditLog);
-        AssetContext assetContext = assetContextBuilder.buildAssetContext(serverName, serverUsername, entity.getGUID());
-        assetContext.setOmrsInstanceEventType(omrsInstanceEventType);
-
-        try {
-
-            assetLineageTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(assetContext));
-
-        } catch (Throwable error) {
-            log.error("Exception publishing event", error);
-            AssetLineageErrorCode auditCode = AssetLineageErrorCode.PUBLISH_EVENT_EXCEPTION;
-
-            auditLog.logException(actionDescription,
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(entity.getClass().getName(), error.getMessage()),
-                    "event {" + entity.toString() + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    error);
-        }
-    }
+//
+//     private void getAssetContext(EntityDetail entity,OMRSInstanceEventType  omrsInstanceEventType) {
+//        String actionDescription = "Send New Event";
+//        log.info("Sending event to asset lineage out topic");
+//        log.debug("event: ", entity);
+//
+//        AssetContextBuilder assetContextBuilder = new AssetContextBuilder(auditLog);
+//        AssetContext assetContext = assetContextBuilder.buildAssetContext(serverName, serverUsername, entity.getGUID());
+//        assetContext.setOmrsInstanceEventType(omrsInstanceEventType);
+//
+//        try {
+//
+//            assetLineageTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(assetContext));
+//
+//        } catch (Throwable error) {
+//            log.error("Exception publishing event", error);
+//            AssetLineageErrorCode auditCode = AssetLineageErrorCode.PUBLISH_EVENT_EXCEPTION;
+//
+//            auditLog.logException(actionDescription,
+//                    auditCode.getErrorMessageId(),
+//                    OMRSAuditLogRecordSeverity.EXCEPTION,
+//                    auditCode.getFormattedErrorMessage(entity.getClass().getName(), error.getMessage()),
+//                    "event {" + entity.toString() + "}",
+//                    auditCode.getSystemAction(),
+//                    auditCode.getUserAction(),
+//                    error);
+//        }
+//    }
 
     /**
      * Returns true if the event was published successfully, false otherwise
@@ -379,6 +394,7 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
 
         try {
 
+            System.out.println(event);
             assetLineageTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(event));
             successFlag = true;
 

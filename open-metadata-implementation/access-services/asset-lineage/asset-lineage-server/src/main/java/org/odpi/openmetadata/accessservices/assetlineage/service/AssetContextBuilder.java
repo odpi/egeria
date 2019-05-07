@@ -111,6 +111,8 @@ public class AssetContextBuilder {
         Term term = buildTerm(glossaryTerm);
 
         List<EntityDetail> schemas = getTheEndsRelationship(userId, glossaryTerm.getGUID(), SEMANTIC_ASSIGNMENT);
+//        List<EntityDetail> test = getTheEndsRelationship(userId, glossaryTerm.getGUID(), TERM_CATEGORIZATION);
+//        System.out.println(test);
         List<AssetElement> assets = new ArrayList<>(schemas.size());
 
         for (EntityDetail schema : schemas) {
