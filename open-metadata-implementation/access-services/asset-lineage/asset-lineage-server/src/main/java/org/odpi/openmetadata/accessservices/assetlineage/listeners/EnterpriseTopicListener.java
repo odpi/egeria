@@ -3,9 +3,11 @@
 package org.odpi.openmetadata.accessservices.assetlineage.listeners;
 
 
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.events.*;
+import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +15,7 @@ public class EnterpriseTopicListener implements OMRSTopicListener {
 
 
     private static final Logger log = LoggerFactory.getLogger(EnterpriseTopicListener.class);
+    private static final String SOURCENAME ="EnterpriseOMRSTopic";
     private OMRSInstanceEventProcessor instanceEventProcessor;
     private OMRSAuditLog auditLog;
 
@@ -53,12 +56,22 @@ public class EnterpriseTopicListener implements OMRSTopicListener {
             if ((instanceEventType != null) && (instanceEventOriginator != null)) {
                 switch (instanceEventType) {
                     case NEW_ENTITY_EVENT:
-                        //Do nothing. New entities can only be introduced via New_Relationship_event
                         break;
 
                     case UPDATED_ENTITY_EVENT:
                         instanceEventProcessor.processUpdatedEntityEvent(
-                                "EnterpriseOMRSTopic",
+                                SOURCENAME,
+                                instanceEventOriginator.getMetadataCollectionId(),
+                                instanceEventOriginator.getServerName(),
+                                instanceEventOriginator.getServerType(),
+                                instanceEventOriginator.getOrganizationName(),
+                                instanceEvent.getOriginalEntity(),
+                                instanceEvent.getEntity());
+                        break;
+
+                    case DELETED_ENTITY_EVENT:
+                        instanceEventProcessor.processUpdatedEntityEvent(
+                                SOURCENAME,
                                 instanceEventOriginator.getMetadataCollectionId(),
                                 instanceEventOriginator.getServerName(),
                                 instanceEventOriginator.getServerType(),
@@ -68,14 +81,22 @@ public class EnterpriseTopicListener implements OMRSTopicListener {
                         break;
 
                     case NEW_RELATIONSHIP_EVENT:
-                        instanceEventProcessor.sendInstanceEvent("EnterpriseOMRSTopic", instanceEvent);
+                        instanceEventProcessor.processNewRelationshipEvent(SOURCENAME,
+                                instanceEventOriginator.getMetadataCollectionId(),
+                                instanceEventOriginator.getServerName(),
+                                instanceEventOriginator.getServerType(),
+                                instanceEventOriginator.getOrganizationName(),
+                                instanceEvent.getRelationship());
 
                         break;
 
                     case UPDATED_RELATIONSHIP_EVENT:
 
-                        instanceEventProcessor.sendInstanceEvent("EnterpriseOMRSTopic", instanceEvent);
+                        instanceEventProcessor.sendInstanceEvent(SOURCENAME, instanceEvent);
                         break;
+
+                     default:
+                         break;
                 }
             }
 

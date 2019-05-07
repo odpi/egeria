@@ -24,6 +24,7 @@ public abstract class AssetLineageEvent {
 
     private OMRSInstanceEventType omrsInstanceEventType;
 
+
     public long getEventVersionId() {
         return eventVersionId;
     }
