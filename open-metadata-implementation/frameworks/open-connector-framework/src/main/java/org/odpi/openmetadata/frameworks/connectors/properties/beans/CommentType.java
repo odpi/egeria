@@ -20,11 +20,12 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public enum CommentType implements Serializable
 {
-    STANDARD_COMMENT (0, "Comment", "General comment about the asset."),
-    QUESTION         (1, "Question", "Asks a question to the people owning, managing or using the asset."),
-    ANSWER           (2, "Answer", "Answers a question (posted as a reply to the question)."),
-    SUGGESTION       (3, "Suggestion", "Provides a suggestion on how to improve the asset or its properties and description."),
-    USAGE_EXPERIENCE (4, "Experience", "Describes situations where this asset has been used and related hints and tips.");
+    STANDARD_COMMENT (0,  "Comment", "General comment about the asset."),
+    QUESTION         (1,  "Question", "Asks a question to the people owning, managing or using the asset."),
+    ANSWER           (2,  "Answer", "Answers a question (posted as a reply to the question)."),
+    SUGGESTION       (3,  "Suggestion", "Provides a suggestion on how to improve the asset or its properties and description."),
+    USAGE_EXPERIENCE (4,  "Experience", "Describes situations where this asset has been used and related hints and tips."),
+    OTHER            (99, "Other", "Unknown comment type.");
 
     private static final long     serialVersionUID = 1L;
 

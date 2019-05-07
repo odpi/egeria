@@ -50,7 +50,7 @@ public class TestCertification
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setAdditionalProperties(additionalProperties);
 
-        testObject.setCertificationTypeGUID("TestCertificationTypeGUID");
+        testObject.setCertificateGUID("TestCertificationTypeGUID");
         testObject.setCertificationTypeName("TestCertificationTypeName");
         testObject.setExaminer("TestExaminer");
         testObject.setSummary("TestSummary");
@@ -81,7 +81,7 @@ public class TestCertification
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getAdditionalProperties() == null);
 
-        assertTrue(resultObject.getCertificationTypeGUID().equals("TestCertificationTypeGUID"));
+        assertTrue(resultObject.getCertificateGUID().equals("TestCertificationTypeGUID"));
         assertTrue(resultObject.getCertificationTypeName().equals("TestCertificationTypeName"));
         assertTrue(resultObject.getExaminer().equals("TestExaminer"));
         assertTrue(resultObject.getSummary().equals("TestSummary"));
@@ -110,7 +110,7 @@ public class TestCertification
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
 
-        assertTrue(nullObject.getCertificationTypeGUID() == null);
+        assertTrue(nullObject.getCertificateGUID() == null);
         assertTrue(nullObject.getCertificationTypeName() == null);
         assertTrue(nullObject.getExaminer() == null);
         assertTrue(nullObject.getSummary() == null);
@@ -132,7 +132,7 @@ public class TestCertification
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
 
-        assertTrue(nullObject.getCertificationTypeGUID() == null);
+        assertTrue(nullObject.getCertificateGUID() == null);
         assertTrue(nullObject.getCertificationTypeName() == null);
         assertTrue(nullObject.getExaminer() == null);
         assertTrue(nullObject.getSummary() == null);
