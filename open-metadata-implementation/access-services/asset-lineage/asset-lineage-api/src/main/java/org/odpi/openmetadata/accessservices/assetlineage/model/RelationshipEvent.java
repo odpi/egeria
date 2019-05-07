@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityProxy;
+
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -17,8 +18,9 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 public class RelationshipEvent extends AssetLineageEvent {
 
     private EntityProxy entityProxyOne;
-    private EntityProxy entityProxyTwo;
+//    private GlossaryTerm glossaryTerm;
     private String typeDefName;
+    private AssetContext assetContext;
 
     public EntityProxy getEntityProxyOne() {
         return entityProxyOne;
@@ -28,13 +30,13 @@ public class RelationshipEvent extends AssetLineageEvent {
         this.entityProxyOne = entityProxyOne;
     }
 
-    public EntityProxy getEntityProxyTwo() {
-        return entityProxyTwo;
-    }
-
-    public void setEntityProxyTwo(EntityProxy entityProxyTwo) {
-        this.entityProxyTwo = entityProxyTwo;
-    }
+//    public GlossaryTerm getGlossaryTerm() {
+//        return glossaryTerm;
+//    }
+//
+//    public void setGlossaryTerm(GlossaryTerm entityProxyTwo) {
+//        this.glossaryTerm = entityProxyTwo;
+//    }
 
     public String getTypeDefName() {
         return typeDefName;
@@ -44,4 +46,11 @@ public class RelationshipEvent extends AssetLineageEvent {
         this.typeDefName = typeDefName;
     }
 
+    public AssetContext getAssetContext() {
+        return assetContext;
+    }
+
+    public void setAssetContext(AssetContext assetContext) {
+        this.assetContext = assetContext;
+    }
 }

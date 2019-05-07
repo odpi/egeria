@@ -4,6 +4,7 @@ package org.odpi.openmetadata.governanceservers.openlineage.listeners;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetLineageEvent;
+import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipEvent;
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.OpenLineageErrorCode;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -11,6 +12,8 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSever
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicListener;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
 
 public class inTopicListener implements OpenMetadataTopicListener {
 
@@ -50,31 +53,37 @@ public class inTopicListener implements OpenMetadataTopicListener {
                     auditCode.getUserAction(),
                     e);
         }
-        switch (event.getOmrsInstanceEventType()) {
-            case NEW_ENTITY_EVENT:
-                log.error("A NEW_ENTITY_EVENT was received but this should never be published by Asset Lineage OMAS. Ignoring.");
-                break;
-            case UPDATED_ENTITY_EVENT:
-   //             updatedEntityEvent assetContextEvent = (updatedEntityEvent) event;
-    //            graphBuilder.processEvent(updatedEntityEvent);
-                break;
-            case DELETED_ENTITY_EVENT: //TODO Check the difference between delete and purged events
-                //             updatedEntityEvent assetContextEvent = (updatedEntityEvent) event;
-                //            graphBuilder.processEvent(updatedEntityEvent);
-                break;
-            case NEW_RELATIONSHIP_EVENT:
-                //             updatedEntityEvent assetContextEvent = (updatedEntityEvent) event;
-                //            graphBuilder.processEvent(updatedEntityEvent);
-                break;
-            case UPDATED_RELATIONSHIP_EVENT:
-                //             updatedEntityEvent assetContextEvent = (updatedEntityEvent) event;
-                //            graphBuilder.processEvent(updatedEntityEvent);;
-                break;
-            case DELETED_RELATIONSHIP_EVENT: //TODO Check the difference between delete and purged events
-                //             updatedEntityEvent assetContextEvent = (updatedEntityEvent) event;
-                //            graphBuilder.processEvent(updatedEntityEvent);
-                break;
+
+        try {
+            switch (event.getOmrsInstanceEventType()) {
+                case NEW_ENTITY_EVENT:
+                    log.error("A NEW_ENTITY_EVENT was received but this should never be published by Asset Lineage OMAS. Ignoring.");
+                    break;
+                case UPDATED_ENTITY_EVENT:
+                    //             updatedEntityEvent assetContextEvent = (updatedEntityEvent) event;
+                    //            graphBuilder.processEvent(updatedEntityEvent);
+                    break;
+                case DELETED_ENTITY_EVENT: //TODO Check the difference between delete and purged events
+                    //             updatedEntityEvent assetContextEvent = (updatedEntityEvent) event;
+                    //            graphBuilder.processEvent(updatedEntityEvent);
+                    break;
+                case NEW_RELATIONSHIP_EVENT:
+                        RelationshipEvent relationshipEvent =OBJECT_MAPPER.readValue(eventAsString, RelationshipEvent.class);
+                        System.out.println(relationshipEvent.getAssetContext().getAssets());
+                    break;
+                case UPDATED_RELATIONSHIP_EVENT:
+                    //             updatedEntityEvent assetContextEvent = (updatedEntityEvent) event;
+                    //            graphBuilder.processEvent(updatedEntityEvent);;
+                    break;
+                case DELETED_RELATIONSHIP_EVENT: //TODO Check the difference between delete and purged events
+                    //             updatedEntityEvent assetContextEvent = (updatedEntityEvent) event;
+                    //            graphBuilder.processEvent(updatedEntityEvent);
+                    break;
+            }
+        }catch (IOException e){
+            log.debug(e.getMessage());
         }
+
     }
 }
 

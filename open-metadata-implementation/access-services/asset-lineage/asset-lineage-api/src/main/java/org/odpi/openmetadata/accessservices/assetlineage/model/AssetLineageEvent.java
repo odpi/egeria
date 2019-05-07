@@ -16,14 +16,14 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
         include = JsonTypeInfo.As.PROPERTY,
         property = "class")
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = AssetLineageEvent.class, name = "AssetLineageEvent"),
+        @JsonSubTypes.Type(value = RelationshipEvent.class, name = "RelationshipEvent"),
+        @JsonSubTypes.Type(value = AssetContext.class, name = "AssetContext")
 })
 public abstract class AssetLineageEvent {
 
     private long eventVersionId = 1L;
 
     private OMRSInstanceEventType omrsInstanceEventType;
-
 
     public long getEventVersionId() {
         return eventVersionId;
