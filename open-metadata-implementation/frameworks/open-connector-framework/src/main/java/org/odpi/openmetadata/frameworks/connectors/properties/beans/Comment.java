@@ -28,6 +28,7 @@ public class Comment extends Referenceable
     protected CommentType commentType = null;
     protected String      commentText = null;
     protected String      user        = null;
+    protected boolean     isPublic    = false;
 
     /**
      * Default constructor
@@ -41,20 +42,21 @@ public class Comment extends Referenceable
     /**
      * Copy/clone constructor.
      *
-     * @param templateComment element to copy
+     * @param template element to copy
      */
-    public Comment(Comment templateComment)
+    public Comment(Comment template)
     {
-        super(templateComment);
+        super(template);
 
-        if (templateComment != null)
+        if (template != null)
         {
             /*
              * Copy the values from the supplied comment.
              */
-            commentType = templateComment.getCommentType();
-            user        = templateComment.getUser();
-            commentText = templateComment.getCommentText();
+            commentType = template.getCommentType();
+            user        = template.getUser();
+            commentText = template.getCommentText();
+            isPublic    = template.isPublic;
         }
     }
 
@@ -126,6 +128,28 @@ public class Comment extends Referenceable
 
 
     /**
+     * Return if this like is private ot the creating user.
+     *
+     * @return boolean
+     */
+    public boolean isPublic()
+    {
+        return isPublic;
+    }
+
+
+    /**
+     * Set up whether the like is private to the creating user or not.
+     *
+     * @param aPublic boolean
+     */
+    public void setPublic(boolean aPublic)
+    {
+        isPublic = aPublic;
+    }
+
+
+    /**
      * Standard toString method.
      *
      * @return print out of variables in a JSON-style
@@ -137,6 +161,7 @@ public class Comment extends Referenceable
                 "commentType=" + commentType +
                 ", commentText='" + commentText + '\'' +
                 ", user='" + user + '\'' +
+                ", isPublic='" + isPublic + '\'' +
                 ", type=" + type +
                 ", guid='" + guid + '\'' +
                 ", url='" + url + '\'' +
@@ -169,6 +194,7 @@ public class Comment extends Referenceable
         Comment comment = (Comment) objectToCompare;
         return getCommentType() == comment.getCommentType() &&
                 Objects.equals(getCommentText(), comment.getCommentText()) &&
+                Objects.equals(isPublic(), comment.isPublic()) &&
                 Objects.equals(getUser(), comment.getUser());
     }
 }

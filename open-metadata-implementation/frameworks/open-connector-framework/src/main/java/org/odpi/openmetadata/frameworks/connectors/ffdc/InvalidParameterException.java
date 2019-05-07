@@ -1,8 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.frameworks.discovery.ffdc;
-
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+package org.odpi.openmetadata.frameworks.connectors.ffdc;
 
 import java.util.Map;
 import java.util.Objects;
