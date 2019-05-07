@@ -91,7 +91,6 @@ public class EnterpriseTopicListener implements OMRSTopicListener {
                         break;
 
                     case UPDATED_RELATIONSHIP_EVENT:
-
                         instanceEventProcessor.sendInstanceEvent(SOURCENAME, instanceEvent);
                         break;
 
