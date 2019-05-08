@@ -1,7 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.discoveryengine.converters;
-
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementOrigin;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementType;

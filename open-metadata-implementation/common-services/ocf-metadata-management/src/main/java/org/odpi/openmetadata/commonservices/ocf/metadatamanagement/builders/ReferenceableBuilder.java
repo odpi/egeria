@@ -1,10 +1,10 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.discoveryengine.builders;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.mappers.ReferenceableMapper;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
-import org.odpi.openmetadata.frameworks.discovery.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -14,16 +14,11 @@ import java.util.Map;
  * ReferenceableBuilder creates Open Metadata Repository Services (OMRS) objects based on the
  * bean properties supplied in the constructor.
  */
-public class ReferenceableBuilder
+public class ReferenceableBuilder extends RootBuilder
 {
-    protected  OMRSRepositoryHelper repositoryHelper;
-    protected  String               serviceName;
-
     private String               qualifiedName;
     private Map<String, String>  additionalProperties = null;
     private Map<String, Object>  extendedProperties = null;
-
-    private RepositoryErrorHandler errorHandler;
 
 
     /**
@@ -34,16 +29,14 @@ public class ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    ReferenceableBuilder(String               qualifiedName,
-                         OMRSRepositoryHelper repositoryHelper,
-                         String               serviceName,
-                         String               serverName)
+    protected ReferenceableBuilder(String               qualifiedName,
+                                   OMRSRepositoryHelper repositoryHelper,
+                                   String               serviceName,
+                                   String               serverName)
     {
-        this.qualifiedName = qualifiedName;
-        this.repositoryHelper = repositoryHelper;
-        this.serviceName = serviceName;
+        super (repositoryHelper, serviceName, serverName);
 
-        this.errorHandler = new RepositoryErrorHandler(serviceName, serverName);
+        this.qualifiedName = qualifiedName;
     }
 
 
@@ -57,14 +50,15 @@ public class ReferenceableBuilder
      * @param serviceName name of this OMAS
      * @param serverName name of local server
      */
-    ReferenceableBuilder(String               qualifiedName,
-                         Map<String, String>  additionalProperties,
-                         Map<String, Object>  extendedProperties,
-                         OMRSRepositoryHelper repositoryHelper,
-                         String               serviceName,
-                         String               serverName)
+    protected ReferenceableBuilder(String               qualifiedName,
+                                   Map<String, String>  additionalProperties,
+                                   Map<String, Object>  extendedProperties,
+                                   OMRSRepositoryHelper repositoryHelper,
+                                   String               serviceName,
+                                   String               serverName)
     {
         this(qualifiedName, repositoryHelper, serviceName, serverName);
+
         this.additionalProperties = additionalProperties;
         this.extendedProperties = extendedProperties;
     }
@@ -77,7 +71,7 @@ public class ReferenceableBuilder
      * @return InstanceProperties object
      * @throws InvalidParameterException there is a problem with the properties
      */
-    InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
+    protected InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
     {
         InstanceProperties properties = null;
 
@@ -126,7 +120,7 @@ public class ReferenceableBuilder
      * @param methodName name of the calling method
      * @return InstanceProperties object
      */
-    InstanceProperties getNameInstanceProperties(String  methodName)
+    public InstanceProperties getNameInstanceProperties(String  methodName)
     {
         InstanceProperties properties = null;
 
