@@ -232,8 +232,7 @@ public class OMAGServerOperationalServices
                         {
                             try
                             {
-                                AccessServiceAdmin
-                                        accessServiceAdmin = (AccessServiceAdmin)Class.forName(accessServiceAdminClassName).newInstance();
+                                AccessServiceAdmin accessServiceAdmin = (AccessServiceAdmin)Class.forName(accessServiceAdminClassName).newInstance();
 
                                 accessServiceAdmin.initialize(accessServiceConfig,
                                                               enterpriseTopicConnector,
@@ -286,7 +285,6 @@ public class OMAGServerOperationalServices
              * The instance information can then be retrieved for shutdown or other management requests.
              */
             instance.setOperationalAccessServiceAdminList(operationalAccessServiceAdminList);
-            instanceMap.setNewInstance(serverName, instance);
 
             /*
              * Initialize the Open Metadata Conformance Suite Services.  This runs the Open Metadata TestLabs that are
@@ -412,7 +410,8 @@ public class OMAGServerOperationalServices
             /*
              * Initialize the Virtualization Services.
              */
-            if (virtualizationConfig != null) {
+            if (virtualizationConfig != null)
+            {
                 VirtualizationOperationalServices operationalVirtualizationServices = new VirtualizationOperationalServices(configuration.getLocalServerName(),
                                                                                                                             configuration.getLocalServerType(),
                                                                                                                             configuration.getOrganizationName(),
@@ -450,6 +449,8 @@ public class OMAGServerOperationalServices
 
                 activatedServiceList.add(GovernanceServersDescription.STEWARDSHIP_SERVICES.getServiceName());
             }
+
+            instanceMap.setNewInstance(serverName, instance);
 
             response.setSuccessMessage(new Date().toString() + " " + serverName + " is running the following services: " + activatedServiceList.toString());
         }
@@ -502,6 +503,15 @@ public class OMAGServerOperationalServices
         }
 
         /*
+         * Shutdown the open lineage services
+         */
+        if (instance.getOpenLineageOperationalServices() != null)
+        {
+            // TODO
+            // instance.getOpenLineageOperationalServices().terminate(permanentDeactivation);
+        }
+
+        /*
          * Shutdown the security sync
          */
         if (instance.getOperationalSecuritySyncServices() != null)
@@ -513,7 +523,8 @@ public class OMAGServerOperationalServices
         /*
          * Shutdown the virtualizer
          */
-        if (instance.getOperationalVirtualizationServices() != null){
+        if (instance.getOperationalVirtualizationServices() != null)
+        {
             instance.getOperationalVirtualizationServices().disconnect(permanentDeactivation);
         }
 
@@ -524,6 +535,15 @@ public class OMAGServerOperationalServices
         if (instance.getOperationalStewardshipServices() != null)
         {
             instance.getOperationalStewardshipServices().terminate(permanentDeactivation);
+        }
+
+
+        /*
+         * Shutdown the conformance test suite
+         */
+        if (instance.getOperationalConformanceSuiteServices() != null)
+        {
+            instance.getOperationalConformanceSuiteServices().terminate(permanentDeactivation);
         }
 
         /*
