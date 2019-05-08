@@ -7593,7 +7593,7 @@ public class OpenMetadataTypesArchive
         this.add0265AnalyticsAssets();
         this.add0270IoTAssets();
         this.add0280ModelAssets();
-        this.add0290PortsAndWires();
+        this.add0290Ports();
     }
 
 
@@ -10024,7 +10024,7 @@ public class OpenMetadataTypesArchive
         /* placeholder */
     }
 
-    private void add0290PortsAndWires()
+    private void add0290Ports()
     {
         this.archiveBuilder.addEnumDef(getPortTypeEnum());
 
