@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.connectedasset.client;
 
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.slf4j.Logger;
@@ -38,6 +38,7 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
     private String               assetGUID = null;
     private RESTClient           restClient;
 
+    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     private static final Logger log = LoggerFactory.getLogger(ConnectedAssetRelatedAssetProperties.class);
 
@@ -112,20 +113,7 @@ public class ConnectedAssetRelatedAssetProperties extends org.odpi.openmetadata.
         }
         catch (Throwable  error)
         {
-            ConnectedAssetErrorCode errorCode    = ConnectedAssetErrorCode.PROPERTY_SERVER_ERROR;
-            String                  errorMessage = errorCode.getErrorMessageId()
-                                                 + errorCode.getFormattedErrorMessage(methodName,
-                                                                                      serviceName,
-                                                                                      omasServerURL,
-                                                                                      error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
+            restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }
 
         log.debug("Returning from method: " + methodName + " having retrieved: " + assetProperties.toString());

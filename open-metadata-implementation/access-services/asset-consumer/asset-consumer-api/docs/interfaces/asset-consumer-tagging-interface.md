@@ -13,49 +13,49 @@ any number of assets (including none).
 * **createPublicTag** - Creates a new public informal tag and returns the unique identifier for it.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/create-public-tag-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/create-public-tag-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/create-public-tag-with-rest.md)
 
 * **createPrivateTag** - Creates a new private informal tag and returns the unique identifier for it.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/create-private-tag-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/create-private-tag-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/create-private-tag-with-rest.md)
   
 * **updateTagDescription** - Updates the description of an existing tag (either private of public).
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/update-tag-description-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/update-tag-description-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/update-tag-description-with-rest.md)
   
 * **deleteTag** - Removes a tag from the repository.  All of the relationships to assets are lost.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/delete-tag-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/delete-tag-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/delete-tag-with-rest.md)
 
 * **getTag** - Return the tag for the supplied unique identifier (guid).
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/get-tag-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/get-tag-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/get-tag-with-rest.md)
 
 * **getTagsByName** - Return the list of tags matching the supplied name.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/get-tags-by-name-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/get-tags-by-name-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/get-tags-by-name-with-rest.md)
 
 * **addTagToAsset** - Adds a tag (either private of public) to an asset.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/add-tag-to-asset-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/add-tag-to-asset-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/add-tag-to-asset-with-rest.md)
 
 * **removeTagFromAsset** - Removes a tag from the asset that was added by this user.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/remove-tag-from-asset-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/remove-tag-from-asset-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/remove-tag-from-asset-with-rest.md)
 
 ----

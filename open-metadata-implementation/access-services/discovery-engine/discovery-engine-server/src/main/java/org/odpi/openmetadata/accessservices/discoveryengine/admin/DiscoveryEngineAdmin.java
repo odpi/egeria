@@ -19,7 +19,7 @@ import java.util.Map;
  * DiscoveryEngineAdmin manages the start up and shutdown of the Discovery Engine OMAS.   During start up,
  * it validates the parameters and options it receives and sets up the service as requested.
  */
-public class DiscoveryEngineAdmin implements AccessServiceAdmin
+public class DiscoveryEngineAdmin extends AccessServiceAdmin
 {
     private OMRSAuditLog                    auditLog   = null;
     private DiscoveryEngineServicesInstance instance   = null;
@@ -65,10 +65,17 @@ public class DiscoveryEngineAdmin implements AccessServiceAdmin
         {
             this.auditLog = auditLog;
 
-            List<String>           supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions());
+            List<String>   supportedZones = super.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                        accessServiceConfig.getAccessServiceName(),
+                                                                        auditLog);
+
+            List<String>  defaultZones = super.extractDefaultZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                   accessServiceConfig.getAccessServiceName(),
+                                                                   auditLog);
 
             this.instance = new DiscoveryEngineServicesInstance(repositoryConnector,
                                                                 supportedZones,
+                                                                defaultZones,
                                                                 auditLog);
             this.serverName = instance.getServerName();
 
@@ -121,84 +128,5 @@ public class DiscoveryEngineAdmin implements AccessServiceAdmin
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
-    }
-
-
-    /**
-     * Extract the supported zones property from the access services option.
-     *
-     * @param accessServiceOptions options passed to the access service.
-     * @return null or list of zone names
-     * @throws OMAGConfigurationErrorException the supported zones property is not a list of zone names.
-     */
-    private List<String> extractSupportedZones(Map<String, Object> accessServiceOptions) throws OMAGConfigurationErrorException
-    {
-        final String             methodName = "extractSupportedZones";
-        DiscoveryEngineAuditCode auditCode;
-
-        if (accessServiceOptions == null)
-        {
-            return null;
-        }
-        else
-        {
-            Object   zoneListObject = accessServiceOptions.get(supportedZonesPropertyName);
-
-            if (zoneListObject == null)
-            {
-                auditCode = DiscoveryEngineAuditCode.ALL_ZONES;
-                auditLog.logRecord(methodName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
-                return null;
-            }
-            else
-            {
-                try
-                {
-                    List<String>  zoneList =  (List<String>)zoneListObject;
-
-                    auditCode = DiscoveryEngineAuditCode.SUPPORTED_ZONES;
-                    auditLog.logRecord(methodName,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(zoneList.toString()),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
-
-                    return zoneList;
-                }
-                catch (Throwable error)
-                {
-                    auditCode = DiscoveryEngineAuditCode.BAD_CONFIG;
-                    auditLog.logRecord(methodName,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(zoneListObject.toString(), supportedZonesPropertyName),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
-
-                    DiscoveryEngineErrorCode errorCode = DiscoveryEngineErrorCode.BAD_CONFIG;
-                    String                   errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(zoneListObject.toString(),
-                                                                                                                               supportedZonesPropertyName,
-                                                                                                                               error.getClass().getName(),
-                                                                                                                               error.getMessage());
-
-                    throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                              this.getClass().getName(),
-                                                              methodName,
-                                                              errorMessage,
-                                                              errorCode.getSystemAction(),
-                                                              errorCode.getUserAction(),
-                                                              error);
-                }
-            }
-        }
     }
 }

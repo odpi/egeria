@@ -20,10 +20,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class Like extends ElementHeader
 {
-    /*
-     * Attributes of a Like
-     */
-    protected String user = null;
+    protected String     user       = null;
+    protected boolean    isPublic   = false;
 
 
     /**
@@ -38,15 +36,16 @@ public class Like extends ElementHeader
     /**
      * Copy/clone constructor.
      *
-     * @param templateLike   element to copy
+     * @param template   element to copy
      */
-    public Like(Like templateLike)
+    public Like(Like template)
     {
-        super(templateLike);
+        super(template);
 
-        if (templateLike != null)
+        if (template != null)
         {
-            user = templateLike.getUser();
+            user = template.getUser();
+            isPublic = template.isPublic;
         }
     }
 
@@ -71,6 +70,29 @@ public class Like extends ElementHeader
         this.user = user;
     }
 
+
+    /**
+     * Return if this like is private ot the creating user.
+     *
+     * @return boolean
+     */
+    public boolean isPublic()
+    {
+        return isPublic;
+    }
+
+
+    /**
+     * Set up whether the like is private to the creating user or not.
+     *
+     * @param aPublic boolean
+     */
+    public void setPublic(boolean aPublic)
+    {
+        isPublic = aPublic;
+    }
+
+
     /**
      * Standard toString method.
      *
@@ -81,6 +103,7 @@ public class Like extends ElementHeader
     {
         return "Like{" +
                 "user='" + user + '\'' +
+                ", isPublic='" + isPublic + '\'' +
                 ", type=" + type +
                 ", guid='" + guid + '\'' +
                 ", url='" + url + '\'' +
@@ -111,6 +134,7 @@ public class Like extends ElementHeader
             return false;
         }
         Like like = (Like) objectToCompare;
-        return Objects.equals(getUser(), like.getUser());
+        return isPublic() == like.isPublic() &&
+                Objects.equals(getUser(), like.getUser());
     }
 }

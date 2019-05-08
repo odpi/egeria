@@ -9,9 +9,9 @@ the various APIs supported by an Open Metadata and Governance (OMAG) Server Plat
 
 This workbench supports the following profiles:
 
-* **[Platform Origin](profiles/platform-origin)** does the platform support the `server-origin` API.
+* **[Platform Origin](profiles/platform-origin)** does the platform support the `server-platform-origin` API.
 
-The test case uses the server-origin API to extract the servers origin description.
+The test case uses the server-platform-origin API to extract the servers origin description.
 Typically this describes the vendor, product name and version of the server.
 
 ## Test case detail

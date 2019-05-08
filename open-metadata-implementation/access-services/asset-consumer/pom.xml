@@ -30,13 +30,4 @@
         <module>asset-consumer-spring</module>
     </modules>
 
-    <!-- Asset Consumer is built on Connected Asset -->
-    <dependencies>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
-            <artifactId>connected-asset-client</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-    </dependencies>
-
 </project>
