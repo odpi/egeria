@@ -7,6 +7,8 @@ package org.odpi.openmetadata.accessservices.assetlineage.eventProcessors;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.odpi.openmetadata.accessservices.assetlineage.events.AssetLineageHeader;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
+import org.odpi.openmetadata.accessservices.assetlineage.model.rest.responses.AssetResponse;
+import org.odpi.openmetadata.accessservices.assetlineage.service.AssetContext;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
@@ -24,12 +26,16 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(EventProcessor.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private String serverName;
+    private String serverUsername;
     private OpenMetadataTopic assetLineageTopicConnector;
     private OMRSAuditLog auditLog;
 
 
-    public EventProcessor(OpenMetadataTopic assetLineageTopicConnector,
+    public EventProcessor(String serverName, String serverUsername, OpenMetadataTopic assetLineageTopicConnector,
                           OMRSAuditLog auditLog) {
+        this.serverName = serverName;
+        this.serverUsername = serverUsername;
         this.assetLineageTopicConnector = assetLineageTopicConnector;
         this.auditLog = auditLog;
     }
@@ -65,6 +71,8 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                       String originatorServerType,
                                       String originatorOrganizationName,
                                       EntityDetail entity) {
+
+        getAssetContext(entity);
     }
 
     public void processUpdatedEntityEvent(String sourceName,
@@ -74,6 +82,19 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                           String originatorOrganizationName,
                                           EntityDetail oldEntity,
                                           EntityDetail entity) {
+        getAssetContext(entity);
+    }
+
+    private void getAssetContext(EntityDetail entity) {
+        String assetGUID = entity.getGUID();
+        AssetContext assetContext = new AssetContext();
+        AssetResponse assetResponse = assetContext.buildAssetContext(serverName, serverUsername, assetGUID);
+
+        try {
+            assetLineageTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(assetResponse));
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
     }
 
     public void processUndoneEntityEvent(String sourceName,
