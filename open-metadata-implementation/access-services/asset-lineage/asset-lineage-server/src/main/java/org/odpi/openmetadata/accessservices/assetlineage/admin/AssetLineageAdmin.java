@@ -26,7 +26,8 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSConfigErrorEx
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AssetLineageAdmin extends AccessServiceAdmin {
+public class AssetLineageAdmin extends AccessServiceAdmin
+{
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineageAdmin.class);
     private OMRSAuditLog auditLog;
@@ -49,7 +50,8 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
     public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
                            OMRSTopicConnector enterpriseOMRSTopicConnector,
                            OMRSRepositoryConnector enterpriseConnector,
-                           OMRSAuditLog auditLog, String serverUserName){
+                           OMRSAuditLog auditLog, String serverUserName) throws OMAGConfigurationErrorException
+    {
         final String actionDescription = "initialize";
         AssetLineageAuditCode auditCode;
         this.serverUserName = serverUserName;
