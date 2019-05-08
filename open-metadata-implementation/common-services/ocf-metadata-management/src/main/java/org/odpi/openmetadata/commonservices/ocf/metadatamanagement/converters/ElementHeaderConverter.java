@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.discoveryengine.converters;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters;
 
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.ElementHeader;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
@@ -23,10 +23,10 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  */
 class ElementHeaderConverter
 {
-    EntityDetail           entity;
-    Relationship           relationship = null;
-    OMRSRepositoryHelper   repositoryHelper;
-    String                 serviceName;
+    protected EntityDetail           entity;
+    protected Relationship           relationship = null;
+    protected OMRSRepositoryHelper   repositoryHelper;
+    protected String                 serviceName;
 
     /**
      * Constructor captures the initial content

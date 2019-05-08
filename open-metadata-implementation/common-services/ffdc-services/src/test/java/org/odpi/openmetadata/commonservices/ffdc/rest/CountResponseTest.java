@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.communityprofile.rest;
+package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.annotations.Test;
@@ -194,29 +194,6 @@ public class CountResponseTest
         try
         {
             validateResultObject(objectMapper.readValue(jsonString, CountResponse.class));
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
-
-        /*
-         * Through superclass
-         */
-        CommunityProfileOMASAPIResponse superObject = getTestObject();
-
-        try
-        {
-            jsonString = objectMapper.writeValueAsString(superObject);
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
-
-        try
-        {
-            validateResultObject((CountResponse) objectMapper.readValue(jsonString, CommunityProfileOMASAPIResponse.class));
         }
         catch (Throwable  exc)
         {

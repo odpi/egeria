@@ -1,10 +1,9 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.discoveryengine.builders;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders;
 
-
-import org.odpi.openmetadata.accessservices.discoveryengine.mappers.ConnectionMapper;
-import org.odpi.openmetadata.frameworks.discovery.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ConnectionMapper;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -53,7 +52,7 @@ public class ConnectionBuilder extends ReferenceableBuilder
      *
      * @param qualifiedName unique name
      * @param displayName new value for the display name.
-     * @param description new description for the discovery engine.
+     * @param description new description for the connection.
      * @param additionalProperties additional properties
      * @param securedProperties protected properties
      * @param configurationProperties  properties passed to configure underlying technologies
@@ -169,6 +168,7 @@ public class ConnectionBuilder extends ReferenceableBuilder
                                                                       encryptedPassword,
                                                                       methodName);
         }
+
         return properties;
     }
 

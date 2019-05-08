@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.connectedasset.converters;
+package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters;
 
 /**
  * The converters are responsible for converting entities, classifications and relationships retrieved from the

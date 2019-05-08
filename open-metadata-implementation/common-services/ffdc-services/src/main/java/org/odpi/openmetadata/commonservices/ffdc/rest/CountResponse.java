@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.connectedasset.rest;
+package org.odpi.openmetadata.commonservices.ffdc.rest;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -18,9 +18,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CountResponse extends ConnectedAssetOMASAPIResponse
+public class CountResponse extends FFDCResponseBase
 {
-    long     objectCount = 0;
+    long count = 0;
 
     /**
      * Default constructor
@@ -39,6 +39,11 @@ public class CountResponse extends ConnectedAssetOMASAPIResponse
     public CountResponse(CountResponse template)
     {
         super(template);
+
+        if (template != null)
+        {
+            this.count = template.getCount();
+        }
     }
 
 
@@ -47,20 +52,20 @@ public class CountResponse extends ConnectedAssetOMASAPIResponse
      *
      * @return long
      */
-    public long getObjectCount()
+    public long getCount()
     {
-        return objectCount;
+        return count;
     }
 
 
     /**
      * Set up count of objects.
      *
-     * @param objectCount long
+     * @param count long
      */
-    public void setObjectCount(long objectCount)
+    public void setCount(long count)
     {
-        this.objectCount = objectCount;
+        this.count = count;
     }
 
 
@@ -73,7 +78,7 @@ public class CountResponse extends ConnectedAssetOMASAPIResponse
     public String toString()
     {
         return "CountResponse{" +
-                "objectCount=" + getObjectCount() +
+                "count=" + getCount() +
                 ", relatedHTTPCode=" + getRelatedHTTPCode() +
                 ", exceptionClassName='" + getExceptionClassName() + '\'' +
                 ", exceptionErrorMessage='" + getExceptionErrorMessage() + '\'' +
@@ -106,7 +111,7 @@ public class CountResponse extends ConnectedAssetOMASAPIResponse
             return false;
         }
         CountResponse that = (CountResponse) objectToCompare;
-        return Objects.equals(objectCount, that.objectCount);
+        return Objects.equals(count, that.count);
     }
 
 
@@ -118,6 +123,6 @@ public class CountResponse extends ConnectedAssetOMASAPIResponse
     @Override
     public int hashCode()
     {
-        return Objects.hash(objectCount);
+        return Objects.hash(count);
     }
 }
