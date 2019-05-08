@@ -29,13 +29,6 @@ public abstract class GovernanceEngineOMASAPIResponse implements Serializable {
     protected String exceptionUserAction;
 
     /**
-     * Default constructor
-     */
-    public GovernanceEngineOMASAPIResponse() {
-    }
-
-
-    /**
      * Return the HTTP Code to use if forwarding response to HTTP client.
      *
      * @return integer HTTP status code

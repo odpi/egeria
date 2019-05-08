@@ -156,8 +156,8 @@ public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
 
     @Override
     public void processNewRelationshipEvent(String sourceName, String originatorMetadataCollectionId, String originatorServerName,
-                                            String originatorServerType, String originatorOrganizationName,
-                                            Relationship relationship) {
+                                            String originatorServerType, String originatorOrganizationName, Relationship relationship) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -236,6 +236,7 @@ public class GovernanceEnginePublisher extends OMRSInstanceEventProcessor {
 
     /**
      * Should check if the entity has a "Security Tag"
+     *
      * @param entity - asset received contains classifications that needs to be validated
      * @return boolean
      */
