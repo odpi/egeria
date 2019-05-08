@@ -4354,9 +4354,9 @@ public class OpenMetadataTypesArchive
                                                             attribute1DescriptionGUID);
         properties.add(property);
 
-        property = archiveHelper.getIntTypeDefAttribute(attribute2Name,
-                                                        attribute2Description,
-                                                        attribute2DescriptionGUID);
+        property = archiveHelper.getLongTypeDefAttribute(attribute2Name,
+                                                         attribute2Description,
+                                                         attribute2DescriptionGUID);
         properties.add(property);
 
         entityDef.setPropertiesDefinition(properties);
