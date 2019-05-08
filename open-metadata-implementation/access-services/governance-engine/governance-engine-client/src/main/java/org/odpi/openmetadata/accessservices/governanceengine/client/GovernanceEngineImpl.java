@@ -3,7 +3,12 @@
 package org.odpi.openmetadata.accessservices.governanceengine.client;
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.errorcode.GovernanceEngineErrorCode;
-import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.*;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.ClassificationNotFoundException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.GuidNotFoundException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.InvalidParameterException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.MetadataServerException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.TypeNotFoundException;
+import org.odpi.openmetadata.accessservices.governanceengine.api.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceEngineOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAssetAPIResponse;
@@ -13,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -76,7 +82,11 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowTypeNotFoundException(methodName, restResult);
 
-        return restResult.getGovernedAssetList();
+        if (restResult != null) {
+            return restResult.getGovernedAssetList();
+        }
+
+        return Collections.emptyList();
     }
 
     /**
@@ -111,7 +121,11 @@ public class GovernanceEngineImpl implements GovernanceEngineClient {
         this.detectAndThrowUserNotAuthorizedException(methodName, restResult);
         this.detectAndThrowGuidNotFoundException(methodName, restResult);
 
-        return restResult.getAsset();
+        if (restResult != null) {
+            return restResult.getAsset();
+        }
+
+        return null;
     }
 
     private void validateOMASServerURL(String methodName) throws InvalidParameterException {

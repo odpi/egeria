@@ -129,30 +129,22 @@ public class GraphOMRSEntityMapper {
 
                     // This uses the qualified property name - so that graph index property keys are finer grained which speeds up index enablement and
                     // will also make lookups faster.
-                    InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
-                    if (ipvCat == InstancePropertyCategory.PRIMITIVE) {
-                        // Primitives are stored directly in the graph
-                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
-                        Object primValue = ppv.getPrimitiveValue();
-                        vertex.property(qualifiedPropName, primValue);
-                    }
-                    else {
-                        log.debug("{} non-primitive instance property {}", propertyName);
-                    }
-
+                    addProperty(vertex, propertyName, qualifiedPropName, ipv);
                 }
                 else {
-                    // no value has been specified - remove the property from the vertex
-                    VertexProperty vp = vertex.property(qualifiedPropName);
-                    if (vp != null) {
-                        vp.remove();
-                    }
+                    removeProperty(vertex, qualifiedPropName);
                 }
             }
         }
     }
 
-
+    private void removeProperty(Vertex vertex, String qualifiedPropName) {
+        // no value has been specified - remove the property from the vertex
+        VertexProperty vp = vertex.property(qualifiedPropName);
+        if (vp != null) {
+            vp.remove();
+        }
+    }
 
 
     public void mapEntityProxyToVertex(EntityProxy entity, Vertex vertex)
@@ -207,25 +199,30 @@ public class GraphOMRSEntityMapper {
 
                     // This uses the qualified property name - so that graph index property keys are finer grained which speeds up index enablement and
                     // will also make lookups faster.
-                    InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
-                    if (ipvCat == InstancePropertyCategory.PRIMITIVE) {
-                        // Primitives are stored directly in the graph
-                        PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
-                        Object primValue = ppv.getPrimitiveValue();
-                        vertex.property(qualifiedPropName, primValue);
-                    } else {
-                        log.debug("{} non-primitive instance property {}", propertyName);
-                    }
+                    addProperty(vertex, propertyName, qualifiedPropName, ipv);
 
                 } else {
                     // no value has been specified - remove the property from the vertex
-                    VertexProperty vp = vertex.property(qualifiedPropName);
-                    if (vp != null) {
-                        vp.remove();
-                    }
+                    removeProperty(vertex, qualifiedPropName);
 
                 }
             }
+        }
+    }
+
+    private void addProperty(Vertex vertex, String propertyName, String qualifiedPropName, InstancePropertyValue ipv) {
+        InstancePropertyCategory ipvCat = ipv.getInstancePropertyCategory();
+        if (ipvCat == InstancePropertyCategory.PRIMITIVE) {
+            // Primitives are stored directly in the graph
+            PrimitivePropertyValue ppv = (PrimitivePropertyValue) ipv;
+            Object primValue = ppv.getPrimitiveValue();
+            if (primValue != null) {
+                vertex.property(qualifiedPropName, primValue);
+            } else {
+                removeProperty(vertex, qualifiedPropName);
+            }
+        } else {
+            log.debug("{} non-primitive instance property {}", propertyName);
         }
     }
 
@@ -242,12 +239,14 @@ public class GraphOMRSEntityMapper {
 
         // Some properties are mandatory. If any of these are null then throw exception
         boolean missingAttribute = false;
+        String  missingAttributeName = null;
 
         if (entity.getGUID() != null)
             vertex.property(PROPERTY_KEY_ENTITY_GUID, entity.getGUID());
         else {
             log.debug("{} missing attribute: guid", methodName);
             missingAttribute = true;
+            missingAttributeName = "guid";
         }
 
         InstanceType instanceType = entity.getType();
@@ -256,25 +255,20 @@ public class GraphOMRSEntityMapper {
         else {
             log.debug("{} missing attribute: type name", methodName);
             missingAttribute = true;
+            missingAttributeName = "type or typeDefName";
         }
 
-        if (this.metadataCollectionId != null)
-            vertex.property(PROPERTY_KEY_ENTITY_METADATACOLLECTION_ID, this.metadataCollectionId);
+        if (entity.getMetadataCollectionId() != null)
+            vertex.property(PROPERTY_KEY_ENTITY_METADATACOLLECTION_ID, entity.getMetadataCollectionId());
         else {
             log.debug("{} missing attribute: metadataCollectionId", methodName);
             missingAttribute = true;
-        }
-
-        if (this.repositoryName != null)
-            vertex.property(PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME, this.repositoryName);
-        else {
-            log.debug("{} missing attribute: metadataCollectionName", methodName);
-            missingAttribute = true;
+            missingAttributeName = "metadataCollectionId";
         }
 
 
         if (missingAttribute) {
-            log.error("{} entity is missing a core attribute{}", methodName);
+            log.error("{} entity is missing core attribute {}", methodName, missingAttributeName);
             GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.ENTITY_PROPERTIES_ERROR;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entity.getGUID(), methodName,
                     this.getClass().getName(),
@@ -292,85 +286,76 @@ public class GraphOMRSEntityMapper {
 
         // Other properties can be removed if set to null
 
+        if (entity.getMetadataCollectionName() != null) {
+            vertex.property(PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME, entity.getMetadataCollectionName());
+        }
+        else {
+            VertexProperty vp = vertex.property(PROPERTY_KEY_ENTITY_METADATACOLLECTION_NAME);
+            if (vp != null)
+                vp.remove();
+        }
+
         if (entity.getCreatedBy() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_CREATED_BY, entity.getCreatedBy());
         }
         else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_ENTITY_CREATED_BY);
-            if (vp != null)
-                vp.remove();
+            removeProperty(vertex, PROPERTY_KEY_ENTITY_CREATED_BY);
         }
 
         if (entity.getCreateTime() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_CREATE_TIME, entity.getCreateTime());
         }
         else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_ENTITY_CREATE_TIME);
-            if (vp != null)
-                vp.remove();
+            removeProperty(vertex, PROPERTY_KEY_ENTITY_CREATE_TIME);
         }
 
         if (entity.getUpdatedBy() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_UPDATED_BY, entity.getUpdatedBy());
         }
         else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_ENTITY_UPDATED_BY);
-            if (vp != null)
-                vp.remove();
+            removeProperty(vertex, PROPERTY_KEY_ENTITY_UPDATED_BY);
         }
 
         if (entity.getUpdateTime() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_UPDATE_TIME, entity.getUpdateTime());
         }
         else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_ENTITY_UPDATE_TIME);
-            if (vp != null)
-                vp.remove();
+            removeProperty(vertex, PROPERTY_KEY_ENTITY_UPDATE_TIME);
         }
 
         if (entity.getInstanceProvenanceType() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_PROVENANCE_TYPE, entity.getInstanceProvenanceType().getOrdinal());     // ** ordinal mapping
         }
         else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_ENTITY_PROVENANCE_TYPE);
-            if (vp != null)
-                vp.remove();
+            removeProperty(vertex, PROPERTY_KEY_ENTITY_PROVENANCE_TYPE);
         }
 
         if (entity.getStatus() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_STATUS, entity.getStatus().getOrdinal());                              // ** ordinal mapping
         }
         else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_ENTITY_STATUS);
-            if (vp != null)
-                vp.remove();
+            removeProperty(vertex, PROPERTY_KEY_ENTITY_STATUS);
         }
 
         if (entity.getStatusOnDelete() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_STATUS_ON_DELETE, entity.getStatusOnDelete().getOrdinal());            // ** ordinal mapping
         }
         else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_ENTITY_STATUS_ON_DELETE);
-            if (vp != null)
-                vp.remove();
+            removeProperty(vertex, PROPERTY_KEY_ENTITY_STATUS_ON_DELETE);
         }
 
         if (entity.getInstanceURL() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_INSTANCE_URL, entity.getInstanceURL());
         }
         else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_ENTITY_INSTANCE_URL);
-            if (vp != null)
-                vp.remove();
+            removeProperty(vertex, PROPERTY_KEY_ENTITY_INSTANCE_URL);
         }
 
         if (entity.getInstanceLicense() != null) {
             vertex.property(PROPERTY_KEY_ENTITY_INSTANCE_LICENSE, entity.getInstanceLicense());
         }
         else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_ENTITY_INSTANCE_LICENSE);
-            if (vp != null)
-                vp.remove();
+            removeProperty(vertex, PROPERTY_KEY_ENTITY_INSTANCE_LICENSE);
         }
 
         // maintainedBy is a List<String>. This could be implemented using multi-properties for Entity and Classification instances,
@@ -400,9 +385,7 @@ public class GraphOMRSEntityMapper {
             }
         }
         else {
-            VertexProperty vp = vertex.property(PROPERTY_KEY_ENTITY_MAINTAINED_BY);
-            if (vp != null)
-                vp.remove();
+            removeProperty(vertex, PROPERTY_KEY_ENTITY_MAINTAINED_BY);
         }
 
 
@@ -682,6 +665,12 @@ public class GraphOMRSEntityMapper {
         String guid = null;
         guid = (String) getVertexProperty(vertex, PROPERTY_KEY_ENTITY_GUID);
         return guid;
+    }
+
+    public String getEntityMetadataCollectionId(Vertex vertex) {
+        String metadataCollectionId = null;
+        metadataCollectionId = (String) getVertexProperty(vertex, PROPERTY_KEY_ENTITY_METADATACOLLECTION_ID);
+        return metadataCollectionId;
     }
 
 

@@ -35,7 +35,7 @@ public class GlossaryCategory {
 
     @Override
     public String toString() {
-        return "GlossaryCategory{" +
+        return "{" +
                 "name='" + name + '\'' +
                 ", parentCategory=" + parentCategory +
                 '}';

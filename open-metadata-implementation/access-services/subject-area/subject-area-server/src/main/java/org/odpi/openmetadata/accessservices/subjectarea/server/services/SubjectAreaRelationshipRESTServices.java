@@ -56,7 +56,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
     public SubjectAreaOMASAPIResponse createTermHASARelationship(String serverName, String userId, TermHASARelationship termHASARelationship)
     {
-        return createLine(serverName,userId,TermHASARelationship.class.getName(),termHASARelationship);
+        String restAPIName = "createTermHASARelationship";
+        return createLine(serverName,restAPIName, userId,TermHASARelationship.class.getName(),termHASARelationship);
     }
 
 
@@ -78,8 +79,10 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse getTermHASARelationship(String serverName, String userId, String guid)
-    {
-        return getLine(serverName,userId,TermHASARelationship.class.getName(),guid);
+     {
+
+        String restAPIName = "getTermHASARelationship";
+        return getLine(serverName,restAPIName, userId,TermHASARelationship.class.getName(),guid);
     }
 
     /**
@@ -103,8 +106,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateTermHASARelationship(String serverName, String userId, TermHASARelationship termHASARelationship, boolean isReplace)
-    {
-        return updateLine(serverName,userId,TermHASARelationship.class.getName(),termHASARelationship,isReplace);
+     {
+        String restAPIName = "updateTermHASARelationship";
+        return updateLine(serverName,restAPIName, userId,TermHASARelationship.class.getName(),termHASARelationship,isReplace);
     }
 
     /**
@@ -127,8 +131,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse deleteTermHASARelationship(String serverName, String userId, String guid, Boolean isPurge)
-    {
-        return deleteLine(serverName,userId,TermHASARelationship.class.getName(),guid,isPurge);
+     {
+        String restAPIName = "deleteTermHASARelationship";
+        return deleteLine(serverName,restAPIName, userId,TermHASARelationship.class.getName(),guid,isPurge);
     }
 
     /**
@@ -151,8 +156,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreTermHASARelationship(String serverName, String userId, String guid)
-    {
-        return restoreLine(serverName, userId, TermHASARelationship.class.getName(), guid);
+     {
+        String restAPIName = "restoreTermHASARelationship";
+        return restoreLine(serverName, restAPIName, userId, TermHASARelationship.class.getName(), guid);
     }
 
     /**
@@ -174,8 +180,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createRelatedTerm(String serverName, String userId, RelatedTerm relatedTermRelationship)
-    {
-        return createLine(serverName,userId,RelatedTerm.class.getName(),relatedTermRelationship);
+     {
+        String restAPIName = "createRelatedTerm";
+        return createLine(serverName,restAPIName, userId,RelatedTerm.class.getName(),relatedTermRelationship);
     }
 
     /**
@@ -195,8 +202,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse getRelatedTerm(String serverName, String userId, String guid)
-    {
-        return getLine(serverName,userId,RelatedTerm.class.getName(),guid);
+     {
+        String restAPIName = "getRelatedTerm";
+        return getLine(serverName,restAPIName, userId,RelatedTerm.class.getName(),guid);
     }
 
     /**
@@ -220,8 +228,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateRelatedTerm(String serverName, String userId, RelatedTerm relatedTermRelationship, boolean isReplace)
-    {
-        return updateLine(serverName,userId,RelatedTerm.class.getName(),relatedTermRelationship,isReplace);
+     {
+        String restAPIName = "updateRelatedTerm";
+        return updateLine(serverName,restAPIName, userId,RelatedTerm.class.getName(),relatedTermRelationship,isReplace);
     }
 
     /**
@@ -245,8 +254,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse deleteRelatedTerm(String serverName, String userId, String guid, Boolean isPurge)
-    {
-        return deleteLine(serverName,userId,RelatedTerm.class.getName(),guid,isPurge);
+     {
+        String restAPIName = "deleteRelatedTerm";
+        return deleteLine(serverName,restAPIName, userId,RelatedTerm.class.getName(),guid,isPurge);
     }
     /**
      * Restore a related Term relationship.
@@ -268,8 +278,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreRelatedTerm(String serverName, String userId, String guid)
-    {
-        return restoreLine(serverName, userId, RelatedTerm.class.getName(), guid);
+     {
+        String restAPIName = "restoreRelatedTerm";
+        return restoreLine(serverName, restAPIName, userId, RelatedTerm.class.getName(), guid);
     }
 
     /**
@@ -292,8 +303,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createSynonym(String serverName, String userId, Synonym synonym)
-    {
-       return createLine(serverName,userId,Synonym.class.getName(),synonym);
+     {
+        String restAPIName = "createSynonym";
+       return createLine(serverName,restAPIName, userId,Synonym.class.getName(),synonym);
     }
 
     /**
@@ -313,8 +325,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse getSynonymRelationship(String serverName, String userId, String guid)
-    {
-        return getLine(serverName, userId, Synonym.class.getName(), guid);
+     {
+        String restAPIName = "getSynonymRelationship";
+        return getLine(serverName, restAPIName, userId, Synonym.class.getName(), guid);
     }
 
     /**
@@ -338,8 +351,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateSynonymRelationship(String serverName, String userId, Synonym synonym, boolean isReplace)
-    {
-        return updateLine(serverName,userId,Synonym.class.getName(),synonym,isReplace);
+     {
+        String restAPIName = "updateSynonymRelationship";
+        return updateLine(serverName,restAPIName, userId,Synonym.class.getName(),synonym,isReplace);
     }
 
     /**
@@ -363,8 +377,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse deleteSynonymRelationship(String serverName, String userId, String guid, Boolean isPurge)
-    {
-        return deleteLine(serverName, userId, Synonym.class.getName(), guid,isPurge);
+     {
+        String restAPIName = "deleteSynonymRelationship";
+        return deleteLine(serverName, restAPIName, userId, Synonym.class.getName(), guid,isPurge);
     }
     /**
      * Restore a synonym relationship.
@@ -386,8 +401,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreSynonym(String serverName, String userId, String guid)
-    {
-        return restoreLine(serverName, userId, Synonym.class.getName(), guid);
+     {
+        String restAPIName = "restoreSynonym";
+        return restoreLine(serverName, restAPIName, userId, Synonym.class.getName(), guid);
     }
     /**
      * Create an antonym relationship, which is a link between glossary terms that have the opposite meaning.
@@ -408,8 +424,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createAntonym(String serverName, String userId, Antonym antonym)
-    {
-        return createLine(serverName,userId,Antonym.class.getName(),antonym);
+     {
+        String restAPIName = "createAntonym";
+        return createLine(serverName,restAPIName, userId,Antonym.class.getName(),antonym);
     }
 
     /**
@@ -429,8 +446,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse getAntonymRelationship(String serverName, String userId, String guid)
-    {
-        return getLine(serverName,userId,Antonym.class.getName(),guid);
+     {
+        String restAPIName = "getAntonymRelationship";
+        return getLine(serverName,restAPIName, userId,Antonym.class.getName(),guid);
     }
 
     /**
@@ -454,8 +472,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateAntonymRelationship(String serverName, String userId, Antonym antonym, boolean isReplace)
-    {
-        return updateLine(serverName,userId,Antonym.class.getName(),antonym,isReplace);
+     {
+        String restAPIName = "updateAntonymRelationship";
+        return updateLine(serverName,restAPIName, userId,Antonym.class.getName(),antonym,isReplace);
     }
 
     /**
@@ -479,8 +498,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse deleteAntonymRelationship(String serverName, String userId, String guid, Boolean isPurge)
-    {
-        return deleteLine(serverName,userId,Antonym.class.getName(),guid,isPurge);
+     {
+        String restAPIName = "deleteAntonymRelationship";
+        return deleteLine(serverName,restAPIName, userId,Antonym.class.getName(),guid,isPurge);
     }
     /**
      * Restore an antonym relationship.
@@ -503,8 +523,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreAntonym(String serverName, String userId, String guid)
-    {
-        return restoreLine(serverName, userId, Antonym.class.getName(), guid);
+     {
+        String restAPIName = "restoreAntonym";
+        return restoreLine(serverName, restAPIName, userId, Antonym.class.getName(), guid);
     }
     /**
      * Create a translationRelationship relationship, which is a link between glossary terms to provide different natural language translationRelationship of the same concept.
@@ -525,8 +546,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createTranslation(String serverName, String userId, Translation translationRelationship)
-    {
-        return createLine(serverName,userId,Translation.class.getName(),translationRelationship);
+     {
+        String restAPIName = "createTranslation";
+        return createLine(serverName,restAPIName, userId,Translation.class.getName(),translationRelationship);
     }
 
     /**
@@ -546,8 +568,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse getTranslationRelationship(String serverName, String userId, String guid)
-    {
-        return getLine(serverName,userId,Translation.class.getName(),guid);
+     {
+        String restAPIName = "getTranslationRelationship";
+        return getLine(serverName,restAPIName, userId,Translation.class.getName(),guid);
     }
 
     /**
@@ -571,8 +594,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateTranslationRelationship(String serverName, String userId, Translation translationRelationship, boolean isReplace)
-    {
-        return updateLine(serverName,userId,Translation.class.getName(),translationRelationship,isReplace);
+     {
+        String restAPIName = "updateTranslationRelationship";
+        return updateLine(serverName,restAPIName, userId,Translation.class.getName(),translationRelationship,isReplace);
     }
 
     /**
@@ -596,8 +620,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse deleteTranslationRelationship(String serverName, String userId, String guid, Boolean isPurge)
-    {
-        return deleteLine(serverName,userId,Translation.class.getName(),guid,isPurge);
+     {
+        String restAPIName = "deleteTranslationRelationship";
+        return deleteLine(serverName,restAPIName, userId,Translation.class.getName(),guid,isPurge);
     }
     /**
      * Restore a translation relationship.
@@ -619,8 +644,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreTranslation(String serverName, String userId, String guid)
-    {
-        return restoreLine(serverName, userId,Translation.class.getName(), guid);
+     {
+        String restAPIName = "restoreTranslation";
+        return restoreLine(serverName, restAPIName, userId,Translation.class.getName(), guid);
     }
     /**
      * Create a usedInContextRelationship relationship, which is a link between glossary terms, where one describes the context where the other one is valid to use.
@@ -642,8 +668,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createUsedInContext(String serverName, String userId, UsedInContext usedInContextRelationship)
-    {
-        return createLine(serverName,userId,UsedInContext.class.getName(),usedInContextRelationship);
+     {
+        String restAPIName = "createUsedInContext";
+        return createLine(serverName,restAPIName, userId,UsedInContext.class.getName(),usedInContextRelationship);
     }
 
     /**
@@ -663,8 +690,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse getUsedInContextRelationship(String serverName, String userId, String guid)
-    {
-        return getLine(serverName,userId,UsedInContext.class.getName(),guid);
+     {
+        String restAPIName = "getUsedInContextRelationship";
+        return getLine(serverName,restAPIName, userId,UsedInContext.class.getName(),guid);
     }
 
     /**
@@ -687,8 +715,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateUsedInContextRelationship(String serverName, String userId, UsedInContext usedInContextRelationship, boolean isReplace)
-    {
-        return updateLine(serverName, userId, UsedInContext.class.getName(), usedInContextRelationship, isReplace);
+     {
+        String restAPIName = "updateUsedInContextRelationship";
+        return updateLine(serverName, restAPIName, userId, UsedInContext.class.getName(), usedInContextRelationship, isReplace);
     }
 
     /**
@@ -712,8 +741,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse deleteUsedInContextRelationship(String serverName, String userId, String guid, Boolean isPurge)
-    {
-        return deleteLine(serverName,userId,UsedInContext.class.getName(),guid,isPurge);
+     {
+        String restAPIName = "deleteUsedInContextRelationship";
+        return deleteLine(serverName,restAPIName, userId,UsedInContext.class.getName(),guid,isPurge);
     }
     /**
      * Restore a used in context relationship.
@@ -735,8 +765,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreUsedInContext(String serverName, String userId, String guid)
-    {
-        return restoreLine(serverName, userId, UsedInContext.class.getName(), guid);
+     {
+        String restAPIName = "restoreUsedInContext";
+        return restoreLine(serverName, restAPIName, userId, UsedInContext.class.getName(), guid);
     }
 
     /**
@@ -758,8 +789,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createPreferredTerm(String serverName, String userId, PreferredTerm preferredTermRelationship)
-    {
-        return createLine(serverName, userId,PreferredTerm.class.getName(), preferredTermRelationship);
+     {
+        String restAPIName = "createPreferredTerm";
+        return createLine(serverName, restAPIName, userId,PreferredTerm.class.getName(), preferredTermRelationship);
     }
 
     /**
@@ -779,8 +811,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse getPreferredTermRelationship(String serverName, String userId, String guid)
-    {
-        return getLine(serverName, userId,PreferredTerm.class.getName(), guid);
+     {
+        String restAPIName = "getPreferredTermRelationship";
+        return getLine(serverName, restAPIName, userId,PreferredTerm.class.getName(), guid);
     }
 
     /**
@@ -805,8 +838,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updatePreferredTermRelationship(String serverName, String userId, PreferredTerm preferredTermRelationship, boolean isReplace)
-    {
-        return updateLine(serverName, userId, PreferredTerm.class.getName(), preferredTermRelationship, isReplace);
+     {
+        String restAPIName = "updatePreferredTermRelationship";
+        return updateLine(serverName, restAPIName, userId, PreferredTerm.class.getName(), preferredTermRelationship, isReplace);
     }
 
     /**
@@ -830,8 +864,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse deletePreferredTermRelationship(String serverName, String userId, String guid, Boolean isPurge)
-    {
-        return deleteLine(serverName, userId,PreferredTerm.class.getName(), guid,isPurge);
+     {
+        String restAPIName = "deletePreferredTermRelationship";
+        return deleteLine(serverName, restAPIName, userId,PreferredTerm.class.getName(), guid,isPurge);
     }
     /**
      * Restore a preferred term relationship.
@@ -853,8 +888,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restorePreferredTerm(String serverName, String userId, String guid)
-    {
-        return restoreLine(serverName, userId, PreferredTerm.class.getName(), guid);
+     {
+        String restAPIName = "restorePreferredTerm";
+        return restoreLine(serverName, restAPIName, userId, PreferredTerm.class.getName(), guid);
     }
 
     /**
@@ -877,8 +913,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createValidValue(String serverName, String userId, ValidValue validValueRelationship)
-    {
-        return createLine(serverName, userId,ValidValue.class.getName(), validValueRelationship);
+     {
+        String restAPIName = "createValidValue";
+        return createLine(serverName, restAPIName, userId,ValidValue.class.getName(), validValueRelationship);
     }
 
     /**
@@ -898,8 +935,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse getValidValueRelationship(String serverName, String userId, String guid)
-    {
-        return getLine(serverName, userId,ValidValue.class.getName(),guid);
+     {
+        String restAPIName = "getValidValueRelationship";
+        return getLine(serverName, restAPIName, userId,ValidValue.class.getName(),guid);
     }
 
     /**
@@ -923,8 +961,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateValidValueRelationship(String serverName, String userId, ValidValue validValueRelationship, boolean isReplace)
-    {
-        return updateLine(serverName, userId,ValidValue.class.getName(),validValueRelationship,isReplace);
+     {
+        String restAPIName = "updateValidValueRelationship";
+        return updateLine(serverName, restAPIName, userId,ValidValue.class.getName(),validValueRelationship,isReplace);
     }
 
     /**
@@ -948,8 +987,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse deleteValidValueRelationship(String serverName, String userId, String guid, Boolean isPurge)
-    {
-        return deleteLine(serverName, userId,ValidValue.class.getName(),guid,isPurge);
+     {
+        String restAPIName = "deleteValidValueRelationship";
+        return deleteLine(serverName, restAPIName, userId,ValidValue.class.getName(),guid,isPurge);
     }
     /**
      * Restore a valid value relationship.
@@ -971,8 +1011,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreValidValue(String serverName, String userId, String guid)
-    {
-        return restoreLine(serverName, userId, ValidValue.class.getName(), guid);
+     {
+        String restAPIName = "restoreValidValue";
+        return restoreLine(serverName, restAPIName, userId, ValidValue.class.getName(), guid);
     }
 
     /**
@@ -994,8 +1035,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createReplacementTerm(String serverName, String userId, ReplacementTerm replacementTermRelationship)
-    {
-        return createLine(serverName, userId,ReplacementTerm.class.getName(), replacementTermRelationship);
+     {
+        String restAPIName = "createReplacementTerm";
+        return createLine(serverName, restAPIName, userId,ReplacementTerm.class.getName(), replacementTermRelationship);
     }
 
     /**
@@ -1015,8 +1057,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse getReplacementTerm(String serverName, String userId, String guid)
-    {
-        return getLine(serverName, userId,ReplacementTerm.class.getName(),guid);
+     {
+        String restAPIName = "getReplacementTerm";
+        return getLine(serverName, restAPIName, userId,ReplacementTerm.class.getName(),guid);
     }
 
     /**
@@ -1040,8 +1083,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateReplacementTerm(String serverName, String userId, ReplacementTerm replacementTermRelationship, boolean isReplace)
-    {
-        return updateLine(serverName, userId,ReplacementTerm.class.getName(), replacementTermRelationship,isReplace);
+     {
+        String restAPIName = "updateReplacementTerm";
+        return updateLine(serverName, restAPIName, userId,ReplacementTerm.class.getName(), replacementTermRelationship,isReplace);
     }
 
     /**
@@ -1065,8 +1109,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse deleteReplacementTerm(String serverName, String userId, String guid, Boolean isPurge)
-    {
-        return deleteLine(serverName, userId,ReplacementTerm.class.getName(), guid,isPurge);
+     {
+        String restAPIName = "deleteReplacementTerm";
+        return deleteLine(serverName, restAPIName, userId,ReplacementTerm.class.getName(), guid,isPurge);
     }
     /**
      * Restore a replacement term relationship.
@@ -1089,8 +1134,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreReplacementTerm(String serverName, String userId, String guid)
-    {
-        return restoreLine(serverName, userId, ReplacementTerm.class.getName(), guid);
+     {
+        String restAPIName = "restoreReplacementTerm";
+        return restoreLine(serverName, restAPIName, userId, ReplacementTerm.class.getName(), guid);
     }
     /**
      * Create a termTYPEDBYRelationship relationship, which is a link between a spine attribute and its type.
@@ -1111,8 +1157,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createTermTYPEDBYRelationship(String serverName, String userId, TermTYPEDBYRelationship termTYPEDBYRelationship)
-    {
-        return createLine(serverName, userId,TermTYPEDBYRelationship.class.getName(), termTYPEDBYRelationship);
+     {
+        String restAPIName = "createTermTYPEDBYRelationship";
+        return createLine(serverName, restAPIName, userId,TermTYPEDBYRelationship.class.getName(), termTYPEDBYRelationship);
     }
 
     /**
@@ -1132,8 +1179,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse getTermTYPEDBYRelationship(String serverName, String userId, String guid)
-    {
-        return getLine(serverName, userId,TermTYPEDBYRelationship.class.getName(), guid);
+     {
+        String restAPIName = "getTermTYPEDBYRelationship";
+        return getLine(serverName, restAPIName, userId,TermTYPEDBYRelationship.class.getName(), guid);
     }
 
     /**
@@ -1157,8 +1205,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateTermTYPEDBYRelationship(String serverName, String userId, TermTYPEDBYRelationship termTYPEDBYRelationship, boolean isReplace)
-    {
-        return updateLine(serverName, userId,TermTYPEDBYRelationship.class.getName(), termTYPEDBYRelationship,isReplace);
+     {
+        String restAPIName = "updateTermTYPEDBYRelationship";
+        return updateLine(serverName, restAPIName, userId,TermTYPEDBYRelationship.class.getName(), termTYPEDBYRelationship,isReplace);
     }
 
     /**
@@ -1182,8 +1231,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse deleteTermTYPEDBYRelationship(String serverName, String userId, String guid, Boolean isPurge)
-    {
-        return deleteLine(serverName, userId,TermTYPEDBYRelationship.class.getName(), guid, isPurge);
+     {
+        String restAPIName = "deleteTermTYPEDBYRelationship";
+        return deleteLine(serverName, restAPIName, userId,TermTYPEDBYRelationship.class.getName(), guid, isPurge);
     }
     /**
      * Restore a replacement term relationship.
@@ -1205,8 +1255,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreTermTYPEDBYRelationship(String serverName, String userId, String guid)
-    {
-        return restoreLine(serverName, userId, TermTYPEDBYRelationship.class.getName(), guid);
+     {
+        String restAPIName = "restoreTermTYPEDBYRelationship";
+        return restoreLine(serverName, restAPIName, userId, TermTYPEDBYRelationship.class.getName(), guid);
     }
     /**
      * Create a iSARelationship relationship, which is a link between a more general glossary term and a more specific definition.
@@ -1228,8 +1279,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createISARelationship(String serverName, String userId, ISARelationship iSARelationship)
-    {
-        return createLine(serverName, userId,ISARelationship.class.getName(), iSARelationship);
+     {
+        String restAPIName = "createISARelationship";
+        return createLine(serverName, restAPIName, userId,ISARelationship.class.getName(), iSARelationship);
     }
 
     /**
@@ -1249,8 +1301,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse getISARelationship(String serverName, String userId, String guid)
-    {
-        return getLine(serverName, userId,ISARelationship.class.getName(), guid);
+     {
+        String restAPIName = "getISARelationship";
+        return getLine(serverName, restAPIName, userId,ISARelationship.class.getName(), guid);
     }
 
     /**
@@ -1274,8 +1327,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateISARelationship(String serverName, String userId, ISARelationship iSARelationship, boolean isReplace)
-    {
-        return updateLine(serverName, userId,ISARelationship.class.getName(), iSARelationship,isReplace);
+     {
+        String restAPIName = "updateISARelationship";
+        return updateLine(serverName, restAPIName, userId,ISARelationship.class.getName(), iSARelationship,isReplace);
     }
 
     /**
@@ -1299,8 +1353,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse deleteISARelationship(String serverName, String userId, String guid, Boolean isPurge)
-    {
-        return deleteLine(serverName, userId,ISARelationship.class.getName(), guid, isPurge);
+     {
+        String restAPIName = "deleteISARelationship";
+        return deleteLine(serverName, restAPIName, userId,ISARelationship.class.getName(), guid, isPurge);
     }
     /**
      * Restore a is a relationship.
@@ -1322,8 +1377,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreISARelationship(String serverName, String userId, String guid)
-    {
-        return restoreLine(serverName, userId, ISARelationship.class.getName(), guid);
+     {
+        String restAPIName = "restoreISARelationship";
+        return restoreLine(serverName, restAPIName, userId, ISARelationship.class.getName(), guid);
     }
     /**
      * Create a termISATypeOFRelationship relationship, which is an inheritance relationship between two spine objects.
@@ -1345,8 +1401,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createTermISATypeOFRelationship(String serverName, String userId, TermISATypeOFRelationship termISATypeOFRelationship)
-    {
-        return createLine(serverName, userId,TermISATypeOFRelationship.class.getName(),termISATypeOFRelationship);
+     {
+        String restAPIName = "createTermISATypeOFRelationship";
+        return createLine(serverName, restAPIName, userId,TermISATypeOFRelationship.class.getName(),termISATypeOFRelationship);
     }
 
     /**
@@ -1366,8 +1423,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse getTermISATypeOFRelationship(String serverName, String userId, String guid)
-    {
-        return getLine(serverName, userId,TermISATypeOFRelationship.class.getName(),guid);
+     {
+        String restAPIName = "getTermISATypeOFRelationship";
+        return getLine(serverName, restAPIName, userId,TermISATypeOFRelationship.class.getName(),guid);
     }
 
     /**
@@ -1391,8 +1449,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse updateTermISATypeOFRelationship(String serverName, String userId, TermISATypeOFRelationship termISATypeOFRelationship, boolean isReplace)
-    {
-        return updateLine(serverName, userId,TermISATypeOFRelationship.class.getName(),termISATypeOFRelationship,isReplace);
+     {
+        String restAPIName = "updateTermISATypeOFRelationship";
+        return updateLine(serverName, restAPIName, userId,TermISATypeOFRelationship.class.getName(),termISATypeOFRelationship,isReplace);
     }
 
     /**
@@ -1416,8 +1475,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse deleteIsATypeOfRelationship(String serverName, String userId, String guid, Boolean isPurge)
-    {
-        return deleteLine(serverName, userId,TermISATypeOFRelationship.class.getName(),guid,isPurge);
+     {
+        String restAPIName = "deleteIsATypeOfRelationship";
+        return deleteLine(serverName, restAPIName, userId,TermISATypeOFRelationship.class.getName(),guid,isPurge);
     }
     /**
      * Restore a is TermISATypeOFRelationship relationship.
@@ -1439,8 +1499,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreTermISATypeOF(String serverName, String userId, String guid)
-    {
-        return restoreLine(serverName, userId, TermISATypeOFRelationship.class.getName(), guid);
+     {
+        String restAPIName = "restoreTermISATypeOF";
+        return restoreLine(serverName, restAPIName, userId, TermISATypeOFRelationship.class.getName(), guid);
     }
     /**
      *  Create a termCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
@@ -1463,8 +1524,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createTermCategorization(String serverName, String userId, TermCategorizationRelationship  termCategorizationRelationship)
-    {
-        return createLine(serverName, userId,TermCategorizationRelationship.class.getName(), termCategorizationRelationship);
+     {
+        String restAPIName = "createTermCategorization";
+        return createLine(serverName, restAPIName, userId,TermCategorizationRelationship.class.getName(), termCategorizationRelationship);
     }
 
     /**
@@ -1482,8 +1544,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-     public SubjectAreaOMASAPIResponse getTermCategorizationRelationship(String serverName,String userId,String guid)  {
-         return getLine(serverName, userId,TermCategorizationRelationship.class.getName(), guid);
+     public SubjectAreaOMASAPIResponse getTermCategorizationRelationship(String serverName,String userId,String guid)   {
+        String restAPIName = "getTermCategorizationRelationship";
+         return getLine(serverName, restAPIName, userId,TermCategorizationRelationship.class.getName(), guid);
      }
 
     /**
@@ -1506,8 +1569,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(String serverName,String userId,TermCategorizationRelationship termCategorizationRelationship, Boolean isReplace) {
-        return updateLine(serverName, userId,TermCategorizationRelationship.class.getName(),termCategorizationRelationship,isReplace);
+    public SubjectAreaOMASAPIResponse updateTermCategorizationRelationship(String serverName,String userId,TermCategorizationRelationship termCategorizationRelationship, Boolean isReplace)  {
+        String restAPIName = "updateTermCategorizationRelationship";
+        return updateLine(serverName, restAPIName, userId,TermCategorizationRelationship.class.getName(),termCategorizationRelationship,isReplace);
     }
 
 
@@ -1530,8 +1594,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-     public SubjectAreaOMASAPIResponse deleteTermCategorizationRelationship(String serverName,String userId, String guid, Boolean isPurge) {
-         return deleteLine(serverName, userId,TermCategorizationRelationship.class.getName(), guid,isPurge);
+     public SubjectAreaOMASAPIResponse deleteTermCategorizationRelationship(String serverName,String userId, String guid, Boolean isPurge)  {
+        String restAPIName = "deleteTermCategorizationRelationship";
+         return deleteLine(serverName, restAPIName, userId,TermCategorizationRelationship.class.getName(), guid,isPurge);
      }
     /**
      * Restore a TermCategorization Relationship. A relationship between a Category and a Term. This relationship allows terms to be categorized.
@@ -1551,8 +1616,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreTermCategorizationRelationship( String serverName,  String userId, String guid)
-    {
-        return restoreLine(serverName, userId, TermCategorizationRelationship.class.getName(), guid);
+     {
+        String restAPIName = "restoreTermCategorizationRelationship";
+        return restoreLine(serverName, restAPIName, userId, TermCategorizationRelationship.class.getName(), guid);
     }
 
     /**
@@ -1578,8 +1644,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createTermAnchor(String serverName, String userId, TermAnchorRelationship  termAnchorRelationship)
-    {
-        return createLine(serverName, userId,TermAnchorRelationship.class.getName(), termAnchorRelationship);
+     {
+        String restAPIName = "createTermAnchor";
+        return createLine(serverName, restAPIName, userId,TermAnchorRelationship.class.getName(), termAnchorRelationship);
     }
 
     /**
@@ -1597,8 +1664,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse getTermAnchorRelationship(String serverName,String userId,String guid)  {
-        return getLine(serverName, userId,TermAnchorRelationship.class.getName(), guid);
+    public SubjectAreaOMASAPIResponse getTermAnchorRelationship(String serverName,String userId,String guid)   {
+        String restAPIName = "getTermAnchorRelationship";
+        return getLine(serverName, restAPIName, userId,TermAnchorRelationship.class.getName(), guid);
     }
 
     /**
@@ -1620,8 +1688,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteTermAnchorRelationship(String serverName,String userId, String guid, Boolean isPurge) {
-        return deleteLine(serverName, userId,TermAnchorRelationship.class.getName(), guid,isPurge);
+    public SubjectAreaOMASAPIResponse deleteTermAnchorRelationship(String serverName,String userId, String guid, Boolean isPurge)  {
+        String restAPIName = "deleteTermAnchorRelationship";
+        return deleteLine(serverName, restAPIName, userId,TermAnchorRelationship.class.getName(), guid,isPurge);
     }
     /**
      * Restore a TermAnchor Relationship. A relationship between a Glossary and a Term. This relationship allows terms to be owned by a Glossary.
@@ -1641,8 +1710,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreTermAnchorRelationship( String serverName,  String userId, String guid)
-    {
-        return restoreLine(serverName, userId, TermAnchorRelationship.class.getName(), guid);
+     {
+        String restAPIName = "restoreTermAnchorRelationship";
+        return restoreLine(serverName, restAPIName, userId, TermAnchorRelationship.class.getName(), guid);
     }
     /**
      *  Create a categoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
@@ -1666,8 +1736,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse createCategoryAnchor(String serverName, String userId, CategoryAnchorRelationship  categoryAnchorRelationship)
-    {
-        return createLine(serverName, userId,CategoryAnchorRelationship.class.getName(), categoryAnchorRelationship);
+     {
+        String restAPIName = "createCategoryAnchor";
+        return createLine(serverName, restAPIName, userId,CategoryAnchorRelationship.class.getName(), categoryAnchorRelationship);
     }
 
     /**
@@ -1685,8 +1756,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> UnrecognizedGUIDException            the supplied guid was not recognised</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse getCategoryAnchorRelationship(String serverName,String userId,String guid)  {
-        return getLine(serverName, userId,CategoryAnchorRelationship.class.getName(), guid);
+    public SubjectAreaOMASAPIResponse getCategoryAnchorRelationship(String serverName,String userId,String guid)   {
+        String restAPIName = "getCategoryAnchorRelationship";
+        return getLine(serverName, restAPIName, userId,CategoryAnchorRelationship.class.getName(), guid);
     }
 
     /**
@@ -1708,8 +1780,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * <li> GUIDNotPurgedException               a hard delete was issued but the relationship was not purged</li>
      * </ul>
      */
-    public SubjectAreaOMASAPIResponse deleteCategoryAnchorRelationship(String serverName,String userId, String guid, Boolean isPurge) {
-        return deleteLine(serverName, userId,CategoryAnchorRelationship.class.getName(), guid,isPurge);
+    public SubjectAreaOMASAPIResponse deleteCategoryAnchorRelationship(String serverName,String userId, String guid, Boolean isPurge)  {
+        String restAPIName = "deleteCategoryAnchorRelationship";
+        return deleteLine(serverName, restAPIName, userId,CategoryAnchorRelationship.class.getName(), guid,isPurge);
     }
     /**
      * Restore a CategoryAnchor Relationship. A relationship between a Glossary and a Category. This relationship allows terms to be owned by a Glossary.
@@ -1729,8 +1802,9 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      * </ul>
      */
     public SubjectAreaOMASAPIResponse restoreCategoryAnchorRelationship( String serverName,  String userId, String guid)
-    {
-        return restoreLine(serverName, userId, CategoryAnchorRelationship.class.getName(), guid);
+     {
+        String restAPIName = "restoreCategoryAnchorRelationship";
+        return restoreLine(serverName, restAPIName, userId, CategoryAnchorRelationship.class.getName(), guid);
     }
 
     /**
@@ -1750,7 +1824,8 @@ public class SubjectAreaRelationshipRESTServices extends SubjectAreaRESTServices
      */
 
     public SubjectAreaOMASAPIResponse getSemanticAssignmentRelationship(String serverName, String userId, String guid)
-    {
-        return restoreLine(serverName, userId,SemanticAssignment.class.getName(), guid);
+     {
+         String restAPIName = "getSemanticAssignmentRelationship";
+        return restoreLine(serverName, restAPIName, userId,SemanticAssignment.class.getName(), guid);
     }
 }

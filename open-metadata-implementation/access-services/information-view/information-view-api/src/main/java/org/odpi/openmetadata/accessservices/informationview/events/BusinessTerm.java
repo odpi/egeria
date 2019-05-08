@@ -160,7 +160,7 @@ public class BusinessTerm {
 
     @Override
     public String toString() {
-        return "BusinessTerm{" +
+        return "{" +
                 "guid='" + guid + '\'' +
                 ", name='" + name + '\'' +
                 ", query='" + query + '\'' +
