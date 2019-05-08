@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.openmetadata.platformservices.server;
+package org.odpi.openmetadata.platformservices.server;
 
 /**
  * OMAGServerPlatformOriginServices support the origin services for Egeria's OMAG Server.  It is overridden in

@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.openmetadata.platformservices.server.spring;
+package org.odpi.openmetadata.platformservices.server.spring;
 
 import org.odpi.openmetadata.platformservices.server.OMAGServerPlatformOriginServices;
 import org.springframework.web.bind.annotation.PathVariable;
