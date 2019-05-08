@@ -32,14 +32,14 @@ public enum KafkaOpenMetadataTopicConnectorAuditCode
 
     SERVICE_PRODUCER_PROPERTIES("OCF-KAFKA-TOPIC-CONNECTOR-0002",
               OMRSAuditLogRecordSeverity.INFO,
-              "The properties passed to the Apache Kafka Producer for topic {0} are: {1}",
-              "The server is registering to receive events from Apache Kafka using the properties shown.",
+              "{0} properties passed to the Apache Kafka Producer for topic {1}",
+              "The server is registering to receive events from Apache Kafka using the properties associated with this log record.",
               "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_CONSUMER_PROPERTIES("OCF-KAFKA-TOPIC-CONNECTOR-0003",
               OMRSAuditLogRecordSeverity.INFO,
-              "The properties passed to the Apache Kafka Consumer for topic {0} are: {1}",
-              "The server is registering to receive events from Apache Kafka using the properties shown.",
+              "{0} properties passed to the Apache Kafka Consumer for topic {1}",
+              "The server is registering to receive events from Apache Kafka using the properties associated with this log record.",
               "No action is required.  This is part of the normal operation of the server."),
 
     SERVICE_SHUTDOWN("OCF-KAFKA-TOPIC-CONNECTOR-0004",
