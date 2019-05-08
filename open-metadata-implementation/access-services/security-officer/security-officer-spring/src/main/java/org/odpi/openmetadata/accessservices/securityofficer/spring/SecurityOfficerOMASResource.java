@@ -25,7 +25,7 @@ public class SecurityOfficerOMASResource {
      * @param assetId       the type of the entities that are returned
      */
     @RequestMapping(method = RequestMethod.GET, path = "/security-tag/assets/{assetId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    private void getSecurityTagByAssetIdentifier(@PathVariable String serverName, @PathVariable String userId, @PathVariable String assetId) {
+    public void getSecurityTagByAssetIdentifier(@PathVariable String serverName, @PathVariable String userId, @PathVariable String assetId) {
         service.getSecurityTagByAssetId(serverName, userId, assetId);
     }
 }
