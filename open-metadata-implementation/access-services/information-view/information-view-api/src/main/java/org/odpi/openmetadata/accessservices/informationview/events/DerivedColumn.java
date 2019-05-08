@@ -39,7 +39,7 @@ public class DerivedColumn extends TableColumn {
 
     @Override
     public String toString() {
-        return "DerivedColumn{" +
+        return "{" +
                 "name='" + getName() + '\'' +
                 ", position=" + getPosition() +
                 ", cardinality='" + getCardinality() + '\'' +

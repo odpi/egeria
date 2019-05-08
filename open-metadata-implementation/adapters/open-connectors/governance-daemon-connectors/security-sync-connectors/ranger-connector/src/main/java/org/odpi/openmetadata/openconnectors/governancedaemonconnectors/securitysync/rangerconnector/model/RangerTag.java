@@ -5,33 +5,13 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.security
 import java.util.Map;
 import java.util.Objects;
 
-public class RangerTag {
+public class RangerTag extends RangerBaseObject {
 
-    private Long id;
-    private String guid;
     private Boolean isEnabled;
-    private String createdBy;
-    private String updatedBy;
-    private String createTime;
+    private Short owner;
     private String type;
     private Map<String, String> attributes;
     private Map<String, Object> options;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getGuid() {
-        return guid;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
-    }
 
     public Boolean getEnabled() {
         return isEnabled;
@@ -41,28 +21,12 @@ public class RangerTag {
         isEnabled = enabled;
     }
 
-    public String getCreatedBy() {
-        return createdBy;
+    public Short getOwner() {
+        return owner;
     }
 
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public String getUpdatedBy() {
-        return updatedBy;
-    }
-
-    public void setUpdatedBy(String updatedBy) {
-        this.updatedBy = updatedBy;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
+    public void setOwner(Short owner) {
+        this.owner = owner;
     }
 
     public String getType() {
@@ -94,24 +58,20 @@ public class RangerTag {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RangerTag rangerTag = (RangerTag) o;
-        return guid.equals(rangerTag.guid) &&
+        return this.getGuid().equals(rangerTag.getGuid()) &&
                 type.equals(rangerTag.type);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(guid, type);
+        return Objects.hash(this.getGuid(), type);
     }
 
     @Override
     public String toString() {
         return "RangerTag{" +
-                "id=" + id +
-                ", guid='" + guid + '\'' +
-                ", isEnabled=" + isEnabled +
-                ", createdBy='" + createdBy + '\'' +
-                ", updatedBy='" + updatedBy + '\'' +
-                ", createTime='" + createTime + '\'' +
+                "isEnabled=" + isEnabled +
+                ", owner=" + owner +
                 ", type='" + type + '\'' +
                 ", attributes=" + attributes +
                 ", options=" + options +

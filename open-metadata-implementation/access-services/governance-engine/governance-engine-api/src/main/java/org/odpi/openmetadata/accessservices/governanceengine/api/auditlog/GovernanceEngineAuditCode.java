@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.MessageFormat;
-import java.util.Arrays;
 
 /**
  * The GovernanceConsumerAuditLog is used to define the message content for the OMRS Audit Log.
@@ -125,18 +124,9 @@ public enum GovernanceEngineAuditCode {
      * @return logMessage (formatted with supplied parameters)
      */
     public String getFormattedLogMessage(String... params) {
-        if (log.isDebugEnabled()) {
-            log.debug("==> OMRS Audit Code.getMessage({})", Arrays.toString(params));
-        }
-
         MessageFormat mf = new MessageFormat(logMessage);
-        String result = mf.format(params);
 
-        if (log.isDebugEnabled()) {
-            log.debug("<== OMRS Audit Code.getMessage({}): {}", Arrays.toString(params), result);
-        }
-
-        return result;
+        return mf.format(params);
     }
 
 

@@ -55,7 +55,7 @@ public class ReportColumn extends ReportElement {
 
     @Override
     public String toString() {
-        return "ReportColumn{" +
+        return "{" +
                 "aggregation='" + aggregation + '\'' +
                 ", formula='" + formula + '\'' +
                 ", sources=" + sources +
