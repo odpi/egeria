@@ -4,6 +4,7 @@ package org.odpi.openmetadata.openconnectors.governancedaemonconnectors.security
 
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernanceClassification;
 import org.odpi.openmetadata.accessservices.governanceengine.api.objects.GovernedAsset;
+import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerServiceResource;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerTag;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.ResourceTagMapper;
 
@@ -13,15 +14,17 @@ public interface SecurityServiceConnector {
 
     void importTaggedResources(List<GovernedAsset> governedAssets);
 
-    void createAssociationResourceToSecurityTag(GovernedAsset governedAsset);
-
     void deleteAssociationResourceToSecurityTag(ResourceTagMapper resourceTagMapper);
 
-    void createSecurityTag(GovernanceClassification classification);
-
-    List<RangerTag> getSecurityTags();
+    RangerTag createSecurityTag(GovernanceClassification classification);
 
     ResourceTagMapper getTagAssociatedWithTheResource(Long id);
 
     ResourceTagMapper createAssociationResourceToSecurityTag(String tagGUID, String resourceGUID);
+
+    RangerServiceResource getResourceByGUID(String resourceGuid);
+
+    void deleteResourceByGUID(String resourceGuid);
+
+    RangerServiceResource createResource(GovernedAsset governedAsset);
 }

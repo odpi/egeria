@@ -1,5 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
+---
+{{ if .Values.openldap.enabled }}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -87,3 +89,4 @@ spec:
             - mountPath: /egeria
               name: egeria-volume
               readOnly: true
+{{ end }}
