@@ -110,10 +110,7 @@ public enum CommunityProfileErrorCode
             "No profile exists for userId {0}.",
             "The service was unable to locate a profile for this user.",
             "Use the createMyProfile or createPersonalProfile method to add a profile and retry the request."),
-    INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAS-COMMUNITY-PROFILE-404-013 ",
-            "The {0} method has retrieved a object for unique identifier (guid) {1} which is of type {2} rather than type {3)",
-            "The service is not able to return the requested object.",
-            "Check that the unique identifier is correct and the property server(s) supporting the community profile is/are running."),
+
     INSTANCE_NOT_DELETED(404, "OMAS-COMMUNITY-PROFILE-404-010 ",
             "The service is not able to delete an instance of type {0} with an guid of {1}; the error message was {2}",
             "The instance is not deletable.",

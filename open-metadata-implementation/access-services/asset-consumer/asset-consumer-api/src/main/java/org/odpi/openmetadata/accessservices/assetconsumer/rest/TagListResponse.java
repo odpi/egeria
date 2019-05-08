@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetconsumer.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.Tag;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.InformalTag;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +24,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TagListResponse extends AssetConsumerOMASAPIResponse
 {
-    private List<Tag> tags                = null;
-    private int       startingFromElement = 0;
+    private List<InformalTag> tags                = null;
+    private int               startingFromElement = 0;
 
 
     /**
@@ -59,7 +59,7 @@ public class TagListResponse extends AssetConsumerOMASAPIResponse
      *
      * @return list of glossary terms
      */
-    public List<Tag> getTags()
+    public List<InformalTag> getTags()
     {
         if (tags == null)
         {
@@ -71,11 +71,11 @@ public class TagListResponse extends AssetConsumerOMASAPIResponse
         }
         else
         {
-            List<Tag>  clonedList = new ArrayList<>();
+            List<InformalTag>  clonedList = new ArrayList<>();
 
-            for (Tag  existingElement : tags)
+            for (InformalTag  existingElement : tags)
             {
-                clonedList.add(new Tag(existingElement));
+                clonedList.add(new InformalTag(existingElement));
             }
 
             return clonedList;
@@ -88,7 +88,7 @@ public class TagListResponse extends AssetConsumerOMASAPIResponse
      *
      * @param tags list
      */
-    public void setTags(List<Tag> tags)
+    public void setTags(List<InformalTag> tags)
     {
         this.tags = tags;
     }
