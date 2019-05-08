@@ -4,11 +4,10 @@ package org.odpi.openmetadata.accessservices.governanceprogram.samples;
 
 import org.apache.log4j.varia.NullAppender;
 import org.odpi.openmetadata.accessservices.governanceprogram.client.GovernanceProgramLeadership;
-import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.InvalidParameterException;
-import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.PropertyServerException;
-import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.UnrecognizedGUIDException;
-import org.odpi.openmetadata.accessservices.governanceprogram.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.accessservices.governanceprogram.properties.*;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -80,13 +79,13 @@ public class GovernanceLeadershipSample
      * @param client the client to call.
      * @param clientUserId the user id to use on the call.
      * @param guid the unique identifier for the personal profile.
-     * @throws UnrecognizedGUIDException the guid is not recognized.
+     * @throws InvalidParameterException the guid is not recognized.
      * @throws PropertyServerException the property server is not available.
      * @throws UserNotAuthorizedException the user id is not authorized to access the personal profile.
      */
     private void  printPersonalProfile(GovernanceProgramLeadership     client,
                                        String                          clientUserId,
-                                       String                          guid) throws UnrecognizedGUIDException,
+                                       String                          guid) throws InvalidParameterException,
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
     {
@@ -149,13 +148,13 @@ public class GovernanceLeadershipSample
      * @param client the client to call.
      * @param clientUserId the user id to use on the call.
      * @param guid the unique identifier for the governance officer.
-     * @throws UnrecognizedGUIDException the guid is not recognized.
+     * @throws InvalidParameterException the guid is not recognized.
      * @throws PropertyServerException the property server is not available.
      * @throws UserNotAuthorizedException the user id is not authorized to access the personal profile.
      */
     private void  printGovernanceOfficer(GovernanceProgramLeadership     client,
                                          String                          clientUserId,
-                                         String                          guid) throws UnrecognizedGUIDException,
+                                         String                          guid) throws InvalidParameterException,
                                                                                       PropertyServerException,
                                                                                       UserNotAuthorizedException
     {
@@ -185,8 +184,7 @@ public class GovernanceLeadershipSample
 
 
 
-    private void run() throws UnrecognizedGUIDException,
-                              InvalidParameterException,
+    private void run() throws InvalidParameterException,
                               PropertyServerException,
                               UserNotAuthorizedException
     {
@@ -605,7 +603,7 @@ public class GovernanceLeadershipSample
     /**
      * The main program takes the URL root for the server.
      *
-     * @param args URL root for the server
+     * @param args 1. server name, 2. URL root for the server, 3. client userId
      */
     public static void main(String[] args)
     {
@@ -618,7 +616,7 @@ public class GovernanceLeadershipSample
         if ((args == null) || (args.length < 3))
         {
             System.out.println("Please specify the server's name in the first parameter, " +
-                                       "the server's URL root in the second parameter " +
+                                       "the server's platform URL root in the second parameter " +
                                        "and the caller's userId in the third parameter");
             System.exit(-1);
         }
