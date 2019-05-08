@@ -9,7 +9,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <parent>
-        <artifactId>governance-servers</artifactId>
+        <artifactId>open-metadata-implementation</artifactId>
         <groupId>org.odpi.egeria</groupId>
         <version>1.1-SNAPSHOT</version>
     </parent>
@@ -18,8 +18,7 @@
 
     <name>Server Chassis</name>
     <description>
-        The server chassis provides an "empty" server to host the open metadata
-        services.
+        The server chassis provides an "empty" server to host the open metadata services.
     </description>
 
     <artifactId>server-chassis</artifactId>

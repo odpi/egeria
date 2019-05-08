@@ -5,7 +5,7 @@
 
 The server chassis is the component that provides the base
 server infrastructure for the
-[OMAG Server Platform](../../../open-metadata-publication/website/omag-server).
+[OMAG Server Platform](../../open-metadata-publication/website/omag-server).
 
 It is written using [Spring Boot](https://spring.io/projects/spring-boot).
 and manages the REST APIs' endpoint.  Calls to the server chassis
