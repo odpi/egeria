@@ -4,6 +4,8 @@ package org.odpi.openmetadata.accessservices.governanceprogram.server.spring;
 
 import org.odpi.openmetadata.accessservices.governanceprogram.rest.*;
 import org.odpi.openmetadata.accessservices.governanceprogram.server.GovernanceProgramRESTServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -64,10 +66,10 @@ public class GovernanceLeadershipResource
      */
     @RequestMapping(method = RequestMethod.POST, path = "/personal-profiles/{profileGUID}")
 
-    public VoidResponse   updatePersonalProfile(@PathVariable String                     serverName,
-                                                @PathVariable String                     userId,
-                                                @PathVariable String                     profileGUID,
-                                                @RequestBody  PersonalDetailsRequestBody requestBody)
+    public VoidResponse updatePersonalProfile(@PathVariable String                     serverName,
+                                              @PathVariable String                     userId,
+                                              @PathVariable String                     profileGUID,
+                                              @RequestBody  PersonalDetailsRequestBody requestBody)
     {
         return restAPI.updatePersonalProfile(serverName, userId, profileGUID, requestBody);
     }

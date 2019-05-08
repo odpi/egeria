@@ -24,7 +24,7 @@ and then [retrieve the asset properties](retrieving-asset-properties.md).
 
 Within the asset properties are links to glossary terms.
 It is possible to
-[look up the full description of a term](looking-up-meanings-of-terms.md)
+[look up the full description of a term](looking-up-assets-of-terms.md)
 to further understand the asset.
 
 There are also capabilities to 

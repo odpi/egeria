@@ -76,17 +76,8 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
             /*
              * Only set up the listening and event publishing if requested in the config.
              */
-            if ((omrsTopicConnector != null) && (accessServiceConfig.getAccessServiceOutTopic() != null))
+            if (accessServiceConfig.getAccessServiceOutTopic() != null)
             {
-                auditCode = AssetConsumerAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(serverName),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
-
                 AssetConsumerOMRSTopicListener omrsTopicListener;
 
                 omrsTopicListener = new AssetConsumerOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
@@ -95,8 +86,11 @@ public class AssetConsumerAdmin extends AccessServiceAdmin
                                                                        accessServiceConfig.getAccessServiceName(),
                                                                        supportedZones,
                                                                        auditLog);
-
-                omrsTopicConnector.registerListener(omrsTopicListener);
+                super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
+                                                  serverName,
+                                                  omrsTopicConnector,
+                                                  omrsTopicListener,
+                                                  auditLog);
             }
 
             auditCode = AssetConsumerAuditCode.SERVICE_INITIALIZED;

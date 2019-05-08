@@ -3,16 +3,16 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.handlers;
 
 
-import org.odpi.openmetadata.accessservices.assetconsumer.AssetConsumerGlossaryInterface;
+import org.odpi.openmetadata.accessservices.assetconsumer.api.AssetConsumerGlossaryInterface;
+import org.odpi.openmetadata.accessservices.assetconsumer.builders.GlossaryTermBuilder;
 import org.odpi.openmetadata.accessservices.assetconsumer.converters.GlossaryTermConverter;
-import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
+import org.odpi.openmetadata.accessservices.assetconsumer.mappers.GlossaryTermMapper;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTerm;
 import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
-import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.ConnectionHandler;
-import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryErrorHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
@@ -20,42 +20,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * MeaningHandler retrieves Glossary Term objects from the property server.  It runs server-side in the AssetConsumer
+ * GlossaryHandler retrieves Glossary Term objects from the property server.  It runs server-side in the AssetConsumer
  * OMAS and retrieves Glossary Term entities through the OMRSRepositoryConnector.
  */
-public class MeaningHandler implements AssetConsumerGlossaryInterface
+public class GlossaryHandler implements AssetConsumerGlossaryInterface
 {
-    private static final String glossaryTermGUID          = "0db3e6ec-f5ef-4d75-ae38-b7ee6fd6ec0a";
+    private String                  serviceName;
+    private String                  serverName;
+    private RepositoryHandler       repositoryHandler;
+    private OMRSRepositoryHelper    repositoryHelper;
+    private InvalidParameterHandler invalidParameterHandler;
 
-
-    private String                 serviceName;
-    private OMRSRepositoryHelper   repositoryHelper = null;
-    private String                 serverName       = null;
-    private RepositoryErrorHandler errorHandler     = null;
 
     /**
-     * Construct the glossary term handler with a link to the property server's connector and this access service's
-     * official name.
+     * Construct the discovery engine configuration handler caching the objects
+     * needed to operate within a single server instance.
      *
-     * @param serviceName  name of this service
+     * @param serviceName name of the consuming service
+     * @param serverName name of this server instance
+     * @param invalidParameterHandler handler for invalid parameters
+     * @param repositoryHelper helper used by the converters
+     * @param repositoryHandler handler for calling the repository services
      */
-    public MeaningHandler(String                  serviceName,
-                          String                  serverName,
-                          InvalidParameterHandler invalidParameterHandler,
-                          OMRSRepositoryHelper    repositoryHelper,
-                          RepositoryHandler repositoryHandler,
-                          RepositoryErrorHandler  errorHandler,
-                          ConnectionHandler connectionHandler)
+    public GlossaryHandler(String                  serviceName,
+                           String                  serverName,
+                           InvalidParameterHandler invalidParameterHandler,
+                           OMRSRepositoryHelper    repositoryHelper,
+                           RepositoryHandler       repositoryHandler)
     {
         this.serviceName = serviceName;
         this.serverName = serverName;
-        if (repositoryConnector != null)
-        {
-            this.repositoryHelper = repositoryConnector.getRepositoryHelper();
-            this.serverName = repositoryConnector.getServerName();
-            errorHandler = new RepositoryErrorHandler(repositoryConnector);
-        }
+        this.invalidParameterHandler = invalidParameterHandler;
+        this.repositoryHelper = repositoryHelper;
+        this.repositoryHandler = repositoryHandler;
     }
+
 
 
     /**
@@ -74,83 +73,51 @@ public class MeaningHandler implements AssetConsumerGlossaryInterface
     public List<GlossaryTerm> getMeaningByName(String    userId,
                                                String    name,
                                                int       startFrom,
-                                               int       pageSize) throws InvalidParameterException, PropertyServerException,
-                                                                    UserNotAuthorizedException
+                                               int       pageSize) throws InvalidParameterException,
+                                                                          PropertyServerException,
+                                                                          UserNotAuthorizedException
     {
         final  String   methodName = "getMeaningsByName";
         final  String   nameParameter = "name";
 
         List<GlossaryTerm>  results = new ArrayList<>();
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateName(name, nameParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(name, nameParameter, methodName);
 
-        OMRSMetadataCollection metadataCollection = errorHandler.validateRepositoryConnector(methodName);
+        GlossaryTermBuilder glossaryTermBuilder = new GlossaryTermBuilder(name,
+                                                                          name,
+                                                                          repositoryHelper,
+                                                                          serviceName,
+                                                                          serverName);
 
-        try
+        List<EntityDetail> glossaryTerms = repositoryHandler.getEntityByName(userId,
+                                                                             glossaryTermBuilder.getNameInstanceProperties(methodName),
+                                                                             GlossaryTermMapper.GLOSSARY_TERM_TYPE_GUID,
+                                                                             methodName);
+
+        if (glossaryTerms != null)
         {
-            InstanceProperties properties;
-
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      null,
-                                                                      ReferenceableHeaderConverter.QUALIFIED_NAME_PROPERTY_NAME,
-                                                                      name,
-                                                                      methodName);
-
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      GlossaryTermConverter.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      name,
-                                                                      methodName);
-
-            List<EntityDetail> glossaryTermEntities = metadataCollection.findEntitiesByProperty(userId,
-                                                                                                glossaryTermGUID,
-                                                                                                properties,
-                                                                                                MatchCriteria.ANY,
-                                                                                                startFrom,
-                                                                                                null,
-                                                                                                null,
-                                                                                                null,
-                                                                                                null,
-                                                                                                null,
-                                                                                                pageSize);
-
-            if (glossaryTermEntities == null)
+            for (EntityDetail entity : glossaryTerms)
             {
-                return null;
-            }
-            else if (glossaryTermEntities.isEmpty())
-            {
-                return null;
-            }
-            else
-            {
-                for (EntityDetail  termEntity : glossaryTermEntities)
+                if (entity != null)
                 {
-                    if (termEntity != null)
-                    {
-                        GlossaryTermConverter   converter = new GlossaryTermConverter(termEntity, repositoryHelper, serviceName);
-                        results.add(converter.getBean());
-                    }
+                    GlossaryTermConverter  converter = new GlossaryTermConverter(entity,
+                                                                                 repositoryHelper,
+                                                                                 serviceName);
+                    results.add(converter.getBean());
                 }
             }
         }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId,
-                                                methodName,
-                                                serverName,
-                                                serviceName);
-        }
-        catch (Throwable  error)
-        {
-            errorHandler.handleRepositoryError(error,
-                                               methodName,
-                                               serverName,
-                                               serviceName);
-        }
 
-        return null;
+        if (results.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return results;
+        }
     }
 
 
@@ -173,61 +140,18 @@ public class MeaningHandler implements AssetConsumerGlossaryInterface
         final  String   methodName = "getMeaningByGUID";
         final  String   guidParameter = "guid";
 
-        errorHandler.validateUserId(userId, methodName);
-        errorHandler.validateGUID(guid, guidParameter, methodName);
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateGUID(guid, guidParameter, methodName);
 
-        OMRSMetadataCollection  metadataCollection = errorHandler.validateRepositoryConnector(methodName);
-        EntityDetail            termEntity = null;
+        EntityDetail entity = repositoryHandler.getEntityByGUID(userId,
+                                                                guid,
+                                                                guidParameter,
+                                                                GlossaryTermMapper.GLOSSARY_TERM_TYPE_NAME,
+                                                                methodName);
 
-        try
-        {
-            termEntity = metadataCollection.getEntityDetail(userId, guid);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
-        {
-            AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.TERM_NOT_FOUND;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
-                                                                                                            serverName,
-                                                                                                            error.getErrorMessage());
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                guidParameter);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException error)
-        {
-            AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.PROXY_TERM_FOUND;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(guid,
-                                                                                                            serverName,
-                                                                                                            error.getErrorMessage());
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                guidParameter);
-        }
-        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
-        {
-            errorHandler.handleUnauthorizedUser(userId, methodName, serverName, serviceName);
-        }
-        catch (Throwable   error)
-        {
-            errorHandler.handleRepositoryError(error, methodName, serverName, serviceName);
-        }
-
-        if (termEntity != null)
-        {
-            GlossaryTermConverter   converter = new GlossaryTermConverter(termEntity, repositoryHelper, serviceName);
-            return converter.getBean();
-        }
-
-        return null;
+        GlossaryTermConverter  converter = new GlossaryTermConverter(entity,
+                                                                     repositoryHelper,
+                                                                     serviceName);
+        return converter.getBean();
     }
 }

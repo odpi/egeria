@@ -1,5 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.assetowner;
+/* Copyright Contributors to the ODPi Egeria project. */
+
+package org.odpi.openmetadata.accessservices.assetowner.api;
 
 /**
  * The AssetReviewInterface is used by the asset owner to review the state of the asset including any quality and usage

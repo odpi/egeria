@@ -3,7 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.connectedasset.client;
 
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -146,6 +146,8 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
 
         log.debug("Calling method: " + methodName);
 
+        RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
+
         try
         {
             if ((localServerUserId != null) && (localServerPassword != null))
@@ -163,20 +165,7 @@ public class ConnectedAssetProperties extends org.odpi.openmetadata.frameworks.c
         }
         catch (Throwable  error)
         {
-            ConnectedAssetErrorCode errorCode    = ConnectedAssetErrorCode.PROPERTY_SERVER_ERROR;
-            String                  errorMessage = errorCode.getErrorMessageId()
-                                                 + errorCode.getFormattedErrorMessage(methodName,
-                                                                                      serviceName,
-                                                                                      omasServerURL,
-                                                                                      error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
+            restExceptionHandler.handleUnexpectedException(error, methodName, remoteServerName, omasServerURL);
         }
 
         log.debug("Returning from method: " + methodName + " having retrieved: " + assetProperties.toString());

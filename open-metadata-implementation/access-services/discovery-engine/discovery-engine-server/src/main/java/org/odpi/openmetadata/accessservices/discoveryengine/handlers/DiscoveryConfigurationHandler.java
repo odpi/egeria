@@ -19,7 +19,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedExcepti
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryConfigurationServer;
-import org.odpi.openmetadata.frameworks.discovery.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryServiceProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.RegisteredDiscoveryService;
@@ -32,10 +32,10 @@ import java.util.Map;
 
 
 /**
- * DiscoveryConfigurationServerHandler provides the open metadata server side implementation of
+ * DiscoveryConfigurationHandler provides the open metadata server side implementation of
  * DiscoveryConfigurationServer which is part of the Open Discovery Framework (ODF).
  */
-public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationServer
+public class DiscoveryConfigurationHandler extends DiscoveryConfigurationServer
 {
     private String                  serviceName;
     private String                  serverName;
@@ -58,13 +58,13 @@ public class DiscoveryConfigurationServerHandler extends DiscoveryConfigurationS
      * @param errorHandler handler for repository service errors
      * @param connectionHandler handler for working with connection objects
      */
-    public DiscoveryConfigurationServerHandler(String                  serviceName,
-                                               String                  serverName,
-                                               InvalidParameterHandler invalidParameterHandler,
-                                               OMRSRepositoryHelper    repositoryHelper,
-                                               RepositoryHandler       repositoryHandler,
-                                               RepositoryErrorHandler  errorHandler,
-                                               ConnectionHandler       connectionHandler)
+    public DiscoveryConfigurationHandler(String                  serviceName,
+                                         String                  serverName,
+                                         InvalidParameterHandler invalidParameterHandler,
+                                         OMRSRepositoryHelper    repositoryHelper,
+                                         RepositoryHandler       repositoryHandler,
+                                         RepositoryErrorHandler  errorHandler,
+                                         ConnectionHandler       connectionHandler)
     {
         this.serviceName = serviceName;
         this.serverName = serverName;

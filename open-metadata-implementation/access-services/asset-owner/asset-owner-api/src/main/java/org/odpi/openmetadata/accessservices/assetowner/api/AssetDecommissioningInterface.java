@@ -1,5 +1,6 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.assetowner;
+/* Copyright Contributors to the ODPi Egeria project. */
+package org.odpi.openmetadata.accessservices.assetowner.api;
 
 /**
  * The AssetDecommissioningInterface covers the steps that the asset owner needs to perform at the end of life of the
