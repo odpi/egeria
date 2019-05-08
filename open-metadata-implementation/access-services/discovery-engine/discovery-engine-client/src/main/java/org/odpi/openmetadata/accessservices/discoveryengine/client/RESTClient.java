@@ -2,23 +2,17 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.client;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.DiscoveryEngineErrorCode;
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
-import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
-import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientFactory;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.discovery.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
 
 /**
  * RESTClient is responsible for issuing calls to the OMAS REST APIs.
  */
-class RESTClient
+class RESTClient extends FFDCRESTClient
 {
-    private RESTClientConnector clientConnector;        /* Initialized in constructor */
-    private String              serverName;             /* Initialized in constructor */
-    private String              serverPlatformURLRoot;  /* Initialized in constructor */
-
     /**
      * Constructor for no authentication.
      *
@@ -30,33 +24,7 @@ class RESTClient
     RESTClient(String serverName,
                String serverPlatformURLRoot) throws InvalidParameterException
     {
-        final String  methodName = "RESTClient(no authentication)";
-
-        RESTClientFactory factory = new RESTClientFactory(serverName, serverPlatformURLRoot);
-
-        this.serverName = serverName;
-        this.serverPlatformURLRoot = serverPlatformURLRoot;
-
-        try
-        {
-            this.clientConnector = factory.getClientConnector();
-        }
-        catch (Throwable     error)
-        {
-            DiscoveryEngineErrorCode errorCode    = DiscoveryEngineErrorCode.NULL_LOCAL_SERVER_NAME;
-            String                   errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
-
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                error,
-                                                "serverPlatformURLRoot or serverName");
-        }
+        super(serverName, serverPlatformURLRoot);
     }
 
 
@@ -75,202 +43,7 @@ class RESTClient
                String userId,
                String password) throws InvalidParameterException
     {
-        final String  methodName = "RESTClient(userId and password)";
-
-        RESTClientFactory  factory = new RESTClientFactory(serverName,
-                                                           serverPlatformURLRoot,
-                                                           userId,
-                                                           password);
-
-        try
-        {
-            this.clientConnector = factory.getClientConnector();
-        }
-        catch (Throwable     error)
-        {
-            DiscoveryEngineErrorCode errorCode    = DiscoveryEngineErrorCode.NULL_LOCAL_SERVER_NAME;
-            String                   errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(serverName, error.getMessage());
-
-
-            throw new InvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                this.getClass().getName(),
-                                                methodName,
-                                                errorMessage,
-                                                errorCode.getSystemAction(),
-                                                errorCode.getUserAction(),
-                                                error,
-                                                "serverPlatformURLRoot or serverName");
-        }
-    }
-
-
-
-    /**
-     * Issue a GET REST call that returns a list of GUIDs object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return ConnectionResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    GUIDListResponse callGUIDListGetRESTCall(String    methodName,
-                                             String    urlTemplate,
-                                             Object... params) throws PropertyServerException
-    {
-        try
-        {
-            return clientConnector.callGetRESTCall(methodName, GUIDListResponse.class, urlTemplate, params);
-        }
-        catch (Throwable     error)
-        {
-            DiscoveryEngineErrorCode errorCode    = DiscoveryEngineErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String                   errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       serverPlatformURLRoot,
-                                                                                       error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
-        }
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a GUIDResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return GUIDResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    GUIDResponse callGUIDGetRESTCall(String    methodName,
-                                     String    urlTemplate,
-                                     Object... params) throws PropertyServerException
-    {
-        try
-        {
-            return clientConnector.callGetRESTCall(methodName, GUIDResponse.class, urlTemplate, params);
-        }
-        catch (Throwable     error)
-        {
-            DiscoveryEngineErrorCode errorCode    = DiscoveryEngineErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String                   errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       serverPlatformURLRoot,
-                                                                                       error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
-        }
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a guid object.
-     *
-     * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the request.
-     * @param params  a list of parameters that are slotted into the url template.
-     *
-     * @return GUIDResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    GUIDResponse callGUIDPostRESTCall(String    methodName,
-                                      String    urlTemplate,
-                                      Object    requestBody,
-                                      Object... params) throws PropertyServerException
-    {
-        try
-        {
-            return clientConnector.callPostRESTCall(methodName,
-                                                    GUIDResponse.class,
-                                                    urlTemplate,
-                                                    requestBody,
-                                                    params);
-        }
-        catch (Throwable     error)
-        {
-            DiscoveryEngineErrorCode errorCode    = DiscoveryEngineErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String                   errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       serverPlatformURLRoot,
-                                                                                       error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
-        }
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a VoidResponse object.  This is typically a create
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the request.
-     * @param params  a list of parameters that are slotted into the url template.
-     *
-     * @return VoidResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    VoidResponse callVoidPostRESTCall(String    methodName,
-                                      String    urlTemplate,
-                                      Object    requestBody,
-                                      Object... params) throws PropertyServerException
-    {
-        try
-        {
-            return clientConnector.callPostRESTCall(methodName,
-                                                    VoidResponse.class,
-                                                    urlTemplate,
-                                                    requestBody,
-                                                    params);
-        }
-        catch (Throwable     error)
-        {
-            DiscoveryEngineErrorCode errorCode    = DiscoveryEngineErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String                   errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       serverPlatformURLRoot,
-                                                                                       error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
-        }
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
 
 
@@ -288,28 +61,7 @@ class RESTClient
                                                                                String    urlTemplate,
                                                                                Object... params) throws PropertyServerException
     {
-        try
-        {
-            return clientConnector.callGetRESTCall(methodName, DiscoveryEnginePropertiesResponse.class, urlTemplate, params);
-        }
-        catch (Throwable     error)
-        {
-            DiscoveryEngineErrorCode errorCode    = DiscoveryEngineErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String                   errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       serverPlatformURLRoot,
-                                                                                       error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
-        }
+        return this.callGetRESTCall(methodName, DiscoveryEnginePropertiesResponse.class, urlTemplate, params);
     }
 
 
@@ -327,28 +79,7 @@ class RESTClient
                                                                    String    urlTemplate,
                                                                    Object... params) throws PropertyServerException
     {
-        try
-        {
-            return clientConnector.callGetRESTCall(methodName, DiscoveryEngineListResponse.class, urlTemplate, params);
-        }
-        catch (Throwable     error)
-        {
-            DiscoveryEngineErrorCode errorCode    = DiscoveryEngineErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String                   errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       serverPlatformURLRoot,
-                                                                                       error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
-        }
+        return this.callGetRESTCall(methodName, DiscoveryEngineListResponse.class, urlTemplate, params);
     }
 
 
@@ -366,28 +97,7 @@ class RESTClient
                                                                                  String    urlTemplate,
                                                                                  Object... params) throws PropertyServerException
     {
-        try
-        {
-            return clientConnector.callGetRESTCall(methodName, DiscoveryServicePropertiesResponse.class, urlTemplate, params);
-        }
-        catch (Throwable     error)
-        {
-            DiscoveryEngineErrorCode errorCode    = DiscoveryEngineErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String                   errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       serverPlatformURLRoot,
-                                                                                       error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
-        }
+        return this.callGetRESTCall(methodName, DiscoveryServicePropertiesResponse.class, urlTemplate, params);
     }
 
 
@@ -405,28 +115,7 @@ class RESTClient
                                                                      String    urlTemplate,
                                                                      Object... params) throws PropertyServerException
     {
-        try
-        {
-            return clientConnector.callGetRESTCall(methodName, DiscoveryServiceListResponse.class, urlTemplate, params);
-        }
-        catch (Throwable     error)
-        {
-            DiscoveryEngineErrorCode errorCode    = DiscoveryEngineErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String                   errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       serverPlatformURLRoot,
-                                                                                       error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
-        }
+        return this.callGetRESTCall(methodName, DiscoveryServiceListResponse.class, urlTemplate, params);
     }
 
 
@@ -444,28 +133,6 @@ class RESTClient
                                                                                  String    urlTemplate,
                                                                                  Object... params) throws PropertyServerException
     {
-        try
-        {
-            return clientConnector.callGetRESTCall(methodName, RegisteredDiscoveryServiceResponse.class, urlTemplate, params);
-        }
-        catch (Throwable     error)
-        {
-            DiscoveryEngineErrorCode errorCode    = DiscoveryEngineErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String                   errorMessage = errorCode.getErrorMessageId()
-                                                  + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                       urlTemplate,
-                                                                                       serverName,
-                                                                                       serverPlatformURLRoot,
-                                                                                       error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
-        }
+        return this.callGetRESTCall(methodName, RegisteredDiscoveryServiceResponse.class, urlTemplate, params);
     }
-
 }

@@ -1,5 +1,7 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.assetowner;
+/* Copyright Contributors to the ODPi Egeria project. */
+
+package org.odpi.openmetadata.accessservices.assetowner.api;
 
 
 /**
@@ -9,4 +11,5 @@ package org.odpi.openmetadata.accessservices.assetowner;
  */
 public interface AssetVisibilityInterface
 {
+
 }

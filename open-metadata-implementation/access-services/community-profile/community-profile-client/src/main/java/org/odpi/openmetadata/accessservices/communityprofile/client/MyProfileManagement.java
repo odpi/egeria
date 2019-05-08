@@ -2,13 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.client;
 
-import org.odpi.openmetadata.accessservices.communityprofile.MyPersonalProfileInterface;
+import org.odpi.openmetadata.accessservices.communityprofile.api.MyPersonalProfileInterface;
 import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.AssetCollectionMember;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethod;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.ContactMethodType;
 import org.odpi.openmetadata.accessservices.communityprofile.properties.PersonalProfile;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.CountResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 
 import java.util.List;
 import java.util.Map;
@@ -24,7 +30,6 @@ public class MyProfileManagement implements MyPersonalProfileInterface
 
     private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
     private RESTExceptionHandler    exceptionHandler        = new RESTExceptionHandler();
-    private NullRequestBody         nullRequestBody         = new NullRequestBody();
 
 
     /**
@@ -32,9 +37,11 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      *
      * @param serverName name of the server to connect to
      * @param omasServerURL the network address of the server running the OMAS REST servers
+     *
+     * @throws InvalidParameterException bad input parameters
      */
     public MyProfileManagement(String     serverName,
-                               String     omasServerURL)
+                               String     omasServerURL) throws InvalidParameterException
     {
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
@@ -50,11 +57,13 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @param omasServerURL the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     *
+     * @throws InvalidParameterException bad input parameters
      */
     public MyProfileManagement(String     serverName,
                                String     omasServerURL,
                                String     userId,
-                               String     password)
+                               String     password) throws  InvalidParameterException
     {
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
@@ -82,7 +91,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
         final String   methodName = "getMyProfile";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/my-profile";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
 
         PersonalProfileResponse restResult = restClient.callPersonalProfileGetRESTCall(methodName,
@@ -110,15 +119,15 @@ public class MyProfileManagement implements MyPersonalProfileInterface
      * @throws PropertyServerException there is a problem retrieving information from the property server(s).
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
-    public int getMyKarmaPoints(String userId) throws InvalidParameterException,
-                                                      NoProfileForUserException,
-                                                      PropertyServerException,
-                                                      UserNotAuthorizedException
+    public long getMyKarmaPoints(String userId) throws InvalidParameterException,
+                                                       NoProfileForUserException,
+                                                       PropertyServerException,
+                                                       UserNotAuthorizedException
     {
         final String   methodName = "getMyKarmaPoints";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/community-profile/users/{1}/my-profile/karma-points";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
 
         CountResponse restResult = restClient.callCountGetRESTCall(methodName,
@@ -166,7 +175,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
         final String   qualifiedNameParameterName = "qualifiedName";
         final String   knownNameParameterName = "knownName";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
         invalidParameterHandler.validateName(knownName, knownNameParameterName, methodName);
@@ -211,7 +220,7 @@ public class MyProfileManagement implements MyPersonalProfileInterface
 
         final String   qualifiedNameParameterName = "qualifiedName";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, qualifiedNameParameterName, methodName);
 

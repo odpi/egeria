@@ -18,17 +18,16 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class ReviewRequestBody extends AssetConsumerOMASAPIRequestBody
+public class RatingRequestBody extends FeedbackRequestBody
 {
     private StarRating starRating = null;
     private String     review     = null;
-    private boolean    isPrivate  = false;
 
 
     /**
      * Default constructor
      */
-    public ReviewRequestBody()
+    public RatingRequestBody()
     {
     }
 
@@ -38,7 +37,7 @@ public class ReviewRequestBody extends AssetConsumerOMASAPIRequestBody
      *
      * @param template object to copy
      */
-    public ReviewRequestBody(ReviewRequestBody template)
+    public RatingRequestBody(RatingRequestBody template)
     {
         super(template);
 
@@ -46,7 +45,6 @@ public class ReviewRequestBody extends AssetConsumerOMASAPIRequestBody
         {
             this.starRating = template.getStarRating();
             this.review = template.getReview();
-            this.isPrivate = template.isPrivate();
         }
     }
 
@@ -96,28 +94,6 @@ public class ReviewRequestBody extends AssetConsumerOMASAPIRequestBody
 
 
     /**
-     * Return whether the feedback is private or not
-     *
-     * @return boolean
-     */
-    public boolean isPrivate()
-    {
-        return isPrivate;
-    }
-
-
-    /**
-     * Set up the privacy flag.
-     *
-     * @param aPrivate boolean
-     */
-    public void setPrivate(boolean aPrivate)
-    {
-        isPrivate = aPrivate;
-    }
-
-
-    /**
      * JSON-style toString.
      *
      * @return list of properties and their values.
@@ -125,10 +101,10 @@ public class ReviewRequestBody extends AssetConsumerOMASAPIRequestBody
     @Override
     public String toString()
     {
-        return "ReviewRequestBody{" +
+        return "RatingRequestBody{" +
                 "starRating=" + starRating +
                 ", review='" + review + '\'' +
-                ", isPublic=" + isPrivate +
+                ", isPublic=" + isPublic() +
                 '}';
     }
 
@@ -150,8 +126,8 @@ public class ReviewRequestBody extends AssetConsumerOMASAPIRequestBody
         {
             return false;
         }
-        ReviewRequestBody that = (ReviewRequestBody) objectToCompare;
-        return isPrivate() == that.isPrivate() &&
+        RatingRequestBody that = (RatingRequestBody) objectToCompare;
+        return isPublic() == that.isPublic() &&
                 getStarRating() == that.getStarRating() &&
                 Objects.equals(getReview(), that.getReview());
     }
@@ -166,6 +142,6 @@ public class ReviewRequestBody extends AssetConsumerOMASAPIRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(getStarRating(), getReview(), isPrivate());
+        return Objects.hash(getStarRating(), getReview(), isPublic());
     }
 }

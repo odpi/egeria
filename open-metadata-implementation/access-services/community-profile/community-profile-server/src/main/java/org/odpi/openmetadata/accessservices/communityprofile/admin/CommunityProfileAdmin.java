@@ -62,7 +62,11 @@ public class CommunityProfileAdmin extends AccessServiceAdmin
         try
         {
             this.repositoryConnector = enterpriseOMRSRepositoryConnector;
-            this.instance = new CommunityProfileServicesInstance(repositoryConnector);
+            this.instance = new CommunityProfileServicesInstance(repositoryConnector,
+                                                                 this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                                            accessServiceConfig.getAccessServiceName(),
+                                                                                            auditLog),
+                                                                 auditLog);
             this.serverName = instance.getServerName();
 
             this.accessServiceConfig = accessServiceConfigurationProperties;

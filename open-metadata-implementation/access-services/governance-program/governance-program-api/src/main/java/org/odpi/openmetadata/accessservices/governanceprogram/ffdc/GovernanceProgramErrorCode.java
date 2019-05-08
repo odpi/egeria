@@ -1,4 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
+/* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceprogram.ffdc;
 
 import org.slf4j.Logger;
@@ -98,10 +99,6 @@ public enum GovernanceProgramErrorCode
             "The governance program OMAS is not able to delete a personal details record with an guid of {0}; the error message was {1}",
             "The personal details record is not deletable.",
             "Check that the guid is correct and the property server(s) supporting the governance program is/are running."),
-    INSTANCE_WRONG_TYPE_FOR_GUID(404, "OMAS-GOVERNANCE-PROGRAM-404-010 ",
-            "The governance program OMAS {0} method has retrieved a record for unique identifier (guid) {1} which is of type {2} rather than type {3)",
-            "The governance officer record is not stored in the property server.",
-            "Check that the unique identifier is correct and the property server(s) supporting the governance program is/are running."),
     GOVERNANCE_OFFICER_NOT_FOUND_BY_APPOINTMENT_ID(404, "OMAS-GOVERNANCE-PROGRAM-404-011 ",
             "The governance program OMAS is not able to retrieve a governance officer record with an appointment id of {0}",
             "The governance officer record is not stored in the property server.",
