@@ -4,7 +4,7 @@
 # Origin identifier requirement
 
 The open metadata standards defines a getServerOrigin
-operation (`../open-metadata/admin-services/users/{userId}/server-origin`).
+operation (`../open-metadata/admin-services/users/{userId}/server-platform-origin`).
 This operation returns an origin descriptor.
 Typically this identifies the vendor, product name and version of the server.
 It is useful to administrators to be able to validate the platform that is running.

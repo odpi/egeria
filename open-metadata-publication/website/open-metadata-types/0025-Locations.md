@@ -24,6 +24,7 @@ SecureLocation and CyberLocation help to clarify the nature of the location.
 * CyberLocation means that the location describes something in cyber space.
 
 
+Return to [Area 0](Area-0-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

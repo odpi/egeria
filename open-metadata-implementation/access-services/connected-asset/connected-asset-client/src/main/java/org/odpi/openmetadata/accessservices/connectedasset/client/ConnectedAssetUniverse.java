@@ -2,9 +2,10 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.client;
 
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.exceptions.*;
 import org.odpi.openmetadata.accessservices.connectedasset.rest.AssetResponse;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.*;
@@ -26,6 +27,9 @@ public class ConnectedAssetUniverse extends AssetUniverse
 {
     private final int MAX_CACHE_SIZE = 100;
 
+    private InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
+    private RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
+
 
     /**
      * Constructor used by Asset Consumer OMAS for getExtendedProperties() with no authentication
@@ -38,15 +42,13 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @param assetGUID  unique id for asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UnrecognizedAssetGUIDException the assetGUID is not recognized
      * @throws PropertyServerException There is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
     public ConnectedAssetUniverse(String   remoteServerName,
                                   String   omasServerURL,
                                   String   userId,
-                                  String   assetGUID) throws UnrecognizedAssetGUIDException,
-                                                             InvalidParameterException,
+                                  String   assetGUID) throws InvalidParameterException,
                                                              PropertyServerException,
                                                              UserNotAuthorizedException
     {
@@ -73,7 +75,6 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @param assetGUID  unique id for asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UnrecognizedAssetGUIDException the assetGUID is not recognized
      * @throws PropertyServerException There is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
@@ -82,8 +83,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                   String   localServerPassword,
                                   String   omasServerURL,
                                   String   userId,
-                                  String   assetGUID) throws UnrecognizedAssetGUIDException,
-                                                             InvalidParameterException,
+                                  String   assetGUID) throws InvalidParameterException,
                                                              PropertyServerException,
                                                              UserNotAuthorizedException
     {
@@ -105,7 +105,6 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @param assetGUID  unique id for asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UnrecognizedAssetGUIDException the assetGUID is not recognized
      * @throws PropertyServerException There is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
@@ -113,8 +112,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                   String      omasServerURL,
                                   String      userId,
                                   String      assetGUID,
-                                  RESTClient  restClient) throws UnrecognizedAssetGUIDException,
-                                                                 InvalidParameterException,
+                                  RESTClient  restClient) throws InvalidParameterException,
                                                                  PropertyServerException,
                                                                  UserNotAuthorizedException
     {
@@ -138,8 +136,6 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @param connectionGUID  unique id for connection used to access asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UnrecognizedAssetGUIDException the assetGUID is not recognized
-     * @throws UnrecognizedConnectionGUIDException the connectionGUID is not recognized
      * @throws PropertyServerException There is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
@@ -147,9 +143,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                   String   omasServerURL,
                                   String   userId,
                                   String   assetGUID,
-                                  String   connectionGUID) throws UnrecognizedAssetGUIDException,
-                                                                  UnrecognizedConnectionGUIDException,
-                                                                  InvalidParameterException,
+                                  String   connectionGUID) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
     {
@@ -176,8 +170,6 @@ public class ConnectedAssetUniverse extends AssetUniverse
      * @param connectionGUID  unique id for connection used to access asset.
      *
      * @throws InvalidParameterException one of the parameters is null or invalid.
-     * @throws UnrecognizedAssetGUIDException the assetGUID is not recognized
-     * @throws UnrecognizedConnectionGUIDException the connectionGUID is not recognized
      * @throws PropertyServerException There is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
@@ -187,9 +179,7 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                   String   omasServerURL,
                                   String   userId,
                                   String   assetGUID,
-                                  String   connectionGUID) throws UnrecognizedAssetGUIDException,
-                                                                  UnrecognizedConnectionGUIDException,
-                                                                  InvalidParameterException,
+                                  String   connectionGUID) throws InvalidParameterException,
                                                                   PropertyServerException,
                                                                   UserNotAuthorizedException
     {
@@ -370,8 +360,6 @@ public class ConnectedAssetUniverse extends AssetUniverse
      *
      * @return a bean with the basic properties about the asset.
      * @throws InvalidParameterException the asset GUID is null or invalid.
-     * @throws UnrecognizedAssetGUIDException the asset GUID is not recognized by the property server.
-     * @throws UnrecognizedConnectionGUIDException the connection GUID is not recognized by the property server.
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
@@ -381,46 +369,32 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                                    String     userId,
                                                    String     assetGUID,
                                                    String     connectionGUID) throws InvalidParameterException,
-                                                                                     UnrecognizedAssetGUIDException,
-                                                                                     UnrecognizedConnectionGUIDException,
                                                                                      PropertyServerException,
                                                                                      UserNotAuthorizedException
     {
         final String   methodName = "getConnectedAssetSummary";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/assets/{2}/via-connection/{3}";
 
-        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-        RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, remoteServerName, methodName);
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
-
-        AssetResponse  restResult;
+        AssetResponse  restResult = null;
 
         try
         {
             restResult = restClient.callAssetGetRESTCall(methodName, urlTemplate, remoteServerName, userId, assetGUID, connectionGUID);
+
+            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        }
+        catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException error)
+        {
+            throw error;
         }
         catch (Throwable error)
         {
-            ConnectedAssetErrorCode errorCode = ConnectedAssetErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     omasServerURL,
-                                                                                                     error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
+            restExceptionHandler.handleUnexpectedException(error, methodName, remoteServerName, omasServerURL);
         }
-
-        restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        restExceptionHandler.detectAndThrowUnrecognizedAssetGUIDException(methodName, restResult);
-        restExceptionHandler.detectAndThrowUnrecognizedConnectionGUIDException(methodName, restResult);
-        restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult;
     }
@@ -438,7 +412,6 @@ public class ConnectedAssetUniverse extends AssetUniverse
      *
      * @return a bean with the basic properties about the asset.
      * @throws InvalidParameterException the asset GUID is null or invalid.
-     * @throws UnrecognizedAssetGUIDException the asset GUID is not recognized by the property server.
      * @throws PropertyServerException there is a problem retrieving the asset properties from the property server.
      * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
      */
@@ -447,44 +420,32 @@ public class ConnectedAssetUniverse extends AssetUniverse
                                           RESTClient restClient,
                                           String     userId,
                                           String     assetGUID) throws InvalidParameterException,
-                                                                       UnrecognizedAssetGUIDException,
                                                                        PropertyServerException,
                                                                        UserNotAuthorizedException
     {
         final String   methodName = "getAssetSummary";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/assets/{2}";
-
-        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-        RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
         
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, remoteServerName, methodName);
 
-        AssetResponse  restResult;
+        AssetResponse  restResult = null;
 
         try
         {
             restResult = restClient.callAssetGetRESTCall(methodName, urlTemplate, remoteServerName, userId, assetGUID);
+
+            restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+            restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+            restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+        }
+        catch (InvalidParameterException | UserNotAuthorizedException | PropertyServerException error)
+        {
+            throw error;
         }
         catch (Throwable error)
         {
-            ConnectedAssetErrorCode errorCode = ConnectedAssetErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     omasServerURL,
-                                                                                                     error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
+            restExceptionHandler.handleUnexpectedException(error, methodName, remoteServerName, omasServerURL);
         }
-
-        restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-        restExceptionHandler.detectAndThrowUnrecognizedAssetGUIDException(methodName, restResult);
-        restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
-        restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
         return restResult;
     }

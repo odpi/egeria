@@ -6,7 +6,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
-import org.odpi.openmetadata.frameworks.discovery.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryServiceProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.RegisteredDiscoveryService;

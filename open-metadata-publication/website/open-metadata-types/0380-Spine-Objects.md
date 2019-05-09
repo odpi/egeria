@@ -24,6 +24,7 @@ Note that a term may be a spine object and/or a spine attribute and/or an object
 * **TermTYPEDBYRelationship** - is a term relationship between a SpineAttribute and a SpineObject to say that the SpineAttribute is implemented using a type represented by the **SpineObject**.
 
 
+Return to [Area 3](Area-3-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
