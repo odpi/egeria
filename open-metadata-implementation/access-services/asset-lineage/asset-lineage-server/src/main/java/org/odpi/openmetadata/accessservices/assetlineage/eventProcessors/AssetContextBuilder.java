@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetlineage.service;
+package org.odpi.openmetadata.accessservices.assetlineage.eventProcessors;
 
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.*;
@@ -22,11 +22,12 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.eventProcessors.EventProcessor.instanceHandler;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 public class AssetContextBuilder {
 
-    private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
+
     private OMRSMetadataCollection metadataCollectionForSearch;
     private Converter converter = new Converter();
     private TypeDefGallery allTypes = new TypeDefGallery();
@@ -40,8 +41,8 @@ public class AssetContextBuilder {
 
     }
 
-    public org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext buildAssetContext(String serverName, String userId, String assetId){
-        org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext response = new org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext();
+    public AssetContext buildAssetContext(String serverName, String userId, String assetId){
+        AssetContext assetContext = new org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext();
 
         try {
             setMetadataRepositoryDetails(serverName, userId);
@@ -51,7 +52,7 @@ public class AssetContextBuilder {
             String typeDefName = entityDetail.getType().getTypeDefName();
             if(typeDefName.equals(GLOSSARY_TERM)){
                 Term term = getStructureForGlossaryTerm(userId, knownAssetConnection, entityDetail);
-                response.setAssets(Collections.singletonList(term));
+                assetContext.setAssets(Collections.singletonList(term));
             } else {
                 Term term = buildTerm(entityDetail);
                 AssetElement assetElement = new AssetElement();
@@ -63,16 +64,16 @@ public class AssetContextBuilder {
                 }
 
                 term.setElements(Collections.singletonList(assetElement));
-                response.setAssets(Collections.singletonList(term));
+                assetContext.setAssets(Collections.singletonList(term));
             }
 
         } catch (UserNotAuthorizedException | PagingErrorException | TypeErrorException | PropertyErrorException | RepositoryErrorException | InvalidParameterException | FunctionNotSupportedException | TypeDefNotKnownException | EntityNotKnownException | EntityProxyOnlyException e) {
-            exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
+            exceptionUtil.captureOMRSCheckedExceptionBase(assetContext, e);
         } catch (PropertyServerException | AssetNotFoundException e) {
-            exceptionUtil.captureAssetLineageExeption(response, e);
+            exceptionUtil.captureAssetLineageExeption(assetContext, e);
         }
 
-        return response;
+        return assetContext;
     }
 
     private Optional<TypeDef> isAsset(String typeDefName){

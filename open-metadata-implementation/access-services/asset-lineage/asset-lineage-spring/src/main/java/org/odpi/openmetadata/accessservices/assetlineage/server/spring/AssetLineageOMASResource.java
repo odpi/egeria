@@ -2,7 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetlineage.server.spring;
 
-import org.odpi.openmetadata.accessservices.assetlineage.service.AssetLineageRestServices;
+import org.odpi.openmetadata.accessservices.assetlineage.eventProcessors.AssetLineageRestServices;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
