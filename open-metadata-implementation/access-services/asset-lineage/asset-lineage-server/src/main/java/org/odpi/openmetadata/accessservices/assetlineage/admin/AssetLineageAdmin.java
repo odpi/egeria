@@ -7,7 +7,7 @@ package org.odpi.openmetadata.accessservices.assetlineage.admin;
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
 import org.odpi.openmetadata.accessservices.assetlineage.eventProcessors.EventProcessor;
 import org.odpi.openmetadata.accessservices.assetlineage.listeners.EnterpriseTopicListener;
-import org.odpi.openmetadata.accessservices.assetlineage.service.AssetLineageServicesInstance;
+import org.odpi.openmetadata.accessservices.assetlineage.eventProcessors.AssetLineageServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;

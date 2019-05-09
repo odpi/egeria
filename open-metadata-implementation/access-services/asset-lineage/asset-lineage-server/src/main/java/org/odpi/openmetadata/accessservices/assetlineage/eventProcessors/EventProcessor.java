@@ -10,7 +10,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorC
 import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GlossaryTerm;
 import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipEvent;
-import org.odpi.openmetadata.accessservices.assetlineage.service.AssetContextBuilder;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
@@ -19,7 +18,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +31,9 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
     private String serverUsername;
     private OpenMetadataTopic assetLineageTopicConnector;
     private OMRSAuditLog auditLog;
+    //TODO Since AssetLineageInstanceHandler is static, it must be in the same package as the class instantiating it.
+    //TODO Determine whether there is a still way to not include the service classes within the eventprocessors package.
+    public static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
 
 
     public EventProcessor(String serverName, String serverUsername, OpenMetadataTopic assetLineageTopicConnector,
@@ -229,29 +230,6 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
 
     }
 
-    private void processSemanticAssignment(Relationship relationship) {
-
-        RelationshipEvent relationshipEvent = new RelationshipEvent();
-        GlossaryTerm glossaryTerm = new GlossaryTerm();
-
-        AssetContextBuilder assetContextBuilder = new AssetContextBuilder(auditLog);
-        AssetContext assetContext = assetContextBuilder.buildAssetContext(serverName, serverUsername, relationship.getEntityOneProxy().getGUID());
-
-        InstancePropertyValue instancePropertyValue = relationship.getEntityTwoProxy().getUniqueProperties().getInstanceProperties().get("qualifiedName");
-        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) instancePropertyValue;
-        String qualifiedName = primitivePropertyValue.getPrimitiveValue().toString();
-
-        glossaryTerm.setGuid(relationship.getEntityTwoProxy().getGUID());
-        glossaryTerm.setQualifiedName(qualifiedName);
-
-        relationshipEvent.setGlossaryTerm(glossaryTerm);
-        relationshipEvent.setTypeDefName(relationship.getType().getTypeDefName());
-        relationshipEvent.setAssetContext(assetContext);
-        relationshipEvent.setOmrsInstanceEventType(OMRSInstanceEventType.NEW_RELATIONSHIP_EVENT);
-
-        sendEvent(relationshipEvent);
-    }
-
 
     public void processUpdatedRelationshipEvent(String sourceName,
                                                 String originatorMetadataCollectionId,
@@ -270,6 +248,24 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                                String originatorOrganizationName,
                                                Relationship relationship) {
 
+    }
+
+    private void processSemanticAssignment(Relationship relationship) {
+        RelationshipEvent relationshipEvent = new RelationshipEvent();
+
+        String technicalGuid = relationship.getEntityOneProxy().getGUID();
+        AssetContextBuilder assetContextBuilder = new AssetContextBuilder(auditLog);
+        AssetContext assetContext = assetContextBuilder.buildAssetContext(serverName, serverUsername, technicalGuid);
+
+        GlossaryTermBuilder glossaryTermBuilder = new GlossaryTermBuilder(serverName,serverUsername);
+        GlossaryTerm glossaryTerm = glossaryTermBuilder.getGlossaryTerm(relationship.getEntityTwoProxy());
+
+        relationshipEvent.setGlossaryTerm(glossaryTerm);
+        relationshipEvent.setTypeDefName(relationship.getType().getTypeDefName());
+        relationshipEvent.setAssetContext(assetContext);
+        relationshipEvent.setOmrsInstanceEventType(OMRSInstanceEventType.NEW_RELATIONSHIP_EVENT);
+
+        sendEvent(relationshipEvent);
     }
 
     @Override
