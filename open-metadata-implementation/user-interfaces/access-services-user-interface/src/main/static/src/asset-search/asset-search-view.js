@@ -29,6 +29,7 @@ class AssetSearchView extends PolymerElement {
           height: calc(100vh - 130px);
         }
       </style>
+
       <token-ajax id="tokenAjax" last-response="{{searchResp}}"></token-ajax>
       <iron-form id="searchForm">
         <form method="get">
@@ -69,7 +70,6 @@ class AssetSearchView extends PolymerElement {
                 </template>
                 <template>[[item.properties.qualifiedName]]</template>
             </vaadin-grid-column>
-            
   
         </vaadin-grid>
        

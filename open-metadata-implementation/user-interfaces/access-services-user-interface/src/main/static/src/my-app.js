@@ -24,7 +24,7 @@ import '@polymer/paper-item/paper-item.js';
 import '@polymer/paper-menu-button';
 import '@polymer/iron-icon/iron-icon.js';
 import '@polymer/iron-icons/iron-icons.js';
-import './asset-search/my-icons.js';
+import './my-icons.js';
 import './token-ajax.js';
 import './login-view.js';
 import './user-options-menu';
@@ -46,8 +46,6 @@ class MyApp extends PolymerElement {
           --app-secondary-color: #24272a;
           display: block;
         }
-        
-        
         
         app-drawer-layout:not([narrow]) [drawer-toggle] {
           display: none;
@@ -100,7 +98,7 @@ class MyApp extends PolymerElement {
               </app-toolbar>
               <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
                 <a name="asset-search" href="[[rootPath]]search">Asset search</a>
-                <a name="data-view" href="[[rootPath]]data">Data view</a>
+                <a name="subject-area" href="[[rootPath]]subjectarea">Subject Area</a>
               </iron-selector>
             </app-drawer>
     
@@ -110,16 +108,14 @@ class MyApp extends PolymerElement {
                   <app-header slot="header" condenses="" reveals="" effects="waterfall">
                     <app-toolbar>
                       <paper-icon-button icon="my-icons:menu" drawer-toggle=""></paper-icon-button>
-                      <div main-title="">Asset Catalog search</div>
+                      <div main-title="">Egeria UI</div>
                       <user-options token="[[token]]"></user-options>
                     </app-toolbar>
                   </app-header>
         
                   <iron-pages selected="[[page]]" attr-for-selected="name" role="main">
                     <asset-search-view name="search"></asset-search-view>
-                    <data-view name="data"></data-view>
-                    <my-view2 name="view2"></my-view2>
-                    <my-view3 name="view3"></my-view3>
+                    <subject-area-view name="subjectarea"></subject-area-view>
                     <my-view404 name="view404"></my-view404>
 
                   </iron-pages>
@@ -145,7 +141,7 @@ class MyApp extends PolymerElement {
             subroute: Object,
             pages: {
                 type: Array,
-                value: ['search', 'data', 'view2', 'view3']
+                value: ['search', 'subjectarea']
             },
             feedback: {
                 type: Object,
@@ -214,14 +210,8 @@ class MyApp extends PolymerElement {
         // Note: `polymer build` doesn't like string concatenation in the import
         // statement, so break it up.
         switch (page) {
-            case 'data':
-                import('./asset-search/data-view.js');
-                break;
-            case 'view2':
-                import('./asset-search/my-view2.js');
-                break;
-            case 'view3':
-                import('./asset-search/my-view3.js');
+            case 'subjectarea':
+                import('./subject-area/subject-area-view.js');
                 break;
             case 'view404':
                 import('./asset-search/my-view404.js');

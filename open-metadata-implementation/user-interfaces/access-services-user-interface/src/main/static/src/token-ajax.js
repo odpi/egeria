@@ -23,7 +23,9 @@ class TokenAjax extends PolymerElement {
                    handle-as="json"
                    last-response="{{lastResponse}}"
                    on-error="_handleErrorResponse"
+                   body="{{body}}"
                    loading="{{loading}}"
+                   method="{{method}}"
                    on-loading-changed="_onLoadingChanged"
                    >
         </iron-ajax>
@@ -49,10 +51,17 @@ class TokenAjax extends PolymerElement {
             url: String,
             headers: {
                 type: Object,
-                computed: 'computeHeader(token)'
+                computed: 'computeHeaders(token,method)',
+                notify: true
             },
             lastResponse: {
                 notify: true
+            },
+            method: {
+                type: String
+            },
+            body: {
+                type: Object
             },
 
             /**
@@ -82,17 +91,27 @@ class TokenAjax extends PolymerElement {
     _tokenUpdated(){
         console.debug('token updated with:'+this.token)
     }
+   /*
+    * Compute the headers for the rest call. The authentication token (tok) is used as the value of the authentication header
+    * The method name (the operation) is passed through so that the content type header id only sent when there could be content
+    * associated with the request (i.e. post and put).
+    */
+    computeHeaders(tok,meth) {
+        var computedHeaders = {};
+        computedHeaders['x-auth-token'] = tok;
+        // only need to the content type in the header if there is content
+        if (meth == 'post' || meth == 'put') {
+            computedHeaders['content-type'] = 'application/json';
+        }
 
-    computeHeader(tok) {
-        console.log("computing header:" + tok)
-        return {'x-auth-token': tok};
+        console.log("computing header with token: " + tok);
+        return computedHeaders;
     }
 
     _requestOptionsChanged(auto){
-        this.headers = {'x-auth-token': this.token};
-        if (this.auto) {
+       if (this.auto) {
             this.$.ajax.generateRequest();
-        }
+       }
     }
 
     _handleErrorResponse(evt){
