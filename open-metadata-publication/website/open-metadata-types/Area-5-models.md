@@ -13,6 +13,7 @@ capability around the data assets.
 * **[0503 Asset Schema](0503-Asset-Schema.md)**
 * **[0504 Implementation Snippets](0504-Implementation-Snippets.md)**
 * **[0505 Schema Attributes](0505-Schema-Attributes.md)**
+* **[0507 Bounded Schema Types](0507-Bounded-Schema-Types.md)**
 * **[0510 Schema Link Element](0510-Schema-Link-Element.md)**
 * **[0511 Map Schema Element](0511-Map-Schema-Elements.md)**
 * **[0512 Derived Schema Elements](0512-Derived-Schema-Elements.md)**
@@ -24,11 +25,14 @@ capability around the data assets.
 * **[0535 Event Schema](0535-Event-Schemas.md)**
 * **[0536 API Schemas](0536-API-Schemas.md)**
 * **[0540 Data Classes](0540-Data-Classes.md)**
+* **[0545 Reference Data](0545-Reference-Data.md)**
 * **[0565 Model Elements](0565-Model-Elements.md)**
 * **[0580 Solution Blueprints](0580-Solution-Blueprints.md)**
 * **[0581 Solution Ports and Wires](0581-Solution-Ports-and-Wires.md)**
+* **[0595 Design Patterns](0595-Design-Patterns.md)**
 
 
+Return to [Overview](README.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

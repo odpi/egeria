@@ -47,24 +47,6 @@ public enum DiscoveryEngineAuditCode
              "The Discovery Engine Open Metadata Access Service (OMAS) is unable to initialize a new instance; error message is {0}",
              "The access service detected an error during the start up of a specific server instance.  Its services are not available for the server.",
                              "Review the error message and any other reported failures to determine the cause of the problem.  Once this is resolved, restart the server."),
-    ALL_ZONES("OMAS-DISCOVERY-ENGINE-0006",
-             OMRSAuditLogRecordSeverity.INFO,
-             "The Discovery Engine Open Metadata Access Service (OMAS) is supporting all governance zones",
-             "The access service has not been passed a list of governance zones in the SupportedZones property of the access services options.  " +
-                      "This means it is providing access to all Assets irrespective of the zone(s) they are located in.",
-             "No action is required.  This is part of the normal operation of the service."),
-    SUPPORTED_ZONES("OMAS-DISCOVERY-ENGINE-0007",
-              OMRSAuditLogRecordSeverity.INFO,
-             "The Discovery Engine Open Metadata Access Service (OMAS) is supporting the following governance zones {0}",
-             "The access service was passed a list of governance zones in the SupportedZones property of the access services options.  " +
-                      "This means it is only providing access to the Assets from these zone(s).",
-             "No action is required.  This is part of the normal operation of the service."),
-    BAD_CONFIG("OMAS-DISCOVERY-ENGINE-0008",
-             OMRSAuditLogRecordSeverity.ERROR,
-             "The Discovery Engine Open Metadata Access Service (OMAS) has been passed an invalid value of {0} in the {1} property",
-             "The access service has not been passed valid configuration.",
-             "Correct the configuration and restart the service.")
-
     ;
 
     private String                     logMessageId;

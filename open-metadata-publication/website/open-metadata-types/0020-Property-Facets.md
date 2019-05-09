@@ -9,6 +9,7 @@ This is particularly useful for storing metadata that originated in another type
 ![UML](0020-Property-Facets.png)
 
 
+Return to [Area 0](Area-0-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

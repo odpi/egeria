@@ -2,9 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.client;
 
-
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
 import org.odpi.openmetadata.accessservices.connectedasset.rest.RatingsResponse;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetDescriptor;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetRating;
@@ -83,7 +82,7 @@ public class ConnectedAssetRatings extends AssetRatings
             this.omasServerURL  = template.omasServerURL;
             this.assetGUID      = template.assetGUID;
             this.connectedAsset = parentAsset;
-            this.restClient     = restClient;
+            this.restClient     = template.restClient;
         }
     }
 
@@ -128,10 +127,7 @@ public class ConnectedAssetRatings extends AssetRatings
         final String   methodName = "AssetRatings.getCachedList";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/connected-asset/users/{1}/assets/{2}/ratings?elementStart={3}&maxElements={4}";
 
-        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
         RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
-
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
 
         try
         {
@@ -143,7 +139,6 @@ public class ConnectedAssetRatings extends AssetRatings
                                                                           maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            restExceptionHandler.detectAndThrowUnrecognizedAssetGUIDException(methodName, restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
             restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
@@ -169,19 +164,9 @@ public class ConnectedAssetRatings extends AssetRatings
         }
         catch (Throwable  error)
         {
-            ConnectedAssetErrorCode errorCode = ConnectedAssetErrorCode.EXCEPTION_RESPONSE_FROM_API;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     omasServerURL,
-                                                                                                     error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
+            restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }
+
+        return null;
     }
 }

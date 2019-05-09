@@ -6,7 +6,7 @@ package org.odpi.openmetadata.accessservices.assetconsumer.rest;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.Tag;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.InformalTag;
 
 import java.util.Objects;
 
@@ -23,7 +23,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown=true)
 public class TagResponse extends AssetConsumerOMASAPIResponse
 {
-    private Tag tag = null;
+    private InformalTag tag = null;
 
     /**
      * Default constructor
@@ -55,7 +55,7 @@ public class TagResponse extends AssetConsumerOMASAPIResponse
      *
      * @return tag
      */
-    public Tag getTag()
+    public InformalTag getTag()
     {
         if (tag == null)
         {
@@ -63,7 +63,7 @@ public class TagResponse extends AssetConsumerOMASAPIResponse
         }
         else
         {
-            return new Tag(tag);
+            return new InformalTag(tag);
         }
     }
 
@@ -73,7 +73,7 @@ public class TagResponse extends AssetConsumerOMASAPIResponse
      *
      * @param tag  tag object
      */
-    public void setTag(Tag tag)
+    public void setTag(InformalTag tag)
     {
         this.tag = tag;
     }

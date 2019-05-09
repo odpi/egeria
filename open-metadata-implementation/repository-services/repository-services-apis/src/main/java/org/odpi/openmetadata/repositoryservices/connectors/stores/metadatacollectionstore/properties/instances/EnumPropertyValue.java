@@ -63,6 +63,28 @@ public class EnumPropertyValue extends InstancePropertyValue
 
 
     /**
+     * Return the string version of the value - used for error logging.
+     *
+     * @return string value
+     */
+    public  String valueAsString()
+    {
+        return symbolicName;
+    }
+
+
+    /**
+     * Return the object version of the value - used for comparisons.
+     *
+     * @return object value
+     */
+    public  Object valueAsObject()
+    {
+        return symbolicName;
+    }
+
+
+    /**
      * Return the integer ordinal for this enum.
      *
      * @return int ordinal
