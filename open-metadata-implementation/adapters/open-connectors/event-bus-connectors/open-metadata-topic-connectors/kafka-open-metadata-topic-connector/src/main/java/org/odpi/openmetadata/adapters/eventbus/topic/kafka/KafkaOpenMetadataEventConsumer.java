@@ -84,8 +84,8 @@ public class KafkaOpenMetadataEventConsumer implements Runnable
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(topicName, kafkaConsumerProperties.toString()),
-                           null,
+                           auditCode.getFormattedLogMessage(Integer.toString(kafkaConsumerProperties.size()), topicName),
+                           kafkaConsumerProperties.toString(),
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
         

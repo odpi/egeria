@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.connectedasset.admin;
 
 import org.odpi.openmetadata.accessservices.connectedasset.auditlog.ConnectedAssetAuditCode;
-import org.odpi.openmetadata.accessservices.connectedasset.listener.ConnectedAssetOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.connectedasset.server.ConnectedAssetServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
@@ -12,6 +11,8 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
+import java.util.List;
+
 
 /**
  * ConnectedAssetAdmin is the class that is called by the OMAG Server to initialize and terminate
@@ -19,17 +20,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * Open Metadata Repository Services.
  *
  */
-public class ConnectedAssetAdmin implements AccessServiceAdmin
+public class ConnectedAssetAdmin extends AccessServiceAdmin
 {
-    private OMRSRepositoryConnector        repositoryConnector = null;
-    private OMRSTopicConnector             omrsTopicConnector  = null;
-    private AccessServiceConfig            accessServiceConfig = null;
     private OMRSAuditLog                   auditLog            = null;
     private ConnectedAssetServicesInstance instance            = null;
     private String                         serverName          = null;
-    private String                         serverUserName      = null;
-
-    private ConnectedAssetOMRSTopicListener omrsTopicListener = null;
 
     /**
      * Default constructor
@@ -41,7 +36,7 @@ public class ConnectedAssetAdmin implements AccessServiceAdmin
     /**
      * Initialize the access service.
      *
-     * @param accessServiceConfigurationProperties specific configuration properties for this access service.
+     * @param accessServiceConfig specific configuration properties for this access service.
      * @param enterpriseOMRSTopicConnector connector for receiving OMRS Events from the cohorts
      * @param enterpriseOMRSRepositoryConnector connector for querying the cohort repositories
      * @param auditLog audit log component for logging messages.
@@ -49,13 +44,13 @@ public class ConnectedAssetAdmin implements AccessServiceAdmin
      *                       processing OMRS messages from the Enterprise OMRS Topic Connector.
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
-    public void initialize(AccessServiceConfig     accessServiceConfigurationProperties,
+    public void initialize(AccessServiceConfig     accessServiceConfig,
                            OMRSTopicConnector      enterpriseOMRSTopicConnector,
                            OMRSRepositoryConnector enterpriseOMRSRepositoryConnector,
                            OMRSAuditLog            auditLog,
                            String                  serverUserName) throws OMAGConfigurationErrorException
     {
-        final String            actionDescription = "initialize";
+        final String            actionDescription = "initialize OMAS";
         ConnectedAssetAuditCode auditCode;
 
         auditCode = ConnectedAssetAuditCode.SERVICE_INITIALIZING;
@@ -69,34 +64,16 @@ public class ConnectedAssetAdmin implements AccessServiceAdmin
 
         try
         {
-            this.repositoryConnector = enterpriseOMRSRepositoryConnector;
-            this.instance = new ConnectedAssetServicesInstance(enterpriseOMRSRepositoryConnector);
-            this.serverName = instance.getServerName();
-
-            this.accessServiceConfig = accessServiceConfigurationProperties;
-            this.omrsTopicConnector = enterpriseOMRSTopicConnector;
-
-            if (omrsTopicConnector != null)
-            {
-                auditCode = ConnectedAssetAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(serverName),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
-
-                omrsTopicListener = new ConnectedAssetOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
-                                                                        repositoryConnector.getRepositoryHelper(),
-                                                                        repositoryConnector.getRepositoryValidator(),
-                                                                        accessServiceConfig.getAccessServiceName());
-
-                omrsTopicConnector.registerListener(omrsTopicListener);
-            }
-
             this.auditLog = auditLog;
-            this.serverUserName = serverUserName;
+
+            List<String>  supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                      accessServiceConfig.getAccessServiceName(),
+                                                                      auditLog);
+
+            this.instance = new ConnectedAssetServicesInstance(enterpriseOMRSRepositoryConnector,
+                                                               supportedZones,
+                                                               auditLog);
+            this.serverName = instance.getServerName();
 
             auditCode = ConnectedAssetAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
@@ -106,6 +83,10 @@ public class ConnectedAssetAdmin implements AccessServiceAdmin
                                null,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
+        }
+        catch (OMAGConfigurationErrorException error)
+        {
+            throw error;
         }
         catch (Throwable error)
         {
