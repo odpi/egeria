@@ -18,6 +18,7 @@ public class GlossaryTermBuilder {
     private String userId;
     private OMRSMetadataCollection metadataCollectionForSearch;
 
+    //TODO Replace print stacktraces with proper audit logging!
     public GlossaryTermBuilder(String serverName, String userID) {
         this.serverName = serverName;
         this.userId = userID;
