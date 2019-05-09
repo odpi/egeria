@@ -1,9 +1,9 @@
+/* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetlineage.model;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -13,8 +13,8 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GlossaryTerm {
 
-    private String  guid;
-    private String  qualifiedName;
+    private String guid;
+    private String qualifiedName;
 
     public String getGuid() {
         return guid;
