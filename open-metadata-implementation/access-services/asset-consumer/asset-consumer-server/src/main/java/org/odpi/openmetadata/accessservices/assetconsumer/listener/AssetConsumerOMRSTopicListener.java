@@ -2,11 +2,11 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.listener;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.converters.AssetConverter;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.NewAssetEvent;
 import org.odpi.openmetadata.accessservices.assetconsumer.events.UpdatedAssetEvent;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.Asset;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.AssetConverter;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
@@ -135,14 +135,14 @@ public class AssetConsumerOMRSTopicListener implements OMRSTopicListener
 
         if (assetType != null)
         {
-            AssetConverter assetConverter = new AssetConverter(entity, repositoryHelper, componentName);
-            Asset          assetBean      = assetConverter.getBean();
+            AssetConverter assetConverter = new AssetConverter(entity, null, repositoryHelper, componentName);
+            Asset          assetBean      = assetConverter.getAssetBean();
 
             if ((assetBean != null) && (this.inTheZone(assetBean.getZoneMembership())))
             {
                 NewAssetEvent event = new NewAssetEvent();
 
-                event.setAsset(assetConverter.getBean());
+                event.setAsset(assetConverter.getAssetBean());
                 event.setCreationTime(entity.getCreateTime());
 
                 publisher.publishNewAssetEvent(event);
@@ -164,16 +164,16 @@ public class AssetConsumerOMRSTopicListener implements OMRSTopicListener
 
         if (assetType != null)
         {
-            AssetConverter    assetConverter            = new AssetConverter(entity, repositoryHelper, componentName);
-            Asset             assetBean                 = assetConverter.getBean();
+            AssetConverter    assetConverter            = new AssetConverter(entity, null, repositoryHelper, componentName);
+            Asset             assetBean                 = assetConverter.getAssetBean();
 
             if ((assetBean != null) && (this.inTheZone(assetBean.getZoneMembership())))
             {
-                AssetConverter    assetConverterForOriginal = new AssetConverter(originalEntity, repositoryHelper, componentName);
+                AssetConverter    assetConverterForOriginal = new AssetConverter(originalEntity, null, repositoryHelper, componentName);
                 UpdatedAssetEvent event                     = new UpdatedAssetEvent();
 
                 event.setAsset(assetBean);
-                event.setOriginalAsset(assetConverterForOriginal.getBean());
+                event.setOriginalAsset(assetConverterForOriginal.getAssetBean());
                 event.setUpdateTime(entity.getUpdateTime());
 
                 publisher.publishUpdatedAssetEvent(event);

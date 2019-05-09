@@ -2,14 +2,19 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.client;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryConfigurationServer;
-import org.odpi.openmetadata.frameworks.discovery.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryServiceProperties;
 import org.odpi.openmetadata.frameworks.discovery.properties.RegisteredDiscoveryService;
@@ -33,10 +38,16 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
      *
      * @param serverName name of the server to connect to
      * @param newServerURL the network address of the server running the OMAS REST servers
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
      */
     public DiscoveryConfigurationClient(String     serverName,
-                                        String     newServerURL)
+                                        String     newServerURL) throws InvalidParameterException
     {
+        final String methodName = "Constructor (no security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+
         this.serverName = serverName;
         this.omasServerURL = newServerURL;
         this.restClient = new RESTClient(serverName, omasServerURL);
@@ -51,12 +62,18 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
      * @param omasServerURL the network address of the server running the OMAS REST servers
      * @param userId caller's userId embedded in all HTTP requests
      * @param password caller's userId embedded in all HTTP requests
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
      */
     public DiscoveryConfigurationClient(String     serverName,
                                         String     omasServerURL,
                                         String     userId,
-                                        String     password)
+                                        String     password) throws InvalidParameterException
     {
+        final String methodName = "Constructor (with security)";
+
+        invalidParameterHandler.validateOMAGServerPlatformURL(omasServerURL, serverName, methodName);
+
         this.serverName = serverName;
         this.omasServerURL = omasServerURL;
         this.restClient = new RESTClient(serverName, omasServerURL, userId, password);
@@ -89,7 +106,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String   nameParameterName = "qualifiedName";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-engines";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameterName, methodName);
 
@@ -132,7 +148,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String   guidParameterName = "guid";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-engines/{2}";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
@@ -170,7 +185,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String   nameParameterName = "name";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-engines/by-name/{2}";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
@@ -209,7 +223,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String   methodName = "getAllDiscoveryEngines";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-engines?startingFrom={2}&maximumResults={3}";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
@@ -268,7 +281,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String   nameParameterName = "qualifiedName";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-engines/{2}";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameterName, methodName);
@@ -320,7 +332,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String   nameParameterName = "qualifiedName";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-engines/{2}";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameterName, methodName);
@@ -370,7 +381,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String   connectionParameterName = "connection";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-services";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameterName, methodName);
         invalidParameterHandler.validateConnection(connection, connectionParameterName, methodName);
@@ -416,7 +426,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String   guidParameterName = "guid";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-services/{2}";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
 
@@ -455,7 +464,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String   nameParameterName = "name";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-services/by-name/{2}";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateName(name, nameParameterName, methodName);
 
@@ -495,7 +503,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String   methodName = "getAllDiscoveryServices";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-services?startingFrom={2}&maximumResults={3}";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
 
@@ -535,7 +542,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final  String   guidParameter = "discoveryServiceGUID";
         final  String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-services/{2}/registrations";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryServiceGUID, guidParameter, methodName);
 
@@ -598,7 +604,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String   connectionParameterName = "connection";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-services/{2}";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameterName, methodName);
@@ -654,7 +659,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String   nameParameterName = "qualifiedName";
         final String   urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-services/{2}";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(guid, guidParameterName, methodName);
         invalidParameterHandler.validateName(qualifiedName, nameParameterName, methodName);
@@ -700,7 +704,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String assetTypesParameter = "assetTypes";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-engines/{2}/discovery-services";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
@@ -747,7 +750,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String discoveryServiceGUIDParameter = "discoveryServiceGUID";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-engines/{2}/discovery-services/{3}";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);
@@ -792,7 +794,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String discoveryEngineGUIDParameter = "discoveryEngineGUID";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-engines/{2}/discovery-services?startingFrom={3}&maximumResults={4}";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
         invalidParameterHandler.validatePaging(startingFrom, maximumResults, methodName);
@@ -835,7 +836,6 @@ public class DiscoveryConfigurationClient extends DiscoveryConfigurationServer
         final String discoveryServiceGUIDParameter = "discoveryServiceGUID";
         final String urlTemplate = "/servers/{0}/open-metadata/access-services/discovery-engine/users/{1}/discovery-engines/{2}/discovery-services/{3}/delete";
 
-        invalidParameterHandler.validateOMASServerURL(omasServerURL,methodName);
         invalidParameterHandler.validateUserId(userId, methodName);
         invalidParameterHandler.validateGUID(discoveryEngineGUID, discoveryEngineGUIDParameter, methodName);
         invalidParameterHandler.validateGUID(discoveryServiceGUID, discoveryServiceGUIDParameter, methodName);

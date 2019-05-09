@@ -10,13 +10,13 @@ meaning of terms associated with an asset.
 that contains the definition.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/get-meaning-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/get-meaning-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/get-meaning-with-rest.md)
 
 * **getMeaningByName** - Returns the full definition (meaning) of the terms matching the supplied name.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/get-meaning-by-name-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/get-meaning-by-name-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/get-meaning-by-name-with-rest.md)
            
 

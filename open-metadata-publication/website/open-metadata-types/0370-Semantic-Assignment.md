@@ -21,6 +21,7 @@ Thus **TermAssignmentStatus** defines how much the semantic assignment should be
 * OTHER - the status of the relationship does not match any of the other term status values.  The description field can be used to add details about the relationship.
 
 
+Return to [Area 3](Area-3-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -20,7 +20,7 @@ class DiscoveryEngineRegistration
     /**
      * Pass information about this access service to the OMAG Server administration services.
      */
-    public static void registerAccessService()
+    static void registerAccessService()
     {
         AccessServiceDescription myDescription = AccessServiceDescription.DISCOVERY_ENGINE_OMAS;
 

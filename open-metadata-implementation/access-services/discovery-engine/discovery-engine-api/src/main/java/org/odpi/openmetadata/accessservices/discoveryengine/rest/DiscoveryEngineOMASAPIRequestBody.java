@@ -22,8 +22,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
                 @JsonSubTypes.Type(value = NewDiscoveryEngineRequestBody.class,           name = "NewDiscoveryEngineRequestBody"),
                 @JsonSubTypes.Type(value = NewDiscoveryServiceRequestBody.class,          name = "NewDiscoveryServiceRequestBody"),
                 @JsonSubTypes.Type(value = DiscoveryServiceRegistrationRequestBody.class, name = "DiscoveryServiceRegistrationRequestBody"),
-                @JsonSubTypes.Type(value = DeleteRequestBody.class,                       name = "DeleteRequestBody"),
-                @JsonSubTypes.Type(value = NullRequestBody.class,                         name = "NullRequestBody")
+                @JsonSubTypes.Type(value = DeleteRequestBody.class,                       name = "DeleteRequestBody")
         })
 public abstract class DiscoveryEngineOMASAPIRequestBody implements java.io.Serializable
 {

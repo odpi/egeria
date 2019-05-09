@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.admin;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.auditlog.AssetConsumerAuditCode;
-import org.odpi.openmetadata.accessservices.assetconsumer.ffdc.AssetConsumerErrorCode;
 import org.odpi.openmetadata.accessservices.assetconsumer.listener.AssetConsumerOMRSTopicListener;
 import org.odpi.openmetadata.accessservices.assetconsumer.server.AssetConsumerServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
@@ -14,13 +13,12 @@ import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicCo
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * AssetConsumerAdmin manages the start up and shutdown of the Asset Consumer OMAS.   During start up,
  * it validates the parameters and options it receives and sets up the service as requested.
  */
-public class AssetConsumerAdmin implements AccessServiceAdmin
+public class AssetConsumerAdmin extends AccessServiceAdmin
 {
     private OMRSAuditLog                   auditLog            = null;
     private AssetConsumerServicesInstance  instance            = null;
@@ -66,7 +64,9 @@ public class AssetConsumerAdmin implements AccessServiceAdmin
         {
             this.auditLog = auditLog;
 
-            List<String>           supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions());
+            List<String>  supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                      accessServiceConfig.getAccessServiceName(),
+                                                                      auditLog);
 
             this.instance = new AssetConsumerServicesInstance(repositoryConnector,
                                                               supportedZones,
@@ -76,17 +76,8 @@ public class AssetConsumerAdmin implements AccessServiceAdmin
             /*
              * Only set up the listening and event publishing if requested in the config.
              */
-            if ((omrsTopicConnector != null) && (accessServiceConfig.getAccessServiceOutTopic() != null))
+            if (accessServiceConfig.getAccessServiceOutTopic() != null)
             {
-                auditCode = AssetConsumerAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
-                auditLog.logRecord(actionDescription,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(serverName),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
-
                 AssetConsumerOMRSTopicListener omrsTopicListener;
 
                 omrsTopicListener = new AssetConsumerOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
@@ -95,8 +86,11 @@ public class AssetConsumerAdmin implements AccessServiceAdmin
                                                                        accessServiceConfig.getAccessServiceName(),
                                                                        supportedZones,
                                                                        auditLog);
-
-                omrsTopicConnector.registerListener(omrsTopicListener);
+                super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
+                                                  serverName,
+                                                  omrsTopicConnector,
+                                                  omrsTopicListener,
+                                                  auditLog);
             }
 
             auditCode = AssetConsumerAuditCode.SERVICE_INITIALIZED;
@@ -147,84 +141,5 @@ public class AssetConsumerAdmin implements AccessServiceAdmin
                            null,
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
-    }
-
-
-    /**
-     * Extract the supported zones property from the access services option.
-     *
-     * @param accessServiceOptions options passed to the access service.
-     * @return null or list of zone names
-     * @throws OMAGConfigurationErrorException the supported zones property is not a list of zone names.
-     */
-    private List<String> extractSupportedZones(Map<String, Object> accessServiceOptions) throws OMAGConfigurationErrorException
-    {
-        final String           methodName = "extractSupportedZones";
-        AssetConsumerAuditCode auditCode;
-
-        if (accessServiceOptions == null)
-        {
-            return null;
-        }
-        else
-        {
-            Object   zoneListObject = accessServiceOptions.get(supportedZonesPropertyName);
-
-            if (zoneListObject == null)
-            {
-                auditCode = AssetConsumerAuditCode.ALL_ZONES;
-                auditLog.logRecord(methodName,
-                                   auditCode.getLogMessageId(),
-                                   auditCode.getSeverity(),
-                                   auditCode.getFormattedLogMessage(),
-                                   null,
-                                   auditCode.getSystemAction(),
-                                   auditCode.getUserAction());
-                return null;
-            }
-            else
-            {
-                try
-                {
-                    List<String>  zoneList =  (List<String>)zoneListObject;
-
-                    auditCode = AssetConsumerAuditCode.SUPPORTED_ZONES;
-                    auditLog.logRecord(methodName,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(zoneList.toString()),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
-
-                    return zoneList;
-                }
-                catch (Throwable error)
-                {
-                    auditCode = AssetConsumerAuditCode.BAD_CONFIG;
-                    auditLog.logRecord(methodName,
-                                       auditCode.getLogMessageId(),
-                                       auditCode.getSeverity(),
-                                       auditCode.getFormattedLogMessage(zoneListObject.toString(), supportedZonesPropertyName),
-                                       null,
-                                       auditCode.getSystemAction(),
-                                       auditCode.getUserAction());
-
-                    AssetConsumerErrorCode errorCode    = AssetConsumerErrorCode.BAD_CONFIG;
-                    String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(zoneListObject.toString(),
-                                                                                                                             supportedZonesPropertyName,
-                                                                                                                             error.getClass().getName(),
-                                                                                                                             error.getMessage());
-
-                    throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                              this.getClass().getName(),
-                                                              methodName,
-                                                              errorMessage,
-                                                              errorCode.getSystemAction(),
-                                                              errorCode.getUserAction(),
-                                                              error);
-                }
-            }
-        }
     }
 }
