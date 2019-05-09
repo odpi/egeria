@@ -146,7 +146,7 @@ public class SubjectAreaGlossaryController
      * <li> FunctionNotSupportedException        Function not supported.</li>
      * </ul>
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/")
+    @RequestMapping(method = RequestMethod.GET)
     public  SubjectAreaOMASAPIResponse findGlossary(
                                                 @RequestParam(value = "searchCriteria", required=false) String searchCriteria,
                                                 @RequestParam(value = "asOfTime", required=false) Date asOfTime,
@@ -160,6 +160,13 @@ public class SubjectAreaGlossaryController
         String userId = getUser(model);
         SubjectAreaOMASAPIResponse response;
         try {
+
+            if (offset == null) {
+                offset = new Integer(0);
+            }
+            if (pageSize == null) {
+               pageSize = new Integer(0);
+            }
             List<Glossary> glossaries = this.subjectAreaGlossary.findGlossary(serverName,userId,searchCriteria,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
             GlossariesResponse glossariesResponse = new GlossariesResponse();
             glossariesResponse.setGlossaries(glossaries);
