@@ -49,7 +49,6 @@ public class GlossaryTermBuilder {
         PrimitivePropertyValue displayNamePrimitivePropertyValue = (PrimitivePropertyValue) displayNameInstancePropertyValue;
         String displayName = displayNamePrimitivePropertyValue.getPrimitiveValue().toString();
 
-        //TODO Maybe classifications and displayname shouldn't be in the same try block. We only want to query once though.
         List<Classification> classifications = entityDetail.getClassifications();
 
         glossaryTerm.setDisplayName(displayName);
