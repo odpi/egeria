@@ -255,7 +255,7 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
 
         String technicalGuid = relationship.getEntityOneProxy().getGUID();
         AssetContextBuilder assetContextBuilder = new AssetContextBuilder(auditLog);
-        AssetContext assetContext = assetContextBuilder.buildAssetContext(serverName, serverUsername, technicalGuid);
+        AssetContext assetContext = assetContextBuilder.getAssetContext(serverName, serverUsername, technicalGuid);
 
         GlossaryTermBuilder glossaryTermBuilder = new GlossaryTermBuilder(serverName,serverUsername);
         GlossaryTerm glossaryTerm = glossaryTermBuilder.getGlossaryTerm(relationship.getEntityTwoProxy());

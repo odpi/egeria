@@ -41,7 +41,7 @@ public class AssetContextBuilder {
 
     }
 
-    public AssetContext buildAssetContext(String serverName, String userId, String assetId){
+    public AssetContext getAssetContext(String serverName, String userId, String assetId){
         AssetContext assetContext = new org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext();
 
         try {
