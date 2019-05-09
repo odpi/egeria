@@ -9,7 +9,7 @@ about an asset to the local server's audit log.
 * **addLogMessageToAsset** - Creates an Audit log record about the asset.  This log record is stored in the local server's Audit Log.
   
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/add-log-message-to-asset-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/add-log-message-to-asset-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/add-log-message-to-asset-with-rest.md)
 
 

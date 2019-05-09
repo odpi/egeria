@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.repositoryservices.ffdc.exception;
 
+
 /**
  * RepositoryErrorException provides a checked exception for reporting situations where the metadata
  * repository hosting a metadata collection is unable to perform a request.

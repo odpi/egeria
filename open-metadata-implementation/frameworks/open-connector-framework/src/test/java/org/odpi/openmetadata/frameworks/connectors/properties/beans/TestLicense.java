@@ -50,7 +50,7 @@ public class TestLicense
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setAdditionalProperties(additionalProperties);
 
-        testObject.setLicenseTypeGUID("TestLicenseTypeGUID");
+        testObject.setLicenseGUID("TestLicenseTypeGUID");
         testObject.setLicenseTypeName("TestLicenseTypeName");
         testObject.setLicensee("TestExaminer");
         testObject.setSummary("TestSummary");
@@ -81,7 +81,7 @@ public class TestLicense
         assertTrue(resultObject.getQualifiedName().equals("TestQualifiedName"));
         assertTrue(resultObject.getAdditionalProperties() == null);
 
-        assertTrue(resultObject.getLicenseTypeGUID().equals("TestLicenseTypeGUID"));
+        assertTrue(resultObject.getLicenseGUID().equals("TestLicenseTypeGUID"));
         assertTrue(resultObject.getLicenseTypeName().equals("TestLicenseTypeName"));
         assertTrue(resultObject.getLicensee().equals("TestExaminer"));
         assertTrue(resultObject.getSummary().equals("TestSummary"));
@@ -110,7 +110,7 @@ public class TestLicense
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
 
-        assertTrue(nullObject.getLicenseTypeGUID() == null);
+        assertTrue(nullObject.getLicenseGUID() == null);
         assertTrue(nullObject.getLicenseTypeName() == null);
         assertTrue(nullObject.getLicensee() == null);
         assertTrue(nullObject.getSummary() == null);
@@ -132,7 +132,7 @@ public class TestLicense
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getAdditionalProperties() == null);
 
-        assertTrue(nullObject.getLicenseTypeGUID() == null);
+        assertTrue(nullObject.getLicenseGUID() == null);
         assertTrue(nullObject.getLicenseTypeName() == null);
         assertTrue(nullObject.getLicensee() == null);
         assertTrue(nullObject.getSummary() == null);

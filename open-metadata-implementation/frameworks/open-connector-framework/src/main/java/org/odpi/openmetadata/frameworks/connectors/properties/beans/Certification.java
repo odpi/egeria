@@ -24,7 +24,7 @@ public class Certification extends Referenceable
     /*
      * Properties of a certification
      */
-    protected String            certificationTypeGUID   = null;
+    protected String            certificateGUID         = null;
     protected String            certificationTypeName   = null;
     protected String            examiner                = null;
     protected String            summary                 = null;
@@ -57,7 +57,7 @@ public class Certification extends Referenceable
 
         if (templateCertification != null)
         {
-            certificationTypeGUID = templateCertification.getCertificationTypeGUID();
+            certificateGUID = templateCertification.getCertificateGUID();
             certificationTypeName = templateCertification.getCertificationTypeName();
             examiner = templateCertification.getExaminer();
             summary = templateCertification.getSummary();
@@ -93,17 +93,17 @@ public class Certification extends Referenceable
      *
      * @return String certification type GUID
      */
-    public String getCertificationTypeGUID() { return certificationTypeGUID; }
+    public String getCertificateGUID() { return certificateGUID; }
 
 
     /**
      * Set up the unique id for the type of certification.
      *
-     * @param certificationTypeGUID  String certification type GUID
+     * @param certificateGUID  String certification type GUID
      */
-    public void setCertificationTypeGUID(String certificationTypeGUID)
+    public void setCertificateGUID(String certificateGUID)
     {
-        this.certificationTypeGUID = certificationTypeGUID;
+        this.certificateGUID = certificateGUID;
     }
 
 
@@ -339,7 +339,7 @@ public class Certification extends Referenceable
     public String toString()
     {
         return "Certification{" +
-                "certificationTypeGUID='" + certificationTypeGUID + '\'' +
+                "certificateGUID='" + certificateGUID + '\'' +
                 ", certificationTypeName='" + certificationTypeName + '\'' +
                 ", examiner='" + examiner + '\'' +
                 ", summary='" + summary + '\'' +
@@ -382,7 +382,7 @@ public class Certification extends Referenceable
             return false;
         }
         Certification that = (Certification) objectToCompare;
-        return Objects.equals(getCertificationTypeGUID(), that.getCertificationTypeGUID()) &&
+        return Objects.equals(getCertificateGUID(), that.getCertificateGUID()) &&
                 Objects.equals(getCertificationTypeName(), that.getCertificationTypeName()) &&
                 Objects.equals(getExaminer(), that.getExaminer()) &&
                 Objects.equals(getSummary(), that.getSummary()) &&

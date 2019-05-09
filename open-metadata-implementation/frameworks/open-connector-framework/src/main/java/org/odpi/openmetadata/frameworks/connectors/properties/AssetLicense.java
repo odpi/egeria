@@ -102,7 +102,7 @@ public class AssetLicense extends AssetReferenceable
      *
      * @return String license type GUID
      */
-    public String getLicenseTypeGUID() { return licenseBean.getLicenseTypeGUID(); }
+    public String getLicenseTypeGUID() { return licenseBean.getLicenseGUID(); }
 
 
     /**
