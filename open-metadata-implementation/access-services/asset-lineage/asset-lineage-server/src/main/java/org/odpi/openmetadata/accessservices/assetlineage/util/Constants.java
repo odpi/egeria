@@ -28,6 +28,7 @@ public final class Constants {
     public static final String CONNECTION_ENDPOINT = "ConnectionEndpoint";
     public static final String DATA_CONTENT_FOR_DATA_SET = "DataContentForDataSet";
     public static final String SEMANTIC_ASSIGNMENT = "SemanticAssignment";
+    public static final String TERM_CATEGORIZATION= "TermCategorization";
 
     //Instance Properties fields
     public static final String DISPLAY_NAME = "displayName";
