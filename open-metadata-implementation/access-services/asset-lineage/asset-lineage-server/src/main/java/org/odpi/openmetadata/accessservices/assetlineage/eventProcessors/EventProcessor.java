@@ -19,8 +19,11 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 public class EventProcessor extends OMRSInstanceEventProcessor {
 
@@ -42,7 +45,8 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
 
 
     @Override
-    public void sendInstanceEvent(String sourceName, OMRSInstanceEvent instanceEvent) { }
+    public void sendInstanceEvent(String sourceName, OMRSInstanceEvent instanceEvent) {
+    }
 
     public void processNewEntityEvent(String sourceName,
                                       String originatorMetadataCollectionId,
@@ -62,7 +66,6 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                           EntityDetail entity) {
 
     }
-
 
 
     public void processUndoneEntityEvent(String sourceName,
@@ -198,27 +201,55 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                             String originatorServerType,
                                             String originatorOrganizationName,
                                             Relationship relationship) {
+
+        //It should handle only semantic assignments for relational columns and relational tables
+        if (!(relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT) &&
+                (relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN)) ||
+                 relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_TABLE))) {
+            log.info("Event is ignored as the relationship is not a semantic assignment for a column");
+
+        } else {
+            log.info("Processing semantic assignment relationship event");
+            try {
+                processSemanticAssignment(relationship);
+            } catch (Exception e) {
+                log.error("Exception building events", e);
+                AssetLineageErrorCode auditCode = AssetLineageErrorCode.PUBLISH_EVENT_EXCEPTION;
+                auditLog.logException("processNewRelationshipEvent",
+                        auditCode.getErrorMessageId(),
+                        OMRSAuditLogRecordSeverity.EXCEPTION,
+                        auditCode.getFormattedErrorMessage(RelationshipEvent.class.getName(), e.getMessage()),
+                        e.getMessage(),
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction(),
+                        e);
+            }
+        }
+
+
+    }
+
+    private void processSemanticAssignment(Relationship relationship) {
+
         RelationshipEvent relationshipEvent = new RelationshipEvent();
         GlossaryTerm glossaryTerm = new GlossaryTerm();
 
-        glossaryTerm.setGuid(relationship.getEntityTwoProxy().getGUID());
-        glossaryTerm.setQualifiedName(relationship.getEntityTwoProxy().getUniqueProperties()
-                .getInstanceProperties().get( "primitiveValue").toString());
-
-        System.out.println("--------------------");
-        System.out.println(relationship.getEntityTwoProxy().getUniqueProperties()
-                .getInstanceProperties().get( "primitiveValue").toString());
-        
         AssetContextBuilder assetContextBuilder = new AssetContextBuilder(auditLog);
         AssetContext assetContext = assetContextBuilder.buildAssetContext(serverName, serverUsername, relationship.getEntityOneProxy().getGUID());
 
-        relationshipEvent.setEntityProxyOne(relationship.getEntityOneProxy());
-//        relationshipEvent.setGlossaryTerm(glossaryTerm);
+        InstancePropertyValue instancePropertyValue = relationship.getEntityTwoProxy().getUniqueProperties().getInstanceProperties().get("qualifiedName");
+        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) instancePropertyValue;
+        String qualifiedName = primitivePropertyValue.getPrimitiveValue().toString();
+
+        glossaryTerm.setGuid(relationship.getEntityTwoProxy().getGUID());
+        glossaryTerm.setQualifiedName(qualifiedName);
+
+        relationshipEvent.setGlossaryTerm(glossaryTerm);
         relationshipEvent.setTypeDefName(relationship.getType().getTypeDefName());
         relationshipEvent.setAssetContext(assetContext);
         relationshipEvent.setOmrsInstanceEventType(OMRSInstanceEventType.NEW_RELATIONSHIP_EVENT);
-        sendEvent(relationshipEvent);
 
+        sendEvent(relationshipEvent);
     }
 
 
