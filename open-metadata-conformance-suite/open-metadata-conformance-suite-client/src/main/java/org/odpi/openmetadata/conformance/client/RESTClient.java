@@ -4,14 +4,11 @@ package org.odpi.openmetadata.conformance.client;
 
 
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientConnector;
+import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTConfigurationException;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
 import org.odpi.openmetadata.adapters.connectors.restclients.RESTClientFactory;
 import org.odpi.openmetadata.conformance.ffdc.ConformanceSuiteErrorCode;
-import org.odpi.openmetadata.conformance.ffdc.exception.RESTConfigurationException;
 import org.odpi.openmetadata.conformance.rest.TestLabReportResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -19,8 +16,6 @@ import org.slf4j.LoggerFactory;
  */
 class RESTClient
 {
-    private static final Logger log = LoggerFactory.getLogger(RESTClient.class);
-
     private RESTClientConnector clientConnector;        /* Initialized in constructor */
 
 

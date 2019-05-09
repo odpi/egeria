@@ -81,7 +81,7 @@ $
 and issue the following REST call to check the server is running with the new server address.
 
 ```text
-$ curl -X GET http://localhost:8081/open-metadata/admin-services/users/test/server-origin
+$ curl -X GET http://localhost:8081/open-metadata/platform-services/users/test/server-platform-origin
 ODPi Egeria OMAG Server Platform
 $
 

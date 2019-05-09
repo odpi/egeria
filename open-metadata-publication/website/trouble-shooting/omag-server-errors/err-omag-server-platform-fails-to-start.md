@@ -45,13 +45,13 @@ Process finished with exit code 1
 ```
 This means another server is already using the same network address.
 
-Issue the `server-origin` REST call to determine if this is just another instance of your OMAG Server Platform
+Issue the `server-platform-origin` REST call to determine if this is just another instance of your OMAG Server Platform
 already running.  The example below is for an OMAG Server Platform using the default network
 address of `http://localhost:8080`.  
 
 ```bash
 
-$ curl -X GET http://localhost:8080/open-metadata/admin-services/users/test/server-origin
+$ curl -X GET http://localhost:8080/open-metadata/platform-services/users/test/server-platform-origin
 ODPi Egeria OMAG Server Platform (version 1.1-SNAPSHOT)
 $
 
@@ -61,7 +61,7 @@ If you get a response like this:
 
 ```json
 
-{"timestamp":"2019-02-01T15:13:56.749+0000","status":404,"error":"Not Found","message":"No message available","path":"/open-metadata/admin-services/users/fred/server-origin"}
+{"timestamp":"2019-02-01T15:13:56.749+0000","status":404,"error":"Not Found","message":"No message available","path":"/open-metadata/platform-services/users/test/server-platform-origin"}
 
 ```
 
