@@ -11,7 +11,7 @@ The name of the file is passed to the connector in the **address**
 property in the Endpoint object of the Connection object used to create the connector.
 
 If the first row of the file contains column names,
-This connector is able to return a schema structure for the file
+this connector is able to return a schema structure for the file
 that can be used by a discovery engine or data platform engine or
 governance daemon or OMAS to extract and store the schema.
 

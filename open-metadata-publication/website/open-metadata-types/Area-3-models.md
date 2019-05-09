@@ -5,7 +5,7 @@
 
 Area 3 describes the glossary.
 
-This enables the definition of meanings and the relationships
+This enables the definition of assets and the relationships
 between different types of terminology.
 Most definitions are created through a manual process,
 however, this definition may occur in a different
@@ -34,6 +34,7 @@ understand the data assets they are working with.
 * **[0390 Glossary Projects](0390-Glossary-Projects.md)**
 
 
+Return to [Overview](README.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

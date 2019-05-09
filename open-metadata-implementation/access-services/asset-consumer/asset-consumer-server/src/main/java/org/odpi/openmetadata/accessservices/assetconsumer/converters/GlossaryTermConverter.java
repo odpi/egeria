@@ -3,25 +3,16 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.converters;
 
 
+import org.odpi.openmetadata.accessservices.assetconsumer.mappers.GlossaryTermMapper;
 import org.odpi.openmetadata.accessservices.assetconsumer.properties.GlossaryTerm;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.ReferenceableConverter;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
-public class GlossaryTermConverter extends ReferenceableHeaderConverter
+public class GlossaryTermConverter extends ReferenceableConverter
 {
-    public  static final String DISPLAY_NAME_PROPERTY_NAME = "displayName";
-
-    private static final String summaryPropertyName       = "summary";
-    private static final String descriptionPropertyName   = "description";
-    private static final String examplesPropertyName      = "usage";
-    private static final String abbreviationPropertyName  = "abbreviation";
-    private static final String usagePropertyName         = "usage";
-
-
-    private GlossaryTerm  glossaryTermBean = null;
-
-
     /**
      * Constructor takes in the source of information for the bean
      *
@@ -34,41 +25,17 @@ public class GlossaryTermConverter extends ReferenceableHeaderConverter
                                  String               componentName)
     {
         super(entity, repositoryHelper, componentName);
-
-        if (entity != null)
-        {
-            this.glossaryTermBean = new GlossaryTerm();
-            super.setBean(glossaryTermBean);
-            this.updateGlossaryTermBean(entity, repositoryHelper, componentName);
-        }
     }
 
 
     /**
-     * Extract the Asset specific properties from the entity.
+     * This method is overridable by the subclasses.
      *
-     * @param entity entity containing the relevant properties
-     * @param repositoryHelper helper object to parse entity
-     * @param componentName name of this component
+     * @return empty bean
      */
-    private void updateGlossaryTermBean(EntityDetail         entity,
-                                        OMRSRepositoryHelper repositoryHelper,
-                                        String               componentName)
+    protected GlossaryTerm  getNewGlossaryTermBean()
     {
-        final String  methodName = "updateGlossaryTermBean";
-
-        if (entity != null)
-        {
-            InstanceProperties instanceProperties = entity.getProperties();
-
-            glossaryTermBean.setDisplayName(repositoryHelper.getStringProperty(componentName,
-                                                                               DISPLAY_NAME_PROPERTY_NAME, instanceProperties, methodName));
-            glossaryTermBean.setSummary(repositoryHelper.getStringProperty(componentName, summaryPropertyName, instanceProperties, methodName));
-            glossaryTermBean.setDescription(repositoryHelper.getStringProperty(componentName, descriptionPropertyName, instanceProperties, methodName));
-            glossaryTermBean.setUsage(repositoryHelper.getStringProperty(componentName, usagePropertyName, instanceProperties, methodName));
-            glossaryTermBean.setAbbreviation(repositoryHelper.getStringProperty(componentName, abbreviationPropertyName, instanceProperties, methodName));
-            glossaryTermBean.setExamples(repositoryHelper.getStringProperty(componentName, examplesPropertyName, instanceProperties, methodName));
-        }
+        return new GlossaryTerm();
     }
 
 
@@ -79,6 +46,70 @@ public class GlossaryTermConverter extends ReferenceableHeaderConverter
      */
     public GlossaryTerm getBean()
     {
-        return glossaryTermBean;
+        GlossaryTerm  bean = null;
+
+        if (entity != null)
+        {
+            bean = getNewGlossaryTermBean();
+
+            updateBean(bean);
+        }
+
+        return bean;
+    }
+
+
+    /**
+     * Request the bean is extracted from the repository objects
+     *
+     * @return output bean
+     */
+    protected void updateBean(GlossaryTerm bean)
+    {
+        final String  methodName = "updateBean";
+
+        if (entity != null)
+        {
+            super.updateBean(bean);
+
+            /*
+             * The properties are removed from the instance properties and stowed in the bean.
+             * Any remaining properties are stored in extendedProperties.
+             */
+            InstanceProperties instanceProperties = entity.getProperties();
+
+            if (instanceProperties != null)
+            {
+                bean.setQualifiedName(repositoryHelper.removeStringProperty(serviceName,
+                                                                            ReferenceableMapper.QUALIFIED_NAME_PROPERTY_NAME,
+                                                                            instanceProperties,
+                                                                            methodName));
+                bean.setDisplayName(repositoryHelper.removeStringProperty(serviceName,
+                                                                          GlossaryTermMapper.DISPLAY_NAME_PROPERTY_NAME,
+                                                                          instanceProperties,
+                                                                          methodName));
+                bean.setDisplayName(repositoryHelper.removeStringProperty(serviceName,
+                                                                          GlossaryTermMapper.SUMMARY_PROPERTY_NAME,
+                                                                          instanceProperties,
+                                                                          methodName));
+                bean.setDescription(repositoryHelper.removeStringProperty(serviceName,
+                                                                          GlossaryTermMapper.DESCRIPTION_PROPERTY_NAME,
+                                                                          instanceProperties,
+                                                                          methodName));
+                bean.setDisplayName(repositoryHelper.removeStringProperty(serviceName,
+                                                                          GlossaryTermMapper.ABBREVIATION_PROPERTY_NAME,
+                                                                          instanceProperties,
+                                                                          methodName));
+                bean.setDescription(repositoryHelper.removeStringProperty(serviceName,
+                                                                          GlossaryTermMapper.USAGE_PROPERTY_NAME,
+                                                                          instanceProperties,
+                                                                          methodName));
+                bean.setAdditionalProperties(repositoryHelper.removeStringMapFromProperty(serviceName,
+                                                                                          ReferenceableMapper.ADDITIONAL_PROPERTIES_PROPERTY_NAME,
+                                                                                          instanceProperties,
+                                                                                          methodName));
+                bean.setExtendedProperties(repositoryHelper.getInstancePropertiesAsMap(instanceProperties));
+            }
+        }
     }
 }

@@ -46,7 +46,7 @@
         <module>subject-area</module>
         <module>data-privacy</module>
         <module>data-engine</module>
-
+        <module>glossary-view</module>
     </modules>
 
     <!-- These are the standard dependencies needed by all access services -->
@@ -55,6 +55,12 @@
         <dependency>
             <groupId>org.odpi.egeria</groupId>
             <artifactId>open-connector-framework</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ffdc-services</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 

@@ -5,11 +5,11 @@ package org.odpi.openmetadata.conformance.client;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.varia.NullAppender;
+import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTConfigurationException;
 import org.odpi.openmetadata.adapters.connectors.restclients.ffdc.exceptions.RESTServerException;
 import org.odpi.openmetadata.conformance.beans.OpenMetadataConformanceTestLabResults;
 import org.odpi.openmetadata.conformance.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.conformance.ffdc.exception.PropertyServerException;
-import org.odpi.openmetadata.conformance.ffdc.exception.RESTConfigurationException;
 import org.odpi.openmetadata.conformance.ffdc.exception.UserNotAuthorizedException;
 import org.odpi.openmetadata.conformance.rest.TestLabReportResponse;
 
@@ -169,7 +169,7 @@ public class OpenMetadataConformanceTestReport
 
             testLabResults = testLab.getConformanceReport();
         }
-        catch (RESTConfigurationException  error)
+        catch (RESTConfigurationException error)
         {
             System.out.println("Unable to issue calls to the conformance suite server " + serverName + " at " + serverURLRoot);
             System.out.println("Returned error message is " + error.getErrorMessage() + ".");
