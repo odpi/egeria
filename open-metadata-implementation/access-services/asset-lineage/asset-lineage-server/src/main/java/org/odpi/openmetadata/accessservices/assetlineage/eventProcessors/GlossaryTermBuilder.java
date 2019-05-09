@@ -3,6 +3,7 @@
 
 package org.odpi.openmetadata.accessservices.assetlineage.eventProcessors;
 
+import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.PropertyServerException;
 import org.odpi.openmetadata.accessservices.assetlineage.model.GlossaryTerm;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
@@ -20,6 +21,11 @@ public class GlossaryTermBuilder {
     public GlossaryTermBuilder(String serverName, String userID) {
         this.serverName = serverName;
         this.userId = userID;
+        try {
+            this.metadataCollectionForSearch = instanceHandler.getMetadataCollection(serverName);
+        } catch (PropertyServerException e) {
+            e.printStackTrace();
+        }
     }
 
     public GlossaryTerm getGlossaryTerm(EntityProxy entityProxy) {
@@ -32,24 +38,21 @@ public class GlossaryTermBuilder {
 
         glossaryTerm.setGuid(GUID);
         glossaryTerm.setQualifiedName(qualifiedName);
-
+        EntityDetail entityDetail = null;
         try {
-
-            this.metadataCollectionForSearch = instanceHandler.getMetadataCollection(serverName);
-            EntityDetail entityDetail = metadataCollectionForSearch.getEntityDetail(userId, GUID);
-            InstancePropertyValue displayNameInstancePropertyValue  = entityDetail.getProperties().getPropertyValue("displayName");
-            PrimitivePropertyValue displayNamePrimitivePropertyValue = (PrimitivePropertyValue) displayNameInstancePropertyValue;
-            String displayName = displayNamePrimitivePropertyValue.getPrimitiveValue().toString();
-
-            //TODO Maybe classifications and displayname shouldn't be in the same try block. We only want to query once though.
-            List<Classification> classifications = entityDetail.getClassifications();
-
-            glossaryTerm.setDisplayName(displayName);
-            glossaryTerm.setClassifications(classifications);
+            entityDetail = metadataCollectionForSearch.getEntityDetail(userId, GUID);
         } catch (Exception e) {
-            //TODO Proper auditlog error logging!
             e.printStackTrace();
         }
+        InstancePropertyValue displayNameInstancePropertyValue = entityDetail.getProperties().getPropertyValue("displayName");
+        PrimitivePropertyValue displayNamePrimitivePropertyValue = (PrimitivePropertyValue) displayNameInstancePropertyValue;
+        String displayName = displayNamePrimitivePropertyValue.getPrimitiveValue().toString();
+
+        //TODO Maybe classifications and displayname shouldn't be in the same try block. We only want to query once though.
+        List<Classification> classifications = entityDetail.getClassifications();
+
+        glossaryTerm.setDisplayName(displayName);
+        glossaryTerm.setClassifications(classifications);
         return glossaryTerm;
     }
 }
