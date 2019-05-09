@@ -28,6 +28,7 @@ the average of the scores for all its columns, but other factors may be taken in
 account by a given system and we should be able to associate a score to an Asset,
 independently of the way it is calculated.
 
+Return to [Area 6](Area-6-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

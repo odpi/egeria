@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.Tag;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.InformalTag;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -19,9 +19,9 @@ import static org.testng.Assert.assertTrue;
  */
 public class TagListResponseTest
 {
-    private Tag        tag                  = new Tag();
-    private List<Tag>  meaningList          = new ArrayList<>();
-    private Map<String, Object> additionalProperties = new HashMap<>();
+    private InformalTag         tag                 = new InformalTag();
+    private List<InformalTag>   tagList             = new ArrayList<>();
+    private Map<String, Object> exceptionProperties = new HashMap<>();
 
 
     /**
@@ -31,8 +31,8 @@ public class TagListResponseTest
     {
         tag.setName("TestTag");
 
-        meaningList.add(tag);
-        additionalProperties.put("TestAdditionalPropertyName", "TestAdditionalPropertyValue");
+        tagList.add(tag);
+        exceptionProperties.put("TestAdditionalPropertyName", "TestAdditionalPropertyValue");
     }
 
 
@@ -51,10 +51,10 @@ public class TagListResponseTest
         testObject.setExceptionUserAction("TestUserAction");
 
         testObject.setRelatedHTTPCode(400);
-        testObject.setExceptionProperties(additionalProperties);
+        testObject.setExceptionProperties(exceptionProperties);
 
         testObject.setStartingFromElement(10);
-        testObject.setTags(meaningList);
+        testObject.setTags(tagList);
 
         return testObject;
     }
@@ -73,10 +73,10 @@ public class TagListResponseTest
         assertTrue(resultObject.getExceptionUserAction().equals("TestUserAction"));
 
         assertTrue(resultObject.getRelatedHTTPCode() == 400);
-        assertTrue(resultObject.getExceptionProperties().equals(additionalProperties));
+        assertTrue(resultObject.getExceptionProperties().equals(exceptionProperties));
 
         assertTrue(resultObject.getStartingFromElement() == 10);
-        assertTrue(resultObject.getTags().equals(meaningList));
+        assertTrue(resultObject.getTags().equals(tagList));
     }
 
 

@@ -32,7 +32,8 @@ import java.util.List;
 import java.util.Map;
 
 
-public class DataPlatformAdmin implements AccessServiceAdmin {
+public class DataPlatformAdmin extends AccessServiceAdmin
+{
 
     private static final Logger log = LoggerFactory.getLogger(DataPlatformAdmin.class);
     private OpenMetadataTopicConnector dataPlatformInTopicConnector;
@@ -146,18 +147,6 @@ public class DataPlatformAdmin implements AccessServiceAdmin {
                     auditCode.getUserAction()
             );
         }
-    }
-
-    private String getTopicName(Connection connection) {
-        String topicName = null;
-        if (connection != null) {
-            Endpoint outTopicEndpoint = connection.getEndpoint();
-
-            if (outTopicEndpoint != null) {
-                topicName = outTopicEndpoint.getAddress();
-            }
-        }
-        return topicName;
     }
 
 
