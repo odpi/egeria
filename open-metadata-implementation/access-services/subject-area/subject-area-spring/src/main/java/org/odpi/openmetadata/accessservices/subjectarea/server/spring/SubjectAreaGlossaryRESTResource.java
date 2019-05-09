@@ -83,7 +83,7 @@ public class SubjectAreaGlossaryRESTResource extends SubjectAreaRESTServicesInst
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param searchCriteria String expression matching Glossary property values .
+     * @param searchCriteria String expression matching Glossary property values. If not specified then all glossaries are returned.
      * @param asOfTime the glossaries returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.

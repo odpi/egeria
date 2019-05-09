@@ -91,7 +91,9 @@ public class CategoryMapper extends EntityDetailMapper implements INodeMapper {
         List inlinedClassifications = new ArrayList<>();
 
         if (node.getNodeType()== NodeType.SubjectAreaDefinition) {
-            inlinedClassifications.add(new SubjectArea());
+            SubjectArea subjectArea = new SubjectArea();
+            subjectArea.setName(node.getName());
+            inlinedClassifications.add(subjectArea);
         }
 
         return inlinedClassifications;
