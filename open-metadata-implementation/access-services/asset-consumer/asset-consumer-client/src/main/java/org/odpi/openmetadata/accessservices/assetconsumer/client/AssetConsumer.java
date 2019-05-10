@@ -19,6 +19,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetUniverse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -104,6 +105,50 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
      * AssetConsumerAssetInterface
      * ===============================================
      */
+
+    /**
+     * Return a list of assets with the requested name.
+     *
+     * @param serverName name of the server instances for this request
+     * @param userId calling user
+     * @param assetName asset name to search for
+     * @param startFrom starting element (used in paging through large result sets)
+     * @param pageSize maximum number of results to return
+     *
+     * @return list of Asset summaries or
+     * InvalidParameterException the name is invalid or
+     * PropertyServerException there is a problem access in the property server or
+     * UserNotAuthorizedException the user does not have access to the properties
+     */
+    private List<Asset> getAssetByName(String   serverName,
+                                  String   userId,
+                                  String   assetName,
+                                  int      startFrom,
+                                  int      pageSize) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException
+    {
+        final String   methodName = "getAssetByName";
+        final String   nameParameter = "assetName";
+        final String   urlTemplate = "/servers/{0}/open-metadata/access-services/asset-consumer/users/{1}/assets/by-name/{2}";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(assetName, nameParameter, methodName);
+
+       AssetListResponse restResult = restClient.callAssetListGetRESTCall(methodName,
+                omasServerURL + urlTemplate,
+                serverName,
+                assetName);
+
+        exceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
+        exceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
+        exceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
+
+        return restResult.getAssets();
+    }
+
+
+
 
 
     /**
@@ -244,7 +289,7 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
                                                                      PropertyServerException,
                                                                      UserNotAuthorizedException
     {
-        final String   methodName = "getExtendedProperties";
+        final String   methodName = "getAssetProperties";
         final String   guidParameter = "assetGUID";
 
         invalidParameterHandler.validateUserId(userId, methodName);
@@ -281,6 +326,142 @@ public class AssetConsumer implements AssetConsumerAssetInterface,
                                               errorCode.getUserAction());
         }
     }
+    /**
+     * Returns a comprehensive collection of properties about the requested asset. The following calls are issued in order until one is successfull
+     * - getAssetProperties passing the token as the GUID
+     * - getAssetByName passing the token as the name
+     *
+     * @param userId         userId of user making request.
+     * @param assetToken     token used to find the Asset.
+     *
+     * @return a list of AssetUniverses - which are comprehensive collections of properties about the asset.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<AssetUniverse> getAssetPropertiesByToken(String userId,
+                                            String assetToken) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException
+    {
+        final String   methodName = "getAssetPropertiesByToken";
+        final String   guidParameter = "assetGUID";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+
+        List<AssetUniverse> assetUniverses= new ArrayList<>();
+        UserNotAuthorizedException userNotAuthorizedException =null;
+
+        try
+        {
+            /*
+             * Make use of the ConnectedAsset OMAS Service which provides the metadata services for the
+             * Open Connector Framework (OCF).
+             */
+            assetUniverses.add(new ConnectedAssetUniverse(serverName, omasServerURL, userId, assetToken));
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        {
+            userNotAuthorizedException = new UserNotAuthorizedException(error.getReportedHTTPCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    error.getErrorMessage(),
+                    error.getReportedSystemAction(),
+                    error.getReportedUserAction(),
+                    userId);
+        }
+        catch (Throwable error)
+        {
+            // the token is not a guid - so try getting the asset by name.
+            try {
+                assetUniverses = this.getAssetPropertiesByName(userId, assetToken);
+            } catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error2)
+                {
+                    userNotAuthorizedException = new  UserNotAuthorizedException(error2.getReportedHTTPCode(),
+                            this.getClass().getName(),
+                            methodName,
+                            error2.getErrorMessage(),
+                            error2.getReportedSystemAction(),
+                            error2.getReportedUserAction(),
+                            userId);
+                } catch (Throwable error3) {
+
+                AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.NO_ASSET_PROPERTIES;
+                String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+
+                throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                        this.getClass().getName(),
+                        methodName,
+                        errorMessage,
+                        errorCode.getSystemAction(),
+                        errorCode.getUserAction());
+            }
+            if (userNotAuthorizedException !=null) {
+                throw userNotAuthorizedException;
+            }
+        }
+        return assetUniverses;
+    }
+    /**
+     * Returns a comprehensive collection of properties about the requested asset using its name.
+     *
+     * @param userId         userId of user making request.
+     * @param assetName      name of the asset to look for.
+     *
+     * @return a list of AssetUniverses - which are comprehensive collections of properties about the asset.
+     *
+     * @throws InvalidParameterException one of the parameters is null or invalid.
+     * @throws PropertyServerException there is a problem retrieving the asset properties from the property servers).
+     * @throws UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public List<AssetUniverse> getAssetPropertiesByName(String userId,
+                                            String assetName) throws InvalidParameterException,
+            PropertyServerException,
+            UserNotAuthorizedException
+    {
+        final String   methodName = "getAssetPropertiesByName";
+        final String   nameParameter = "assetName";
+
+        invalidParameterHandler.validateUserId(userId, methodName);
+        invalidParameterHandler.validateName(assetName, nameParameter, methodName);
+        List<AssetUniverse> assetUniverses= new ArrayList<>();
+        try
+        {
+            /*
+             * Make use of the ConnectedAsset OMAS Service which provides the metadata services for the
+             * Open Connector Framework (OCF).
+             */
+           List<Asset> assets = getAssetsByName(userId,assetName,0,0);
+           for (Asset asset:assets) {
+               assetUniverses.add(getAssetProperties(userId,asset.getGUID()));
+           }
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        {
+            throw new UserNotAuthorizedException(error.getReportedHTTPCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    error.getErrorMessage(),
+                    error.getReportedSystemAction(),
+                    error.getReportedUserAction(),
+                    userId);
+        }
+        catch (Throwable error)
+        {
+            AssetConsumerErrorCode errorCode = AssetConsumerErrorCode.NO_ASSET_PROPERTIES;
+            String                 errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
+
+            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+        return assetUniverses;
+    }
+
 
 
     /*
