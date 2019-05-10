@@ -52,7 +52,6 @@ public class TestInMemoryEntityNeighbourhood
         EntityDetail entity1 = new EntityDetail();
         entity1.setGUID("1111");
         entityStore.put(entity1.getGUID(), entity1);
-        when(repositoryValidator.verifyInstanceType(anyString(), any())).thenReturn(true);
         when(repositoryValidator.verifyInstanceHasRightStatus(any(), any())).thenReturn(true);
         when(repositoryValidator.verifyEntityIsClassified(any(), any())).thenReturn(true);
         when(repositoryHelper.isTypeOf(anyString(),anyString(),anyString())).thenReturn(true);
