@@ -405,18 +405,34 @@ public class AssetHandler
         String                   assetTypeGUID  = AssetMapper.ASSET_TYPE_GUID;
         String                   assetTypeName  = AssetMapper.ASSET_TYPE_NAME;
 
+        ElementType   assetType = asset.getType();
+
+        if (assetType != null)
+        {
+            if (assetType.getElementTypeId() != null)
+            {
+                assetTypeGUID = assetType.getElementTypeId();
+            }
+
+            if (assetType.getElementTypeName() != null)
+            {
+                assetTypeName = assetType.getElementTypeName();
+            }
+        }
+
+
         AssetBuilder assetBuilder = new AssetBuilder(asset.getQualifiedName(),
-                                                          asset.getDisplayName(),
-                                                          asset.getDescription(),
-                                                          asset.getOwner(),
-                                                          asset.getOwnerType(),
-                                                          asset.getZoneMembership(),
-                                                          asset.getLatestChange(),
-                                                          asset.getAdditionalProperties(),
-                                                          asset.getExtendedProperties(),  
-                                                          repositoryHelper,
-                                                          serviceName,
-                                                          serverName);
+                                                     asset.getDisplayName(),
+                                                     asset.getDescription(),
+                                                     asset.getOwner(),
+                                                     asset.getOwnerType(),
+                                                     asset.getZoneMembership(),
+                                                     asset.getLatestChange(),
+                                                     asset.getAdditionalProperties(),
+                                                     asset.getExtendedProperties(),
+                                                     repositoryHelper,
+                                                     serviceName,
+                                                     serverName);
 
         String assetGUID = repositoryHandler.createEntity(userId,
                                                           assetTypeGUID,
