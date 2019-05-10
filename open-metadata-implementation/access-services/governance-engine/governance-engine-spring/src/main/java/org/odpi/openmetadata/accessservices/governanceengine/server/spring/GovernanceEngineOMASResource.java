@@ -39,10 +39,10 @@ public class GovernanceEngineOMASResource {
      * UserNotAuthorizedException - the requesting user is not authorized to issue this request.
      */
     @RequestMapping(method = RequestMethod.GET, path = "/assets", produces = MediaType.APPLICATION_JSON_VALUE)
-    GovernedAssetListAPIResponse getGovernedAssets(@PathVariable String serverName,
-                                                   @PathVariable String userId,
-                                                   @RequestParam(value = "classification", required = false) List<String> classification,
-                                                   @RequestParam(value = "type", required = false) List<String> type) {
+    public GovernedAssetListAPIResponse getGovernedAssets(@PathVariable String serverName,
+                                                          @PathVariable String userId,
+                                                          @RequestParam(value = "classification", required = false) List<String> classification,
+                                                          @RequestParam(value = "type", required = false) List<String> type) {
         return restAPI.getGovernedAssets(serverName, userId, classification, type);
     }
 
