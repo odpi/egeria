@@ -18,54 +18,54 @@ These first three methods enable the caller to work with reviews.
 * **addReviewToAsset** - Adds a star rating and optional review text to the asset.
   
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/add-review-to-asset-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/add-review-to-asset-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/add-review-to-asset-with-rest.md)
 
 * **updateReviewOnAsset** - Updates the rating and optional review text attached to the asset by this user.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/update-review-on-asset-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/update-review-on-asset-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/update-review-on-asset-with-rest.md)
 
 * **removeReviewFromAsset** - Removes a review that was added to the asset by this user.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/remove-review-from-asset-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/remove-review-from-asset-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/remove-review-from-asset-with-rest.md)
 
 * **addLikeToAsset** - Adds a "Like" to the asset.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/add-like-to-asset-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/add-like-to-asset-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/add-like-to-asset-with-rest.md)
 
 * **removeLikeFromAsset** - Removes a "Like" added to the asset by this user.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/remove-like-from-asset-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/remove-like-from-asset-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/remove-like-from-asset-with-rest.md)
    
 * **addCommentToAsset** - Adds a comment to the asset.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/add-comment-to-asset-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/add-comment-to-asset-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/add-comment-to-asset-with-rest.md)
 
 * **addCommentReply** - Adds a comment to another comment.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/add-comment-reply-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/add-comment-reply-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/add-comment-reply-with-rest.md)
 * **updateComment** -  Update an existing comment.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/update-comment-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/update-comment-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/update-comment-with-rest.md)
 
 * **removeCommentFromAsset** - Removes a comment added to the asset by this user.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/remove-comment-from-asset-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/remove-comment-from-asset-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/remove-comment-from-asset-with-rest.md)
 
 ----

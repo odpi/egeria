@@ -106,7 +106,7 @@ For example, try the following command (this is request **3.** in Postman):
 
 ```text
 
-POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/local-server-type?typeName="Standalone Metadata Repository"
+POST http://localhost:8080/open-metadata/admin-services/users/garygeeke/servers/cocoMDS1/server-type?typeName="Standalone Metadata Repository"
 
 ```
 

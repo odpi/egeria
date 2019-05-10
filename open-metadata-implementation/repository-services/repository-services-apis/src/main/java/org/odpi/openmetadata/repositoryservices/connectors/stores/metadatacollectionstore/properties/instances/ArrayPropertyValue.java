@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.OMRSRuntimeException;
 
-import java.util.Objects;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -61,6 +61,78 @@ public class ArrayPropertyValue extends InstancePropertyValue
     public  InstancePropertyValue cloneFromSubclass()
     {
         return new ArrayPropertyValue(this);
+    }
+
+
+    /**
+     * Return the string version of the value - used for error logging.
+     *
+     * @return string value
+     */
+    public String valueAsString()
+    {
+        List<String> objectValue = new ArrayList<>();
+
+        if ((arrayCount > 0) && (arrayValues != null))
+        {
+            Map<String, InstancePropertyValue> instancePropertyValueMap = arrayValues.getInstanceProperties();
+
+            if (instancePropertyValueMap != null)
+            {
+                Set<String> indicies = instancePropertyValueMap.keySet();
+
+                for (String index : indicies)
+                {
+                    if (index != null)
+                    {
+                        objectValue.add(Integer.getInteger(index), instancePropertyValueMap.get(index).valueAsString());
+                    }
+                }
+            }
+        }
+
+        if (objectValue.isEmpty())
+        {
+            return null;
+        }
+
+        return objectValue.toString();
+    }
+
+
+    /**
+     * Return the object version of the value - used for comparisons.
+     *
+     * @return object value
+     */
+    public Object valueAsObject()
+    {
+        List<Object> objectValue = new ArrayList<>();
+
+        if ((arrayCount > 0) && (arrayValues != null))
+        {
+            Map<String, InstancePropertyValue> instancePropertyValueMap = arrayValues.getInstanceProperties();
+
+            if (instancePropertyValueMap != null)
+            {
+                Set<String> indicies = instancePropertyValueMap.keySet();
+
+                for (String index : indicies)
+                {
+                    if (index != null)
+                    {
+                        objectValue.add(Integer.getInteger(index), instancePropertyValueMap.get(index).valueAsObject());
+                    }
+                }
+            }
+        }
+
+        if (objectValue.isEmpty())
+        {
+            return null;
+        }
+
+        return objectValue;
     }
 
 

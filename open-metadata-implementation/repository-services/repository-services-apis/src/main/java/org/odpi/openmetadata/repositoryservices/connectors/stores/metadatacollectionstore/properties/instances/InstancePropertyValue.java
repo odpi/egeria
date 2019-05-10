@@ -82,6 +82,22 @@ public abstract class InstancePropertyValue extends InstanceElementHeader
 
 
     /**
+     * Return the string version of the value - used for error logging.
+     *
+     * @return string value
+     */
+    public abstract String valueAsString();
+
+
+    /**
+     * Return the object version of the value - used for comparisons.
+     *
+     * @return object value
+     */
+    public abstract Object valueAsObject();
+
+
+    /**
      * Return the category of this instance property's type.
      *
      * @return TypeDefCategory enum value

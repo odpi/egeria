@@ -303,7 +303,7 @@ public enum OMRSAuditCode
                       "The information in the event is not available to the server.",
                       "Review the exception to determine the source of the error and correct it."),
 
-    NULL_EVENT_TO_PROCESS("OMRS-AUDIT-0101",
+    NULL_EVENT_TO_PROCESS("OMRS-AUDIT-0102",
                       OMRSAuditLogRecordSeverity.EXCEPTION,
                       "Connector {0} is unable to process a null event {0} passed by the event bus",
                       "The OMRS Topic Connector was passed a null event by the event bus.",

@@ -2,10 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.builders;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.mappers.DiscoveryServicePropertiesMapper;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.builders.AssetBuilder;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
-import org.odpi.openmetadata.frameworks.discovery.ffdc.InvalidParameterException;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 
 import java.util.List;
@@ -16,16 +14,8 @@ import java.util.Map;
  * Specifically, a single discovery service is represented as a DiscoveryService entity linked to a Connection
  * entity using an ConnectionToAsset relationship.
  */
-public class DiscoveryServiceBuilder extends ReferenceableBuilder
+public class DiscoveryServiceBuilder extends AssetBuilder
 {
-    private String       displayName;
-    private String       description;
-    private String       owner          = null;
-    private OwnerType    ownerType      = null;
-    private List<String> zoneMembership = null;
-    private String       latestChange   = null;
-
-
     public DiscoveryServiceBuilder(String               qualifiedName,
                                    String               displayName,
                                    String               description,
@@ -33,10 +23,7 @@ public class DiscoveryServiceBuilder extends ReferenceableBuilder
                                    String               serviceName,
                                    String               serverName)
     {
-        super(qualifiedName, repositoryHelper, serviceName, serverName);
-
-        this.displayName = displayName;
-        this.description = description;
+        super(qualifiedName, displayName, description, repositoryHelper, serviceName, serverName);
     }
 
 
@@ -69,155 +56,6 @@ public class DiscoveryServiceBuilder extends ReferenceableBuilder
                                    String               serviceName,
                                    String               serverName)
     {
-        super(qualifiedName,
-              additionalProperties,
-              extendedProperties,
-              repositoryHelper,
-              serviceName,
-              serverName);
-
-        this.displayName = displayName;
-        this.description = description;
-        this.owner = owner;
-        this.ownerType = ownerType;
-        this.zoneMembership = zoneMembership;
-        this.latestChange = latestChange;
-    }
-
-
-    /**
-     * Return the supplied bean properties in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     * @throws InvalidParameterException there is a problem with the properties
-     */
-    public InstanceProperties getInstanceProperties(String  methodName) throws InvalidParameterException
-    {
-        InstanceProperties properties = super.getInstanceProperties(methodName);
-
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      DiscoveryServicePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
-
-        if (description != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      DiscoveryServicePropertiesMapper.DESCRIPTION_PROPERTY_NAME,
-                                                                      description,
-                                                                      methodName);
-        }
-
-        if (owner != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      DiscoveryServicePropertiesMapper.OWNER_PROPERTY_NAME,
-                                                                      owner,
-                                                                      methodName);
-        }
-
-        if (ownerType != null)
-        {
-            properties = this.addOwnerTypeToProperties(properties, methodName);
-        }
-
-        if (zoneMembership != null)
-        {
-            properties = repositoryHelper.addStringArrayPropertyToInstance(serviceName,
-                                                                           properties,
-                                                                           DiscoveryServicePropertiesMapper.ZONE_MEMBERSHIP_PROPERTY_NAME,
-                                                                           zoneMembership,
-                                                                           methodName);
-        }
-
-        if (latestChange != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      DiscoveryServicePropertiesMapper.LATEST_CHANGE_PROPERTY_NAME,
-                                                                      latestChange,
-                                                                      methodName);
-        }
-
-        return properties;
-    }
-
-
-    /**
-     * Return the supplied bean properties that represent a name in an InstanceProperties object.
-     *
-     * @param methodName name of the calling method
-     * @return InstanceProperties object
-     */
-    public InstanceProperties getNameInstanceProperties(String  methodName)
-    {
-        InstanceProperties properties = super.getNameInstanceProperties(methodName);
-
-        if (displayName != null)
-        {
-            properties = repositoryHelper.addStringPropertyToInstance(serviceName,
-                                                                      properties,
-                                                                      DiscoveryServicePropertiesMapper.DISPLAY_NAME_PROPERTY_NAME,
-                                                                      displayName,
-                                                                      methodName);
-        }
-
-        return properties;
-    }
-
-
-    /**
-     * Add the OwnerType enum to the properties.
-     *
-     * @param properties current properties
-     * @param methodName calling method
-     * @return updated properties
-     */
-    private InstanceProperties addOwnerTypeToProperties(InstanceProperties properties,
-                                                        String             methodName)
-    {
-        InstanceProperties resultingProperties = properties;
-
-        switch (ownerType)
-        {
-            case USER_ID:
-                resultingProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                                                 resultingProperties,
-                                                                                 DiscoveryServicePropertiesMapper.OWNER_TYPE_PROPERTY_NAME,
-                                                                                 0,
-                                                                                 "UserId",
-                                                                                 "The owner's userId is specified (default).",
-                                                                                 methodName);
-                break;
-
-            case PROFILE_ID:
-                resultingProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                                                 resultingProperties,
-                                                                                 DiscoveryServicePropertiesMapper.OWNER_TYPE_PROPERTY_NAME,
-                                                                                 1,
-                                                                                 "ProfileId",
-                                                                                 "The unique identifier (guid) of the profile of the owner..",
-                                                                                 methodName);
-                break;
-
-            case OTHER:
-                resultingProperties = repositoryHelper.addEnumPropertyToInstance(serviceName,
-                                                                                 resultingProperties,
-                                                                                 DiscoveryServicePropertiesMapper.OWNER_TYPE_PROPERTY_NAME,
-                                                                                 99,
-                                                                                 "Other",
-                                                                                 "Another type of owner identifier, probably not supported by open metadata.",
-                                                                                 methodName);
-                break;
-        }
-
-        return resultingProperties;
+        super(qualifiedName, displayName, description, owner, ownerType, zoneMembership, latestChange, additionalProperties, extendedProperties, repositoryHelper, serviceName, serverName);
     }
 }

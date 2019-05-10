@@ -50,7 +50,7 @@ public class TestAssetCertification
         testBean.setQualifiedName("TestQualifiedName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        testBean.setCertificationTypeGUID("TestCertificationTypeGUID");
+        testBean.setCertificateGUID("TestCertificationTypeGUID");
         testBean.setCertificationTypeName("TestCertificationTypeName");
         testBean.setExaminer("TestExaminer");
         testBean.setSummary("TestSummary");
@@ -83,7 +83,7 @@ public class TestAssetCertification
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setAdditionalProperties(additionalProperties);
 
-        testObject.setCertificationTypeGUID("TestCertificationTypeGUID");
+        testObject.setCertificateGUID("TestCertificationTypeGUID");
         testObject.setCertificationTypeName("TestCertificationTypeName");
         testObject.setExaminer("TestExaminer");
         testObject.setSummary("TestSummary");
@@ -116,7 +116,7 @@ public class TestAssetCertification
         testObject.setQualifiedName("TestQualifiedName");
         testObject.setAdditionalProperties(additionalProperties);
 
-        testObject.setCertificationTypeGUID("TestCertificationTypeGUID");
+        testObject.setCertificateGUID("TestCertificationTypeGUID");
         testObject.setCertificationTypeName("TestCertificationTypeName");
         testObject.setExaminer("TestExaminer");
         testObject.setSummary("TestSummary");

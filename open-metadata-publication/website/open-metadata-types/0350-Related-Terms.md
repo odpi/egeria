@@ -3,7 +3,7 @@
 
 # 0350 Related Terms
 
-The Related Terms model contains relationships used to show how the meanings of different terms are related to one another.
+The Related Terms model contains relationships used to show how the assets of different terms are related to one another.
 
 ![UML](0350-Related-Terms.png)
 
@@ -33,6 +33,7 @@ For example, this relationship would be use to say that "Cat" ISA "Animal".
 * **ValidValue** is a relationship that shows the validValue term represents one of the valid values that could be assigned to a data item that has the meaning described in the **validValueFor** term.
 
 
+Return to [Area 3](Area-3-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
