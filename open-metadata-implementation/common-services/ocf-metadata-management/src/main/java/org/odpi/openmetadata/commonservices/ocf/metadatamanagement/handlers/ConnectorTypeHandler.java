@@ -80,11 +80,11 @@ public class ConnectorTypeHandler
 
             if (connectorType.getGUID() != null)
             {
-                if (repositoryHandler.validateEntityGUID(userId,
-                                                         connectorType.getGUID(),
-                                                         ConnectorTypeMapper.CONNECTOR_TYPE_NAME,
-                                                         methodName,
-                                                         guidParameterName) != null)
+                if (repositoryHandler.isEntityKnown(userId,
+                                                    connectorType.getGUID(),
+                                                    ConnectorTypeMapper.CONNECTOR_TYPE_NAME,
+                                                    methodName,
+                                                    guidParameterName) != null)
                 {
                     return connectorType.getGUID();
                 }
