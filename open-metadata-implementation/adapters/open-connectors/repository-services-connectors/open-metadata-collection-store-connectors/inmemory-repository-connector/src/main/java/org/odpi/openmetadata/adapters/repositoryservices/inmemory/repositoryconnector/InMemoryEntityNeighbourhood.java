@@ -14,23 +14,23 @@ import java.util.*;
  * In memory entity neighbourhood processing to return the entities and relationships that radiate out from the supplied entity GUID.
  * The results are scoped both the instance type guids, classifications, status and the level.
  */
-public class InMemoryEntityNeighbourhood
+class InMemoryEntityNeighbourhood
 {
-    private OMRSRepositoryValidator repositoryValidator = null;
-    private OMRSRepositoryHelper repositoryHelper = null;
-    private String repositoryName = null;
-    private Map<String, EntityDetail> entityStore = null;
-    private Map<String, Relationship> relationshipStore = null;
-    private String rootEntityGUID = null;
-    private List<String> entityTypeGUIDs = null;
-    private List<String> relationshipTypeGUIDs = null;
-    private List<InstanceStatus> limitResultsByStatus = null;
-    private List<String> limitResultsByClassification = null;
-    private int level = 0;
-    private Set<String> graphEntities = new HashSet<>();
-    private Set<String> graphRelationships = new HashSet<>();
-    private Map<String, Set<String>> entityToRelationships = new HashMap<String, Set<String>>();
-    private Map<String, Set<String>> relationshipToEntities = new HashMap<String, Set<String>>();
+    private OMRSRepositoryValidator   repositoryValidator;
+    private OMRSRepositoryHelper      repositoryHelper;
+    private String                    repositoryName;
+    private Map<String, EntityDetail> entityStore;
+    private Map<String, Relationship> relationshipStore;
+    private String                    rootEntityGUID;
+    private List<String>              entityTypeGUIDs;
+    private List<String>              relationshipTypeGUIDs;
+    private List<InstanceStatus>      limitResultsByStatus;
+    private List<String>              limitResultsByClassification;
+    private int                       level;
+    private Set<String>               graphEntities          = new HashSet<>();
+    private Set<String>               graphRelationships     = new HashSet<>();
+    private Map<String, Set<String>>  entityToRelationships  = new HashMap<>();
+    private Map<String, Set<String>>  relationshipToEntities = new HashMap<>();
 
     /**
      * Constructor
@@ -50,7 +50,7 @@ public class InMemoryEntityNeighbourhood
      * @param limitResultsByClassification List of classifications that must be present on all returned entities.
      * @param level                        the number of the relationships out from the starting entity that the query will traverse to
      */
-    public InMemoryEntityNeighbourhood(OMRSRepositoryHelper repositoryHelper, String repositoryName, OMRSRepositoryValidator repositoryValidator, Map<String, EntityDetail> entityStore, Map<String, Relationship> relationshipStore, String rootEntityGUID, List<String> entityTypeGUIDs, List<String> relationshipTypeGUIDs, List<InstanceStatus> limitResultsByStatus, List<String> limitResultsByClassification, int level)
+    InMemoryEntityNeighbourhood(OMRSRepositoryHelper repositoryHelper, String repositoryName, OMRSRepositoryValidator repositoryValidator, Map<String, EntityDetail> entityStore, Map<String, Relationship> relationshipStore, String rootEntityGUID, List<String> entityTypeGUIDs, List<String> relationshipTypeGUIDs, List<InstanceStatus> limitResultsByStatus, List<String> limitResultsByClassification, int level)
     {
         this.repositoryHelper = repositoryHelper;
         this.repositoryName = repositoryName;
@@ -80,14 +80,15 @@ public class InMemoryEntityNeighbourhood
     {
         for (Relationship relationship : relationshipStore.values())
         {
-            String relationshipGuid = relationship.getGUID();
-            String relationshipEnd1Guid = getEnd1EntityGUID(relationship);
-            String relationshipEnd2Guid = getEnd2EntityGUID(relationship);
-            Set<String> endsGuids = new HashSet<>();
+            String      relationshipGuid     = relationship.getGUID();
+            String      relationshipEnd1Guid = getEnd1EntityGUID(relationship);
+            String      relationshipEnd2Guid = getEnd2EntityGUID(relationship);
+            Set<String> endsGuids            = new HashSet<>();
+
             endsGuids.add(relationshipEnd1Guid);
             endsGuids.add(relationshipEnd2Guid);
             relationshipToEntities.put(relationshipGuid, endsGuids);
-            Set<String> relationshipGuids = null;
+            Set<String> relationshipGuids;
 
             /*
              * process end1
@@ -149,7 +150,7 @@ public class InMemoryEntityNeighbourhood
             {
                 for (String relationshipTypeGUID : relationshipTypeGUIDs)
                 {
-                    if (repositoryValidator.verifyInstanceType(relationshipTypeGUID, relationship))
+                    if (repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationship))
                     {
                         validRelationship = true;
                     }
@@ -166,7 +167,7 @@ public class InMemoryEntityNeighbourhood
                     {
                         for (String typeGUID1 : entityTypeGUIDs)
                         {
-                            if (repositoryValidator.verifyInstanceType(typeGUID1, entity1))
+                            if (repositoryValidator.verifyInstanceType(repositoryName, typeGUID1, entity1))
                             {
                                 /*
                                  * Valid type
@@ -179,7 +180,7 @@ public class InMemoryEntityNeighbourhood
                             }
                             for (String typeGUID2 : entityTypeGUIDs)
                             {
-                                if (repositoryValidator.verifyInstanceType(typeGUID2, entity1))
+                                if (repositoryValidator.verifyInstanceType(repositoryName, typeGUID2, entity1))
                                 {
                                     /*
                                      * Valid type
@@ -267,7 +268,8 @@ public class InMemoryEntityNeighbourhood
      *
      * @return InstanceGraph  the instance graph that contains the entities and relationships that radiate out from the supplied entity GUID.
      */
-    public InstanceGraph createInstanceGraph() throws TypeErrorException {
+    InstanceGraph createInstanceGraph() throws TypeErrorException
+    {
         Set<String> entities = new HashSet<>();
         Set<String> visitedEntities = new HashSet<>();
         Set<String> visitedRelationships = new HashSet<>();
@@ -302,7 +304,8 @@ public class InMemoryEntityNeighbourhood
      * @param visitedRelationships the relationship that have already been visited (seen)
      * @param currentLevel         the current level
      */
-    private void createGraph(Set<String> entities, Set visitedEntities, Set visitedRelationships, int currentLevel) throws TypeErrorException {
+    private void createGraph(Set<String> entities, Set visitedEntities, Set visitedRelationships, int currentLevel) throws TypeErrorException
+    {
         Set<String> nextEntitySet = new HashSet<>();
         for (String entityGuid : entities)
         {
@@ -359,6 +362,7 @@ public class InMemoryEntityNeighbourhood
             createGraph(nextEntitySet, visitedEntities, visitedRelationships, nextLevel);
         }
     }
+
 
     /**
      * Return the guid of an entity linked to end 1 of the relationship.
