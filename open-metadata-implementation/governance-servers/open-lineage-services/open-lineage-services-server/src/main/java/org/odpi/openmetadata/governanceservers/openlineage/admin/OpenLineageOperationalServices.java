@@ -10,7 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
 import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
-import org.odpi.openmetadata.governanceservers.openlineage.listeners.ALOutTopicListener;
+import org.odpi.openmetadata.governanceservers.openlineage.listeners.inTopicListener;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServicesInstance;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
@@ -85,14 +85,14 @@ public class OpenLineageOperationalServices {
             this.graphBuilder = new GraphBuilder();
 
             Connection inTopicConnection = openLineageConfig.getInTopicConnection();
-            String ALOutTopicName = getTopicName(inTopicConnection);
+            String inTopicName = getTopicName(inTopicConnection);
 
             inTopicConnector = initializeOpenLineageTopicConnector(inTopicConnection);
 
             if (inTopicConnector != null) {
-                OpenMetadataTopicListener ALOutTopicListener = new ALOutTopicListener(graphBuilder, auditLog);
+                OpenMetadataTopicListener ALOutTopicListener = new inTopicListener(graphBuilder, auditLog);
                 this.inTopicConnector.registerListener(ALOutTopicListener);
-                startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, ALOutTopicName, inTopicConnector);
+                startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, inTopicName, inTopicConnector);
             }
 
             this.instance = new OpenLineageServicesInstance(graphBuilder, localServerName);
