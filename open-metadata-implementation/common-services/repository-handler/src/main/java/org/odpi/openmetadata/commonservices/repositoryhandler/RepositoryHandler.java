@@ -50,12 +50,12 @@ public class RepositoryHandler
      * @throws UserNotAuthorizedException security access problem
      */
     public EntitySummary  validateEntityGUID(String                  userId,
-                                            String                  guid,
-                                            String                  entityTypeName,
-                                            String                  methodName,
-                                            String                  guidParameterName) throws InvalidParameterException,
-                                                                                              UserNotAuthorizedException,
-                                                                                              PropertyServerException
+                                             String                  guid,
+                                             String                  entityTypeName,
+                                             String                  methodName,
+                                             String                  guidParameterName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
     {
         try
         {
@@ -68,6 +68,47 @@ public class RepositoryHandler
                                              entityTypeName,
                                              methodName,
                                              guidParameterName);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Validate that the supplied GUID is for a real entity.  Return null if not
+     *
+     * @param userId  user making the request.
+     * @param guid  unique identifier of the entity.
+     * @param entityTypeName expected type of asset.
+     * @param methodName  name of method called.
+     * @return retrieved entity
+     * @throws InvalidParameterException entity not known
+     * @throws PropertyServerException problem accessing property server
+     * @throws UserNotAuthorizedException security access problem
+     */
+    public EntitySummary  isEntityKnown(String                  userId,
+                                        String                  guid,
+                                        String                  entityTypeName,
+                                        String                  methodName,
+                                        String                  guidParameterName) throws InvalidParameterException,
+                                                                                               UserNotAuthorizedException,
+                                                                                               PropertyServerException
+    {
+        try
+        {
+            return metadataCollection.getEntitySummary(userId, guid);
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException error)
+        {
+            return null;
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException error)
         {
