@@ -57,7 +57,7 @@ public class ColumnContextBuilder {
     public ColumnContextBuilder(OMRSRepositoryConnector enterpriseConnector) {
         this.enterpriseConnector = enterpriseConnector;
         this.omrsRepositoryHelper = enterpriseConnector.getRepositoryHelper();
-    }
+}
 
 
     /**
