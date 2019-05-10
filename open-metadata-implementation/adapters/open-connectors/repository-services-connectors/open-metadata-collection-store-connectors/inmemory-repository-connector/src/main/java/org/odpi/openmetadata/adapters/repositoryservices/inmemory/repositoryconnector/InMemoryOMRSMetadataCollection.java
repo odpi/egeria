@@ -1587,7 +1587,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
             if (entity != null)
             {
                 if ((entity.getStatus() != InstanceStatus.DELETED) &&
-                    (repositoryValidator.verifyInstanceType(entityTypeGUID, entity)) &&
+                    (repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entity)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
                     (repositoryValidator.verifyEntityIsClassified(limitResultsByClassification, entity)) &&
                     (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
@@ -1690,7 +1690,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
             if (entity != null)
             {
                 if ((entity.getStatus() != InstanceStatus.DELETED) &&
-                    (repositoryValidator.verifyInstanceType(entityTypeGUID, entity)) &&
+                    (repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entity)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, entity)) &&
                     (repositoryValidator.verifyEntityIsClassified(classificationList, entity)))
                 {
@@ -1808,7 +1808,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
             if (entity != null)
             {
                 if ((entity.getStatus() != InstanceStatus.DELETED) &&
-                    (repositoryValidator.verifyInstanceType(entityTypeGUID, entity)) &&
+                    (repositoryValidator.verifyInstanceType(repositoryName, entityTypeGUID, entity)) &&
                     (repositoryValidator.verifyInstancePropertiesMatchSearchCriteria(repositoryName,
                                                                                     entity.getProperties(),
                                                                                     searchCriteria,
@@ -2017,7 +2017,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
             if (relationship != null)
             {
                 if ((relationship.getStatus() != InstanceStatus.DELETED) &&
-                    (repositoryValidator.verifyInstanceType(relationshipTypeGUID, relationship)) &&
+                    (repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationship)) &&
                     (repositoryValidator.verifyInstanceHasRightStatus(limitResultsByStatus, relationship)) &&
                     (repositoryValidator.verifyMatchingInstancePropertyValues(matchProperties,
                                                                               relationship,
@@ -2113,7 +2113,7 @@ public class InMemoryOMRSMetadataCollection extends OMRSMetadataCollectionBase
             if (relationship != null)
             {
                 if ((relationship.getStatus() != InstanceStatus.DELETED) &&
-                    (repositoryValidator.verifyInstanceType(relationshipTypeGUID, relationship)) &&
+                    (repositoryValidator.verifyInstanceType(repositoryName, relationshipTypeGUID, relationship)) &&
                     (repositoryValidator.verifyInstancePropertiesMatchSearchCriteria(repositoryName,
                                                                                      relationship.getProperties(),
                                                                                      searchCriteria,
