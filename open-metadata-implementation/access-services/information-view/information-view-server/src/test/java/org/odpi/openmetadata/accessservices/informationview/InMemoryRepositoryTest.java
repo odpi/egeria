@@ -116,11 +116,7 @@ public class InMemoryRepositoryTest {
         localOMRSRepositoryConnector.setRepositoryValidator(new OMRSRepositoryContentValidator(localRepositoryContentManager));
         localOMRSRepositoryConnector.setAuditLog(auditLog);
         localOMRSRepositoryConnector.setMetadataCollectionId("1234");
-        localRepositoryContentManager.setupEventProcessor(localOMRSRepositoryConnector,
-                repositoryConnector,
-                new OMRSRepositoryEventExchangeRule(OpenMetadataExchangeRule.ALL,
-                        null),
-                localRepositoryEventManager);
+        localRepositoryContentManager.setupEventProcessor(localOMRSRepositoryConnector, localRepositoryEventManager);
 
 
         repositoryConnector.setRepositoryHelper(new OMRSRepositoryContentHelper(localRepositoryContentManager));

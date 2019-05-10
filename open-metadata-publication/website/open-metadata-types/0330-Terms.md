@@ -20,6 +20,7 @@ A term may be linked with many categories and a category may have many terms lin
 This relationship may connect terms and categories both in the same glossary and in different glossaries.
 * **LibraryTermReference** provides reference information for how this term corresponds to a term in an external glossary.
 
+Return to [Area 3](Area-3-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

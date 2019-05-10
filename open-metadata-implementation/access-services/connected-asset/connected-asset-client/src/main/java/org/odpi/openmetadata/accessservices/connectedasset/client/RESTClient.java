@@ -2,10 +2,9 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.client;
 
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
 import org.odpi.openmetadata.accessservices.connectedasset.rest.*;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,6 +17,7 @@ class RESTClient
     private String          serverName;     /* Initialized in constructor */
     private String          omasServerURL;  /* Initialized in constructor */
 
+    private RESTExceptionHandler  restExceptionHandler = new RESTExceptionHandler();
 
     /**
      * Constructor for no authentication.
@@ -376,24 +376,13 @@ class RESTClient
     {
         try
         {
-            RestTemplate  restTemplate = new RestTemplate();
-
             return restTemplate.getForObject(urlTemplate, returnClass, params);
         }
         catch (Throwable error)
         {
-            ConnectedAssetErrorCode errorCode = ConnectedAssetErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     omasServerURL,
-                                                                                                     error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
+            restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }
+
+        return null;
     }
 }

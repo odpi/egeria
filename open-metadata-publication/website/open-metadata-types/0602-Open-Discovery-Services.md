@@ -19,7 +19,7 @@ the discovery engine supports the open discovery service.
 ![UML](0602-Open-Discovery-Services.png)
 
 
-
+Return to [Area 6](Area-6-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

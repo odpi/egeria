@@ -9,7 +9,7 @@ The dictionary model adds some basic term classification used to show how partic
 
 * **ActivityDescription** is a classification used to indicate that the term describes a verb, or an activity.
 Most term definitions are nouns, they describe concepts or things.
-However, it is useful to be able to define the meanings of particular activities in the glossary.
+However, it is useful to be able to define the assets of particular activities in the glossary.
 The ActivityDescription classification highlights when a term describes such an activity.
   * OPERATION - describes a function or API call
   * ACTION - describes a governance action that results from evaluating governance rules.
@@ -21,6 +21,7 @@ The ActivityDescription classification highlights when a term describes such an 
 * **DataValue** means that the glossary term describes a valid value for a data item.
 
 
+Return to [Area 3](Area-3-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
