@@ -77,11 +77,11 @@ public class EndpointHandler
         {
             if (endpoint.getGUID() != null)
             {
-                if (repositoryHandler.validateEntityGUID(userId,
-                                                         endpoint.getGUID(),
-                                                         EndpointMapper.ENDPOINT_TYPE_NAME,
-                                                         methodName,
-                                                         guidParameterName) != null)
+                if (repositoryHandler.isEntityKnown(userId,
+                                                    endpoint.getGUID(),
+                                                    EndpointMapper.ENDPOINT_TYPE_NAME,
+                                                    methodName,
+                                                    guidParameterName) != null)
                 {
                     return endpoint.getGUID();
                 }
