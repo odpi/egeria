@@ -111,15 +111,18 @@ public class ContextBuilder {
     }
 
     private Relationship getRelationshipForEntity(OMRSMetadataCollection metadataCollection, String relationalColumnGuid, String relationshipType) throws InvalidParameterException, RepositoryErrorException, TypeDefNotKnownException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException {
-        String attributeForSchemaGUID = metadataCollection.getTypeDefByName(GOVERNANCE_ENGINE, relationshipType).getGUID();
-        List<InstanceStatus> statusList = getActiveStatuses();
-
-        final List<Relationship> relationshipsForEntity = metadataCollection
-                .getRelationshipsForEntity(GOVERNANCE_ENGINE, relationalColumnGuid, attributeForSchemaGUID, 0, statusList, null, null, null, 0);
+        List<Relationship> relationshipsForEntity = getRelationshipsForEntity(relationalColumnGuid, relationshipType, metadataCollection);
         if (relationshipsForEntity != null && !relationshipsForEntity.isEmpty()) {
             return relationshipsForEntity.get(0);
         }
         return null;
+    }
+
+    private List<Relationship> getRelationshipsForEntity(String entityGUID, String relationshipType, OMRSMetadataCollection metadataCollection) throws InvalidParameterException, RepositoryErrorException, TypeDefNotKnownException, UserNotAuthorizedException, TypeErrorException, EntityNotKnownException, PropertyErrorException, PagingErrorException, FunctionNotSupportedException {
+        String attributeForSchemaGUID = metadataCollection.getTypeDefByName(GOVERNANCE_ENGINE, relationshipType).getGUID();
+        List<InstanceStatus> statusList = getActiveStatuses();
+
+        return metadataCollection.getRelationshipsForEntity(GOVERNANCE_ENGINE, entityGUID, attributeForSchemaGUID, 0, statusList, null, null, null, 0);
     }
 
     private String getTheOtherEntityGuid(String givenEntityId, Relationship relationship) {
