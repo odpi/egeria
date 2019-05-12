@@ -21,17 +21,17 @@ It includes the following operations:
 * **getConnectorByName** - Returns the connector corresponding to the supplied connection name.
   
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/get-connector-by-name-with-java.md)
+  [Java](../../../asset-consumer-client/docs/user/java-client/get-connector-by-name-with-java.md)
 
 * **getConnectorByGUID** - Returns the connector corresponding to the supplied connection GUID.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/get-connector-by-GUID-with-java.md)
+  [Java](../../../asset-consumer-client/docs/user/java-client/get-connector-by-guid-with-java.md)
 
 * **getConnectorByConnection** - Returns the connector corresponding to the supplied connection.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/get-connector-by-connection-with-java.md)
+  [Java](../../../asset-consumer-client/docs/user/java-client/get-connector-by-connection-with-java.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  * SubjectAreaAdmin is the Subject Area access service implementation class that controls its lifecycle.
  * It is initalised here receiving the access service configuration. It is shutdown here.
  */
-public class SubjectAreaAdmin implements AccessServiceAdmin
+public class SubjectAreaAdmin extends AccessServiceAdmin
 {
     private static final Logger log = LoggerFactory.getLogger(SubjectAreaAdmin.class);
 

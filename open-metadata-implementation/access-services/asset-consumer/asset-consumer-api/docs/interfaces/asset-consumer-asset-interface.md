@@ -12,13 +12,13 @@ These first two methods enable the caller to extract the unique identifier
 * **getAssetForConnection** - returns the unique identifier for the asset connected to the requested connection.
   
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/get-asset-for-connection-guid-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/get-asset-for-connection-guid-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/get-asset-for-connection-guid-with-rest.md)
 
 * **getAssetForConnectionName** - returns the asset corresponding to the supplied connection name.
 
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/get-asset-for-connection-name-with-java.md),
+  [Java](../../../asset-consumer-client/docs/user/java-client/get-asset-for-connection-name-with-java.md),
   [REST](../../../asset-consumer-server/docs/user/get-asset-for-connection-name-with-rest.md)
 
 This method uses the guid of the asset to retrieve properties about the asset.  It is implemented
@@ -27,7 +27,7 @@ by the [Connected Asset OMAS](../../../../connected-asset) which is why there is
 * **getAssetProperties** - returns a comprehensive collection of properties about the requested asset.
    
   Implementation: 
-  [Java](../../../asset-consumer-client/docs/user/get-asset-properties-with-java.md)
+  [Java](../../../asset-consumer-client/docs/user/java-client/get-asset-properties-with-java.md)
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -11,7 +11,6 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceStatus;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceType;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.*;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.eventmanagement.*;
 import org.odpi.openmetadata.repositoryservices.ffdc.OMRSErrorCode;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
@@ -46,8 +45,6 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
     private LocalOMRSRepositoryConnector    localRepositoryConnector       = null;
     private String                          localServerName                = null;
     private OMRSRepositoryEventManager      outboundRepositoryEventManager = null;
-    private OMRSRepositoryConnector         realLocalConnector             = null;
-    private OMRSRepositoryEventExchangeRule saveExchangeRule               = null;
     private String                          openTypesOriginGUID            = null;
     private Map<String, TypeDef>            knownTypeDefGUIDs              = new HashMap<>();
     private Map<String, TypeDef>            knownTypeDefNames              = new HashMap<>();
@@ -87,14 +84,10 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * Saves all of the information necessary to process incoming TypeDef events.
      *
      * @param localRepositoryConnector connector to the local repository
-     * @param realLocalConnector connector to the real local repository used for processing TypeDef events
-     * @param saveExchangeRule rule that determines which events to process.
      * @param outboundRepositoryEventManager event manager to call for outbound events used to send out reports
      *                                       of conflicting TypeDefs
      */
     public void setupEventProcessor(LocalOMRSRepositoryConnector      localRepositoryConnector,
-                                    OMRSRepositoryConnector           realLocalConnector,
-                                    OMRSRepositoryEventExchangeRule   saveExchangeRule,
                                     OMRSRepositoryEventManager        outboundRepositoryEventManager)
     {
         if (localRepositoryConnector != null)
@@ -103,8 +96,6 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
             this.localServerName = localRepositoryConnector.getLocalServerName();
         }
 
-        this.realLocalConnector = realLocalConnector;
-        this.saveExchangeRule = saveExchangeRule;
         this.outboundRepositoryEventManager = outboundRepositoryEventManager;
     }
 
@@ -530,6 +521,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
         final String methodName = "isTypeOf";
 
         log.debug("IsTypeOf: sourceName = " + sourceName + "; actualTypeName = " + actualTypeName + "; expectedTypeName = " + expectedTypeName);
+
         if ((expectedTypeName != null) && (actualTypeName != null))
         {
             /*
@@ -558,6 +550,62 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                             return true;
                         }
                         log.debug("No match with " + superType.getName());
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    /**
+     * Validate that the type of an entity is of the expected/desired type.  The actual entity may be a subtype
+     * of the expected type of course.
+     *
+     * @param sourceName source of the request (used for logging)
+     * @param actualTypeGUID GUID of the entity type
+     * @param actualTypeName name of the entity type
+     * @param expectedTypeGUID GUID of the expected type
+     * @return boolean if they match (a null in either results in false)
+     */
+    boolean  isTypeOfByGUID(String   sourceName,
+                            String   actualTypeGUID,
+                            String   actualTypeName,
+                            String   expectedTypeGUID)
+    {
+        final String methodName = "isTypeOfByGUID";
+
+        log.debug("IsTypeOfByGUID: sourceName = " + sourceName + "; actualTypeName = " + actualTypeName + "; expectedTypeGUID = " + expectedTypeGUID);
+
+        if ((expectedTypeGUID != null) && (actualTypeGUID != null))
+        {
+            /*
+             * Do the obvious first.
+             */
+            if (actualTypeGUID.equals(expectedTypeGUID))
+            {
+                log.debug("Simple match success");
+                return true;
+            }
+
+            /*
+             * Looking for a match in the superTypes.
+             */
+           List<TypeDefLink>   typeHierarchy = this.getSuperTypes(sourceName, actualTypeName, methodName);
+
+            if (typeHierarchy != null)
+            {
+                for (TypeDefLink superType : typeHierarchy)
+                {
+                    if (superType != null)
+                    {
+                        if (expectedTypeGUID.equals(superType.getGUID()))
+                        {
+                            log.debug("SuperType match success");
+                            return true;
+                        }
+                        log.debug("No match with " + superType.getGUID());
                     }
                 }
             }
@@ -631,7 +679,6 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 /*
                  * Work up the TypeDef hierarchy extracting the property names.
                  */
-                List<TypeDefLink> superTypes    = new ArrayList<>();
                 TypeDefLink       superTypeLink = typeDef.getSuperType();
 
                 while (superTypeLink != null)
@@ -641,11 +688,6 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                     if (superTypeName != null)
                     {
                         log.debug(typeName + " from " + sourceName + " has super type " + superTypeName);
-
-                        /*
-                         * Save the name of the super type into the instance type
-                         */
-                        superTypes.add(superTypeLink);
 
                         /*
                          * Retrieve the TypeDef for this super type
@@ -872,12 +914,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                 return false;
             }
         }
-        catch (TypeErrorException   typeError)
-        {
-            throwContentManagerLogicError(sourceName, methodName, thisMethodName);
-            return false;
-        }
-        catch (ClassCastException   castError)
+        catch (TypeErrorException | ClassCastException  typeError)
         {
             throwContentManagerLogicError(sourceName, methodName, thisMethodName);
             return false;
@@ -2702,7 +2739,7 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
                                                  TypeDef        otherTypeDef,
                                                  String         errorMessage)
     {
-
+        // TODO
     }
 
 
@@ -2719,8 +2756,8 @@ public class OMRSRepositoryContentManager extends OMRSTypeDefEventProcessor impl
      * @param metadataCollectionId unique identifier (guid) for the metadata collection.
      * @param metadataCollectionName display name for the metadata collection (can be null).
      */
-    public synchronized void registerMetadataCollection(String    metadataCollectionId,
-                                           String    metadataCollectionName)
+    synchronized void registerMetadataCollection(String    metadataCollectionId,
+                                                 String    metadataCollectionName)
     {
         if (metadataCollectionId != null)
         {

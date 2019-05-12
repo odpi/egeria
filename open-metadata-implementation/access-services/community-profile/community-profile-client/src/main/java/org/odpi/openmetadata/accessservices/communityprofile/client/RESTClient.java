@@ -2,54 +2,49 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.communityprofile.client;
 
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.CommunityProfileErrorCode;
-import org.odpi.openmetadata.accessservices.communityprofile.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.accessservices.communityprofile.rest.*;
-import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.web.client.RestTemplate;
+import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
 /**
  * RESTClient is responsible for issuing calls to the Community Profile OMAS REST APIs.
  */
-class RESTClient
+class RESTClient extends FFDCRESTClient
 {
-    private RestTemplate    restTemplate;   /* Initialized in constructor */
-    private String          serverName;     /* Initialized in constructor */
-    private String          omasServerURL;  /* Initialized in constructor */
-
-
     /**
      * Constructor for no authentication.
      *
-     * @param serverName name of server to connect to
-     * @param omasServerURL URL root for this server
+     * @param serverName name of the OMAG Server to call
+     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
      */
     RESTClient(String serverName,
-               String omasServerURL)
+               String serverPlatformURLRoot) throws InvalidParameterException
     {
-        this.serverName = serverName;
-        this.omasServerURL = omasServerURL;
-        this.restTemplate = new RestTemplate();
+        super(serverName, serverPlatformURLRoot);
     }
 
 
     /**
      * Constructor for simple userId and password authentication.
      *
-     * @param serverName name of server to connect to
-     * @param omasServerURL URL root for this server
+     * @param serverName name of the OMAG Server to call
+     * @param serverPlatformURLRoot URL root of the server platform where the OMAG Server is running.
      * @param userId user id for the HTTP request
      * @param password password for the HTTP request
+     * @throws InvalidParameterException there is a problem creating the client-side components to issue any
+     * REST API calls.
      */
-    RESTClient(String serverName, String omasServerURL, String userId, String password)
+    RESTClient(String serverName,
+               String serverPlatformURLRoot,
+               String userId,
+               String password) throws InvalidParameterException
     {
-        this.serverName = serverName;
-        this.omasServerURL = omasServerURL;
-
-        RestTemplateBuilder restTemplateBuilder = new RestTemplateBuilder();
-
-        this.restTemplate = restTemplateBuilder.basicAuthentication(userId, password).build();
+        super(serverName, serverPlatformURLRoot, userId, password);
     }
+
 
 
     /**
@@ -66,7 +61,7 @@ class RESTClient
                                                            String    urlTemplate,
                                                            Object... params) throws PropertyServerException
     {
-        return (PersonalProfileResponse)this.callGetRESTCall(methodName, PersonalProfileResponse.class, urlTemplate, params);
+        return this.callGetRESTCall(methodName, PersonalProfileResponse.class, urlTemplate, params);
     }
 
 
@@ -83,43 +78,7 @@ class RESTClient
                                                                    String    urlTemplate,
                                                                    Object... params) throws PropertyServerException
     {
-        return (PersonalProfileListResponse)this.callGetRESTCall(methodName, PersonalProfileListResponse.class, urlTemplate, params);
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a CountResponse object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return CountResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    CountResponse callCountGetRESTCall(String    methodName,
-                                       String    urlTemplate,
-                                       Object... params) throws PropertyServerException
-    {
-        return (CountResponse)this.callGetRESTCall(methodName, CountResponse.class, urlTemplate, params);
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a Connection object.
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return GUIDResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    GUIDResponse callGUIDGetRESTCall(String    methodName,
-                                     String    urlTemplate,
-                                     Object... params) throws PropertyServerException
-    {
-        return (GUIDResponse)this.callGetRESTCall(methodName, GUIDResponse.class, urlTemplate, params);
+        return this.callGetRESTCall(methodName, PersonalProfileListResponse.class, urlTemplate, params);
     }
 
 
@@ -137,134 +96,6 @@ class RESTClient
                                                String    urlTemplate,
                                                Object... params) throws PropertyServerException
     {
-        return (AssetListResponse)this.callGetRESTCall(methodName, AssetListResponse.class, urlTemplate, params);
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a guid object.
-     *
-     * @param methodName  name of the method being called
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the request.
-     * @param params  a list of parameters that are slotted into the url template.
-     *
-     * @return GUIDResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    GUIDResponse callGUIDPostRESTCall(String    methodName,
-                                      String    urlTemplate,
-                                      Object    requestBody,
-                                      Object... params) throws PropertyServerException
-    {
-        return (GUIDResponse)this.callPostRESTCall(methodName,
-                                                   GUIDResponse.class,
-                                                   urlTemplate,
-                                                   requestBody,
-                                                   params);
-    }
-
-
-
-    /**
-     * Issue a POST REST call that returns a VoidResponse object.  This is typically a create
-     *
-     * @param methodName  name of the method being called.
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the request.
-     * @param params  a list of parameters that are slotted into the url template.
-     *
-     * @return VoidResponse
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    VoidResponse callVoidPostRESTCall(String    methodName,
-                                      String    urlTemplate,
-                                      Object    requestBody,
-                                      Object... params) throws PropertyServerException
-    {
-        return (VoidResponse)this.callPostRESTCall(methodName,
-                                                   VoidResponse.class,
-                                                   urlTemplate,
-                                                   requestBody,
-                                                   params);
-    }
-
-
-    /**
-     * Issue a GET REST call that returns a response object.
-     *
-     * @param methodName  name of the method being called.
-     * @param returnClass class of the response object.
-     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
-     * @param params      a list of parameters that are slotted into the url template.
-     *
-     * @return response object
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    private Object callGetRESTCall(String    methodName,
-                                   Class     returnClass,
-                                   String    urlTemplate,
-                                   Object... params) throws PropertyServerException
-    {
-        try
-        {
-            return restTemplate.getForObject(urlTemplate, returnClass, params);
-        }
-        catch (Throwable error)
-        {
-            CommunityProfileErrorCode errorCode = CommunityProfileErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     omasServerURL,
-                                                                                                     error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
-        }
-    }
-
-
-    /**
-     * Issue a POST REST call that returns a VoidResponse object.  This is typically a create
-     *
-     * @param methodName  name of the method being called.
-     * @param returnClass class of the response object.
-     * @param urlTemplate  template of the URL for the REST API call with place-holders for the parameters.
-     * @param requestBody request body for the request.
-     * @param params  a list of parameters that are slotted into the url template.
-     *
-     * @return Object
-     * @throws PropertyServerException something went wrong with the REST call stack.
-     */
-    private Object callPostRESTCall(String    methodName,
-                                    Class     returnClass,
-                                    String    urlTemplate,
-                                    Object    requestBody,
-                                    Object... params) throws PropertyServerException
-    {
-        try
-        {
-            return restTemplate.postForObject(urlTemplate, requestBody, returnClass, params);
-        }
-        catch (Throwable error)
-        {
-            CommunityProfileErrorCode errorCode = CommunityProfileErrorCode.CLIENT_SIDE_REST_API_ERROR;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                                                                                                     serverName,
-                                                                                                     omasServerURL,
-                                                                                                     error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
-        }
+        return this.callGetRESTCall(methodName, AssetListResponse.class, urlTemplate, params);
     }
 }
