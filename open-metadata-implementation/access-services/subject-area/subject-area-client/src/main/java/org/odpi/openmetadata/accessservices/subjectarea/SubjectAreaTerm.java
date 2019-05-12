@@ -234,7 +234,7 @@ import java.util.List;
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param searchCriteria String expression matching Term property values (this does not include the GlossarySummary content). When not specified, all terms are returned.
+     * @param searchCriteria String expression matching Term property values (this does not include the GlossarySummary content).
      * @param asOfTime the relationships returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
