@@ -30,17 +30,17 @@ public class License extends Referenceable
     /*
      * properties of a license
      */
-    protected String                 licenseTypeGUID   = null;
-    protected String                 licenseTypeName   = null;
-    protected String                 licensee          = null;
-    protected String                 summary           = null;
-    protected ExternalReference      link              = null;
-    protected Date                   startDate         = null;
-    protected Date                   endDate           = null;
-    protected String                 licenseConditions = null;
-    protected String                 createdBy         = null;
-    protected String                 custodian         = null;
-    protected String                 notes             = null;
+    protected String            licenseGUID       = null;
+    protected String            licenseTypeName   = null;
+    protected String            licensee          = null;
+    protected String            summary           = null;
+    protected ExternalReference link              = null;
+    protected Date              startDate         = null;
+    protected Date              endDate           = null;
+    protected String            licenseConditions = null;
+    protected String            createdBy         = null;
+    protected String            custodian         = null;
+    protected String            notes             = null;
 
 
     /**
@@ -55,41 +55,41 @@ public class License extends Referenceable
     /**
      * Copy/clone constructor.
      *
-     * @param templateLicense element to copy
+     * @param template element to copy
      */
-    public License(License templateLicense)
+    public License(License template)
     {
-        super(templateLicense);
+        super(template);
 
-        if (templateLicense != null)
+        if (template != null)
         {
-            licenseTypeGUID = templateLicense.getLicenseTypeGUID();
-            licenseTypeName = templateLicense.getLicenseTypeName();
-            licensee = templateLicense.getLicensee();
-            summary = templateLicense.getSummary();
+            licenseGUID = template.getLicenseGUID();
+            licenseTypeName = template.getLicenseTypeName();
+            licensee = template.getLicensee();
+            summary = template.getSummary();
 
-            ExternalReference templateLink = templateLicense.getLink();
+            ExternalReference templateLink = template.getLink();
             if (templateLink != null)
             {
                 link = new ExternalReference(templateLink);
             }
 
-            Date templateStartDate = templateLicense.getStartDate();
+            Date templateStartDate = template.getStartDate();
             if (templateStartDate != null)
             {
                 startDate = new Date(templateStartDate.getTime());
             }
 
-            Date templateEndDate = templateLicense.getEndDate();
+            Date templateEndDate = template.getEndDate();
             if (templateEndDate != null)
             {
                 endDate = new Date(templateEndDate.getTime());
             }
 
-            licenseConditions = templateLicense.getLicenseConditions();
-            createdBy = templateLicense.getCreatedBy();
-            custodian = templateLicense.getCustodian();
-            notes = templateLicense.getNotes();
+            licenseConditions = template.getLicenseConditions();
+            createdBy = template.getCreatedBy();
+            custodian = template.getCustodian();
+            notes = template.getNotes();
         }
     }
 
@@ -99,17 +99,17 @@ public class License extends Referenceable
      *
      * @return String license type GUID
      */
-    public String getLicenseTypeGUID() { return licenseTypeGUID; }
+    public String getLicenseGUID() { return licenseGUID; }
 
 
     /**
      * Set up the unique id for the type of license.
      *
-     * @param licenseTypeGUID String license type GUID
+     * @param licenseGUID String license type GUID
      */
-    public void setLicenseTypeGUID(String licenseTypeGUID)
+    public void setLicenseGUID(String licenseGUID)
     {
-        this.licenseTypeGUID = licenseTypeGUID;
+        this.licenseGUID = licenseGUID;
     }
 
 
@@ -344,7 +344,7 @@ public class License extends Referenceable
     public String toString()
     {
         return "License{" +
-                "licenseTypeGUID='" + licenseTypeGUID + '\'' +
+                "licenseGUID='" + licenseGUID + '\'' +
                 ", licenseTypeName='" + licenseTypeName + '\'' +
                 ", licensee='" + licensee + '\'' +
                 ", summary='" + summary + '\'' +
@@ -387,7 +387,7 @@ public class License extends Referenceable
             return false;
         }
         License license = (License) objectToCompare;
-        return Objects.equals(getLicenseTypeGUID(), license.getLicenseTypeGUID()) &&
+        return Objects.equals(getLicenseGUID(), license.getLicenseGUID()) &&
                 Objects.equals(licenseTypeName, license.licenseTypeName) &&
                 Objects.equals(getLicensee(), license.getLicensee()) &&
                 Objects.equals(getSummary(), license.getSummary()) &&

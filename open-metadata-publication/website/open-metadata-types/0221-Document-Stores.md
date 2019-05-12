@@ -8,6 +8,7 @@ Document stores describes a specialist type of server that manages documents and
 ![UML](0221-Document-Stores.png)
 
 
+Return to [Area 2](Area-2-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
