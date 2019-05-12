@@ -43,7 +43,7 @@ public class SecuritySyncEventListener implements OpenMetadataTopicListener {
                     break;
             }
         } catch (Exception e) {
-            log.error(e.getMessage());
+            log.debug("Security Sync Server is unable to process the event.");
         }
     }
 }
