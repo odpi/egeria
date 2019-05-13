@@ -21,9 +21,7 @@ public class CategoryService extends GlossaryViewOMAS {
         return instance;
     }
 
-    private CategoryService() {
-        //
-    }
+    private CategoryService() {}
 
     /**
      * Extract the category definition for the given GUID
