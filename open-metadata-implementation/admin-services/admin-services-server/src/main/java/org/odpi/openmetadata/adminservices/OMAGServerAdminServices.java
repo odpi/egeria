@@ -6,7 +6,7 @@ import org.odpi.openmetadata.adapters.repositoryservices.ConnectorConfigurationF
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
-import org.odpi.openmetadata.adminservices.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
@@ -29,7 +29,7 @@ public class OMAGServerAdminServices
 {
     private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
-
+    private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
     /*
      * =============================================================
      * Configure server - basic options using defaults
@@ -88,13 +88,17 @@ public class OMAGServerAdminServices
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -153,13 +157,17 @@ public class OMAGServerAdminServices
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -218,13 +226,17 @@ public class OMAGServerAdminServices
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -283,13 +295,17 @@ public class OMAGServerAdminServices
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -334,7 +350,7 @@ public class OMAGServerAdminServices
                     configAuditTrail = new ArrayList<>();
                 }
 
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for maximum page size to " + Integer.toString(maxPageSize) + ".");
+                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for maximum page size to " + maxPageSize + ".");
 
                 serverConfig.setAuditTrail(configAuditTrail);
                 serverConfig.setMaxPageSize(maxPageSize);
@@ -355,13 +371,17 @@ public class OMAGServerAdminServices
                                                         errorCode.getUserAction());
             }
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -433,13 +453,17 @@ public class OMAGServerAdminServices
             configStore.saveServerConfig(serverName, methodName, serverConfig);
 
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -504,13 +528,17 @@ public class OMAGServerAdminServices
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -546,13 +574,17 @@ public class OMAGServerAdminServices
 
             this.setAuditLogDestinations(userId, serverName, auditLogConnections);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -605,13 +637,17 @@ public class OMAGServerAdminServices
 
             this.setOpenMetadataArchives(userId, serverName, openMetadataArchiveConnections);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -650,13 +686,17 @@ public class OMAGServerAdminServices
                                           configurationFactory.getInMemoryLocalRepositoryConfig(serverConfig.getLocalServerName(),
                                                                                                 serverConfig.getLocalServerURL()));
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -695,13 +735,17 @@ public class OMAGServerAdminServices
                                           configurationFactory.getLocalGraphLocalRepositoryConfig(serverConfig.getLocalServerName(),
                                                                                                   serverConfig.getLocalServerURL()));
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -732,13 +776,17 @@ public class OMAGServerAdminServices
 
             this.setLocalRepositoryConfig(userId, serverName, null);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -782,13 +830,17 @@ public class OMAGServerAdminServices
 
             this.setLocalRepositoryConfig(userId, serverName, localRepositoryConfig);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -833,13 +885,17 @@ public class OMAGServerAdminServices
                                                                                                          serverConfig.getLocalServerURL(),
                                                                                                          additionalProperties));
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -908,17 +964,21 @@ public class OMAGServerAdminServices
 
             this.setLocalRepositoryConfig(userId, serverName, localRepositoryConfig);
         }
-        catch (OMAGInvalidParameterException  error)
-        {
-            errorHandler.captureInvalidParameterException(response, error);
-        }
         catch (OMAGConfigurationErrorException  error)
         {
-            errorHandler.captureConfigurationErrorException(response, error);
+            exceptionHandler.captureConfigurationErrorException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -964,13 +1024,17 @@ public class OMAGServerAdminServices
                                                                                                                 additionalProperties,
                                                                                                                 eventSource));
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -1039,17 +1103,21 @@ public class OMAGServerAdminServices
 
             this.setLocalRepositoryConfig(userId, serverName, localRepositoryConfig);
         }
-        catch (OMAGInvalidParameterException  error)
-        {
-            errorHandler.captureInvalidParameterException(response, error);
-        }
         catch (OMAGConfigurationErrorException  error)
         {
-            errorHandler.captureConfigurationErrorException(response, error);
+            exceptionHandler.captureConfigurationErrorException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -1106,17 +1174,21 @@ public class OMAGServerAdminServices
 
             this.setCohortConfig(userId, serverName, cohortName, newCohortConfig);
         }
-        catch (OMAGInvalidParameterException  error)
-        {
-            errorHandler.captureInvalidParameterException(response, error);
-        }
         catch (OMAGConfigurationErrorException  error)
         {
-            errorHandler.captureConfigurationErrorException(response, error);
+            exceptionHandler.captureConfigurationErrorException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -1153,13 +1225,17 @@ public class OMAGServerAdminServices
 
             this.setCohortConfig(userId, serverName, cohortName, null);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -1238,13 +1314,17 @@ public class OMAGServerAdminServices
             serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -1317,13 +1397,17 @@ public class OMAGServerAdminServices
             serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -1395,20 +1479,21 @@ public class OMAGServerAdminServices
             serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
     }
-
-
-
 
 
     /**
@@ -1525,13 +1610,17 @@ public class OMAGServerAdminServices
             serverConfig.setRepositoryServicesConfig(repositoryServicesConfig);
             configStore.saveServerConfig(serverName, methodName, serverConfig);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -1589,77 +1678,21 @@ public class OMAGServerAdminServices
 
             configStore.saveServerConfig(serverName, methodName, omagServerConfig);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
     }
-
-
-    /**
-     * Set up the connector to the virtualisation solution.
-     * The resulting connector will be used in Virualiser to connect to the virtualisation tool.
-     *
-     * @param userId  user that is issuing the request.
-     * @param serverName local server name.
-     * @param connectorProvider  connector provider for the virtualisation solution.
-     * @param additionalProperties  property name/value pairs used to configure the connection to the the virtualisation solution
-     * @return void response or
-     * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command
-     * OMAGInvalidParameterException invalid serverName parameter.
-     */
-//    public VoidResponse setVirtualization(String              userId,
-//                                          String              serverName,
-//                                          String              connectorProvider,
-//                                          Map<String, Object> additionalProperties)
-//    {
-//        final String methodName = "setVirtualization";
-//
-//        VoidResponse response = new VoidResponse();
-//
-//        try
-//        {
-//            /*
-//             * Validate and set up the userName and server name.
-//             */
-//            errorHandler.validateServerName(serverName, methodName);
-//            errorHandler.validateUserId(userId, serverName, methodName);
-//
-//            /*
-//             * Retrieve the existing configuration and validate it is ok to set up event bus.
-//             */
-//            OMAGServerConfig serverConfig   = configStore.getServerConfig(serverName, methodName);
-//            VirtualizationConfig virtualizerConfig = new VirtualizationConfig();
-//
-//            virtualizerConfig.setConnectorProvider(connectorProvider);
-//            virtualizerConfig.setConfigurationProperties(additionalProperties);
-//
-//            serverConfig.setVirtualizationConfig(virtualizerConfig);
-//
-//            /*
-//             * Save the config away
-//             */
-//            configStore.saveServerConfig(serverName, methodName, serverConfig);
-//
-//        }
-//        catch (OMAGInvalidParameterException  error)
-//        {
-//            errorHandler.captureInvalidParameterException(response, error);
-//        }
-//        catch (OMAGNotAuthorizedException  error)
-//        {
-//            errorHandler.captureNotAuthorizedException(response, error);
-//        }
-//
-//        return response;
-//    }
-
 
 
     /*
@@ -1690,13 +1723,17 @@ public class OMAGServerAdminServices
 
             response.setOMAGServerConfig(configStore.getServerConfig(serverName, methodName));
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;

@@ -4,8 +4,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import org.odpi.openmetadata.adminservices.OMAGServerAdminForOpenLineage;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
-import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
-import org.odpi.openmetadata.adminservices.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -14,7 +13,8 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/open-metadata/admin-services/users/{userId}/servers/{serverName}")
-public class ConfigOpenLineageResource {
+public class ConfigOpenLineageResource
+{
     private OMAGServerAdminForOpenLineage adminAPI = new OMAGServerAdminForOpenLineage();
 
 
@@ -29,16 +29,16 @@ public class ConfigOpenLineageResource {
     @RequestMapping(method = RequestMethod.POST, path = "/open-lineage/configuration")
     public VoidResponse setAccessServicesConfig(@PathVariable String userId,
                                                 @PathVariable String serverName,
-                                                @RequestBody OpenLineageConfig openLineageConfig) {
+                                                @RequestBody OpenLineageConfig openLineageConfig)
+    {
         return adminAPI.setOpenLineageConfig(userId, serverName, openLineageConfig);
     }
 
 
     @RequestMapping(method = RequestMethod.POST, path = "/open-lineage")
     public VoidResponse enableOpenLineageServices(@PathVariable String userId,
-                                             @PathVariable String serverName) {
+                                                  @PathVariable String serverName)
+    {
         return adminAPI.enableOpenLineageService(userId, serverName);
     }
-
-
 }
