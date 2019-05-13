@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public class InformationViewAdmin implements AccessServiceAdmin {
+public class InformationViewAdmin extends AccessServiceAdmin {
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewAdmin.class);
     private OpenMetadataTopicConnector informationViewInTopicConnector;
@@ -163,17 +163,7 @@ public class InformationViewAdmin implements AccessServiceAdmin {
         }
     }
 
-    private String getTopicName(Connection connection) {
-        String      topicName = null;
-        if (connection != null) {
-            Endpoint outTopicEndpoint = connection.getEndpoint();
 
-            if (outTopicEndpoint != null) {
-                topicName = outTopicEndpoint.getAddress();
-            }
-        }
-        return topicName;
-    }
 
 
     /**

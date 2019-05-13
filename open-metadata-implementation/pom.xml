@@ -24,10 +24,14 @@
     <packaging>pom</packaging>
     <modules>
         <module>frameworks</module>
+        <module>adapters</module>
+        <module>common-services</module>
         <module>repository-services</module>
         <module>access-services</module>
         <module>governance-servers</module>
-        <module>adapters</module>
+        <module>admin-services</module>
+        <module>platform-services</module>
+        <module>server-chassis</module>
         <module>user-interfaces</module>
     </modules>
 

@@ -77,8 +77,8 @@ public class KafkaOpenMetadataEventProducer implements Runnable
         auditLog.logRecord(actionDescription,
                            auditCode.getLogMessageId(),
                            auditCode.getSeverity(),
-                           auditCode.getFormattedLogMessage(topicName, producerProperties.toString()),
-                           null,
+                           auditCode.getFormattedLogMessage(Integer.toString(producerProperties.size()), topicName),
+                           producerProperties.toString(),
                            auditCode.getSystemAction(),
                            auditCode.getUserAction());
     }

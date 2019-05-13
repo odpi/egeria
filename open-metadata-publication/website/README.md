@@ -3,7 +3,7 @@
   
 # What is ODPi Egeria?
 
-ODPi Egeria creates a set of open APIs, [types](open-metadata-types/README.md)
+ODPi Egeria implements a set of open APIs, [types](open-metadata-types/README.md)
 and interchange protocols to allow all metadata repositories
 to share and exchange metadata.
 
