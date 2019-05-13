@@ -12,7 +12,7 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 
-public class CommunityProfileAdmin implements AccessServiceAdmin
+public class CommunityProfileAdmin extends AccessServiceAdmin
 {
     private OMRSRepositoryConnector            repositoryConnector = null;
     private OMRSTopicConnector                 omrsTopicConnector  = null;
@@ -62,7 +62,11 @@ public class CommunityProfileAdmin implements AccessServiceAdmin
         try
         {
             this.repositoryConnector = enterpriseOMRSRepositoryConnector;
-            this.instance = new CommunityProfileServicesInstance(repositoryConnector);
+            this.instance = new CommunityProfileServicesInstance(repositoryConnector,
+                                                                 this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
+                                                                                            accessServiceConfig.getAccessServiceName(),
+                                                                                            auditLog),
+                                                                 auditLog);
             this.serverName = instance.getServerName();
 
             this.accessServiceConfig = accessServiceConfigurationProperties;
@@ -81,6 +85,9 @@ public class CommunityProfileAdmin implements AccessServiceAdmin
                                    auditCode.getUserAction());
 
                 omrsTopicListener = new CommunityProfileOMRSTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
+                                                                          this.extractKarmaPointPlateau(accessServiceConfig.getAccessServiceOptions(),
+                                                                                                        accessServiceConfig.getAccessServiceName(),
+                                                                                                        auditLog),
                                                                           repositoryConnector,
                                                                           repositoryConnector.getRepositoryHelper(),
                                                                           repositoryConnector.getRepositoryValidator(),
@@ -99,6 +106,10 @@ public class CommunityProfileAdmin implements AccessServiceAdmin
                                null,
                                auditCode.getSystemAction(),
                                auditCode.getUserAction());
+        }
+        catch (OMAGConfigurationErrorException error)
+        {
+            throw error;
         }
         catch (Throwable error)
         {

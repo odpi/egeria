@@ -50,7 +50,7 @@ public class TestAssetLicense
         testBean.setQualifiedName("TestQualifiedName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        testBean.setLicenseTypeGUID("TestLicenseTypeGUID");
+        testBean.setLicenseGUID("TestLicenseTypeGUID");
         testBean.setLicenseTypeName("TestLicenseTypeName");
         testBean.setCustodian("TestCustodian");
         testBean.setLicensee("TestLicensee");
@@ -84,7 +84,7 @@ public class TestAssetLicense
         testBean.setQualifiedName("TestQualifiedName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        testBean.setLicenseTypeGUID("TestLicenseTypeGUID");
+        testBean.setLicenseGUID("TestLicenseTypeGUID");
         testBean.setLicenseTypeName("TestLicenseTypeName");
         testBean.setSummary("TestSummary");
         testBean.setLink(link);
@@ -117,7 +117,7 @@ public class TestAssetLicense
         testBean.setQualifiedName("TestQualifiedName");
         testBean.setAdditionalProperties(additionalProperties);
 
-        testBean.setLicenseTypeGUID("TestLicenseTypeGUID");
+        testBean.setLicenseGUID("TestLicenseTypeGUID");
         testBean.setLicenseTypeName("TestLicenseTypeName");
         testBean.setCustodian("TestDifferentCustodian");
         testBean.setLicensee("TestLicensee");

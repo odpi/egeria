@@ -3,11 +3,11 @@
 package org.odpi.openmetadata.accessservices.discoveryengine.ffdc;
 
 /**
- * This package provides the first failure data capture support for the Asset Consumer OMAS module.
+ * This package provides the first failure data capture support for the Discovery Engine OMAS module.
  * This includes an error code enum, a base class for runtime exceptions, a base class for checked exceptions plus
  * implementation of each specific exception.
  *
- * The error code enum (AssetConsumerErrorCode) has an entry for each unique situation
+ * The error code enum (DiscoveryEngineErrorCode) has an entry for each unique situation
  * where an exception is returned.  Each entry defines:
  *
  * <ul>

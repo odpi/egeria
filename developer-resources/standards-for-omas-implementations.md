@@ -15,9 +15,9 @@ Scope
 
 
 * Over time general external applications should find the functionality they need through this level of interface (OMRS is more geared to direct metadata exchange) & other Atlas APIs will be superceeded
-* OMAS interfaces are targetted at a particular type of consumer with the objective of making it easy for that consumer - transforming, mapping data from Atlas/OMRS as required
+* OMAS interfaces are targeted at a particular type of consumer with the objective of making it easy for that consumer - transforming, mapping data from Atlas/OMRS as required
 * Given the application focus most consuming apps may interact with only 1 or perhaps 2 OMASs. Having to interact with more indicates incomplete OMAS definitions. Some duplication is to be expected.
-* OMAS interfaces will use OMRS to manage the underlaying metadata (other than in any transitionary phase)
+* OMAS interfaces will use OMRS to manage the underlying metadata (other than in any transitionary phase)
 * The structures used on the REST API should be similar to the messaging api
 * Where the same representation of an underlying entity etc is similar between OMASs, consideration should be given to using the same structure. However the second point is the more critical
 * A standard list of scoping parameters has been documented (see connector OMAS), these should be implemented IF RELEVANT but ommitted if not.
@@ -44,7 +44,7 @@ Kafka Messaging (pub/sub)
 
 
 * Each OMAS will listen to ONE incoming omas kafka topic (per omas) for requests to process
-* Each OMAS will listen to OMRS kafka topic so as to respond to changes in the metadata repostitory
+* Each OMAS will listen to OMRS kafka topic so as to respond to changes in the metadata repository
 * Deployment-time properties will configure the topic names to be used
 * Out of order messages need to be handled "sensibly" [requires further discussion] & clustered environments catered for
 * Messaging infrastructure should be pluggable, but only kafka will be implemented

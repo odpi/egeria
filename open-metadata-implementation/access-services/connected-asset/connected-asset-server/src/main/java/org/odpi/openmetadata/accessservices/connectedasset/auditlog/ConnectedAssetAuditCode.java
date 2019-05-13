@@ -29,12 +29,6 @@ public enum ConnectedAssetAuditCode
               "The local server has started up the Connected Asset OMAS.",
               "No action is required.  This is part of the normal operation of the server."),
 
-    SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC("OMAS-CONNECTED-ASSET-0002",
-              OMRSAuditLogRecordSeverity.INFO,
-              "The Connected Asset Open Metadata Access Service (OMAS) is registering a listener with the OMRS Topic for server {0}",
-              "The Connected Asset OMAS is registering to receive events from the connected open metadata repositories.",
-              "No action is required.  This is part of the normal operation of the server."),
-
     SERVICE_INITIALIZED("OMAS-CONNECTED-ASSET-0003",
               OMRSAuditLogRecordSeverity.INFO,
               "The Connected Asset Open Metadata Access Service (OMAS) has initialized a new instance for server {0}",

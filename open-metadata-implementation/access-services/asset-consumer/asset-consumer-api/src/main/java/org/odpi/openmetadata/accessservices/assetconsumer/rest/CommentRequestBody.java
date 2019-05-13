@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class CommentRequestBody extends AssetConsumerOMASAPIRequestBody
+public class CommentRequestBody extends FeedbackRequestBody
 {
     private CommentType commentType = null;
     private String      commentText = null;
@@ -127,11 +127,12 @@ public class CommentRequestBody extends AssetConsumerOMASAPIRequestBody
             return false;
         }
         CommentRequestBody that = (CommentRequestBody) objectToCompare;
-        return Objects.equals(getCommentType(), that.getCommentType()) &&
+        return isPublic() == that.isPublic() &&
+                getCommentType() == that.getCommentType() &&
                 Objects.equals(getCommentText(), that.getCommentText());
     }
 
-    
+
     /**
      * Return hash code for this object
      *
@@ -140,6 +141,6 @@ public class CommentRequestBody extends AssetConsumerOMASAPIRequestBody
     @Override
     public int hashCode()
     {
-        return Objects.hash(getCommentType(), getCommentText());
+        return Objects.hash(getCommentType(), getCommentText(), isPublic());
     }
 }
