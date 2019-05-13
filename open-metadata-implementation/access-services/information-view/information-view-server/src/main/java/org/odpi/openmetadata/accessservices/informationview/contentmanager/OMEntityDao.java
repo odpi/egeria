@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.informationview.contentmanager;
 
 
 import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.IllegalUpdateException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
@@ -21,10 +22,13 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDef;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityConflictException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotDeletedException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.HomeEntityException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidEntityException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
@@ -524,5 +528,86 @@ public class OMEntityDao {
             enterpriseConnector.getMetadataCollection().deleteEntity(Constants.INFORMATION_VIEW_USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
             enterpriseConnector.getMetadataCollection().purgeEntity(Constants.INFORMATION_VIEW_USER_ID, entitySummary.getType().getTypeDefGUID(), entitySummary.getType().getTypeDefName(), entitySummary.getGUID());
         }
+    }
+
+
+    public OMEntityWrapper saveEntityReferenceCopy(String metadataCollectionId,
+                                          String typeName,
+                                          String qualifiedName,
+                                          InstanceProperties instanceProperties,
+                                          boolean update,
+                                          boolean zoneRestricted) throws TypeErrorException, RepositoryErrorException,
+                                                                         UserNotAuthorizedException,
+                                                                         InvalidEntityException,
+                                                                         FunctionNotSupportedException,
+                                                                         InvalidParameterException,
+                                                                         PropertyErrorException,
+                                                                         EntityConflictException,
+                                                                         HomeEntityException,
+                                                                         PagingErrorException {
+
+        EntityDetail entityDetail;
+        entityDetail = getEntity(typeName, qualifiedName, zoneRestricted);
+        if (entityDetail == null) {
+            entityDetail = saveEntityReferenceCopy(metadataCollectionId,
+                    typeName,
+                    instanceProperties,
+                    zoneRestricted);
+            return new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.NEW);
+        } else {
+            log.info("Entity with qualified name {} already exists", qualifiedName);
+            if (log.isDebugEnabled()) {
+                log.debug("Entity: {}", entityDetail);
+            }
+            if (!update) {
+                return new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.EXISTING);
+            }
+
+            if (!entityDetail.getMetadataCollectionId().equals(metadataCollectionId)) {
+                InformationViewErrorCode code = InformationViewErrorCode.ILLEGAL_UPDATE_EXCEPTION;
+                throw new IllegalUpdateException(code.getHttpErrorCode(),
+                        OMEntityDao.class.getName(),
+                        code.getFormattedErrorMessage(qualifiedName),
+                        code.getSystemAction(),
+                        code.getUserAction(),
+                        null);
+            }
+            if (!EntityPropertiesUtils.matchExactlyInstanceProperties(entityDetail.getProperties(),
+                    instanceProperties)) {//TODO should add validation
+                log.info("Updating entity with qualified name {} ", qualifiedName);
+                entityDetail.setProperties(instanceProperties);
+                enterpriseConnector.getMetadataCollection().saveEntityReferenceCopy(Constants.INFORMATION_VIEW_OMAS_NAME,//TODO - userId
+                        entityDetail);
+                return new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.UPDATED);
+            }
+            return new OMEntityWrapper(entityDetail, OMEntityWrapper.EntityStatus.EXISTING);
+        }
+    }
+
+    private EntityDetail saveEntityReferenceCopy(String metadataCollectionId,
+                                                 String typeName,
+                                                 InstanceProperties instanceProperties,
+                                                 boolean zoneRestricted) throws TypeErrorException,
+                                                                                InvalidParameterException,
+                                                                                RepositoryErrorException,
+                                                                                PropertyErrorException,
+                                                                                HomeEntityException,
+                                                                                EntityConflictException,
+                                                                                InvalidEntityException,
+                                                                                FunctionNotSupportedException,
+                                                                                UserNotAuthorizedException {
+        EntityDetail entity;
+        entity = enterpriseConnector.getRepositoryHelper().getSkeletonEntity(Constants.INFORMATION_VIEW_OMAS_NAME,
+                metadataCollectionId,
+                InstanceProvenanceType.LOCAL_COHORT,
+                Constants.INFORMATION_VIEW_USER_ID,
+                typeName);
+        if(zoneRestricted && supportedZones != null && !supportedZones.isEmpty()){
+            instanceProperties = enterpriseConnector.getRepositoryHelper().addStringArrayPropertyToInstance(Constants.INFORMATION_VIEW_OMAS_NAME, instanceProperties, Constants.ZONE_MEMBERSHIP, supportedZones, "saveEntityReferenceCopy");
+        }
+        entity.setProperties(instanceProperties);
+        enterpriseConnector.getMetadataCollection().saveEntityReferenceCopy(Constants.INFORMATION_VIEW_OMAS_NAME,//TODO - userId
+                entity);
+        return entity;
     }
 }
