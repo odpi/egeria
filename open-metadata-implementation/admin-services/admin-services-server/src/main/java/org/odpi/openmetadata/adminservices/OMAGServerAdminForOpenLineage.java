@@ -7,51 +7,72 @@ import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConf
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OpenLineageConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.rest.VoidResponse;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-public class OMAGServerAdminForOpenLineage {
-
+public class OMAGServerAdminForOpenLineage
+{
     private final OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
+
     private static final String defaultALOutTopicName = "omas.open-metadata.access-services.AssetLineage.outTopic";
 
+    private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
+    private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
 
-    public VoidResponse enableOpenLineageService(String userId, String serverName) {
-
+    public VoidResponse enableOpenLineageService(String userId, String serverName)
+    {
         final String methodName = "enableOpenLineageService";
         VoidResponse response = new VoidResponse();
 
-        try {
+        try
+        {
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
             OpenLineageConfig openLineageConfig = serverConfig.getOpenLineageConfig();
             this.setOpenLineageConfig(userId, serverName, openLineageConfig);
-        } catch (OMAGInvalidParameterException e) {
-            e.printStackTrace();
         }
+        catch (OMAGInvalidParameterException  error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
+
         return response;
     }
 
-    public VoidResponse setOpenLineageConfig(String userId, String serverName, OpenLineageConfig openLineageConfig) {
+
+    public VoidResponse setOpenLineageConfig(String userId, String serverName, OpenLineageConfig openLineageConfig)
+    {
         String methodName = "setOpenLineageConfig";
         VoidResponse response = new VoidResponse();
 
-        try {
+        try
+        {
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
 
-            if (configAuditTrail == null) {
+            if (configAuditTrail == null)
+            {
                 configAuditTrail = new ArrayList<>();
             }
 
-            if (openLineageConfig == null) {
-                configAuditTrail.add(new Date().toString() + " " + userId + " removed configuration for open lineage services.");
-            } else {
-                configAuditTrail.add(new Date().toString() + " " + userId + " updated configuration for open lineage services.");
+            if (openLineageConfig == null)
+            {
+                configAuditTrail.add(
+                        new Date().toString() + " " + userId + " removed configuration for open lineage services.");
+            }
+            else
+            {
+                configAuditTrail.add(
+                        new Date().toString() + " " + userId + " updated configuration for open lineage services.");
             }
 
             serverConfig.setAuditTrail(configAuditTrail);
@@ -68,13 +89,19 @@ public class OMAGServerAdminForOpenLineage {
                             eventBusConfig.getConfigurationProperties()));
 
 
-
             serverConfig.setOpenLineageConfig(openLineageConfig);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
-        } catch (OMAGInvalidParameterException e) {
-
         }
+        catch (OMAGInvalidParameterException  error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
+
         return response;
     }
 

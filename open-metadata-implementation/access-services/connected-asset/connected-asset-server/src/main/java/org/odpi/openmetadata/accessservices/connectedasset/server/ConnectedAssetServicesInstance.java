@@ -28,8 +28,8 @@ public class ConnectedAssetServicesInstance extends OCFOMASServiceInstance
      * @throws NewInstanceException a problem occurred during initialization
      */
     public ConnectedAssetServicesInstance(OMRSRepositoryConnector repositoryConnector,
-                                          List<String> supportedZones,
-                                          OMRSAuditLog auditLog) throws NewInstanceException
+                                          List<String>            supportedZones,
+                                          OMRSAuditLog            auditLog) throws NewInstanceException
     {
         super(myDescription.getAccessServiceName(),
               repositoryConnector,

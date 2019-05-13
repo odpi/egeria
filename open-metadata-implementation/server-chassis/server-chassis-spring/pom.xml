@@ -38,6 +38,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>ocf-metadata-spring</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>repository-services-spring</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
