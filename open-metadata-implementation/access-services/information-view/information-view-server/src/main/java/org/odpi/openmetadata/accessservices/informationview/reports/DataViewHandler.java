@@ -15,8 +15,11 @@ import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.ClassificationErrorException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityConflictException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSupportedException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.HomeEntityException;
+import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidEntityException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
@@ -67,11 +70,12 @@ public class DataViewHandler {
                     .build();
 
 
-            OMEntityWrapper dataViewWrapper = omEntityDao.createOrUpdateEntity(Constants.INFORMATION_VIEW,
-                                                                            qualifiedNameForDataView,
-                                                                            dataViewProperties,
-                                                                            null,
-                                                                            true, true);
+            OMEntityWrapper dataViewWrapper = omEntityDao.saveEntityReferenceCopy(requestBody.getRegistrationGuid(),
+                                                                                Constants.DEPLOYED_REPORT,
+                                                                                qualifiedNameForDataView,
+                                                                                dataViewProperties,
+                                                                                true,
+                                                                                true);
 
 
             dataViewCreator.createDataView(requestBody, dataViewWrapper.getEntityDetail());
@@ -83,9 +87,7 @@ public class DataViewHandler {
 //            } TODO update not implemented yet
 
 
-        } catch (PagingErrorException | PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException e) {
-
-            log.error(e.getMessage(), e);
+        } catch (PagingErrorException | PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException |InvalidEntityException | EntityConflictException | HomeEntityException e) {
             throw new DataViewCreationException(InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getHttpErrorCode(),
                                                DataViewHandler.class.getName(),
                                                InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getFormattedErrorMessage(requestBody.toString(), e.getMessage()),
