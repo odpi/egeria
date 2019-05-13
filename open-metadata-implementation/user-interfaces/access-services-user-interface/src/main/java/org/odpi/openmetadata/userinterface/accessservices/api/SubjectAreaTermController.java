@@ -127,7 +127,7 @@ public class SubjectAreaTermController
     /**
      * Find Term
      *
-     * @param searchCriteria String expression matching Term property values .
+     * @param searchCriteria String expression matching Term property values.
      * @param asOfTime the terms returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
