@@ -22,7 +22,6 @@ public class GovernanceEngineCheckedExceptionBase extends Exception {
     private String reportedErrorMessage;
     private String reportedSystemAction;
     private String reportedUserAction;
-    private Throwable reportedCaughtException = null;
 
 
     /**
@@ -77,7 +76,6 @@ public class GovernanceEngineCheckedExceptionBase extends Exception {
         this.reportedErrorMessage = errorMessage;
         this.reportedSystemAction = systemAction;
         this.reportedUserAction = userAction;
-        this.reportedCaughtException = caughtError;
     }
 
 
@@ -138,16 +136,5 @@ public class GovernanceEngineCheckedExceptionBase extends Exception {
      */
     public String getReportedUserAction() {
         return reportedUserAction;
-    }
-
-
-    /**
-     * An exception that was caught and wrapped by this exception.  If a null is returned, then this exception is
-     * newly created and not the result of a previous exception.
-     *
-     * @return reportedCaughtException
-     */
-    public Throwable getReportedCaughtException() {
-        return reportedCaughtException;
     }
 }

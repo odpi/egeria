@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -129,7 +130,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             ResponseEntity<RangerServiceResource> result = restTemplate.exchange(resourceURL, HttpMethod.GET, entity, RangerServiceResource.class);
             return result.getBody();
         } catch (HttpStatusCodeException exception) {
-            log.error("Unable to fetch the resource with guid = {}", resourceGuid);
+            log.debug("Unable to fetch the resource with guid = {}", resourceGuid);
         }
         return null;
     }
@@ -144,7 +145,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             restTemplate.delete(resourceURL, HttpMethod.DELETE, entity);
             log.info("The resource with guid = {} has been deleted", resourceGuid);
         } catch (HttpStatusCodeException exception) {
-            log.error("Unable to delete the resource with guid = {}", resourceGuid);
+            log.debug("Unable to delete the resource with guid = {}", resourceGuid);
         }
     }
 
@@ -163,7 +164,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             ResponseEntity<RangerServiceResource> result = restTemplate.exchange(createAssociation, HttpMethod.POST, entity, RangerServiceResource.class);
             return result.getBody();
         } catch (HttpStatusCodeException exception) {
-            log.error("Unable to create the association between tag and resource");
+            log.debug("Unable to create the association between tag and resource");
         }
         return null;
     }
@@ -196,7 +197,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             ResponseEntity<RangerTag> result = restTemplate.exchange(createTagURL, HttpMethod.POST, entity, RangerTag.class);
             return result.getBody();
         } catch (HttpStatusCodeException exception) {
-            log.error("Unable to create a security tag");
+            log.debug("Unable to create a security tag");
         }
         return null;
     }
@@ -214,7 +215,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             ResponseEntity<RangerTagDef> result = restTemplate.exchange(createRangerTagDefURL, HttpMethod.POST, entity, RangerTagDef.class);
             return result.getBody();
         } catch (HttpStatusCodeException exception) {
-            log.error("Unable to create a security tag");
+            log.debug("Unable to create a security tag");
         }
         return null;
     }
@@ -239,7 +240,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             });
             return response.getBody();
         } catch (HttpStatusCodeException exception) {
-            log.error("Unable to fetch the mapped resources");
+            log.debug("Unable to fetch the mapped resources");
         }
         return Collections.emptyList();
     }
@@ -296,10 +297,13 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
 
     private HttpHeaders getHttpHeaders() {
         HttpHeaders headers = getBasicHTTPHeaders();
+
         if (connection != null && connection.getAdditionalProperties() != null
-                && connection.getAdditionalProperties().containsKey("securityServerAuthorization")) {
-            headers.set("Authorization", connection.getAdditionalProperties().get("securityServerAuthorization"));
+                && connection.getAdditionalProperties().containsKey(SECURITY_SERVER_AUTHORIZATION)
+                && connection.getAdditionalProperties().get(SECURITY_SERVER_AUTHORIZATION).matches("[a-zA-Z0-9]++")) {
+            headers.set("Authorization", connection.getAdditionalProperties().get(SECURITY_SERVER_AUTHORIZATION));
         }
+
         return headers;
     }
 
@@ -310,4 +314,17 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         return headers;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        RangerSecurityServiceConnector that = (RangerSecurityServiceConnector) o;
+        return Objects.equals(connection, that.connection);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), connection);
+    }
 }

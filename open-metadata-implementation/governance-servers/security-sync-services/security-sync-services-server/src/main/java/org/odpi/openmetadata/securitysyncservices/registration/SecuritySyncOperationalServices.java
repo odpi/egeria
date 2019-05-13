@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.securitysyncservices.registration;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
@@ -55,7 +56,7 @@ public class SecuritySyncOperationalServices {
         this.maxPageSize = maxPageSize;
     }
 
-    public void initialize(SecuritySyncConfig securitySyncConfig, OMRSAuditLog auditLog) {
+    public void initialize(SecuritySyncConfig securitySyncConfig, OMRSAuditLog auditLog) throws OMAGConfigurationErrorException {
         if (securitySyncConfig != null) {
             final String actionDescription = "initialize";
             this.auditLog = auditLog;
@@ -68,7 +69,7 @@ public class SecuritySyncOperationalServices {
             OpenMetadataTopicListener governanceEventListener = new SecuritySyncEventListener(securitySyncEventProcessor);
             inTopic.registerListener(governanceEventListener);
 
-            startTopic(inTopic);
+            startTopic(inTopic, securitySyncConfig.getSecuritySyncInTopicName());
 
             securitySyncEventProcessor.processExistingGovernedAssetsFromRepository();
             logAudit(SecuritySyncAuditCode.SERVICE_INITIALIZED, actionDescription);
@@ -127,11 +128,26 @@ public class SecuritySyncOperationalServices {
         return false;
     }
 
-    private void startTopic(OpenMetadataTopicConnector topic) {
+    private void startTopic(OpenMetadataTopicConnector topic, String topicName) throws OMAGConfigurationErrorException {
         try {
             topic.start();
         } catch (ConnectorCheckedException e) {
-            log.error(e.getErrorMessage());
+            String action = "Unable to initialize the topic connection";
+            SecuritySyncAuditCode auditCode = SecuritySyncAuditCode.ERROR_INITIALIZING_SECURITY_SYNC_TOPIC_CONNECTION;
+            auditLog.logRecord(action,
+                    auditCode.getLogMessageId(),
+                    auditCode.getSeverity(),
+                    auditCode.getFormattedLogMessage(topicName, localServerName),
+                    null,
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction());
+            throw new OMAGConfigurationErrorException(400,
+                    this.getClass().getSimpleName(),
+                    action,
+                    auditCode.getFormattedLogMessage(),
+                    auditCode.getSystemAction(),
+                    auditCode.getUserAction()
+            );
         }
     }
 
