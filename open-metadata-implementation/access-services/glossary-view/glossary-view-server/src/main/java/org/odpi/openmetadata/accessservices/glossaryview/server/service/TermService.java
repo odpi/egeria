@@ -21,9 +21,7 @@ public class TermService extends GlossaryViewOMAS {
         return instance;
     }
 
-    private TermService() {
-        //
-    }
+    private TermService() {}
 
     /**
      * Extract the term definition for the given GUID
