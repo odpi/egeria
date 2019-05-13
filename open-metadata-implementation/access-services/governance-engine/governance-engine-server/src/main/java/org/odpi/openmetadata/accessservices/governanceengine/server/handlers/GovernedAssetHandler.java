@@ -302,7 +302,6 @@ public class GovernedAssetHandler {
         governedAsset.setGuid(entity.getGUID());
         governedAsset.setType(entity.getType().getTypeDefName());
         governedAsset.setFullQualifiedName(getResourceValue(entity, QUALIFIED_NAME));
-        log.info("Qualified name: {}", getResourceValue(entity, QUALIFIED_NAME));
 
         governedAsset.setName(getResourceValue(entity, DISPLAY_NAME));
         governedAsset.setContext(buildDatabaseContext(entity));

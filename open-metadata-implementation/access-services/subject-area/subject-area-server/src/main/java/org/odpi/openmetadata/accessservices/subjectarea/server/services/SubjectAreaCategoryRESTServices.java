@@ -296,7 +296,9 @@ public class SubjectAreaCategoryRESTServices  extends SubjectAreaRESTServicesIns
                 EntityDetailsResponse entityDetailsResponse = (EntityDetailsResponse) response;
                 List<EntityDetail> entitydetails = entityDetailsResponse.getEntityDetails();
                 List<Category> categories = new ArrayList<>();
-                if (entitydetails != null) {
+                if (entitydetails == null) {
+                    response = new CategoriesResponse(categories);
+                } else {
                     for (EntityDetail entityDetail : entitydetails) {
                         // call the getCategory so that the GlossarySummary and other parts are populated.
                         response = getCategory(serverName, userId, entityDetail.getGUID());
