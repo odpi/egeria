@@ -20,32 +20,32 @@
 
 
 {{ define "vdc.template.kafkaext.eventbus" -}}
---data '{
-"producer":
+--data "{
+\"producer\":
 {
-"bootstrap.servers":"{{-  required "Require kafka.external.brokers" .Values.kafka.external.brokers -}}"
+\"bootstrap.servers\":\"{{-  required "Require kafka.external.brokers" .Values.kafka.external.brokers -}}\"
 {{- if and (required "Required kafka.external.provider" .Values.kafka.external.provider) ( eq  .Values.kafka.external.provider "IBMEventStreams" ) -}}
 ,
-"security.protocol":"SASL_SSL",
-"ssl.protocol":"TLSv1.2",
-"ssl.enabled.protocols":"TLSv1.2",
-"ssl.endpoint.identification.algorithm":"HTTPS",
-"sasl.jaas.config":"org.apache.kafka.common.security.plain.PlainLoginModule required username='${KAFKA_USER}' password='${KAFKA_PASS}';",
-"sasl.mechanism":"PLAIN"
+\"security.protocol\":\"SASL_SSL\",
+\"ssl.protocol\":\"TLSv1.2\",
+\"ssl.enabled.protocols\":\"TLSv1.2\",
+\"ssl.endpoint.identification.algorithm\":\"HTTPS\",
+\"sasl.jaas.config\":\"org.apache.kafka.common.security.plain.PlainLoginModule required username='${KAFKA_USER}' password='${KAFKA_PASS}';\",
+\"sasl.mechanism\":\"PLAIN\"
 {{- end -}}
 },
-"consumer":
+\"consumer\":
 {
-"bootstrap.servers":"{{ .Values.kafka.external.brokers }}"
+\"bootstrap.servers\":\"{{ .Values.kafka.external.brokers }}\"
 {{- if and (required "Required kafka.external.provider" .Values.kafka.external.provider) ( eq  .Values.kafka.external.provider "IBMEventStreams" ) -}},
-"security.protocol":"SASL_SSL",
-"ssl.protocol":"TLSv1.2",
-"ssl.enabled.protocols":"TLSv1.2",
-"ssl.endpoint.identification.algorithm":"HTTPS",
-"auto.offset.reset":"latest",
-"sasl.jaas.config":"org.apache.kafka.common.security.plain.PlainLoginModule required username='${KAFKA_USER}' password='${KAFKA_PASS}';",
-"sasl.mechanism":"PLAIN"
+\"security.protocol\":\"SASL_SSL\",
+\"ssl.protocol\":\"TLSv1.2\",
+\"ssl.enabled.protocols\":\"TLSv1.2\",
+\"ssl.endpoint.identification.algorithm\":\"HTTPS\",
+\"auto.offset.reset\":\"latest\",
+\"sasl.jaas.config\":\"org.apache.kafka.common.security.plain.PlainLoginModule required username='${KAFKA_USER}' password='${KAFKA_PASS}';\",
+\"sasl.mechanism\":\"PLAIN\"
 {{- end -}}
 }
-}'
+}"
 {{- end -}}
