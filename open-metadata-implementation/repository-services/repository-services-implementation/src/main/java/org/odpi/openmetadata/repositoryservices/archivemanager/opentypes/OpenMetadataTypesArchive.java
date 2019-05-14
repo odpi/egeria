@@ -352,9 +352,6 @@ public class OpenMetadataTypesArchive
         this.archiveBuilder.addEntityDef(getInfrastructureEntity());
         this.archiveBuilder.addEntityDef(getProcessEntity());
         this.archiveBuilder.addEntityDef(getDataSetEntity());
-
-        this.archiveBuilder.addRelationshipDef(getProcessInputRelationship());
-        this.archiveBuilder.addRelationshipDef(getProcessOutputRelationship());
     }
 
     private EnumDef getAssetOwnerTypeEnum()
@@ -633,134 +630,6 @@ public class OpenMetadataTypesArchive
                                                  description,
                                                  descriptionGUID);
     }
-
-
-    /**
-     * The ProcessInput relationship describes the data set(s) that are passed into a process.
-     *
-     * @return ProcessInput RelationshipDef
-     */
-    private RelationshipDef getProcessInputRelationship()
-    {
-        /*
-         * Build the relationship
-         */
-        final String guid            = "9a6583c4-7419-4d5a-a6e5-26b0033fa349";
-        final String name            = "ProcessInput";
-        final String description     = "The DataSets passed into a Process.";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
-                                                                                null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1EntityType               = "Process";
-        final String                     end1AttributeName            = "consumedByProcess";
-        final String                     end1AttributeDescription     = "Processes that consume this DataSet.";
-        final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2EntityType               = "DataSet";
-        final String                     end2AttributeName            = "processInputData";
-        final String                     end2AttributeDescription     = "DataSets consumed by this Process.";
-        final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-
-        return relationshipDef;
-    }
-
-
-    /**
-     * The ProcessOutput relationship describes the data set(s) that are produced by a process.
-     *
-     * @return ProcessOutput RelationshipDef
-     */
-    private RelationshipDef getProcessOutputRelationship()
-    {
-        /*
-         * Build the relationship
-         */
-        final String                        guid                          = "8920eada-9b05-4368-b511-b8506a4bef4b";
-        final String                        name                          = "ProcessOutput";
-        final String                        description                   = "The DataSets produced by a Process.";
-        final String                        descriptionGUID               = null;
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
-                                                                                null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1EntityType               = "Process";
-        final String                     end1AttributeName            = "producedByProcess";
-        final String                     end1AttributeDescription     = "Processes that produce this DataSet.";
-        final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2EntityType               = "DataSet";
-        final String                     end2AttributeName            = "processOutputData";
-        final String                     end2AttributeDescription     = "DataSets produced by this Process.";
-        final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-
-        return relationshipDef;
-    }
-
 
     /*
      * -------------------------------------------------------------------------------------------------------
@@ -7699,6 +7568,7 @@ public class OpenMetadataTypesArchive
         this.add0265AnalyticsAssets();
         this.add0270IoTAssets();
         this.add0280ModelAssets();
+        this.add0290Ports();
     }
 
 
@@ -10190,22 +10060,100 @@ public class OpenMetadataTypesArchive
         /* placeholder */
     }
 
-    private void add0290PortsAndWires()
+    private void add0290Ports()
     {
+        this.archiveBuilder.addEnumDef(getPortTypeEnum());
+
         this.archiveBuilder.addEntityDef(getPortEntity());
+        this.archiveBuilder.addEntityDef(getPortAliasEntity());
+        this.archiveBuilder.addEntityDef(getPortImplementationEntity());
+
 
         this.archiveBuilder.addRelationshipDef(getProcessPortRelationship());
-        this.archiveBuilder.addRelationshipDef(getPortWireRelationship());
-        this.archiveBuilder.addRelationshipDef(getPortInterfaceRelationship());
-        this.archiveBuilder.addRelationshipDef(getAssetWireRelationship());
-        this.archiveBuilder.addRelationshipDef(getParentPortRelationship());
+        this.archiveBuilder.addRelationshipDef(getPortDelegationRelationship());
     }
 
+    /**
+     * The PortType enum describes the type of a port
+     *
+     * @return PortType EnumyDef
+     */
+    private EnumDef getPortTypeEnum()
+    {
+        final String guid            = "HSGybLtU-c1fr-PAO3-SmYj-AJX6fKIpLVNS";
+        final String name            = "PortType";
+        final String description     = "Descriptor for a port that indicates its type.";
+        final String descriptionGUID = null;
+
+        EnumDef enumDef = archiveHelper.getEmptyEnumDef(guid, name, description, descriptionGUID);
+
+        ArrayList<EnumElementDef> elementDefs = new ArrayList<>();
+        EnumElementDef            elementDef;
+
+        final int    element1Ordinal         = 0;
+        final String element1Value           = "INPUT_PORT";
+        final String element1Description     = "Input Port.";
+        final String element1DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element1Ordinal,
+                                                    element1Value,
+                                                    element1Description,
+                                                    element1DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element2Ordinal         = 1;
+        final String element2Value           = "OUTPUT_PORT";
+        final String element2Description     = "Output Port.";
+        final String element2DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element2Ordinal,
+                                                    element2Value,
+                                                    element2Description,
+                                                    element2DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element3Ordinal         = 2;
+        final String element3Value           = "INOUT_PORT";
+        final String element3Description     = "Input Output Port.";
+        final String element3DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element3Ordinal,
+                                                    element3Value,
+                                                    element3Description,
+                                                    element3DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element4Ordinal         = 3;
+        final String element4Value           = "OUTIN_PORT";
+        final String element4Description     = "Output Input Port.";
+        final String element4DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element4Ordinal,
+                                                    element4Value,
+                                                    element4Description,
+                                                    element4DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        final int    element5Ordinal         = 99;
+        final String element5Value           = "OTHER";
+        final String element5Description     = "None of the above.";
+        final String element5DescriptionGUID = null;
+
+        elementDef = archiveHelper.getEnumElementDef(element5Ordinal,
+                                                    element5Value,
+                                                    element5Description,
+                                                    element5DescriptionGUID);
+        elementDefs.add(elementDef);
+
+        enumDef.setElementDefs(elementDefs);
+
+        return enumDef;
+    }
 
     /**
-     * The Port entity describes the interaction point between two assets.
+     * The Port entity describes the input or output of a process
      *
-     * @return Process EntityDef
+     * @return Port EntityDef
      */
     private EntityDef getPortEntity()
     {
@@ -10214,7 +10162,7 @@ public class OpenMetadataTypesArchive
          */
         final String guid            = "4253ee4F-AUBw-PA91-AwA3-rP3ZEsUgii6w";
         final String name            = "Port";
-        final String description     = "Entity that describes the interaction point between two assets ";
+        final String description     = "Entity that describes the interaction point between a process and a schema type.";
         final String descriptionGUID = null;
         final String superTypeName   = "Referenceable";
 
@@ -10246,18 +10194,86 @@ public class OpenMetadataTypesArchive
         return entityDef;
     }
 
+    /**
+     * The PortAlias describes the input/output of a higher-level process
+     *
+     * @return PortAlias EntityDef
+     */
+    private EntityDef getPortAliasEntity()
+    {
+        /*
+         * Build the Entity
+         */
+        final String guid            = "BgehpbcK-M5NI-KQ4R-ElaX-cmzumvM0AW8k";
+        final String name            = "PortAlias";
+        final String description     = "Entity that describes the interaction point a process and a schema type.";
+        final String descriptionGUID = null;
+        final String superTypeName   = "Port";
+
+
+        return archiveHelper.getDefaultEntityDef(guid,
+                                                 name,
+                                                 this.archiveBuilder.getEntityDef(superTypeName),
+                                                 description,
+                                                 descriptionGUID);
+
+    }
 
     /**
-     * The PortInterface relationship describes a nested relationship between two ports.
-     * @return PortInterface RelationshipDef
+     * The PortImplementation describes the input/output of a lowest-level process
+     *
+     * @return PortImplementation EntityDef
      */
-    private RelationshipDef getParentPortRelationship() {
+    private EntityDef getPortImplementationEntity()
+    {
+        /*
+         * Build the Entity
+         */
+        final String guid            = "hy9is7dx-xQF9-wGFb-dkP6-ddyd362NBp68";
+        final String name            = "PortImplementation";
+        final String description     = "Entity that describes the interaction point between two assets.";
+        final String descriptionGUID = null;
+        final String superTypeName   = "Port";
+
+
+        EntityDef entityDef = archiveHelper.getDefaultEntityDef(guid,
+                                                                name,
+                                                                this.archiveBuilder.getEntityDef(superTypeName),
+                                                                description,
+                                                                descriptionGUID);
+
+        /*
+         * Build the attributes
+         */
+        List<TypeDefAttribute> properties = new ArrayList<>();
+        TypeDefAttribute       property;
+
+        final String attribute1Name            = "type";
+        final String attribute1Description     = "Type of port";
+        final String attribute1DescriptionGUID = null;
+
+        property = archiveHelper.getEnumTypeDefAttribute("PortType",
+                                                        attribute1Name,
+                                                        attribute1Description,
+                                                        attribute1DescriptionGUID);
+        properties.add(property);
+
+        entityDef.setPropertiesDefinition(properties);
+
+        return entityDef;
+    }
+
+    /**
+     * The PortDelegation relationship describes the relationship between a more granular and a more abstract port
+     * @return PortDelegation RelationshipDef
+     */
+    private RelationshipDef getPortDelegationRelationship() {
         /*
          * Build the relationship
          */
         final String guid            = "UzK6vHfH-JC46-vXYi-qKZE-v0bbM58nQGPX";
-        final String name            = "ParentPort";
-        final String description     = "A nested relationship between two ports";
+        final String name            = "PortDelegation";
+        final String description     = "A relationship between a more granular and a more abstract port";
         final String descriptionGUID = null;
 
         final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
@@ -10275,8 +10291,8 @@ public class OpenMetadataTypesArchive
          * Set up end 1.
          */
         final String                     end1EntityType               = "Port";
-        final String                     end1AttributeName            = "consumingPort";
-        final String                     end1AttributeDescription     = "Parent Port";
+        final String                     end1AttributeName            = "delegatingTo";
+        final String                     end1AttributeDescription     = "Higher level Port";
         final String                     end1AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
 
@@ -10291,10 +10307,10 @@ public class OpenMetadataTypesArchive
          * Set up end 2.
          */
         final String                     end2EntityType               = "Port";
-        final String                     end2AttributeName            = "subPort";
-        final String                     end2AttributeDescription     = "Sub Port";
+        final String                     end2AttributeName            = "delegatingFrom";
+        final String                     end2AttributeDescription     = "Lower level port";
         final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
                                                                  end2AttributeName,
@@ -10336,10 +10352,10 @@ public class OpenMetadataTypesArchive
          * Set up end 1.
          */
         final String                     end1EntityType               = "Process";
-        final String                     end1AttributeName            = "process";
+        final String                     end1AttributeName            = "owningProcess";
         final String                     end1AttributeDescription     = "Process linked to the port";
         final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
 
         relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
                                                                  end1AttributeName,
@@ -10353,7 +10369,7 @@ public class OpenMetadataTypesArchive
          * Set up end 2.
          */
         final String                     end2EntityType               = "Port";
-        final String                     end2AttributeName            = "port";
+        final String                     end2AttributeName            = "ports";
         final String                     end2AttributeDescription     = "Port to the process";
         final String                     end2AttributeDescriptionGUID = null;
         final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
@@ -10368,193 +10384,6 @@ public class OpenMetadataTypesArchive
 
         return relationshipDef;
     }
-
-    /**
-     *  The PortWire relationship describes the link between two ports.
-     * @return PortWire RelationshipDef
-     */
-    private RelationshipDef getPortWireRelationship() {
-        /*
-         * Build the relationship
-         */
-        final String guid            = "GGQmRWnY-aKYh-Yzsa-UoAi-1DsFzGTLqjJk";
-        final String name            = "PortWire";
-        final String description     = "A link between two ports";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
-                                                                                null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1EntityType               = "Port";
-        final String                     end1AttributeName            = "FirstPort";
-        final String                     end1AttributeDescription     = "First Port";
-        final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2EntityType               = "Port";
-        final String                     end2AttributeName            = "SecondPort";
-        final String                     end2AttributeDescription     = "Second Port.";
-        final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-
-        return relationshipDef;
-    }
-
-
-    /**
-     * The PortInterface relationship describes the link between a Port and the DeployedAPI linked to the Port.
-     * @return PortInterface RelationshipDef
-     */
-    private RelationshipDef getPortInterfaceRelationship() {
-        /*
-         * Build the relationship
-         */
-        final String guid            = "dsdPJ7OO-yYyG-cRvY-wOoK-oaVNIAIxo2MP";
-        final String name            = "PortInterface";
-        final String description     = "A link between a Port and a DeployedAP";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
-                                                                                null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1EntityType               = "Port";
-        final String                     end1AttributeName            = "port";
-        final String                     end1AttributeDescription     = "Port";
-        final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2EntityType               = "DeployedAPI";
-        final String                     end2AttributeName            = "DeployedAPI";
-        final String                     end2AttributeDescription     = "DeployedAPI";
-        final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-
-        return relationshipDef;
-    }
-
-
-    /**
-     * The AssetWire relationship describes the link between an Asset and the DeployedAPI
-     * @return AssetWire RelationshipDef
-     */
-    private RelationshipDef getAssetWireRelationship() {
-        /*
-         * Build the relationship
-         */
-        final String guid            = "bni3AGDA-PJCN-EEqg-NrQr-UHEsW2ATk8yd";
-        final String name            = "AssetWire";
-        final String description     = "A link between an Asset and the DeployedAPI";
-        final String descriptionGUID = null;
-
-        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
-
-        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
-                                                                                name,
-                                                                                null,
-                                                                                description,
-                                                                                descriptionGUID,
-                                                                                classificationPropagationRule);
-
-        RelationshipEndDef relationshipEndDef;
-
-        /*
-         * Set up end 1.
-         */
-        final String                     end1EntityType               = "DeployedAPI";
-        final String                     end1AttributeName            = "accessAPI";
-        final String                     end1AttributeDescription     = "AccessAPI";
-        final String                     end1AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
-                                                                 end1AttributeName,
-                                                                 end1AttributeDescription,
-                                                                 end1AttributeDescriptionGUID,
-                                                                 end1Cardinality);
-        relationshipDef.setEndDef1(relationshipEndDef);
-
-
-        /*
-         * Set up end 2.
-         */
-        final String                     end2EntityType               = "Asset";
-        final String                     end2AttributeName            = "implementationResource";
-        final String                     end2AttributeDescription     = "Implementation resource";
-        final String                     end2AttributeDescriptionGUID = null;
-        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
-
-        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
-                                                                 end2AttributeName,
-                                                                 end2AttributeDescription,
-                                                                 end2AttributeDescriptionGUID,
-                                                                 end2Cardinality);
-        relationshipDef.setEndDef2(relationshipEndDef);
-
-
-        return relationshipDef;
-    }
-
-
 
     /*
      * ========================================
@@ -17300,6 +17129,7 @@ public class OpenMetadataTypesArchive
         this.add580SolutionBlueprints();
         this.add0581SolutionPortsAndWires();
         this.add0595DesignPatterns();
+        this.add0598LineageRelationships();
     }
 
 
@@ -20676,6 +20506,136 @@ public class OpenMetadataTypesArchive
 
         return relationshipDef;
     }
+
+
+    private void add0598LineageRelationships() {
+
+        this.archiveBuilder.addRelationshipDef(getPortSchemaRelationship());
+        this.archiveBuilder.addRelationshipDef(getLineageMappingRelationship());
+    }
+
+    /**
+     * The PortSchema relationship describes the link between a Port and the SchemaType linked to the Port
+     * @return PortSchema RelationshipDef
+     */
+    private RelationshipDef getPortSchemaRelationship() {
+        /*
+         * Build the relationship
+         */
+        final String guid            = "dsdPJ7OO-yYyG-cRvY-wOoK-oaVNIAIxo2MP";
+        final String name            = "PortSchema";
+        final String description     = "A link between a Port and a SchemaType";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                name,
+                null,
+                description,
+                descriptionGUID,
+                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "Port";
+        final String                     end1AttributeName            = "port";
+        final String                     end1AttributeDescription     = "Port";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                end1AttributeName,
+                end1AttributeDescription,
+                end1AttributeDescriptionGUID,
+                end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "SchemaType";
+        final String                     end2AttributeName            = "SchemaType";
+        final String                     end2AttributeDescription     = "SchemaType";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.AT_MOST_ONE;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                end2AttributeName,
+                end2AttributeDescription,
+                end2AttributeDescriptionGUID,
+                end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+
+        return relationshipDef;
+    }
+
+    /**
+     *  The LineageMapping relationship describes the directional mapping between SchemaTypes
+     * @return LineageMapping RelationshipDef
+     */
+    private RelationshipDef getLineageMappingRelationship() {
+        /*
+         * Build the relationship
+         */
+        final String guid            = "GGQmRWnY-aKYh-Yzsa-UoAi-1DsFzGTLqjJk";
+        final String name            = "LineageMapping";
+        final String description     = "A link between two schema types.";
+        final String descriptionGUID = null;
+
+        final ClassificationPropagationRule classificationPropagationRule = ClassificationPropagationRule.NONE;
+
+        RelationshipDef relationshipDef = archiveHelper.getBasicRelationshipDef(guid,
+                name,
+                null,
+                description,
+                descriptionGUID,
+                classificationPropagationRule);
+
+        RelationshipEndDef relationshipEndDef;
+
+        /*
+         * Set up end 1.
+         */
+        final String                     end1EntityType               = "SchemaType";
+        final String                     end1AttributeName            = "targetElement";
+        final String                     end1AttributeDescription     = "Target Schema.";
+        final String                     end1AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end1Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end1EntityType),
+                end1AttributeName,
+                end1AttributeDescription,
+                end1AttributeDescriptionGUID,
+                end1Cardinality);
+        relationshipDef.setEndDef1(relationshipEndDef);
+
+
+        /*
+         * Set up end 2.
+         */
+        final String                     end2EntityType               = "SchemaType";
+        final String                     end2AttributeName            = "sourceElement";
+        final String                     end2AttributeDescription     = "Source Schema.";
+        final String                     end2AttributeDescriptionGUID = null;
+        final RelationshipEndCardinality end2Cardinality              = RelationshipEndCardinality.ANY_NUMBER;
+
+        relationshipEndDef = archiveHelper.getRelationshipEndDef(this.archiveBuilder.getEntityDef(end2EntityType),
+                end2AttributeName,
+                end2AttributeDescription,
+                end2AttributeDescriptionGUID,
+                end2Cardinality);
+        relationshipDef.setEndDef2(relationshipEndDef);
+
+
+        return relationshipDef;
+    }
+
 
     /*
      * ========================================
