@@ -15,8 +15,10 @@ RUN mvn clean install -DskipTests
 RUN git log > git.log && echo ${branch} > git.branch && git remote -v >> git.remote
 
 FROM openjdk:8-jre-alpine
-COPY --from=build /root/egeria/open-metadata-distribution/open-metadata-assemblies/target/egeria-*-omag-server/servers/omag-server-*/server-chassis-spring-*.jar /server-chassis-spring.jar
-COPY --from=build /root/egeria/open-metadata-distribution/open-metadata-assemblies/target/egeria-*-distribution/egeria-omag-*/user-interface/access-services-user-interface-*.jar /access-services-user-interface.jar
+#COPY --from=build /root/egeria/open-metadata-distribution/open-metadata-assemblies/target/egeria-*-omag-server/servers/omag-server-*/server-chassis-spring-*.jar /server-chassis-spring.jar
+COPY --from=build /root/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/target/server-chassis-spring-*.jar /server-chassis-spring.jar
+#COPY --from=build /root/egeria/open-metadata-distribution/open-metadata-assemblies/target/egeria-*-distribution/egeria-omag-*/user-interface/access-services-user-interface-*.jar /access-services-user-interface.jar
+COPY --from=build /root/egeria/open-metadata-implementation/user-interfaces/access-services-user-interface/target/access-services-user-interface-*.jar /access-services-user-interface.jar
 COPY --from=build /root/egeria/git.* /
 RUN apk add bash
 COPY dist/entrypoint.sh /entrypoint.sh
