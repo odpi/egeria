@@ -21,7 +21,7 @@ The Connected Asset OMAS returns metadata about the asset at three levels of det
 * `getAssetSummary` - returns the summary information organized in the `assetSummary` structure.
 * `getAssetDetail` - returns detailed information about the asset organized in the `assetDetail` structure.
 * `getAssetUniverse` - returns all of the common metadata properties connected to the asset such as its
-schema, meanings and platform.
+schema, assets and platform.
 
 These structures are defined in the OCF module as POJO property objects (aka beans).
 

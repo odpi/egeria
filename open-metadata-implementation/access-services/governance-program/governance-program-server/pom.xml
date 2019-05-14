@@ -30,6 +30,24 @@
             <version>${open-metadata.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>repository-handler</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ocf-metadata-management</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>multi-tenant</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
     </dependencies>
 
 </project>
