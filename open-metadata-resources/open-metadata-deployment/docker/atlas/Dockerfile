@@ -54,7 +54,7 @@ RUN git log > git.log && echo ${branch} > git.branch && git remote -v >> git.rem
 
 FROM openjdk:8-jdk-alpine
 
-RUN apk add python bash
+RUN apk --no-cache add python bash && apk --no-cache update && apk --no-cache upgrade
 COPY --from=build /root/atlas-bin/ /root/atlas-bin/
 COPY --from=build /root/atlas/git.* /
 WORKDIR /root/atlas-bin/conf
