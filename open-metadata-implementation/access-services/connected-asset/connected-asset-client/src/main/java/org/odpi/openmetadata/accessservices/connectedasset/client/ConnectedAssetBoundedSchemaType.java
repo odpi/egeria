@@ -5,7 +5,7 @@ package org.odpi.openmetadata.accessservices.connectedasset.client;
 import org.odpi.openmetadata.frameworks.connectors.properties.AssetBoundedSchemaType;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.BoundedSchemaType;
 
-public class ConnectedAssetBoundedSchemaType extends AssetBoundedSchemaType
+class ConnectedAssetBoundedSchemaType extends AssetBoundedSchemaType
 {
     /**
      * Typical constructor creates an AssetComplexSchemaType object primed with information to retrieve an asset's schema
@@ -27,6 +27,10 @@ public class ConnectedAssetBoundedSchemaType extends AssetBoundedSchemaType
     {
         super(parentAsset);
         super.setBean(schemaBean);
-        super.boundedSchemaElementType = parentAsset.getAssetSchemaType(serverName, omasServerURL, userId, schemaBean.getElementType(), restClient);
+        super.boundedSchemaElementType = parentAsset.getAssetSchemaType(serverName,
+                                                                        omasServerURL,
+                                                                        userId,
+                                                                        schemaBean.getElementType(),
+                                                                        restClient);
     }
 }

@@ -28,9 +28,9 @@ public class RatingRequestBodyTest
      *
      * @return filled in object
      */
-    private ReviewRequestBody getTestObject()
+    private RatingRequestBody getTestObject()
     {
-        ReviewRequestBody testObject = new ReviewRequestBody();
+        RatingRequestBody testObject = new RatingRequestBody();
 
         testObject.setReview("TestReviewText");
         testObject.setStarRating(StarRating.FIVE_STARS);
@@ -44,7 +44,7 @@ public class RatingRequestBodyTest
      *
      * @param resultObject object returned by the test
      */
-    private void validateResultObject(ReviewRequestBody resultObject)
+    private void validateResultObject(RatingRequestBody resultObject)
     {
         assertTrue(resultObject.getReview().equals("TestReviewText"));
         assertTrue(resultObject.getStarRating() == StarRating.FIVE_STARS);
@@ -56,12 +56,12 @@ public class RatingRequestBodyTest
      */
     @Test public void testNullObject()
     {
-        ReviewRequestBody nullObject = new ReviewRequestBody();
+        RatingRequestBody nullObject = new RatingRequestBody();
 
         assertTrue(nullObject.getStarRating() == null);
         assertTrue(nullObject.getReview() == null);
 
-        nullObject = new ReviewRequestBody(null);
+        nullObject = new RatingRequestBody(null);
 
         assertTrue(nullObject.getStarRating() == null);
         assertTrue(nullObject.getReview() == null);
@@ -77,10 +77,10 @@ public class RatingRequestBodyTest
         assertFalse(getTestObject().equals("DummyString"));
         assertTrue(getTestObject().equals(getTestObject()));
 
-        ReviewRequestBody sameObject = getTestObject();
+        RatingRequestBody sameObject = getTestObject();
         assertTrue(sameObject.equals(sameObject));
 
-        ReviewRequestBody differentObject = getTestObject();
+        RatingRequestBody differentObject = getTestObject();
         differentObject.setStarRating(StarRating.ONE_STAR);
         assertFalse(getTestObject().equals(differentObject));
     }
@@ -100,7 +100,7 @@ public class RatingRequestBodyTest
      */
     @Test public void testClone()
     {
-        validateResultObject(new ReviewRequestBody(getTestObject()));
+        validateResultObject(new RatingRequestBody(getTestObject()));
     }
 
 
@@ -127,7 +127,7 @@ public class RatingRequestBodyTest
 
         try
         {
-            validateResultObject(objectMapper.readValue(jsonString, ReviewRequestBody.class));
+            validateResultObject(objectMapper.readValue(jsonString, RatingRequestBody.class));
         }
         catch (Throwable  exc)
         {
@@ -150,7 +150,7 @@ public class RatingRequestBodyTest
 
         try
         {
-            validateResultObject((ReviewRequestBody) objectMapper.readValue(jsonString, AssetConsumerOMASAPIRequestBody.class));
+            validateResultObject((RatingRequestBody) objectMapper.readValue(jsonString, AssetConsumerOMASAPIRequestBody.class));
         }
         catch (Throwable  exc)
         {

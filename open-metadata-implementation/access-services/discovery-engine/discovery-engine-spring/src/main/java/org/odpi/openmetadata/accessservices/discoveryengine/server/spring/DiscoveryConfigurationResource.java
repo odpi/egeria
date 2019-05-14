@@ -4,6 +4,10 @@ package org.odpi.openmetadata.accessservices.discoveryengine.server.spring;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
 import org.odpi.openmetadata.accessservices.discoveryengine.server.DiscoveryConfigurationServices;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDListResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.GUIDResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.NullRequestBody;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -270,9 +274,9 @@ public class DiscoveryConfigurationResource
      */
     @RequestMapping(method = RequestMethod.GET, path = "/discovery-services/{guid}/registrations")
 
-    public  GUIDListResponse  getDiscoveryServiceRegistrations(@PathVariable String   serverName,
-                                                               @PathVariable String   userId,
-                                                               @PathVariable String   guid)
+    public GUIDListResponse getDiscoveryServiceRegistrations(@PathVariable String   serverName,
+                                                             @PathVariable String   userId,
+                                                             @PathVariable String   guid)
     {
         return restAPI.getDiscoveryServiceRegistrations(serverName, userId, guid);
     }

@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.events;
 
 import com.fasterxml.jackson.annotation.*;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 
 import java.util.Objects;
 
@@ -26,7 +26,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 })
 public class AssetEvent extends AssetConsumerEventHeader
 {
-    private Asset                  asset           = null;
+    private Asset asset = null;
 
 
     /**

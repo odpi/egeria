@@ -37,5 +37,11 @@
             <version>${open-metadata.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>multi-tenant</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
     </dependencies>
 </project>

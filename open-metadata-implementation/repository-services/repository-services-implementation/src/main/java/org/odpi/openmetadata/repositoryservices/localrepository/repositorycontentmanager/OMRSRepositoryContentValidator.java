@@ -2096,11 +2096,13 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
      * Verify whether the instance passed to this method is of the type indicated by the type guid.
      * A null type guid matches all instances (ie result is true).  A null instance returns false.
      *
+     * @param sourceName name of the caller.
      * @param instanceTypeGUID unique identifier of the type (or null).
      * @param instance instance to test.
      * @return boolean
      */
-    public boolean verifyInstanceType(String           instanceTypeGUID,
+    public boolean verifyInstanceType(String           sourceName,
+                                      String           instanceTypeGUID,
                                       InstanceHeader   instance)
     {
         if (instance != null)
@@ -2118,7 +2120,10 @@ public class OMRSRepositoryContentValidator implements OMRSRepositoryValidator
 
                 if (entityType != null)
                 {
-                    if (instanceTypeGUID.equals(entityType.getTypeDefGUID()))
+                    if (repositoryContentManager.isTypeOfByGUID(sourceName,
+                                                                entityType.getTypeDefGUID(),
+                                                                entityType.getTypeDefName(),
+                                                                instanceTypeGUID))
                     {
                         return true;
                     }

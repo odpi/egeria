@@ -22,15 +22,23 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
         this.instanceEventProcessor = instanceEventProcessor;
     }
 
-    @Override
-    public void processRegistryEvent(OMRSRegistryEvent omrsRegistryEvent) {
-        throw new UnsupportedOperationException();
-    }
 
-    @Override
-    public void processTypeDefEvent(OMRSTypeDefEvent event) {
-        throw new UnsupportedOperationException();
-    }
+    /**
+     * Registry events are ignored by this OMAS
+     *
+     * @param omrsRegistryEvent event
+     */
+    public void processRegistryEvent(OMRSRegistryEvent omrsRegistryEvent) { }
+
+
+    /**
+     * TypeDef events are ignored by this OMAS
+     *
+     * @param event inbound event
+     */
+    public void processTypeDefEvent(OMRSTypeDefEvent event) { }
+
+
 
     /**
      * @param instanceEvent - the event coming from enterprise topic

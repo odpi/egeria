@@ -5,7 +5,7 @@ package org.odpi.openmetadata.discoveryserver.client;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryEngine;
 import org.odpi.openmetadata.frameworks.discovery.ffdc.DiscoveryEngineException;
-import org.odpi.openmetadata.frameworks.discovery.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.discovery.properties.Annotation;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryReport;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryRequestStatus;

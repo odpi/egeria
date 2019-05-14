@@ -3,8 +3,8 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.events;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.Asset;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.ReferenceableClassification;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.testng.annotations.Test;
 
 import java.util.*;
@@ -17,23 +17,23 @@ import static org.testng.Assert.assertTrue;
  */
 public class NewAssetEventTest
 {
-    private AssetConsumerEventType            eventType                = AssetConsumerEventType.NEW_ASSET_EVENT;
-    private Date                              creationTime             = new Date();
-    private Asset                             asset                    = new Asset();
-    private String                            url                      = "TestURL";
-    private String                            guid                     = "TestGUID";
-    private String                            typeId                   = "TestTypeId";
-    private String                            typeName                 = "TestTypeName";
-    private long                              typeVersion              = 7;
-    private String                            typeDescription          = "TestTypeDescription";
-    private String                            qualifiedName            = "TestQualifiedName";
-    private String                            displayName              = "TestDisplayName";
-    private String                            description              = "TestDescription";
-    private String                            owner                    = "TestOwner";
-    private Map<String, Object>               additionalProperties     = new HashMap<>();
-    private List<ReferenceableClassification> classifications          = new ArrayList<>();
-    private ReferenceableClassification       classification           = new ReferenceableClassification();
-    private Map<String, Object>               classificationProperties = new HashMap<>();
+    private AssetConsumerEventType eventType                = AssetConsumerEventType.NEW_ASSET_EVENT;
+    private Date                   creationTime             = new Date();
+    private Asset                  asset                    = new Asset();
+    private String                 url             = "TestURL";
+    private String                 guid            = "TestGUID";
+    private String                 typeId          = "TestTypeId";
+    private String                 typeName        = "TestTypeName";
+    private long                   typeVersion     = 7;
+    private String                 typeDescription          = "TestTypeDescription";
+    private String                 qualifiedName            = "TestQualifiedName";
+    private String                 displayName              = "TestDisplayName";
+    private String                 description              = "TestDescription";
+    private String                 owner                    = "TestOwner";
+    private Map<String, String>    additionalProperties     = new HashMap<>();
+    private List<Classification>   classifications          = new ArrayList<>();
+    private Classification         classification           = new Classification();
+    private Map<String, Object>    classificationProperties = new HashMap<>();
 
 
     /**
@@ -42,8 +42,6 @@ public class NewAssetEventTest
     public NewAssetEventTest()
     {
         asset.setGUID(guid);
-        asset.setTypeName(typeName);
-        asset.setTypeDescription(typeDescription);
         asset.setQualifiedName(qualifiedName);
         asset.setDisplayName(displayName);
         asset.setDescription(description);

@@ -50,7 +50,7 @@ See the [OMRS Server-side REST implementation](../open-metadata-implementation/r
 for the server-side annotations that process the REST calls from the OMRS REST Connector.
 
 Spring Boot is used in the 
-[OMAG Server Chassis](../open-metadata-implementation/governance-servers/server-chassis/server-chassis-spring/README.md).
+[OMAG Server Chassis](../open-metadata-implementation/server-chassis/server-chassis-spring/README.md).
 It searches for all of the REST API definitions and starts them in a server.
 
 For more information on Spring, see [https://spring.io/](https://spring.io/).

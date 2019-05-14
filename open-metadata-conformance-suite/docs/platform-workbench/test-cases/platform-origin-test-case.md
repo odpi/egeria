@@ -9,7 +9,7 @@ repositories and or servers.
 
 ## Operation
 
-This test uses the getServerOrigin operation (`../open-metadata/admin-services/users/{userId}/server-origin`)
+This test uses the getServerPlatformOrigin operation (`../open-metadata/platform-services/users/{userId}/server-platform-origin`)
 operation to test that the platform knows its origin descriptor.
 Typically this describes the vendor, product name and version of the server.
 
