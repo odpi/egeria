@@ -26,6 +26,8 @@ The current Egeria maintainers are:
 | Cong Chen | cong.chen@ing.com |
 | Ernie Ostic | eostic@us.ibm.com |
 | Chris Replogle | Chris.Replogle@sas.com |
+| Dimitrios Maimaris | dimi.maim@gmail.com |
+
 
 
 ----

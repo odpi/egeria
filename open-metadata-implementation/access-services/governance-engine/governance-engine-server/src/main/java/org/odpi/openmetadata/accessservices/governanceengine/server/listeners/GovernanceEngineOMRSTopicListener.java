@@ -2,7 +2,6 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.governanceengine.server.listeners;
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
 import org.odpi.openmetadata.repositoryservices.events.OMRSEventOriginator;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
@@ -19,19 +18,27 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
     private String enterpriseOMRSTopic = "EnterpriseOMRSTopic";
     private OMRSInstanceEventProcessor instanceEventProcessor;
 
-    public GovernanceEngineOMRSTopicListener(OMRSInstanceEventProcessor instanceEventProcessor, OMRSAuditLog auditLog) {
+    public GovernanceEngineOMRSTopicListener(OMRSInstanceEventProcessor instanceEventProcessor) {
         this.instanceEventProcessor = instanceEventProcessor;
     }
 
-    @Override
-    public void processRegistryEvent(OMRSRegistryEvent omrsRegistryEvent) {
-        throw new UnsupportedOperationException();
-    }
 
-    @Override
-    public void processTypeDefEvent(OMRSTypeDefEvent event) {
-        throw new UnsupportedOperationException();
-    }
+    /**
+     * Registry events are ignored by this OMAS
+     *
+     * @param omrsRegistryEvent event
+     */
+    public void processRegistryEvent(OMRSRegistryEvent omrsRegistryEvent) { }
+
+
+    /**
+     * TypeDef events are ignored by this OMAS
+     *
+     * @param event inbound event
+     */
+    public void processTypeDefEvent(OMRSTypeDefEvent event) { }
+
+
 
     /**
      * @param instanceEvent - the event coming from enterprise topic
@@ -48,14 +55,6 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
             }
 
             switch (instanceEventType) {
-                case NEW_RELATIONSHIP_EVENT:
-                    instanceEventProcessor.processNewRelationshipEvent(enterpriseOMRSTopic,
-                            instanceEventOriginator.getMetadataCollectionId(),
-                            instanceEventOriginator.getServerName(),
-                            instanceEventOriginator.getServerType(),
-                            instanceEventOriginator.getOrganizationName(),
-                            instanceEvent.getRelationship());
-                    break;
                 case CLASSIFIED_ENTITY_EVENT:
                     instanceEventProcessor.processClassifiedEntityEvent(enterpriseOMRSTopic,
                             instanceEventOriginator.getMetadataCollectionId(),
@@ -66,6 +65,22 @@ public class GovernanceEngineOMRSTopicListener implements OMRSTopicListener {
                     break;
                 case RECLASSIFIED_ENTITY_EVENT:
                     instanceEventProcessor.processReclassifiedEntityEvent(enterpriseOMRSTopic,
+                            instanceEventOriginator.getMetadataCollectionId(),
+                            instanceEventOriginator.getServerName(),
+                            instanceEventOriginator.getServerType(),
+                            instanceEventOriginator.getOrganizationName(),
+                            instanceEvent.getEntity());
+                    break;
+                case DELETED_ENTITY_EVENT:
+                    instanceEventProcessor.processDeletePurgedEntityEvent(enterpriseOMRSTopic,
+                            instanceEventOriginator.getMetadataCollectionId(),
+                            instanceEventOriginator.getServerName(),
+                            instanceEventOriginator.getServerType(),
+                            instanceEventOriginator.getOrganizationName(),
+                            instanceEvent.getEntity());
+                    break;
+                case DECLASSIFIED_ENTITY_EVENT:
+                    instanceEventProcessor.processDeclassifiedEntityEvent(enterpriseOMRSTopic,
                             instanceEventOriginator.getMetadataCollectionId(),
                             instanceEventOriginator.getServerName(),
                             instanceEventOriginator.getServerType(),

@@ -11,8 +11,11 @@ import org.odpi.openmetadata.accessservices.informationview.events.ForeignKey;
 import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.ContextLoadException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveEntityException;
+import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.RetrieveRelationshipException;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
-import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Classification;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntitySummary;
@@ -26,9 +29,7 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.FunctionNotSuppor
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PagingErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.RelationshipNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
-import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeDefNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.TypeErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
 import org.slf4j.Logger;
@@ -57,7 +58,7 @@ public class ColumnContextBuilder {
     public ColumnContextBuilder(OMRSRepositoryConnector enterpriseConnector) {
         this.enterpriseConnector = enterpriseConnector;
         this.omrsRepositoryHelper = enterpriseConnector.getRepositoryHelper();
-    }
+}
 
 
     /**
@@ -65,26 +66,17 @@ public class ColumnContextBuilder {
      *
      * @param guidColumn of the relational column entity
      * @return the list of full contexts for the column
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     * @throws InvalidParameterException
-     * @throws EntityNotKnownException
      */
-    public List<TableContextEvent> buildContexts(String guidColumn) throws RepositoryErrorException,
-                                                                           UserNotAuthorizedException,
-                                                                           EntityNotKnownException,
-                                                                           FunctionNotSupportedException,
-                                                                           InvalidParameterException,
-                                                                           PropertyErrorException,
-                                                                           TypeErrorException,
-                                                                           PagingErrorException,
-                                                                           RelationshipNotKnownException,
-                                                                           TypeDefNotKnownException,
-                                                                           EntityProxyOnlyException {
+    public List<TableContextEvent> buildContexts(String guidColumn)  {
         List<TableContextEvent> tableContexts = new ArrayList<>();
         String relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
-        for (Relationship relationship : enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, guidColumn, relationshipTypeGuid, 0, null, null, null, null, 0)) {
-            tableContexts.addAll(getTableContext(relationship.getEntityOneProxy().getGUID(), Constants.START_FROM, Constants.PAGE_SIZE));
+        try {
+            for (Relationship relationship : enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, guidColumn, relationshipTypeGuid, 0, null, null, null, null, 0)) {
+                tableContexts.addAll(getTableContext(relationship.getEntityOneProxy().getGUID(), Constants.START_FROM, Constants.PAGE_SIZE));
+            }
+        } catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException | PropertyErrorException | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException  e) {
+            InformationViewErrorCode code = InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION;
+            throw new ContextLoadException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(guidColumn, e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
         }
         if(log.isDebugEnabled()) {
             log.debug("Context events: {}", tableContexts);
@@ -99,44 +91,43 @@ public class ColumnContextBuilder {
      * @param startFrom
      * @param pageSize
      * @return the list of contexts with table details populated
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     * @throws InvalidParameterException
-     * @throws EntityNotKnownException
+
      */
-    public List<TableContextEvent> getTableContext(String tableTypeGuid, int startFrom, int pageSize) throws
-                                                                                                      InvalidParameterException,
-                                                                                                      RelationshipNotKnownException,
-                                                                                                      PropertyErrorException,
-                                                                                                      FunctionNotSupportedException,
-                                                                                                      EntityNotKnownException,
-                                                                                                      TypeDefNotKnownException,
-                                                                                                      PagingErrorException,
-                                                                                                      EntityProxyOnlyException,
-                                                                                                      UserNotAuthorizedException,
-                                                                                                      TypeErrorException,
-                                                                                                      RepositoryErrorException {
+    public List<TableContextEvent> getTableContext(String tableTypeGuid, int startFrom, int pageSize) {
         if(log.isDebugEnabled()) {
             log.debug("Load table type details for entity with guid {}", tableTypeGuid);
         }
         List<TableContextEvent> tableContexts = new ArrayList<>();
-        EntityDetail tableTypeDetail = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, tableTypeGuid);
+        EntityDetail tableTypeDetail = null;
+        try {
+            tableTypeDetail = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, tableTypeGuid);
+        } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException | UserNotAuthorizedException e) {
+            InformationViewErrorCode code = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
+            throw new RetrieveEntityException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(Constants.GUID, tableTypeGuid, e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+        }
         List<TableColumn> columns = getTableColumns(tableTypeGuid, startFrom, pageSize);
         List<Relationship> schemaAttributeTypeRelationships = getSchemaTypeRelationships(tableTypeDetail, Constants.SCHEMA_ATTRIBUTE_TYPE, Constants.START_FROM, Constants.PAGE_SIZE);
 
         for(Relationship schemaAttributeTypeRelationship : schemaAttributeTypeRelationships) {
             String tableGuid = schemaAttributeTypeRelationship.getEntityOneProxy().getGUID();
-            EntityDetail tableEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, tableGuid);
-            String tableName = omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.ATTRIBUTE_NAME, tableEntity.getProperties(), BUILD_CONTEXT_METHOD_NAME);
-            String attributeForSchemaTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
+            EntityDetail tableEntity = null;
+            try {
+                tableEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, tableGuid);
+                String tableName = omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.ATTRIBUTE_NAME, tableEntity.getProperties(), BUILD_CONTEXT_METHOD_NAME);
+                String attributeForSchemaTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
 
-            for (Relationship parentSchemaTypeRelationship : enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, tableEntity.getGUID(), attributeForSchemaTypeGuid, 0, null, null, null, null, 0)) {
-                List<TableContextEvent> events = getDatabaseSchemaTypeContext(parentSchemaTypeRelationship.getEntityOneProxy().getGUID());
-                tableContexts.addAll(events.stream().map(e -> {e.getTableSource().setName(tableName);
-                                                               e.getTableSource().setGuid(tableGuid);
-                                                               e.setTableColumns(columns);
-                                                               return e;}).collect(Collectors.toList()));
+                for (Relationship parentSchemaTypeRelationship : enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, tableEntity.getGUID(), attributeForSchemaTypeGuid, 0, null, null, null, null, 0)) {
+                    List<TableContextEvent> events = getDatabaseSchemaTypeContext(parentSchemaTypeRelationship.getEntityOneProxy().getGUID());
+                    tableContexts.addAll(events.stream().map(e -> {e.getTableSource().setName(tableName);
+                        e.getTableSource().setGuid(tableGuid);
+                        e.setTableColumns(columns);
+                        return e;}).collect(Collectors.toList()));
+                }
+            } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException | UserNotAuthorizedException | PropertyErrorException | FunctionNotSupportedException | TypeErrorException | PagingErrorException e) {
+                InformationViewErrorCode code = InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION;
+                throw new ContextLoadException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(tableGuid, e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
             }
+
         }
         return tableContexts;
     }
@@ -148,25 +139,15 @@ public class ColumnContextBuilder {
      * @param startFrom
      * @param pageSize
      * @return
-     * @throws InvalidParameterException
-     * @throws TypeErrorException
-     * @throws RepositoryErrorException
-     * @throws EntityNotKnownException
-     * @throws PropertyErrorException
-     * @throws PagingErrorException
-     * @throws FunctionNotSupportedException
-     * @throws UserNotAuthorizedException
      */
-    public List<Relationship> getSchemaTypeRelationships(EntityDetail entityDetail, String schemaTypeRelationshipName, int startFrom, int pageSize) throws InvalidParameterException,
-                                                                                                                                TypeErrorException,
-                                                                                                                                RepositoryErrorException,
-                                                                                                                                EntityNotKnownException,
-                                                                                                                                PropertyErrorException,
-                                                                                                                                PagingErrorException,
-                                                                                                                                FunctionNotSupportedException,
-                                                                                                                                UserNotAuthorizedException {
+    public List<Relationship> getSchemaTypeRelationships(EntityDetail entityDetail, String schemaTypeRelationshipName, int startFrom, int pageSize){
         String relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, schemaTypeRelationshipName).getGUID();
-        return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, entityDetail.getGUID(), relationshipTypeGuid, startFrom, null, null, null, null, pageSize);
+        try {
+            return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, entityDetail.getGUID(), relationshipTypeGuid, startFrom, null, null, null, null, pageSize);
+        } catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException | PropertyErrorException | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException e) {
+            InformationViewErrorCode code = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
+            throw new RetrieveRelationshipException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(Constants.ATTRIBUTE_FOR_SCHEMA, entityDetail.getGUID(), e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+        }
     }
 
     /**
@@ -174,19 +155,21 @@ public class ColumnContextBuilder {
      *
      * @param tableTypeGuid for which the columns are loaded
      * @return the list of details of all columns of the table
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     * @throws InvalidParameterException
-     * @throws EntityNotKnownException
      */
-    public List<TableColumn> getTableColumns(String tableTypeGuid, int startFrom, int pageSize) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, EntityNotKnownException, TypeDefNotKnownException, PropertyErrorException, FunctionNotSupportedException, PagingErrorException, EntityProxyOnlyException, RelationshipNotKnownException, TypeErrorException {
+    public List<TableColumn> getTableColumns(String tableTypeGuid, int startFrom, int pageSize)  {
         if(log.isDebugEnabled()) {
             log.debug("Load table columns for entity with guid {}", tableTypeGuid);
         }
         String relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
 
         List<TableColumn> allColumns = new ArrayList<>();
-        List<Relationship> relationshipsToColumns = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, tableTypeGuid, relationshipTypeGuid, startFrom, null, null, null, null, pageSize);
+        List<Relationship> relationshipsToColumns;
+        try {
+            relationshipsToColumns = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, tableTypeGuid, relationshipTypeGuid, startFrom, null, null, null, null, pageSize);
+        } catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException | PropertyErrorException | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException e) {
+            InformationViewErrorCode code = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
+            throw new RetrieveRelationshipException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(Constants.ATTRIBUTE_FOR_SCHEMA, tableTypeGuid, e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+        }
         if(CollectionUtils.isNotEmpty(relationshipsToColumns)){
             allColumns.addAll(relationshipsToColumns.parallelStream().map(r -> buildTableColumn(r)).collect(Collectors.toList()));
         }
@@ -213,13 +196,13 @@ public class ColumnContextBuilder {
             tableColumn.setType(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.DATA_TYPE, columnTypeUniverse.getProperties(), BUILD_CONTEXT_METHOD_NAME ));
             tableColumn.setQualifiedName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, columnEntity.getProperties(), BUILD_CONTEXT_METHOD_NAME));
             return tableColumn;
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new RuntimeException("Unable to load column details", e);
+        } catch ( EntityNotKnownException | UserNotAuthorizedException  | EntityProxyOnlyException | InvalidParameterException | RepositoryErrorException e) {
+            InformationViewErrorCode code = InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION;
+            throw new ContextLoadException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(tableTypeToColumns.getEntityTwoProxy().getGUID(), e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
         }
     }
 
-    private ForeignKey getReferencedColumn(EntityDetail columnEntity) throws RepositoryErrorException, InvalidParameterException, UserNotAuthorizedException, TypeErrorException, FunctionNotSupportedException, EntityNotKnownException, PagingErrorException, PropertyErrorException, EntityProxyOnlyException, RelationshipNotKnownException {
+    private ForeignKey getReferencedColumn(EntityDetail columnEntity) {
         if(log.isDebugEnabled()) {
             log.debug("Load foreign keys for entity with guid {}", columnEntity.getGUID());
         }
@@ -231,7 +214,13 @@ public class ColumnContextBuilder {
         List<ForeignKey> foreignKeys = new ArrayList<>();
         for(Relationship relationship : columnForeignKeys){
             if (relationship.getEntityTwoProxy().getGUID().equals(columnEntity.getGUID())) {
-                EntityDetail foreignKeyEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, relationship.getEntityOneProxy().getGUID());
+                EntityDetail foreignKeyEntity;
+                try {
+                    foreignKeyEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, relationship.getEntityOneProxy().getGUID());
+                } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException | UserNotAuthorizedException e) {
+                    InformationViewErrorCode code = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
+                    throw new RetrieveEntityException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(Constants.GUID, relationship.getEntityOneProxy().getGUID(), e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+                }
                 ForeignKey foreignKey = new ForeignKey();
                 foreignKey.setColumnGuid(foreignKeyEntity.getGUID());
                 foreignKey.setForeignKeyName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, relationship.getProperties(), BUILD_CONTEXT_METHOD_NAME));
@@ -253,54 +242,48 @@ public class ColumnContextBuilder {
 
     }
 
-    private List<Relationship> getRelationships(String relationshipTypeName, String guid) throws InvalidParameterException,
-                                                                                        RepositoryErrorException,
-                                                                                        UserNotAuthorizedException,
-                                                                                        TypeErrorException,
-                                                                                        EntityNotKnownException,
-                                                                                        PropertyErrorException,
-                                                                                        PagingErrorException,
-                                                                                        FunctionNotSupportedException {
+    private List<Relationship> getRelationships(String relationshipTypeName, String guid) {
         String relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, relationshipTypeName).getGUID();
-        return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
-                                                                                    guid,
-                                                                                    relationshipTypeGuid,
-                                                                                    0,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    null,
-                                                                                    0);
+        try {
+            return enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
+                                                                                        guid,
+                                                                                        relationshipTypeGuid,
+                                                                                        0,
+                                                                                        null,
+                                                                                        null,
+                                                                                        null,
+                                                                                        null,
+                                                                                        0);
+        } catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException | PropertyErrorException | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException e) {
+            InformationViewErrorCode code = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
+            throw new RetrieveRelationshipException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(relationshipTypeName, guid, Constants.ASSET_SCHEMA_TYPE , e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+        }
     }
 
-    public List<EntityDetail> getTablesForColumn(String columnEntityGuid) throws InvalidParameterException,
-                                                                                 PropertyErrorException,
-                                                                                 EntityNotKnownException,
-                                                                                 FunctionNotSupportedException,
-                                                                                 PagingErrorException,
-                                                                                 EntityProxyOnlyException,
-                                                                                 UserNotAuthorizedException,
-                                                                                 TypeErrorException,
-                                                                                 RepositoryErrorException {
+    public List<EntityDetail> getTablesForColumn(String columnEntityGuid)  {
         if(log.isDebugEnabled()) {
             log.debug("Load table for column with guid {}", columnEntityGuid);
         }
         String relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
-        Relationship columnToTableType = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, columnEntityGuid, relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
-        EntityDetail tableTypeEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, columnToTableType.getEntityOneProxy().getGUID());
-        relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.SCHEMA_ATTRIBUTE_TYPE).getGUID();
+        Relationship columnToTableType;
+        try {
+            columnToTableType = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, columnEntityGuid, relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
+            EntityDetail tableTypeEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, columnToTableType.getEntityOneProxy().getGUID());
+            relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.SCHEMA_ATTRIBUTE_TYPE).getGUID();
 
-        List<Relationship> relationshipToTable = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, tableTypeEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0);
-        List<EntityDetail> tableEntities = relationshipToTable.stream().map(r -> {
-            try {
-                return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, r.getEntityOneProxy().getGUID());
-            } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | UserNotAuthorizedException | EntityProxyOnlyException e) {
-                log.error(e.getMessage(), e);
-                return null;//TODO  throw specific exception
-            }
-        }).collect(Collectors.toList());
-
-        return tableEntities;
+            List<Relationship> relationshipToTable = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, tableTypeEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0);
+            return relationshipToTable.stream().map(r -> {
+                try {
+                    return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, r.getEntityOneProxy().getGUID());
+                } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | UserNotAuthorizedException | EntityProxyOnlyException e) {
+                    InformationViewErrorCode code = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
+                    throw new RetrieveEntityException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(Constants.GUID, r.getGUID(), e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+                }
+            }).collect(Collectors.toList());
+        } catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException | PropertyErrorException | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException | EntityProxyOnlyException e) {
+            InformationViewErrorCode code = InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION;
+            throw new ContextLoadException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(columnEntityGuid, e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+        }
     }
 
     /**
@@ -309,52 +292,44 @@ public class ColumnContextBuilder {
      * @param startFrom - index to start from
      * @param pageSize - number of tables to return
      * @return
-     * @throws InvalidParameterException
-     * @throws PropertyErrorException
-     * @throws EntityNotKnownException
-     * @throws FunctionNotSupportedException
-     * @throws PagingErrorException
-     * @throws EntityProxyOnlyException
-     * @throws UserNotAuthorizedException
-     * @throws TypeErrorException
-     * @throws RepositoryErrorException
+
      */
-    public List<TableSource> getTablesForDatabase(String databaseEntityGuid, int startFrom, int pageSize) throws InvalidParameterException,
-                                                                                                                 PropertyErrorException,
-                                                                                                                 EntityNotKnownException,
-                                                                                                                 FunctionNotSupportedException,
-                                                                                                                 PagingErrorException,
-                                                                                                                 EntityProxyOnlyException,
-                                                                                                                 UserNotAuthorizedException,
-                                                                                                                 TypeErrorException,
-                                                                                                                 RepositoryErrorException {
+    public List<TableSource> getTablesForDatabase(String databaseEntityGuid, int startFrom, int pageSize)  {
         if(log.isDebugEnabled()) {
             log.debug("Load table for database with guid {}", databaseEntityGuid);
         }
         String relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.DATA_CONTENT_FOR_DATASET).getGUID();
-        Relationship databaseToDbSchema = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, databaseEntityGuid, relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
-        EntityDetail dbSchemaEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, databaseToDbSchema.getEntityTwoProxy().getGUID());
-
-        relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.ASSET_SCHEMA_TYPE).getGUID();
-        Relationship dbSchemaToSchemaType = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, dbSchemaEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
-        EntityDetail dbSchemaTypeEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, dbSchemaToSchemaType.getEntityTwoProxy().getGUID());
-        String schemaName = omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.ATTRIBUTE_NAME, dbSchemaEntity.getProperties(), BUILD_CONTEXT_METHOD_NAME);
-
-        relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
-        List<Relationship> dbSchemaTypeToTableRelationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
-                        dbSchemaTypeEntity.getGUID(), relationshipTypeGuid, startFrom, null, null, null, null, pageSize);
-
+        Relationship databaseToDbSchema;
         List<TableSource> tableSources = new ArrayList<>();
-        for(Relationship relationship : dbSchemaTypeToTableRelationships){
-            String tableGuid = relationship.getEntityTwoProxy().getGUID();
-            EntityDetail tableEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, tableGuid);
-            String tableName = omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.ATTRIBUTE_NAME, tableEntity.getProperties(), BUILD_CONTEXT_METHOD_NAME);
-            TableSource tableSource = new TableSource();
-            tableSource.setName(tableName);
-            tableSource.setGuid(tableGuid);
-            tableSource.setSchemaName(schemaName);
-            tableSources.add(tableSource);
+        try {
+            databaseToDbSchema = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, databaseEntityGuid, relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
+            EntityDetail dbSchemaEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, databaseToDbSchema.getEntityTwoProxy().getGUID());
+
+            relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.ASSET_SCHEMA_TYPE).getGUID();
+            Relationship dbSchemaToSchemaType = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, dbSchemaEntity.getGUID(), relationshipTypeGuid, 0, null, null, null, null, 0).get(0);
+            EntityDetail dbSchemaTypeEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, dbSchemaToSchemaType.getEntityTwoProxy().getGUID());
+            String schemaName = omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.ATTRIBUTE_NAME, dbSchemaEntity.getProperties(), BUILD_CONTEXT_METHOD_NAME);
+
+            relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.ATTRIBUTE_FOR_SCHEMA).getGUID();
+            List<Relationship> dbSchemaTypeToTableRelationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
+                    dbSchemaTypeEntity.getGUID(), relationshipTypeGuid, startFrom, null, null, null, null, pageSize);
+
+
+            for(Relationship relationship : dbSchemaTypeToTableRelationships){
+                String tableGuid = relationship.getEntityTwoProxy().getGUID();
+                EntityDetail tableEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, tableGuid);
+                String tableName = omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.ATTRIBUTE_NAME, tableEntity.getProperties(), BUILD_CONTEXT_METHOD_NAME);
+                TableSource tableSource = new TableSource();
+                tableSource.setName(tableName);
+                tableSource.setGuid(tableGuid);
+                tableSource.setSchemaName(schemaName);
+                tableSources.add(tableSource);
+            }
+        } catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException | PropertyErrorException | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException | EntityProxyOnlyException e) {
+            InformationViewErrorCode code = InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION;
+            throw new ContextLoadException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(databaseEntityGuid, e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
         }
+
 
         return tableSources;
     }
@@ -372,17 +347,18 @@ public class ColumnContextBuilder {
      *
      * @param columnEntity for which the type is retrieved
      * @return the column type entity linked to column entity
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     * @throws InvalidParameterException
-     * @throws EntityNotKnownException
      */
-    private EntityDetail getColumnType(EntityDetail columnEntity) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, EntityNotKnownException, RelationshipNotKnownException, FunctionNotSupportedException, TypeDefNotKnownException, EntityProxyOnlyException, PagingErrorException, PropertyErrorException, TypeErrorException {
+    private EntityDetail getColumnType(EntityDetail columnEntity)  {
         if(log.isDebugEnabled()) {
             log.debug("Load column type for entity with guid {}", columnEntity.getGUID());
         }
         List<Relationship> columnToColumnType = getSchemaTypeRelationships(columnEntity, Constants.SCHEMA_ATTRIBUTE_TYPE, Constants.START_FROM, Constants.PAGE_SIZE);
-        return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, columnToColumnType.get(0).getEntityOneProxy().getGUID());
+        try {
+            return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, columnToColumnType.get(0).getEntityOneProxy().getGUID());
+        } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException | UserNotAuthorizedException e) {
+            InformationViewErrorCode code = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
+            throw new RetrieveEntityException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(Constants.GUID, columnEntity.getGUID(), e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+        }
     }
 
     /**
@@ -390,12 +366,8 @@ public class ColumnContextBuilder {
      *
      * @param columnEntity for which business term is retrieved
      * @return the business term associated to the column
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     * @throws InvalidParameterException
-     * @throws EntityNotKnownException
      */
-    private BusinessTerm getBusinessTermAssociated(EntityDetail columnEntity) throws UserNotAuthorizedException, RepositoryErrorException, InvalidParameterException, EntityNotKnownException, TypeDefNotKnownException, PropertyErrorException, FunctionNotSupportedException, PagingErrorException, EntityProxyOnlyException, TypeErrorException {
+    private BusinessTerm getBusinessTermAssociated(EntityDetail columnEntity) {
         if(log.isDebugEnabled()) {
             log.debug("Load business term associated to column with guid {}", columnEntity.getGUID());
         }
@@ -404,7 +376,13 @@ public class ColumnContextBuilder {
         if (btRelationships != null && !btRelationships.isEmpty()) {
             Relationship btRelationship = btRelationships.get(0);//TODO should send list of business terms
             String businessTermGuid = btRelationship.getEntityTwoProxy().getGUID();
-            EntityDetail btDetail = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, businessTermGuid);
+            EntityDetail btDetail;
+            try {
+                btDetail = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, businessTermGuid);
+            } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException | UserNotAuthorizedException e) {
+                InformationViewErrorCode code = InformationViewErrorCode.GET_ENTITY_EXCEPTION;
+                throw new RetrieveEntityException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(Constants.GUID, columnEntity.getGUID(), e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+            }
             businessTerm = buildBusinessTerm(btDetail);
         }
         return businessTerm;
@@ -415,27 +393,20 @@ public class ColumnContextBuilder {
      *
      * @param dbSchemaTypeGuid is the relationship between table and database schema type
      * @return the list of contexts with DbSchemaType details populated
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     * @throws InvalidParameterException
-     * @throws EntityNotKnownException
      */
-    private List<TableContextEvent> getDatabaseSchemaTypeContext(String dbSchemaTypeGuid) throws
-                                                                                          RepositoryErrorException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          EntityNotKnownException,
-                                                                                          FunctionNotSupportedException,
-                                                                                          InvalidParameterException,
-                                                                                          PropertyErrorException,
-                                                                                          TypeErrorException,
-                                                                                          PagingErrorException,
-                                                                                          EntityProxyOnlyException {
+    private List<TableContextEvent> getDatabaseSchemaTypeContext(String dbSchemaTypeGuid) {
         if(log.isDebugEnabled()) {
             log.debug("Load db schema type with guid {}", dbSchemaTypeGuid);
         }
         List<TableContextEvent> tableContexts = new ArrayList<>();
         String assetSchemaTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.ASSET_SCHEMA_TYPE).getGUID();
-        List<Relationship> relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, dbSchemaTypeGuid, assetSchemaTypeGuid, 0, null, null, null, null, 0);
+        List<Relationship> relationships;
+        try {
+            relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, dbSchemaTypeGuid, assetSchemaTypeGuid, 0, null, null, null, null, 0);
+        } catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException | PropertyErrorException | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException e) {
+            InformationViewErrorCode code = InformationViewErrorCode.GET_RELATIONSHIP_EXCEPTION;
+            throw new RetrieveRelationshipException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(Constants.GUID, dbSchemaTypeGuid, Constants.ASSET_SCHEMA_TYPE , e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+        }
         if(log.isDebugEnabled()) {
             log.debug("Loaded AssetSchemaType relationships for {}", dbSchemaTypeGuid);
         }
@@ -452,34 +423,29 @@ public class ColumnContextBuilder {
      *
      * @param deployedDatabaseSchemaGuid guid of DeployedDatabaseSchema entity
      * @return the list of contexts with deployed database schema details populated
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     * @throws InvalidParameterException
-     * @throws EntityNotKnownException
+
      */
-    private List<TableContextEvent> getDeployedDatabaseSchemaContext(String deployedDatabaseSchemaGuid) throws
-                                                                                                        UserNotAuthorizedException,
-                                                                                                        EntityNotKnownException,
-                                                                                                        FunctionNotSupportedException,
-                                                                                                        InvalidParameterException,
-                                                                                                        RepositoryErrorException,
-                                                                                                        PropertyErrorException,
-                                                                                                        TypeErrorException,
-                                                                                                        PagingErrorException,
-                                                                                                        EntityProxyOnlyException {
+    private List<TableContextEvent> getDeployedDatabaseSchemaContext(String deployedDatabaseSchemaGuid)  {
         if(log.isDebugEnabled()) {
             log.debug("Load deployed db schema with guid {}", deployedDatabaseSchemaGuid);
         }
         List<TableContextEvent> allEvents = new ArrayList<>();
-        EntityDetail deployedDatabaseSchemaEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, deployedDatabaseSchemaGuid);
-        InstanceProperties deployedDatabaseSchemaEntityProperties = deployedDatabaseSchemaEntity.getProperties();
-        String schemaName = omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, deployedDatabaseSchemaEntityProperties, BUILD_CONTEXT_METHOD_NAME);
-        List<Relationship> dbRelationships = getRelationships(Constants.DATA_CONTENT_FOR_DATASET, deployedDatabaseSchemaGuid);
-        for (Relationship relationship : dbRelationships) {
-            List<TableContextEvent> events = getDatabaseContext(relationship.getEntityOneProxy().getGUID());
-            allEvents.addAll(events.stream().map(e -> {e.getTableSource().setSchemaName(schemaName); return e;}).collect(Collectors.toList()));
+        EntityDetail deployedDatabaseSchemaEntity;
+        try {
+            deployedDatabaseSchemaEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, deployedDatabaseSchemaGuid);
+            InstanceProperties deployedDatabaseSchemaEntityProperties = deployedDatabaseSchemaEntity.getProperties();
+            String schemaName = omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, deployedDatabaseSchemaEntityProperties, BUILD_CONTEXT_METHOD_NAME);
+            List<Relationship> dbRelationships = getRelationships(Constants.DATA_CONTENT_FOR_DATASET, deployedDatabaseSchemaGuid);
+            for (Relationship relationship : dbRelationships) {
+                List<TableContextEvent> events = getDatabaseContext(relationship.getEntityOneProxy().getGUID());
+                allEvents.addAll(events.stream().map(e -> {e.getTableSource().setSchemaName(schemaName); return e;}).collect(Collectors.toList()));
+            }
+            return allEvents;
+        } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException | UserNotAuthorizedException e) {
+            InformationViewErrorCode code = InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION;
+            throw new ContextLoadException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(deployedDatabaseSchemaGuid, e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
         }
-        return allEvents;
+
     }
 
     /**
@@ -487,35 +453,29 @@ public class ColumnContextBuilder {
      *
      * @param databaseGuid guid of database entity
      * @return the list of contexts with database details populated
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     * @throws InvalidParameterException
-     * @throws EntityNotKnownException
+
      */
-    public List<TableContextEvent> getDatabaseContext( String databaseGuid) throws RepositoryErrorException,
-                                                                                   UserNotAuthorizedException,
-                                                                                   TypeErrorException,
-                                                                                   EntityNotKnownException,
-                                                                                   FunctionNotSupportedException,
-                                                                                   InvalidParameterException,
-                                                                                   PropertyErrorException,
-                                                                                   EntityProxyOnlyException,
-                                                                                   PagingErrorException {
+    public List<TableContextEvent> getDatabaseContext( String databaseGuid)  {
         if(log.isDebugEnabled()) {
             log.debug("Load database details entity with guid {}", databaseGuid);
         }
         List<TableContextEvent> allEvents = new ArrayList<>();
-
         String relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.CONNECTION_TO_ASSET).getGUID();
-        InstanceProperties databaseEntityProperties = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, databaseGuid).getProperties();
-        List<Relationship> relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, databaseGuid, relationshipTypeGuid, 0, null, null, null, null, 0);
-        TableContextEvent event = getConnectionContext(relationships.get(0).getEntityOneProxy().getGUID());
-        String databaseName = omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, databaseEntityProperties, BUILD_CONTEXT_METHOD_NAME);
-        event.getTableSource().getDatabaseSource().setName(databaseName);
-        event.getTableSource().getDatabaseSource().setGuid(databaseGuid);
-        allEvents.add(event);
+        InstanceProperties databaseEntityProperties;
+        try {
+            databaseEntityProperties = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, databaseGuid).getProperties();
+            List<Relationship> relationships = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID, databaseGuid, relationshipTypeGuid, 0, null, null, null, null, 0);
+            TableContextEvent event = getConnectionContext(relationships.get(0).getEntityOneProxy().getGUID());
+            String databaseName = omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.NAME, databaseEntityProperties, BUILD_CONTEXT_METHOD_NAME);
+            event.getTableSource().getDatabaseSource().setName(databaseName);
+            event.getTableSource().getDatabaseSource().setGuid(databaseGuid);
+            allEvents.add(event);
 
-        return allEvents;
+            return allEvents;
+        } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException | UserNotAuthorizedException  | FunctionNotSupportedException | PropertyErrorException | TypeErrorException | PagingErrorException e) {
+            InformationViewErrorCode code = InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION;
+            throw new ContextLoadException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(databaseGuid, e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+        }
     }
 
 
@@ -524,33 +484,26 @@ public class ColumnContextBuilder {
      *
      * @param connectionEntityGuid guid of connection entity
      * @return the context with connection details populated
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     * @throws InvalidParameterException
-     * @throws EntityNotKnownException
      */
-    public TableContextEvent getConnectionContext( String connectionEntityGuid) throws EntityProxyOnlyException,
-                                                                                       TypeErrorException,
-                                                                                       PropertyErrorException,
-                                                                                       EntityNotKnownException,
-                                                                                       FunctionNotSupportedException,
-                                                                                       PagingErrorException,
-                                                                                       UserNotAuthorizedException,
-                                                                                       InvalidParameterException,
-                                                                                       RepositoryErrorException {
+    public TableContextEvent getConnectionContext( String connectionEntityGuid) {
         if(log.isDebugEnabled()) {
             log.debug("Load connection details for entity with guid {}", connectionEntityGuid);
         }
         String relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID, Constants.CONNECTION_TO_ENDPOINT).getGUID();
-        Relationship relationshipToEndpoint = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
-                                                                                                                    connectionEntityGuid,
-                                                                                                                    relationshipTypeGuid,
-                                                                                                                    0,
-                                                                                                                    null,
-                                                                                                                    null,
-                                                                                                                    null,
-                                                                                                                    null,
-                                                                                                                    0).get(0);
+        Relationship relationshipToEndpoint = null;
+        try {
+            relationshipToEndpoint = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
+                                                                                                                        connectionEntityGuid,
+                                                                                                                        relationshipTypeGuid,
+                                                                                                                        0,
+                                                                                                                        null,
+                                                                                                                        null,
+                                                                                                                        null,
+                                                                                                                        null,
+                                                                                                                        0).get(0);
+        } catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException | PropertyErrorException | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException e) {
+            e.printStackTrace();
+        }
         TableContextEvent event = getEndpointDetails(relationshipToEndpoint.getEntityOneProxy().getGUID());
         EntityDetail connectorTypeEntity = getConnectorTypeProviderName(connectionEntityGuid);
         event.getTableSource().getDatabaseSource().getEndpointSource().setConnectorProviderName(omrsRepositoryHelper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.CONNECTOR_PROVIDER_CLASSNAME, connectorTypeEntity.getProperties(), BUILD_CONTEXT_METHOD_NAME));
@@ -563,25 +516,26 @@ public class ColumnContextBuilder {
      *
      * @param connectionEntityGuid for which to retrieve the connectorType entity
      * @return the connectorType entity linked to connectionEntity
-     * @throws UserNotAuthorizedException
-     * @throws RepositoryErrorException
-     * @throws InvalidParameterException
-     * @throws EntityNotKnownException
      */
-    private EntityDetail getConnectorTypeProviderName(String connectionEntityGuid) throws RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException, TypeErrorException, FunctionNotSupportedException, PagingErrorException, PropertyErrorException {
+    private EntityDetail getConnectorTypeProviderName(String connectionEntityGuid) {
         String relationshipTypeGuid = omrsRepositoryHelper.getTypeDefByName(Constants.INFORMATION_VIEW_USER_ID,Constants.CONNECTION_CONNECTOR_TYPE).getGUID();
-        Relationship relationshipToConnectorType = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
-                                                                                                                    connectionEntityGuid,
-                                                                                                                    relationshipTypeGuid,
-                                                                                                                    0,
-                                                                                                                    null,
-                                                                                                                    null,
-                                                                                                                    null,
-                                                                                                                    null,
-                                                                                                                    0).get(0);
+        Relationship relationshipToConnectorType = null;
+        try {
+            relationshipToConnectorType = enterpriseConnector.getMetadataCollection().getRelationshipsForEntity(Constants.INFORMATION_VIEW_USER_ID,
+                                                                                                                        connectionEntityGuid,
+                                                                                                                        relationshipTypeGuid,
+                                                                                                                        0,
+                                                                                                                        null,
+                                                                                                                        null,
+                                                                                                                        null,
+                                                                                                                        null,
+                                                                                                                        0).get(0);
+         return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, relationshipToConnectorType.getEntityTwoProxy().getGUID());
 
-        return enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, relationshipToConnectorType.getEntityTwoProxy().getGUID());
-
+        } catch (InvalidParameterException | TypeErrorException | RepositoryErrorException | EntityNotKnownException | PropertyErrorException | PagingErrorException | FunctionNotSupportedException | UserNotAuthorizedException | EntityProxyOnlyException e) {
+            InformationViewErrorCode code = InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION;
+            throw new ContextLoadException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(connectionEntityGuid, e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+        }
     }
 
     /**
@@ -590,12 +544,18 @@ public class ColumnContextBuilder {
      * @param endpointGuid - guid for endpoint
      * @return the context with connection details populated
      */
-    private TableContextEvent getEndpointDetails(String endpointGuid) throws RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException {
+    private TableContextEvent getEndpointDetails(String endpointGuid)  {
         if(log.isDebugEnabled()) {
             log.debug("Load endpoint details for entity with guid {}", endpointGuid);
         }
         String methodName = "getEndpointDetails";
-        EntityDetail endpointEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, endpointGuid);
+        EntityDetail endpointEntity = null;
+        try {
+            endpointEntity = enterpriseConnector.getMetadataCollection().getEntityDetail(Constants.INFORMATION_VIEW_USER_ID, endpointGuid);
+        } catch (InvalidParameterException | RepositoryErrorException | EntityNotKnownException | EntityProxyOnlyException | UserNotAuthorizedException e) {
+            InformationViewErrorCode code = InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION;
+            throw new ContextLoadException(code.getHttpErrorCode(), ColumnContextBuilder.class.getName(), code.getFormattedErrorMessage(endpointGuid, e.getMessage()), code.getSystemAction(), code.getUserAction(), e);
+        }
         TableContextEvent tableContextEvent = new TableContextEvent();
         TableSource tableSource = new TableSource();
         tableContextEvent.setTableSource(tableSource);
@@ -614,25 +574,11 @@ public class ColumnContextBuilder {
      *
      * @param businessTermGuid guid of the business term for which we want to retrieve the linked columns
      * @return list of columns assigned to the business term
-     * @throws UserNotAuthorizedException
-     * @throws EntityNotKnownException
-     * @throws FunctionNotSupportedException
-     * @throws InvalidParameterException
-     * @throws RepositoryErrorException
-     * @throws PropertyErrorException
-     * @throws TypeErrorException
-     * @throws PagingErrorException
      */
-    public List<EntitySummary> getAssignedColumns(String businessTermGuid) throws UserNotAuthorizedException,
-                                                                                  EntityNotKnownException,
-                                                                                  FunctionNotSupportedException,
-                                                                                  InvalidParameterException,
-                                                                                  RepositoryErrorException,
-                                                                                  PropertyErrorException,
-                                                                                  TypeErrorException,
-                                                                                  PagingErrorException {
+    public List<EntitySummary> getAssignedColumns(String businessTermGuid) {
         List<EntitySummary> entities = new ArrayList<>();
-        List<Relationship> columnsAssigned = getRelationships(Constants.SEMANTIC_ASSIGNMENT, businessTermGuid);
+        List<Relationship> columnsAssigned = null;
+        columnsAssigned = getRelationships(Constants.SEMANTIC_ASSIGNMENT, businessTermGuid);
         if(columnsAssigned != null && !columnsAssigned.isEmpty()){
             return  columnsAssigned.stream().filter(r -> Constants.RELATIONAL_COLUMN.equals(r.getEntityOneProxy().getType().getTypeDefName())).map(e -> e.getEntityOneProxy()).collect(Collectors.toList());
         }

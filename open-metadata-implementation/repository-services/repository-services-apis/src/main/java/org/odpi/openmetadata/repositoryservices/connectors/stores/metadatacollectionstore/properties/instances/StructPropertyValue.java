@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Objects;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -25,7 +25,7 @@ public class StructPropertyValue extends InstancePropertyValue
 
 
     /**
-     * Default constructor set StructProperyValue to null.
+     * Default constructor set StructPropertyValue to null.
      */
     public StructPropertyValue()
     {
@@ -61,6 +61,78 @@ public class StructPropertyValue extends InstancePropertyValue
 
 
     /**
+     * Return the string version of the value - used for error logging.
+     *
+     * @return string value
+     */
+    public String valueAsString()
+    {
+        Map<String, Object> objectValue = new HashMap<>();
+
+        if (attributes != null)
+        {
+            Map<String, InstancePropertyValue> instancePropertyValueMap = attributes.getInstanceProperties();
+
+            if (instancePropertyValueMap != null)
+            {
+                Set<String> propertyValues = instancePropertyValueMap.keySet();
+
+                for (String propertyName : propertyValues)
+                {
+                    if (propertyName != null)
+                    {
+                        objectValue.put(propertyName, instancePropertyValueMap.get(propertyName).valueAsString());
+                    }
+                }
+            }
+        }
+
+        if (objectValue.isEmpty())
+        {
+            return null;
+        }
+
+        return objectValue.toString();
+    }
+
+
+    /**
+     * Return the object version of the value - used for comparisons.
+     *
+     * @return object value
+     */
+    public Object valueAsObject()
+    {
+        Map<String, Object> objectValue = new HashMap<>();
+
+        if (attributes != null)
+        {
+            Map<String, InstancePropertyValue> instancePropertyValueMap = attributes.getInstanceProperties();
+
+            if (instancePropertyValueMap != null)
+            {
+                Set<String> indicies = instancePropertyValueMap.keySet();
+
+                for (String propertyName : indicies)
+                {
+                    if (propertyName != null)
+                    {
+                        objectValue.put(propertyName, instancePropertyValueMap.get(propertyName).valueAsObject());
+                    }
+                }
+            }
+        }
+
+        if (objectValue.isEmpty())
+        {
+            return null;
+        }
+
+        return objectValue;
+    }
+
+
+    /**
      * Return the attributes that make up the fields of the struct.
      *
      * @return attributes InstanceProperties iterator
@@ -69,7 +141,7 @@ public class StructPropertyValue extends InstancePropertyValue
     {
         if (attributes == null)
         {
-            return attributes;
+            return null;
         }
         else
         {

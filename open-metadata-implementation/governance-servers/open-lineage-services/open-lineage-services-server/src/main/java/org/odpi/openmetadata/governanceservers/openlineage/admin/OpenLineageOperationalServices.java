@@ -9,8 +9,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedExceptio
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.governanceservers.openlineage.auditlog.OpenLineageAuditCode;
-import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphConstructor;
-import org.odpi.openmetadata.governanceservers.openlineage.listeners.ALOutTopicListener;
+import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
+import org.odpi.openmetadata.governanceservers.openlineage.listeners.inTopicListener;
 import org.odpi.openmetadata.governanceservers.openlineage.server.OpenLineageServicesInstance;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
@@ -37,8 +37,8 @@ public class OpenLineageOperationalServices {
     private int maxPageSize;
 
     private OMRSAuditLog auditLog;
-    private OpenMetadataTopicConnector assetLineageOutTopicConnector;
-    private GraphConstructor graphConstructor;
+    private OpenMetadataTopicConnector inTopicConnector;
+    private GraphBuilder graphBuilder;
     private OpenLineageServicesInstance instance;
 
 
@@ -82,20 +82,20 @@ public class OpenLineageOperationalServices {
 
 
             this.auditLog = auditLog;
-            this.graphConstructor = new GraphConstructor();
+            this.graphBuilder = new GraphBuilder();
 
-            Connection assetLineageOutTopicConnection = openLineageConfig.getAssetLineageOutTopicConnection();
-            String ALOutTopicName = getTopicName(assetLineageOutTopicConnection);
+            Connection inTopicConnection = openLineageConfig.getInTopicConnection();
+            String inTopicName = getTopicName(inTopicConnection);
 
-            assetLineageOutTopicConnector = initializeOpenLineageTopicConnector(assetLineageOutTopicConnection);
+            inTopicConnector = initializeOpenLineageTopicConnector(inTopicConnection);
 
-            if (assetLineageOutTopicConnector != null) {
-                OpenMetadataTopicListener ALOutTopicListener = new ALOutTopicListener(graphConstructor, auditLog);
-                this.assetLineageOutTopicConnector.registerListener(ALOutTopicListener);
-                startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, ALOutTopicName, assetLineageOutTopicConnector);
+            if (inTopicConnector != null) {
+                OpenMetadataTopicListener ALOutTopicListener = new inTopicListener(graphBuilder, auditLog);
+                this.inTopicConnector.registerListener(ALOutTopicListener);
+                startConnector(OpenLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, inTopicName, inTopicConnector);
             }
 
-            this.instance = new OpenLineageServicesInstance(graphConstructor, localServerName);
+            this.instance = new OpenLineageServicesInstance(graphBuilder, localServerName);
 
             auditCode = OpenLineageAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
@@ -175,7 +175,6 @@ public class OpenLineageOperationalServices {
             OMRSErrorCode errorCode = OMRSErrorCode.NULL_TOPIC_CONNECTOR;
             String errorMessage = errorCode.getErrorMessageId()
                     + errorCode.getFormattedErrorMessage("getTopicConnector");
-
             throw new OMRSConfigErrorException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
                     methodName,
@@ -228,7 +227,7 @@ public class OpenLineageOperationalServices {
     public boolean disconnect(boolean permanent) {
 
         try {
-            assetLineageOutTopicConnector.disconnect();
+            inTopicConnector.disconnect();
         } catch (ConnectorCheckedException e) {
             log.error("Error disconnecting Asset Lineage Out Topic Connector");
             return false;

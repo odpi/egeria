@@ -2,8 +2,8 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.connectedasset.client;
 
-import org.odpi.openmetadata.accessservices.connectedasset.ffdc.ConnectedAssetErrorCode;
 import org.odpi.openmetadata.accessservices.connectedasset.rest.SchemaAttributesResponse;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.properties.*;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.SchemaAttribute;
@@ -28,6 +28,7 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
     private int                    maxCacheSize;
     private RESTClient             restClient;
 
+    private RESTExceptionHandler   restExceptionHandler    = new RESTExceptionHandler();
 
     /**
      * Typical constructor creates an iterator with the supplied list of elements.
@@ -127,10 +128,6 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
         final String   methodName = "SchemaAttributes.getCachedList";
         final String   urlTemplate = "/open-metadata/access-services/connected-asset/users/{0}/schemas/{1}/attributes?elementStart={2}&maxElements={3}";
 
-        InvalidParameterHandler invalidParameterHandler = new InvalidParameterHandler();
-        RESTExceptionHandler    restExceptionHandler    = new RESTExceptionHandler();
-
-        invalidParameterHandler.validateOMASServerURL(omasServerURL, methodName);
 
         try
         {
@@ -142,7 +139,6 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
                                                                                             maximumSize);
 
             restExceptionHandler.detectAndThrowInvalidParameterException(methodName, restResult);
-            restExceptionHandler.detectAndThrowUnrecognizedGUIDException(methodName, restResult);
             restExceptionHandler.detectAndThrowUserNotAuthorizedException(methodName, restResult);
             restExceptionHandler.detectAndThrowPropertyServerException(methodName, restResult);
 
@@ -179,24 +175,17 @@ public class ConnectedAssetSchemaAttributes extends AssetSchemaAttributes
                     }
                 }
 
-                return resultList;
+                if (! resultList.isEmpty())
+                {
+                    return resultList;
+                }
             }
         }
-        catch (Throwable  error)
+        catch (Throwable error)
         {
-            ConnectedAssetErrorCode errorCode = ConnectedAssetErrorCode.EXCEPTION_RESPONSE_FROM_API;
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(error.getClass().getName(),
-                                                                                                     methodName,
-                                                                                                     omasServerURL,
-                                                                                                     error.getMessage());
-
-            throw new PropertyServerException(errorCode.getHTTPErrorCode(),
-                                              this.getClass().getName(),
-                                              methodName,
-                                              errorMessage,
-                                              errorCode.getSystemAction(),
-                                              errorCode.getUserAction(),
-                                              error);
+            restExceptionHandler.handleUnexpectedException(error, methodName, serverName, omasServerURL);
         }
+
+        return null;
     }
 }

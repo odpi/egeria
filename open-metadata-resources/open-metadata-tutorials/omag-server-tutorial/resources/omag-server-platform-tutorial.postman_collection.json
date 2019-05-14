@@ -16,7 +16,7 @@
 					"raw": ""
 				},
 				"url": {
-					"raw": "http://localhost:8080/open-metadata/admin-services/users/garygeeke/server-origin",
+					"raw": "http://localhost:8080/open-metadata/platform-services/users/garygeeke/server-platform-origin",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -24,10 +24,10 @@
 					"port": "8080",
 					"path": [
 						"open-metadata",
-						"admin-services",
+						"platform-services",
 						"users",
 						"garygeeke",
-						"server-origin"
+						"server-platform-origin"
 					]
 				},
 				"description": "Requests information about the author of the server platform."

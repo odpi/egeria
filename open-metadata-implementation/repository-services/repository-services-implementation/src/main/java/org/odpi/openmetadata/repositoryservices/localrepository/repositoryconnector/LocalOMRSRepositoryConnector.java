@@ -84,8 +84,6 @@ public class LocalOMRSRepositoryConnector extends OMRSRepositoryConnector implem
         if (repositoryContentManager != null)
         {
             repositoryContentManager.setupEventProcessor(this,
-                                                         realLocalConnector,
-                                                         saveExchangeRule,
                                                          outboundRepositoryEventManager);
         }
 
