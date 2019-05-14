@@ -11,10 +11,11 @@ import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AssetLineageEnterpriseOmrsEventListener implements OMRSTopicListener {
+public class EnterpriseTopicListener implements OMRSTopicListener {
 
 
-    private static final Logger log = LoggerFactory.getLogger(AssetLineageEnterpriseOmrsEventListener.class);
+    private static final Logger log = LoggerFactory.getLogger(EnterpriseTopicListener.class);
+    private static final String SOURCENAME ="EnterpriseOMRSTopic";
     private OMRSInstanceEventProcessor instanceEventProcessor;
     private OMRSAuditLog auditLog;
 
@@ -23,7 +24,7 @@ public class AssetLineageEnterpriseOmrsEventListener implements OMRSTopicListene
      * @param instanceEventProcessor
      * @param auditLog
      */
-    public AssetLineageEnterpriseOmrsEventListener(OMRSInstanceEventProcessor instanceEventProcessor, OMRSAuditLog auditLog) {
+    public EnterpriseTopicListener(OMRSInstanceEventProcessor instanceEventProcessor, OMRSAuditLog auditLog) {
 
         this.instanceEventProcessor = instanceEventProcessor;
         this.auditLog = auditLog;
@@ -55,18 +56,22 @@ public class AssetLineageEnterpriseOmrsEventListener implements OMRSTopicListene
             if ((instanceEventType != null) && (instanceEventOriginator != null)) {
                 switch (instanceEventType) {
                     case NEW_ENTITY_EVENT:
-                        instanceEventProcessor.processNewEntityEvent(
-                                "EnterpriseOMRSTopic",
-                                instanceEventOriginator.getMetadataCollectionId(),
-                                instanceEventOriginator.getServerName(),
-                                instanceEventOriginator.getServerType(),
-                                instanceEventOriginator.getOrganizationName(),
-                                instanceEvent.getEntity());
                         break;
 
                     case UPDATED_ENTITY_EVENT:
                         instanceEventProcessor.processUpdatedEntityEvent(
-                                "EnterpriseOMRSTopic",
+                                SOURCENAME,
+                                instanceEventOriginator.getMetadataCollectionId(),
+                                instanceEventOriginator.getServerName(),
+                                instanceEventOriginator.getServerType(),
+                                instanceEventOriginator.getOrganizationName(),
+                                instanceEvent.getOriginalEntity(),
+                                instanceEvent.getEntity());
+                        break;
+
+                    case DELETED_ENTITY_EVENT:
+                        instanceEventProcessor.processUpdatedEntityEvent(
+                                SOURCENAME,
                                 instanceEventOriginator.getMetadataCollectionId(),
                                 instanceEventOriginator.getServerName(),
                                 instanceEventOriginator.getServerType(),
@@ -76,14 +81,21 @@ public class AssetLineageEnterpriseOmrsEventListener implements OMRSTopicListene
                         break;
 
                     case NEW_RELATIONSHIP_EVENT:
-                        instanceEventProcessor.sendInstanceEvent("EnterpriseOMRSTopic", instanceEvent);
+                        instanceEventProcessor.processNewRelationshipEvent(SOURCENAME,
+                                instanceEventOriginator.getMetadataCollectionId(),
+                                instanceEventOriginator.getServerName(),
+                                instanceEventOriginator.getServerType(),
+                                instanceEventOriginator.getOrganizationName(),
+                                instanceEvent.getRelationship());
 
                         break;
 
                     case UPDATED_RELATIONSHIP_EVENT:
-
-                        instanceEventProcessor.sendInstanceEvent("EnterpriseOMRSTopic", instanceEvent);
+                        instanceEventProcessor.sendInstanceEvent(SOURCENAME, instanceEvent);
                         break;
+
+                     default:
+                         break;
                 }
             }
 

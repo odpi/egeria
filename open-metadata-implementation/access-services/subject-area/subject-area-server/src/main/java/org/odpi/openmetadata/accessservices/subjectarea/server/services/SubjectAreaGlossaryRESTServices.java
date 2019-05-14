@@ -175,7 +175,7 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
      *
      * @param serverName serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
-     * @param searchCriteria String expression matching Glossary property values.
+     * @param searchCriteria String expression matching Glossary property values. If not specified then all glossaries are returned.
      * @param asOfTime the glossaries returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -209,6 +209,12 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
         SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
         if (response ==null)
         {
+            /*
+             * If no search criteria is supplied then we return all glossaries, this should not be too many.
+             */
+            if (searchCriteria == null) {
+                searchCriteria =".*";
+            }
             response = OMRSAPIHelper.findEntitiesByType(oMRSAPIHelper, serverName, methodName, userId, "Glossary", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetails))
             {
@@ -216,8 +222,9 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
                 List<EntityDetail> entityDetails = entityDetailsResponse.getEntityDetails();
 
                 List<Glossary> glossaries = new ArrayList<>();
-                if (entityDetails != null)
-                {
+                if (entityDetails == null) {
+                    response = new GlossariesResponse(glossaries);
+                } else {
                     for (EntityDetail entityDetail : entityDetails)
                     {
                         // call the getGlossary so that the GlossarySummary and other parts are populated.
