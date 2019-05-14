@@ -213,9 +213,10 @@ public class SubjectAreaGlossaryRESTServices extends SubjectAreaRESTServicesInst
              * If no search criteria is supplied then we return all glossaries, this should not be too many.
              */
             if (searchCriteria == null) {
-                searchCriteria =".*";
+                response = oMRSAPIHelper.getEntitiesByType(oMRSAPIHelper,methodName,userId,"Glossary",asOfTime, offset, pageSize);
+            } else {
+                response = oMRSAPIHelper.findEntitiesByPropertyValue(oMRSAPIHelper, methodName, userId, "Glossary", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
             }
-            response = OMRSAPIHelper.findEntitiesByType(oMRSAPIHelper, serverName, methodName, userId, "Glossary", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetails))
             {
                 EntityDetailsResponse entityDetailsResponse = (EntityDetailsResponse) response;
