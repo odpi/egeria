@@ -83,7 +83,7 @@ logging:
 
 imageDefaults:
   registry: docker.io
-  namespace: planetf1
+  namespace: odpi
   tag: latest
   pullPolicy: IfNotPresent
 
