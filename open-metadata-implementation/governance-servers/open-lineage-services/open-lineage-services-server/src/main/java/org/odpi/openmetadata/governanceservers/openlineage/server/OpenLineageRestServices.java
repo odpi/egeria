@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.governanceservers.openlineage.server;
 
 
-import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphConstructor;
+import org.odpi.openmetadata.governanceservers.openlineage.eventprocessors.GraphBuilder;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.OpenLineageOMASAPIResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.VoidResponse;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.exceptions.PropertyServerException;
@@ -18,8 +18,8 @@ public class OpenLineageRestServices {
         VoidResponse response = new VoidResponse();
 
         try {
-            GraphConstructor graphConstructor  = instanceHandler.graphConstructor(serverName);
-            graphConstructor.exportGraph();
+            GraphBuilder graphBuilder = instanceHandler.graphConstructor(serverName);
+            graphBuilder.exportGraph();
         }
         catch (PropertyServerException e) {
             response.setExceptionClassName(e.getReportingClassName());

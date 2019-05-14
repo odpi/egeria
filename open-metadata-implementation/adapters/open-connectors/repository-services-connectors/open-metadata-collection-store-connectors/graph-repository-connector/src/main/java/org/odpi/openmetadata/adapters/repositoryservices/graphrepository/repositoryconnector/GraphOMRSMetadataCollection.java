@@ -985,12 +985,18 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
          * Validation complete - ok to create new instance
          */
         EntityDetail newEntity = repositoryHelper.getNewEntity(repositoryName,
-                null,
+                metadataCollectionId,
                 InstanceProvenanceType.LOCAL_COHORT,
                 userId,
                 typeDef.getName(),
                 initialProperties,
                 initialClassifications);
+
+        /*
+         * Ensure metadataCollectionName is also set
+         */
+        newEntity.setMetadataCollectionName(metadataCollectionName);
+
         /*
          * If an initial status is supplied then override the default value.
          */
@@ -1051,11 +1057,11 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
 
         EntityDetail entity;
         try {
-            entity = graphStore.getEntityFromStore(guid);
+            entity = graphStore.getEntityDetailFromStore(guid);
             repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
         }
-        catch (EntityNotKnownException e) {
-            log.error("{} entity with GUID {} does not exist in repository {}", methodName, guid, repositoryName);
+        catch (EntityProxyOnlyException | EntityNotKnownException e) {
+            log.error("{} entity with GUID {} does not exist in repository {} or is a proxy", methodName, guid, repositoryName);
             entity = null;
         }
 
@@ -1103,17 +1109,7 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
          * Perform operation
          */
 
-        EntitySummary entity;
-        try {
-            entity = graphStore.getEntityFromStore(guid);
-
-        }
-        catch (EntityNotKnownException e) {
-            log.info("{} entity not found wth GUID {} found - will check whether there is a proxy", methodName, guid);
-            entity = graphStore.getEntityProxyFromStore(guid);
-
-        }
-
+        EntitySummary entity = graphStore.getEntitySummaryFromStore(guid);
 
         repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
@@ -1128,6 +1124,7 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             InvalidParameterException,
             RepositoryErrorException,
             EntityNotKnownException,
+            EntityProxyOnlyException,
             UserNotAuthorizedException
     {
         final String methodName = "getEntityDetail";
@@ -1142,7 +1139,7 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
          * Perform operation
          */
 
-        EntityDetail entity = graphStore.getEntityFromStore(guid);
+        EntityDetail entity = graphStore.getEntityDetailFromStore(guid);
 
         repositoryValidator.validateEntityFromStore(repositoryName, guid, entity, methodName);
         repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
@@ -1278,16 +1275,30 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         EntityDetail entity;
         try {
 
-            entity = graphStore.getEntityFromStore(entityGUID);
+            entity = graphStore.getEntityDetailFromStore(entityGUID);
 
         }
-        catch (EntityNotKnownException e) {
-            log.error("{} entity wth GUID {} not found", methodName, entityGUID);
+        catch (EntityProxyOnlyException e) {
+            log.error("{} entity wth GUID {} only a proxy", methodName, entityGUID);
             OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_PROXY_ONLY;
 
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
                     this.getClass().getName(),
                     repositoryName);
+
+            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+
+        }
+        catch (EntityNotKnownException e) {
+            log.error("{} entity wth GUID {} not found ", methodName, entityGUID);
+            OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName, repositoryName);
 
             throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
@@ -1371,11 +1382,11 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         EntityDetail entity;
         try {
 
-            entity = graphStore.getEntityFromStore(entityGUID);
+            entity = graphStore.getEntityDetailFromStore(entityGUID);
 
         }
-        catch (EntityNotKnownException e) {
-            log.error("{} entity wth GUID {} not found", methodName, entityGUID);
+        catch (EntityProxyOnlyException | EntityNotKnownException e) {
+            log.error("{} entity wth GUID {} not found or only a proxy", methodName, entityGUID);
             OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_PROXY_ONLY;
 
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
@@ -1626,11 +1637,11 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         EntityDetail entity;
         try {
 
-            entity = graphStore.getEntityFromStore(deletedEntityGUID);
+            entity = graphStore.getEntityDetailFromStore(deletedEntityGUID);
 
         }
-        catch (EntityNotKnownException e) {
-            log.error("{} entity wth GUID {} not found", methodName, deletedEntityGUID);
+        catch (EntityProxyOnlyException | EntityNotKnownException e) {
+            log.error("{} entity wth GUID {} not found or only a proxy", methodName, deletedEntityGUID);
             OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_PROXY_ONLY;
 
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
@@ -2444,16 +2455,14 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         EntityDetail entity;
         try {
 
-            entity = graphStore.getEntityFromStore(entityGUID);
+            entity = graphStore.getEntityDetailFromStore(entityGUID);
 
         }
-        catch (EntityNotKnownException e) {
-            log.error("{} entity wth GUID {} not found", methodName, entityGUID);
+        catch (EntityProxyOnlyException | EntityNotKnownException e) {
+            log.error("{} entity wth GUID {} not found or only a proxy", methodName, entityGUID);
             OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID,
-                    methodName,
-                    repositoryName);
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName, repositoryName);
 
             throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
@@ -2551,11 +2560,11 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         EntityDetail entity;
         try {
 
-            entity = graphStore.getEntityFromStore(entityGUID);
+            entity = graphStore.getEntityDetailFromStore(entityGUID);
 
         }
-        catch (EntityNotKnownException e) {
-            log.error("{} entity wth GUID {} not found", methodName, entityGUID);
+        catch (EntityProxyOnlyException | EntityNotKnownException e) {
+            log.error("{} entity wth GUID {} not found or only a proxy", methodName, entityGUID);
             OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_PROXY_ONLY;
 
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
@@ -2754,17 +2763,17 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         EntityDetail entityDetail = null;
         try {
 
-            entityDetail = graphStore.getEntityFromStore(obsoleteEntityGUID);
+            entityDetail = graphStore.getEntityDetailFromStore(obsoleteEntityGUID);
             repositoryValidator.validateEntityFromStore(repositoryName, obsoleteEntityGUID, entityDetail, methodName);
 
-        } catch (EntityNotKnownException e) {
+        }
+        catch (EntityProxyOnlyException | EntityNotKnownException e) {
 
             log.error("{} entity wth GUID {} not found or only a proxy", methodName, obsoleteEntityGUID);
             OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
 
-            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName,
-                    this.getClass().getName(),
-                    repositoryName);
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(obsoleteEntityGUID, methodName, repositoryName);
+
 
             throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
@@ -2832,7 +2841,7 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
     // restoreEntity
     public EntityDetail restoreEntity(String    userId,
                                       String    deletedEntityGUID)
-            throws
+        throws
             InvalidParameterException,
             RepositoryErrorException,
             EntityNotKnownException,
@@ -2849,12 +2858,28 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Locate entity
          */
-        EntityDetail  entity  = graphStore.getEntityFromStore(deletedEntityGUID);
+        EntityDetail entity = null;
+        try {
+            entity = graphStore.getEntityDetailFromStore(deletedEntityGUID);
 
-        repositoryValidator.validateEntityFromStore(repositoryName, deletedEntityGUID, entity, methodName);
+            repositoryValidator.validateEntityFromStore(repositoryName, deletedEntityGUID, entity, methodName);
 
-        repositoryValidator.validateEntityIsDeleted(repositoryName, entity, methodName);
+            repositoryValidator.validateEntityIsDeleted(repositoryName, entity, methodName);
 
+        }
+        catch (EntityProxyOnlyException e) {
+            log.error("{} entity wth GUID {} only a proxy", methodName, deletedEntityGUID);
+            OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(deletedEntityGUID, methodName, repositoryName);
+
+            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
         /*
          * Validation is complete.  It is ok to restore the entity.
          */
@@ -2968,10 +2993,10 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
             EntityNotKnownException,
             UserNotAuthorizedException
     {
-        final String  methodName            = "reIdentifyEntity";
-        final String  guidParameterName     = "typeDefGUID";
-        final String  nameParameterName     = "typeDefName";
-        final String  instanceParameterName = "deletedRelationshipGUID";
+        final String methodName = "reIdentifyEntity";
+        final String guidParameterName = "typeDefGUID";
+        final String nameParameterName = "typeDefName";
+        final String instanceParameterName = "deletedRelationshipGUID";
 
         /*
          * Validate parameters
@@ -2992,14 +3017,30 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Locate entity
          */
-        EntityDetail  entity  = graphStore.getEntityFromStore(entityGUID);
+        EntityDetail entity = null;
+        try {
+            entity = graphStore.getEntityDetailFromStore(entityGUID);
 
-        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+            repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        }
+        catch (EntityProxyOnlyException e) {
+            log.error("{} entity wth GUID {} only a proxy", methodName, entityGUID);
+            OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName, repositoryName);
+
+            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
 
         /*
          * Validation complete - ok to make changes
          */
-        EntityDetail   updatedEntity = new EntityDetail(entity);
+        EntityDetail updatedEntity = new EntityDetail(entity);
 
         updatedEntity.setGUID(newEntityGUID);
 
@@ -3054,9 +3095,25 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Locate entity
          */
-        EntityDetail  entity  = graphStore.getEntityFromStore(entityGUID);
+        EntityDetail entity = null;
+        try {
+            entity = graphStore.getEntityDetailFromStore(entityGUID);
 
-        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+            repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+        }
+        catch (EntityProxyOnlyException e) {
+            log.error("{} entity wth GUID {} only a proxy", methodName, entityGUID);
+            OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName, repositoryName);
+
+            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
 
 
         /*
@@ -3107,28 +3164,44 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Locate entity
          */
-        EntityDetail  entity  = graphStore.getEntityFromStore(entityGUID);
+        EntityDetail entity = null;
+        try {
+            entity = graphStore.getEntityDetailFromStore(entityGUID);
 
-        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+            repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
 
-        repositoryValidator.validateInstanceType(repositoryName,
-                entity,
-                currentTypeDefParameterName,
-                currentTypeDefParameterName,
-                currentTypeDefSummary.getGUID(),
-                currentTypeDefSummary.getName());
+            repositoryValidator.validateInstanceType(repositoryName,
+                    entity,
+                    currentTypeDefParameterName,
+                    currentTypeDefParameterName,
+                    currentTypeDefSummary.getGUID(),
+                    currentTypeDefSummary.getName());
 
-        repositoryValidator.validatePropertiesForType(repositoryName,
-                newTypeDefParameterName,
-                newTypeDefSummary,
-                entity.getProperties(),
-                methodName);
+            repositoryValidator.validatePropertiesForType(repositoryName,
+                    newTypeDefParameterName,
+                    newTypeDefSummary,
+                    entity.getProperties(),
+                    methodName);
 
-        repositoryValidator.validateClassificationList(repositoryName,
-                entityParameterName,
-                entity.getClassifications(),
-                newTypeDefSummary.getName(),
-                methodName);
+            repositoryValidator.validateClassificationList(repositoryName,
+                    entityParameterName,
+                    entity.getClassifications(),
+                    newTypeDefSummary.getName(),
+                    methodName);
+        }
+        catch (EntityProxyOnlyException e) {
+            log.error("{} entity wth GUID {} only a proxy", methodName, entityGUID);
+            OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName, repositoryName);
+
+            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
 
         /*
          * Validation complete - ok to make changes
@@ -3351,10 +3424,27 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         /*
          * Locate entity
          */
-        EntityDetail entity = graphStore.getEntityFromStore(entityGUID);
+        EntityDetail entity = null;
+        try {
+            entity = graphStore.getEntityDetailFromStore(entityGUID);
 
-        repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
-        repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
+            repositoryValidator.validateEntityFromStore(repositoryName, entityGUID, entity, methodName);
+            repositoryValidator.validateEntityIsNotDeleted(repositoryName, entity, methodName);
+        }
+        catch (EntityProxyOnlyException e) {
+            log.error("{} entity wth GUID {} only a proxy", methodName, entityGUID);
+            OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName, repositoryName);
+
+            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
 
         Classification classification = repositoryHelper.getClassificationFromEntity(repositoryName,
                 entity,
@@ -3414,10 +3504,8 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 entity,
                 methodName);
 
-        // There may (or not) already be a proxy for this entity:
-        // - if no proxy, create the ref copy on the store
-        // - if there is a proxy, it is replaced by this reference copy. Note that the proxy flag should be cleared.
-        graphStore.createEntityInStore(entity);
+
+        graphStore.saveEntityReferenceCopyToStore(entity);
 
     }
 
@@ -3459,7 +3547,25 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 methodName);
         repositoryValidator.validateHomeMetadataGUID(repositoryName, homeParameterName, homeMetadataCollectionId, methodName);
 
-        EntityDetail  entity = graphStore.getEntityFromStore(entityGUID);
+        EntityDetail entity = null;
+        try {
+            entity = graphStore.getEntityDetailFromStore(entityGUID);
+        }
+        catch (EntityProxyOnlyException e) {
+            log.error("{} entity wth GUID {} only a proxy", methodName, entityGUID);
+            OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
+
+            String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName, repositoryName);
+
+            throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
+                    this.getClass().getName(),
+                    methodName,
+                    errorMessage,
+                    errorCode.getSystemAction(),
+                    errorCode.getUserAction());
+        }
+
+
         if (entity != null)
         {
             graphStore.removeEntityFromStore(entityGUID);
@@ -3467,9 +3573,7 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
         else
         {
             OMRSErrorCode errorCode = OMRSErrorCode.ENTITY_NOT_KNOWN;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID,
-                    methodName,
-                    repositoryName);
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(entityGUID, methodName, repositoryName);
 
             throw new EntityNotKnownException(errorCode.getHTTPErrorCode(),
                     this.getClass().getName(),
@@ -3544,9 +3648,8 @@ public class GraphOMRSMetadataCollection extends OMRSMetadataCollectionBase {
                 relationship,
                 methodName);
 
-        graphStore.createEntityProxyInStore(relationship.getEntityOneProxy());
-        graphStore.createEntityProxyInStore(relationship.getEntityTwoProxy());
-        graphStore.createRelationshipInStore(relationship);
+
+        graphStore.saveRelationshipReferenceCopyToStore(relationship);
     }
 
 

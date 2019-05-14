@@ -157,12 +157,14 @@ public class GraphOMRSClassificationMapper {
 
             // Some properties are mandatory. If any of these are null then throw exception
             boolean missingAttribute = false;
+            String  missingAttributeName = null;
 
             if (classification.getName() != null)
                 vertex.property(PROPERTY_KEY_CLASSIFICATION_CLASSIFICATION_NAME, classification.getName());
             else {
                 log.debug("{} missing attribute: guid", methodName);
                 missingAttribute = true;
+                missingAttributeName = "guid";
             }
 
             InstanceType instanceType = classification.getType();
@@ -171,6 +173,7 @@ public class GraphOMRSClassificationMapper {
             else {
                 log.debug("{} missing attribute: type name", methodName);
                 missingAttribute = true;
+                missingAttributeName = "type or typeName";
             }
 
             if (this.metadataCollectionId != null)
@@ -178,18 +181,11 @@ public class GraphOMRSClassificationMapper {
             else {
                 log.debug("{} missing attribute: metadataCollectionId", methodName);
                 missingAttribute = true;
+                missingAttributeName = "metadataCollectionId";
             }
-
-            if (this.repositoryName != null)
-                vertex.property(PROPERTY_KEY_CLASSIFICATION_METADATACOLLECTION_NAME, this.repositoryName);
-            else {
-                log.debug("{} missing attribute: metadataCollectionName", methodName);
-                missingAttribute = true;
-            }
-
 
             if (missingAttribute) {
-                log.error("{} entity is missing a core attribute{}", methodName);
+                log.error("{} entity is missing a core attribute {}", methodName, missingAttributeName);
                 GraphOMRSErrorCode errorCode = GraphOMRSErrorCode.CLASSIFICATION_PROPERTIES_ERROR;
                 String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(classification.getName(), methodName,
                         this.getClass().getName(),
@@ -206,6 +202,16 @@ public class GraphOMRSClassificationMapper {
             vertex.property(PROPERTY_KEY_CLASSIFICATION_VERSION, classification.getVersion());
 
             // Other properties can be removed if set to null
+
+            if (classification.getMetadataCollectionName() != null) {
+                vertex.property(PROPERTY_KEY_CLASSIFICATION_METADATACOLLECTION_NAME, classification.getMetadataCollectionName());
+            }
+            else {
+                VertexProperty vp = vertex.property(PROPERTY_KEY_CLASSIFICATION_METADATACOLLECTION_NAME);
+                if (vp != null)
+                    vp.remove();
+            }
+
 
             if (classification.getCreatedBy() != null) {
                 vertex.property(PROPERTY_KEY_CLASSIFICATION_CREATED_BY, classification.getCreatedBy());

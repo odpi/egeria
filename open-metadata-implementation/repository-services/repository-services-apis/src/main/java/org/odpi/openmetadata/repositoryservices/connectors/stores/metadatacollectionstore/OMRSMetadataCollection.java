@@ -38,7 +38,7 @@ import java.util.Date;
  *         The metadata repository stores instances of the typedefs as metadata instances.
  *         Principally these are entities (nodes in the graph) and relationships (links between nodes).
  *         Both the entities and relationships can have properties.
- *         The entity may also have structured properties called structs and classifications attached.
+ *         The entity may also have structured properties called classifications attached.
  *         This second group of methods supports a range of queries to retrieve these instances.
  *     </li>
  *

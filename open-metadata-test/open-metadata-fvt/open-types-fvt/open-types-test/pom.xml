@@ -29,39 +29,54 @@
             <version>${open-metadata.version}</version>
         </dependency>
     </dependencies>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>java</goal>
-                        </goals>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <mainClass>org.odpi.openmetadata.fvt.opentypes.generators.OmrsBeanGenerator</mainClass>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
+    <profiles>
 
-            <plugin>
-                <artifactId>maven-clean-plugin</artifactId>
-                <version>${maven-clean-plugin.version}</version>
-                <configuration>
-                    <filesets>
-                        <fileset>
-                            <directory>${basedir}/src/main/java/org/odpi/openmetadata/fvt/open-types</directory>
-                        </fileset>
-                        <fileset>
-                            <directory>${basedir}/src/test/java/org/odpi/openmetadata/fvt/open-types</directory>
-                        </fileset>
-                    </filesets>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
+        <profile>
+            <id>open-types-test</id>
+            <activation>
+                <!--
+                To skip this module from the build add -DskipOpenTypesTest
+                -->
+                <property>
+                    <name>!skipOpenTypesTest</name>
+                </property>
+            </activation>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>exec-maven-plugin</artifactId>
+                        <version>1.6.0</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>java</goal>
+                                </goals>
+                                <phase>generate-sources</phase>
+                                <configuration>
+                                    <mainClass>org.odpi.openmetadata.fvt.opentypes.generators.OmrsBeanGenerator</mainClass>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>${maven-clean-plugin.version}</version>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>${basedir}/src/main/java/org/odpi/openmetadata/fvt/open-types</directory>
+                                </fileset>
+                                <fileset>
+                                    <directory>${basedir}/src/test/java/org/odpi/openmetadata/fvt/open-types</directory>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
