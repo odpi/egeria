@@ -171,7 +171,8 @@ kafka:
 # in which case, also provide the hostname, IP address and port number for the domain tier
 ibmigc:
   enabled: false
-  cred: aXNhZG1pbjppc2FkbWlu
+  user: isadmin
+  password: isadmin
   internal:
     enabled: false
   external:
