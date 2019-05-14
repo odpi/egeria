@@ -70,24 +70,16 @@ public class DatabaseContextHandler {
 
     public List<TableSource> getTables(String databaseGuid, int startFrom, int pageSize) {
         EntityDetail database = getEntity(databaseGuid, Constants.DATA_STORE);
-        try {
-            return columnContextBuilder.getTablesForDatabase(database.getGUID(), startFrom, pageSize);
-        } catch (UserNotAuthorizedException | EntityProxyOnlyException | PagingErrorException | TypeErrorException | FunctionNotSupportedException | EntityNotKnownException | InvalidParameterException | PropertyErrorException | RepositoryErrorException e) {
-            throw new EntityNotFoundException(DatabaseContextHandler.class.getName(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getFormattedErrorMessage(database.getGUID(), e.getMessage()), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getSystemAction(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getUserAction(), e);
-        }
+        return columnContextBuilder.getTablesForDatabase(database.getGUID(), startFrom, pageSize);
     }
 
     public List<TableContextEvent> getTableContext(String tableGuid) {
         EntityDetail table = getEntity(tableGuid , Constants.RELATIONAL_TABLE);
-        try {
-            List<Relationship> relationships = columnContextBuilder.getSchemaTypeRelationships(table, Constants.SCHEMA_ATTRIBUTE_TYPE, Constants.START_FROM, Constants.PAGE_SIZE);
-            if (relationships != null && !relationships.isEmpty()) {
-                return columnContextBuilder.getTableContext(relationships.get(0).getEntityTwoProxy().getGUID(), Constants.START_FROM, Constants.PAGE_SIZE);
-            } else {
-                throw new ContextLoadException(InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getFormattedErrorMessage(tableGuid, "Schema attribute type relationship doesn't exist"), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getSystemAction(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getUserAction(), null);
-            }
-        } catch (PagingErrorException | TypeDefNotKnownException | TypeErrorException | EntityNotKnownException | UserNotAuthorizedException | RelationshipNotKnownException | PropertyErrorException | EntityProxyOnlyException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException e) {
-            throw new ContextLoadException(InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getFormattedErrorMessage(tableGuid, e.getMessage()), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getSystemAction(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getUserAction(), e);
+        List<Relationship> relationships = columnContextBuilder.getSchemaTypeRelationships(table, Constants.SCHEMA_ATTRIBUTE_TYPE, Constants.START_FROM, Constants.PAGE_SIZE);
+        if (relationships != null && !relationships.isEmpty()) {
+            return columnContextBuilder.getTableContext(relationships.get(0).getEntityTwoProxy().getGUID(), Constants.START_FROM, Constants.PAGE_SIZE);
+        } else {
+            throw new ContextLoadException(InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION.getFormattedErrorMessage(tableGuid, "Schema attribute type relationship doesn't exist"), InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION.getSystemAction(), InformationViewErrorCode.RETRIEVE_CONTEXT_EXCEPTION.getUserAction(), null);
         }
     }
 
@@ -96,12 +88,8 @@ public class DatabaseContextHandler {
         if (entities != null && !entities.isEmpty()) {
             for (EntityDetail entityDetail : entities) {
                 List<TableContextEvent> contexts;
-                try {
-                    contexts = columnContextBuilder.getDatabaseContext(entityDetail.getGUID());
-                    databaseSources.add(contexts.get(0).getTableSource().getDatabaseSource());
-                } catch (UserNotAuthorizedException | EntityProxyOnlyException | RepositoryErrorException | PagingErrorException | TypeErrorException | InvalidParameterException | EntityNotKnownException | PropertyErrorException | FunctionNotSupportedException e) {
-                    throw new ContextLoadException(InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getFormattedErrorMessage(entityDetail.getGUID(), e.getMessage()), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getSystemAction(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getUserAction(), e);
-                }
+                contexts = columnContextBuilder.getDatabaseContext(entityDetail.getGUID());
+                databaseSources.add(contexts.get(0).getTableSource().getDatabaseSource());
             }
         }
         return databaseSources;
@@ -111,19 +99,15 @@ public class DatabaseContextHandler {
         EntityDetail table = getEntity(tableGuid, Constants.RELATIONAL_TABLE);
         List<Relationship> relationships;
 
-        try {
-            relationships = columnContextBuilder.getSchemaTypeRelationships(table, Constants.SCHEMA_ATTRIBUTE_TYPE, Constants.START_FROM, Constants.PAGE_SIZE);
-            if (relationships != null && !relationships.isEmpty()) {
-                return columnContextBuilder.getTableColumns(relationships.get(0).getEntityTwoProxy().getGUID(), startFrom, pageSize);
-            }
-            else{
-                throw new IncorrectModelException(DatabaseContextHandler.class.getName(),
-                                                InformationViewErrorCode.INCORRECT_MODEL_EXCEPTION.getFormattedErrorMessage(tableGuid, "Table Schema Type is missing"),
-                                                InformationViewErrorCode.INCORRECT_MODEL_EXCEPTION.getSystemAction(),
-                                                InformationViewErrorCode.INCORRECT_MODEL_EXCEPTION.getUserAction(), null);
-            }
-        } catch (PagingErrorException | TypeDefNotKnownException | PropertyErrorException | UserNotAuthorizedException | RelationshipNotKnownException | EntityProxyOnlyException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | EntityNotKnownException e) {
-            throw new ContextLoadException(InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getHttpErrorCode(), DatabaseContextHandler.class.getName(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getFormattedErrorMessage(tableGuid, e.getMessage()), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getSystemAction(), InformationViewErrorCode.BUILD_CONTEXT_EXCEPTION.getUserAction(), e);
+        relationships = columnContextBuilder.getSchemaTypeRelationships(table, Constants.SCHEMA_ATTRIBUTE_TYPE, Constants.START_FROM, Constants.PAGE_SIZE);
+        if (relationships != null && !relationships.isEmpty()) {
+            return columnContextBuilder.getTableColumns(relationships.get(0).getEntityTwoProxy().getGUID(), startFrom, pageSize);
+        }
+        else{
+            throw new IncorrectModelException(DatabaseContextHandler.class.getName(),
+                    InformationViewErrorCode.INCORRECT_MODEL_EXCEPTION.getFormattedErrorMessage(tableGuid, "Table Schema Type is missing"),
+                    InformationViewErrorCode.INCORRECT_MODEL_EXCEPTION.getSystemAction(),
+                    InformationViewErrorCode.INCORRECT_MODEL_EXCEPTION.getUserAction(), null);
         }
     }
 

@@ -7,6 +7,7 @@ import org.odpi.openmetadata.accessservices.informationview.events.ReportRequest
 import org.odpi.openmetadata.accessservices.informationview.lookup.LookupHelper;
 import org.odpi.openmetadata.accessservices.informationview.utils.Constants;
 import org.odpi.openmetadata.accessservices.informationview.utils.EntityPropertiesBuilder;
+import org.odpi.openmetadata.accessservices.informationview.utils.QualifiedNameUtils;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
@@ -41,7 +42,7 @@ public class ReportCreator extends ReportBasicOperation {
                                                                                           ClassificationErrorException,
                                                                                           UserNotAuthorizedException,
                                                                                           RepositoryErrorException {
-        String qualifiedNameForComplexSchemaType = helper.getStringProperty(Constants.INFORMATION_VIEW_OMAS_NAME, Constants.QUALIFIED_NAME, reportEntity.getProperties(), "createReport") + Constants.TYPE_SUFFIX;
+        String qualifiedNameForComplexSchemaType =  QualifiedNameUtils.buildQualifiedName("", Constants.ASSET_SCHEMA_TYPE, payload.getId()  + Constants.TYPE_SUFFIX);
         InstanceProperties complexSchemaTypeProperties = new EntityPropertiesBuilder()
                 .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForComplexSchemaType)
                 .build();
