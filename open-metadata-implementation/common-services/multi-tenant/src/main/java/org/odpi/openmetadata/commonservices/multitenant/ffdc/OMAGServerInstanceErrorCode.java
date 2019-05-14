@@ -36,7 +36,7 @@ public enum OMAGServerInstanceErrorCode
             "Retry the request when the OMAG Server is available."),
 
     SERVICE_NOT_AVAILABLE(404, "OMAG-PLATFORM-404-002 ",
-            "The {0} service is not available on OMAG Server {1} to handle a request from user {1}",
+            "The {0} service is not available on OMAG Server {1} to handle a request from user {2}",
             "The system is unable to process the request.",
             "Verify that the correct server is being called on the correct platform and that the requested service is configured to run there.  " +
                                   "Once the correct environment is in place, retry the request."),

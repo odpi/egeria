@@ -196,11 +196,11 @@ public class ConnectionHandler
 
         if (connectionGUID != null)
         {
-            if (repositoryHandler.validateEntityGUID(userId,
-                                                     connectionGUID,
-                                                     ConnectionMapper.CONNECTION_TYPE_NAME,
-                                                     methodName,
-                                                     guidParameterName) != null)
+            if (repositoryHandler.isEntityKnown(userId,
+                                                connectionGUID,
+                                                ConnectionMapper.CONNECTION_TYPE_NAME,
+                                                methodName,
+                                                guidParameterName) != null)
             {
                 return connectionGUID;
             }

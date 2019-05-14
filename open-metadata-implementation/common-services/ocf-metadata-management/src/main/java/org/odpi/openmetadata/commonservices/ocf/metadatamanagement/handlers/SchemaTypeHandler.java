@@ -512,11 +512,11 @@ public class SchemaTypeHandler
 
         if (schemaAttributeGUID != null)
         {
-            if (repositoryHandler.validateEntityGUID(userId,
-                                                     schemaAttributeGUID,
-                                                     SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
-                                                     methodName,
-                                                     guidParameterName) != null)
+            if (repositoryHandler.isEntityKnown(userId,
+                                                schemaAttributeGUID,
+                                                SchemaElementMapper.SCHEMA_ATTRIBUTE_TYPE_NAME,
+                                                methodName,
+                                                guidParameterName) != null)
             {
                 return schemaAttributeGUID;
             }
@@ -753,11 +753,11 @@ public class SchemaTypeHandler
 
         if (schemaTypeGUID != null)
         {
-            if (repositoryHandler.validateEntityGUID(userId,
-                                                     schemaTypeGUID,
-                                                     SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME,
-                                                     methodName,
-                                                     guidParameterName) != null)
+            if (repositoryHandler.isEntityKnown(userId,
+                                                schemaTypeGUID,
+                                                SchemaElementMapper.SCHEMA_TYPE_TYPE_NAME,
+                                                methodName,
+                                                guidParameterName) != null)
             {
                 return schemaTypeGUID;
             }

@@ -62,6 +62,12 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
+            <artifactId>asset-owner-spring</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
             <artifactId>discovery-engine-spring</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>

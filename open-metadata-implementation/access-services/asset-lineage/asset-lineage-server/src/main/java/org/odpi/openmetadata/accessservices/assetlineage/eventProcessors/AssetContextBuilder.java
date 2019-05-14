@@ -1,14 +1,14 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetlineage.service;
+package org.odpi.openmetadata.accessservices.assetlineage.eventProcessors;
 
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.*;
 import org.odpi.openmetadata.accessservices.assetlineage.model.*;
-import org.odpi.openmetadata.accessservices.assetlineage.model.rest.responses.AssetResponse;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Constants;
 import org.odpi.openmetadata.accessservices.assetlineage.util.Converter;
 import org.odpi.openmetadata.accessservices.assetlineage.util.ExceptionHandler;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
@@ -22,20 +22,27 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static org.odpi.openmetadata.accessservices.assetlineage.eventProcessors.EventProcessor.instanceHandler;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
-public class AssetContext {
+public class AssetContextBuilder {
 
-    private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
+
     private OMRSMetadataCollection metadataCollectionForSearch;
     private Converter converter = new Converter();
     private TypeDefGallery allTypes = new TypeDefGallery();
     private String serverName;
-    private ExceptionHandler exceptionUtil = new ExceptionHandler();
+    private ExceptionHandler exceptionUtil;
+    private OMRSAuditLog auditLog;
 
+    public AssetContextBuilder(OMRSAuditLog auditLog){
+        this.auditLog = auditLog;
+        this.exceptionUtil = new ExceptionHandler(auditLog);
 
-    public AssetResponse buildAssetContext(String serverName, String userId, String assetId){
-        AssetResponse response = new AssetResponse();
+    }
+
+    public AssetContext getAssetContext(String serverName, String userId, String assetId){
+        AssetContext assetContext = new org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext();
 
         try {
             setMetadataRepositoryDetails(serverName, userId);
@@ -45,7 +52,7 @@ public class AssetContext {
             String typeDefName = entityDetail.getType().getTypeDefName();
             if(typeDefName.equals(GLOSSARY_TERM)){
                 Term term = getStructureForGlossaryTerm(userId, knownAssetConnection, entityDetail);
-                response.setAssets(Collections.singletonList(term));
+                assetContext.setAssets(Collections.singletonList(term));
             } else {
                 Term term = buildTerm(entityDetail);
                 AssetElement assetElement = new AssetElement();
@@ -57,16 +64,16 @@ public class AssetContext {
                 }
 
                 term.setElements(Collections.singletonList(assetElement));
-                response.setAssets(Collections.singletonList(term));
+                assetContext.setAssets(Collections.singletonList(term));
             }
 
         } catch (UserNotAuthorizedException | PagingErrorException | TypeErrorException | PropertyErrorException | RepositoryErrorException | InvalidParameterException | FunctionNotSupportedException | TypeDefNotKnownException | EntityNotKnownException | EntityProxyOnlyException e) {
-            exceptionUtil.captureOMRSCheckedExceptionBase(response, e);
+            exceptionUtil.captureOMRSCheckedExceptionBase(assetContext, e);
         } catch (PropertyServerException | AssetNotFoundException e) {
-            exceptionUtil.captureAssetLineageExeption(response, e);
+            exceptionUtil.captureAssetLineageExeption(assetContext, e);
         }
 
-        return response;
+        return assetContext;
     }
 
     private Optional<TypeDef> isAsset(String typeDefName){
@@ -100,11 +107,13 @@ public class AssetContext {
 
         return entityDetail;
     }
-    
+
     private Term getStructureForGlossaryTerm(String userId, Map<String, List<Connection>> knownAssetConnection, EntityDetail glossaryTerm) throws RepositoryErrorException, UserNotAuthorizedException, EntityNotKnownException, FunctionNotSupportedException, InvalidParameterException, PropertyErrorException, TypeErrorException, PagingErrorException, EntityProxyOnlyException, TypeDefNotKnownException {
         Term term = buildTerm(glossaryTerm);
 
         List<EntityDetail> schemas = getTheEndsRelationship(userId, glossaryTerm.getGUID(), SEMANTIC_ASSIGNMENT);
+//        List<EntityDetail> test = getTheEndsRelationship(userId, glossaryTerm.getGUID(), TERM_CATEGORIZATION);
+//        System.out.println(test);
         List<AssetElement> assets = new ArrayList<>(schemas.size());
 
         for (EntityDetail schema : schemas) {
