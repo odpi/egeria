@@ -2070,25 +2070,28 @@ public class OMRSRepositoryContentHelper implements OMRSRepositoryHelper
             Map<String, InstancePropertyValue> instancePropertyValues = instanceProperties.getInstanceProperties();
             Map<String, Object>                resultingMap      = new HashMap<>();
 
-            for (String mapPropertyName : instancePropertyValues.keySet())
+            if (instancePropertyValues != null)
             {
-                InstancePropertyValue actualPropertyValue = instanceProperties.getPropertyValue(mapPropertyName);
-
-                if (actualPropertyValue != null)
+                for (String mapPropertyName : instancePropertyValues.keySet())
                 {
-                    if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+                    InstancePropertyValue actualPropertyValue = instanceProperties.getPropertyValue(mapPropertyName);
+
+                    if (actualPropertyValue != null)
                     {
-                        PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) actualPropertyValue;
-                        resultingMap.put(mapPropertyName, primitivePropertyValue.getPrimitiveValue());
-                    }
-                    else if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.ENUM)
-                    {
-                        EnumPropertyValue  enumPropertyValue = (EnumPropertyValue) actualPropertyValue;
-                        resultingMap.put(mapPropertyName, enumPropertyValue.getSymbolicName());
-                    }
-                    else
-                    {
-                        resultingMap.put(mapPropertyName, actualPropertyValue);
+                        if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.PRIMITIVE)
+                        {
+                            PrimitivePropertyValue primitivePropertyValue = (PrimitivePropertyValue) actualPropertyValue;
+                            resultingMap.put(mapPropertyName, primitivePropertyValue.getPrimitiveValue());
+                        }
+                        else if (actualPropertyValue.getInstancePropertyCategory() == InstancePropertyCategory.ENUM)
+                        {
+                            EnumPropertyValue  enumPropertyValue = (EnumPropertyValue) actualPropertyValue;
+                            resultingMap.put(mapPropertyName, enumPropertyValue.getSymbolicName());
+                        }
+                        else
+                        {
+                            resultingMap.put(mapPropertyName, actualPropertyValue);
+                        }
                     }
                 }
             }

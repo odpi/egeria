@@ -632,7 +632,7 @@ public class ConnectionHandler
                                                                                     PropertyServerException,
                                                                                     UserNotAuthorizedException
     {
-        final String  methodName = "getAsset";
+        final String  methodName = "getConnection";
         final String  guidParameterName = "connectionGUID";
 
         EntityDetail connectionEntity = repositoryHandler.getEntityByGUID(userId,
@@ -711,6 +711,11 @@ public class ConnectionHandler
             }
         }
 
+
+        if (embeddedConnections.isEmpty())
+        {
+            embeddedConnections = null;
+        }
 
         ConnectionConverter connectionConverter = new ConnectionConverter(connectionEntity,
                                                                           endpoint,
