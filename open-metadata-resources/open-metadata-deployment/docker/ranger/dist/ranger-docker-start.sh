@@ -19,5 +19,5 @@ sed -i "s|^keyadmin_password=$|keyadmin_password=${RANGER_PASSWORD}|g" "install.
 # And then Ranger itself (as 'ranger')
 su -c "./ews/ranger-admin-services.sh start" ranger
 
-sleep 5
-tail -F ews/logs/ranger-admin*.log
+sleep 10
+tail -F ews/logs/*.log
