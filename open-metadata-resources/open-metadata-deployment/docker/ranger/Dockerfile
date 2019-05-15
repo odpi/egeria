@@ -84,6 +84,7 @@ RUN groupadd -r ranger -g 1000 && useradd --no-log-init -r -g ranger -u 1000 -d 
 RUN groupadd -r solr -g 1001 && useradd --no-log-init -r -g solr -u 1001 -d /opt/solr solr && mkdir -p /var/log/solr/ranger_audits && chown solr:solr /var/log/solr/ranger_audits
 
 COPY --from=build --chown=ranger:ranger /opt/ranger-admin/ /opt/ranger-admin/
+COPY --from=build --chown=ranger:ranger /root/ranger/git.* /opt/details/
 COPY --from=build --chown=solr:solr /opt/solr/ /opt/solr/
 
 # Once Solr is separated, we whould run this as the ranger user (non-root)
