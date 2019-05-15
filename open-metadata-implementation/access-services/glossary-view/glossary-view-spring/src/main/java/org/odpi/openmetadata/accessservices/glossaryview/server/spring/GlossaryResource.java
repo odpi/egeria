@@ -85,7 +85,7 @@ public class GlossaryResource {
      *
      * @return external glossary
      */
-    @RequestMapping(method = RequestMethod.GET, path = "/external-glossaries/{glossaryGUID}")
+    @RequestMapping(method = RequestMethod.GET, path = "/glossaries/{glossaryGUID}/external-glossaries")
     public GlossaryViewEntityDetailResponse getExternalGlossaries(@PathVariable("serverName") String serverName,
                                                                   @PathVariable("userId") String userId,
                                                                   @PathVariable("glossaryGUID") String glossaryGUID) {

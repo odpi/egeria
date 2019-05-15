@@ -19,7 +19,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GlossaryViewEntityDetail{
 
-    private String entityClass;
+    private String entityType;
     private String createdBy;
     private String updatedBy;
     private Date createTime;
@@ -36,7 +36,7 @@ public class GlossaryViewEntityDetail{
 
     public GlossaryViewEntityDetail(){}
 
-    public String getEntityClass(){ return entityClass; }
+    public String getEntityType(){ return entityType; }
 
     public String getCreatedBy() {
         return createdBy;
@@ -82,8 +82,8 @@ public class GlossaryViewEntityDetail{
         return classifications;
     }
 
-    public GlossaryViewEntityDetail setEntityClass(String entityClass) {
-        this.entityClass = entityClass;
+    public GlossaryViewEntityDetail setEntityType(String entityType) {
+        this.entityType = entityType;
         return this;
     }
     public GlossaryViewEntityDetail setCreatedBy(String createdBy) {

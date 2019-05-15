@@ -13,6 +13,7 @@ public class TermService extends GlossaryViewOMAS {
 
     private static TermService instance;
     private static final String TERM_CATEGORIZATION = "TermCategorization";
+    private static final String LIBRARY_TERM_REFERENCE = "LibraryTermReference";
 
     public static synchronized TermService getInstance(){
         if(instance == null){
@@ -47,6 +48,19 @@ public class TermService extends GlossaryViewOMAS {
      */
     public GlossaryViewEntityDetailResponse getTerms(String userId, String serverName, String categoryGUID){
         return getRelatedEntities(userId, serverName, categoryGUID, TERM_CATEGORIZATION);
+    }
+
+    /**
+     * Extract external glossary definitions for the given term
+     *
+     * @param userId calling user
+     * @param serverName instance to call
+     * @param termGUID glossary GUID
+     *
+     * @return EntityDetailResponse all external glossaries
+     */
+    public GlossaryViewEntityDetailResponse getExternalGlossaries(String userId, String serverName, String termGUID){
+        return getRelatedEntities(userId, serverName, termGUID, LIBRARY_TERM_REFERENCE);
     }
 
 }

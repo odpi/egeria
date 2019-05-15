@@ -66,7 +66,7 @@ public class GlossaryViewOMAS extends OMRSClient {
         Optional<InstanceProperties> optionalProperties = Optional.ofNullable(entityDetail.getProperties());
 
         GlossaryViewEntityDetail glossaryViewEntityDetail = new GlossaryViewEntityDetail()
-            .setEntityClass(entityDetail.getType().getTypeDefName())
+            .setEntityType(entityDetail.getType().getTypeDefName())
             .setCreatedBy(entityDetail.getCreatedBy())
             .setUpdatedBy(entityDetail.getUpdatedBy())
             .setCreateTime(entityDetail.getCreateTime())
