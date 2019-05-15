@@ -38,11 +38,11 @@ public enum InformationViewErrorCode {
             "The system is unable to process the request.",
             "Verify the topic event."),
     GET_RELATIONSHIP_EXCEPTION("OMAS-INFORMATION-VIEW-007",
-            "Relationship {0} could not be fetched. Error: {1}",
+            "Relationship {0} for entity {1} could not be fetched. Error: {2}",
             "The system is unable to process the request.",
             "Verify the topic event."),
-    BUILD_CONTEXT_EXCEPTION(500,"OMAS-INFORMATION-VIEW-008",
-            "Full context could not be built for entity {0}. Error: {1}",
+    RETRIEVE_CONTEXT_EXCEPTION(500,"OMAS-INFORMATION-VIEW-008",
+            "Context could not be retrieved for entity {0}. Error: {1}",
             "The system is unable to process the request.",
             "Verify the topic event."),
     PARSE_EVENT("OMAS-INFORMATION-VIEW-009",
@@ -100,7 +100,15 @@ public enum InformationViewErrorCode {
     REGISTRATION_EXCEPTION(500, "OMAS-INFORMATION-VIEW-022",
                             "Tool registration failed because of error: {0}",
                             "The system is unable to process the request.",
-                            "Check the error message for more details.");
+                            "Check the error message for more details."),
+    SOURCE_NOT_FOUND_EXCEPTION(500, "OMAS-INFORMATION-VIEW-023",
+                            "No entity was found based on source: {0}",
+                            "The system is unable to process the request.",
+                            "Check the error message for more details."),
+    ILLEGAL_UPDATE_EXCEPTION(403, "OMAS-INFORMATION-VIEW-024",
+                "Illegal update for entity: {0}",
+                "The system will not process the request.",
+                  "This entity is owned by another tool.");
 
     private static final Logger log = LoggerFactory.getLogger(InformationViewErrorCode.class);
     private String errorMessageId;
