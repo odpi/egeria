@@ -16,12 +16,20 @@ RUN git log > git.log && echo ${branch} > git.branch && git remote -v >> git.rem
 
 FROM openjdk:8-jre-alpine
 
-COPY --from=build /root/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/target/server-chassis-spring-*.jar /server-chassis-spring.jar
-COPY --from=build /root/egeria/open-metadata-implementation/user-interfaces/access-services-user-interface/target/access-services-user-interface-*.jar /access-services-user-interface.jar
-COPY --from=build /root/egeria/git.* /
-RUN apk --no-cache add bash && apk --no-cache update && apk --no-cache upgrade
-COPY dist/entrypoint.sh /entrypoint.sh
+RUN apk --no-cache add bash shadow && apk --no-cache update && apk --no-cache upgrade
+
+RUN groupadd -r egeria -g 1000 && useradd --no-log-init -r -g egeria -u 1000 -d /opt/egeria egeria
+
+COPY --from=build --chown=egeria:egeria /root/egeria/open-metadata-implementation/server-chassis/server-chassis-spring/target/server-chassis-spring-*.jar /opt/egeria/server-chassis-spring.jar
+COPY --from=build --chown=egeria:egeria /root/egeria/open-metadata-implementation/user-interfaces/access-services-user-interface/target/access-services-user-interface-*.jar /opt/egeria/access-services-user-interface.jar
+COPY --from=build --chown=egeria:egeria /root/egeria/git.* /opt/egeria/details/
+COPY --chown=egeria:egeria dist/entrypoint.sh /entrypoint.sh
+
 # Expose port 8080 (default) for client access, and allow for 5005 being used for remote java debug
 EXPOSE 8080 5005
-CMD java -jar /server-chassis-spring.jar
+
+WORKDIR /opt/egeria
+USER egeria:egeria
+
+CMD java -jar /opt/egeria/server-chassis-spring.jar
 ENTRYPOINT ["/entrypoint.sh"]
