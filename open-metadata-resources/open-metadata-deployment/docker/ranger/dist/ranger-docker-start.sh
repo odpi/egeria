@@ -9,13 +9,13 @@ sed -i "s|^rangerTagsync_password=$|rangerTagsync_password=${RANGER_PASSWORD}|g"
 sed -i "s|^rangerUsersync_password=$|rangerUsersync_password=${RANGER_PASSWORD}|g" "install.properties"
 sed -i "s|^keyadmin_password=$|keyadmin_password=${RANGER_PASSWORD}|g" "install.properties"
 
-./setup.sh
+su -c "./setup.sh" ranger
 
 # Now let's start solr
-/opt/solr/ranger_audit_server/scripts/start_solr.sh &
+/opt/solr/ranger_audit_server/scripts/start_solr.sh
 
-./ews/ranger-admin-services.sh start
+su -c "./ews/ranger-admin-services.sh start" ranger
 
 sleep 5
 
-tail -F ews/logs/ranger-admin*.log
+su -c "tail -F ews/logs/ranger-admin*.log" ranger
