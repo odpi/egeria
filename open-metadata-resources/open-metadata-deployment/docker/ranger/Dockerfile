@@ -68,6 +68,7 @@ WORKDIR /opt/ranger-admin/contrib/solr_for_audit_setup
 RUN sed -i 's|SOLR_INSTALL=false|SOLR_INSTALL=true|' install.properties
 RUN sed -i "s|SOLR_DOWNLOAD_URL=|SOLR_DOWNLOAD_URL=http://www.mirrorservice.org/sites/ftp.apache.org/lucene/solr/7.7.1/solr-7.7.1.tgz|" install.properties
 RUN ./setup.sh
+RUN sed -i 's|^SOLR_JAVA_HOME="/usr/lib/jvm/java-8-openjdk-amd64"$|SOLR_JAVA_HOME="/usr/lib/jvm/java-1.8-openjdk"|g' /opt/solr/ranger_audit_server/scripts/solr.in.sh
 
 WORKDIR /opt/ranger-admin
 RUN sed -i "s|^DB_FLAVOR=MYSQL|DB_FLAVOR=POSTGRES|g" install.properties
@@ -78,11 +79,12 @@ RUN sed -i "s|^audit_solr_urls=|audit_solr_urls=http://localhost:6083/solr/range
 FROM openjdk:8-jdk-alpine
 
 RUN apk --no-cache add python bash java-postgresql-jdbc bc shadow procps && apk --no-cache update && apk --no-cache upgrade
-COPY --from=build /opt/ranger-admin/ /opt/ranger-admin/
-COPY --from=build /opt/solr/ /opt/solr/
 
-RUN groupadd -r ranger -g 1000 && useradd --no-log-init -r -g ranger -u 1000 ranger
-RUN groupadd -r solr -g 1001 && useradd --no-log-init -r -g solr -u 1001 solr
+RUN groupadd -r ranger -g 1000 && useradd --no-log-init -r -g ranger -u 1000 -d /opt/ranger-admin ranger
+RUN groupadd -r solr -g 1001 && useradd --no-log-init -r -g solr -u 1001 -d /opt/solr solr && mkdir -p /var/log/solr/ranger_audits && chown solr:solr /var/log/solr/ranger_audits
+
+COPY --from=build --chown=ranger:ranger /opt/ranger-admin/ /opt/ranger-admin/
+COPY --from=build --chown=solr:solr /opt/solr/ /opt/solr/
 
 # Once Solr is separated, we whould run this as the ranger user (non-root)
 #USER ranger:ranger
