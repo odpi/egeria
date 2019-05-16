@@ -95,6 +95,54 @@ public class AssetConsumerRESTServices
 
 
     /**
+     * Returns the connection corresponding to the supplied asset GUID.
+     *
+     * @param serverName  name of the server instances for this request
+     * @param userId      userId of user making request.
+     * @param assetGUID   the unique id for the asset within the metadata repository.
+     *
+     * @return connection object or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UnrecognizedConnectionNameException there is no connection defined for this name or
+     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    public ConnectionResponse getConnectionForAsset(String   serverName,
+                                                    String   userId,
+                                                    String   assetGUID)
+    {
+        final String        methodName = "getConnectionForAsset";
+
+        log.debug("Calling method: " + methodName);
+
+        ConnectionResponse  response = new ConnectionResponse();
+
+        try
+        {
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName);
+
+            response.setConnection(handler.getConnectionForAsset(userId, assetGUID));
+        }
+        catch (InvalidParameterException  error)
+        {
+            restExceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (PropertyServerException  error)
+        {
+            restExceptionHandler.capturePropertyServerException(response, error);
+        }
+        catch (UserNotAuthorizedException error)
+        {
+            restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+
+        log.debug("Returning from method: " + methodName + " with response: " + response.toString());
+
+        return response;
+    }
+
+
+    /**
      * Return a list of assets with the requested name.
      *
      * @param serverName name of the server instances for this request
@@ -247,6 +295,7 @@ public class AssetConsumerRESTServices
 
         return response;
     }
+
 
 
     /*

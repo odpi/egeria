@@ -4,7 +4,7 @@ package org.odpi.openmetadata.adminservices.spring;
 
 import org.odpi.openmetadata.adminservices.OMAGConformanceSuiteConfigServices;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
-import org.odpi.openmetadata.adminservices.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**

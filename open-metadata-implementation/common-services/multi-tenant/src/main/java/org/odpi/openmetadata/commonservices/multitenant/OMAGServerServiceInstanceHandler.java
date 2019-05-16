@@ -40,6 +40,23 @@ public abstract class OMAGServerServiceInstanceHandler
 
 
     /**
+     * Return whether a particular server is registered with the platform.
+     * This is used by the admin services when there being no instance is not an error.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     *
+     * @return boolean
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    public boolean isServerKnown(String    userId,
+                                 String    serverName) throws UserNotAuthorizedException
+    {
+        return platformInstanceMap.isServerKnown(userId, serverName);
+    }
+
+
+    /**
      * Get the object containing the properties for this server.
      *
      * @param userId calling user
@@ -49,10 +66,10 @@ public abstract class OMAGServerServiceInstanceHandler
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      * @throws PropertyServerException the service name is not known - indicating a logic error
      */
-    protected OMAGServerServiceInstance getServerServiceInstance(String  userId,
-                                                                 String  serverName) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+    protected  OMAGServerServiceInstance getServerServiceInstance(String  userId,
+                                                                  String  serverName) throws InvalidParameterException,
+                                                                                             UserNotAuthorizedException,
+                                                                                             PropertyServerException
     {
         return platformInstanceMap.getServiceInstance(userId, serverName, serviceName);
     }
@@ -63,7 +80,7 @@ public abstract class OMAGServerServiceInstanceHandler
      *
      * @param serverName name of the server
      */
-    protected void removeServerServiceInstance(String  serverName)
+    public void removeServerServiceInstance(String  serverName)
     {
         platformInstanceMap.removeServiceInstanceFromPlatform(serverName, serviceName);
     }

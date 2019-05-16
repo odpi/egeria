@@ -35,7 +35,7 @@ $
 ```
 
 The **application.properties** file provides a means to add configuration
-to the [Spring Boot Server Chassis](../../../open-metadata-implementation/governance-servers/server-chassis)
+to the [Spring Boot Server Chassis](../../../open-metadata-implementation/server-chassis)
 that acts as a base for the OMAG Server Platform.
 
 ```text
