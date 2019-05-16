@@ -1,4 +1,6 @@
 #!/bin/sh
+# SPDX-License-Identifier: Apache-2.0
+# Copyright Contributors to the Egeria project.
 
 # Setup the configuration, as it seems only possible for Ranger to read it from 'install.properties'
 sed -i "s|^db_root_user=root|db_root_user=${PGUSER}|g" "install.properties"
