@@ -5,7 +5,7 @@ package org.odpi.openmetadata.adminservices.spring;
 import org.odpi.openmetadata.adminservices.OMAGServerAdminForAccessServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.EnterpriseAccessConfig;
-import org.odpi.openmetadata.adminservices.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -27,7 +27,6 @@ open-metadata-implementation/governance-servers @mandy-chessell
 open-metadata-implementation/access-services @mandy-chessell
 open-metadata-implementation/access-services/asset-consumer @mandy-chessell
 open-metadata-implementation/access-services/asset-owner @mandy-chessell
-open-metadata-implementation/access-services/connected-asset @mandy-chessell
 open-metadata-implementation/access-services/community-profile @mandy-chessell
 open-metadata-implementation/access-services/digital-architecture @mandy-chessell
 open-metadata-implementation/access-services/enterprise-architecture @mandy-chessell

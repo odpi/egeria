@@ -50,11 +50,6 @@
         </dependency>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>connected-asset-client</artifactId>
-            <version>${open-metadata.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.odpi.egeria</groupId>
             <artifactId>digital-architecture-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
