@@ -16,6 +16,17 @@ RUN git log > git.log && echo ${branch} > git.branch && git remote -v >> git.rem
 
 FROM openjdk:8-jre-alpine
 
+LABEL org.label-schema.schema-version = "1.0"
+LABEL org.label-schema.vendor = "ODPi"
+LABEL org.label-schema.name = "egeria"
+LABEL org.label-schema.description = "Common image for core ODPi Egeria runtimes: OMAG Server Platform (chassis) and UI."
+LABEL org.label-schema.url = "https://egeria.odpi.org/open-metadata-resources/open-metadata-deployment/"
+LABEL org.label-schema.vcs-url = "https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/docker/egeria"
+LABEL org.label-schema.docker.cmd = "docker run -d -p 8080:8080 odpi/egeria"
+LABEL org.label-schema.docker.cmd.devel = "docker run -d -p 8080:8080 -p 5005:5005 -e JAVA_DEBUG=true odpi/egeria"
+LABEL org.label-schema.docker.debug = "docker exec -it $CONTAINER /bin/sh"
+LABEL org.label-schema.docker.params = "JAVA_DEBUG=set to true to enable JVM debugging"
+
 RUN apk --no-cache add bash shadow && apk --no-cache update && apk --no-cache upgrade
 
 RUN groupadd -r egeria -g 1000 && useradd --no-log-init -r -g egeria -u 1000 -d /opt/egeria egeria
