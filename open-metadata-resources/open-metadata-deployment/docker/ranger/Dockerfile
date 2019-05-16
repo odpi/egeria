@@ -78,6 +78,16 @@ RUN sed -i "s|^audit_solr_urls=|audit_solr_urls=http://localhost:6083/solr/range
 # Create minimal runtime image
 FROM openjdk:8-jdk-alpine
 
+LABEL org.label-schema.schema-version = "1.0"
+LABEL org.label-schema.vendor = "ODPi"
+LABEL org.label-schema.name = "ranger-admin-egeriavdc"
+LABEL org.label-schema.description = "Apache Ranger administration server, for use as part of ODPi Egeria Virtual Data Connector demonstrations."
+LABEL org.label-schema.url = "https://egeria.odpi.org/open-metadata-resources/open-metadata-deployment/"
+LABEL org.label-schema.vcs-url = "https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/docker/ranger"
+LABEL org.label-schema.docker.cmd = "docker run -d -p 6080:6080 -p 6182:6182 -p 6083:6083 -p 6183:6183 -e PGUSER=postgres -e PGPASSWORD=passw0rd -e PGHOST=host -e RANGER_PASSWORD=admin999 odpi/ranger-admin-egeriavdc"
+LABEL org.label-schema.docker.debug = "docker exec -it $CONTAINER /bin/sh"
+LABEL org.label-schema.docker.params = "PGUSER=postgres user,PGPASSWORD=postgres password,PGHOST=postgres host,RANGER_PASSWORD=password to init for ranger admin user"
+
 RUN apk --no-cache add python bash java-postgresql-jdbc bc shadow procps && apk --no-cache update && apk --no-cache upgrade
 
 RUN groupadd -r ranger -g 1000 && useradd --no-log-init -r -g ranger -u 1000 -d /opt/ranger-admin ranger
