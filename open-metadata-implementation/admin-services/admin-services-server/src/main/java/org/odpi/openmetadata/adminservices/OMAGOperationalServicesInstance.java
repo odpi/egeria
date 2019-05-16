@@ -4,6 +4,8 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstance;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
 import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalServices;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
@@ -19,10 +21,11 @@ import java.util.List;
  * OMAGOperationalServicesInstance provides the references to the active services for an instance of an OMAG Server.
  */
 
-class OMAGOperationalServicesInstance
+class OMAGOperationalServicesInstance extends OMAGServerServiceInstance
 {
     private OMAGServerConfig                    operationalConfiguration            = null;
     private OMRSOperationalServices             operationalRepositoryServices       = null;
+    private OCFMetadataOperationalServices      operationalOCFMetadataServices      = null;
     private List<AccessServiceAdmin>            operationalAccessServiceAdminList   = new ArrayList<>();
     private ConformanceSuiteOperationalServices operationalConformanceSuiteServices = null;
     private DiscoveryServerOperationalServices  operationalDiscoveryServer          = null;
@@ -31,11 +34,17 @@ class OMAGOperationalServicesInstance
     private SecuritySyncOperationalServices     operationalSecuritySyncServices     = null;
     private VirtualizationOperationalServices   operationalVirtualizationServices   = null;
 
+
     /**
      * Default constructor
+     *
+     * @param serverName name of the new server
+     * @param serviceName name of the new service instance
      */
-    OMAGOperationalServicesInstance()
+    public OMAGOperationalServicesInstance(String   serverName,
+                                           String   serviceName)
     {
+        super(serverName, serviceName);
     }
 
 
@@ -79,6 +88,28 @@ class OMAGOperationalServicesInstance
     void setOperationalRepositoryServices(OMRSOperationalServices operationalRepositoryServices)
     {
         this.operationalRepositoryServices = operationalRepositoryServices;
+    }
+
+
+    /**
+     * Return the running instance of the Open Connector Framework (OCF) metadata services.
+     *
+     * @return OCFMetadataOperationalServices object
+     */
+    public OCFMetadataOperationalServices getOperationalOCFMetadataServices()
+    {
+        return operationalOCFMetadataServices;
+    }
+
+
+    /**
+     * Set up the running instance of the Open Connector Framework (OCF) metadata services.
+     *
+     * @param operationalOCFMetadataServices OCFMetadataOperationalServices object
+     */
+    public void setOperationalOCFMetadataServices(OCFMetadataOperationalServices operationalOCFMetadataServices)
+    {
+        this.operationalOCFMetadataServices = operationalOCFMetadataServices;
     }
 
 

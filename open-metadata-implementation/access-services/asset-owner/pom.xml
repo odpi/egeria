@@ -31,11 +31,11 @@
         <module>asset-owner-spring</module>
     </modules>
 
-    <!-- Asset Owner consumes Connected Asset -->
+    <!-- Asset Owner consumes OCF Connected Asset -->
     <dependencies>
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>connected-asset-client</artifactId>
+            <artifactId>ocf-metadata-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
     </dependencies>

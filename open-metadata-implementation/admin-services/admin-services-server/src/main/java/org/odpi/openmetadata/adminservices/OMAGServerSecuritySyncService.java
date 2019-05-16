@@ -7,14 +7,16 @@ import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConf
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySyncConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.rest.VoidResponse;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
 import java.util.*;
 
-public class OMAGServerSecuritySyncService {
-
+public class OMAGServerSecuritySyncService
+{
     private OMAGServerAdminStoreServices configStore = new OMAGServerAdminStoreServices();
-    private OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
+    private OMAGServerErrorHandler       errorHandler = new OMAGServerErrorHandler();
+    private OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
 
     private static final String defaultOutTopicName = "OutTopic";
     private static final String defaultInTopicName = "open-metadata.access-services.GovernanceEngine.outTopic";
@@ -22,11 +24,16 @@ public class OMAGServerSecuritySyncService {
     private static final String outputTopic = "open-metadata.security-sync.";
     private static final String defaultOutTopic = ".outTopic";
 
-    public VoidResponse setSecuritySyncConfig(String userId, String serverName, SecuritySyncConfig securitySyncConfig) {
+    public VoidResponse setSecuritySyncConfig(String userId, String serverName, SecuritySyncConfig securitySyncConfig)
+    {
         String methodName = "setSecuritySyncConfig";
         VoidResponse response = new VoidResponse();
 
-        try {
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
             List<String> configAuditTrail = serverConfig.getAuditTrail();
@@ -80,28 +87,45 @@ public class OMAGServerSecuritySyncService {
             serverConfig.setSecuritySyncConfig(securitySyncConfig);
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
-        } catch (OMAGInvalidParameterException e) {
-            errorHandler.captureInvalidParameterException(response, e);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
         return response;
     }
 
-    private String getOutputTopicName(String securityServerType) {
+    private String getOutputTopicName(String securityServerType)
+    {
         return outputTopic + securityServerType + defaultOutTopic;
     }
 
-    public VoidResponse enableSecuritySyncService(String userId, String serverName) {
+    public VoidResponse enableSecuritySyncService(String userId, String serverName)
+    {
 
         final String methodName = "enableSecuritySyncService";
         VoidResponse response = new VoidResponse();
 
-        try {
+        try
+        {
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
             SecuritySyncConfig securitySyncConfig = serverConfig.getSecuritySyncConfig();
             this.setSecuritySyncConfig(userId, serverName, securitySyncConfig);
-        } catch (OMAGInvalidParameterException e) {
-            errorHandler.captureInvalidParameterException(response, e);
         }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
+
         return response;
     }
 

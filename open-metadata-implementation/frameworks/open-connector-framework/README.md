@@ -56,7 +56,7 @@ The role of the OCF is to bridge from the Asset access requests to the GAF where
 Therefore the OCF provides a standard interface for accessing these properties.
 Different providers of these properties can plug into the OCF.
 Egeria provides an implementation of this interface to supply Asset properties stored in open metadata repositories
-in the [Connected Asset OMAS](../../access-services/connected-asset) service.
+in the [OCF Metadata Management modules](../../common-services/ocf-metadata-management) service.
 
 
 ## Terminology
@@ -105,7 +105,7 @@ These are read only facades around the beans.
 
 ## Related Modules
 
-The [Connected Asset OMAS](../../access-services/connected-asset) supports the retrieval
+The [OCF Metadata Managment](../../common-services/ocf-metadata-management) supports the retrieval
 of connection and connected asset properties from the open metadata
 repository/repositories.
 
