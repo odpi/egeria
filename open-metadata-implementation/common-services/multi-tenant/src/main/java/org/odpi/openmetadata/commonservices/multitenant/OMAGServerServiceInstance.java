@@ -22,6 +22,9 @@ public abstract class OMAGServerServiceInstance
 
     /**
      * Default constructor
+     *
+     * @param serverName name of the new server
+     * @param serviceName name of the new service instance
      */
     public OMAGServerServiceInstance(String   serverName,
                                      String   serviceName)

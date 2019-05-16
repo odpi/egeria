@@ -5,7 +5,8 @@ package org.odpi.openmetadata.adminservices.spring;
 import org.odpi.openmetadata.adminservices.OMAGServerOperationalServices;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
-import org.odpi.openmetadata.adminservices.rest.VoidResponse;
+import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -34,8 +35,8 @@ public class OperationalServicesResource
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
     @RequestMapping(method = RequestMethod.POST, path = "/instance")
-    public VoidResponse activateWithStoredConfig(@PathVariable String userId,
-                                                 @PathVariable String serverName)
+    public SuccessMessageResponse activateWithStoredConfig(@PathVariable String userId,
+                                                           @PathVariable String serverName)
     {
         return operationalServices.activateWithStoredConfig(userId, serverName);
     }
@@ -54,9 +55,9 @@ public class OperationalServicesResource
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
     @RequestMapping(method = RequestMethod.POST, path = "/instance/configuration")
-    public VoidResponse activateWithSuppliedConfig(@PathVariable String           userId,
-                                                   @PathVariable String           serverName,
-                                                   @RequestBody OMAGServerConfig configuration)
+    public SuccessMessageResponse activateWithSuppliedConfig(@PathVariable String           userId,
+                                                             @PathVariable String           serverName,
+                                                             @RequestBody  OMAGServerConfig configuration)
     {
         return operationalServices.activateWithSuppliedConfig(userId, serverName, configuration);
     }

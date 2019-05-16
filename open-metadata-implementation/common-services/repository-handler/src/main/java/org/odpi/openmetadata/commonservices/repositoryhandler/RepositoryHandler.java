@@ -8,6 +8,8 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.MatchCriteria;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,8 @@ public class RepositoryHandler
 {
     private RepositoryErrorHandler errorHandler;
     private OMRSMetadataCollection metadataCollection;
+
+    private static final Logger log = LoggerFactory.getLogger(RepositoryHandler.class);
 
 
     /**
@@ -90,7 +94,6 @@ public class RepositoryHandler
      * @param entityTypeName expected type of asset.
      * @param methodName  name of method called.
      * @return retrieved entity
-     * @throws InvalidParameterException entity not known
      * @throws PropertyServerException problem accessing property server
      * @throws UserNotAuthorizedException security access problem
      */
@@ -98,9 +101,8 @@ public class RepositoryHandler
                                         String                  guid,
                                         String                  entityTypeName,
                                         String                  methodName,
-                                        String                  guidParameterName) throws InvalidParameterException,
-                                                                                               UserNotAuthorizedException,
-                                                                                               PropertyServerException
+                                        String                  guidParameterName) throws UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
         try
         {
@@ -572,6 +574,14 @@ public class RepositoryHandler
                     results.add(metadataCollection.getEntityDetail(userId, requiredEnd.getGUID()));
                 }
             }
+            else
+            {
+                if (log.isDebugEnabled())
+                {
+                    log.debug("No relationships of type " + relationshipTypeName +
+                                      " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                }
+            }
         }
         catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
         {
@@ -944,6 +954,67 @@ public class RepositoryHandler
                                                      String                 relationshipTypeName,
                                                      String                 methodName) throws UserNotAuthorizedException,
                                                                                                PropertyServerException
+    {
+        try
+        {
+            List<Relationship> relationships = metadataCollection.getRelationshipsForEntity(userId,
+                                                                                            anchorEntityGUID,
+                                                                                            relationshipTypeGUID,
+                                                                                            0,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            null,
+                                                                                            100);
+
+            if ((relationships == null) || (relationships.isEmpty()))
+            {
+                if (log.isDebugEnabled())
+                {
+                    log.debug("No relationships of type " + relationshipTypeName +
+                              " found for " + anchorEntityTypeName + " entity " + anchorEntityGUID);
+                }
+            }
+
+            return relationships;
+        }
+        catch (org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException  error)
+        {
+            errorHandler.handleUnauthorizedUser(userId, methodName);
+        }
+        catch (Throwable   error)
+        {
+            errorHandler.handleRepositoryError(error, methodName);
+        }
+
+        return null;
+    }
+
+
+
+    /**
+     * Return the list of relationships of the requested type connected to the anchor entity.
+     * No relationships found results in an exception.
+     *
+     * @param userId  user making the request
+     * @param anchorEntityGUID  starting entity's GUID
+     * @param anchorEntityTypeName  starting entity's type name
+     * @param relationshipTypeGUID  identifier for the relationship to follow
+     * @param relationshipTypeName  type name for the relationship to follow
+     * @param methodName  name of calling method
+     *
+     * @return retrieved relationships or null
+     *
+     * @throws UserNotAuthorizedException security access problem
+     * @throws PropertyServerException problem accessing the property server
+     */
+    public List<Relationship> getRequiredRelationshipsByType(String                 userId,
+                                                             String                 anchorEntityGUID,
+                                                             String                 anchorEntityTypeName,
+                                                             String                 relationshipTypeGUID,
+                                                             String                 relationshipTypeName,
+                                                             String                 methodName) throws UserNotAuthorizedException,
+                                                                                                       PropertyServerException
     {
         try
         {

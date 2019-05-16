@@ -208,7 +208,7 @@ implementing the OMAS one scenario at a time.
   resource classes that support the REST API.
   
   Add the ***omas-name*/*omas-name*-server-spring module to the `pom.xml` file for the 
-  [OMAG Server Chassis](../../../governance-servers/server-chassis/server-chassis-spring).
+  [OMAG Server Chassis](../../../server-chassis/server-chassis-spring).
 
 * Design and implement the event handling.
 
