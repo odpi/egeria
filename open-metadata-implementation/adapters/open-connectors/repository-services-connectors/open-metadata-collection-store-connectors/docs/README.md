@@ -87,9 +87,9 @@ Within this `adapter` module, in a package like `...repositoryconnector`, implem
 	1. then implement be the `getEntityDetail()` method that retrieves an entity by its GUID.
 
 Once these minimal starting points are implemented, you should be able to configure the
-[OMAG server chassis](../../../../../governance-servers/server-chassis/server-chassis-spring/README.md)
+[OMAG server chassis](../../../../../server-chassis/server-chassis-spring/README.md)
 as a proxy to your repository connector by following the instructions in
-[using the admin services](../../../../../governance-servers/admin-services/Using-the-Admin-Services.md).
+[using the admin services](../../../../../admin-services/Using-the-Admin-Services.md).
 **Important**: this will *not* necessarily be the
 [end-state pattern](../../../../../../open-metadata-publication/website/open-metadata-integration-patterns/README.md)
 you intend to use for your repository connector, but can provide a quick way to start testing its functionality.

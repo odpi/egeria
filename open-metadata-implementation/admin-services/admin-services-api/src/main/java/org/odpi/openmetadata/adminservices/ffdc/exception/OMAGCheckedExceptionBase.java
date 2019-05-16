@@ -2,26 +2,16 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.adminservices.ffdc.exception;
 
+import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+
 /**
  * OMAGCheckedExceptionBase provides a checked exception for reporting errors found when using the OMAG Server.
  * Typically these errors are either configuration or operational errors that can be fixed by an administrator
  * or power user.  However, there may be the odd bug that surfaces here. The OMAGAdminErrorCode can be used with
  * this exception to populate it with standard messages.
  */
-public class OMAGCheckedExceptionBase extends Exception
+public class OMAGCheckedExceptionBase extends OCFCheckedExceptionBase
 {
-    /*
-     * These default values are only seen if this exception is initialized using one of its superclass constructors.
-     */
-    private int       reportedHTTPCode;
-    private String    reportingClassName;
-    private String    reportingActionDescription;
-    private String    reportedErrorMessage;
-    private String    reportedSystemAction;
-    private String    reportedUserAction;
-    private Throwable reportedCaughtException = null;
-
-
     /**
      * This is the typical constructor used for creating a OMRSCheckedExceptionBase.
      *
@@ -34,13 +24,7 @@ public class OMAGCheckedExceptionBase extends Exception
      */
     public OMAGCheckedExceptionBase(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction)
     {
-        super(errorMessage);
-        this.reportedHTTPCode = httpCode;
-        this.reportingClassName = className;
-        this.reportingActionDescription = actionDescription;
-        this.reportedErrorMessage = errorMessage;
-        this.reportedSystemAction = systemAction;
-        this.reportedUserAction = userAction;
+        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction);
     }
 
 
@@ -57,88 +41,6 @@ public class OMAGCheckedExceptionBase extends Exception
      */
     public OMAGCheckedExceptionBase(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
     {
-        super(errorMessage, caughtError);
-        this.reportedHTTPCode = httpCode;
-        this.reportingClassName = className;
-        this.reportingActionDescription = actionDescription;
-        this.reportedErrorMessage = errorMessage;
-        this.reportedSystemAction = systemAction;
-        this.reportedUserAction = userAction;
-        this.reportedCaughtException = caughtError;
+        super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
     }
-
-
-    /**
-     * Return the HTTP response code to use with this exception.
-     *
-     * @return reportedHTTPCode
-     */
-    public int getReportedHTTPCode()
-    {
-        return reportedHTTPCode;
-    }
-
-    /**
-     * The class that created this exception.
-     *
-     * @return reportingClassName
-     */
-    public String getReportingClassName()
-    {
-        return reportingClassName;
-    }
-
-
-    /**
-     * The type of request that the class was performing when the condition occurred that resulted in this
-     * exception.
-     *
-     * @return reportingActionDescription
-     */
-    public String getReportingActionDescription()
-    {
-        return reportingActionDescription;
-    }
-
-
-    /**
-     * A formatted short description of the cause of the condition that resulted in this exception.
-     *
-     * @return reportedErrorMessage
-     */
-    public String getErrorMessage()
-    {
-        return reportedErrorMessage;
-    }
-
-
-    /**
-     * A description of the action that the system took as a result of the error condition.
-     *
-     * @return reportedSystemAction
-     */
-    public String getReportedSystemAction()
-    {
-        return reportedSystemAction;
-    }
-
-
-    /**
-     * A description of the action necessary to correct the error.
-     *
-     * @return reportedUserAction
-     */
-    public String getReportedUserAction()
-    {
-        return reportedUserAction;
-    }
-
-
-    /**
-     * An exception that was caught and wrapped by this exception.  If a null is returned, then this exception is
-     * newly created and not the result of a previous exception.
-     *
-     * @return reportedCaughtException
-     */
-    public Throwable getReportedCaughtException() { return reportedCaughtException; }
 }

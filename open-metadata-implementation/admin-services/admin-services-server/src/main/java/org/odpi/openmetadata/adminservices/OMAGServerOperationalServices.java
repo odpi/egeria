@@ -14,15 +14,20 @@ import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySync
 import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.VirtualizationConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServersDescription;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
-import org.odpi.openmetadata.adminservices.rest.VoidResponse;
+import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
 import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalServices;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.governanceservers.openlineage.admin.OpenLineageOperationalServices;
 import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.StewardshipOperationalServices;
@@ -40,10 +45,11 @@ import java.util.List;
  */
 public class OMAGServerOperationalServices
 {
-    private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
-    private OMAGServerInstanceMap          instanceMap = new OMAGServerInstanceMap();
-    private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
+    private OMAGServerOperationalInstanceHandler instanceHandler = new OMAGServerOperationalInstanceHandler(CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
 
+    private OMAGServerAdminStoreServices   configStore  = new OMAGServerAdminStoreServices();
+    private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
+    private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
     /*
      * =============================================================
      * Initialization and shutdown
@@ -59,27 +65,31 @@ public class OMAGServerOperationalServices
      * OMAGInvalidParameterException the server name is invalid or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
-    public VoidResponse activateWithStoredConfig(String userId,
-                                                 String serverName)
+    public SuccessMessageResponse activateWithStoredConfig(String userId,
+                                                           String serverName)
     {
         final String methodName = "activateWithStoredConfig";
 
-        VoidResponse response = new VoidResponse();
+        SuccessMessageResponse response = new SuccessMessageResponse();
 
         try
         {
-            validateServerName(serverName, methodName);
+            errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
             response = activateWithSuppliedConfig(userId, serverName, configStore.getServerConfig(serverName, methodName));
         }
         catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -98,24 +108,27 @@ public class OMAGServerOperationalServices
      * OMAGInvalidParameterException the server name is invalid or
      * OMAGConfigurationErrorException there is a problem using the supplied configuration.
      */
-    public VoidResponse activateWithSuppliedConfig(String           userId,
-                                                   String           serverName,
-                                                   OMAGServerConfig configuration)
+    public SuccessMessageResponse activateWithSuppliedConfig(String           userId,
+                                                             String           serverName,
+                                                             OMAGServerConfig configuration)
     {
         final String methodName                = "activateWithSuppliedConfig";
-        final String REPOSITORY_SERVICES       = "Repository Services";
-
 
         List<String> activatedServiceList = new ArrayList<>();
 
-        VoidResponse response = new VoidResponse();
+        SuccessMessageResponse response = new SuccessMessageResponse();
 
         try
         {
-            OMAGOperationalServicesInstance instance = validateServerName(serverName, methodName);
-
+            /*
+             * Check that a serverName and userId is supplied
+             */
+            errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
+            /*
+             * Validate there is a configuration document supplied.
+             */
             if (configuration == null)
             {
                 OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_SERVER_CONFIG;
@@ -130,22 +143,7 @@ public class OMAGServerOperationalServices
             }
 
             /*
-             * Validate the server name from the configuration document matches the server name passed in the request
-             * and is all is well, save the configuration document to the config store and the server instance.
-             */
-            validateConfigServerName(serverName, configuration.getLocalServerName(), methodName);
-            configStore.saveServerConfig(serverName, methodName, configuration);
-            instance.setOperationalConfiguration(configuration);
-
-            /*
-             * Shut down any running instances for this server
-             */
-            deactivateRunningServiceInstances(instance, false);
-
-            /*
-             * Ready to start services
-             *
-             * First verify that there are services configured.
+             * Next verify that there are services configured.
              */
             RepositoryServicesConfig  repositoryServicesConfig  = configuration.getRepositoryServicesConfig();
             List<AccessServiceConfig> accessServiceConfigList   = configuration.getAccessServicesConfig();
@@ -157,13 +155,13 @@ public class OMAGServerOperationalServices
             VirtualizationConfig      virtualizationConfig      = configuration.getVirtualizationConfig();
 
             if ((repositoryServicesConfig == null) &&
-                (accessServiceConfigList == null) &&
-                (conformanceSuiteConfig == null) &&
-                (discoveryServerConfig == null) &&
-                (openLineageConfig == null) &&
-                (securitySyncConfig == null) &&
-                (stewardshipServicesConfig == null) &&
-                (virtualizationConfig == null))
+                    (accessServiceConfigList == null) &&
+                    (conformanceSuiteConfig == null) &&
+                    (discoveryServerConfig == null) &&
+                    (openLineageConfig == null) &&
+                    (securitySyncConfig == null) &&
+                    (stewardshipServicesConfig == null) &&
+                    (virtualizationConfig == null))
             {
                 OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.EMPTY_CONFIGURATION;
                 String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName);
@@ -177,8 +175,7 @@ public class OMAGServerOperationalServices
             }
 
             /*
-             * Initialize the open metadata repository services first since other services depend on it.
-             * (Even the governance daemons need the audit log.)
+             * All servers need the repository services
              */
             if (repositoryServicesConfig == null)
             {
@@ -196,6 +193,42 @@ public class OMAGServerOperationalServices
                                                           errorCode.getUserAction());
             }
 
+            /*
+             * Validate the server name from the configuration document matches the server name passed in the request
+             * and if all is well, save the configuration document to the config store and the server instance.
+             */
+            errorHandler.validateConfigServerName(serverName, configuration.getLocalServerName(), methodName);
+            configStore.saveServerConfig(serverName, methodName, configuration);
+
+            /*
+             * Validate that the server is not running already.  If it is running it should be shutdown.
+             */
+            if (instanceHandler.isServerKnown(userId, serverName))
+            {
+                this.deactivateTemporarily(userId, serverName);
+            }
+
+
+            /*
+             * The instance saves the operational services objects for this server instance so they can be retrieved
+             * in response to subsequent REST calls for the server
+             */
+            OMAGOperationalServicesInstance instance = new OMAGOperationalServicesInstance(serverName,
+                                                                                           CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+
+            /*
+             * Save the configuration that is going to be used to start the server.
+             */
+            instance.setOperationalConfiguration(configuration);
+
+            /*
+             * Ready to start services
+             */
+
+            /*
+             * Initialize the open metadata repository services first since other services depend on it.
+             * (Even the governance servers need the audit log.)
+             */
             OMRSOperationalServices         operationalRepositoryServices;
 
             operationalRepositoryServices = new OMRSOperationalServices(configuration.getLocalServerName(),
@@ -205,7 +238,7 @@ public class OMAGServerOperationalServices
                                                                         configuration.getLocalServerPassword(),
                                                                         configuration.getLocalServerURL(),
                                                                         configuration.getMaxPageSize());
-            activatedServiceList.add(REPOSITORY_SERVICES);
+            activatedServiceList.add(CommonServicesDescription.REPOSITORY_SERVICES.getServiceName());
 
             /*
              * Save the instance of the OMRS and then initialize it.  The initialization will optionally set up the
@@ -216,6 +249,22 @@ public class OMAGServerOperationalServices
              */
             instance.setOperationalRepositoryServices(operationalRepositoryServices);
             operationalRepositoryServices.initialize(repositoryServicesConfig);
+
+            /*
+             * Next initialize the Open Connector Framework (OCF) metadata services
+             */
+            OCFMetadataOperationalServices operationalOCFMetadataServices;
+
+            operationalOCFMetadataServices = new OCFMetadataOperationalServices(configuration.getLocalServerName(),
+                                                                                operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName()),
+                                                                                operationalRepositoryServices.getAuditLog(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceCode(),
+                                                                                                                          CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(),
+                                                                                                                          CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceDescription(),
+                                                                                                                          CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceWiki()));
+
+            instance.setOperationalOCFMetadataServices(operationalOCFMetadataServices);
+            activatedServiceList.add(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName());
+
 
             /*
              * Now initialize the configured open metadata access services.  Each access service has an Admin object
@@ -345,11 +394,11 @@ public class OMAGServerOperationalServices
             }
 
             /*
-             * Now start the Governance Daemons.
+             * Now start the Governance Servers.
              */
 
             /*
-             * Initialize the Discovery Engine Services.  This is a governance daemon for running automated metadata discovery.
+             * Initialize the Discovery Engine Services.  This is a governance server for running automated metadata discovery.
              */
             if (discoveryServerConfig != null)
             {
@@ -370,7 +419,7 @@ public class OMAGServerOperationalServices
             }
 
             /*
-             * Initialize the Open Lineage Services.  This is a governance daemon for the storage and querying of asset lineage.
+             * Initialize the Open Lineage Services.  This is a governance server for the storage and querying of asset lineage.
              */
             if (openLineageConfig != null)
             {
@@ -391,7 +440,7 @@ public class OMAGServerOperationalServices
             }
 
             /*
-             * Initialize the Security Sync Services.  This is a governance daemon for maintaining the configuration
+             * Initialize the Security Sync Services.  This is a governance server for maintaining the configuration
              * in security oriented governance engines.
              */
             if (securitySyncConfig != null)
@@ -458,21 +507,27 @@ public class OMAGServerOperationalServices
                 activatedServiceList.add(GovernanceServersDescription.STEWARDSHIP_SERVICES.getServiceName());
             }
 
-            instanceMap.setNewInstance(serverName, instance);
-
             response.setSuccessMessage(new Date().toString() + " " + serverName + " is running the following services: " + activatedServiceList.toString());
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (UserNotAuthorizedException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
         }
         catch (OMAGConfigurationErrorException  error)
         {
-            errorHandler.captureConfigurationErrorException(response, error);
+            exceptionHandler.captureConfigurationErrorException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -480,10 +535,10 @@ public class OMAGServerOperationalServices
 
 
     /**
-     * Shutdown any running services.
+     * Shutdown any running services for a specific server instance.
      *
      * @param instance a list of the running services
-     * @param permanentDeactivation should the service be permanently disconnected
+     * @param permanentDeactivation should the server be permanently disconnected
      */
     private void deactivateRunningServiceInstances(OMAGOperationalServicesInstance instance,
                                                    boolean                         permanentDeactivation)
@@ -500,6 +555,14 @@ public class OMAGServerOperationalServices
                     accessServiceAdmin.shutdown();
                 }
             }
+        }
+
+        /*
+         * Shutdown the OCF metadata management services
+         */
+        if (instance.getOperationalOCFMetadataServices() != null)
+        {
+            instance.getOperationalOCFMetadataServices().shutdown();
         }
 
         /*
@@ -582,20 +645,33 @@ public class OMAGServerOperationalServices
 
         try
         {
-            OMAGOperationalServicesInstance instance = validateServerName(serverName, methodName);
+            errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            deactivateRunningServiceInstances(instance, false);
+            deactivateRunningServiceInstances(instanceHandler.getServerServiceInstance(userId, serverName),
+                                              false);
 
-            instanceMap.removeInstance(serverName);
+            instanceHandler.removeServerServiceInstance(serverName);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (UserNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -621,28 +697,38 @@ public class OMAGServerOperationalServices
 
         try
         {
-            validateServerName(serverName, methodName);
+            errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGOperationalServicesInstance instance = validateServerName(serverName, methodName);
-            errorHandler.validateUserId(userId, serverName, methodName);
+            deactivateRunningServiceInstances(instanceHandler.getServerServiceInstance(userId, serverName),
+                                              true);
 
-            deactivateRunningServiceInstances(instance, true);
-
-            instanceMap.removeInstance(serverName);
+            instanceHandler.removeServerServiceInstance(serverName);
 
             /*
              * Delete the configuration for this server
              */
             configStore.saveServerConfig(serverName, methodName, null);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (UserNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -677,18 +763,27 @@ public class OMAGServerOperationalServices
 
         try
         {
-            OMAGOperationalServicesInstance instance = validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
+
+            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName);
 
             response.setOMAGServerConfig(instance.getOperationalConfiguration());
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (UserNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -715,104 +810,39 @@ public class OMAGServerOperationalServices
 
         try
         {
-            OMAGOperationalServicesInstance instance = validateServerName(serverName, methodName);
+            errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
             errorHandler.validateFileName(fileName, serverName, methodName);
 
             ConnectorConfigurationFactory configurationFactory   = new ConnectorConfigurationFactory();
             Connection newOpenMetadataArchive = configurationFactory.getOpenMetadataArchiveFileConnection(fileName);
 
-            OMRSOperationalServices  repositoryServicesInstance = instance.getOperationalRepositoryServices();
+            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName);
+            OMRSOperationalServices         repositoryServicesInstance = instance.getOperationalRepositoryServices();
 
             repositoryServicesInstance.addOpenMetadataArchive(newOpenMetadataArchive);
         }
-        catch (OMAGInvalidParameterException  error)
+        catch (InvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
-        catch (OMAGNotAuthorizedException  error)
+        catch (UserNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
-    }
-
-
-    /*
-     * =============================================================
-     * Private methods
-     */
-
-
-    /**
-     * Validate that the server name is not null and retrieve an operational services instance for the server.
-     * If no operational services instance is stored in the instance map it means this server is not running and
-     * a new operational services instance is created.  The resulting operational services instance is returned.
-     *
-     * @param serverName  serverName passed on a request
-     * @param methodName  method being called
-     * @return OMAGOperationalServicesInstance object
-     * @throws OMAGInvalidParameterException null server name
-     */
-    private OMAGOperationalServicesInstance validateServerName(String serverName,
-                                                               String methodName) throws OMAGInvalidParameterException
-    {
-        /*
-         * If the local server name is still null then save the server name in the configuration.
-         */
-        if (serverName == null)
-        {
-            OMAGAdminErrorCode errorCode    = OMAGAdminErrorCode.NULL_LOCAL_SERVER_NAME;
-            String             errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage();
-
-            throw new OMAGInvalidParameterException(errorCode.getHTTPErrorCode(),
-                                                    this.getClass().getName(),
-                                                    methodName,
-                                                    errorMessage,
-                                                    errorCode.getSystemAction(),
-                                                    errorCode.getUserAction());
-        }
-        else
-        {
-            OMAGOperationalServicesInstance instance = instanceMap.getInstance(serverName);
-
-            if (instance == null)
-            {
-                instance = new OMAGOperationalServicesInstance();
-            }
-
-            return instance;
-        }
-    }
-
-
-
-    /**
-     * Validate that the server name is not null and save it in the config.
-     *
-     * @param serverName  serverName passed on a request
-     * @param configServerName serverName passed in config (should match request name)
-     * @param methodName  method being called
-     * @throws OMAGConfigurationErrorException incompatible server names
-     */
-    private void validateConfigServerName(String serverName,
-                                          String configServerName,
-                                          String methodName) throws OMAGConfigurationErrorException
-    {
-        if (! serverName.equals(configServerName))
-        {
-            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.INCOMPATIBLE_SERVER_NAMES;
-            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                            configServerName);
-
-            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                      this.getClass().getName(),
-                                                      methodName,
-                                                      errorMessage,
-                                                      errorCode.getSystemAction(),
-                                                      errorCode.getUserAction());
-
-        }
     }
 }
