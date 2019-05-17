@@ -55,7 +55,7 @@
 
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>ocf-metadata-management</artifactId>
+            <artifactId>ocf-metadata-handlers</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 

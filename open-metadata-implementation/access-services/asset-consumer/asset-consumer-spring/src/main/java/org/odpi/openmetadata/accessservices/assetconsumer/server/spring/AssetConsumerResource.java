@@ -375,6 +375,29 @@ public class AssetConsumerResource
 
 
     /**
+     * Returns the connection corresponding to the supplied asset GUID.
+     *
+     * @param serverName  name of the server instances for this request
+     * @param userId      userId of user making request.
+     * @param assetGUID   the unique id for the asset within the metadata repository.
+     *
+     * @return connection object or
+     * InvalidParameterException one of the parameters is null or invalid or
+     * UnrecognizedConnectionNameException there is no connection defined for this name or
+     * PropertyServerException there is a problem retrieving information from the property (metadata) server or
+     * UserNotAuthorizedException the requesting user is not authorized to issue this request.
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/assets/{assetGUID}/connection")
+
+    public ConnectionResponse getConnectionForAsset(@PathVariable String   serverName,
+                                                    @PathVariable String   userId,
+                                                    @PathVariable String   assetGUID)
+    {
+        return restAPI.getConnectionForAsset(serverName, userId, assetGUID);
+    }
+
+
+    /**
      * Return the full definition (meaning) of the terms matching the supplied name.
      *
      * @param serverName name of the server instances for this request.
