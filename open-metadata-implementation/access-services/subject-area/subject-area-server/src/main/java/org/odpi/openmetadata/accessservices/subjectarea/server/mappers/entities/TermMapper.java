@@ -96,8 +96,11 @@ public class TermMapper extends EntityDetailMapper implements INodeMapper{
         if (term.getExamples()!=null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getExamples(), "examples");
         }
-        if (term.getExamples()!=null) {
+        if (term.getUsage()!=null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, term.getUsage(), "usage");
+        }
+        if (node.getName()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), "displayName");
         }
     }
 

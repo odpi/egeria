@@ -76,7 +76,7 @@ abstract public class EntityDetailMapper {
                         if (actualValue != null) {
                             node.setQualifiedName((String) actualValue);
                         }
-                    } else if (propertyName.equals("displayName")) {
+                    } else if (propertyName.equals("displayName") || propertyName.equals("name")) {
                         if (actualValue!=null) {
                             node.setName((String) actualValue);
                         }
@@ -276,8 +276,14 @@ abstract public class EntityDetailMapper {
         if (node.getQualifiedName()!=null) {
             repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"qualifiedName",node.getQualifiedName(),methodName);
         }
-        if (node.getName()!=null) {  SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getQualifiedName(), "displayName");
-           repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(),instanceProperties,"displayName",node.getName(),methodName);
+        if (node.getName()!=null) {
+            if (node.getNodeType() == NodeType.Project || node.getNodeType() == NodeType.GlossaryProject) {
+                SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), "name");
+                repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(), instanceProperties, "name", node.getName(), methodName);
+            } else {
+                SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), "displayName");
+                repositoryHelper.addStringPropertyToInstance(omrsapiHelper.getServiceName(), instanceProperties, "displayName", node.getName(), methodName);
+            }
         }
 
         if (node.getDescription()!=null) {  SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getDescription(), "description");
