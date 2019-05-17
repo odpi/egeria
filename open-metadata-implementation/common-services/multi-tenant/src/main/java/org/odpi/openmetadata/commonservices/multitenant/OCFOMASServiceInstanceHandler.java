@@ -22,6 +22,17 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
 
 
     /**
+     * Constructor
+     *
+     * @param serviceName name of the service
+     */
+    public OCFOMASServiceInstanceHandler(String serviceName)
+    {
+        super(serviceName);
+    }
+
+
+    /**
      * Retrieve the specific handler for the access service.
      *
      * @param userId calling user

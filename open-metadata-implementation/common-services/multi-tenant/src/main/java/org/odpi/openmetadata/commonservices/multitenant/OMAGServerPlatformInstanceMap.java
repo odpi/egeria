@@ -2,6 +2,7 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
+import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
@@ -53,6 +54,32 @@ public class OMAGServerPlatformInstanceMap
 
 
     /**
+     * Return whether a particular service is registered with this platform.
+     * This is used by the admin services when there being no instance is not an error.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     *
+     * @return boolean
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    private static synchronized boolean isServerInstanceKnown(String  userId,
+                                                              String  serverName) throws UserNotAuthorizedException
+    {
+
+        OMAGServerInstance  serverInstance = serverInstanceMap.get(serverName);
+
+        if (platformSecurityVerifier != null)
+        {
+            platformSecurityVerifier.validateUserForPlatform(userId);
+            platformSecurityVerifier.validateUserAsAdminForPlatform(userId);
+        }
+
+        return (serverInstance != null);
+    }
+
+
+    /**
      * Return the instance of this service for this server.
      *
      * @param userId calling user or null if it is an anonymous request
@@ -78,6 +105,11 @@ public class OMAGServerPlatformInstanceMap
         if (platformSecurityVerifier != null)
         {
             platformSecurityVerifier.validateUserForPlatform(userId);
+
+            if (CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName().equals(serviceName))
+            {
+                platformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
+            }
         }
 
         if (serverInstance != null)
@@ -213,6 +245,23 @@ public class OMAGServerPlatformInstanceMap
      */
     public OMAGServerPlatformInstanceMap()
     {
+    }
+
+
+    /**
+     * Return whether a particular server is registered with the platform.
+     * This is used by the admin services when there being no instance is not an error.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     *
+     * @return boolean
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    boolean isServerKnown(String  userId,
+                          String  serverName) throws UserNotAuthorizedException
+    {
+        return OMAGServerPlatformInstanceMap.isServerInstanceKnown(userId, serverName);
     }
 
 
