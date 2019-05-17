@@ -14,6 +14,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.SecuritySync
 import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.VirtualizationConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServersDescription;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
@@ -34,6 +35,7 @@ import org.odpi.openmetadata.governanceservers.stewardshipservices.admin.Steward
 import org.odpi.openmetadata.governanceservers.virtualizationservices.admin.VirtualizationOperationalServices;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSOperationalServices;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.securitysyncservices.registration.SecuritySyncOperationalServices;
 
 import java.util.ArrayList;
@@ -251,19 +253,26 @@ public class OMAGServerOperationalServices
             operationalRepositoryServices.initialize(repositoryServicesConfig);
 
             /*
-             * Next initialize the Open Connector Framework (OCF) metadata services
+             * Next initialize the Open Connector Framework (OCF) metadata services.  These services are only initialized
+             * if the enterprise repository services are enabled.
              */
-            OCFMetadataOperationalServices operationalOCFMetadataServices;
+            OMRSRepositoryConnector enterpriseRepositoryConnector =   operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName());
 
-            operationalOCFMetadataServices = new OCFMetadataOperationalServices(configuration.getLocalServerName(),
-                                                                                operationalRepositoryServices.getEnterpriseOMRSRepositoryConnector(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName()),
-                                                                                operationalRepositoryServices.getAuditLog(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceCode(),
-                                                                                                                          CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(),
-                                                                                                                          CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceDescription(),
-                                                                                                                          CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceWiki()));
+            if (enterpriseRepositoryConnector != null)
+            {
+                OCFMetadataOperationalServices operationalOCFMetadataServices;
 
-            instance.setOperationalOCFMetadataServices(operationalOCFMetadataServices);
-            activatedServiceList.add(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName());
+                operationalOCFMetadataServices = new OCFMetadataOperationalServices(configuration.getLocalServerName(),
+                                                                                    enterpriseRepositoryConnector,
+                                                                                    operationalRepositoryServices.getAuditLog(
+                                                                                            CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceCode(),
+                                                                                            CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName(),
+                                                                                            CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceDescription(),
+                                                                                            CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceWiki()));
+
+                instance.setOperationalOCFMetadataServices(operationalOCFMetadataServices);
+                activatedServiceList.add(CommonServicesDescription.OCF_METADATA_MANAGEMENT.getServiceName());
+            }
 
 
             /*
@@ -281,7 +290,10 @@ public class OMAGServerOperationalServices
             {
                 for (AccessServiceConfig  accessServiceConfig : accessServiceConfigList)
                 {
-                    if (accessServiceConfig != null)
+                    /*
+                     * Connected Asset OMAS has been removed but may be present in some configuration documents.
+                     */
+                    if ((accessServiceConfig != null) && (accessServiceConfig.getAccessServiceId() != AccessServiceDescription.CONNECTED_ASSET_OMAS.getAccessServiceCode()))
                     {
                         String    accessServiceAdminClassName = accessServiceConfig.getAccessServiceAdminClass();
 
