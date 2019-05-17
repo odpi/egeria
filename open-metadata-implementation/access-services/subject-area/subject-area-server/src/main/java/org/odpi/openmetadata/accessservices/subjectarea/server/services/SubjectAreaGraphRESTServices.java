@@ -231,6 +231,9 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
                                         if (name.equals("displayName")) {
                                             node.setName((String) actualValue);
                                         }
+                                        if (name.equals("name")) {
+                                            node.setName((String) actualValue);
+                                        }
                                         if (name.equals("description")) {
                                             node.setDescription((String) actualValue);
                                         }
@@ -303,6 +306,9 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
         if (oMRSRepositoryHelper.isTypeOf(methodName, typeDefName, "Asset")) {
             nodeType = "Asset";
         }
+        if (oMRSRepositoryHelper.isTypeOf(methodName, typeDefName, "Project")) {
+            nodeType = "Project";
+        }
         List<Classification> classifications = entity.getClassifications();
         Set<String> classificationNames = null;
         if (classifications != null && !classifications.isEmpty()) {
@@ -326,6 +332,8 @@ public class SubjectAreaGraphRESTServices extends SubjectAreaRESTServicesInstanc
                         }
                     } else if (typeDefName.equals("Term") && classificationNames.contains("Activity")) {
                         node.setNodeType(NodeType.Activity);
+                    } else if (typeDefName.equals("Project") && classificationNames.contains("GlossaryProject")) {
+                        node.setNodeType(NodeType.GlossaryProject);
                     }
                 }
                 if (node.getNodeType() == NodeType.Unknown) {

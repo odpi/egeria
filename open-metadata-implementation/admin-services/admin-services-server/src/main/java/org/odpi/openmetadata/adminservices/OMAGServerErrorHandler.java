@@ -4,12 +4,9 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.ffdc.OMAGAdminErrorCode;
-import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGCheckedExceptionBase;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
-import org.odpi.openmetadata.adminservices.rest.AdminServicesAPIResponse;
-
 
 /**
  * OMAGServerErrorHandler provides common error handling routines for the admin services
@@ -75,6 +72,35 @@ class OMAGServerErrorHandler
                                                     errorMessage,
                                                     errorCode.getSystemAction(),
                                                     errorCode.getUserAction());
+        }
+    }
+
+
+    /**
+     * Validate that the server name is not null and save it in the config.
+     *
+     * @param serverName  serverName passed on a request
+     * @param configServerName serverName passed in config (should match request name)
+     * @param methodName  method being called
+     * @throws OMAGConfigurationErrorException incompatible server names
+     */
+    void validateConfigServerName(String serverName,
+                                  String configServerName,
+                                  String methodName) throws OMAGConfigurationErrorException
+    {
+        if (! serverName.equals(configServerName))
+        {
+            OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.INCOMPATIBLE_SERVER_NAMES;
+            String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
+                                                                                                            configServerName);
+
+            throw new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
+                                                      this.getClass().getName(),
+                                                      methodName,
+                                                      errorMessage,
+                                                      errorCode.getSystemAction(),
+                                                      errorCode.getUserAction());
+
         }
     }
 
@@ -253,89 +279,5 @@ class OMAGServerErrorHandler
                                                     errorCode.getSystemAction(),
                                                     errorCode.getUserAction());
         }
-    }
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param serverName  this server instance
-     * @param methodName  method called
-     * @param response  REST Response
-     * @param runtimeException returned error.
-     */
-    void captureRuntimeException(String                   serverName,
-                                 String                   methodName,
-                                 AdminServicesAPIResponse response,
-                                 Throwable                runtimeException)
-    {
-        OMAGAdminErrorCode errorCode = OMAGAdminErrorCode.UNEXPECTED_EXCEPTION;
-        String        errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(serverName,
-                                                                                                        methodName,
-                                                                                                        runtimeException.getClass().getName(),
-                                                                                                        runtimeException.getMessage());
-
-        OMAGConfigurationErrorException error =  new OMAGConfigurationErrorException(errorCode.getHTTPErrorCode(),
-                                                                                     this.getClass().getName(),
-                                                                                     methodName,
-                                                                                     errorMessage,
-                                                                                     errorCode.getSystemAction(),
-                                                                                     errorCode.getUserAction(),
-                                                                                     runtimeException);
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    void captureConfigurationErrorException(AdminServicesAPIResponse response, OMAGConfigurationErrorException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    void captureInvalidParameterException(AdminServicesAPIResponse response, OMAGInvalidParameterException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    void captureNotAuthorizedException(AdminServicesAPIResponse response, OMAGNotAuthorizedException error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     * @param exceptionClassName - class name of the exception to recreate
-     */
-    private void captureCheckedException(AdminServicesAPIResponse          response,
-                                         OMAGCheckedExceptionBase error,
-                                         String                   exceptionClassName)
-    {
-        response.setRelatedHTTPCode(error.getReportedHTTPCode());
-        response.setExceptionClassName(exceptionClassName);
-        response.setExceptionErrorMessage(error.getErrorMessage());
-        response.setExceptionSystemAction(error.getReportedSystemAction());
-        response.setExceptionUserAction(error.getReportedUserAction());
     }
 }

@@ -6,7 +6,7 @@ import org.odpi.openmetadata.adminservices.configuration.properties.*;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.URLRequestBody;
-import org.odpi.openmetadata.adminservices.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,6 +29,7 @@ public class OMAGConformanceSuiteConfigServices
 
     private OMAGServerAdminStoreServices configStore  = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler       errorHandler = new OMAGServerErrorHandler();
+    private OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
 
 
     /**
@@ -203,15 +204,15 @@ public class OMAGConformanceSuiteConfigServices
         }
         catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
         }
         catch (Throwable   error)
         {
-            errorHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -273,15 +274,15 @@ public class OMAGConformanceSuiteConfigServices
         }
         catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
         }
         catch (Throwable   error)
         {
-            errorHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -343,15 +344,15 @@ public class OMAGConformanceSuiteConfigServices
         }
         catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
         }
         catch (Throwable   error)
         {
-            errorHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -404,15 +405,15 @@ public class OMAGConformanceSuiteConfigServices
         }
         catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
         }
         catch (Throwable   error)
         {
-            errorHandler.captureRuntimeException(serverName, methodName, response, error);
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());

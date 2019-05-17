@@ -72,47 +72,6 @@ public class Glossary extends Node{
     }
 
     /**
-     * Consumable name for the glossary, suitable for reports and user interfaces.
-     * @return the glossary name
-     */
-    @Override
-    public String getName() {
-        return super.getName();
-    }
-    @Override
-    public void setName(String name) {
-        super.setName(name);
-    }
-
-    @Override
-    public NodeType getNodeType() {
-        return super.getNodeType();
-    }
-
-    @Override
-    public void setNodeType(NodeType nodeType) {
-        super.setNodeType(nodeType);
-    }
-
-    /**
-     * Description of the glossary
-     * @return the glossary description.
-     */
-    @Override
-    public String getDescription() {
-        return super.getDescription();
-    }
-
-    /**
-     * Unique identifying name for the glossary instance.
-     * @return qualifiedName
-     */
-    @Override
-    public String getQualifiedName() {
-        return super.getQualifiedName();
-    }
-
-    /**
      * The Governance level associated with this glossary
      */
 
