@@ -15,7 +15,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
 /**
- * A GlossaryProject is a project used for authoring Glossaries and their associcontent.
+ * A GlossaryProject is a project used for authoring Glossaries and their associated content.
  */
 public class GlossaryProject extends Project {
 

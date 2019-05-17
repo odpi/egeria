@@ -15,12 +15,13 @@ import java.util.List;
 public interface SubjectAreaProject
 {
     /**
-     * Create a Project. There are specializations of projects that can also be created using this operation.
-     * To create a specialization, you should specify a nodeType other than Project in the supplied Project.
+     * Create a Project.
+     *
+     * Projects with the same name can be confusing. Best practise is to create projects that have unique names.
+     * This Create call does not police that Project names are unique. So it is possible to create projects with the same name as each other.
      *
      * Projects that are created using this call will be GlossaryProjects.
-     * Projects with the same name can be confusing. Best practise is to createProjects that have unique names.
-     * This Create call does not police that Project names are unique. So it is possible to create Projects with the same name as each other.
+     * <p>
      * @param serverName         serverName under which this request is performed, this is used in multi tenanting to identify the tenant
      * @param userId unique identifier for requesting user, under which the request is performed
      * @param suppliedProject Project to create
