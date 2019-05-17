@@ -22,6 +22,7 @@ public class SubjectAreaImpl implements SubjectArea {
     private final SubjectAreaTermImpl termAPI;
     private final SubjectAreaCategoryImpl categoryAPI;
     private final SubjectAreaGlossaryImpl glossaryAPI;
+    private final SubjectAreaProjectImpl projectAPI;
     public final SubjectAreaRelationshipImpl relationshipAPI;
     public final SubjectAreaGraphImpl graphAPI;
     public final String serverName;
@@ -43,6 +44,7 @@ public class SubjectAreaImpl implements SubjectArea {
         this.categoryAPI = new SubjectAreaCategoryImpl(omasServerURL, serverName);
         this.relationshipAPI = new SubjectAreaRelationshipImpl(omasServerURL, serverName);
         this.graphAPI = new SubjectAreaGraphImpl(omasServerURL, serverName);
+        this.projectAPI = new SubjectAreaProjectImpl(omasServerURL, serverName);
         this.serverName = serverName;
         this.omasServerUrl = omasServerURL;
     }
@@ -67,9 +69,13 @@ public class SubjectAreaImpl implements SubjectArea {
         return glossaryAPI;
     }
     /**
-     * Get the Term API. Use this API to author Glossary Terms.
-     * @return SubjectAreaTermImpl
+     * Get the subject area project API class - use this class to issue project calls.
+     * @return subject area project API class
      */
+    @Override
+    public SubjectAreaProject getSubjectAreaProject() {
+        return  projectAPI;
+    }
 
     /**
      * Get the Relationship API. Use this API to author Glossary Terms.
