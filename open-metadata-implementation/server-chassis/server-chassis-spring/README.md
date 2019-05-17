@@ -35,7 +35,7 @@ to the OMAG server platform.
 
 When the OMAG server platform is first started, the REST APIs
 are defined for its endpoint.
-However, only the [Administration Services](https://egeria.odpi.org/open-metadata-implementation/governance-servers/admin-services) are activated at this point.
+However, only the [Administration Services](https://egeria.odpi.org/open-metadata-implementation/admin-services) are activated at this point.
 The other services will each give an error response if called.
 
 To activate these services, it is necessary to use the
@@ -48,7 +48,7 @@ Once it is in place it is possible to activate and deactivate the
 services in the OMAGServerPlatform many times over multiple server restarts.
 
 Details of how to set up the configuration document, and activate/deactivate
-the open metadata services can be found in [admin-services](https://egeria.odpi.org/open-metadata-implementation/governance-servers/admin-services/Using-the-Admin-Services.md).
+the open metadata services can be found in [admin-services](https://egeria.odpi.org/open-metadata-implementation/admin-services/Using-the-Admin-Services.md).
 
 Swagger API documentation is generated with the chassis and is documented in [Swagger Generation](SwaggerGeneration.md).
 

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.accessservices.assetconsumer.client;
 
 import org.odpi.openmetadata.accessservices.assetconsumer.rest.*;
 import org.odpi.openmetadata.commonservices.ffdc.rest.FFDCRESTClient;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.AssetResponse;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 
@@ -63,6 +64,25 @@ class RESTClient extends FFDCRESTClient
     {
         return this.callGetRESTCall(methodName, ConnectionResponse.class, urlTemplate, params);
     }
+
+
+    /**
+     * Issue a GET REST call that returns a AssetResponse object.
+     *
+     * @param methodName  name of the method being called.
+     * @param urlTemplate template of the URL for the REST API call with place-holders for the parameters.
+     * @param params      a list of parameters that are slotted into the url template.
+     *
+     * @return AssetListResponse
+     * @throws PropertyServerException something went wrong with the REST call stack.
+     */
+    AssetResponse callAssetGetRESTCall(String    methodName,
+                                       String    urlTemplate,
+                                       Object... params) throws PropertyServerException
+    {
+        return this.callGetRESTCall(methodName, AssetResponse.class, urlTemplate, params);
+    }
+
 
     /**
      * Issue a GET REST call that returns a AssetListResponse object.

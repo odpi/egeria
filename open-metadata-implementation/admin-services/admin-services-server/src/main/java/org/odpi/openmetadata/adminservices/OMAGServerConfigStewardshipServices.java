@@ -4,9 +4,11 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.StewardshipServicesConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServersDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
-import org.odpi.openmetadata.adminservices.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 
 import java.util.ArrayList;
@@ -18,11 +20,12 @@ import java.util.List;
  */
 public class OMAGServerConfigStewardshipServices
 {
-    static final String serviceName    = "stewardship services";
-    static final String accessService  = "Stewardship Action OMAS";
+    static final String serviceName    = GovernanceServersDescription.STEWARDSHIP_SERVICES.getServiceName();
+    static final String accessService  = AccessServiceDescription.STEWARDSHIP_ACTION_OMAS.getAccessServiceName();
     
     private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
+    private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
 
 
     /**
@@ -35,8 +38,8 @@ public class OMAGServerConfigStewardshipServices
      * OMAGNotAuthorizedException the supplied userId is not authorized to issue this command or
      * OMAGInvalidParameterException invalid serverName or serverType parameter.
      */
-    public VoidResponse setAccessServiceRootURL(String userId, 
-                                                String serverName, 
+    public VoidResponse setAccessServiceRootURL(String userId,
+                                                String serverName,
                                                 String accessServiceRootURL)
     {
         final String methodName = "setAccessServiceRootURL";
@@ -89,11 +92,15 @@ public class OMAGServerConfigStewardshipServices
         }
         catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -164,11 +171,15 @@ public class OMAGServerConfigStewardshipServices
         }
         catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -232,11 +243,15 @@ public class OMAGServerConfigStewardshipServices
         }
         catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -279,11 +294,15 @@ public class OMAGServerConfigStewardshipServices
         }
         catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;

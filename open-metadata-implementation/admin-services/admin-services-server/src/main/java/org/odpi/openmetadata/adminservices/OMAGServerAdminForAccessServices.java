@@ -10,7 +10,7 @@ import org.odpi.openmetadata.adminservices.configuration.registration.AccessServ
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
-import org.odpi.openmetadata.adminservices.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.odpi.openmetadata.repositoryservices.admin.OMRSConfigurationFactory;
 
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ public class OMAGServerAdminForAccessServices
 
     private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
+    private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
 
 
     /**
@@ -132,15 +133,19 @@ public class OMAGServerAdminForAccessServices
         }
         catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGConfigurationErrorException error)
         {
-            errorHandler.captureConfigurationErrorException(response, error);
+            exceptionHandler.captureConfigurationErrorException(response, error);
         }
         catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -177,11 +182,15 @@ public class OMAGServerAdminForAccessServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -238,11 +247,15 @@ public class OMAGServerAdminForAccessServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -315,11 +328,15 @@ public class OMAGServerAdminForAccessServices
         }
         catch (OMAGInvalidParameterException  error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException  error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
