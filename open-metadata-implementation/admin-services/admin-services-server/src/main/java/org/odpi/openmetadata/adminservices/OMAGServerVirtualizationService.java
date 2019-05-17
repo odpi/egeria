@@ -7,7 +7,8 @@ import org.odpi.openmetadata.adminservices.configuration.properties.EventBusConf
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.VirtualizationConfig;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
-import org.odpi.openmetadata.adminservices.rest.VoidResponse;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,15 +20,22 @@ public class OMAGServerVirtualizationService {
     private static final String defaultOutTopicName = "OutTopic";
     private static final String defaultInTopicName = "InTopic";
 
-    private OMAGServerErrorHandler errorHandler = new OMAGServerErrorHandler();
+    private OMAGServerErrorHandler       errorHandler = new OMAGServerErrorHandler();
+    private OMAGServerExceptionHandler   exceptionHandler = new OMAGServerExceptionHandler();
+
 
     private Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public VoidResponse setVirtualizerConfig(String userId, String serverName, VirtualizationConfig virtualizationConfig){
+    public VoidResponse setVirtualizerConfig(String userId, String serverName, VirtualizationConfig virtualizationConfig)
+    {
         String methodName = "setVirtualizationConfig";
         VoidResponse response = new VoidResponse();
 
-        try {
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
 
             ConnectorConfigurationFactory connectorConfigurationFactory = new ConnectorConfigurationFactory();
@@ -60,8 +68,18 @@ public class OMAGServerVirtualizationService {
 
             configStore.saveServerConfig(serverName, methodName, serverConfig);
 
-        } catch (OMAGInvalidParameterException e){
-            log.error("Invalid configuration! ", e);
+        }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -72,13 +90,28 @@ public class OMAGServerVirtualizationService {
         final String methodName = "enableVirtualizationService";
         VoidResponse response = new VoidResponse();
 
-        try {
+        try
+        {
+            errorHandler.validateServerName(serverName, methodName);
+            errorHandler.validateUserId(userId, serverName, methodName);
+
             OMAGServerConfig serverConfig = configStore.getServerConfig(serverName, methodName);
             VirtualizationConfig virtualizationConfig = serverConfig.getVirtualizationConfig();
             this.setVirtualizerConfig(userId, serverName, virtualizationConfig);
-        } catch (OMAGInvalidParameterException e) {
-            errorHandler.captureInvalidParameterException(response, e);
         }
+        catch (OMAGInvalidParameterException error)
+        {
+            exceptionHandler.captureInvalidParameterException(response, error);
+        }
+        catch (OMAGNotAuthorizedException error)
+        {
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
+        }
+
         return response;
     }
 

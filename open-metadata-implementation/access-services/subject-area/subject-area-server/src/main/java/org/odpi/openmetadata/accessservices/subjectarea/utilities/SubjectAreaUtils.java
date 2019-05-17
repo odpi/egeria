@@ -540,4 +540,17 @@ public class SubjectAreaUtils {
         primitivePropertyValue.setPrimitiveValue(integerValue);
         instanceProperties.setProperty(propertyName, primitivePropertyValue);
     }
+
+    /**
+     * set the Date value into the InstanceProperties
+     * @param instanceProperties supplied instanceproperties
+     * @param date Datew value
+     * @param propertyName property name
+     */
+    public static void setDatePropertyInInstanceProperties(InstanceProperties instanceProperties,  Date date, String propertyName) {
+        PrimitivePropertyValue primitivePropertyValue = new PrimitivePropertyValue();
+        primitivePropertyValue.setPrimitiveDefCategory(PrimitiveDefCategory.OM_PRIMITIVE_TYPE_DATE);
+        primitivePropertyValue.setPrimitiveValue(date);
+        instanceProperties.setProperty(propertyName, primitivePropertyValue);
+    }
 }
