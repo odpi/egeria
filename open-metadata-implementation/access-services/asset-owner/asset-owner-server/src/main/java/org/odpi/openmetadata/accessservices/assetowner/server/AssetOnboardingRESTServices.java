@@ -13,6 +13,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterExceptio
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.*;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,8 +62,8 @@ public class AssetOnboardingRESTServices
 
         log.debug("Calling method: " + methodName);
 
-        GUIDResponse  response = new GUIDResponse();
-
+        GUIDResponse response = new GUIDResponse();
+        OMRSAuditLog auditLog = null;
 
         try
         {
@@ -71,6 +72,8 @@ public class AssetOnboardingRESTServices
                 AssetHandler  assetHandler  = instanceHandler.getAssetHandler(userId, serverName);
                 Asset         asset         = assetHandler.createEmptyAsset(AssetMapper.CSV_FILE_TYPE_GUID,
                                                                             AssetMapper.CSV_FILE_TYPE_NAME);
+
+                auditLog = instanceHandler.getAuditLog(userId, serverName);
 
                 asset.setDisplayName(requestBody.getDisplayName());
                 asset.setDescription(requestBody.getDescription());
@@ -133,6 +136,10 @@ public class AssetOnboardingRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());

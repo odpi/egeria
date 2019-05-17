@@ -12,6 +12,7 @@ import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.CommentType;
@@ -68,11 +69,14 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDResponse  response = new GUIDResponse();
+        OMRSAuditLog  auditLog = null;
+
 
         try
         {
             AssetHandler assetHandler = instanceHandler.getAssetHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             response.setGUID(assetHandler.getAssetForConnection(userId, connectionGUID));
         }
         catch (InvalidParameterException error)
@@ -86,6 +90,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -116,11 +124,13 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         ConnectionResponse  response = new ConnectionResponse();
+        OMRSAuditLog        auditLog = null;
 
         try
         {
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             response.setConnection(handler.getConnectionForAsset(userId, assetGUID));
         }
         catch (InvalidParameterException  error)
@@ -134,6 +144,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -167,11 +181,13 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         AssetListResponse response = new AssetListResponse();
+        OMRSAuditLog      auditLog = null;
 
         try
         {
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             response.setAssets(handler.getAssetsByName(userId, name, startFrom, pageSize, methodName));
         }
         catch (InvalidParameterException error)
@@ -185,6 +201,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -223,11 +243,13 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         ConnectionResponse  response = new ConnectionResponse();
+        OMRSAuditLog        auditLog = null;
 
         try
         {
             ConnectionHandler connectionHandler = instanceHandler.getConnectionHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             response.setConnection(connectionHandler.getConnectionByName(userId, name));
         }
         catch (InvalidParameterException error)
@@ -241,6 +263,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -271,11 +297,13 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         ConnectionResponse  response = new ConnectionResponse();
+        OMRSAuditLog        auditLog = null;
 
         try
         {
             ConnectionHandler connectionHandler = instanceHandler.getConnectionHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             response.setConnection(connectionHandler.getConnection(userId, guid));
         }
         catch (InvalidParameterException  error)
@@ -289,6 +317,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -329,6 +361,7 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse  response = new VoidResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
@@ -345,6 +378,7 @@ public class AssetConsumerRESTServices
 
             RatingHandler handler = instanceHandler.getRatingHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             handler.addRatingToAsset(userId, guid, starRating, review, isPublic, methodName);
         }
         catch (InvalidParameterException  error)
@@ -358,6 +392,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -390,11 +428,13 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse  response = new VoidResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
             RatingHandler handler = instanceHandler.getRatingHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             handler.removeRatingFromAsset(userId, guid, methodName);
         }
         catch (InvalidParameterException  error)
@@ -408,6 +448,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -447,11 +491,13 @@ public class AssetConsumerRESTServices
         }
 
         VoidResponse  response = new VoidResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
             LikeHandler handler = instanceHandler.getLikeHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             handler.addLikeToAsset(userId, guid, isPublic, methodName);
         }
         catch (InvalidParameterException  error)
@@ -465,6 +511,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -497,11 +547,13 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse  response = new VoidResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
             LikeHandler handler = instanceHandler.getLikeHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             handler.removeLikeFromAsset(userId, guid, methodName);
         }
         catch (InvalidParameterException  error)
@@ -515,6 +567,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -547,6 +603,7 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDResponse  response = new GUIDResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
@@ -563,6 +620,7 @@ public class AssetConsumerRESTServices
 
             CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             response.setGUID(handler.addCommentToAsset(userId, guid, commentType, commentText, isPublic, methodName));
         }
         catch (InvalidParameterException  error)
@@ -576,6 +634,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -608,6 +670,7 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDResponse  response = new GUIDResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
@@ -624,6 +687,7 @@ public class AssetConsumerRESTServices
 
             CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             response.setGUID(handler.addCommentReply(userId, commentGUID, commentType, commentText, isPublic, methodName));
         }
         catch (InvalidParameterException  error)
@@ -637,6 +701,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -668,6 +736,7 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse  response = new VoidResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
@@ -684,6 +753,7 @@ public class AssetConsumerRESTServices
 
             CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             handler.updateComment(userId, guid, commentType, commentText, isPublic, methodName);
         }
         catch (InvalidParameterException  error)
@@ -697,6 +767,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -729,11 +803,13 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse  response = new VoidResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
             CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             handler.removeComment(userId, guid, methodName);
         }
         catch (InvalidParameterException  error)
@@ -747,6 +823,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -784,11 +864,13 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         MeaningResponse  response = new MeaningResponse();
+        OMRSAuditLog     auditLog = null;
 
         try
         {
             GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             response.setGlossaryTerm(glossaryHandler.getMeaning(userId, guid));
         }
         catch (InvalidParameterException  error)
@@ -802,6 +884,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -835,11 +921,13 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         MeaningListResponse  response = new MeaningListResponse();
+        OMRSAuditLog         auditLog = null;
 
         try
         {
             GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             response.setMeanings(glossaryHandler.getMeaningByName(userId, term, startFrom, pageSize));
         }
         catch (InvalidParameterException  error)
@@ -853,6 +941,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -896,6 +988,7 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse  response = new VoidResponse();
+        OMRSAuditLog  auditLog = null;
 
 
         try
@@ -917,6 +1010,7 @@ public class AssetConsumerRESTServices
 
             LoggingHandler loggingHandler = instanceHandler.getLoggingHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             loggingHandler.addLogMessageToAsset(userId,
                                                 guid,
                                                 connectorInstanceId,
@@ -936,6 +1030,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -974,6 +1072,7 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         GUIDResponse  response = new GUIDResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
@@ -988,6 +1087,7 @@ public class AssetConsumerRESTServices
 
             InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             response.setGUID(handler.createTag(userId, tagName, tagDescription, isPublic, methodName));
         }
         catch (InvalidParameterException  error)
@@ -1001,6 +1101,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1076,6 +1180,7 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse  response = new VoidResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
@@ -1088,6 +1193,7 @@ public class AssetConsumerRESTServices
 
             InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             handler.updateTagDescription(userId, tagGUID, tagDescription, methodName);
         }
         catch (InvalidParameterException  error)
@@ -1101,6 +1207,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1132,11 +1242,13 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse  response = new VoidResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
             InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             handler.deleteTag(userId, tagGUID, methodName);
         }
         catch (InvalidParameterException  error)
@@ -1150,6 +1262,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1179,11 +1295,13 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         TagResponse  response = new TagResponse();
+        OMRSAuditLog auditLog = null;
 
         try
         {
             InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             response.setTag(handler.getTag(userId, guid, methodName));
         }
         catch (InvalidParameterException  error)
@@ -1197,6 +1315,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1230,11 +1352,13 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         TagListResponse  response = new TagListResponse();
+        OMRSAuditLog     auditLog = null;
 
         try
         {
             InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             response.setTags(handler.getTagsByName(userId, tagName, startFrom, pageSize, methodName));
             response.setStartingFromElement(startFrom);
         }
@@ -1249,6 +1373,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1289,11 +1417,13 @@ public class AssetConsumerRESTServices
         }
 
         VoidResponse  response = new VoidResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
             InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             handler.addTagToAsset(userId, assetGUID, tagGUID, isPublic, methodName);
         }
         catch (InvalidParameterException  error)
@@ -1307,6 +1437,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1340,11 +1474,13 @@ public class AssetConsumerRESTServices
         log.debug("Calling method: " + methodName);
 
         VoidResponse  response = new VoidResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
             InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             handler.removeTagFromAsset(userId, assetGUID, tagGUID, methodName);
         }
         catch (InvalidParameterException  error)
@@ -1358,6 +1494,10 @@ public class AssetConsumerRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
