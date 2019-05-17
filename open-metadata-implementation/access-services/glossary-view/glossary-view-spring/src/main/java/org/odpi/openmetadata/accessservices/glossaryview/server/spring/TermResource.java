@@ -75,4 +75,27 @@ public class TermResource {
         return response;
     }
 
+    /**
+     * Extract external glossary definitions for the given term
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param termGUID term GUID
+     *
+     * @return subcategories
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/terms/{termGUID}/external-glossaries")
+    public GlossaryViewEntityDetailResponse getExternalGlossaries(@PathVariable("serverName") String serverName,
+                                                                  @PathVariable("userId") String userId,
+                                                                  @PathVariable("termGUID") String termGUID) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = termService.getExternalGlossaries(userId, serverName, termGUID);
+
+        watch.stop();
+        log.debug("Method: getExternalGlossaries; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
 }
