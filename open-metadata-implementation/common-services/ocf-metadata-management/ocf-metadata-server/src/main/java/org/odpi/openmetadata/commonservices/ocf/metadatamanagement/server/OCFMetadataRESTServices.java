@@ -3,7 +3,6 @@
 package org.odpi.openmetadata.commonservices.ocf.metadatamanagement.server;
 
 import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
-import org.odpi.openmetadata.commonservices.multitenant.OCFOMASServiceInstance;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
@@ -11,6 +10,7 @@ import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Comment;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.NoteLog;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -61,11 +61,13 @@ public class OCFMetadataRESTServices
     {
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
-        AssetResponse  response = new AssetResponse();
+        AssetResponse response = new AssetResponse();
+        OMRSAuditLog  auditLog = null;
 
         try
         {
             AssetHandler assetHandler = instanceHandler.getAssetHandler(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
 
             if (connectionGUID != null)
             {
@@ -101,6 +103,10 @@ public class OCFMetadataRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
@@ -184,11 +190,13 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         CertificationsResponse  response = new CertificationsResponse();
+        OMRSAuditLog            auditLog = null;
 
         try
         {
             CertificationHandler handler = instanceHandler.getCertificationHandler(userId, serverName);
 
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
             response.setList(handler.getCertifications(userId, assetGUID, elementStart, maxElements, methodName));
         }
         catch (InvalidParameterException error)
@@ -202,6 +210,10 @@ public class OCFMetadataRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
@@ -235,10 +247,12 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         CommentsResponse  response = new CommentsResponse();
+        OMRSAuditLog      auditLog = null;
 
         try
         {
             CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
 
             List<Comment>         attachedComments = handler.getComments(userId, anchorGUID, elementStart, maxElements, methodName);
             List<CommentResponse> results          = new ArrayList<>();
@@ -279,6 +293,10 @@ public class OCFMetadataRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
@@ -364,10 +382,12 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         ConnectionsResponse  response = new ConnectionsResponse();
+        OMRSAuditLog         auditLog = null;
 
         try
         {
             ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
 
             response.setList(handler.getConnections(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -382,6 +402,10 @@ public class OCFMetadataRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
@@ -415,10 +439,12 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         ExternalIdentifiersResponse  response = new ExternalIdentifiersResponse();
+        OMRSAuditLog                 auditLog = null;
 
         try
         {
             ExternalIdentifierHandler handler = instanceHandler.getExternalIdentifierHandler(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
 
             response.setList(handler.getExternalIdentifiers(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -433,6 +459,10 @@ public class OCFMetadataRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
@@ -466,10 +496,12 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         ExternalReferencesResponse  response = new ExternalReferencesResponse();
+        OMRSAuditLog                auditLog = null;
 
         try
         {
             ExternalReferenceHandler handler = instanceHandler.getExternalReferenceHandler(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
 
             response.setList(handler.getExternalReferences(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -484,6 +516,10 @@ public class OCFMetadataRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
@@ -517,10 +553,12 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         InformalTagsResponse  response = new InformalTagsResponse();
+        OMRSAuditLog          auditLog = null;
 
         try
         {
             InformalTagHandler handler = instanceHandler.getInformalTagHandler(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
 
             response.setList(handler.getAttachedTags(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -535,6 +573,10 @@ public class OCFMetadataRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
@@ -568,10 +610,12 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         LicensesResponse  response = new LicensesResponse();
+        OMRSAuditLog      auditLog = null;
 
         try
         {
             LicenseHandler handler = instanceHandler.getLicenseHandler(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
 
             response.setList(handler.getLicenses(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -586,6 +630,10 @@ public class OCFMetadataRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
@@ -619,10 +667,12 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         LikesResponse  response = new LikesResponse();
+        OMRSAuditLog   auditLog = null;
 
         try
         {
             LikeHandler handler = instanceHandler.getLikeHandler(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
 
             response.setList(handler.getLikes(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -637,6 +687,10 @@ public class OCFMetadataRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
@@ -670,10 +724,12 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         LocationsResponse  response = new LocationsResponse();
+        OMRSAuditLog       auditLog = null;
 
         try
         {
             LocationHandler handler = instanceHandler.getLocationHandler(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
 
             response.setList(handler.getLocations(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -688,6 +744,10 @@ public class OCFMetadataRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
@@ -721,10 +781,12 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         NoteLogsResponse  response = new NoteLogsResponse();
+        OMRSAuditLog      auditLog = null;
 
         try
         {
             NoteLogHandler handler = instanceHandler.getNoteLogHandler(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
 
             List<NoteLog>          noteLogs = handler.getAttachedNoteLogs(userId, assetGUID, elementStart, maxElements, methodName);
             List<NoteLogResponse>  results = new ArrayList<>();
@@ -765,6 +827,10 @@ public class OCFMetadataRESTServices
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
         }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
+        }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
 
@@ -797,10 +863,12 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         NotesResponse  response = new NotesResponse();
+        OMRSAuditLog   auditLog = null;
 
         try
         {
             NoteHandler handler = instanceHandler.getNoteHandler(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
 
             response.setList(handler.getNotes(userId, noteLogGUID, elementStart, maxElements, methodName));
         }
@@ -815,6 +883,10 @@ public class OCFMetadataRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
@@ -848,10 +920,12 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         RatingsResponse  response = new RatingsResponse();
+        OMRSAuditLog     auditLog = null;
 
         try
         {
             RatingHandler handler = instanceHandler.getRatingHandler(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
 
             response.setList(handler.getRatings(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -866,6 +940,10 @@ public class OCFMetadataRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
@@ -899,10 +977,12 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         RelatedAssetsResponse  response = new RelatedAssetsResponse();
+        OMRSAuditLog           auditLog = null;
 
         try
         {
             AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
 
             response.setList(handler.getRelatedAssets(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -917,6 +997,10 @@ public class OCFMetadataRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
@@ -950,10 +1034,12 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         RelatedMediaReferencesResponse  response = new RelatedMediaReferencesResponse();
+        OMRSAuditLog                    auditLog = null;
 
         try
         {
             RelatedMediaHandler handler = instanceHandler.getRelatedMediaHandler(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
 
             response.setList(handler.getRelatedMedia(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -968,6 +1054,10 @@ public class OCFMetadataRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());
@@ -1001,10 +1091,12 @@ public class OCFMetadataRESTServices
         log.debug("Calling method: " + methodName + " for server " + serverName);
 
         SchemaAttributesResponse  response = new SchemaAttributesResponse();
+        OMRSAuditLog              auditLog = null;
 
         try
         {
             SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName);
 
             response.setList(handler.getSchemaAttributes(userId, schemaTypeGUID, elementStart, maxElements, methodName));
         }
@@ -1019,6 +1111,10 @@ public class OCFMetadataRESTServices
         catch (UserNotAuthorizedException error)
         {
             restExceptionHandler.captureUserNotAuthorizedException(response, error);
+        }
+        catch (Throwable error)
+        {
+            restExceptionHandler.captureThrowable(response, error, methodName, auditLog);
         }
 
         log.debug("Returning from method: " + methodName  + " for server " + serverName + " with response: " + response.toString());

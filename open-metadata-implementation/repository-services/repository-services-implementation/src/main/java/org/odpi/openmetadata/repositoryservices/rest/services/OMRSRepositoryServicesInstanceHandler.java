@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.repositoryservices.rest.services;
 
 import org.odpi.openmetadata.commonservices.multitenant.OMAGServerServiceInstanceHandler;
+import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.RepositoryErrorException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorizedException;
@@ -73,6 +74,32 @@ public class OMRSRepositoryServicesInstanceHandler extends OMAGServerServiceInst
                                                                                                        error.getReportedSystemAction(),
                                                                                                        error.getReportedUserAction());
         }
+    }
+
+
+    /**
+     * Return the audit log or null (if the instance is not available.
+     *
+     * @param userId calling user
+     * @param serverName requested server
+     * @return audit log or null
+     */
+    public OMRSAuditLog  getAuditLog(String userId, String  serverName)
+    {
+        try
+        {
+            OMRSRepositoryServicesInstance instance = (OMRSRepositoryServicesInstance) super.getServerServiceInstance(userId, serverName);
+
+            if (instance != null)
+            {
+                return instance.getAuditLog();
+            }
+        }
+        catch (Throwable  error)
+        {
+        }
+
+        return null;
     }
 
 

@@ -4,6 +4,7 @@ package org.odpi.openmetadata.discoveryserver.server;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.client.DiscoveryConfigurationClient;
 import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryServerConfig;
+import org.odpi.openmetadata.commonservices.ffdc.RESTExceptionHandler;
 import org.odpi.openmetadata.frameworks.discovery.DiscoveryConfigurationServer;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.slf4j.Logger;
@@ -17,6 +18,8 @@ import org.slf4j.LoggerFactory;
 public class DiscoveryServerOperationalServices
 {
     private static final Logger log = LoggerFactory.getLogger(DiscoveryServerOperationalServices.class);
+
+    private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     private String                localServerName;               /* Initialized in constructor */
     private String                localServerUserId;             /* Initialized in constructor */
