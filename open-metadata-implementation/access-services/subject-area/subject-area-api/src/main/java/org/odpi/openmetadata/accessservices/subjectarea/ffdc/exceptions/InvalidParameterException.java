@@ -3,12 +3,15 @@
 package org.odpi.openmetadata.accessservices.subjectarea.ffdc.exceptions;
 
 
+import java.util.Map;
+
 /**
  * The InvalidParameterException is thrown by the Subject Area OMAS when a parameter is null or an invalid
  * value.
  */
 public class InvalidParameterException extends SubjectAreaCheckedExceptionBase
 {
+    private Map<String,Object> relatedProperties;
     /**
      * This is the typical constructor used for creating a InvalidParameterException.
      *
@@ -39,5 +42,13 @@ public class InvalidParameterException extends SubjectAreaCheckedExceptionBase
     public InvalidParameterException(int  httpCode, String className, String  actionDescription, String errorMessage, String systemAction, String userAction, Throwable caughtError)
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError);
+    }
+
+    public Map<String, Object> getRelatedProperties() {
+        return relatedProperties;
+    }
+
+    public void setRelatedProperties(Map<String, Object> relatedProperties) {
+        this.relatedProperties = relatedProperties;
     }
 }
