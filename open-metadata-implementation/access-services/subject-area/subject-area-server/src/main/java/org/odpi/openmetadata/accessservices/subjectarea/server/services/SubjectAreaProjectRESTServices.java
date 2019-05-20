@@ -47,8 +47,7 @@ public class SubjectAreaProjectRESTServices extends SubjectAreaRESTServicesInsta
 
 
     /**
-     * Create a Project. There are specializations of projects that can also be created using this operation.
-     * To create a specialization, you should specify a nodeType other than Project in the supplied Project.
+     * Create a Project.
      *
      * Projects with the same name can be confusing. Best practise is to create projects that have unique names.
      * This Create call does not police that Project names are unique. So it is possible to create projects with the same name as each other.
