@@ -53,7 +53,7 @@ public class CategoryResource {
     }
 
     /**
-     * Extract a category definition for the given GUID
+     * Extract the category definition for the given GUID
      *
      * @param serverName instance to call
      * @param userId calling user
@@ -71,6 +71,52 @@ public class CategoryResource {
 
         watch.stop();
         log.debug("Method: getCategory; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract subcategory definitions for the given GUID
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param categoryGUID category GUID
+     *
+     * @return subcategories
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/subcategories")
+    public GlossaryViewEntityDetailResponse getSubcategories(@PathVariable("serverName") String serverName,
+                                                             @PathVariable("userId") String userId,
+                                                             @PathVariable("categoryGUID") String categoryGUID) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response =  categoryService.getSubcategories(userId, serverName, categoryGUID);
+
+        watch.stop();
+        log.debug("Method: getSubcategories; Duration: " + watch.getTime()/1000 + "seconds");
+
+        return response;
+    }
+
+    /**
+     * Extract external glossary definitions for the given category
+     *
+     * @param serverName instance to call
+     * @param userId calling user
+     * @param categoryGUID category GUID
+     *
+     * @return subcategories
+     */
+    @RequestMapping(method = RequestMethod.GET, path = "/categories/{categoryGUID}/external-glossaries")
+    public GlossaryViewEntityDetailResponse getExternalGlossaries(@PathVariable("serverName") String serverName,
+                                                                  @PathVariable("userId") String userId,
+                                                                  @PathVariable("categoryGUID") String categoryGUID) {
+        StopWatch watch = StopWatch.createStarted();
+
+        GlossaryViewEntityDetailResponse response = categoryService.getExternalGlossaries(userId, serverName, categoryGUID);
+
+        watch.stop();
+        log.debug("Method: getExternalGlossaries; Duration: " + watch.getTime()/1000 + "seconds");
 
         return response;
     }

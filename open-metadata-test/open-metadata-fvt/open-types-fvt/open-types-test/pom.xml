@@ -13,7 +13,10 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <name>Open Types Test generator</name>
+    <name>Open Types Test execution</name>
+    <description>
+        Run the Functional Verification Test (FVT) for open types.
+    </description>
 
     <artifactId>open-types-test</artifactId>
 

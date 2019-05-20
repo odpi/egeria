@@ -18,6 +18,7 @@ public enum ResponseCategory {
     Glossary,
     Glossaries,
     Project,
+    Projects,
     Comment,
 
     // term to term relationship

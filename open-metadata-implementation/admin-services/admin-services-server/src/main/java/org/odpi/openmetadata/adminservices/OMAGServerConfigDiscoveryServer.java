@@ -4,9 +4,11 @@ package org.odpi.openmetadata.adminservices;
 
 import org.odpi.openmetadata.adminservices.configuration.properties.DiscoveryServerConfig;
 import org.odpi.openmetadata.adminservices.configuration.properties.OMAGServerConfig;
+import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
+import org.odpi.openmetadata.adminservices.configuration.registration.GovernanceServersDescription;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterException;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
-import org.odpi.openmetadata.adminservices.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -18,12 +20,12 @@ import java.util.List;
  */
 public class OMAGServerConfigDiscoveryServer
 {
-    static final String serviceName    = "discovery server";
-    static final String accessService  = "Discovery Engine OMAS";
+    static final String serviceName    = GovernanceServersDescription.DISCOVERY_ENGINE_SERVICES.getServiceName();
+    static final String accessService  = AccessServiceDescription.DISCOVERY_ENGINE_OMAS.getAccessServiceName();
 
     private OMAGServerAdminStoreServices   configStore = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
-
+    private OMAGServerExceptionHandler     exceptionHandler = new OMAGServerExceptionHandler();
 
     /**
      * Set up the root URL of the access service.
@@ -89,11 +91,15 @@ public class OMAGServerConfigDiscoveryServer
         }
         catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -164,11 +170,15 @@ public class OMAGServerConfigDiscoveryServer
         }
         catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -233,11 +243,15 @@ public class OMAGServerConfigDiscoveryServer
         }
         catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;
@@ -280,11 +294,15 @@ public class OMAGServerConfigDiscoveryServer
         }
         catch (OMAGInvalidParameterException error)
         {
-            errorHandler.captureInvalidParameterException(response, error);
+            exceptionHandler.captureInvalidParameterException(response, error);
         }
         catch (OMAGNotAuthorizedException error)
         {
-            errorHandler.captureNotAuthorizedException(response, error);
+            exceptionHandler.captureNotAuthorizedException(response, error);
+        }
+        catch (Throwable  error)
+        {
+            exceptionHandler.captureRuntimeException(serverName, methodName, response, error);
         }
 
         return response;

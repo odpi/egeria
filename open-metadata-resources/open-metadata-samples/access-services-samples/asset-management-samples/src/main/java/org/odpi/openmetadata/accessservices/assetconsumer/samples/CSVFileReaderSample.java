@@ -89,15 +89,15 @@ public class CSVFileReaderSample
              * This call extracts the list of assets stored in the open metadata repositories that have a name
              * that matches the requested filename.
              */
-            List<Asset>   knownAssets = client.getAssetsByName(clientUserId, fileName, 0, 99);
+            List<String>   knownAssets = client.getAssetsByName(clientUserId, fileName, 0, 99);
 
             if (knownAssets != null)
             {
                 System.out.println("The open metadata repositories have returned " + knownAssets.size() + " asset definitions for the requested file name " + fileName);
 
-                for (Asset asset : knownAssets)
+                for (String assetGUID : knownAssets)
                 {
-                    if (asset != null)
+                    if (assetGUID != null)
                     {
                         try
                         {
@@ -107,11 +107,11 @@ public class CSVFileReaderSample
                              * exception is thrown and the code moves on to process the next asset.
                              */
                             return (StructuredFileStoreConnector) client.getConnectorForAsset(clientUserId,
-                                                                                              asset.getGUID());
+                                                                                              assetGUID);
                         }
                         catch (Throwable error)
                         {
-                            System.out.println("Unable to create connector for asset: " + asset.getDisplayName());
+                            System.out.println("Unable to create connector for asset: " + assetGUID);
                         }
                     }
                 }
