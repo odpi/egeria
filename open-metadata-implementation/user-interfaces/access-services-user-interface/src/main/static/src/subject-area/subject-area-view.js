@@ -24,6 +24,8 @@ import "../../node_modules/@vaadin/vaadin-button/vaadin-button.js";
 import { PolymerElement, html } from "../../node_modules/@polymer/polymer/polymer-element.js";
 import '../shared-styles.js';
 import '../token-ajax.js';
+import './glossary-selector.js';
+import './project-selector.js';
 /**
 *
 *SubjectAreaView is the top level web component for the subject area expert.
@@ -36,125 +38,28 @@ class SubjectAreaView extends PolymerElement {
           display: block;
           padding: 10px 20px;
         }
-        vaadin-grid {
-          height: calc(100vh - 130px);
-        }
       </style>
-       <!--  token-ajax is the component that the UI uses for all rest calls. last-response is bound to local properties -->
-       <token-ajax id="addGlossaryAjaxId" last-response="{{lastAddGlossaryResp}}" ></token-ajax>
-       <token-ajax id="getGlossariesAjaxId" last-response="{{lastGetGlossariesResp}}"></token-ajax>
-       <token-ajax id="addProjectAjaxId" last-response="{{lastAddProjectResp}}" ></token-ajax>
-       <token-ajax id="getProjectsAjaxId" last-response="{{lastGetProjectsResp}}"></token-ajax>
 
        <div style="margin-bottom: 20px">
-       Prototype - create Glossaries and see them in the dropdown. Work in progress.<b>
-        <paper-dropdown-menu label="Glossaries" id="glossary-selector" selected="[[selectedGlossary]]" attr-for-selected="name">
-                <paper-listbox slot="dropdown-content" selected="1">
-                  <template is="dom-repeat" items="[[glossaries]]">
-                    <paper-item>[[item.name]]</paper-item>
-                  </template>
-                </paper-listbox>
-              </paper-dropdown-menu>
-
-         <vaadin-button on-click="onGlossaryDialogOpen">+</vaadin-button>
-        </div>
-        <b>
-        <paper-dropdown-menu label="Projects" id="project-selector" selected="[[selectedProject]]" attr-for-selected="name">
-                <paper-listbox slot="dropdown-content" selected="1">
-                  <template is="dom-repeat" items="[[projects]]">
-                    <paper-item>[[item.name]]</paper-item>
-                  </template>
-                </paper-listbox>
-              </paper-dropdown-menu>
-
-         <vaadin-button on-click="onProjectDialogOpen">+</vaadin-button>
-        </div>        
-
-        <paper-dialog id="createGlossaryDialog">
-         
-               <form is="iron-form" id="createGlossaryForm">
-                  <label for="glossaryName">Name</label>
-                  <input is="paper-input" id="glossaryName" type="text" name="name"> <br>
-
-                  <label for="glossaryQualifiedName">Qualified Name</label>
-                  <input is="paper-input" id="glossaryQualifiedName" type="text" name="qname"><br>
-
-                  <label for="glossaryDescription">Description</label>
-                  <input is="paper-input" id="glossaryDescription" type="text" name="description"><br>
-
-                  <div class="buttons">
-                      <paper-button  dialog-dismiss>Cancel</paper-button>
-                      <paper-button on-tap="_onGlossaryDialogCreate">Create</paper-button>
-                  </div>
-               </form>
-        </paper-dialog>
-        
-        
-        <paper-dialog id="createProjectDialog">
-         
-               <form is="iron-form" id="createProjectForm">
-                  <label for="projectName">Name</label>
-                  <input is="paper-input" id="projectName" type="text" name="name"> <br>
-
-                  <label for="projectQualifiedName">Qualified Name</label>
-                  <input is="paper-input" id="projectQualifiedName" type="text" name="qname"><br>
-
-                  <label for="projectDescription">Description</label>
-                  <input is="paper-input" id="projectDescription" type="text" name="description"><br>
-
-                  <div class="buttons">
-                      <paper-button  dialog-dismiss>Cancel</paper-button>
-                      <paper-button on-tap="_onProjectDialogCreate">Create</paper-button>
-                  </div>
-               </form>
-        </paper-dialog>
-    `;
-  }
+       Prototype - create Glossaries and see them in the dropdown. Work in progress.<p>
+         <glossary-selector selected-glossary="{{selectedGlossary}}" ></glossary-selector>
+         <p>
+         <project-selector selected-project="{{selectedProject}}" ></project-selector>
+       </div>
+  `;
+   }
 
   static get properties() {
     return {
-      //  add glossary response
-      lastAddGlossaryResp: {
-        type: Object,
-         // Observer called  when this property changes
-        observer: '_addGlossaryRespChanged'
-      },
-      //  get glossaries response
-      lastGetGlossariesResp: {
-        type: Object,
-        notify: true
-      },
-       //  selected glossary
-      selectedGlossary: {
-        type: Object,
-        notify: true
-      },
-      // all glossaries from the server rest call response
-      glossaries: {
-        type: Array,
-        computed: 'computeGlossaries(lastGetGlossariesResp)',
-        notify: true
-      },
-  //  add project response
-      lastAddProjectResp: {
-        type: Object,
-         // Observer called  when this property changes
-        observer: '_addProjectRespChanged'
-      },
-      //  get projects response
-      lastGetProjectsResp: {
-        type: Object,
-        notify: true
-      },
-       //  selected project
+
+      //  selected project
       selectedProject: {
         type: Object,
         notify: true
       },
-      // all projects from the server rest call response
-      projects: {
-        type: Array,
-        computed: 'computeProjects(lastGetProjectsResp)',
+      //  selected glossary
+      selectedGlossary: {
+        type: Object,
         notify: true
       }
     };
@@ -162,149 +67,13 @@ class SubjectAreaView extends PolymerElement {
 
     ready(){
         super.ready();
-        // do the initial load of the glossaries
-        this.getGlossaries();
-        this.getProjects();
     }
-  onGlossaryDialogOpen() {
-     this.$.createGlossaryDialog.open();
-  }
-  onProjectDialogOpen() {
-     this.$.createProjectDialog.open();
-  }
-  /**
-   *  Create glossary dialog form - by issuing the rest call. Note that this dos not submit the form which would close the dialog.
-   * It keeps the dialog open so that ut can display any error that occurs
-   */
-  _onGlossaryDialogCreate() {
-     if (this.$.glossaryName.value) {
-         this.createGlossaryAJAX();
-     } else {
-         alert('Glossary name required');
-     }
-  }
-  /**
-   *  Create project dialog form - by issuing the rest call. Note that this dos not submit the form which would close the dialog.
-   * It keeps the dialog open so that ut can display any error that occurs
-   */
-  _onProjectDialogCreate() {
-     if (this.$.projectName.value) {
-         this.createProjectAJAX();
-     } else {
-         alert('Project name required');
-     }
-  }  
-  
-  /**
-   * Issue the create rest Ajax call to add a glossary to the server
-   */
-  createGlossaryAJAX() {
-        var glossary = {};
-        glossary.nodeType = "Glossary";
-        glossary.class = "Glossary";
-        glossary.name =  this.$.glossaryName.value;
-        if (this.$.glossaryDescription.value) {
-            glossary.description= this.$.glossaryDescription.value;
-        }
-        if (this.$.glossaryQualifiedName) {
-            glossary.qualifiedName =this.$.glossaryQualifiedName.value;
-        }
 
-        this.$.addGlossaryAjaxId.method ="post";
-        this.$.addGlossaryAjaxId.body = glossary;
-        this.$.addGlossaryAjaxId.url = "/api/subject-area/glossaries";
-        this.$.addGlossaryAjaxId._go();
-  }
-   /**
-     * Issue the create rest Ajax call to add a glossary to the server
-     */
-    createProjectAJAX() {
-          var project = {};
-          project.nodeType = "Project";
-          project.class = "Project";
-          project.name =  this.$.projectName.value;
-          if (this.$.projectDescription.value) {
-              project.description= this.$.projectDescription.value;
-          }
-          if (this.$.projectQualifiedName) {
-              project.qualifiedName =this.$.projectQualifiedName.value;
-          }
-  
-          this.$.addProjectAjaxId.method ="post";
-          this.$.addProjectAjaxId.body = project;
-          this.$.addProjectAjaxId.url = "/api/subject-area/projects";
-          this.$.addProjectAjaxId._go();
-    }
-  /*
-   * After an add glossary - get the glossaries again so the drop down will be up tp date.
-   */
-  _addGlossaryRespChanged(oldValue,newValue) {
-      if (newValue.relatedHTTPCode == 200) {
-           this.getGlossaries();
-           // close the dialog - a glossary was successfully created
-           this.$.createGlossaryDialog.close();
-      } else {
-          if (newValue.exceptionErrorMessage) {
-               // this is an error that the omas code generated with message and user action.
-               alert('Error occurred: ' +newValue.exceptionErrorMessage + ',user action: ' + newValue.exceptionUserAction);
-           } else {
-               alert('Error occurred resp :' +  newValue);
-          }
-      }
-  }
-    /*
-     * After an add project - get the projects again so the drop down will be up tp date.
-     */
-    _addProjectRespChanged(oldValue,newValue) {
-        if (newValue.relatedHTTPCode == 200) {
-             this.getProjects();
-             // close the dialog - a glossary was successfully created
-             this.$.createProjectDialog.close();
-        } else {
-            if (newValue.exceptionErrorMessage) {
-                 // this is an error that the omas code generated with message and user action.
-                 alert('Error occurred: ' +newValue.exceptionErrorMessage + ',user action: ' + newValue.exceptionUserAction);
-             } else {
-                 alert('Error occurred resp :' +  newValue);
-            }
-        }
-    }
- /**
-  * Issue get glossaries Ajax rest call to the server
-  */
-  getGlossaries() {
-      this.$.getGlossariesAjaxId.method ="get";
-      this.$.getGlossariesAjaxId.url = "/api/subject-area/glossaries";
-      this.$.getGlossariesAjaxId._go();
-  }
- /**
-  * Issue get glossaries Ajax rest call to the server
-  */
-  getProjects() {
-      this.$.getProjectsAjaxId.method ="get";
-      this.$.getProjectsAjaxId.url = "/api/subject-area/projects";
-      this.$.getProjectsAjaxId._go();
-  }  
-  /**
-      * Get the glossaries from the response
-      */
-     computeGlossaries(resp) {
-        if (resp) {
-           return resp.glossaries;
-        } else {
-           return null;
-        }
-     }
-  /**
-      * Get the projects from the response
-      */
-     computeProjects(resp) {
-        if (resp) {
-           return resp.projects;
-        } else {
-           return null;
-        }
-     }     
+
+
+
+
+
 }
 
 window.customElements.define('subject-area-view', SubjectAreaView);

@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -26,13 +27,12 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/subject-area/projects")
-public class SubjectAreaProjectController
+public class SubjectAreaProjectController extends SecureController
 {
     private final SubjectArea subjectArea;
     private static String className = SubjectAreaProjectController.class.getName();
     private static final Logger LOG = LoggerFactory.getLogger(className);
     private final SubjectAreaProject subjectAreaProject;
-    private final String user = "demo";
 
     /**
      * Default constructor
@@ -53,7 +53,7 @@ public class SubjectAreaProjectController
      * Projects that are created using this call will be GlossaryProjects.
      * <p>
      * @param suppliedProject Project to create
-     * @param model Spring model containing attributes including the http session attributes.
+     * @param request HttpServletRequest the servlet request
      * @return response, when successful contains the created project.
      * when not successful the following Exception responses can occur
      * <ul>
@@ -66,9 +66,9 @@ public class SubjectAreaProjectController
      * </ul>
      */
     @RequestMapping(method = RequestMethod.POST)
-    public SubjectAreaOMASAPIResponse createProject( @RequestBody Project suppliedProject,ModelMap model) {
+    public SubjectAreaOMASAPIResponse createProject(@RequestBody Project suppliedProject, HttpServletRequest request) {
         String serverName = subjectArea.getServerName();
-        String userId = getUser(model);
+        String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
             Project project = this.subjectAreaProject.createProject(serverName, userId,suppliedProject);
@@ -81,21 +81,10 @@ public class SubjectAreaProjectController
         return  response;
     }
 
-    private String getUser(ModelMap model) {
-        //TODO error instead of defaulting.
-        String userId = "demo";
-        // the ModelMap contains attributes, this should include the session attributes.
-        User user = (User) model.get("user");
-        if (user !=null) {
-            userId = user.getName();
-        }
-        return userId;
-    }
-
     /**
      * Get a project.
      * @param guid guid of the project to get
-     * @param model Spring model containing attributes including the http session attributes.
+     * @param request HttpServletRequest the servlet request
      * @return response which when successful contains the project with the requested guid
      *  when not successful the following Exception responses can occur
      * <ul>
@@ -108,9 +97,9 @@ public class SubjectAreaProjectController
      * </ul>
      */
     @RequestMapping(method = RequestMethod.GET, path = "/{guid}")
-    public  SubjectAreaOMASAPIResponse getProject(@PathVariable String guid,ModelMap model) {
+    public  SubjectAreaOMASAPIResponse getProject(@PathVariable String guid,HttpServletRequest request) {
         String serverName = subjectArea.getServerName();
-        String userId = getUser(model);
+        String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
             Project project = this.subjectAreaProject.getProjectByGuid(serverName, userId,guid);
@@ -133,7 +122,7 @@ public class SubjectAreaProjectController
      *                 0 means there is no limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @param model Spring model containing attributes including the http session attributes.
+     * @param request HttpServletRequest the servlet request
      * @return A list of projects meeting the search Criteria
      *
      * <ul>
@@ -151,10 +140,10 @@ public class SubjectAreaProjectController
                                                 @RequestParam(value = "pageSize", required=false) Integer pageSize,
                                                 @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
                                                 @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
-                                                ModelMap model
+                                                HttpServletRequest request
     )  {
         String serverName = subjectArea.getServerName();
-        String userId = getUser(model);
+        String userId = getUser(request);
         SubjectAreaOMASAPIResponse response;
         try {
 
@@ -184,7 +173,7 @@ public class SubjectAreaProjectController
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @param model Spring model containing attributes including the http session attributes.
+     * @param request HttpServletRequest the servlet request
      * @return a response which when successful contains the project relationships
      * when not successful the following Exception responses can occur
      * <ul>
@@ -202,12 +191,12 @@ public class SubjectAreaProjectController
                                                             @RequestParam(value = "pageSize", required=false) Integer pageSize,
                                                             @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
                                                             @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
-                                                            ModelMap model
+                                                            HttpServletRequest request
     
     ) {
 
         String serverName = subjectArea.getServerName();
-        String userId = getUser(model);
+        String userId = getUser(request);
         SubjectAreaOMASAPIResponse response;
         try {
             List<Line> lines = this.subjectAreaProject.getProjectRelationships(serverName, userId,guid,asOfTime,offset,pageSize,sequencingOrder,sequencingProperty);
@@ -233,7 +222,7 @@ public class SubjectAreaProjectController
      * @param guid             guid of the project to update
      * @param project         project to update
      * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @param model Spring model containing attributes including the http session attributes.
+     * @param request HttpServletRequest the servlet request
      * @return a response which when successful contains the updated project
      * when not successful the following Exception responses can occur
      * <ul>
@@ -249,9 +238,9 @@ public class SubjectAreaProjectController
                                                       @PathVariable String guid,
                                                       @RequestBody Project project,
                                                       @RequestParam(value = "isReplace", required=false) Boolean isReplace,
-                                                      ModelMap model) {
+                                                      HttpServletRequest request) {
         String serverName = subjectArea.getServerName();
-        String userId = getUser(model);
+        String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
             Project updatedProject;
@@ -282,7 +271,7 @@ public class SubjectAreaProjectController
      *
      * @param guid    guid of the project to be deleted.
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @param model Spring model containing attributes including the http session attributes.
+     * @param request HttpServletRequest the servlet request
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -296,13 +285,13 @@ public class SubjectAreaProjectController
      * </ul>
      */
     @RequestMapping(method = RequestMethod.DELETE, path = "/{guid}")
-    public  SubjectAreaOMASAPIResponse deleteProject(@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge, ModelMap model)  {
+    public  SubjectAreaOMASAPIResponse deleteProject(@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge, HttpServletRequest request)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
         }
         String serverName = subjectArea.getServerName();
-        String userId = getUser(model);
+        String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
             if (isPurge) {
@@ -325,7 +314,7 @@ public class SubjectAreaProjectController
      *
      * Restore allows the deleted Project to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param guid       guid of the project to restore
-     * @param model Spring model containing attributes including the http session attributes.
+     * @param request HttpServletRequest the servlet request
      * @return response which when successful contains the restored project
      * when not successful the following Exception responses can occur
      * <ul>
@@ -337,10 +326,10 @@ public class SubjectAreaProjectController
      * </ul>
      */
     @RequestMapping(method = RequestMethod.POST, path = "/{guid}")
-    public SubjectAreaOMASAPIResponse restoreProject(@PathVariable String guid, ModelMap model)
+    public SubjectAreaOMASAPIResponse restoreProject(@PathVariable String guid, HttpServletRequest request)
     {
         String serverName = subjectArea.getServerName();
-        String userId = getUser(model);
+        String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
             Project project = this.subjectAreaProject.restoreProject(serverName, userId,guid);
