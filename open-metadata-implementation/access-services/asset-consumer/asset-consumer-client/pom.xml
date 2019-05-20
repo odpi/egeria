@@ -45,7 +45,7 @@
         <!-- Asset Consumer is built on Connected Asset -->
         <dependency>
             <groupId>org.odpi.egeria</groupId>
-            <artifactId>connected-asset-client</artifactId>
+            <artifactId>ocf-metadata-client</artifactId>
             <version>${open-metadata.version}</version>
         </dependency>
 

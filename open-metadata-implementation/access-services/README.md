@@ -195,7 +195,7 @@ options).   The implementation of the OMRS Connector handles the
 communication between the OMAS application and the metadata repositories,
 whether this is through local or remote calls.
 
-The [administration services](../governance-servers/admin-services/README.md) provide
+The [administration services](../admin-services/README.md) provide
 the ability to configure, start and stop the access services.
 
 ----

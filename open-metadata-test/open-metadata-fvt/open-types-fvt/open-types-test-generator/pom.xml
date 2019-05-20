@@ -14,6 +14,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <name>Open Types Test generator</name>
+    <description>
+        Generate Functional Verification Test (FVT) for open types.
+    </description>
 
     <artifactId>open-types-test-generator</artifactId>
 

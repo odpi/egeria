@@ -18,7 +18,7 @@
         <!-- Copy the Jars for the OMAG Server-->
 
         <fileSet>
-            <directory>../../open-metadata-implementation/governance-servers/server-chassis/server-chassis-spring/target</directory>
+            <directory>../../open-metadata-implementation/server-chassis/server-chassis-spring/target</directory>
             <outputDirectory>./server</outputDirectory>
             <includes>
                 <include>*.jar</include>
@@ -30,7 +30,7 @@
         <!-- Copy the properties for the OMAG Server-->
 
         <fileSet>
-            <directory>../../open-metadata-implementation/governance-servers/server-chassis/server-chassis-spring/src/main</directory>
+            <directory>../../open-metadata-implementation/server-chassis/server-chassis-spring/src/main</directory>
             <outputDirectory>./server</outputDirectory>
             <includes>
                 <include>resources/*</include>
@@ -86,16 +86,6 @@
 
         <fileSet>
             <directory>../../open-metadata-implementation/access-services/community-profile/community-profile-client/target/</directory>
-            <outputDirectory>./clients</outputDirectory>
-            <includes>
-                <include>*.jar</include>
-            </includes>
-            <fileMode>0755</fileMode>
-            <directoryMode>0755</directoryMode>
-        </fileSet>
-
-        <fileSet>
-            <directory>../../open-metadata-implementation/access-services/community-profile/connected-asset-client/target/</directory>
             <outputDirectory>./clients</outputDirectory>
             <includes>
                 <include>*.jar</include>

@@ -28,7 +28,6 @@
         <module>asset-lineage</module>
         <module>asset-owner</module>
         <module>community-profile</module>
-        <module>connected-asset</module>
         <module>data-platform</module>
         <module>data-process</module>
         <module>data-science</module>

@@ -40,8 +40,9 @@ public class NodeTypeMapper {
             entityTypeName = "GlossaryCategory";
         } else if (nodeType.name().equals("Taxonomy") || nodeType.name().equals("CanonicalGlossary") || nodeType.name().equals("TaxonomyAndCanonicalGlossary")) {
               entityTypeName = "Glossary";
+        } else if (nodeType.name().equals("GlossaryProject")) {
+              entityTypeName = "Project";
         }
-
         return OMRSArchiveAccessor.getInstance().getEntityDefByName(entityTypeName).getGUID();
     }
 
