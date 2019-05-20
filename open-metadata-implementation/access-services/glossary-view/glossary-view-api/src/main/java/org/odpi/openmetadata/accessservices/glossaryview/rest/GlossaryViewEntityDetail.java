@@ -6,7 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.util.Date;
+import java.util.*;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
@@ -19,48 +19,24 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class GlossaryViewEntityDetail{
 
-    private String entityClass;
+    private String entityType;
     private String createdBy;
     private String updatedBy;
     private Date createTime;
     private Date updateTime;
     private long version;
+    private String guid;
+    private String status;
     private Date effectiveFromTime;
     private Date effectiveToTime;
 
-    private String qualifiedName;
-    private String guid;
-    private String displayName;
-    private String description;
-    private String language;
-    private String usage;
-    private String status;
+    private Map<String, String> properties;
 
-    public GlossaryViewEntityDetail(){
+    private List<GlossaryViewClassification> classifications;
 
-    }
+    public GlossaryViewEntityDetail(){}
 
-    public GlossaryViewEntityDetail(String entityClass, String createdBy, String updatedBy, Date createTime, Date updateTime, long version,
-                                    Date effectiveFromTime, Date effectiveToTime, String qualifiedName, String guid, String displayName,
-                                    String description, String language, String usage, String status){
-        this.entityClass = entityClass;
-        this.createdBy = createdBy;
-        this.updatedBy = updatedBy;
-        this.createTime = createTime;
-        this.updateTime = updateTime;
-        this.version = version;
-        this.effectiveFromTime = effectiveFromTime;
-        this.effectiveToTime = effectiveToTime;
-        this.qualifiedName = qualifiedName;
-        this.guid = guid;
-        this.displayName = displayName;
-        this.description = description;
-        this.language = language;
-        this.usage = usage;
-        this.status = status;
-    }
-
-    public String getEntityClass(){ return entityClass; }
+    public String getEntityType(){ return entityType; }
 
     public String getCreatedBy() {
         return createdBy;
@@ -82,6 +58,14 @@ public class GlossaryViewEntityDetail{
         return version;
     }
 
+    public String getGuid() {
+        return guid;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
     public Date getEffectiveFromTime() {
         return effectiveFromTime;
     }
@@ -90,36 +74,16 @@ public class GlossaryViewEntityDetail{
         return effectiveToTime;
     }
 
-    public String getQualifiedName() {
-        return qualifiedName;
+    public Map<String, String> getProperties() {
+        return properties;
     }
 
-    public String getGuid() {
-        return guid;
+    public List<GlossaryViewClassification> getClassifications() {
+        return classifications;
     }
 
-    public String getDisplayName() {
-        return displayName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public String getLanguage() {
-        return language;
-    }
-
-    public String getUsage() {
-        return usage;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public GlossaryViewEntityDetail setEntityClass(String entityClass) {
-        this.entityClass = entityClass;
+    public GlossaryViewEntityDetail setEntityType(String entityType) {
+        this.entityType = entityType;
         return this;
     }
     public GlossaryViewEntityDetail setCreatedBy(String createdBy) {
@@ -147,6 +111,16 @@ public class GlossaryViewEntityDetail{
         return this;
     }
 
+    public GlossaryViewEntityDetail setGuid(String guid) {
+        this.guid = guid;
+        return this;
+    }
+
+    public GlossaryViewEntityDetail setStatus(String status) {
+        this.status = status;
+        return this;
+    }
+
     public GlossaryViewEntityDetail setEffectiveFromTime(Date effectiveFromTime) {
         this.effectiveFromTime = effectiveFromTime;
         return this;
@@ -157,38 +131,46 @@ public class GlossaryViewEntityDetail{
         return this;
     }
 
-    public GlossaryViewEntityDetail setQualifiedName(String qualifiedName) {
-        this.qualifiedName = qualifiedName;
+    public GlossaryViewEntityDetail setProperties(Map<String, String> properties){
+        this.properties = properties;
         return this;
     }
 
-    public GlossaryViewEntityDetail setGuid(String guid) {
-        this.guid = guid;
+    public GlossaryViewEntityDetail putProperties(Map<String, String> properties){
+        if (this.properties == null) {
+            this.properties = new HashMap<>();
+        }
+        this.properties.putAll(properties);
         return this;
     }
 
-    public GlossaryViewEntityDetail setDisplayName(String displayName) {
-        this.displayName = displayName;
+    public GlossaryViewEntityDetail putProperty(String key, String value){
+        if (this.properties == null) {
+            this.properties = new HashMap<>();
+        }
+        this.properties.put(key, value);
         return this;
     }
 
-    public GlossaryViewEntityDetail setDescription(String description) {
-        this.description = description;
+    public GlossaryViewEntityDetail setClassifications(List<GlossaryViewClassification> classifications) {
+        this.classifications = classifications;
         return this;
     }
 
-    public GlossaryViewEntityDetail setLanguage(String language) {
-        this.language = language;
+    public GlossaryViewEntityDetail addClassifications(List<GlossaryViewClassification> classifications) {
+        if(this.classifications == null){
+            this.classifications = new ArrayList<>();
+        }
+        this.classifications.addAll(classifications);
         return this;
     }
 
-    public GlossaryViewEntityDetail setUsage(String usage) {
-        this.usage = usage;
+    public GlossaryViewEntityDetail addClassification(GlossaryViewClassification classification) {
+        if(this.classifications == null){
+            this.classifications = new ArrayList<>();
+        }
+        this.classifications.add(classification);
         return this;
     }
 
-    public GlossaryViewEntityDetail setStatus(String status) {
-        this.status = status;
-        return this;
-    }
 }

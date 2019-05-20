@@ -12,6 +12,7 @@ import org.odpi.openmetadata.accessservices.glossaryview.rest.GlossaryViewEntity
 public class GlossaryService extends GlossaryViewOMAS {
 
     private static GlossaryService instance;
+    private static final String EXTERNALLY_SOURCED_GLOSSARY = "ExternallySourcedGlossary";
     private static final String GLOSSARY = "Glossary";
 
     public static synchronized GlossaryService getInstance(){
@@ -21,9 +22,7 @@ public class GlossaryService extends GlossaryViewOMAS {
         return instance;
     }
 
-    private GlossaryService() {
-        //
-    }
+    private GlossaryService() {}
 
     /**
      * Extract the glossary definition for the given GUID
@@ -48,6 +47,19 @@ public class GlossaryService extends GlossaryViewOMAS {
      */
     public GlossaryViewEntityDetailResponse getAllGlossaries(String userId, String serverName){
         return getAllEntityDetailsResponse(userId, serverName, GLOSSARY);
+    }
+
+    /**
+     * Extract external glossary definitions
+     *
+     * @param userId calling user
+     * @param serverName instance to call
+     * @param glossaryGUID glossary GUID
+     *
+     * @return EntityDetailResponse all external glossaries
+     */
+    public GlossaryViewEntityDetailResponse getExternalGlossaries(String userId, String serverName, String glossaryGUID){
+        return getRelatedEntities(userId, serverName, glossaryGUID, EXTERNALLY_SOURCED_GLOSSARY);
     }
 
 }
