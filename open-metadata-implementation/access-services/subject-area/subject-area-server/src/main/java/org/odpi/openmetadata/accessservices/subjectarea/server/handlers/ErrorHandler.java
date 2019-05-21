@@ -134,6 +134,7 @@ public class ErrorHandler
                 errorMessage,
                 errorCode.getSystemAction(),
                 errorCode.getUserAction());
+        oe.setRelatedProperties(e.getRelatedProperties());
         return OMASExceptionToResponse.convertInvalidParameterException(oe);
     }
 
@@ -148,7 +149,7 @@ public class ErrorHandler
     public static SubjectAreaOMASAPIResponse  handleTypeDefNotKnownException(String typeName, String methodName, String serverName, String serviceName)  {
         SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.TYPEDEF_NOT_KNOWN;
         String                 errorMessage = errorCode.getErrorMessageId()
-                + errorCode.getFormattedErrorMessage(methodName);
+                + errorCode.getFormattedErrorMessage(methodName,typeName);
         // specifying a typedef name that is not correct is a parameter error.
 
         InvalidParameterException oe = new InvalidParameterException(errorCode.getHTTPErrorCode(),
@@ -169,7 +170,7 @@ public class ErrorHandler
      * @return  InvalidParameterException response a parameter is not valid or missing.
      */
     public static SubjectAreaOMASAPIResponse  handlePropertyErrorException(org.odpi.openmetadata.repositoryservices.ffdc.exception.PropertyErrorException e, String methodName, String serverName, String serviceName)  {
-        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.TYPEDEF_NOT_KNOWN;
+        SubjectAreaErrorCode errorCode = SubjectAreaErrorCode.INVALID_PARAMETER;
         String                 errorMessage = errorCode.getErrorMessageId()
                 + errorCode.getFormattedErrorMessage(methodName);
         // specifying a typedef name that is not correct is a parameter error.
@@ -179,6 +180,7 @@ public class ErrorHandler
                 errorMessage,
                 errorCode.getSystemAction(),
                 errorCode.getUserAction());
+        oe.setRelatedProperties(e.getRelatedProperties());
         return OMASExceptionToResponse.convertInvalidParameterException(oe);
     }
 

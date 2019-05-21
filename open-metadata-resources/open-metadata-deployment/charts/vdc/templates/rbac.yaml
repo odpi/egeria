@@ -33,4 +33,5 @@ subjects:
   namespace: {{ .Release.Namespace }}
 roleRef:
   kind: Role
+  apiGroup: rbac.authorization.k8s.io
   name: {{ include "myapp.fullname" . }}-api-role

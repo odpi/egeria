@@ -32,6 +32,12 @@ public interface SubjectArea
      * @return subject area graph API class
      */
    SubjectAreaGraph getSubjectAreaGraph();
+
+    /**
+     * Get the subject area project API class - use this class to issue project calls.
+     * @return subject area project API class
+     */
+    SubjectAreaProject getSubjectAreaProject();
     /**
      * Server Name under which this request is performed, this is used in multi tenanting to identify the tenant
      * @return serverName name of the server
@@ -42,4 +48,6 @@ public interface SubjectArea
      * @return base url
      */
     String getOmasServerUrl();
+
+
 }
