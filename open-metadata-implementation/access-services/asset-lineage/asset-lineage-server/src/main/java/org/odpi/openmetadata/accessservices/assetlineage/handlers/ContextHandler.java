@@ -1,6 +1,6 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetlineage.eventProcessors;
+package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.exception.*;
@@ -22,10 +22,10 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.eventProcessors.EventProcessor.instanceHandler;
+import static org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher.instanceHandler;
 import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
-public class AssetContextBuilder {
+public class ContextHandler {
 
 
     private OMRSMetadataCollection metadataCollectionForSearch;
@@ -35,7 +35,7 @@ public class AssetContextBuilder {
     private ExceptionHandler exceptionUtil;
     private OMRSAuditLog auditLog;
 
-    public AssetContextBuilder(OMRSAuditLog auditLog){
+    public ContextHandler(OMRSAuditLog auditLog){
         this.auditLog = auditLog;
         this.exceptionUtil = new ExceptionHandler(auditLog);
 

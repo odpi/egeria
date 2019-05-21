@@ -25,10 +25,9 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
  */
 public class AssetConsumerRESTServices
 {
+
     private static AssetConsumerInstanceHandler   instanceHandler     = new AssetConsumerInstanceHandler();
-
     private static final Logger log = LoggerFactory.getLogger(AssetConsumerRESTServices.class);
-
     private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
