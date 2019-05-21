@@ -72,6 +72,16 @@ spec:
         app.kubernetes.io/component: ranger-admin-service
 
     spec:
+      initContainers:
+        - name: wait-for-db
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          env:
+            - name: SERVICE
+              value: {{ include "myapp.fullname" . }}-postgresql-service
       containers:
         - name: {{ .Chart.Name }}-ranger
           image: "{{ if (.Values.image.ranger.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.ranger.registry | default .Values.imageDefaults.registry }}/{{ end }}\
@@ -85,18 +95,21 @@ spec:
             - containerPort: 6083
             - containerPort: 6183
             - containerPort: 8886
-          resources: {}
-        - name: {{ .Chart.Name }}-mariadb
-          image: "{{ if (.Values.image.mariadb.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.mariadb.registry | default .Values.imageDefaults.registry }}/{{ end }}\
-                  {{ if (.Values.image.mariadb.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.mariadb.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
-                  {{ .Values.image.mariadb.name }}\
-                  :{{ .Values.image.mariadb.tag | default .Values.imageDefaults.tag }}"
-          imagePullPolicy: {{ .Values.image.mariadb.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           env:
-            - name: MYSQL_ROOT_PASSWORD
-              value: admin999
-          ports:
-            - containerPort: 3306
+            - name: PGPASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "myapp.fullname" . }}-configmap
+                  key: POSTGRESQL_PASSWORD
+            - name: RANGER_PASSWORD
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ include "myapp.fullname" . }}-configmap
+                  key: RANGER_PASSWORD
+            - name: PGHOST
+              value: {{ include "myapp.fullname" . }}-postgresql-service
+            - name: PGUSER
+              value: postgres
           resources: {}
       restartPolicy: Always
 status: {}
