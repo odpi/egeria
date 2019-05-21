@@ -1,10 +1,12 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetlineage.model;
+package org.odpi.openmetadata.accessservices.assetlineage.model.assetContext;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetElement;
+import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Element;
 
 import java.util.List;
 
@@ -14,24 +16,15 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility = PUBLIC_ONLY, setterVisibility = PUBLIC_ONLY, fieldVisibility = NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class AssetElement extends Element {
+public class Term extends Element {
 
-    private List<Element> context;
-    private List<Connection> connections;
+    private List<AssetElement> elements;
 
-    public List<Element> getContext() {
-        return context;
+    public List<AssetElement> getElements() {
+        return elements;
     }
 
-    public void setContext(List<Element> context) {
-        this.context = context;
-    }
-
-    public List<Connection> getConnections() {
-        return connections;
-    }
-
-    public void setConnections(List<Connection> connections) {
-        this.connections = connections;
+    public void setElements(List<AssetElement> elements) {
+        this.elements = elements;
     }
 }

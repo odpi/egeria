@@ -1,8 +1,10 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.accessservices.assetlineage.model;
+package org.odpi.openmetadata.accessservices.assetlineage.model.assetContext;
 
 import com.fasterxml.jackson.annotation.*;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.RelationshipEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
 
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;

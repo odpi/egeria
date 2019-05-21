@@ -24,6 +24,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
     private OMRSAuditLog auditLog;
     private AssetLineageServicesInstance instance;
     private String serverName;
+    private String serverUserName;
 
 
     /**
@@ -50,6 +51,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                            String serverUserName) throws OMAGConfigurationErrorException {
         final String actionDescription = "initialize";
         AssetLineageAuditCode auditCode;
+        this.serverUserName = serverUserName;
 
         auditCode = AssetLineageAuditCode.SERVICE_INITIALIZING;
         auditLog.logRecord(actionDescription,
@@ -63,6 +65,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
         try {
             this.auditLog = auditLog;
 
+            //TODO add proper zones
             List<String> supportedZones = this.extractSupportedZones(accessServiceConfig.getAccessServiceOptions(),
                     accessServiceConfig.getAccessServiceName(),
                     auditLog);
@@ -84,7 +87,9 @@ public class AssetLineageAdmin extends AccessServiceAdmin {
                         repositoryConnector.getRepositoryValidator(),
                         accessServiceConfig.getAccessServiceName(),
                         supportedZones,
-                        auditLog);
+                        auditLog,
+                        serverUserName,
+                        serverName);
                 super.registerWithEnterpriseTopic(accessServiceConfig.getAccessServiceName(),
                         serverName,
                         omrsTopicConnector,

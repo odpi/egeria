@@ -44,8 +44,17 @@ public class AssetLineageServicesInstance extends OCFOMASServiceInstance {
         super.supportedZones = supportedZones;
 
         if (repositoryHandler != null)  {
-            glossaryHandler = new GlossaryHandler(serverName, null);
-            contextHandler = new ContextHandler(auditLog);
+            glossaryHandler = new GlossaryHandler(serviceName,
+                    serverName,
+                    invalidParameterHandler,
+                    repositoryHelper,
+                    repositoryHandler);
+
+            contextHandler = new ContextHandler(serviceName,
+                    serverName,
+                    invalidParameterHandler,
+                    repositoryHelper,
+                    repositoryHandler);
         }else {
             AssetLineageErrorCode errorCode = AssetLineageErrorCode.OMRS_NOT_INITIALIZED;
             String errorMessage = errorCode.getErrorMessageId() + errorCode.getFormattedErrorMessage(methodName);
