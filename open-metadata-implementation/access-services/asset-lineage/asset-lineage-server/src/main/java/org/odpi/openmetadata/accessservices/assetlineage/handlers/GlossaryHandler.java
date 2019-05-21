@@ -22,7 +22,6 @@ public class GlossaryHandler {
     private static AssetLineageInstanceHandler instanceHandler     = new AssetLineageInstanceHandler();
     private String serverName;
 
-    //TODO Replace print stacktraces with proper audit logging!
     public GlossaryHandler(String serverName, RepositoryHandler repositoryHandler) {
         this.serverName = serverName;
         this.repositoryHandler = repositoryHandler;

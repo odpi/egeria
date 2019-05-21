@@ -8,7 +8,6 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationError
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.events.*;
 import org.slf4j.Logger;
@@ -16,10 +15,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-public class EnterpriseTopicListener implements OMRSTopicListener {
+public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
 
-    private static final Logger log = LoggerFactory.getLogger(EnterpriseTopicListener.class);
+    private static final Logger log = LoggerFactory.getLogger(AssetLineageOMRSTopicListener.class);
     private static final String SOURCENAME ="EnterpriseOMRSTopic";
     private OMRSInstanceEventProcessor instanceEventProcessor;
     private OMRSAuditLog auditLog;
@@ -31,21 +30,19 @@ public class EnterpriseTopicListener implements OMRSTopicListener {
      * along with classes for testing and manipulating instances.
      *
      * @param assetLineageOutTopic  connection to the out topic
-     * @param repositoryHelper  provides methods for working with metadata instances
      * @param repositoryValidator  provides validation of metadata instance
      * @param componentName  name of component
      * @param supportedZones list of zones covered by this instance of the access service.
      * @param auditLog log for errors and information messages
      */
-    public EnterpriseTopicListener(Connection assetLineageOutTopic,
-                                   OMRSRepositoryHelper repositoryHelper,
-                                   OMRSRepositoryValidator repositoryValidator,
-                                   String                  componentName,
-                                   List<String> supportedZones,
-                                   OMRSAuditLog            auditLog) throws OMAGConfigurationErrorException {
+    public AssetLineageOMRSTopicListener(Connection assetLineageOutTopic,
+                                         OMRSRepositoryValidator repositoryValidator,
+                                         String                  componentName,
+                                         List<String> supportedZones,
+                                         OMRSAuditLog            auditLog) throws OMAGConfigurationErrorException {
 
         this.auditLog = auditLog;
-        assetLineagePublisher = new AssetLineagePublisher(repositoryHelper, assetLineageOutTopic, auditLog);
+        assetLineagePublisher = new AssetLineagePublisher(assetLineageOutTopic, auditLog);
     }
 
     @Override
