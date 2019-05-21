@@ -33,8 +33,12 @@ data:
   ATLAS_ENDPOINT: http://{{ include "myapp.fullname" . }}-atlas-service:21000
   {{ end }}
 
-  {{ if .Values.postgresql.enabled }}
+  {{ if or .Values.postgresql.enabled .Values.ranger.enabled }}
   POSTGRESQL_PASSWORD: passw0rd
+  {{ end }}
+
+  {{ if .Values.ranger.enabled }}
+  RANGER_PASSWORD: admin999
   {{ end }}
 
   {{ if .Values.ibmigc.enabled }}

@@ -108,10 +108,10 @@ spec:
             - "/bin/bash"
             - "-c"
             - >
-              cd /connectors &&
+              cd /opt/egeria/connectors &&
               wget https://github.com/odpi/egeria-connector-ibm-igc/releases/download/1.1-SNAPSHOT/egeria-connector-ibm-igc-package-1.1-SNAPSHOT.jar
           volumeMounts:
-            - mountPath: /connectors
+            - mountPath: /opt/egeria/connectors
               name: egeria-igc-connector-volume
 {{ if .Values.ibmigc.internal.enabled }}
 # If we are using a cluster-internal IGC, stand up both the IGC container and the proxy, embedding the Ansible
@@ -148,7 +148,7 @@ spec:
                 name: {{ include "myapp.fullname" . }}-configmap
           env:
             - name: "LOADER_PATH"
-              value: "/connectors"
+              value: "/opt/egeria/connectors"
           ports:
             - containerPort: 8080
           readinessProbe:
@@ -159,7 +159,7 @@ spec:
             failureThreshold: 6
           resources: {}
           volumeMounts:
-            - mountPath: /connectors
+            - mountPath: /opt/egeria/connectors
               name: egeria-igc-connector-volume
               readOnly: true
 {{ if .Values.ibmigc.internal.enabled }}

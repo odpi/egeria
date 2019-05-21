@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 ---
-{{ if .Values.postgresql.enabled }}
+{{ if or .Values.postgresql.enabled .Values.ranger.enabled }}
 apiVersion: v1
 kind: Service
 metadata:
