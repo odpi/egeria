@@ -36,7 +36,7 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException    error in the requested server
      */
-    GlossaryHandler getGlossaryTermBuilder(String userId,
+    public GlossaryHandler getGlossaryHandler(String userId,
                                            String serverName) throws InvalidParameterException,
             UserNotAuthorizedException,
             PropertyServerException {
@@ -59,7 +59,7 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException    error in the requested server
      */
-    ContextHandler getContextHandler(String userId,
+    public ContextHandler getContextHandler(String userId,
                                      String serverName) throws InvalidParameterException,
             UserNotAuthorizedException,
             PropertyServerException {

@@ -3,8 +3,8 @@
 
 package org.odpi.openmetadata.accessservices.assetlineage.handlers;
 
-import org.odpi.openmetadata.accessservices.assetlineage.model.GlossaryTerm;
-import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageInstanceHandler;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.GlossaryTerm;
+import org.odpi.openmetadata.commonservices.ffdc.InvalidParameterHandler;
 import org.odpi.openmetadata.commonservices.repositoryhandler.RepositoryHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
@@ -18,14 +18,33 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.G
 
 public class GlossaryHandler {
 
-    private RepositoryHandler repositoryHandler;
-    private static AssetLineageInstanceHandler instanceHandler     = new AssetLineageInstanceHandler();
-    private String serverName;
+    private String                  serviceName;
+    private String                  serverName;
+    private RepositoryHandler       repositoryHandler;
+    private OMRSRepositoryHelper    repositoryHelper;
+    private InvalidParameterHandler invalidParameterHandler;
 
-    public GlossaryHandler(String serverName, RepositoryHandler repositoryHandler) {
+    /**
+     * Construct the discovery engine configuration handler caching the objects
+     * needed to operate within a single server instance.
+     *
+     * @param serviceName name of the consuming service
+     * @param serverName name of this server instance
+     * @param invalidParameterHandler handler for invalid parameters
+     * @param repositoryHelper helper used by the converters
+     * @param repositoryHandler handler for calling the repository services
+     */
+    public GlossaryHandler(String                  serviceName,
+                           String                  serverName,
+                           InvalidParameterHandler invalidParameterHandler,
+                           OMRSRepositoryHelper    repositoryHelper,
+                           RepositoryHandler       repositoryHandler)
+    {
+        this.serviceName = serviceName;
         this.serverName = serverName;
+        this.invalidParameterHandler = invalidParameterHandler;
+        this.repositoryHelper = repositoryHelper;
         this.repositoryHandler = repositoryHandler;
-
     }
 
 

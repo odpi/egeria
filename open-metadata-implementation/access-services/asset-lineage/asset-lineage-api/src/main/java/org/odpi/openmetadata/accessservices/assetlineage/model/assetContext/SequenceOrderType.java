@@ -1,5 +1,5 @@
 /* SPDX-License-Identifier: Apache-2.0 */
-package org.odpi.openmetadata.accessservices.assetlineage.model;
+package org.odpi.openmetadata.accessservices.assetlineage.model.assetContext;
 
 /**
  * The SequenceOrderType enum defining how the results should be ordered when they are returned from metadata collection.
