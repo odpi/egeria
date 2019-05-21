@@ -3,13 +3,18 @@
 package org.odpi.openmetadata.accessservices.assetlineage.listeners;
 
 
-import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditCode;
+import org.odpi.openmetadata.accessservices.assetlineage.outtopic.AssetLineagePublisher;
+import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicListener;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryValidator;
 import org.odpi.openmetadata.repositoryservices.events.*;
-import org.odpi.openmetadata.repositoryservices.events.beans.v1.OMRSEventV1;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 public class EnterpriseTopicListener implements OMRSTopicListener {
 
@@ -18,16 +23,29 @@ public class EnterpriseTopicListener implements OMRSTopicListener {
     private static final String SOURCENAME ="EnterpriseOMRSTopic";
     private OMRSInstanceEventProcessor instanceEventProcessor;
     private OMRSAuditLog auditLog;
+    private AssetLineagePublisher assetLineagePublisher;
+
 
     /**
+     * The constructor is given the connection to the out topic for Asset Lineage OMAS
+     * along with classes for testing and manipulating instances.
      *
-     * @param instanceEventProcessor
-     * @param auditLog
+     * @param assetLineageOutTopic  connection to the out topic
+     * @param repositoryHelper  provides methods for working with metadata instances
+     * @param repositoryValidator  provides validation of metadata instance
+     * @param componentName  name of component
+     * @param supportedZones list of zones covered by this instance of the access service.
+     * @param auditLog log for errors and information messages
      */
-    public EnterpriseTopicListener(OMRSInstanceEventProcessor instanceEventProcessor, OMRSAuditLog auditLog) {
+    public EnterpriseTopicListener(Connection assetLineageOutTopic,
+                                   OMRSRepositoryHelper repositoryHelper,
+                                   OMRSRepositoryValidator repositoryValidator,
+                                   String                  componentName,
+                                   List<String> supportedZones,
+                                   OMRSAuditLog            auditLog) throws OMAGConfigurationErrorException {
 
-        this.instanceEventProcessor = instanceEventProcessor;
         this.auditLog = auditLog;
+        assetLineagePublisher = new AssetLineagePublisher(repositoryHelper, assetLineageOutTopic, auditLog);
     }
 
     @Override
@@ -81,7 +99,8 @@ public class EnterpriseTopicListener implements OMRSTopicListener {
                         break;
 
                     case NEW_RELATIONSHIP_EVENT:
-                        instanceEventProcessor.processNewRelationshipEvent(SOURCENAME,
+                        instanceEventProcessor.processNewRelationshipEvent(
+                                SOURCENAME,
                                 instanceEventOriginator.getMetadataCollectionId(),
                                 instanceEventOriginator.getServerName(),
                                 instanceEventOriginator.getServerType(),

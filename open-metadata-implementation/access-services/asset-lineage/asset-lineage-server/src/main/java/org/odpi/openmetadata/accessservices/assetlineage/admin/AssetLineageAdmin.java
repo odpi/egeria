@@ -5,16 +5,14 @@ package org.odpi.openmetadata.accessservices.assetlineage.admin;
 
 
 import org.odpi.openmetadata.accessservices.assetlineage.auditlog.AssetLineageAuditCode;
-import org.odpi.openmetadata.accessservices.assetlineage.eventProcessors.EventProcessor;
 import org.odpi.openmetadata.accessservices.assetlineage.listeners.EnterpriseTopicListener;
-import org.odpi.openmetadata.accessservices.assetlineage.eventProcessors.AssetLineageServicesInstance;
+import org.odpi.openmetadata.accessservices.assetlineage.server.AssetLineageServicesInstance;
 import org.odpi.openmetadata.adminservices.configuration.properties.AccessServiceConfig;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceAdmin;
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGConfigurationErrorException;
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBroker;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
-import org.odpi.openmetadata.frameworks.connectors.properties.beans.Endpoint;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditingComponent;
 import org.odpi.openmetadata.repositoryservices.connectors.omrstopic.OMRSTopicConnector;
@@ -32,28 +30,27 @@ public class AssetLineageAdmin extends AccessServiceAdmin
     private OMRSAuditLog auditLog;
     private String serverName;
     private AssetLineageServicesInstance instance;
-    private String serverUserName;
 
 
     /**
      * Initialize the access service.
      *
-     * @param accessServiceConfigurationProperties specific configuration properties for this access service.
+     * @param accessServiceConfig specific configuration properties for this access service.
      * @param enterpriseOMRSTopicConnector         connector for receiving OMRS Events from the cohorts
-     * @param enterpriseConnector                  connector for querying the cohort repositories
+     * @param repositoryConnector                  connector for querying the cohort repositories
      * @param auditLog                             audit log component for logging messages.
      * @param serverUserName                       user id to use on OMRS calls where there is no end user.
      * @throws OMAGConfigurationErrorException invalid parameters in the configuration properties.
      */
     @Override
-    public void initialize(AccessServiceConfig accessServiceConfigurationProperties,
+    public void initialize(AccessServiceConfig accessServiceConfig,
                            OMRSTopicConnector enterpriseOMRSTopicConnector,
-                           OMRSRepositoryConnector enterpriseConnector,
-                           OMRSAuditLog auditLog, String serverUserName) throws OMAGConfigurationErrorException
+                           OMRSRepositoryConnector repositoryConnector,
+                           OMRSAuditLog auditLog,
+                           String serverUserName) throws OMAGConfigurationErrorException
     {
         final String actionDescription = "initialize";
         AssetLineageAuditCode auditCode;
-        this.serverUserName = serverUserName;
 
         try {
             auditCode = AssetLineageAuditCode.SERVICE_INITIALIZING;
@@ -67,14 +64,14 @@ public class AssetLineageAdmin extends AccessServiceAdmin
 
             this.auditLog = auditLog;
 
-            if (enterpriseConnector != null) {
-                serverName = enterpriseConnector.getServerName();
+            if (repositoryConnector != null) {
+                serverName = repositoryConnector.getServerName();
             }
 
-            Connection outTopicConnection = accessServiceConfigurationProperties.getAccessServiceOutTopic();
+            Connection outTopicConnection = accessServiceConfig.getAccessServiceOutTopic();
             String outTopicName = getTopicName(outTopicConnection);
 
-            OpenMetadataTopicConnector assetLineageOutTopicConnector = initializeAssetLineageTopicConnector(accessServiceConfigurationProperties.getAccessServiceOutTopic());
+            OpenMetadataTopicConnector assetLineageOutTopicConnector = initializeAssetLineageTopicConnector(accessServiceConfig.getAccessServiceOutTopic());
 
             if (enterpriseOMRSTopicConnector != null) {
                 auditCode = AssetLineageAuditCode.SERVICE_REGISTERED_WITH_ENTERPRISE_TOPIC;
@@ -85,8 +82,13 @@ public class AssetLineageAdmin extends AccessServiceAdmin
                         null,
                         auditCode.getSystemAction(),
                         auditCode.getUserAction());
-                EventProcessor eventProcessor = new EventProcessor(this.serverName, this.serverUserName, assetLineageOutTopicConnector, auditLog);
-                EnterpriseTopicListener enterpriseTopicListener = new EnterpriseTopicListener(eventProcessor, auditLog);
+
+                EnterpriseTopicListener enterpriseTopicListener = new EnterpriseTopicListener(accessServiceConfig.getAccessServiceOutTopic(),
+                        repositoryConnector.getRepositoryHelper(),
+                        repositoryConnector.getRepositoryValidator(),
+                        accessServiceConfig.getAccessServiceName(),
+                        null,
+                        auditLog);
                 enterpriseOMRSTopicConnector.registerListener(enterpriseTopicListener);
             }
 
@@ -95,8 +97,7 @@ public class AssetLineageAdmin extends AccessServiceAdmin
                 startConnector(AssetLineageAuditCode.SERVICE_REGISTERED_WITH_AL_OUT_TOPIC, actionDescription, outTopicName, assetLineageOutTopicConnector);
             }
 
-            this.instance = new AssetLineageServicesInstance(enterpriseConnector);
-
+            this.instance = new AssetLineageServicesInstance(repositoryConnector, null, auditLog);
             auditCode = AssetLineageAuditCode.SERVICE_INITIALIZED;
             auditLog.logRecord(actionDescription,
                     auditCode.getLogMessageId(),
@@ -219,14 +220,15 @@ public class AssetLineageAdmin extends AccessServiceAdmin
     /**
      * Shutdown the access service.
      */
-    public void shutdown() {
+    public void shutdown()
+    {
+        final String            actionDescription = "shutdown";
+        AssetLineageAuditCode  auditCode;
 
-        if (instance != null) {
-            instance.shutdown();
+        if (instance != null)
+        {
+            this.instance.shutdown();
         }
-
-        final String actionDescription = "shutdown";
-        AssetLineageAuditCode auditCode;
 
         auditCode = AssetLineageAuditCode.SERVICE_SHUTDOWN;
         auditLog.logRecord(actionDescription,
