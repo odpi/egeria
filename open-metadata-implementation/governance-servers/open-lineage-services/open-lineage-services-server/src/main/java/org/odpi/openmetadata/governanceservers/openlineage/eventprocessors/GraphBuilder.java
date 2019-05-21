@@ -13,7 +13,6 @@ import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Conn
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Element;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Term;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.AssetContext;
-import org.odpi.openmetadata.governanceservers.openlineage.performancetesting.GraphOMRSGraphFactory;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.AssetType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,12 +41,8 @@ public class GraphBuilder {
         this.relationships.put(2,"AttributeForSchema");
         this.relationships.put(3,"AssetSchemaType");
         this.relationships.put(4,"DataContentForDataSet");
-        performanceTest();
     }
 
-    private void performanceTest() {
-        JanusGraph janusGraph = GraphOMRSGraphFactory.open();
-    }
 
     public void addAsset(AssetContext event) {
         Term term = event.getAssets().get(0);
