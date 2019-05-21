@@ -67,6 +67,11 @@ public class GlossaryFVT
         FVTUtils.validateNode(glossary);
         Glossary glossary2 = createGlossary(serverName+" "+DEFAULT_TEST_GLOSSARY_NAME2);
         FVTUtils.validateNode(glossary2);
+
+        List<Glossary> results = findGlossaries(null);
+        if (results.size() !=2 ) {
+            throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 2 back on the find got " +results.size(), "", "");
+        }
         Glossary glossaryForUpdate = new Glossary();
         glossaryForUpdate.setName(serverName+" "+DEFAULT_TEST_GLOSSARY_NAME3);
         System.out.println("Get the glossary");
@@ -106,7 +111,7 @@ public class GlossaryFVT
         Glossary glossaryForFind4 = createGlossary("This is a Glossary with spaces in name");
         FVTUtils.validateNode(glossaryForFind4);
 
-        List<Glossary> results = findGlossaries("zzz");
+        results = findGlossaries("zzz");
         if (results.size() !=1 ) {
             throw new SubjectAreaFVTCheckedException(0, "", "", "ERROR: Expected 1 back on the find got " +results.size(), "", "");
         }
