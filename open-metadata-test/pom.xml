@@ -20,7 +20,20 @@
 
     <artifactId>open-metadata-test</artifactId>
     <packaging>pom</packaging>
-    <modules>
-        <module>open-metadata-fvt</module>
-    </modules>
+
+    <!-- FVTs are run as long as skipFVT is not defined -->
+    <profiles>
+        <profile>
+            <id>egeria-fvt</id>
+            <activation>
+                <property>
+                    <name>!skipFVT</name>
+                </property>
+	    </activation>
+            <modules>
+                <module>open-metadata-fvt</module>
+	    </modules>
+        </profile>
+    </profiles>
+
 </project>
