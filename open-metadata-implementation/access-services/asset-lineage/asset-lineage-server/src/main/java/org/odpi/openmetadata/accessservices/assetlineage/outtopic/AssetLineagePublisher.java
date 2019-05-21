@@ -30,8 +30,7 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*
 public class AssetLineagePublisher {
 
     private static final Logger log = LoggerFactory.getLogger(AssetLineagePublisher.class);
-    private OpenMetadataTopicConnector connector = null;
-    private OMRSRepositoryHelper repositoryHelper;
+    private OpenMetadataTopicConnector connector;
     private OMRSAuditLog auditLog;
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -43,9 +42,8 @@ public class AssetLineagePublisher {
      * @param assetLineageOutTopic connection to the out topic
      * @param auditLog             log file for the connector.
      */
-    public AssetLineagePublisher(OMRSRepositoryHelper repositoryHelper, Connection assetLineageOutTopic,
+    public AssetLineagePublisher(Connection assetLineageOutTopic,
                                  OMRSAuditLog auditLog) throws OMAGConfigurationErrorException {
-        this.repositoryHelper = repositoryHelper;
         if (assetLineageOutTopic != null) {
             connector = this.getTopicConnector(assetLineageOutTopic, auditLog);
         }
