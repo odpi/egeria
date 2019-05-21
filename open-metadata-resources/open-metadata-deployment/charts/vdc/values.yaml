@@ -40,6 +40,7 @@ service:
     ui: 30443
     ranger: 32080
     rangersecure: 30182
+    solr: 30983
     # Set this to address of one of the local nodes - public IP
     omrsmonitor: 31080
     externalip: 10.10.1.30
@@ -55,22 +56,28 @@ istio:
   enabled: false
 
 # Options to switch off certain components (not egeria)
-ranger:
+omrsmonitor:
   enabled: true
 
-gaian:
+ui:
   enabled: true
 
 atlas:
   enabled: true
 
+gaian:
+  enabled: true
+
+ranger:
+  enabled: true
+
+# NOTE: postgresql is required for ranger, so will be automatically enabled if ranger is enabled
+# (also used for sample data, even if not using ranger)
 postgresql:
   enabled: true
 
-omrsmonitor:
-  enabled: true
-
-ui:
+# NOTE: solr is required for both ranger and atlas, so will be automatically enabled if either of those is enabled
+solr:
   enabled: true
 
 # Debug support for Egeria - set to true to enable JVM debug for Egeria images on port 5005
@@ -103,29 +110,33 @@ egeria:
 #  To build from egeria source - (example)
 #  mvn clean install -Ddocker -Ddocker.registry=localhost:5000 -Ddocker.repo=odpi
 image:
-  ranger:
-    name: ranger-admin-egeriavdc
-
-  mariadb:
-    namespace: library
-    name: mariadb
-
   egeria:
     name: egeria
+
+  configure:
+    name: egeria-configure
+
+  omrsmonitor:
+    name: omrsmonitor-egeriavdc
+
+  atlas:
+    name: apache-atlas
 
   gaian:
     name: gaian-egeriavdc
 
-  atlas:
-    name: apache-atlas
+  ranger:
+    name: ranger-admin-egeriavdc
 
   postgresql:
     namespace: library
     name: postgres
     tag: alpine
 
-  omrsmonitor:
-    name: omrsmonitor-egeriavdc
+  solr:
+    namespace: library
+    name: solr
+    tag: 5-alpine
 
   # NOTE: this image is only used if the ibmigc.external is set to false; otherwise it is ignored and
   # the k8s-external, pre-existing environment defined under ibmigc... is used
@@ -135,11 +146,9 @@ image:
     name: infosvr
     tag: v11.7.0.2
 
-  configure:
-    name: egeria-configure
-
-  nameOverride: ""
-  fullnameOverride: ""
+# These should not be embedded under 'image' (?)
+nameOverride: ""
+fullnameOverride: ""
 
 # Set 'use' to true to use your local repository rather than Egeria's (remote) master git repository
 # (When set to true, also provide the absolute path to your local repository)
