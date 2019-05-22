@@ -25,9 +25,10 @@ import org.odpi.openmetadata.frameworks.connectors.properties.beans.StarRating;
  */
 public class AssetConsumerRESTServices
 {
-
     private static AssetConsumerInstanceHandler   instanceHandler     = new AssetConsumerInstanceHandler();
+
     private static final Logger log = LoggerFactory.getLogger(AssetConsumerRESTServices.class);
+
     private RESTExceptionHandler restExceptionHandler = new RESTExceptionHandler();
 
     /**
@@ -917,12 +918,12 @@ public class AssetConsumerRESTServices
             LoggingHandler loggingHandler = instanceHandler.getLoggingHandler(userId, serverName);
 
             loggingHandler.addLogMessageToAsset(userId,
-                                                guid,
-                                                connectorInstanceId,
-                                                connectionName,
-                                                connectorType,
-                                                contextId,
-                                                message);
+                    guid,
+                    connectorInstanceId,
+                    connectionName,
+                    connectorType,
+                    contextId,
+                    message);
         }
         catch (InvalidParameterException  error)
         {

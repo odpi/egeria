@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * The AssetConsumerRESTServices provides the server-side implementation of the Asset Consumer Open Metadata
+ * The AssetLineageRESTServices provides the server-side implementation of the Asset Lineage Open Metadata
  * Assess Service (OMAS).  This interface provides connections to assets and APIs for adding feedback
  * on the asset.
  */
