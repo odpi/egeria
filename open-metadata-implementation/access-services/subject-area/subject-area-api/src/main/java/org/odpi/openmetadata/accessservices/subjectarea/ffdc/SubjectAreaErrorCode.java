@@ -303,6 +303,11 @@ public enum SubjectAreaErrorCode {
             "Cannot update a Line if no properties are supplied",
             "The system is unable to process the request.",
             "Correct the code in the caller to only issue updates if there is something to update."),
+    PROJECT_CREATE_WITHOUT_NAME(400, "OMAS-SUBJECTAREA-400-068 ",
+            "Cannot create a Project without a name",
+            "The system is unable to process the request.",
+            "Correct the code in the caller to create a Project with a name."),
+
 
     OMRS_NOT_INITIALIZED(404, "OMAS-SUBJECTAREA-404-001 ",
             "The open metadata repository services are not initialized for the {0} operation",
