@@ -77,6 +77,7 @@ public class GlossaryHandler {
 
         List<Classification> classifications = entityDetail.getClassifications();
 
+        glossaryTerm.setType(entityProxy.getType().getTypeDefName());
         glossaryTerm.setDisplayName(displayName);
         glossaryTerm.setClassifications(classifications);
         return glossaryTerm;
