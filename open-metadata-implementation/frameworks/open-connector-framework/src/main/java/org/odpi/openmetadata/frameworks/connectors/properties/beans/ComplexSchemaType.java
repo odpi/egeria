@@ -13,7 +13,9 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.NONE;
 import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_ONLY;
 
 /**
- * ComplexSchemaType describes a schema with multiple attributes.
+ * ComplexSchemaType describes a schema with multiple attributes.  Notice it does not contain the attributes,
+ * just a count of them.  This is because a complex schema type may have literally thousands of attributes
+ * and so the attribute contents are retrieved separated through calls that support paging.
  */
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)

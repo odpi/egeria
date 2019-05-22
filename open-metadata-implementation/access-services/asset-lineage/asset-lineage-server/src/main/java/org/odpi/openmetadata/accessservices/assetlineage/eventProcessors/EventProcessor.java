@@ -5,31 +5,41 @@ package org.odpi.openmetadata.accessservices.assetlineage.eventProcessors;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.assetlineage.events.AssetLineageHeader;
+import org.odpi.openmetadata.accessservices.assetlineage.model.AssetLineageEvent;
 import org.odpi.openmetadata.accessservices.assetlineage.ffdc.AssetLineageErrorCode;
+import org.odpi.openmetadata.accessservices.assetlineage.model.AssetContext;
+import org.odpi.openmetadata.accessservices.assetlineage.model.GlossaryTerm;
+import org.odpi.openmetadata.accessservices.assetlineage.model.RelationshipEvent;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLog;
 import org.odpi.openmetadata.repositoryservices.auditlog.OMRSAuditLogRecordSeverity;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopic;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceGraph;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProvenanceType;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.typedefs.TypeDefSummary;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEvent;
 import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventProcessor;
+import org.odpi.openmetadata.repositoryservices.events.OMRSInstanceEventType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 public class EventProcessor extends OMRSInstanceEventProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(EventProcessor.class);
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private String serverName;
+    private String serverUsername;
     private OpenMetadataTopic assetLineageTopicConnector;
     private OMRSAuditLog auditLog;
+    //TODO Since AssetLineageInstanceHandler is static, it must be in the same package as the class instantiating it.
+    //TODO Determine whether there is a still way to not include the service classes within the eventprocessors package.
+    public static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
 
 
-    public EventProcessor(OpenMetadataTopic assetLineageTopicConnector,
+    public EventProcessor(String serverName, String serverUsername, OpenMetadataTopic assetLineageTopicConnector,
                           OMRSAuditLog auditLog) {
+        this.serverName = serverName;
+        this.serverUsername = serverUsername;
         this.assetLineageTopicConnector = assetLineageTopicConnector;
         this.auditLog = auditLog;
     }
@@ -37,26 +47,6 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
 
     @Override
     public void sendInstanceEvent(String sourceName, OMRSInstanceEvent instanceEvent) {
-        String actionDescription = "Send New Event";
-        log.info("Sending event to asset lineage out topic");
-        log.debug("event: ", instanceEvent);
-
-        try {
-            assetLineageTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(instanceEvent.getOMRSEventV1()));
-
-        } catch (Throwable error) {
-            log.error("Exception publishing event", error);
-            AssetLineageErrorCode auditCode = AssetLineageErrorCode.PUBLISH_EVENT_EXCEPTION;
-
-            auditLog.logException(actionDescription,
-                    auditCode.getErrorMessageId(),
-                    OMRSAuditLogRecordSeverity.EXCEPTION,
-                    auditCode.getFormattedErrorMessage(instanceEvent.getClass().getName(), error.getMessage()),
-                    "event {" + instanceEvent.toString() + "}",
-                    auditCode.getSystemAction(),
-                    auditCode.getUserAction(),
-                    error);
-        }
     }
 
     public void processNewEntityEvent(String sourceName,
@@ -65,6 +55,7 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                       String originatorServerType,
                                       String originatorOrganizationName,
                                       EntityDetail entity) {
+
     }
 
     public void processUpdatedEntityEvent(String sourceName,
@@ -74,7 +65,9 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                           String originatorOrganizationName,
                                           EntityDetail oldEntity,
                                           EntityDetail entity) {
+
     }
+
 
     public void processUndoneEntityEvent(String sourceName,
                                          String originatorMetadataCollectionId,
@@ -209,6 +202,32 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                             String originatorServerType,
                                             String originatorOrganizationName,
                                             Relationship relationship) {
+
+        //It should handle only semantic assignments for relational columns and relational tables
+        if (!(relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT) &&
+                (relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN)) ||
+                 relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_TABLE))) {
+            log.info("Event is ignored as the relationship is not a semantic assignment for a column");
+
+        } else {
+            log.info("Processing semantic assignment relationship event");
+            try {
+                processSemanticAssignment(relationship);
+            } catch (Exception e) {
+                log.error("Exception building events", e);
+                AssetLineageErrorCode auditCode = AssetLineageErrorCode.PUBLISH_EVENT_EXCEPTION;
+                auditLog.logException("processNewRelationshipEvent",
+                        auditCode.getErrorMessageId(),
+                        OMRSAuditLogRecordSeverity.EXCEPTION,
+                        auditCode.getFormattedErrorMessage(RelationshipEvent.class.getName(), e.getMessage()),
+                        e.getMessage(),
+                        auditCode.getSystemAction(),
+                        auditCode.getUserAction(),
+                        e);
+            }
+        }
+
+
     }
 
 
@@ -229,6 +248,24 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
                                                String originatorOrganizationName,
                                                Relationship relationship) {
 
+    }
+
+    private void processSemanticAssignment(Relationship relationship) {
+        RelationshipEvent relationshipEvent = new RelationshipEvent();
+
+        String technicalGuid = relationship.getEntityOneProxy().getGUID();
+        AssetContextBuilder assetContextBuilder = new AssetContextBuilder(auditLog);
+        AssetContext assetContext = assetContextBuilder.getAssetContext(serverName, serverUsername, technicalGuid);
+
+        GlossaryTermBuilder glossaryTermBuilder = new GlossaryTermBuilder(serverName, serverUsername);
+        GlossaryTerm glossaryTerm = glossaryTermBuilder.getGlossaryTerm(relationship.getEntityTwoProxy());
+
+        relationshipEvent.setGlossaryTerm(glossaryTerm);
+        relationshipEvent.setTypeDefName(relationship.getType().getTypeDefName());
+        relationshipEvent.setAssetContext(assetContext);
+        relationshipEvent.setOmrsInstanceEventType(OMRSInstanceEventType.NEW_RELATIONSHIP_EVENT);
+
+        sendEvent(relationshipEvent);
     }
 
     @Override
@@ -341,14 +378,13 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
 
     }
 
-
     /**
      * Returns true if the event was published successfully, false otherwise
      *
      * @param event to be published
      * @return true/false based on the success of the operation
      */
-    public boolean sendEvent(AssetLineageHeader event) {
+    public boolean sendEvent(AssetLineageEvent event) {
         String actionDescription = "Send New Event";
         boolean successFlag = false;
 
@@ -356,6 +392,7 @@ public class EventProcessor extends OMRSInstanceEventProcessor {
         log.debug("event: ", event);
 
         try {
+
             assetLineageTopicConnector.sendEvent(OBJECT_MAPPER.writeValueAsString(event));
             successFlag = true;
 

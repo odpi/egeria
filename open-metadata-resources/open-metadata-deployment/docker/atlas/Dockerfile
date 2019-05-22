@@ -3,13 +3,6 @@
 
 FROM ubuntu:18.10 AS build
 
-LABEL org.label-schema.name = "AtlasForEgeriaVDC"
-LABEL org.label-schema.description="Atlas service to support Egeria VDC demos" 
-LABEL org.label-schema.url="https://github.com/odpi/egeria/"
-LABEL org.label-schema.vcs="https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/docker/atlas"
-LABEL org.label-schema.version="0.1.4"
-LABEL org.label-schema.schema-version = "1.0"
-
 # Install Git, which is missing from the Ubuntu base images.
 RUN apt-get update && apt-get install -y git python openjdk-8-jdk maven wget inetutils-ping dnsutils gzip tar
 
@@ -54,7 +47,16 @@ RUN git log > git.log && echo ${branch} > git.branch && git remote -v >> git.rem
 
 FROM openjdk:8-jdk-alpine
 
-RUN apk add python bash
+LABEL org.label-schema.schema-version = "1.0"
+LABEL org.label-schema.vendor = "ODPi"
+LABEL org.label-schema.name = "apache-atlas"
+LABEL org.label-schema.description = "Apache Atlas image to support ODPi Egeria demonstrations."
+LABEL org.label-schema.url = "https://egeria.odpi.org/open-metadata-resources/open-metadata-deployment/"
+LABEL org.label-schema.vcs-url = "https://github.com/odpi/egeria/tree/master/open-metadata-resources/open-metadata-deployment/docker/atlas"
+LABEL org.label-schema.docker.cmd = "docker run -d -p 21000:21000 odpi/apache-atlas"
+LABEL org.label-schema.docker.debug = "docker exec -it $CONTAINER /bin/sh"
+
+RUN apk --no-cache add python bash && apk --no-cache update && apk --no-cache upgrade
 COPY --from=build /root/atlas-bin/ /root/atlas-bin/
 COPY --from=build /root/atlas/git.* /
 WORKDIR /root/atlas-bin/conf

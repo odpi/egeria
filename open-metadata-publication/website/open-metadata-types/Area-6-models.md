@@ -51,3 +51,9 @@ ODF discovery services use connectors from the
 [Open Connector Framework (OCF)](../../../open-metadata-implementation/frameworks/open-connector-framework)
 to connect to the data assets and access the known
 metadata about them. 
+
+Return to [Overview](README.md).
+
+----
+License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),
+Copyright Contributors to the ODPi Egeria project.

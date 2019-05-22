@@ -3,6 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.properties;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Classification;
 import org.testng.annotations.Test;
 
 import java.util.ArrayList;
@@ -18,22 +19,22 @@ import static org.testng.Assert.assertTrue;
  */
 public class GlossaryTermTest
 {
-    private String                            guid                     = "TestGUID";
-    private String                            typeId                   = "TestTypeId";
+    private String               guid                     = "TestGUID";
+    private String               typeId                   = "TestTypeId";
     private String                            typeName                 = "TestTypeName";
     private long                              typeVersion              = 7;
     private String                            typeDescription          = "TestTypeDescription";
     private String                            summary                  = "TestSummary";
     private String                            examples                 = "TestExamples";
-    private String                            abbreviation             = "TestAbbreviation";
-    private String                            usage                    = "TestUsage";
-    private String                            qualifiedName            = "TestQualifiedName";
-    private String                            displayName              = "TestDisplayName";
-    private String                            description              = "TestDescription";
-    private Map<String, Object>               additionalProperties     = new HashMap<>();
-    private List<ReferenceableClassification> classifications          = new ArrayList<>();
-    private ReferenceableClassification       classification           = new ReferenceableClassification();
-    private Map<String, Object>               classificationProperties = new HashMap<>();
+    private String               abbreviation             = "TestAbbreviation";
+    private String               usage                    = "TestUsage";
+    private String               qualifiedName            = "TestQualifiedName";
+    private String               displayName              = "TestDisplayName";
+    private String               description              = "TestDescription";
+    private Map<String, String>  additionalProperties     = new HashMap<>();
+    private List<Classification> classifications          = new ArrayList<>();
+    private Classification       classification           = new Classification();
+    private Map<String, Object>  classificationProperties = new HashMap<>();
 
 
 
@@ -61,8 +62,6 @@ public class GlossaryTermTest
         GlossaryTerm testObject = new GlossaryTerm();
 
         testObject.setGUID(guid);
-        testObject.setTypeName(typeName);
-        testObject.setTypeDescription(typeDescription);
         testObject.setQualifiedName(qualifiedName);
         testObject.setDisplayName(displayName);
         testObject.setDescription(description);
@@ -85,8 +84,6 @@ public class GlossaryTermTest
     private void validateResultObject(GlossaryTerm  resultObject)
     {
         assertTrue(resultObject.getGUID().equals(guid));
-        assertTrue(resultObject.getTypeName().equals(typeName));
-        assertTrue(resultObject.getTypeDescription().equals(typeDescription));
         assertTrue(resultObject.getQualifiedName().equals(qualifiedName));
         assertTrue(resultObject.getDisplayName().equals(displayName));
         assertTrue(resultObject.getDescription().equals(description));
@@ -107,8 +104,6 @@ public class GlossaryTermTest
         GlossaryTerm    nullObject = new GlossaryTerm();
 
         assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getTypeName() == null);
-        assertTrue(nullObject.getTypeDescription() == null);
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getDescription() == null);
@@ -122,8 +117,6 @@ public class GlossaryTermTest
         nullObject = new GlossaryTerm(null);
 
         assertTrue(nullObject.getGUID() == null);
-        assertTrue(nullObject.getTypeName() == null);
-        assertTrue(nullObject.getTypeDescription() == null);
         assertTrue(nullObject.getQualifiedName() == null);
         assertTrue(nullObject.getDisplayName() == null);
         assertTrue(nullObject.getDescription() == null);
@@ -141,7 +134,7 @@ public class GlossaryTermTest
      */
     @Test public void testAdditionalProperties()
     {
-        Map<String, Object>   propertyMap;
+        Map<String, String>   propertyMap;
         GlossaryTerm                 testObject = new GlossaryTerm();
 
         assertTrue(testObject.getAdditionalProperties() == null);
@@ -162,7 +155,7 @@ public class GlossaryTermTest
         testObject = new GlossaryTerm();
         testObject.setAdditionalProperties(propertyMap);
 
-        Map<String, Object>   retrievedPropertyMap = testObject.getAdditionalProperties();
+        Map<String, String>   retrievedPropertyMap = testObject.getAdditionalProperties();
 
         assertTrue(retrievedPropertyMap != null);
         assertFalse(retrievedPropertyMap.isEmpty());
@@ -184,7 +177,7 @@ public class GlossaryTermTest
 
         assertTrue(testObject.getClassifications() == null);
 
-        List<ReferenceableClassification> emptyClassifications = new ArrayList<>();
+        List<Classification> emptyClassifications = new ArrayList<>();
         testObject = new GlossaryTerm();
         testObject.setClassifications(emptyClassifications);
 
@@ -193,7 +186,7 @@ public class GlossaryTermTest
         testObject = new GlossaryTerm();
         testObject.setClassifications(classifications);
 
-        List<ReferenceableClassification> retrievedClassifications = testObject.getClassifications();
+        List<Classification> retrievedClassifications = testObject.getClassifications();
 
         assertTrue(retrievedClassifications != null);
         assertFalse(retrievedClassifications.isEmpty());
@@ -234,12 +227,6 @@ public class GlossaryTermTest
         GlossaryTerm  testObject = getTestObject();
 
         assertTrue(testObject.hashCode() != 0);
-
-        GlossaryTerm  differentObject = getTestObject();
-
-        differentObject.setClassifications(null);
-
-        assertFalse(testObject.hashCode() == differentObject.hashCode());
     }
 
 
@@ -276,29 +263,6 @@ public class GlossaryTermTest
         try
         {
             validateResultObject(objectMapper.readValue(jsonString, GlossaryTerm.class));
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
-
-        /*
-         * Through superclass
-         */
-        AssetConsumerElementHeader superObject = getTestObject();
-
-        try
-        {
-            jsonString = objectMapper.writeValueAsString(superObject);
-        }
-        catch (Throwable  exc)
-        {
-            assertTrue(false, "Exception: " + exc.getMessage());
-        }
-
-        try
-        {
-            validateResultObject((GlossaryTerm) objectMapper.readValue(jsonString, AssetConsumerElementHeader.class));
         }
         catch (Throwable  exc)
         {

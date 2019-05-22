@@ -12,9 +12,7 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Governe
 import org.odpi.openmetadata.accessservices.governanceengine.server.handlers.GovernedAssetHandler;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.ConnectorCheckedException;
 import org.odpi.openmetadata.repositoryservices.connectors.openmetadatatopic.OpenMetadataTopicConnector;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.OMRSMetadataCollection;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
-import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.Relationship;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryConnector;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityNotKnownException;
 import org.odpi.openmetadata.repositoryservices.ffdc.exception.EntityProxyOnlyException;
@@ -29,20 +27,14 @@ import org.odpi.openmetadata.repositoryservices.ffdc.exception.UserNotAuthorized
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-
-import static org.odpi.openmetadata.accessservices.governanceengine.server.util.Constants.GOVERNANCE_ENGINE;
-
 public class GovernanceEngineEventProcessor {
 
     private static final Logger log = LoggerFactory.getLogger(GovernanceEngineEventProcessor.class);
 
-    private OMRSRepositoryConnector enterpriseOMRSRepositoryConnector;
     private OpenMetadataTopicConnector governanceEngineOutputTopic;
     private GovernedAssetHandler governedAssetHandler;
 
     public GovernanceEngineEventProcessor(OMRSRepositoryConnector enterpriseOMRSRepositoryConnector, OpenMetadataTopicConnector governanceEngineOutputTopic) {
-        this.enterpriseOMRSRepositoryConnector = enterpriseOMRSRepositoryConnector;
         this.governanceEngineOutputTopic = governanceEngineOutputTopic;
 
         try {
@@ -50,21 +42,6 @@ public class GovernanceEngineEventProcessor {
         } catch (MetadataServerException e) {
             log.error("Metadata Server is not available.");
         }
-
-    }
-
-    public void processSemanticAssignmentRelationshipCreation(Relationship relationship) throws RepositoryErrorException, UserNotAuthorizedException, EntityProxyOnlyException, InvalidParameterException, EntityNotKnownException, TypeErrorException, TypeDefNotKnownException, PagingErrorException, FunctionNotSupportedException, PropertyErrorException {
-        final OMRSMetadataCollection metadataCollection = enterpriseOMRSRepositoryConnector.getMetadataCollection();
-
-        String glossaryTermGuid = relationship.getEntityTwoProxy().getGUID();
-        final EntityDetail glossaryTerm = metadataCollection.getEntityDetail(GOVERNANCE_ENGINE, glossaryTermGuid);
-
-        if (!governedAssetHandler.containsGovernedClassification(glossaryTerm)) {
-            return;
-        }
-
-        GovernanceEngineEvent governanceEvent = getGovernanceEngineEvent(glossaryTerm, GovernanceEngineEventType.NEW_CLASSIFIED_ASSET);
-        sendEvent(governanceEvent);
     }
 
     public void processClassifiedEntity(EntityDetail entityDetail) throws RepositoryErrorException, EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException {
@@ -83,6 +60,26 @@ public class GovernanceEngineEventProcessor {
         sendEvent(governanceEvent);
     }
 
+    public void processDeletedEntityEvent(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
+        if (!governedAssetHandler.containsGovernedClassification(entity)) {
+            return;
+        }
+
+        GovernanceEngineEvent governanceEngineEvent = getGovernanceEngineEvent(entity, GovernanceEngineEventType.DELETED_ASSET);
+
+        sendEvent(governanceEngineEvent);
+    }
+
+    public void processDeclassifiedEntityEvent(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
+        if (!governedAssetHandler.containsGovernedClassification(entity)) {
+            return;
+        }
+
+        GovernanceEngineEvent governanceEngineEvent = getGovernanceEngineEvent(entity, GovernanceEngineEventType.DE_CLASSIFIED_ASSET);
+
+        sendEvent(governanceEngineEvent);
+    }
+
     private GovernanceEngineEvent getGovernanceEngineEvent(EntityDetail entityDetail, GovernanceEngineEventType governanceEngineEventType) throws EntityProxyOnlyException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
         GovernanceEngineEvent governanceEvent = new GovernanceEngineEvent();
 
@@ -95,8 +92,8 @@ public class GovernanceEngineEventProcessor {
 
     private GovernedAsset getGovernedAsset(EntityDetail entityDetail) throws EntityProxyOnlyException, TypeErrorException, TypeDefNotKnownException, PropertyErrorException, EntityNotKnownException, FunctionNotSupportedException, PagingErrorException, UserNotAuthorizedException, InvalidParameterException, RepositoryErrorException {
         GovernedAsset governedAsset = governedAssetHandler.getGovernedAsset(entityDetail);
-        List<GovernanceClassification> governanceClassifications = governedAssetHandler.getGovernanceClassifications(entityDetail.getClassifications());
-        governedAsset.setAssignedGovernanceClassifications(governanceClassifications);
+        GovernanceClassification governanceClassification = governedAssetHandler.getGovernanceClassifications(entityDetail.getClassifications());
+        governedAsset.setAssignedGovernanceClassification(governanceClassification);
 
         return governedAsset;
     }

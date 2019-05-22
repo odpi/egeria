@@ -26,11 +26,11 @@ the metadata and they are read-only.
 To join an open metadata repository cohort, a metadata repository must integrate
 with the OMRS module.  The integration involves:
 
-* Creating an [OMRS Repository Connector and optional Event Mapper Connector]
+* Creating an [OMRS Repository Connector and optional Event Mapper Connector](../../adapters/open-connectors/repository-services-connectors/open-metadata-collection-store-connectors)
 * Designing how to configure the OMRS Services for your metadata repository.
 Typically this is done by extending the existing administration services of the
 metadata repository, but Egeria also offers
-some pre-built **[administration services](../../governance-servers/admin-services)** that
+some pre-built **[administration services](../../admin-services)** that
 can be used or modified.
 * Plugging the OMRS and any administration services into the metadata repository's security
 module so that requests to the server can be secured against unauthorized access.

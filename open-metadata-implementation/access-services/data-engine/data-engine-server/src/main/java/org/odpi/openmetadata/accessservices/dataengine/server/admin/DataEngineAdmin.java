@@ -15,7 +15,7 @@ import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollec
  * the Data Engine OMAS.  The initialization call provides this OMAS with resources from the
  * Open Metadata Repository Services.
  */
-public class DataEngineAdmin implements AccessServiceAdmin {
+public class DataEngineAdmin extends AccessServiceAdmin {
     private OMRSAuditLog auditLog;
     private DataEngineServicesInstance instance;
 

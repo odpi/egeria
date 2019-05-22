@@ -145,6 +145,9 @@ public class GlossaryMapper extends EntityDetailMapper implements INodeMapper {
         if (glossary.getUsage()!=null) {
             SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, glossary.getUsage(), "usage");
         }
+        if (node.getName()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), "displayName");
+        }
     }
 
     @Override

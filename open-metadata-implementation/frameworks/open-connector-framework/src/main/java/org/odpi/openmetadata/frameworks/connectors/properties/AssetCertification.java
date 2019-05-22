@@ -106,7 +106,7 @@ public class AssetCertification extends AssetReferenceable
      *
      * @return String certification type GUID
      */
-    public String getCertificationTypeGUID() { return certificationBean.getCertificationTypeGUID(); }
+    public String getCertificationTypeGUID() { return certificationBean.getCertificateGUID(); }
 
 
     /**

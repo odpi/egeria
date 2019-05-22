@@ -2,20 +2,18 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.discoveryengine.server;
 
-import org.odpi.openmetadata.accessservices.discoveryengine.handlers.DiscoveryConfigurationServerHandler;
+import org.odpi.openmetadata.accessservices.discoveryengine.handlers.DiscoveryConfigurationHandler;
 import org.odpi.openmetadata.accessservices.discoveryengine.rest.*;
-import org.odpi.openmetadata.frameworks.connectors.ffdc.OCFCheckedExceptionBase;
+import org.odpi.openmetadata.commonservices.ffdc.rest.*;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.PropertyServerException;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.OwnerType;
-import org.odpi.openmetadata.frameworks.discovery.ffdc.InvalidParameterException;
+import org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException;
 
-import org.odpi.openmetadata.frameworks.discovery.ffdc.ODFCheckedExceptionBase;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,7 +24,7 @@ import java.util.Map;
  */
 public class DiscoveryConfigurationServices
 {
-    private static DiscoveryEngineInstanceHandler   instanceHandler     = new DiscoveryEngineInstanceHandler();
+    private static DiscoveryEngineServiceInstanceHandler instanceHandler = new DiscoveryEngineServiceInstanceHandler();
 
     private static final Logger log = LoggerFactory.getLogger(DiscoveryConfigurationServices.class);
 
@@ -78,7 +76,7 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             response.setGUID(handler.createDiscoveryEngine(userId,
                                                            qualifiedName,
@@ -87,15 +85,15 @@ public class DiscoveryConfigurationServices
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -128,21 +126,21 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             response.setDiscoveryEngineProperties(handler.getDiscoveryEngineByGUID(userId, guid));
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -175,21 +173,21 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             response.setDiscoveryEngineProperties(handler.getDiscoveryEngineByName(userId, name));
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -224,21 +222,21 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             response.setDiscoveryEngines(handler.getAllDiscoveryEngines(userId, startingFrom, maximumResults));
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -298,7 +296,7 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             handler.updateDiscoveryEngine(userId,
                                           guid,
@@ -314,15 +312,15 @@ public class DiscoveryConfigurationServices
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -365,7 +363,7 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             handler.deleteDiscoveryEngine(userId,
                                           guid,
@@ -373,15 +371,15 @@ public class DiscoveryConfigurationServices
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -432,7 +430,7 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             response.setGUID(handler.createDiscoveryService(userId,
                                                             qualifiedName,
@@ -442,15 +440,15 @@ public class DiscoveryConfigurationServices
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -483,21 +481,21 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             response.setDiscoveryServiceProperties(handler.getDiscoveryServiceByGUID(userId, guid));
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -530,21 +528,21 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             response.setDiscoveryServiceProperties(handler.getDiscoveryServiceByName(userId, name));
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -579,21 +577,21 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             response.setDiscoveryServices(handler.getAllDiscoveryServices(userId, startingFrom, maximumResults));
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -614,9 +612,9 @@ public class DiscoveryConfigurationServices
      * UserNotAuthorizedException user not authorized to issue this request or
      * PropertyServerException problem storing the discovery engine definition.
      */
-    public  GUIDListResponse  getDiscoveryServiceRegistrations(String   serverName,
-                                                               String   userId,
-                                                               String   discoveryServiceGUID)
+    public GUIDListResponse getDiscoveryServiceRegistrations(String   serverName,
+                                                             String   userId,
+                                                             String   discoveryServiceGUID)
     {
         final String        methodName = "getDiscoveryServiceRegistrations";
 
@@ -626,21 +624,21 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             response.setGUIDs(handler.getDiscoveryServiceRegistrations(userId, discoveryServiceGUID));
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -704,7 +702,7 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             handler.updateDiscoveryService(userId,
                                            guid,
@@ -722,15 +720,15 @@ public class DiscoveryConfigurationServices
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -774,7 +772,7 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             handler.deleteDiscoveryService(userId,
                                            guid,
@@ -782,15 +780,15 @@ public class DiscoveryConfigurationServices
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -836,21 +834,21 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             handler.registerDiscoveryServiceWithEngine(userId, discoveryEngineGUID, discoveryServiceGUID, assetTypes);
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -885,21 +883,21 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             response.setRegisteredDiscoveryService(handler.getRegisteredDiscoveryService(userId, discoveryEngineGUID, discoveryServiceGUID));
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -936,21 +934,21 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             response.setGUIDs(handler.getRegisteredDiscoveryServices(userId, discoveryEngineGUID, startingFrom, maximumResults));
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -988,158 +986,25 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationServerHandler handler = instanceHandler.getDiscoveryConfigurationHandler(serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
 
             handler.unregisterDiscoveryServiceFromEngine(userId, discoveryEngineGUID, discoveryServiceGUID);
         }
         catch (InvalidParameterException  error)
         {
-            captureInvalidParameterException(response, error);
+            instanceHandler.getExceptionHandler().captureInvalidParameterException(response, error);
         }
         catch (PropertyServerException  error)
         {
-            capturePropertyServerException(response, error);
+            instanceHandler.getExceptionHandler().capturePropertyServerException(response, error);
         }
         catch (UserNotAuthorizedException error)
         {
-            captureUserNotAuthorizedException(response, error);
+            instanceHandler.getExceptionHandler().captureUserNotAuthorizedException(response, error);
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
 
         return response;
-    }
-
-
-    /*
-     * ==========================
-     * Support methods
-     * ==========================
-     */
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     * @param exceptionClassName  class name of the exception to recreate
-     * @param exceptionProperties map of properties stored in the exception to help with diagnostics
-     */
-    private void captureCheckedException(DiscoveryEngineOMASAPIResponse      response,
-                                         OCFCheckedExceptionBase             error,
-                                         String                              exceptionClassName,
-                                         Map<String, Object>                 exceptionProperties)
-    {
-        response.setRelatedHTTPCode(error.getReportedHTTPCode());
-        response.setExceptionClassName(exceptionClassName);
-        response.setExceptionErrorMessage(error.getErrorMessage());
-        response.setExceptionSystemAction(error.getReportedSystemAction());
-        response.setExceptionUserAction(error.getReportedUserAction());
-        response.setExceptionProperties(exceptionProperties);
-    }
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     * @param exceptionClassName  class name of the exception to recreate
-     */
-    private void captureCheckedException(DiscoveryEngineOMASAPIResponse      response,
-                                         OCFCheckedExceptionBase             error,
-                                         String                              exceptionClassName)
-    {
-        response.setRelatedHTTPCode(error.getReportedHTTPCode());
-        response.setExceptionClassName(exceptionClassName);
-        response.setExceptionErrorMessage(error.getErrorMessage());
-        response.setExceptionSystemAction(error.getReportedSystemAction());
-        response.setExceptionUserAction(error.getReportedUserAction());
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     * @param exceptionClassName  class name of the exception to recreate
-     * @param exceptionProperties map of properties stored in the exception to help with diagnostics
-     */
-    private void captureCheckedException(DiscoveryEngineOMASAPIResponse      response,
-                                         ODFCheckedExceptionBase             error,
-                                         String                              exceptionClassName,
-                                         Map<String, Object>                 exceptionProperties)
-    {
-        response.setRelatedHTTPCode(error.getReportedHTTPCode());
-        response.setExceptionClassName(exceptionClassName);
-        response.setExceptionErrorMessage(error.getErrorMessage());
-        response.setExceptionSystemAction(error.getReportedSystemAction());
-        response.setExceptionUserAction(error.getReportedUserAction());
-        response.setExceptionProperties(exceptionProperties);
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void captureInvalidParameterException(DiscoveryEngineOMASAPIResponse    response,
-                                                  InvalidParameterException         error)
-    {
-        String  parameterName = error.getParameterName();
-
-        if (parameterName != null)
-        {
-            Map<String, Object>  exceptionProperties = new HashMap<>();
-
-            exceptionProperties.put("parameterName", parameterName);
-            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
-        }
-        else
-        {
-            captureCheckedException(response, error, error.getClass().getName(),  null);
-        }
-    }
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void capturePropertyServerException(DiscoveryEngineOMASAPIResponse     response,
-                                                PropertyServerException            error)
-    {
-        captureCheckedException(response, error, error.getClass().getName());
-    }
-
-
-
-    /**
-     * Set the exception information into the response.
-     *
-     * @param response  REST Response
-     * @param error returned response.
-     */
-    private void captureUserNotAuthorizedException(DiscoveryEngineOMASAPIResponse response,
-                                                   UserNotAuthorizedException   error)
-    {
-        String  userId = error.getUserId();
-
-        if (userId != null)
-        {
-            Map<String, Object>  exceptionProperties = new HashMap<>();
-
-            exceptionProperties.put("userId", userId);
-            captureCheckedException(response, error, error.getClass().getName(), exceptionProperties);
-        }
-        else
-        {
-            captureCheckedException(response, error, error.getClass().getName());
-        }
     }
 }

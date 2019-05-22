@@ -128,7 +128,7 @@ public class Tag extends UserFeedbackHeader
         return "Tag{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", isPrivate=" + isPrivate +
+                ", isPublic=" + isPrivate +
                 ", userId='" + getUserId() + '\'' +
                 ", GUID='" + getGUID() + '\'' +
                 ", typeName='" + getTypeName() + '\'' +
