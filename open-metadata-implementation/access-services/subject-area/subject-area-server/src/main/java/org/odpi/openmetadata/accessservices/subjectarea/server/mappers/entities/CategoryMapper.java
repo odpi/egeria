@@ -13,7 +13,9 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.server.mappers.INodeMapper;
 import org.odpi.openmetadata.accessservices.subjectarea.utilities.OMRSAPIHelper;
+import org.odpi.openmetadata.accessservices.subjectarea.utilities.SubjectAreaUtils;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
+import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.repositoryconnector.OMRSRepositoryHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,6 +68,17 @@ public class CategoryMapper extends EntityDetailMapper implements INodeMapper {
             throw new InvalidParameterException(errorCode.getHTTPErrorCode(), className, methodName, errorMessage, errorCode.getSystemAction(), errorCode.getUserAction());
         }
     }
+    /**
+     * Map the supplied Node to omrs InstanceProperties.
+     * @param node supplied node
+     * @param instanceProperties equivalent instance properties to the Node
+     */
+    @Override
+    protected void mapNodeToInstanceProperties(Node node, InstanceProperties instanceProperties) {
+        if (node.getName()!=null) {
+            SubjectAreaUtils.setStringPropertyInInstanceProperties(instanceProperties, node.getName(), "displayName");
+        }
+    }
 
     @Override
     protected boolean updateNodeWithClassification(Node node, org.odpi.openmetadata.accessservices.subjectarea.properties.classifications.Classification omasClassification) {
@@ -91,7 +104,9 @@ public class CategoryMapper extends EntityDetailMapper implements INodeMapper {
         List inlinedClassifications = new ArrayList<>();
 
         if (node.getNodeType()== NodeType.SubjectAreaDefinition) {
-            inlinedClassifications.add(new SubjectArea());
+            SubjectArea subjectArea = new SubjectArea();
+            subjectArea.setName(node.getName());
+            inlinedClassifications.add(subjectArea);
         }
 
         return inlinedClassifications;

@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
 
@@ -26,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/subject-area/terms")
-public class SubjectAreaTermController
+public class SubjectAreaTermController  extends SecureController
 {
     private final SubjectArea subjectArea;
     private static String className = SubjectAreaTermController.class.getName();
@@ -56,7 +57,7 @@ public class SubjectAreaTermController
      * Failure to create the Terms classifications, link to its glossary or its icon, results in the create failing and the term being deleted
 
      * @param suppliedTerm Term to create
-     * @param model Spring model containing attributes including the http session attributes.
+     * @param request Servlet request
      * @return response, when successful contains the created term.
      * <ul>
      * <li> UserNotAuthorizedException           the requesting user is not authorized to issue this request.</li>
@@ -68,9 +69,9 @@ public class SubjectAreaTermController
      * </ul>
      */
     @RequestMapping(method = RequestMethod.POST)
-    public SubjectAreaOMASAPIResponse createTerm( @RequestBody Term suppliedTerm,ModelMap model) {
+    public SubjectAreaOMASAPIResponse createTerm(@RequestBody Term suppliedTerm, HttpServletRequest request) {
         String serverName = subjectArea.getServerName();
-        String userId = getUser(model);
+        String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
             Term term = this.subjectAreaTerm.createTerm(serverName, userId,suppliedTerm);
@@ -83,21 +84,11 @@ public class SubjectAreaTermController
         return  response;
     }
 
-    private String getUser(ModelMap model) {
-        //TODO error instead of defaulting.
-        String userId = "demo";
-        // the ModelMap contains attributes, this should include the session attributes.
-        User user = (User) model.get("user");
-        if (user !=null) {
-            userId = user.getName();
-        }
-        return userId;
-    }
 
     /**
      * Get a term.
      * @param guid guid of the term to get
-     * @param model Spring model containing attributes including the http session attributes.
+     * @param request Servlet request
      * @return response which when successful contains the term with the requested guid
      *  when not successful the following Exception responses can occur
      * <ul>
@@ -110,9 +101,9 @@ public class SubjectAreaTermController
      * </ul>
      */
     @RequestMapping(method = RequestMethod.GET, path = "/{guid}")
-    public  SubjectAreaOMASAPIResponse getTerm(@PathVariable String guid,ModelMap model) {
+    public  SubjectAreaOMASAPIResponse getTerm(@PathVariable String guid,HttpServletRequest request) {
         String serverName = subjectArea.getServerName();
-        String userId = getUser(model);
+        String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
             Term term = this.subjectAreaTerm.getTermByGuid(serverName, userId,guid);
@@ -127,7 +118,7 @@ public class SubjectAreaTermController
     /**
      * Find Term
      *
-     * @param searchCriteria String expression matching Term property values .
+     * @param searchCriteria String expression matching Term property values.
      * @param asOfTime the terms returned as they were at this time. null indicates at the current time.
      * @param offset  the starting element number for this set of results.  This is used when retrieving elements
      *                 beyond the first page of results. Zero means the results start from the first element.
@@ -135,7 +126,7 @@ public class SubjectAreaTermController
      *                 0 means there is no limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @param model Spring model containing attributes including the http session attributes.
+     * @param request Servlet request
      * @return A list of terms meeting the search Criteria
      *
      * <ul>
@@ -153,10 +144,10 @@ public class SubjectAreaTermController
                                                 @RequestParam(value = "pageSize", required=false) Integer pageSize,
                                                 @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
                                                 @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
-                                                ModelMap model
+                                                HttpServletRequest request
     )  {
         String serverName = subjectArea.getServerName();
-        String userId = getUser(model);
+        String userId = getUser(request);
         SubjectAreaOMASAPIResponse response;
         try {
             if (offset ==null) {
@@ -185,7 +176,7 @@ public class SubjectAreaTermController
      *                 0 means there is not limit to the page size
      * @param sequencingOrder the sequencing order for the results.
      * @param sequencingProperty the name of the property that should be used to sequence the results.
-     * @param model Spring model containing attributes including the http session attributes.
+     * @param request Servlet request
      * @return a response which when successful contains the term relationships
      * when not successful the following Exception responses can occur
      * <ul>
@@ -203,12 +194,12 @@ public class SubjectAreaTermController
                                                             @RequestParam(value = "pageSize", required=false) Integer pageSize,
                                                             @RequestParam(value = "sequencingOrder", required=false) SequencingOrder sequencingOrder,
                                                             @RequestParam(value = "SequencingProperty", required=false) String sequencingProperty,
-                                                            ModelMap model
+                                                            HttpServletRequest request
     
     ) {
 
         String serverName = subjectArea.getServerName();
-        String userId = getUser(model);
+        String userId = getUser(request);
         SubjectAreaOMASAPIResponse response;
         try {
             if (offset ==null) {
@@ -240,7 +231,7 @@ public class SubjectAreaTermController
      * @param guid             guid of the term to update
      * @param term         term to update
      * @param isReplace flag to indicate that this update is a replace. When not set only the supplied (non null) fields are updated.
-     * @param model Spring model containing attributes including the http session attributes.
+     * @param request Servlet request
      * @return a response which when successful contains the updated term
      * when not successful the following Exception responses can occur
      * <ul>
@@ -256,9 +247,9 @@ public class SubjectAreaTermController
                                                       @PathVariable String guid,
                                                       @RequestBody Term term,
                                                       @RequestParam(value = "isReplace", required=false) Boolean isReplace,
-                                                      ModelMap model) {
+                                                      HttpServletRequest request) {
         String serverName = subjectArea.getServerName();
-        String userId = getUser(model);
+        String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
             Term updatedTerm;
@@ -291,7 +282,7 @@ public class SubjectAreaTermController
      *
      * @param guid    guid of the term to be deleted.
      * @param isPurge true indicates a hard delete, false is a soft delete.
-     * @param model Spring model containing attributes including the http session attributes.
+     * @param request Servlet request
      * @return a void response
      * when not successful the following Exception responses can occur
      * <ul>
@@ -305,13 +296,13 @@ public class SubjectAreaTermController
      * </ul>
      */
     @RequestMapping(method = RequestMethod.DELETE, path = "/{guid}")
-    public  SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge, ModelMap model)  {
+    public  SubjectAreaOMASAPIResponse deleteTerm(@PathVariable String guid,@RequestParam(value = "isPurge", required=false) Boolean isPurge, HttpServletRequest request)  {
         if (isPurge == null) {
             // default to soft delete if isPurge is not specified.
             isPurge = false;
         }
         String serverName = subjectArea.getServerName();
-        String userId = getUser(model);
+        String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
             if (isPurge) {
@@ -334,7 +325,7 @@ public class SubjectAreaTermController
      *
      * Restore allows the deleted Term to be made active again. Restore allows deletes to be undone. Hard deletes are not stored in the repository so cannot be restored.
      * @param guid       guid of the term to restore
-     * @param model Spring model containing attributes including the http session attributes.
+     * @param request Servlet request
      * @return response which when successful contains the restored term
      * when not successful the following Exception responses can occur
      * <ul>
@@ -346,10 +337,10 @@ public class SubjectAreaTermController
      * </ul>
      */
     @RequestMapping(method = RequestMethod.POST, path = "/{guid}")
-    public SubjectAreaOMASAPIResponse restoreTerm(@PathVariable String guid, ModelMap model)
+    public SubjectAreaOMASAPIResponse restoreTerm(@PathVariable String guid, HttpServletRequest request)
     {
         String serverName = subjectArea.getServerName();
-        String userId = getUser(model);
+        String userId = getUser(request);
         SubjectAreaOMASAPIResponse response=null;
         try {
             Term term = this.subjectAreaTerm.restoreTerm(serverName, userId,guid);

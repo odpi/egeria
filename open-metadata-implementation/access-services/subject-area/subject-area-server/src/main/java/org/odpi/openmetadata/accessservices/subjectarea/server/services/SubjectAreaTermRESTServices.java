@@ -313,26 +313,29 @@ public class SubjectAreaTermRESTServices extends SubjectAreaRESTServicesInstance
         SubjectAreaOMASAPIResponse response = initializeAPI(serverName, userId, methodName);
         if (response == null)
         {
-            response = OMRSAPIHelper.findEntitiesByType(oMRSAPIHelper, serverName, methodName, userId, "GlossaryTerm", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
+            response = OMRSAPIHelper.findEntitiesByPropertyValue(oMRSAPIHelper, methodName, userId, "GlossaryTerm", searchCriteria, asOfTime, offset, pageSize, sequencingOrder, sequencingProperty, methodName);
             if (response.getResponseCategory().equals(ResponseCategory.OmrsEntityDetails))
             {
                 EntityDetailsResponse entityDetailsResponse = (EntityDetailsResponse) response;
                 List<EntityDetail> entitydetails = entityDetailsResponse.getEntityDetails();
                 List<Term> terms = new ArrayList<>();
-                for (EntityDetail entityDetail : entitydetails)
-                {
-                    // call the getTerm so that the GlossarySummary and other parts are populated.
-                    response = getTermByGuid(serverName,userId,entityDetail.getGUID());
-                    if (response.getResponseCategory() == ResponseCategory.Term) {
-                        TermResponse termResponse = (TermResponse)response;
-                        Term term = termResponse.getTerm();
-                        terms.add(term);
-                    } else {
-                        break;
-                    }
-                }
-                if (response.getResponseCategory() == ResponseCategory.Term) {
+                if (entitydetails == null) {
                     response = new TermsResponse(terms);
+                } else {
+                    for (EntityDetail entityDetail : entitydetails) {
+                        // call the getTerm so that the GlossarySummary and other parts are populated.
+                        response = getTermByGuid(serverName, userId, entityDetail.getGUID());
+                        if (response.getResponseCategory() == ResponseCategory.Term) {
+                            TermResponse termResponse = (TermResponse) response;
+                            Term term = termResponse.getTerm();
+                            terms.add(term);
+                        } else {
+                            break;
+                        }
+                    }
+                    if (response.getResponseCategory() == ResponseCategory.Term) {
+                        response = new TermsResponse(terms);
+                    }
                 }
             }
         }

@@ -3,7 +3,8 @@
 package org.odpi.openmetadata.accessservices.discoveryengine.converters;
 
 import org.odpi.openmetadata.accessservices.discoveryengine.mappers.DiscoveryEnginePropertiesMapper;
-import org.odpi.openmetadata.accessservices.discoveryengine.mappers.ReferenceableMapper;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.converters.ReferenceableConverter;
+import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.mappers.ReferenceableMapper;
 import org.odpi.openmetadata.frameworks.discovery.properties.DiscoveryEngineProperties;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.EntityDetail;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.InstanceProperties;

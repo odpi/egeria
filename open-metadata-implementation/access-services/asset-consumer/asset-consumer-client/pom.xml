@@ -31,8 +31,22 @@
         </dependency>
 
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>rest-client-connectors-api</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>rest-client-factory</artifactId>
+            <version>${open-metadata.version}</version>
+        </dependency>
+
+        <!-- Asset Consumer is built on Connected Asset -->
+        <dependency>
+            <groupId>org.odpi.egeria</groupId>
+            <artifactId>ocf-metadata-client</artifactId>
+            <version>${open-metadata.version}</version>
         </dependency>
 
     </dependencies>

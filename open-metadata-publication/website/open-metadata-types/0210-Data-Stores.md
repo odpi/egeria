@@ -8,7 +8,7 @@ The data store definition shows how the data set relates to the server that it i
 
 ![UML](0210-Data-Stores.png)
 
-
+Return to [Area 2](Area-2-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

@@ -10,7 +10,6 @@ import org.odpi.openmetadata.accessservices.governanceengine.api.objects.Governe
 import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerPolicyResource;
-import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerResource;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerServiceResource;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerTag;
 import org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.model.RangerTagDef;
@@ -27,12 +26,14 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.odpi.openmetadata.openconnectors.governancedaemonconnectors.securitysync.rangerconnector.util.Constants.*;
 
@@ -47,66 +48,32 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
 
     @Override
     public void importTaggedResources(List<GovernedAsset> governedAssets) {
-        Map<String, RangerTag> rangerTagMap = new HashMap<>();
-        Map<Long, RangerTag> tags = new HashMap<>();
-        long resourceIndex = 0L;
-        long tagIndex = 0L;
+        Set<RangerTag> tags = new HashSet<>();
+        Map<String, String> tagToResource = new HashMap<>();
 
-        List<RangerServiceResource> resources = new ArrayList<>();
-        Map<Long, List<Long>> resourceToTagIds = new HashMap<>();
+        createRangerTagDef();
 
         for (GovernedAsset governedAsset : governedAssets) {
 
-            if (governedAsset.getAssignedGovernanceClassifications().isEmpty()) {
+            if (governedAsset.getAssignedGovernanceClassification() == null) {
                 continue;
             }
 
-            GovernanceClassification classification = governedAsset.getAssignedGovernanceClassifications().get(0);
-            String tagName = classification.getAttributes().get(LEVEL);
-            RangerTag rangerTag;
-            Long tagNo = tagIndex;
-            if (rangerTagMap.containsKey(tagName)) {
-                rangerTag = rangerTagMap.get(tagName);
-                for (Map.Entry<Long, RangerTag> rangerTagEntry : tags.entrySet()) {
-                    if (rangerTagEntry.getValue().equals(rangerTag)) {
-                        tagNo = rangerTagEntry.getKey();
-                    }
-                }
-            } else {
-                rangerTag = buildTag(classification);
-                rangerTagMap.put(tagName, rangerTag);
-                tags.put(tagIndex++, rangerTag);
-            }
+            RangerTag rangerTag = buildTag(governedAsset.getAssignedGovernanceClassification());
+            tags.add(rangerTag);
 
-            List<RangerServiceResource> rangerServiceResources = new ArrayList<>(governedAsset.getContexts().size());
-            for (Context context : governedAsset.getContexts()) {
-                Map<String, RangerPolicyResource> resourceMap = getRangerPolicyResourceMap(context);
-                RangerServiceResource serviceResource = getRangerServiceResource(resourceMap, governedAsset.getGuid(), resourceIndex++);
-                rangerServiceResources.add(serviceResource);
-            }
-
-            resources.addAll(rangerServiceResources);
-
-            for (RangerServiceResource resource : rangerServiceResources) {
-                resourceToTagIds.putAll(Collections.singletonMap(resource.getId(), Collections.singletonList(tagNo)));
-            }
+            RangerServiceResource resource = createResource(governedAsset);
+            tagToResource.put(rangerTag.getGuid(), resource.getGuid());
         }
 
-        RangerResource rangerResource = buildRangerResource(resources, tags, resourceToTagIds);
-        importTaggedResources(rangerResource);
-    }
-
-    @Override
-    public void createAssociationResourceToSecurityTag(GovernedAsset asset) {
-        RangerResource rangerResource = processGovernedAsset(asset);
-
-        importTaggedResources(rangerResource);
+        tags.forEach(this::createRangerTag);
+        tagToResource.forEach(this::createAssociationResourceToSecurityTag);
     }
 
     @Override
     public ResourceTagMapper createAssociationResourceToSecurityTag(String tagGUID, String resourceGUID) {
         String rangerBaseURL = connection.getEndpoint().getAddress();
-        String createAssociation = MessageFormat.format("{0}/service/tags/tagresourcemaps?tag-guid={1}&resource-guid={2}", rangerBaseURL, tagGUID, resourceGUID);
+        String createAssociation = MessageFormat.format(SERVICE_TAGS_MAP_TAG_GUID_RESOURCE_GUI, rangerBaseURL, tagGUID, resourceGUID);
 
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
@@ -122,7 +89,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
     @Override
     public void deleteAssociationResourceToSecurityTag(ResourceTagMapper resourceTagMapper) {
         String rangerBaseURL = connection.getEndpoint().getAddress();
-        String deleteAssociationURL = MessageFormat.format("{0}/service/tags/tagresourcemap/{1}", rangerBaseURL, resourceTagMapper.getId());
+        String deleteAssociationURL = MessageFormat.format(TAG_RESOURCE_ASSOCIATION, rangerBaseURL, resourceTagMapper.getId());
 
         RestTemplate restTemplate = new RestTemplate();
         HttpHeaders headers = getHttpHeaders();
@@ -136,19 +103,9 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
     }
 
     @Override
-    public void createSecurityTag(GovernanceClassification classification) {
+    public RangerTag createSecurityTag(GovernanceClassification classification) {
         final RangerTag rangerTag = buildTag(classification);
-
-        String body = getBody(rangerTag);
-        RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> entity = new HttpEntity<>(body, getHttpHeaders());
-
-        try {
-            String createTagURL = getRangerURL("{0}/service/tags/");
-            restTemplate.exchange(createTagURL, HttpMethod.POST, entity, String.class);
-        } catch (HttpStatusCodeException exception) {
-            log.error("Unable to create a security tag");
-        }
+        return createRangerTag(rangerTag);
     }
 
     @Override
@@ -163,96 +120,8 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
     }
 
     @Override
-    public List<RangerTag> getSecurityTags() {
-        String allMappedResources = getRangerURL(SERVICE_ALL_TAGS);
-
-        RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
-
-        try {
-            ResponseEntity<List<RangerTag>> response = restTemplate.exchange(allMappedResources, HttpMethod.GET, entity, new ParameterizedTypeReference<List<RangerTag>>() {
-            });
-            return response.getBody();
-        } catch (HttpStatusCodeException exception) {
-            log.error("Unable to get the security tags available on Ranger Server");
-        }
-        return Collections.emptyList();
-    }
-
-    private RangerResource processGovernedAsset(GovernedAsset governedAsset) {
-        Map<Long, RangerTag> tags = buildTags(governedAsset.getAssignedGovernanceClassifications());
-
-        List<RangerServiceResource> rangerServiceResources = getRangerServiceResources(governedAsset);
-        Map<Long, List<Long>> resourceToTagIds = mapResources(tags, rangerServiceResources);
-
-        return buildRangerResource(rangerServiceResources, tags, resourceToTagIds);
-    }
-
-    private RangerResource buildRangerResource(List<RangerServiceResource> rangerServiceResource,
-                                               Map<Long, RangerTag> tags,
-                                               Map<Long, List<Long>> resourceToTagIds) {
-        RangerResource rangerResource = new RangerResource();
-
-        rangerResource.setTags(tags);
-
-        Map<Long, RangerTagDef> rangerTagDef = createRangerTagDef();
-        rangerResource.setTagDefinitions(rangerTagDef);
-
-        rangerResource.setServiceResources(rangerServiceResource);
-        rangerResource.setResourceToTagIds(resourceToTagIds);
-        rangerResource.setOp(ADD_OR_UPDATE);
-        if (connection.getAdditionalProperties() != null && connection.getAdditionalProperties().get("tagServiceName") != null) {
-            rangerResource.setServiceName(connection.getAdditionalProperties().get("tagServiceName"));
-        }
-        rangerResource.setTagVersion(1L);
-
-        return rangerResource;
-    }
-
-    private Map<Long, RangerTagDef> createRangerTagDef() {
-        Map<Long, RangerTagDef> tagDefinitions = new HashMap<>();
-        RangerTagDef rangerTagDef = new RangerTagDef();
-        rangerTagDef.setId(1L);
-        rangerTagDef.setCreatedBy(RANGER_CONNECTOR);
-        rangerTagDef.setName(CONFIDENTIALITY);
-
-        tagDefinitions.put(1L, rangerTagDef);
-        return tagDefinitions;
-    }
-
-    private List<RangerServiceResource> getRangerServiceResources(GovernedAsset governedAsset) {
-        Long resourceId = 0L;
-        List<RangerServiceResource> rangerServiceResources = new ArrayList<>(governedAsset.getContexts().size());
-
-        for (Context context : governedAsset.getContexts()) {
-            Map<String, RangerPolicyResource> resourceMap = getRangerPolicyResourceMap(context);
-            RangerServiceResource serviceResource = getRangerServiceResource(resourceMap, governedAsset.getGuid(), resourceId++);
-            rangerServiceResources.add(serviceResource);
-        }
-        return rangerServiceResources;
-    }
-
-    private Map<Long, List<Long>> mapResourcesToTags(Long rangerServiceResourceId, List<Long> tagList) {
-        Map<Long, List<Long>> resourceToTagIds = new HashMap<>();
-        resourceToTagIds.put(rangerServiceResourceId, tagList);
-
-        return resourceToTagIds;
-    }
-
-    private Map<Long, List<Long>> mapResources(Map<Long, RangerTag> tags, List<RangerServiceResource> rangerServiceResources) {
-        Map<Long, List<Long>> resourceToTagIds = new HashMap<>();
-        List<Long> tagList = new ArrayList<>(tags.keySet());
-
-        for (RangerServiceResource rangerServiceResource : rangerServiceResources) {
-            resourceToTagIds.putAll(mapResourcesToTags(rangerServiceResource.getId(), tagList));
-        }
-
-        return resourceToTagIds;
-    }
-
     public RangerServiceResource getResourceByGUID(String resourceGuid) {
-        String rangerBaseURL = connection.getEndpoint().getAddress();
-        String resourceURL = MessageFormat.format(SERVICE_TAGS_RESOURCE_BY_GUID, rangerBaseURL, resourceGuid);
+        String resourceURL = getResourceURL(resourceGuid, SERVICE_TAGS_RESOURCE_BY_GUID);
 
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
@@ -261,22 +130,103 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             ResponseEntity<RangerServiceResource> result = restTemplate.exchange(resourceURL, HttpMethod.GET, entity, RangerServiceResource.class);
             return result.getBody();
         } catch (HttpStatusCodeException exception) {
-            log.error("Unable to fetch the resourse with guid = {}", resourceGuid);
+            log.debug("Unable to fetch the resource with guid = {}", resourceGuid);
         }
         return null;
     }
 
-    private void importTaggedResources(RangerResource resource) {
-        String body = getBody(resource);
+    @Override
+    public void deleteResourceByGUID(String resourceGuid) {
+        String resourceURL = getResourceURL(resourceGuid, SERVICE_TAGS_RESOURCE_BY_GUID);
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> entity = new HttpEntity<>(getHttpHeaders());
+
+        try {
+            restTemplate.delete(resourceURL, HttpMethod.DELETE, entity);
+            log.info("The resource with guid = {} has been deleted", resourceGuid);
+        } catch (HttpStatusCodeException exception) {
+            log.debug("Unable to delete the resource with guid = {}", resourceGuid);
+        }
+    }
+
+    @Override
+    public RangerServiceResource createResource(GovernedAsset governedAsset) {
+        RangerServiceResource serviceResource = buildRangerServiceResource(governedAsset);
+
+        String rangerBaseURL = connection.getEndpoint().getAddress();
+        String createAssociation = MessageFormat.format(SERVICE_TAGS_RESOURCES, rangerBaseURL);
+
+        String body = getBody(serviceResource);
         RestTemplate restTemplate = new RestTemplate();
         HttpEntity<String> entity = new HttpEntity<>(body, getHttpHeaders());
 
         try {
-            String url = getRangerURL(SERVICE_TAGS_IMPORT_SERVICE_TAGS);
-            restTemplate.exchange(url, HttpMethod.PUT, entity, String.class);
+            ResponseEntity<RangerServiceResource> result = restTemplate.exchange(createAssociation, HttpMethod.POST, entity, RangerServiceResource.class);
+            return result.getBody();
         } catch (HttpStatusCodeException exception) {
-            log.error("Unable to import the association between tags and resources");
+            log.debug("Unable to create the association between tag and resource");
         }
+        return null;
+    }
+
+    private RangerServiceResource buildRangerServiceResource(GovernedAsset governedAsset) {
+        RangerServiceResource serviceResource = new RangerServiceResource();
+
+        serviceResource.setGuid(governedAsset.getGuid());
+        serviceResource.setServiceName(DEFAULT_SCHEMA_NAME);
+        serviceResource.setCreatedBy(RANGER_CONNECTOR);
+        Map<String, RangerPolicyResource> resourceElements = getRangerPolicyResourceMap(governedAsset.getContext());
+        serviceResource.setResourceElements(resourceElements);
+
+        return serviceResource;
+    }
+
+    private String getResourceURL(String resourceGuid, String serviceTagsResourceByGuid) {
+        String rangerBaseURL = connection.getEndpoint().getAddress();
+        return MessageFormat.format(serviceTagsResourceByGuid, rangerBaseURL, resourceGuid);
+    }
+
+    private RangerTag createRangerTag(RangerTag rangerTag) {
+        String createTagURL = getRangerURL(SERVICE_TAGS);
+        String body = getBody(rangerTag);
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> entity = new HttpEntity<>(body, getHttpHeaders());
+
+        try {
+            ResponseEntity<RangerTag> result = restTemplate.exchange(createTagURL, HttpMethod.POST, entity, RangerTag.class);
+            return result.getBody();
+        } catch (HttpStatusCodeException exception) {
+            log.debug("Unable to create a security tag");
+        }
+        return null;
+    }
+
+    private RangerTagDef createRangerTagDef() {
+        RangerTagDef rangerTagDef = buildRangerTagDef();
+        String body = getBody(rangerTagDef);
+
+        String createRangerTagDefURL = getRangerURL(SERVICE_TAGS_TAGDEF);
+
+        RestTemplate restTemplate = new RestTemplate();
+        HttpEntity<String> entity = new HttpEntity<>(body, getHttpHeaders());
+
+        try {
+            ResponseEntity<RangerTagDef> result = restTemplate.exchange(createRangerTagDefURL, HttpMethod.POST, entity, RangerTagDef.class);
+            return result.getBody();
+        } catch (HttpStatusCodeException exception) {
+            log.debug("Unable to create a security tag");
+        }
+        return null;
+    }
+
+    private RangerTagDef buildRangerTagDef() {
+        RangerTagDef rangerTagDef = new RangerTagDef();
+        rangerTagDef.setId(1L);
+        rangerTagDef.setCreatedBy(RANGER_CONNECTOR);
+        rangerTagDef.setName(CONFIDENTIALITY);
+
+        return rangerTagDef;
     }
 
     private List<ResourceTagMapper> getMappedResources() {
@@ -290,21 +240,9 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
             });
             return response.getBody();
         } catch (HttpStatusCodeException exception) {
-            log.error("Unable to fetch the mapped resources");
+            log.debug("Unable to fetch the mapped resources");
         }
         return Collections.emptyList();
-    }
-
-    private Map<Long, RangerTag> buildTags(List<GovernanceClassification> classifications) {
-        Map<Long, RangerTag> tags = new HashMap<>(classifications.size());
-        long index = 0L;
-
-        for (GovernanceClassification classification : classifications) {
-            final RangerTag rangerTag = buildTag(classification);
-            tags.put(index++, rangerTag);
-        }
-
-        return tags;
     }
 
     private RangerTag buildTag(GovernanceClassification classification) {
@@ -312,6 +250,7 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
 
         tag.setCreatedBy(RANGER_CONNECTOR);
         tag.setType(CONFIDENTIALITY);
+        tag.setOwner(OPEN_METADATA_OWNER);
         if (classification.getAttributes().containsKey(LEVEL)) {
             tag.setGuid(classification.getAttributes().get(LEVEL));
         }
@@ -341,18 +280,6 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         return resourceValue;
     }
 
-    private RangerServiceResource getRangerServiceResource(Map<String, RangerPolicyResource> resourceElements, String guid, Long resourceId) {
-        RangerServiceResource serviceResource = new RangerServiceResource();
-
-        serviceResource.setId(resourceId);
-        serviceResource.setGuid(guid);
-        serviceResource.setServiceName(DEFAULT_SCHEMA_NAME);
-        serviceResource.setCreatedBy(RANGER_CONNECTOR);
-        serviceResource.setResourceElements(resourceElements);
-
-        return serviceResource;
-    }
-
     private String getBody(Object resource) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
@@ -370,10 +297,13 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
 
     private HttpHeaders getHttpHeaders() {
         HttpHeaders headers = getBasicHTTPHeaders();
+
         if (connection != null && connection.getAdditionalProperties() != null
-                && connection.getAdditionalProperties().containsKey("securityServerAuthorization")) {
-            headers.set("Authorization", connection.getAdditionalProperties().get("securityServerAuthorization"));
+                && connection.getAdditionalProperties().containsKey(SECURITY_SERVER_AUTHORIZATION)
+                && connection.getAdditionalProperties().get(SECURITY_SERVER_AUTHORIZATION).matches("[a-zA-Z0-9]++")) {
+            headers.set("Authorization", connection.getAdditionalProperties().get(SECURITY_SERVER_AUTHORIZATION));
         }
+
         return headers;
     }
 
@@ -384,4 +314,17 @@ public class RangerSecurityServiceConnector extends ConnectorBase implements Sec
         return headers;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        RangerSecurityServiceConnector that = (RangerSecurityServiceConnector) o;
+        return Objects.equals(connection, that.connection);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), connection);
+    }
 }

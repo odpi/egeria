@@ -5,6 +5,7 @@ package org.odpi.openmetadata.accessservices.assetconsumer.properties;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Referenceable;
 
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.PUBLIC_
 @JsonAutoDetect(getterVisibility=PUBLIC_ONLY, setterVisibility=PUBLIC_ONLY, fieldVisibility=NONE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown=true)
-public class GlossaryTerm extends ReferenceableHeader
+public class GlossaryTerm extends Referenceable
 {
     private String displayName  = null;
     private String summary      = null;
@@ -206,12 +207,14 @@ public class GlossaryTerm extends ReferenceableHeader
                 ", examples='" + examples + '\'' +
                 ", abbreviation='" + abbreviation + '\'' +
                 ", usage='" + usage + '\'' +
-                ", GUID='" + getGUID() + '\'' +
-                ", typeName='" + getTypeName() + '\'' +
-                ", typeDescription='" + getTypeDescription() + '\'' +
                 ", qualifiedName='" + getQualifiedName() + '\'' +
                 ", additionalProperties=" + getAdditionalProperties() +
+                ", meanings=" + getMeanings() +
+                ", type=" + getType() +
+                ", GUID='" + getGUID() + '\'' +
+                ", URL='" + getURL() + '\'' +
                 ", classifications=" + getClassifications() +
+                ", extendedProperties=" + getExtendedProperties() +
                 '}';
     }
 

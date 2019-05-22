@@ -3,7 +3,7 @@
 package org.odpi.openmetadata.accessservices.assetconsumer.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.Tag;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.InformalTag;
 import org.testng.annotations.Test;
 
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import static org.testng.Assert.assertTrue;
  */
 public class TagResponseTest
 {
-    private Tag                 tag                  = new Tag();
+    private InformalTag         tag                  = new InformalTag();
     private Map<String, Object> additionalProperties = new HashMap<>();
 
 

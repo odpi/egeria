@@ -145,8 +145,7 @@ public class GovernedAssetHandler {
         GovernedAsset governedAsset = getGovernedAsset(entityDetail);
 
         if (entityDetail.getClassifications() != null && !entityDetail.getClassifications().isEmpty()) {
-            List<GovernanceClassification> governanceClassifications = getGovernanceClassifications(entityDetail.getClassifications());
-            governedAsset.setAssignedGovernanceClassifications(governanceClassifications);
+            governedAsset.setAssignedGovernanceClassification(getGovernanceClassifications(entityDetail.getClassifications()));
         }
         return governedAsset;
     }
@@ -166,15 +165,10 @@ public class GovernedAssetHandler {
         return false;
     }
 
-    public List<GovernanceClassification> getGovernanceClassifications(List<Classification> allClassifications) {
-        List<Classification> classificationList = filterGovernedClassifications(allClassifications);
+    public GovernanceClassification getGovernanceClassifications(List<Classification> allClassifications) {
+        Optional<Classification> classification = filterGovernedClassification(allClassifications);
 
-        List<GovernanceClassification> classifications = new ArrayList<>(classificationList.size());
-
-        for (Classification classification : classificationList) {
-            classifications.add(getGovernanceClassification(classification));
-        }
-        return classifications;
+        return classification.map(this::getGovernanceClassification).orElse(null);
     }
 
     private Set<String> setGovernedClassifications() {
@@ -253,34 +247,19 @@ public class GovernedAssetHandler {
 
     private void addClassificationInfoToEntry(GovernedAsset entry, EntityDetail governedAsset) {
 
-        final List<Classification> classifications = filterGovernedClassifications(governedAsset.getClassifications());
-        if (classifications == null || classifications.isEmpty()) {
+        GovernanceClassification usageList = entry.getAssignedGovernanceClassification();
+        if (usageList != null) {
+            log.info("this governed asset contains a classification");
             return;
         }
 
-        List<GovernanceClassification> governanceClassifications = getGovernanceClassifications(entry, classifications);
-        if (governanceClassifications.isEmpty()) {
+        final Optional<Classification> classification = filterGovernedClassification(governedAsset.getClassifications());
+
+        if (!classification.isPresent()) {
             return;
         }
 
-        List<GovernanceClassification> usageList = entry.getAssignedGovernanceClassifications();
-        if (usageList == null) {
-            usageList = new ArrayList<>();
-        }
-        usageList.addAll(governanceClassifications);
-        entry.setAssignedGovernanceClassifications(usageList);
-    }
-
-    private List<GovernanceClassification> getGovernanceClassifications(GovernedAsset entry, List<Classification> classifications) {
-        List<GovernanceClassification> governanceClassifications = new ArrayList<>();
-        for (Classification classification : classifications) {
-            if (containsGovernedClassification(entry, classification)) {
-                continue;
-            }
-            GovernanceClassification governanceClassification = getGovernanceClassification(classification);
-            governanceClassifications.add(governanceClassification);
-        }
-        return governanceClassifications;
+        entry.setAssignedGovernanceClassification(getGovernanceClassification(classification.get()));
     }
 
     private GovernanceClassification getGovernanceClassification(Classification classification) {
@@ -291,14 +270,6 @@ public class GovernedAssetHandler {
         governanceClassification.setAttributes(attributes);
 
         return governanceClassification;
-    }
-
-    private boolean containsGovernedClassification(GovernedAsset entry, Classification classification) {
-        if (entry.getAssignedGovernanceClassifications() == null || entry.getAssignedGovernanceClassifications().isEmpty()) {
-            return false;
-        }
-        final long count = entry.getAssignedGovernanceClassifications().stream().filter(c -> c.getName().equals(classification.getType().getTypeDefName())).count();
-        return count != 0;
     }
 
     private Map<String, String> getInstanceProperties(Classification classification) {
@@ -314,10 +285,10 @@ public class GovernedAssetHandler {
         return attributes;
     }
 
-    private List<Classification> filterGovernedClassifications(List<Classification> classifications) {
+    private Optional<Classification> filterGovernedClassification(List<Classification> classifications) {
         return classifications.stream()
                 .filter(c -> isGovernedClassification(c.getType().getTypeDefName()))
-                .collect(Collectors.toList());
+                .findAny();
     }
 
     private boolean isGovernedClassification(String classificationName) {
@@ -331,24 +302,21 @@ public class GovernedAssetHandler {
         governedAsset.setGuid(entity.getGUID());
         governedAsset.setType(entity.getType().getTypeDefName());
         governedAsset.setFullQualifiedName(getResourceValue(entity, QUALIFIED_NAME));
-        log.info("Qualified name: {}", getResourceValue(entity, QUALIFIED_NAME));
 
         governedAsset.setName(getResourceValue(entity, DISPLAY_NAME));
-        governedAsset.setContexts(buildDatabaseContext(entity));
+        governedAsset.setContext(buildDatabaseContext(entity));
 
         return governedAsset;
     }
 
-    private List<Context> buildDatabaseContext(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException {
+    private Context buildDatabaseContext(EntityDetail entity) throws EntityProxyOnlyException, TypeErrorException, FunctionNotSupportedException, PropertyErrorException, EntityNotKnownException, TypeDefNotKnownException, PagingErrorException, UserNotAuthorizedException, org.odpi.openmetadata.repositoryservices.ffdc.exception.InvalidParameterException, RepositoryErrorException {
         switch (entity.getType().getTypeDefName()) {
             case RELATIONAL_COLUMN:
                 return contextBuilder.buildContextForColumn(metadataCollection, entity.getGUID());
             case RELATIONAL_TABLE:
                 return contextBuilder.buildContextForTable(metadataCollection, entity.getGUID());
-            case GLOSSARY_TERM:
-                return contextBuilder.buildContextForGlossaryTerm(metadataCollection, entity.getGUID());
             default:
-                return Collections.emptyList();
+                return null;
         }
     }
 

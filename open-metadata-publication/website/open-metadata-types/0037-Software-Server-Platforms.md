@@ -8,8 +8,10 @@ Software servers often use a software server platform to provide many of the ser
 ![UML](0037-Software-Server-Platforms.png)
 
 
+The [OMAG Server Platform](../omag-server) is an example of a software server
+platform.
 
-
+Return to [Area 0](Area-0-models.md).
 
 ----
 License: [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/),

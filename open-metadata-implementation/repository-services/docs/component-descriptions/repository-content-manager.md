@@ -5,7 +5,7 @@
 # Repository Content Manager
 
 The repository content manager provides the function of the [TypeDef Manager](typedef-manager.md)
-plus the implementation of many [Repository Helper]() and [Repository Validator]() methods.
+plus the implementation of many [Repository Helper](repository-helper.md) and [Repository Validator]() methods.
 
 
 

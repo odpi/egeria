@@ -2,14 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.accessservices.assetconsumer.events;
 
-import org.odpi.openmetadata.accessservices.assetconsumer.properties.Asset;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Asset;
 
 import java.util.Date;
 import java.util.Objects;
 
 public class UpdatedAssetEvent extends AssetEvent
 {
-    private Date  updateTime = null;
+    private Date  updateTime    = null;
     private Asset originalAsset = null;
 
 

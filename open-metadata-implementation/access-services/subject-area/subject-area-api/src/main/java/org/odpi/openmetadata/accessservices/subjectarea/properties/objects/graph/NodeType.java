@@ -60,11 +60,7 @@ public enum NodeType implements Serializable {
      */
     Category
     ,
-    /*
-     * TODO add support for Project
-     */
-//    Project
-//    ,
+
     /**
      * Asset
      */
@@ -75,8 +71,17 @@ public enum NodeType implements Serializable {
      */
     SubjectAreaDefinition
     ,
-    // TODO Consider other types like classification, comment,
 
+    /**
+     * Project
+     */
+    Project,
+    /**
+     * Glossary Project
+     */
+    GlossaryProject,
+
+    // TODO Consider other types like classification, comment,
     /**
      * Unknown type of node.
      */

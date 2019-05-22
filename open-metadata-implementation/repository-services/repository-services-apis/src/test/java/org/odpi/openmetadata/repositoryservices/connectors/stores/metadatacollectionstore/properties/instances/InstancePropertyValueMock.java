@@ -48,6 +48,27 @@ public class InstancePropertyValueMock extends InstancePropertyValue
 
 
     /**
+     * Return the string version of the value - used for error logging.
+     *
+     * @return string value
+     */
+    public String valueAsString()
+    {
+        return "PropertyValue";
+    }
+
+
+    /**
+     * Return the object version of the value - used for comparisons.
+     *
+     * @return object value
+     */
+    public Object valueAsObject()
+    {
+        return "PropertyObject";
+    }
+
+    /**
      * Delegate the process of cloning to the subclass.
      *
      * @return subclass of InstancePropertyValue
