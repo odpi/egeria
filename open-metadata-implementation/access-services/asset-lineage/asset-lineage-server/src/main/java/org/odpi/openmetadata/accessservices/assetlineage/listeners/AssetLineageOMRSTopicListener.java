@@ -27,9 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.RELATIONAL_COLUMN;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.RELATIONAL_TABLE;
-import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.SEMANTIC_ASSIGNMENT;
+import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*;
 
 public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
@@ -49,7 +47,8 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
     /**
      * The constructor is given the connection to the out topic for Asset Lineage OMAS
      * along with classes for testing and manipulating instances.
-     *  @param assetLineageOutTopic connection to the out topic
+     *
+     * @param assetLineageOutTopic connection to the out topic
      * @param repositoryValidator  provides validation of metadata instance
      * @param componentName        name of component
      * @param supportedZones       list of zones covered by this instance of the access service.
@@ -132,6 +131,7 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
                         break;
                     case DELETED_RELATIONSHIP_EVENT:
                         processDeletedRelationship(instanceEvent.getRelationship());
+
                     default:
                         break;
                 }
@@ -146,20 +146,41 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
      */
     public void processRelationship(Relationship relationship) {
 
-        //It should handle only semantic assignments for relational columns and relational tables
-        if (!(relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT) &&
-                (relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_COLUMN)) ||
-                relationship.getEntityOneProxy().getType().getTypeDefName().equals(RELATIONAL_TABLE))) {
+        if (!isValidRelationshipEvent(relationship))
             log.info("Event is ignored as the relationship is not a semantic assignment for a column or table");
-
-        } else {
+        else {
             log.info("Processing semantic assignment relationship event");
-                processSemanticAssignment(relationship);
+            processSemanticAssignment(relationship);
         }
+
     }
 
 
-    private void processSemanticAssignment(Relationship relationship){
+    /**
+     * Only semantic assignments should be handled, and only when columns or tables are involved.
+     *
+     * @param relationship - details of the new relationship
+     * @return
+     */
+    private boolean isValidRelationshipEvent(Relationship relationship) {
+        String entityProxyOneType = relationship.getEntityOneProxy().getType().getTypeDefName();
+        if (relationship.getType().getTypeDefName().equals(SEMANTIC_ASSIGNMENT)
+                &&
+                (
+                        entityProxyOneType.equals(RELATIONAL_COLUMN)
+                                ||
+                                entityProxyOneType.equals(RELATIONAL_TABLE)
+                                ||
+                                entityProxyOneType.equals(DERIVED_RELATIONAL_COLUMN)
+                                ||
+                                entityProxyOneType.equals(DERIVED_SCHEMA_ATTRIBUTE)
+                )
+        )
+            return true;
+        return false;
+    }
+
+    private void processSemanticAssignment(Relationship relationship) {
         RelationshipEvent relationshipEvent = new RelationshipEvent();
 
         String technicalGuid = relationship.getEntityOneProxy().getGUID();
@@ -177,16 +198,17 @@ public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
             relationshipEvent.setOmrsInstanceEventType(OMRSInstanceEventType.NEW_RELATIONSHIP_EVENT);
 
             publisher.publishRelationshipEvent(relationshipEvent);
-        }
-        catch (Exception e){  //TODO This catches 20 different possible errors right now.
+        } catch (Exception e) {  //TODO This catches 20 different possible errors right now.
             log.error(e.getMessage());
         }
     }
 
     private void processDeletedRelationship(Relationship relationship) {
     }
+
     private void processUpdatedEntityEvent(EntityDetail originalEntity, EntityDetail entity) {
     }
+
     private void processDeletedEntity(EntityDetail entity) {
     }
 

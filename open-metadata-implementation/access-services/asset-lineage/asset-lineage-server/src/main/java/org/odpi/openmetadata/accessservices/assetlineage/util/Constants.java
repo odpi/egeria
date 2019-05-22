@@ -7,8 +7,8 @@ public final class Constants {
     }
 
     public static final String GLOSSARY_TERM_TYPE_NAME = "GlossaryTerm";
-
-    //Asset Types
+    public static final String DERIVED_RELATIONAL_COLUMN = "DerivedRelationalColumn";
+    public static final String DERIVED_SCHEMA_ATTRIBUTE = "DerivedSchemaAttribute";
     public static final String ASSET = "Asset";
     public static final String SCHEMA_ELEMENT = "SchemaElement";
     public static final String GLOSSARY_TERM = "GlossaryTerm";
