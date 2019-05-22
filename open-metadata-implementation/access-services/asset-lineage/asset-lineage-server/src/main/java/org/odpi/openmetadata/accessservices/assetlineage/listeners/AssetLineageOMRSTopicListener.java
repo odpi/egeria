@@ -31,8 +31,6 @@ import static org.odpi.openmetadata.accessservices.assetlineage.util.Constants.*
 
 public class AssetLineageOMRSTopicListener implements OMRSTopicListener {
 
-
-    private static final String assetTypeName = "Asset";
     private static AssetLineageInstanceHandler instanceHandler = new AssetLineageInstanceHandler();
     private static final Logger log = LoggerFactory.getLogger(AssetLineageOMRSTopicListener.class);
 
