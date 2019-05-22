@@ -107,4 +107,15 @@ public class InvalidParameterException extends org.odpi.openmetadata.frameworks.
     {
         super(httpCode, className, actionDescription, errorMessage, systemAction, userAction, caughtError, parameterName, relatedProperties);
     }
+
+
+    /**
+     * This is the copy/clone constructor used for creating an exception.
+     *
+     * @param template   object to copy
+     */
+    public InvalidParameterException(org.odpi.openmetadata.frameworks.connectors.ffdc.InvalidParameterException template)
+    {
+        super(template);
+    }
 }
