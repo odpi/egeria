@@ -124,6 +124,17 @@ public class PropertyServerException extends OCFCheckedExceptionBase
 
 
     /**
+     * This is the copy/clone constructor used for creating an exception.
+     *
+     * @param template   object to copy
+     */
+    public PropertyServerException(PropertyServerException template)
+    {
+        super(template);
+    }
+
+
+    /**
      * JSON-style toString
      *
      * @return string of property names and values for this enum
