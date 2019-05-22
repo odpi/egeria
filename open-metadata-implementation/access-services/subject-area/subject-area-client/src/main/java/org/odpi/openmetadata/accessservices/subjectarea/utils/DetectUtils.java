@@ -9,6 +9,7 @@ import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.categ
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.glossary.Glossary;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Graph;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.graph.Line;
+import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.project.Project;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.objects.term.Term;
 import org.odpi.openmetadata.accessservices.subjectarea.properties.relationships.*;
 import org.odpi.openmetadata.accessservices.subjectarea.responses.*;
@@ -260,6 +261,41 @@ public class DetectUtils {
             CategoryErrorResponse(methodName, restResponse);
         }
         return glossaries;
+    }
+    /**
+     * Detect and return a Project object from the supplied response. If we do not find one then throw an Exception
+     * @param methodName - name of the method called
+     * @param restResponse - response from the rest call.  This generated in the remote handlers.
+     * @return Project if the supplied response is a project response
+     * @throws UnexpectedResponseException - if the response is not a project then throw this exception
+     */
+    public static Project detectAndReturnProject(String methodName,
+                                                   SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        Project project = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.Project)) {
+            ProjectResponse projectResponse = (ProjectResponse)restResponse;
+            project = projectResponse.getProject();
+        } else {
+            CategoryErrorResponse(methodName, restResponse);
+        }
+        return project;
+    }
+    /**
+     * Detect and return a List of Project objects from the supplied response. If we do not find one then throw an Exception
+     * @param methodName - name of the method called
+     * @param restResponse - response from the rest call.  This generated in the remote handlers.
+     * @return Projects if the supplied response is a project response
+     * @throws UnexpectedResponseException - if the response is not a project then throw this exception
+     */
+    public static List<Project> detectAndReturnProjects(String methodName, SubjectAreaOMASAPIResponse restResponse) throws UnexpectedResponseException {
+        List<Project> projects = null;
+        if ((restResponse != null) && (restResponse.getResponseCategory() == ResponseCategory.Projects)) {
+            ProjectsResponse projectsResponse = (ProjectsResponse)restResponse;
+            projects = projectsResponse.getProjects();
+        } else {
+            CategoryErrorResponse(methodName, restResponse);
+        }
+        return projects;
     }
     /**
      * Detect and return a Term object from the supplied response. If we do not find one then throw an Exception
