@@ -7,7 +7,6 @@ import org.apache.tinkerpop.gremlin.structure.Graph;
 import org.apache.tinkerpop.gremlin.structure.Vertex;
 import org.apache.tinkerpop.gremlin.structure.io.graphml.GraphMLWriter;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
-import org.janusgraph.core.JanusGraph;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetElement;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Connection;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Element;
