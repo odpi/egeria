@@ -55,6 +55,7 @@ data:
   {{ end }}
   IBMIGC_USER: {{ .Values.ibmigc.user }}
   IBMIGC_PASS: {{ .Values.ibmigc.password }}
+  IBMIGC_SERVER: {{ .Values.ibmigc.proxyserver }}
   {{ end }}
 
   # Used by User Interface
