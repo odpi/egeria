@@ -92,6 +92,7 @@ public class ContextHandler {
         Optional<TypeDef> typeDefStream = allTypes.getTypeDefs().stream().filter(t -> t.getName().equals(typeDefName)).findAny();
 
         if (typeDefStream.isPresent()) {
+            //TODO There should be a hasSuperType() in class entitytypes
             Optional<TypeDef> superType = allTypes.getTypeDefs().stream().filter(t -> t.getName().equals(typeDefStream.get().getSuperType().getName())).findAny();
             return typeDefStream.map(typeDef -> allTypes.getTypeDefs().stream().filter(t -> t.getName().equals(
                     superType.get().getName()) && t.getSuperType().getName().equals(ASSET)).findAny()).orElse(null);

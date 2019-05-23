@@ -23,6 +23,9 @@ public class AssetLineageInstanceHandler extends OCFOMASServiceInstanceHandler {
     public AssetLineageInstanceHandler() {
         super(AccessServiceDescription.ASSET_LINEAGE_OMAS);
 
+    }
+
+    public void registerAccessService(){
         AssetLineageRegistration.registerAccessService();
     }
 
