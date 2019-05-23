@@ -56,6 +56,36 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: egeria-service
     spec:
+      volumes:
+        - name: egeria-connector-volume
+          emptyDir: {}
+{{ if and .Values.ibmigc.enabled (not .Values.ibmigc.internal.enabled) }}
+# When re-using a pre-existing IGC environment, ensure the IP and hostname of the external IGC
+# resource are resolve-able
+      hostAliases:
+        - ip: {{ .Values.ibmigc.external.ip | quote }}
+          hostnames:
+            - {{ .Values.ibmigc.external.hostname }}
+{{ end }}
+      initContainers:
+{{ if .Values.ibmigc.enabled }}
+        # TODO: Eventually replace the temporary release retrieval below with a package-managed retrieval mechanism
+        - name: init-igc-connector
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          command:
+            - "/bin/bash"
+            - "-c"
+            - >
+              cd /opt/egeria/connectors &&
+              wget https://github.com/odpi/egeria-connector-ibm-igc/releases/download/1.1-SNAPSHOT/egeria-connector-ibm-igc-package-1.1-SNAPSHOT.jar
+          volumeMounts:
+            - mountPath: /opt/egeria/connectors
+              name: egeria-connector-volume
+{{ end }}
       containers:
         - name: egeria
           image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
@@ -76,10 +106,16 @@ spec:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
           env:
+            - name: "LOADER_PATH"
+              value: "/opt/egeria/connectors"
             {{ if .Values.debug.egeriaJVM }}
             - name: JAVA_DEBUG
               value:  "true"
             {{ end }}
+          volumeMounts:
+            - mountPath: /opt/egeria/connectors
+              name: egeria-connector-volume
+              readOnly: true
           resources: {}
       restartPolicy: Always
 

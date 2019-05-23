@@ -42,7 +42,6 @@ data:
   {{ end }}
 
   {{ if .Values.ibmigc.enabled }}
-  IGCPROXY_ENDPOINT: http://{{ include "myapp.fullname" . }}-ibm-igc-service:8080
   # Below values for IBMIGC need to reference either your container or external environment
   # See also: ibmigc... in values.yaml
   {{ if .Values.ibmigc.internal.enabled }}
