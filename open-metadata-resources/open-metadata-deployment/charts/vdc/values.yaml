@@ -181,6 +181,7 @@ ibmigc:
   enabled: false
   user: isadmin
   password: isadmin
+  proxyserver: ibmigc
   internal:
     enabled: false
   external:

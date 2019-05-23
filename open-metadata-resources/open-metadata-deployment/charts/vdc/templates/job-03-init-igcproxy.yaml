@@ -95,17 +95,17 @@ spec:
             - "-c"
             - >
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-type?typeName=IBM%20Information%20Governance%20Catalog
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/server-type?typeName=IBM%20Information%20Governance%20Catalog
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/organization-name?name=ODPi
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/organization-name?name=ODPi
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/server-url-root?url=${EGERIA_ENDPOINT}
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/server-url-root?url=${EGERIA_ENDPOINT}
                 && 
                 curl -f --verbose --basic admin:admin -X POST
                 --header "Content-Type: application/json"
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/event-bus
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/event-bus
                 {{- if .Values.kafka.topicroot -}}
                 ?topicURLRoot={{ .Values.kafka.topicroot }}
                 {{- end -}}
@@ -117,16 +117,16 @@ spec:
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 --header "Content-Type: application/json"
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/local-repository/mode/repository-proxy/details?connectorProvider=org.odpi.egeria.connectors.ibm.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/local-repository/mode/repository-proxy/details?connectorProvider=org.odpi.egeria.connectors.ibm.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider
                 --data '{"ibm.igc.services.host": "'"${IBMIGC_HOST}"'", "ibm.igc.services.port": "'"${IBMIGC_PORT}"'", "ibm.igc.username": "'"${IBMIGC_USER}"'", "ibm.igc.password": "'"${IBMIGC_PASS}"'"}'
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/cohorts/${EGERIA_COHORT}
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/cohorts/${EGERIA_COHORT}
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/local-repository/event-mapper-details?connectorProvider=org.odpi.egeria.connectors.ibm.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider&eventSource=${IBMIGC_KAFKA_ENDPOINT}"
+                "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/local-repository/event-mapper-details?connectorProvider=org.odpi.egeria.connectors.ibm.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider&eventSource=${IBMIGC_KAFKA_ENDPOINT}"
                 &&
                 curl -f --verbose --basic admin:admin -X POST --max-time 900
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${EGERIA_SERVER}/instance
+                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/instance
 ...
 {{ end }}
