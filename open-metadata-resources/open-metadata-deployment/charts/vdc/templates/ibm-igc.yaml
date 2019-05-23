@@ -25,6 +25,9 @@ spec:
       port: 9446
       targetPort: 9446
       nodePort: {{ .Values.service.nodeport.ibmigc }}
+    - name: kafka
+      port: 59092
+      targetPort: 59092
   selector:
     app.kubernetes.io/name: {{ include "myapp.name" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
