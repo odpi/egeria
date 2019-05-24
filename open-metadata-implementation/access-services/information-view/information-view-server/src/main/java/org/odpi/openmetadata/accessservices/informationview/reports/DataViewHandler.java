@@ -57,16 +57,16 @@ public class DataViewHandler {
 
         log.debug("Creating data view based on payload {}", requestBody);
         try {
-            String qualifiedNameForDataView = QualifiedNameUtils.buildQualifiedName(requestBody.getEndpointAddress(), Constants.INFORMATION_VIEW, requestBody.getId());
+            String qualifiedNameForDataView = QualifiedNameUtils.buildQualifiedName(requestBody.getDataView().getEndpointAddress(), Constants.INFORMATION_VIEW, requestBody.getDataView().getId());
             InstanceProperties dataViewProperties = new EntityPropertiesBuilder()
                     .withStringProperty(Constants.QUALIFIED_NAME, qualifiedNameForDataView)
-                    .withStringProperty(Constants.NAME, requestBody.getName())
-                    .withStringProperty(Constants.OWNER, requestBody.getAuthor())
-                    .withStringProperty(Constants.ID, requestBody.getId())
-                    .withStringProperty(Constants.LAST_MODIFIER, requestBody.getLastModifier())
-                    .withDateProperty(Constants.LAST_MODIFIED_TIME, requestBody.getLastModifiedTime())
-                    .withDateProperty(Constants.CREATE_TIME, requestBody.getCreatedTime())
-                    .withStringProperty(Constants.NATIVE_CLASS, requestBody.getNativeClass())
+                    .withStringProperty(Constants.NAME, requestBody.getDataView().getName())
+                    .withStringProperty(Constants.OWNER, requestBody.getDataView().getAuthor())
+                    .withStringProperty(Constants.ID, requestBody.getDataView().getId())
+                    .withStringProperty(Constants.LAST_MODIFIER, requestBody.getDataView().getLastModifier())
+                    .withDateProperty(Constants.LAST_MODIFIED_TIME, requestBody.getDataView().getLastModifiedTime())
+                    .withDateProperty(Constants.CREATE_TIME, requestBody.getDataView().getCreatedTime())
+                    .withStringProperty(Constants.NATIVE_CLASS, requestBody.getDataView().getNativeClass())
                     .build();
 
 
@@ -90,11 +90,11 @@ public class DataViewHandler {
         } catch (PagingErrorException | PropertyErrorException | EntityNotKnownException | UserNotAuthorizedException | StatusNotSupportedException | InvalidParameterException | FunctionNotSupportedException | RepositoryErrorException | TypeErrorException | ClassificationErrorException |InvalidEntityException | EntityConflictException | HomeEntityException e) {
             throw new DataViewCreationException(InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getHttpErrorCode(),
                                                DataViewHandler.class.getName(),
-                                               InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getFormattedErrorMessage(requestBody.toString(), e.getMessage()),
+                                               InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getFormattedErrorMessage(requestBody.getDataView().toString(), e.getMessage()),
                                                InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getUserAction(),
                                                InformationViewErrorCode.INFORMATION_VIEW_SUBMIT_EXCEPTION.getSystemAction(),
                                                 e,
-                                                requestBody.getId());
+                                                requestBody.getDataView().getId());
         }
 
     }
