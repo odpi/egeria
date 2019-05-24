@@ -2,13 +2,14 @@
 /* Copyright Contributors to the ODPi Egeria project. */
 package org.odpi.openmetadata.commonservices.multitenant;
 
-import org.odpi.openmetadata.adminservices.configuration.registration.CommonServicesDescription;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.InvalidParameterException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.multitenant.ffdc.OMAGServerInstanceErrorCode;
-import org.odpi.openmetadata.commonservices.multitenant.ffdc.exceptions.NewInstanceException;
-import org.odpi.openmetadata.metadatasecurity.OpenMetadataPlatformSecurity;
+import org.odpi.openmetadata.frameworks.connectors.properties.beans.Connection;
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataPlatformSecurityVerifier;
+import org.odpi.openmetadata.metadatasecurity.connectors.OpenMetadataServerSecurityConnector;
+import org.odpi.openmetadata.platformservices.properties.OMAGServerInstanceHistory;
 
 import java.util.*;
 
@@ -21,8 +22,52 @@ import java.util.*;
  */
 public class OMAGServerPlatformInstanceMap
 {
-    private static Map<String, OMAGServerInstance> serverInstanceMap        = new HashMap<>();
-    private static OpenMetadataPlatformSecurity    platformSecurityVerifier = null;
+    private static Map<String, OMAGServerInstance> activeServerInstanceMap   = new HashMap<>();
+    private static Map<String, OMAGServerInstance> inActiveServerInstanceMap = new HashMap<>();
+
+
+    /**
+     * Return an active server instance object for the requested service.  The server instance
+     * may be new, already active, or known but inactive.
+     *
+     * @param serverName name of the server
+     * @return active OMAGServerInstance object
+     */
+    private static synchronized OMAGServerInstance getActiveServerInstance(String serverName)
+    {
+        /*
+         * Is this a server that is currently running?
+         */
+        OMAGServerInstance  serverInstance = activeServerInstanceMap.get(serverName);
+
+        if (serverInstance == null)
+        {
+            /*
+             * Is this a known server that is currently inactive?
+             */
+            serverInstance = inActiveServerInstanceMap.get(serverName);
+
+            if (serverInstance == null)
+            {
+                /*
+                 * New server for this platform
+                 */
+                serverInstance = new OMAGServerInstance(serverName);
+                activeServerInstanceMap.put(serverName, serverInstance);
+            }
+            else
+            {
+                /*
+                 * Move the inactive server to active
+                 */
+                activeServerInstanceMap.put(serverName, serverInstance);
+                inActiveServerInstanceMap.remove(serverName);
+            }
+        }
+
+        return serverInstance;
+    }
+
 
     /**
      * Add a new service instance to the server map.
@@ -35,23 +80,53 @@ public class OMAGServerPlatformInstanceMap
                                                              String                    serviceName,
                                                              OMAGServerServiceInstance instance)
     {
-        /*
-         * Is this the first service for this server?
-         */
-        OMAGServerInstance  serverInstance = serverInstanceMap.get(serverName);
-
-        if (serverInstance == null)
-        {
-            /*
-             * Creating the server instance automatically registers it in the serverInstanceMap
-             */
-            serverInstance = new OMAGServerInstance(serverName);
-        }
+        OMAGServerInstance  serverInstance = getActiveServerInstance(serverName);
 
         serverInstance.registerService(serviceName, instance);
-        serverInstanceMap.put(serverName, serverInstance);
     }
 
+
+    /**
+     * Add a new server security connector to the server map.
+     *
+     * @param serverName name of the server
+     * @param connection connection for the server's security validator
+     * @throws InvalidParameterException the connector is not valid.
+     */
+    private static synchronized void setServerActiveWithSecurity(String     serverName,
+                                                                 Connection connection) throws InvalidParameterException
+    {
+        OMAGServerInstance  serverInstance = getActiveServerInstance(serverName);
+
+        serverInstance.initialize();
+        serverInstance.registerSecurityValidator(connection);
+    }
+
+
+    /**
+     * Return whether a particular service is registered with this platform.
+     * This is used by the admin services when there being no instance is not an error.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     *
+     * @return boolean
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    private static synchronized boolean isServerInstanceActive(String  userId,
+                                                               String  serverName) throws UserNotAuthorizedException
+    {
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        {
+            throw new UserNotAuthorizedException(error);
+        }
+
+        return (activeServerInstanceMap.get(serverName) != null);
+    }
 
     /**
      * Return whether a particular service is registered with this platform.
@@ -66,16 +141,17 @@ public class OMAGServerPlatformInstanceMap
     private static synchronized boolean isServerInstanceKnown(String  userId,
                                                               String  serverName) throws UserNotAuthorizedException
     {
-
-        OMAGServerInstance  serverInstance = serverInstanceMap.get(serverName);
-
-        if (platformSecurityVerifier != null)
+        try
         {
-            platformSecurityVerifier.validateUserForPlatform(userId);
-            platformSecurityVerifier.validateUserAsAdminForPlatform(userId);
+            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        {
+            throw new UserNotAuthorizedException(error);
         }
 
-        return (serverInstance != null);
+        return ((activeServerInstanceMap.get(serverName) != null) ||
+                (inActiveServerInstanceMap.get(serverName) != null));
     }
 
 
@@ -85,7 +161,7 @@ public class OMAGServerPlatformInstanceMap
      * @param userId calling user or null if it is an anonymous request
      * @param serverName name of the server
      * @param serviceName name of the service running on the server
-     * @param methodName calling method
+     * @param serviceOperationName calling method
      *
      * @return OMAGServerServiceInstance object
      * @throws InvalidParameterException the server name is not known
@@ -95,30 +171,34 @@ public class OMAGServerPlatformInstanceMap
     private static synchronized OMAGServerServiceInstance getInstanceForPlatform(String  userId,
                                                                                  String  serverName,
                                                                                  String  serviceName,
-                                                                                 String  methodName) throws InvalidParameterException,
-                                                                                                            UserNotAuthorizedException,
-                                                                                                            PropertyServerException
+                                                                                 String  serviceOperationName) throws InvalidParameterException,
+                                                                                                                      UserNotAuthorizedException,
+                                                                                                                      PropertyServerException
     {
-
-        OMAGServerInstance  serverInstance = serverInstanceMap.get(serverName);
-
-        if (platformSecurityVerifier != null)
-        {
-            platformSecurityVerifier.validateUserForPlatform(userId);
-
-            if (CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName().equals(serviceName))
-            {
-                platformSecurityVerifier.validateUserAsOperatorForPlatform(userId);
-            }
-        }
+        OMAGServerInstance  serverInstance = activeServerInstanceMap.get(serverName);
 
         if (serverInstance != null)
         {
-            return serverInstance.getRegisteredService(userId, serviceName, methodName);
+            OpenMetadataServerSecurityConnector serverSecurityVerifier = serverInstance.getSecurityVerifier();
+
+            if (serverSecurityVerifier != null)
+            {
+                try
+                {
+                    serverSecurityVerifier.validateUserForServer(userId);
+                    serverSecurityVerifier.validateUserForService(userId, serviceName);
+                    serverSecurityVerifier.validateUserForServiceOperation(userId, serviceName, serviceOperationName);
+                }
+                catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+                {
+                    throw new UserNotAuthorizedException(error);
+                }
+            }
+            return serverInstance.getRegisteredService(userId, serviceName, serviceOperationName);
         }
         else
         {
-            handleBadServerName(userId, serverName, methodName);
+            handleBadServerName(userId, serverName, serviceOperationName);
         }
 
         return null;
@@ -134,17 +214,16 @@ public class OMAGServerPlatformInstanceMap
      */
     private static synchronized List<String> getActiveServerListForPlatform(String userId) throws UserNotAuthorizedException
     {
-        if (platformSecurityVerifier != null)
+        try
         {
-            platformSecurityVerifier.validateUserForPlatform(userId);
+            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        {
+            throw new UserNotAuthorizedException(error);
         }
 
-        if (platformSecurityVerifier != null)
-        {
-            platformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
-        }
-
-        Set<String>  activeServerSet = serverInstanceMap.keySet();
+        Set<String>  activeServerSet = activeServerInstanceMap.keySet();
 
         if (activeServerSet.isEmpty())
         {
@@ -156,6 +235,163 @@ public class OMAGServerPlatformInstanceMap
         }
     }
 
+
+    /**
+     * Return the list of OMAG Servers running in this OMAG Server Platform.
+     *
+     * @param userId calling user
+     * @return list of OMAG server names
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    private static synchronized List<String> getKnownServerListForPlatform(String userId) throws UserNotAuthorizedException
+    {
+        try
+        {
+            OpenMetadataPlatformSecurityVerifier.validateUserAsInvestigatorForPlatform(userId);
+        }
+        catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+        {
+            throw new UserNotAuthorizedException(error);
+        }
+
+        List<String> knownServerList = new ArrayList<>(activeServerInstanceMap.keySet());
+        knownServerList.addAll(inActiveServerInstanceMap.keySet());
+
+        if (knownServerList.isEmpty())
+        {
+            return null;
+        }
+        else
+        {
+            return knownServerList;
+        }
+    }
+
+
+    /**
+     * Check that the user is allowed to query the active services.
+     *
+     * @param userId calling user
+     * @param serverInstance instance for the server
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    private static synchronized void validateUserAsServerInvestigator(String              userId,
+                                                                      OMAGServerInstance  serverInstance) throws UserNotAuthorizedException
+    {
+        if (serverInstance != null)
+        {
+            OpenMetadataServerSecurityConnector serverSecurityVerifier = serverInstance.getSecurityVerifier();
+
+            if (serverSecurityVerifier != null)
+            {
+                try
+                {
+                    serverSecurityVerifier.validateUserForServer(userId);
+                    serverSecurityVerifier.validateUserAsServerInvestigator(userId);
+                }
+                catch (org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException error)
+                {
+                    throw new UserNotAuthorizedException(error);
+                }
+            }
+        }
+    }
+
+
+    /**
+     * Return the time this server instance last started.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     * @return start time
+     * @throws InvalidParameterException the serverName is not known.
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    private static synchronized  Date getServerStartTimeFromPlatform(String  userId,
+                                                                     String  serverName) throws InvalidParameterException,
+                                                                                                UserNotAuthorizedException
+    {
+        final String  methodName = "getServerStartTimeFromPlatform";
+
+        OMAGServerInstance  serverInstance = activeServerInstanceMap.get(serverName);
+
+        if (serverInstance != null)
+        {
+            validateUserAsServerInvestigator(userId, serverInstance);
+
+            return serverInstance.getServerStartTime();
+        }
+        else
+        {
+            handleBadServerName(userId, serverName, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the time this server instance last ended (or null if it is still running).
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     * @return end time or null
+     * @throws InvalidParameterException the serverName is not known.
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    private static synchronized  Date getServerEndTimeFromPlatform(String  userId,
+                                                                   String  serverName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException
+    {
+        final String  methodName = "getServerEndTimeFromPlatform";
+
+        OMAGServerInstance  serverInstance = activeServerInstanceMap.get(serverName);
+
+        if (serverInstance != null)
+        {
+            validateUserAsServerInvestigator(userId, serverInstance);
+
+            return serverInstance.getServerEndTime();
+        }
+        else
+        {
+            handleBadServerName(userId, serverName, methodName);
+        }
+
+        return null;
+    }
+
+
+    /**
+     * Return the time this server instance last started.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     * @return start time
+     * @throws InvalidParameterException the serverName is not known.
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    private static synchronized  List<OMAGServerInstanceHistory> getServerHistoryFromPlatform(String  userId,
+                                                                                              String  serverName) throws InvalidParameterException,
+                                                                                                                         UserNotAuthorizedException
+    {
+        final String  methodName = "getServerHistoryFromPlatform";
+
+        OMAGServerInstance  serverInstance = activeServerInstanceMap.get(serverName);
+
+        if (serverInstance != null)
+        {
+            validateUserAsServerInvestigator(userId, serverInstance);
+
+            return serverInstance.getServerHistory();
+        }
+        else
+        {
+            handleBadServerName(userId, serverName, methodName);
+        }
+
+        return null;
+    }
 
     /**
      * Return the list of services running in an OMAG Server that is running on this OMAG Server Platform.
@@ -171,20 +407,26 @@ public class OMAGServerPlatformInstanceMap
     {
         final String  methodName = "getActiveServiceListForServerOnPlatform";
 
-        if (platformSecurityVerifier != null)
-        {
-            platformSecurityVerifier.validateUserForPlatform(userId);
-        }
-
-        OMAGServerInstance  serverInstance = serverInstanceMap.get(serverName);
+        OMAGServerInstance  serverInstance = activeServerInstanceMap.get(serverName);
 
         if (serverInstance != null)
         {
+            validateUserAsServerInvestigator(userId, serverInstance);
+
             return serverInstance.getRegisteredServices();
         }
-        else
+        else /* server is not active */
         {
-            handleBadServerName(userId, serverName, methodName);
+            serverInstance = inActiveServerInstanceMap.get(serverName);
+
+            if (serverInstance != null)
+            {
+                validateUserAsServerInvestigator(userId, serverInstance);
+            }
+            else
+            {
+                handleBadServerName(userId, serverName, methodName);
+            }
         }
 
         return null;
@@ -192,7 +434,7 @@ public class OMAGServerPlatformInstanceMap
 
 
     /**
-     * Remove the instance for this server.
+     * Remove the service instance for this server.
      *
      * @param serverName name of the server
      * @param serviceName name of the service running on the server
@@ -200,11 +442,40 @@ public class OMAGServerPlatformInstanceMap
     private static synchronized void removeInstanceForPlatform(String   serverName,
                                                                String   serviceName)
     {
-        OMAGServerInstance  serverInstance = serverInstanceMap.get(serverName);
+        OMAGServerInstance  serverInstance = activeServerInstanceMap.get(serverName);
 
         if (serverInstance != null)
         {
              serverInstance.unRegisterService(serviceName);
+        }
+    }
+
+
+    /**
+     * Shutdown the server instance.  This is called once all services have been shutdown.
+     *
+     * @param userId calling user
+     * @param serverName name of the unknown server
+     * @param methodName calling method
+     * @throws InvalidParameterException server name is not known
+     * @throws PropertyServerException server still has active services - logic error
+     */
+    private static synchronized void setServerInActive(String   userId,
+                                                       String   serverName,
+                                                       String   methodName) throws InvalidParameterException,
+                                                                                   PropertyServerException
+    {
+        OMAGServerInstance  serverInstance = activeServerInstanceMap.get(serverName);
+
+        if (serverInstance == null)
+        {
+            handleBadServerName(userId, serverName, methodName);
+        }
+        else
+        {
+            serverInstance.shutdown(methodName);
+            inActiveServerInstanceMap.put(serverName, serverInstance);
+            activeServerInstanceMap.remove(serverName);
         }
     }
 
@@ -249,6 +520,23 @@ public class OMAGServerPlatformInstanceMap
 
 
     /**
+     * Return whether a particular server is active (running) in the platform.
+     * This is used by the admin services when there being no instance is not an error.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     *
+     * @return boolean
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    public boolean isServerActive(String  userId,
+                                  String  serverName) throws UserNotAuthorizedException
+    {
+        return OMAGServerPlatformInstanceMap.isServerInstanceActive(userId, serverName);
+    }
+
+
+    /**
      * Return whether a particular server is registered with the platform.
      * This is used by the admin services when there being no instance is not an error.
      *
@@ -258,10 +546,61 @@ public class OMAGServerPlatformInstanceMap
      * @return boolean
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
      */
-    boolean isServerKnown(String  userId,
-                          String  serverName) throws UserNotAuthorizedException
+    public boolean isServerKnown(String  userId,
+                                 String  serverName) throws UserNotAuthorizedException
     {
         return OMAGServerPlatformInstanceMap.isServerInstanceKnown(userId, serverName);
+    }
+
+
+    /**
+     * Return the time this server instance last started.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     * @return start time
+     * @throws InvalidParameterException the serverName is not known.
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    public  Date getServerStartTime(String  userId,
+                                    String  serverName) throws InvalidParameterException,
+                                                               UserNotAuthorizedException
+    {
+        return OMAGServerPlatformInstanceMap.getServerStartTimeFromPlatform(userId, serverName);
+    }
+
+
+    /**
+     * Return the time this server instance last ended (or null if it is still running).
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     * @return end time or null
+     * @throws InvalidParameterException the serverName is not known.
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    public  Date getServerEndTime(String  userId,
+                                  String  serverName) throws InvalidParameterException,
+                                                             UserNotAuthorizedException
+    {
+        return OMAGServerPlatformInstanceMap.getServerEndTimeFromPlatform(userId, serverName);
+    }
+
+
+    /**
+     * Return the time this server instance last started.
+     *
+     * @param userId calling user or null if it is an anonymous request
+     * @param serverName name of the server
+     * @return start time
+     * @throws InvalidParameterException the serverName is not known.
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    public  List<OMAGServerInstanceHistory> getServerHistory(String  userId,
+                                                             String  serverName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException
+    {
+        return OMAGServerPlatformInstanceMap.getServerHistoryFromPlatform(userId, serverName);
     }
 
 
@@ -281,12 +620,44 @@ public class OMAGServerPlatformInstanceMap
 
 
     /**
+     * Start up the server with the requested security.
+     *
+     * @param serverName name of the server
+     * @param connection connection properties for open metadata security connector for server (can be null for no security)
+     * @throws InvalidParameterException the connection is invalid
+     */
+    public void startUpServerInstance(String       serverName,
+                                      Connection   connection) throws InvalidParameterException
+    {
+        OMAGServerPlatformInstanceMap.setServerActiveWithSecurity(serverName, connection);
+    }
+
+
+    /**
+     * Shutdown the server instance.  This is called once all services have been shutdown.
+     *
+     * @param userId calling user
+     * @param serverName name of the unknown server
+     * @param methodName calling method
+     * @throws InvalidParameterException server name is not known
+     * @throws PropertyServerException server still has active services - logic error
+     */
+    public void shutdownServerInstance(String userId,
+                                       String serverName,
+                                       String methodName) throws InvalidParameterException,
+                                                                 PropertyServerException
+    {
+        OMAGServerPlatformInstanceMap.setServerInActive(userId, serverName, methodName);
+    }
+
+
+    /**
      * Return the instance for this server.
      *
      * @param userId calling user
      * @param serverName name of the server
      * @param serviceName name of the service running on the server
-     *
+     * @param serviceOperationName  name of the calling method (relates to REST operation call)
      * @return OMAGServerServiceInstance object
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
@@ -294,13 +665,12 @@ public class OMAGServerPlatformInstanceMap
      */
     OMAGServerServiceInstance getServiceInstance(String    userId,
                                                  String    serverName,
-                                                 String    serviceName) throws InvalidParameterException,
-                                                                               UserNotAuthorizedException,
-                                                                               PropertyServerException
+                                                 String    serviceName,
+                                                 String    serviceOperationName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
-        final String methodName = "getServiceInstance";
-
-        return OMAGServerPlatformInstanceMap.getInstanceForPlatform(userId, serverName, serviceName, methodName);
+        return OMAGServerPlatformInstanceMap.getInstanceForPlatform(userId, serverName, serviceName, serviceOperationName);
     }
 
 
@@ -317,6 +687,8 @@ public class OMAGServerPlatformInstanceMap
     }
 
 
+
+
     /**
      * Return the list of OMAG Servers running in this OMAG Server Platform.
      *
@@ -327,6 +699,19 @@ public class OMAGServerPlatformInstanceMap
     public List<String>   getActiveServerList(String userId) throws UserNotAuthorizedException
     {
         return OMAGServerPlatformInstanceMap.getActiveServerListForPlatform(userId);
+    }
+
+
+    /**
+     * Return the list of OMAG Servers that have run or are running in this OMAG Server Platform.
+     *
+     * @param userId calling user
+     * @return list of OMAG server names
+     * @throws UserNotAuthorizedException the user is not authorized to issue the request.
+     */
+    public List<String>   getKnownServerList(String userId) throws UserNotAuthorizedException
+    {
+        return OMAGServerPlatformInstanceMap.getKnownServerListForPlatform(userId);
     }
 
 
