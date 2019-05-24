@@ -23,7 +23,9 @@ import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGInvalidParameterEx
 import org.odpi.openmetadata.adminservices.ffdc.exception.OMAGNotAuthorizedException;
 import org.odpi.openmetadata.adminservices.rest.OMAGServerConfigResponse;
 import org.odpi.openmetadata.adminservices.rest.SuccessMessageResponse;
+import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerException;
 import org.odpi.openmetadata.commonservices.ffdc.rest.VoidResponse;
+import org.odpi.openmetadata.commonservices.multitenant.OMAGServerPlatformInstanceMap;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.admin.OCFMetadataOperationalServices;
 import org.odpi.openmetadata.conformance.server.ConformanceSuiteOperationalServices;
 import org.odpi.openmetadata.discoveryserver.server.DiscoveryServerOperationalServices;
@@ -48,6 +50,8 @@ import java.util.List;
 public class OMAGServerOperationalServices
 {
     private OMAGServerOperationalInstanceHandler instanceHandler = new OMAGServerOperationalInstanceHandler(CommonServicesDescription.ADMIN_OPERATIONAL_SERVICES.getServiceName());
+
+    private OMAGServerPlatformInstanceMap  platformInstanceMap = new OMAGServerPlatformInstanceMap();
 
     private OMAGServerAdminStoreServices   configStore  = new OMAGServerAdminStoreServices();
     private OMAGServerErrorHandler         errorHandler = new OMAGServerErrorHandler();
@@ -79,7 +83,7 @@ public class OMAGServerOperationalServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            response = activateWithSuppliedConfig(userId, serverName, configStore.getServerConfig(serverName, methodName));
+            response = activateWithSuppliedConfig(userId, serverName, configStore.getServerConfig(userId, serverName, methodName));
         }
         catch (OMAGInvalidParameterException error)
         {
@@ -205,11 +209,16 @@ public class OMAGServerOperationalServices
             /*
              * Validate that the server is not running already.  If it is running it should be shutdown.
              */
-            if (instanceHandler.isServerKnown(userId, serverName))
+            if (instanceHandler.isServerActive(userId, serverName))
             {
                 this.deactivateTemporarily(userId, serverName);
             }
 
+
+            /*
+             * Set up the security for the server using the config
+             */
+            platformInstanceMap.startUpServerInstance(serverName, configuration.getServerSecurityConnection());
 
             /*
              * The instance saves the operational services objects for this server instance so they can be retrieved
@@ -549,11 +558,16 @@ public class OMAGServerOperationalServices
     /**
      * Shutdown any running services for a specific server instance.
      *
+     * @param serverName name of this server
      * @param instance a list of the running services
      * @param permanentDeactivation should the server be permanently disconnected
      */
-    private void deactivateRunningServiceInstances(OMAGOperationalServicesInstance instance,
-                                                   boolean                         permanentDeactivation)
+    private void deactivateRunningServiceInstances(String                          userId,
+                                                   String                          serverName,
+                                                   String                          methodName,
+                                                   OMAGOperationalServicesInstance instance,
+                                                   boolean                         permanentDeactivation) throws InvalidParameterException,
+                                                                                                                 PropertyServerException
     {
         /*
          * Shutdown the access services
@@ -636,6 +650,10 @@ public class OMAGServerOperationalServices
         {
             instance.getOperationalRepositoryServices().disconnect(permanentDeactivation);
         }
+
+        instanceHandler.removeServerServiceInstance(serverName);
+
+        platformInstanceMap.shutdownServerInstance(userId, serverName, methodName);
     }
 
 
@@ -660,10 +678,11 @@ public class OMAGServerOperationalServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            deactivateRunningServiceInstances(instanceHandler.getServerServiceInstance(userId, serverName),
+            deactivateRunningServiceInstances(userId,
+                                              serverName,
+                                              methodName,
+                                              instanceHandler.getServerServiceInstance(userId, serverName, methodName),
                                               false);
-
-            instanceHandler.removeServerServiceInstance(serverName);
         }
         catch (InvalidParameterException error)
         {
@@ -712,10 +731,11 @@ public class OMAGServerOperationalServices
             errorHandler.validateServerName(serverName, methodName);
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            deactivateRunningServiceInstances(instanceHandler.getServerServiceInstance(userId, serverName),
+            deactivateRunningServiceInstances(userId,
+                                              serverName,
+                                              methodName,
+                                              instanceHandler.getServerServiceInstance(userId, serverName, methodName),
                                               true);
-
-            instanceHandler.removeServerServiceInstance(serverName);
 
             /*
              * Delete the configuration for this server
@@ -777,7 +797,7 @@ public class OMAGServerOperationalServices
         {
             errorHandler.validateUserId(userId, serverName, methodName);
 
-            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName);
+            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
 
             response.setOMAGServerConfig(instance.getOperationalConfiguration());
         }
@@ -829,7 +849,7 @@ public class OMAGServerOperationalServices
             ConnectorConfigurationFactory configurationFactory   = new ConnectorConfigurationFactory();
             Connection newOpenMetadataArchive = configurationFactory.getOpenMetadataArchiveFileConnection(fileName);
 
-            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName);
+            OMAGOperationalServicesInstance instance = instanceHandler.getServerServiceInstance(userId, serverName, methodName);
             OMRSOperationalServices         repositoryServicesInstance = instance.getOperationalRepositoryServices();
 
             repositoryServicesInstance.addOpenMetadataArchive(newOpenMetadataArchive);
