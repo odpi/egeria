@@ -42,12 +42,13 @@ data:
   {{ end }}
 
   {{ if .Values.ibmigc.enabled }}
+  IGCPROXY_ENDPOINT: http://{{ include "myapp.fullname" . }}-ibm-igc-service:8080
   # Below values for IBMIGC need to reference either your container or external environment
   # See also: ibmigc... in values.yaml
   {{ if .Values.ibmigc.internal.enabled }}
-  IBMIGC_HOST: {{ include "myapp.fullname" . }}-ibm-igc-service
+  IBMIGC_HOST: infosvr
   IBMIGC_PORT: "9446"
-  IBMIGC_KAFKA_ENDPOINT: {{ include "myapp.fullname" . }}-ibm-igc-service:59092
+  IBMIGC_KAFKA_ENDPOINT: infosvr:59092
   {{ else }}
   IBMIGC_HOST: {{ .Values.ibmigc.external.hostname }}
   IBMIGC_PORT: "{{ .Values.ibmigc.external.ports.https }}"
