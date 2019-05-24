@@ -62,19 +62,21 @@ spec:
                   {{ .Values.image.configure.name }}\
                   :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
           imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "myapp.fullname" . }}-configmap
           command:
             - "/bin/bash"
             - "-c"
-# TODO: this is insufficient to detect readiness: completes successfully before server is truly ready
 {{ if (not .Values.ibmigc.internal.enabled) }}
             - >
-                until $(curl -s -f -k --connect-timeout 5 --url https://{{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.https }}/ibm/iis/launchpad); do
+                until $(curl -s -f -k --connect-timeout 5 -X GET -u ${IBMIGC_USER}:${IBMIGC_PASS} --url https://{{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.https }}/ibm/iis/igc-rest/v1/logout); do
                 echo waiting for {{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.port }} to be accessible;
                 sleep 2;
                 done;
 {{ else }}
             - >
-                until $(curl -s -f -k --connect-timeout 5 --url https://{{ include "myapp.fullname" . }}-ibm-igc-service:9446/ibm/iis/launchpad); do
+                until $(curl -s -f -k --connect-timeout 5 -X GET -u ${IBMIGC_USER}:${IBMIGC_PASS} --url https://{{ include "myapp.fullname" . }}-ibm-igc-service:9446/ibm/iis/igc-rest/v1/logout); do
                 echo waiting for {{ include "myapp.fullname" . }}-ibm-igc-service to be accessible;
                 sleep 2;
                 done;
