@@ -75,9 +75,10 @@ ranger:
 postgresql:
   enabled: true
 
-# NOTE: solr is required for both ranger and atlas, so will be automatically enabled if either of those is enabled
+# NOTE: solr will eventually be required for both ranger and atlas, so will be automatically enabled if either of
+# those is enabled (once their embedded Solr's are migrated)
 solr:
-  enabled: true
+  enabled: false
 
 # Debug support for Egeria - set to true to enable JVM debug for Egeria images on port 5005
 debug:
