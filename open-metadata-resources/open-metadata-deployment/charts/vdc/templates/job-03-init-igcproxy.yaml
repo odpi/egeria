@@ -70,13 +70,15 @@ spec:
             - "-c"
 {{ if (not .Values.ibmigc.internal.enabled) }}
             - >
-                until $(curl -s -f -k --connect-timeout 5 -X POST -u ${IBMIGC_USER}:${IBMIGC_PASS} --url https://{{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.https }}/ibm/iis/igc-rest/v1/search -H "Content-Type: application/json" -d '{"types":["category","term","information_governance_policy","information_governance_rule"],"pageSize":1,"workflowMode":"draft"}' | grep 'numTotal' >/dev/null); do
+                until $(curl -c /tmp/cookies.txt -s -f -k --connect-timeout 5 -X POST -u ${IBMIGC_USER}:${IBMIGC_PASS} --url https://{{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.https }}/ibm/iis/igc-rest/v1/search -H "Content-Type: application/json" -d '{"types":["category","term","information_governance_policy","information_governance_rule"],"pageSize":1,"workflowMode":"draft"}' | grep 'numTotal' >/dev/null); do
+                curl -b /tmp/cookies.txt -s -f -k --connect-timeout 5 -X GET -u ${IBMIGC_USER}:${IBMIGC_PASS} --url https://{{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.https }}/ibm/iis/igc-rest/v1/logout;
                 echo waiting for {{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.port }} to be accessible;
                 sleep 2;
                 done;
 {{ else }}
             - >
-                until $(curl -s -f -k --connect-timeout 5 -X POST -u ${IBMIGC_USER}:${IBMIGC_PASS} --url https://{{ include "myapp.fullname" . }}-ibm-igc-service:9446/ibm/iis/igc-rest/v1/search -H "Content-Type: application/json" -d '{"types":["category","term","information_governance_policy","information_governance_rule"],"pageSize":1,"workflowMode":"draft"}' | grep 'numTotal' >/dev/null); do
+                until $(curl -c /tmp/cookies.txt -s -f -k --connect-timeout 5 -X POST -u ${IBMIGC_USER}:${IBMIGC_PASS} --url https://{{ include "myapp.fullname" . }}-ibm-igc-service:9446/ibm/iis/igc-rest/v1/search -H "Content-Type: application/json" -d '{"types":["category","term","information_governance_policy","information_governance_rule"],"pageSize":1,"workflowMode":"draft"}' | grep 'numTotal' >/dev/null); do
+                curl -b /tmp/cookies.txt -s -f -k --connect-timeout 5 -X GET -u ${IBMIGC_USER}:${IBMIGC_PASS} --url https://{{ include "myapp.fullname" . }}-ibm-igc-service:9446/ibm/iis/igc-rest/v1/logout;
                 echo waiting for {{ include "myapp.fullname" . }}-ibm-igc-service to be accessible;
                 sleep 2;
                 done;
