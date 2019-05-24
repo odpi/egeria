@@ -66,8 +66,8 @@ public class OCFMetadataRESTServices
 
         try
         {
-            AssetHandler assetHandler = instanceHandler.getAssetHandler(userId, serverName);
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            AssetHandler assetHandler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             if (connectionGUID != null)
             {
@@ -194,9 +194,9 @@ public class OCFMetadataRESTServices
 
         try
         {
-            CertificationHandler handler = instanceHandler.getCertificationHandler(userId, serverName);
+            CertificationHandler handler = instanceHandler.getCertificationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setList(handler.getCertifications(userId, assetGUID, elementStart, maxElements, methodName));
         }
         catch (InvalidParameterException error)
@@ -251,8 +251,8 @@ public class OCFMetadataRESTServices
 
         try
         {
-            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName);
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             List<Comment>         attachedComments = handler.getComments(userId, anchorGUID, elementStart, maxElements, methodName);
             List<CommentResponse> results          = new ArrayList<>();
@@ -386,8 +386,8 @@ public class OCFMetadataRESTServices
 
         try
         {
-            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName);
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            ConnectionHandler handler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getConnections(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -443,8 +443,8 @@ public class OCFMetadataRESTServices
 
         try
         {
-            ExternalIdentifierHandler handler = instanceHandler.getExternalIdentifierHandler(userId, serverName);
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            ExternalIdentifierHandler handler = instanceHandler.getExternalIdentifierHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getExternalIdentifiers(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -500,8 +500,8 @@ public class OCFMetadataRESTServices
 
         try
         {
-            ExternalReferenceHandler handler = instanceHandler.getExternalReferenceHandler(userId, serverName);
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            ExternalReferenceHandler handler = instanceHandler.getExternalReferenceHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getExternalReferences(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -557,8 +557,8 @@ public class OCFMetadataRESTServices
 
         try
         {
-            InformalTagHandler handler = instanceHandler.getInformalTagHandler(userId, serverName);
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            InformalTagHandler handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getAttachedTags(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -614,8 +614,8 @@ public class OCFMetadataRESTServices
 
         try
         {
-            LicenseHandler handler = instanceHandler.getLicenseHandler(userId, serverName);
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            LicenseHandler handler = instanceHandler.getLicenseHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getLicenses(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -671,8 +671,8 @@ public class OCFMetadataRESTServices
 
         try
         {
-            LikeHandler handler = instanceHandler.getLikeHandler(userId, serverName);
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            LikeHandler handler = instanceHandler.getLikeHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getLikes(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -728,8 +728,8 @@ public class OCFMetadataRESTServices
 
         try
         {
-            LocationHandler handler = instanceHandler.getLocationHandler(userId, serverName);
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            LocationHandler handler = instanceHandler.getLocationHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getLocations(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -785,8 +785,8 @@ public class OCFMetadataRESTServices
 
         try
         {
-            NoteLogHandler handler = instanceHandler.getNoteLogHandler(userId, serverName);
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            NoteLogHandler handler = instanceHandler.getNoteLogHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             List<NoteLog>          noteLogs = handler.getAttachedNoteLogs(userId, assetGUID, elementStart, maxElements, methodName);
             List<NoteLogResponse>  results = new ArrayList<>();
@@ -867,8 +867,8 @@ public class OCFMetadataRESTServices
 
         try
         {
-            NoteHandler handler = instanceHandler.getNoteHandler(userId, serverName);
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            NoteHandler handler = instanceHandler.getNoteHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getNotes(userId, noteLogGUID, elementStart, maxElements, methodName));
         }
@@ -924,8 +924,8 @@ public class OCFMetadataRESTServices
 
         try
         {
-            RatingHandler handler = instanceHandler.getRatingHandler(userId, serverName);
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            RatingHandler handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getRatings(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -981,8 +981,8 @@ public class OCFMetadataRESTServices
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName);
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getRelatedAssets(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -1038,8 +1038,8 @@ public class OCFMetadataRESTServices
 
         try
         {
-            RelatedMediaHandler handler = instanceHandler.getRelatedMediaHandler(userId, serverName);
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            RelatedMediaHandler handler = instanceHandler.getRelatedMediaHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getRelatedMedia(userId, assetGUID, elementStart, maxElements, methodName));
         }
@@ -1095,8 +1095,8 @@ public class OCFMetadataRESTServices
 
         try
         {
-            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName);
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            SchemaTypeHandler handler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
             response.setList(handler.getSchemaAttributes(userId, schemaTypeGUID, elementStart, maxElements, methodName));
         }
