@@ -8,6 +8,9 @@ import org.odpi.openmetadata.commonservices.ffdc.exceptions.PropertyServerExcept
 import org.odpi.openmetadata.commonservices.ffdc.exceptions.UserNotAuthorizedException;
 import org.odpi.openmetadata.commonservices.ocf.metadatamanagement.handlers.*;
 
+/**
+ * Provide access to the common handlers for OMAS's that use the OCF beans.
+ */
 public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceHandler
 {
     /**
@@ -37,18 +40,22 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public AssetHandler getAssetHandler(String userId,
-                                        String serverName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+                                        String serverName,
+                                        String serviceOperationName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
 
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -64,18 +71,22 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public CertificationHandler getCertificationHandler(String userId,
-                                                        String serverName) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+                                                        String serverName,
+                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
 
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -91,18 +102,22 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public CommentHandler getCommentHandler(String userId,
-                                            String serverName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+                                            String serverName,
+                                            String serviceOperationName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
 
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -118,17 +133,21 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public ConnectionHandler getConnectionHandler(String userId,
-                                                  String serverName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+                                                  String serverName,
+                                                  String serviceOperationName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -144,17 +163,21 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public ConnectorTypeHandler getConnectorTypeHandler(String userId,
-                                                        String serverName) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+                                                        String serverName,
+                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -170,17 +193,21 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public EndpointHandler getEndpointHandler(String userId,
-                                              String serverName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+                                              String serverName,
+                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -196,17 +223,21 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public ExternalIdentifierHandler getExternalIdentifierHandler(String userId,
-                                                                  String serverName) throws InvalidParameterException,
-                                                                                            UserNotAuthorizedException,
-                                                                                            PropertyServerException
+                                                                  String serverName,
+                                                                  String serviceOperationName) throws InvalidParameterException,
+                                                                                                      UserNotAuthorizedException,
+                                                                                                      PropertyServerException
     {
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -222,17 +253,21 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public ExternalReferenceHandler getExternalReferenceHandler(String userId,
-                                                                String serverName) throws InvalidParameterException,
-                                                                                          UserNotAuthorizedException,
-                                                                                          PropertyServerException
+                                                                String serverName,
+                                                                String serviceOperationName) throws InvalidParameterException,
+                                                                                                    UserNotAuthorizedException,
+                                                                                                    PropertyServerException
     {
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -248,17 +283,21 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public InformalTagHandler getInformalTagHandler(String userId,
-                                                    String serverName) throws InvalidParameterException,
-                                                                              UserNotAuthorizedException,
-                                                                              PropertyServerException
+                                                    String serverName,
+                                                    String serviceOperationName) throws InvalidParameterException,
+                                                                                        UserNotAuthorizedException,
+                                                                                        PropertyServerException
     {
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -274,17 +313,21 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public LicenseHandler getLicenseHandler(String userId,
-                                            String serverName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+                                            String serverName,
+                                            String serviceOperationName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -300,17 +343,21 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public LikeHandler getLikeHandler(String userId,
-                                      String serverName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+                                      String serverName,
+                                      String serviceOperationName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -326,17 +373,21 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public LocationHandler getLocationHandler(String userId,
-                                              String serverName) throws InvalidParameterException,
-                                                                        UserNotAuthorizedException,
-                                                                        PropertyServerException
+                                              String serverName,
+                                              String serviceOperationName) throws InvalidParameterException,
+                                                                                  UserNotAuthorizedException,
+                                                                                  PropertyServerException
     {
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -352,17 +403,21 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public MeaningHandler getMeaningHandler(String userId,
-                                            String serverName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+                                            String serverName,
+                                            String serviceOperationName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -378,17 +433,21 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public NoteHandler getNoteHandler(String userId,
-                                      String serverName) throws InvalidParameterException,
-                                                                UserNotAuthorizedException,
-                                                                PropertyServerException
+                                      String serverName,
+                                      String serviceOperationName) throws InvalidParameterException,
+                                                                          UserNotAuthorizedException,
+                                                                          PropertyServerException
     {
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -404,17 +463,21 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public NoteLogHandler getNoteLogHandler(String userId,
-                                            String serverName) throws InvalidParameterException,
-                                                                      UserNotAuthorizedException,
-                                                                      PropertyServerException
+                                            String serverName,
+                                            String serviceOperationName) throws InvalidParameterException,
+                                                                                UserNotAuthorizedException,
+                                                                                PropertyServerException
     {
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -430,17 +493,21 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public RatingHandler getRatingHandler(String userId,
-                                          String serverName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+                                          String serverName,
+                                          String serviceOperationName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -456,17 +523,21 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public RelatedMediaHandler getRelatedMediaHandler(String userId,
-                                                      String serverName) throws InvalidParameterException,
-                                                                                UserNotAuthorizedException,
-                                                                                PropertyServerException
+                                                      String serverName,
+                                                      String serviceOperationName) throws InvalidParameterException,
+                                                                                          UserNotAuthorizedException,
+                                                                                          PropertyServerException
     {
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {
@@ -482,17 +553,21 @@ public abstract class OCFOMASServiceInstanceHandler extends OMASServiceInstanceH
      *
      * @param userId calling user
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return handler for use by the requested instance
      * @throws InvalidParameterException no available instance for the requested server
      * @throws UserNotAuthorizedException user does not have access to the requested server
      * @throws PropertyServerException error in the requested server
      */
     public SchemaTypeHandler getSchemaTypeHandler(String userId,
-                                                  String serverName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+                                                  String serverName,
+                                                  String serviceOperationName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
-        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId, serverName);
+        OCFOMASServiceInstance instance = (OCFOMASServiceInstance)super.getServerServiceInstance(userId,
+                                                                                                 serverName,
+                                                                                                 serviceOperationName);
 
         if (instance != null)
         {

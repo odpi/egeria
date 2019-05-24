@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHandler
 {
-    RESTExceptionHandler  exceptionHandler = new RESTExceptionHandler();
+    private RESTExceptionHandler  exceptionHandler = new RESTExceptionHandler();
 
     /**
      * Constructor
@@ -51,6 +51,7 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
      *
      * @param userId calling userId
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return repository connector for exclusive use by the requested instance
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
@@ -58,11 +59,14 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
      *                                 not available - indicating a logic error
      */
     public OMRSRepositoryConnector getRepositoryConnector(String userId,
-                                                          String serverName) throws InvalidParameterException,
-                                                                                    UserNotAuthorizedException,
-                                                                                    PropertyServerException
+                                                          String serverName,
+                                                          String serviceOperationName) throws InvalidParameterException,
+                                                                                              UserNotAuthorizedException,
+                                                                                              PropertyServerException
     {
-        OMASServiceInstance instance = (OMASServiceInstance) super.getServerServiceInstance(userId, serverName);
+        OMASServiceInstance instance = (OMASServiceInstance) super.getServerServiceInstance(userId,
+                                                                                            serverName,
+                                                                                            serviceOperationName);
 
         return instance.getRepositoryConnector();
     }
@@ -73,6 +77,7 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
      *
      * @param userId calling userId
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return metadata collection for exclusive use by the requested instance
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
@@ -80,11 +85,14 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
      *                                 not available - indicating a logic error
      */
     public OMRSMetadataCollection getMetadataCollection(String userId,
-                                                        String serverName) throws InvalidParameterException,
-                                                                                  UserNotAuthorizedException,
-                                                                                  PropertyServerException
+                                                        String serverName,
+                                                        String serviceOperationName) throws InvalidParameterException,
+                                                                                            UserNotAuthorizedException,
+                                                                                            PropertyServerException
     {
-        OMASServiceInstance instance = (OMASServiceInstance) super.getServerServiceInstance(userId, serverName);
+        OMASServiceInstance instance = (OMASServiceInstance) super.getServerServiceInstance(userId,
+                                                                                            serverName,
+                                                                                            serviceOperationName);
 
         return instance.getMetadataCollection();
     }
@@ -96,6 +104,7 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
      *
      * @param userId calling userId
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return repository handler
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
@@ -103,11 +112,14 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
      *                                 not available - indicating a logic error
      */
     public RepositoryHandler getRepositoryHandler(String userId,
-                                                  String serverName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+                                                  String serverName,
+                                                  String serviceOperationName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
-        OMASServiceInstance instance = (OMASServiceInstance) super.getServerServiceInstance(userId, serverName);
+        OMASServiceInstance instance = (OMASServiceInstance) super.getServerServiceInstance(userId,
+                                                                                            serverName,
+                                                                                            serviceOperationName);
 
         return instance.getRepositoryHandler();
     }
@@ -118,6 +130,7 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
      *
      * @param userId calling userId
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return repository error handler
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
@@ -125,11 +138,14 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
      *                                 not available - indicating a logic error
      */
     public RepositoryErrorHandler getErrorHandler(String userId,
-                                                  String serverName) throws InvalidParameterException,
-                                                                            UserNotAuthorizedException,
-                                                                            PropertyServerException
+                                                  String serverName,
+                                                  String serviceOperationName) throws InvalidParameterException,
+                                                                                      UserNotAuthorizedException,
+                                                                                      PropertyServerException
     {
-        OMASServiceInstance instance = (OMASServiceInstance) super.getServerServiceInstance(userId, serverName);
+        OMASServiceInstance instance = (OMASServiceInstance) super.getServerServiceInstance(userId,
+                                                                                            serverName,
+                                                                                            serviceOperationName);
 
         return instance.getErrorHandler();
     }
@@ -140,6 +156,7 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
      *
      * @param userId calling userId
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return repository error handler
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
@@ -147,11 +164,14 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
      *                                 not available - indicating a logic error
      */
     public List<String> getSupportedZones(String userId,
-                                          String serverName) throws InvalidParameterException,
-                                                                    UserNotAuthorizedException,
-                                                                    PropertyServerException
+                                          String serverName,
+                                          String serviceOperationName) throws InvalidParameterException,
+                                                                              UserNotAuthorizedException,
+                                                                              PropertyServerException
     {
-        OMASServiceInstance instance = (OMASServiceInstance) super.getServerServiceInstance(userId, serverName);
+        OMASServiceInstance instance = (OMASServiceInstance) super.getServerServiceInstance(userId,
+                                                                                            serverName,
+                                                                                            serviceOperationName);
 
         return instance.getSupportedZones();
     }
@@ -162,6 +182,7 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
      *
      * @param userId calling userId
      * @param serverName name of the server tied to the request
+     * @param serviceOperationName name of the REST API call (typically the top-level methodName)
      * @return repository error handler
      * @throws InvalidParameterException the server name is not known
      * @throws UserNotAuthorizedException the user is not authorized to issue the request.
@@ -169,11 +190,14 @@ public class OMASServiceInstanceHandler extends AuditableServerServiceInstanceHa
      *                                 not available - indicating a logic error
      */
     public List<String> getDefaultZones(String userId,
-                                        String serverName) throws InvalidParameterException,
-                                                                  UserNotAuthorizedException,
-                                                                  PropertyServerException
+                                        String serverName,
+                                        String serviceOperationName) throws InvalidParameterException,
+                                                                            UserNotAuthorizedException,
+                                                                            PropertyServerException
     {
-        OMASServiceInstance instance = (OMASServiceInstance) super.getServerServiceInstance(userId, serverName);
+        OMASServiceInstance instance = (OMASServiceInstance) super.getServerServiceInstance(userId,
+                                                                                            serverName,
+                                                                                            serviceOperationName);
 
         return instance.getDefaultZones();
     }
