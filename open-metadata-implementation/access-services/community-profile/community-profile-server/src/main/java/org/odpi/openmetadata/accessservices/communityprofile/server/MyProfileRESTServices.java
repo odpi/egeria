@@ -67,9 +67,9 @@ public class MyProfileRESTServices
 
         try
         {
-            MyProfileHandler handler = instanceHandler.getMyProfileHandler(serverName, userId);
+            MyProfileHandler handler = instanceHandler.getMyProfileHandler(serverName, userId, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setPersonalProfile(handler.getMyProfile(userId));
         }
         catch (NoProfileForUserException error)
@@ -142,9 +142,9 @@ public class MyProfileRESTServices
                 additionalProperties = requestBody.getAdditionalProperties();
             }
 
-            MyProfileHandler   handler = instanceHandler.getMyProfileHandler(serverName, userId);
+            MyProfileHandler   handler = instanceHandler.getMyProfileHandler(serverName, userId, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.updateMyProfile(userId, employeeNumber, fullName, knownName, jobTitle, jobRoleDescription, profileProperties, additionalProperties);
         }
         catch (InvalidParameterException error)
