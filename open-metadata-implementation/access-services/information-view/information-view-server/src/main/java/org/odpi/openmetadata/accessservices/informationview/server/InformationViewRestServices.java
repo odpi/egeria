@@ -3,14 +3,15 @@
 package org.odpi.openmetadata.accessservices.informationview.server;
 
 import org.odpi.openmetadata.accessservices.informationview.assets.DatabaseContextHandler;
+import org.odpi.openmetadata.accessservices.informationview.context.ReportContextBuilder;
 import org.odpi.openmetadata.accessservices.informationview.events.DataViewRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.DatabaseSource;
+import org.odpi.openmetadata.accessservices.informationview.events.DeployedReport;
 import org.odpi.openmetadata.accessservices.informationview.events.RegistrationRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.ReportRequestBody;
 import org.odpi.openmetadata.accessservices.informationview.events.TableColumn;
 import org.odpi.openmetadata.accessservices.informationview.events.TableContextEvent;
 import org.odpi.openmetadata.accessservices.informationview.events.TableSource;
-import org.odpi.openmetadata.accessservices.informationview.ffdc.InformationViewErrorCode;
 import org.odpi.openmetadata.accessservices.informationview.ffdc.exceptions.runtime.InformationViewUncheckedExceptionBase;
 import org.odpi.openmetadata.accessservices.informationview.registration.RegistrationHandler;
 import org.odpi.openmetadata.accessservices.informationview.reports.DataViewHandler;
@@ -18,6 +19,7 @@ import org.odpi.openmetadata.accessservices.informationview.reports.ReportHandle
 import org.odpi.openmetadata.accessservices.informationview.responses.DatabaseListResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.InformationViewOMASAPIResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.RegistrationResponse;
+import org.odpi.openmetadata.accessservices.informationview.responses.ReportResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.TableColumnsResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.TableContextResponse;
 import org.odpi.openmetadata.accessservices.informationview.responses.TableListResponse;
@@ -212,7 +214,26 @@ public class InformationViewRestServices {
     }
 
 
+    public InformationViewOMASAPIResponse retrieveReport(String serverName,
+                                                         String userId,
+                                                         String registrationGuid,
+                                                         String reportId) {
 
+
+        try {
+            ReportContextBuilder reportContextBuilder = instanceHandler.getReportContextBuilder(serverName);
+            DeployedReport report = reportContextBuilder.retrieveReport(userId, registrationGuid, reportId);
+            ReportResponse reportResponse = new ReportResponse();
+            reportResponse.setReport(report);
+            return reportResponse;
+
+        }
+        catch (InformationViewUncheckedExceptionBase e) {
+            log.error(e.getMessage(), e);
+            return handleErrorResponse(e);
+        }
+
+    }
 
     private InformationViewOMASAPIResponse handleErrorResponse(InformationViewUncheckedExceptionBase e) {
         VoidResponse  response = new VoidResponse();

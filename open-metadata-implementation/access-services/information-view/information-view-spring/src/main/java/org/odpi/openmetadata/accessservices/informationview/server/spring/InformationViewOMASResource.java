@@ -97,5 +97,12 @@ public class InformationViewOMASResource {
         return restAPI.lookupRegistration(serverName, userId, requestBody);
     }
 
+    @GetMapping(path = "/report")
+    public InformationViewOMASAPIResponse retrieveReport(@PathVariable("serverName") String serverName,
+                                                         @PathVariable("userId") String userId,
+                                                         @RequestParam String registrationGuid,
+                                                         @RequestParam String reportId) {
+        return restAPI.retrieveReport(serverName, userId, registrationGuid, reportId);
+    }
 
 }
