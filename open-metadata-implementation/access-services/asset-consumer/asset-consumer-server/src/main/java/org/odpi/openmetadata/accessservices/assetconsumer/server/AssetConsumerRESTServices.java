@@ -74,10 +74,10 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler assetHandler = instanceHandler.getAssetHandler(userId, serverName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
-            response.setGUID(assetHandler.getAssetForConnection(userId, connectionGUID));
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
+            response.setGUID(handler.getAssetForConnection(userId, connectionGUID));
         }
         catch (InvalidParameterException error)
         {
@@ -128,9 +128,9 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setConnection(handler.getConnectionForAsset(userId, assetGUID));
         }
         catch (InvalidParameterException  error)
@@ -185,9 +185,9 @@ public class AssetConsumerRESTServices
 
         try
         {
-            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName);
+            AssetHandler handler = instanceHandler.getAssetHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setAssets(handler.getAssetsByName(userId, name, startFrom, pageSize, methodName));
         }
         catch (InvalidParameterException error)
@@ -247,9 +247,9 @@ public class AssetConsumerRESTServices
 
         try
         {
-            ConnectionHandler connectionHandler = instanceHandler.getConnectionHandler(userId, serverName);
+            ConnectionHandler connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setConnection(connectionHandler.getConnectionByName(userId, name));
         }
         catch (InvalidParameterException error)
@@ -301,9 +301,9 @@ public class AssetConsumerRESTServices
 
         try
         {
-            ConnectionHandler connectionHandler = instanceHandler.getConnectionHandler(userId, serverName);
+            ConnectionHandler connectionHandler = instanceHandler.getConnectionHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setConnection(connectionHandler.getConnection(userId, guid));
         }
         catch (InvalidParameterException  error)
@@ -376,9 +376,9 @@ public class AssetConsumerRESTServices
                 isPublic = requestBody.isPublic();
             }
 
-            RatingHandler handler = instanceHandler.getRatingHandler(userId, serverName);
+            RatingHandler handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.addRatingToAsset(userId, guid, starRating, review, isPublic, methodName);
         }
         catch (InvalidParameterException  error)
@@ -432,9 +432,9 @@ public class AssetConsumerRESTServices
 
         try
         {
-            RatingHandler handler = instanceHandler.getRatingHandler(userId, serverName);
+            RatingHandler handler = instanceHandler.getRatingHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeRatingFromAsset(userId, guid, methodName);
         }
         catch (InvalidParameterException  error)
@@ -495,9 +495,9 @@ public class AssetConsumerRESTServices
 
         try
         {
-            LikeHandler handler = instanceHandler.getLikeHandler(userId, serverName);
+            LikeHandler handler = instanceHandler.getLikeHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.addLikeToAsset(userId, guid, isPublic, methodName);
         }
         catch (InvalidParameterException  error)
@@ -551,9 +551,9 @@ public class AssetConsumerRESTServices
 
         try
         {
-            LikeHandler handler = instanceHandler.getLikeHandler(userId, serverName);
+            LikeHandler handler = instanceHandler.getLikeHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeLikeFromAsset(userId, guid, methodName);
         }
         catch (InvalidParameterException  error)
@@ -618,9 +618,9 @@ public class AssetConsumerRESTServices
                 isPublic    = requestBody.isPublic();
             }
 
-            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName);
+            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUID(handler.addCommentToAsset(userId, guid, commentType, commentText, isPublic, methodName));
         }
         catch (InvalidParameterException  error)
@@ -685,9 +685,9 @@ public class AssetConsumerRESTServices
                 isPublic    = requestBody.isPublic();
             }
 
-            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName);
+            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUID(handler.addCommentReply(userId, commentGUID, commentType, commentText, isPublic, methodName));
         }
         catch (InvalidParameterException  error)
@@ -751,9 +751,9 @@ public class AssetConsumerRESTServices
                 isPublic    = requestBody.isPublic();
             }
 
-            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName);
+            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.updateComment(userId, guid, commentType, commentText, isPublic, methodName);
         }
         catch (InvalidParameterException  error)
@@ -807,9 +807,9 @@ public class AssetConsumerRESTServices
 
         try
         {
-            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName);
+            CommentHandler handler = instanceHandler.getCommentHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeComment(userId, guid, methodName);
         }
         catch (InvalidParameterException  error)
@@ -868,9 +868,9 @@ public class AssetConsumerRESTServices
 
         try
         {
-            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(userId, serverName);
+            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGlossaryTerm(glossaryHandler.getMeaning(userId, guid));
         }
         catch (InvalidParameterException  error)
@@ -925,9 +925,9 @@ public class AssetConsumerRESTServices
 
         try
         {
-            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(userId, serverName);
+            GlossaryHandler glossaryHandler = instanceHandler.getGlossaryHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setMeanings(glossaryHandler.getMeaningByName(userId, term, startFrom, pageSize));
         }
         catch (InvalidParameterException  error)
@@ -1008,9 +1008,9 @@ public class AssetConsumerRESTServices
                 message = requestBody.getMessage();
             }
 
-            LoggingHandler loggingHandler = instanceHandler.getLoggingHandler(userId, serverName);
+            LoggingHandler loggingHandler = instanceHandler.getLoggingHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             loggingHandler.addLogMessageToAsset(userId,
                                                 guid,
                                                 connectorInstanceId,
@@ -1085,9 +1085,9 @@ public class AssetConsumerRESTServices
                 tagDescription = requestBody.getTagDescription();
             }
 
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName);
+            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUID(handler.createTag(userId, tagName, tagDescription, isPublic, methodName));
         }
         catch (InvalidParameterException  error)
@@ -1191,9 +1191,9 @@ public class AssetConsumerRESTServices
                 tagDescription = requestBody.getTagDescription();
             }
 
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName);
+            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.updateTagDescription(userId, tagGUID, tagDescription, methodName);
         }
         catch (InvalidParameterException  error)
@@ -1246,9 +1246,9 @@ public class AssetConsumerRESTServices
 
         try
         {
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName);
+            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.deleteTag(userId, tagGUID, methodName);
         }
         catch (InvalidParameterException  error)
@@ -1299,9 +1299,9 @@ public class AssetConsumerRESTServices
 
         try
         {
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName);
+            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setTag(handler.getTag(userId, guid, methodName));
         }
         catch (InvalidParameterException  error)
@@ -1356,9 +1356,9 @@ public class AssetConsumerRESTServices
 
         try
         {
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName);
+            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setTags(handler.getTagsByName(userId, tagName, startFrom, pageSize, methodName));
             response.setStartingFromElement(startFrom);
         }
@@ -1421,9 +1421,9 @@ public class AssetConsumerRESTServices
 
         try
         {
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName);
+            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.addTagToAsset(userId, assetGUID, tagGUID, isPublic, methodName);
         }
         catch (InvalidParameterException  error)
@@ -1478,9 +1478,9 @@ public class AssetConsumerRESTServices
 
         try
         {
-            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName);
+            InformalTagHandler   handler = instanceHandler.getInformalTagHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.removeTagFromAsset(userId, assetGUID, tagGUID, methodName);
         }
         catch (InvalidParameterException  error)
