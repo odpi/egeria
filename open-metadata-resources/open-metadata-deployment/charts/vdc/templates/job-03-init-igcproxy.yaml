@@ -36,7 +36,7 @@ spec:
 {{ end }}
       restartPolicy: OnFailure
       initContainers:
-        - name: wait-for-egeria
+        - name: wait-for-igcproxy
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
                   {{ .Values.image.configure.name }}\
@@ -44,7 +44,7 @@ spec:
           imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
           env:
             - name: SERVICE
-              value: {{ include "myapp.fullname" . }}-egeria-service
+              value: {{ include "myapp.fullname" . }}-ibm-igc-service
 {{ if .Values.kafka.internal.enabled }}
         - name: wait-for-kafka
           image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
@@ -65,6 +65,7 @@ spec:
           command:
             - "/bin/bash"
             - "-c"
+# TODO: this is insufficient to detect readiness: completes successfully before server is truly ready
 {{ if (not .Values.ibmigc.internal.enabled) }}
             - >
                 until $(curl -s -f -k --connect-timeout 5 --url https://{{ .Values.ibmigc.external.hostname }}:{{ .Values.ibmigc.external.ports.https }}/ibm/iis/launchpad); do
@@ -95,17 +96,17 @@ spec:
             - "-c"
             - >
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/server-type?typeName=IBM%20Information%20Governance%20Catalog
+                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/server-type?typeName=IBM%20Information%20Governance%20Catalog
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/organization-name?name=ODPi
+                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/organization-name?name=ODPi
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/server-url-root?url=${EGERIA_ENDPOINT}
+                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/server-url-root?url=${IGCPROXY_ENDPOINT}
                 && 
                 curl -f --verbose --basic admin:admin -X POST
                 --header "Content-Type: application/json"
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/event-bus
+                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/event-bus
                 {{- if .Values.kafka.topicroot -}}
                 ?topicURLRoot={{ .Values.kafka.topicroot }}
                 {{- end -}}
@@ -117,16 +118,16 @@ spec:
                 &&
                 curl -f --verbose --basic admin:admin -X POST
                 --header "Content-Type: application/json"
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/local-repository/mode/repository-proxy/details?connectorProvider=org.odpi.egeria.connectors.ibm.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider
+                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/local-repository/mode/repository-proxy/details?connectorProvider=org.odpi.egeria.connectors.ibm.igc.repositoryconnector.IGCOMRSRepositoryConnectorProvider
                 --data '{"ibm.igc.services.host": "'"${IBMIGC_HOST}"'", "ibm.igc.services.port": "'"${IBMIGC_PORT}"'", "ibm.igc.username": "'"${IBMIGC_USER}"'", "ibm.igc.password": "'"${IBMIGC_PASS}"'"}'
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/cohorts/${EGERIA_COHORT}
+                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/cohorts/${EGERIA_COHORT}
                 &&
                 curl -f --verbose --basic admin:admin -X POST
-                "${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/local-repository/event-mapper-details?connectorProvider=org.odpi.egeria.connectors.ibm.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider&eventSource=${IBMIGC_KAFKA_ENDPOINT}"
+                "${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/local-repository/event-mapper-details?connectorProvider=org.odpi.egeria.connectors.ibm.igc.eventmapper.IGCOMRSRepositoryEventMapperProvider&eventSource=${IBMIGC_KAFKA_ENDPOINT}"
                 &&
                 curl -f --verbose --basic admin:admin -X POST --max-time 900
-                ${EGERIA_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/instance
+                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/instance
 ...
 {{ end }}

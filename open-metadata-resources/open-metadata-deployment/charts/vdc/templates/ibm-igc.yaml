@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright Contributors to the Egeria project.
 ---
-{{ if and .Values.ibmigc.enabled .Values.ibmigc.internal.enabled }}
-# Only deploy any of this if IGC (internal) is enabled
+{{ if .Values.ibmigc.enabled }}
+# Only deploy any of this if IGC is enabled
 apiVersion: v1
 kind: Service
 metadata:
@@ -21,10 +21,16 @@ metadata:
 spec:
   type: {{ .Values.service.type }}
   ports:
+    - name: proxy
+      port: 8080
+      targetPort: 8080
+{{ if .Values.ibmigc.internal.enabled }}
+# Only expose web port if we are using a cluster-internal IGC
     - name: web
       port: 9446
       targetPort: 9446
       nodePort: {{ .Values.service.nodeport.ibmigc }}
+{{ end }}
     - name: kafka
       port: 59092
       targetPort: 59092
@@ -62,12 +68,22 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: ibm-igc-service
     spec:
+{{ if .Values.ibmigc.internal.enabled }}
 # Fix the hostname to what the image requires of itself and define the secrets to use
 # for pulling the container image from a private repository
       hostname: infosvr
       imagePullSecrets:
         - name: regcred
+{{ else }}
+# When re-using a pre-existing IGC environment, ensure the IP and hostname of the external IGC
+# resource are resolve-able
+      hostAliases:
+        - ip: {{ .Values.ibmigc.external.ip | quote }}
+          hostnames:
+            - {{ .Values.ibmigc.external.hostname }}
+{{ end }}
       volumes:
+{{ if .Values.ibmigc.internal.enabled }}
 {{ if .Values.localRepo.use }}
 # If we are using a local repository, mount the samples from there
         - name: egeria-samples-volume
@@ -79,8 +95,25 @@ spec:
         - name: egeria-samples-volume
           emptyDir: {}
 {{ end }}
+{{ end }}
       initContainers:
-{{ if (not .Values.localRepo.use) }}
+# TODO: Eventually replace the temporary release retrieval below with a package-managed retrieval mechanism
+        - name: init-connector
+          image: "{{ if (.Values.image.configure.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.configure.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.configure.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.configure.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.configure.name }}\
+                  :{{ .Values.image.configure.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.configure.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          command:
+            - "/bin/bash"
+            - "-c"
+            - >
+                cd /opt/egeria/connectors &&
+                wget https://github.com/odpi/egeria-connector-ibm-igc/releases/download/1.1-SNAPSHOT/egeria-connector-ibm-igc-package-1.1-SNAPSHOT.jar
+          volumeMounts:
+            - mountPath: /opt/egeria/connectors
+              name: egeria-igc-connector-volume
+{{ if and .Values.ibmigc.internal.enabled (not .Values.localRepo.use) }}
 # If we are using a cluster-internal IGC, stand up both the IGC container and the proxy, embedding the Ansible
 # playbooks for loading sample metadata at runtime within the IGC container
         - name: init-samples
@@ -104,6 +137,32 @@ spec:
               name: egeria-samples-volume
 {{ end }}
       containers:
+        - name: proxy
+          image: "{{ if (.Values.image.egeria.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.egeria.registry | default .Values.imageDefaults.registry }}/{{ end }}\
+                  {{ if (.Values.image.egeria.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.egeria.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
+                  {{ .Values.image.egeria.name }}\
+                  :{{ .Values.image.egeria.tag | default .Values.imageDefaults.tag }}"
+          imagePullPolicy: {{ .Values.image.egeria.pullPolicy | default .Values.imageDefaults.pullPolicy }}
+          envFrom:
+            - configMapRef:
+                name: {{ include "myapp.fullname" . }}-configmap
+          env:
+            - name: "LOADER_PATH"
+              value: "/opt/egeria/connectors"
+          ports:
+            - containerPort: 8080
+          readinessProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 6
+          resources: {}
+          volumeMounts:
+            - mountPath: /opt/egeria/connectors
+              name: egeria-igc-connector-volume
+              readOnly: true
+{{ if .Values.ibmigc.internal.enabled }}
         - name: ibm-igc
           image: "{{ if (.Values.image.ibmigc.registry | default .Values.imageDefaults.registry) }}{{ .Values.image.ibmigc.registry | default .Values.imageDefaults.registry }}/{{ end }}\
                   {{ if (.Values.image.ibmigc.namespace | default .Values.imageDefaults.namespace) }}{{ .Values.image.ibmigc.namespace | default .Values.imageDefaults.namespace }}/{{ end }}\
@@ -140,6 +199,7 @@ spec:
             - mountPath: /opt/egeria/samples
               name: egeria-samples-volume
 #      hostIPC: true   # try without this setting to reduce potential risks to host system
+{{ end }}
 
 status: {}
 ...
