@@ -1,9 +1,9 @@
 /* SPDX-License-Identifier: Apache-2.0 */
 package org.odpi.openmetadata.accessservices.assetlineage.util;
 
-import org.odpi.openmetadata.accessservices.assetlineage.model.Classification;
-import org.odpi.openmetadata.accessservices.assetlineage.model.Relationship;
-import org.odpi.openmetadata.accessservices.assetlineage.model.*;
+import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.*;
+import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Classification;
+import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Relationship;
 import org.odpi.openmetadata.adminservices.configuration.registration.AccessServiceDescription;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.SequencingOrder;
 import org.odpi.openmetadata.repositoryservices.connectors.stores.metadatacollectionstore.properties.instances.*;
