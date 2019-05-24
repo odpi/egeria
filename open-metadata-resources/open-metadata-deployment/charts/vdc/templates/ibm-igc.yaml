@@ -82,7 +82,10 @@ spec:
           hostnames:
             - {{ .Values.ibmigc.external.hostname }}
 {{ end }}
+# In all cases, we need the egeria-connector-ibm-igc repository's connector to proxy between IGC and OMRS
       volumes:
+        - name: egeria-igc-connector-volume
+          emptyDir: {}
 {{ if .Values.ibmigc.internal.enabled }}
 {{ if .Values.localRepo.use }}
 # If we are using a local repository, mount the samples from there
