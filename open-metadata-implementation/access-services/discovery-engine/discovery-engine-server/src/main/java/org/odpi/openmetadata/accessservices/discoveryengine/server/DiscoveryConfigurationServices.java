@@ -80,9 +80,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUID(handler.createDiscoveryEngine(userId,
                                                            qualifiedName,
                                                            displayName,
@@ -136,9 +136,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryEngineProperties(handler.getDiscoveryEngineByGUID(userId, guid));
         }
         catch (InvalidParameterException error)
@@ -189,9 +189,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryEngineProperties(handler.getDiscoveryEngineByName(userId, name));
         }
         catch (InvalidParameterException error)
@@ -244,9 +244,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryEngines(handler.getAllDiscoveryEngines(userId, startingFrom, maximumResults));
         }
         catch (InvalidParameterException error)
@@ -324,9 +324,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.updateDiscoveryEngine(userId,
                                           guid,
                                           qualifiedName,
@@ -397,9 +397,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.deleteDiscoveryEngine(userId,
                                           guid,
                                           qualifiedName);
@@ -470,9 +470,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUID(handler.createDiscoveryService(userId,
                                                             qualifiedName,
                                                             displayName,
@@ -527,9 +527,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryServiceProperties(handler.getDiscoveryServiceByGUID(userId, guid));
         }
         catch (InvalidParameterException error)
@@ -580,9 +580,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryServiceProperties(handler.getDiscoveryServiceByName(userId, name));
         }
         catch (InvalidParameterException error)
@@ -635,9 +635,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setDiscoveryServices(handler.getAllDiscoveryServices(userId, startingFrom, maximumResults));
         }
         catch (InvalidParameterException error)
@@ -688,9 +688,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUIDs(handler.getDiscoveryServiceRegistrations(userId, discoveryServiceGUID));
         }
         catch (InvalidParameterException error)
@@ -772,9 +772,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.updateDiscoveryService(userId,
                                            guid,
                                            qualifiedName,
@@ -848,9 +848,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.deleteDiscoveryService(userId,
                                            guid,
                                            qualifiedName);
@@ -916,9 +916,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.registerDiscoveryServiceWithEngine(userId, discoveryEngineGUID, discoveryServiceGUID, assetTypes);
         }
         catch (InvalidParameterException error)
@@ -971,9 +971,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setRegisteredDiscoveryService(handler.getRegisteredDiscoveryService(userId, discoveryEngineGUID, discoveryServiceGUID));
         }
         catch (InvalidParameterException error)
@@ -1028,9 +1028,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName,methodName);
             response.setGUIDs(handler.getRegisteredDiscoveryServices(userId, discoveryEngineGUID, startingFrom, maximumResults));
         }
         catch (InvalidParameterException error)
@@ -1085,9 +1085,9 @@ public class DiscoveryConfigurationServices
 
         try
         {
-            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName);
+            DiscoveryConfigurationHandler handler = instanceHandler.getDiscoveryConfigurationHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.unregisterDiscoveryServiceFromEngine(userId, discoveryEngineGUID, discoveryServiceGUID);
         }
         catch (InvalidParameterException error)
