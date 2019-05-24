@@ -69,11 +69,11 @@ public class AssetOnboardingRESTServices
         {
             if (requestBody != null)
             {
-                AssetHandler  assetHandler  = instanceHandler.getAssetHandler(userId, serverName);
+                AssetHandler  assetHandler  = instanceHandler.getAssetHandler(userId, serverName, methodName);
                 Asset         asset         = assetHandler.createEmptyAsset(AssetMapper.CSV_FILE_TYPE_GUID,
                                                                             AssetMapper.CSV_FILE_TYPE_NAME);
 
-                auditLog = instanceHandler.getAuditLog(userId, serverName);
+                auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
 
                 asset.setDisplayName(requestBody.getDisplayName());
                 asset.setDescription(requestBody.getDescription());
@@ -88,7 +88,7 @@ public class AssetOnboardingRESTServices
 
                 if (requestBody.getColumnHeaders() != null)
                 {
-                    SchemaTypeHandler schemaTypeHandler = instanceHandler.getSchemaTypeHandler(userId, serverName);
+                    SchemaTypeHandler schemaTypeHandler = instanceHandler.getSchemaTypeHandler(userId, serverName, methodName);
 
                     schemaType  = schemaTypeHandler.getTabularSchemaType(asset.getQualifiedName(),
                                                                          asset.getDisplayName(),
