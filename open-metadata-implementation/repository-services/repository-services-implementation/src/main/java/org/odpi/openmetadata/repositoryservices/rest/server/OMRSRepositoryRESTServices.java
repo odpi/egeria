@@ -88,6 +88,7 @@ public class OMRSRepositoryRESTServices
     private static final String                                serviceName       = "Local Repository Services";
     private static final Logger                                log               = LoggerFactory.getLogger(OMRSRepositoryRESTServices.class);
     private static       OMRSRepositoryServicesInstanceHandler instanceHandler   = new OMRSRepositoryServicesInstanceHandler(serviceName);
+    private static final String                                anonymousUserId   = "anon"; // TODO add to config
 
     /**
      * Set up the local repository connector that will service the REST Calls.
@@ -122,11 +123,13 @@ public class OMRSRepositoryRESTServices
     public static String  getEntityURL(String      localServerName,
                                        String...   guid)
     {
+        final String methodName = "getEntityURL";
+
         if (localServerName != null)
         {
             try
             {
-                OMRSRepositoryServicesInstance localServerInstance = instanceHandler.getInstance(null, localServerName);
+                OMRSRepositoryServicesInstance localServerInstance = instanceHandler.getInstance(anonymousUserId, localServerName, methodName);
 
                 if (localServerInstance != null)
                 {
@@ -141,6 +144,7 @@ public class OMRSRepositoryRESTServices
             }
             catch (Throwable error)
             {
+                /* return null */
             }
         }
 
@@ -158,11 +162,13 @@ public class OMRSRepositoryRESTServices
     public static String  getRelationshipURL(String      localServerName,
                                              String...   guid)
     {
+        final String methodName = "getRelationshipURL";
+
         if (localServerName != null)
         {
             try
             {
-                OMRSRepositoryServicesInstance localServerInstance = instanceHandler.getInstance(null, localServerName);
+                OMRSRepositoryServicesInstance localServerInstance = instanceHandler.getInstance(anonymousUserId, localServerName, methodName);
 
                 if (localServerInstance != null)
                 {
@@ -177,6 +183,7 @@ public class OMRSRepositoryRESTServices
             }
             catch (Throwable error)
             {
+                /* return null */
             }
         }
 
@@ -294,7 +301,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -353,7 +360,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -404,7 +411,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -455,7 +462,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -506,7 +513,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -565,7 +572,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -616,7 +623,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -673,7 +680,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -730,7 +737,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -788,7 +795,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -845,7 +852,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -922,7 +929,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -999,7 +1006,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1076,7 +1083,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1145,7 +1152,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1213,7 +1220,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1286,7 +1293,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1358,7 +1365,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1430,7 +1437,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1513,7 +1520,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1596,7 +1603,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1653,7 +1660,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1710,7 +1717,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1794,7 +1801,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1864,7 +1871,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -1945,7 +1952,8 @@ public class OMRSRepositoryRESTServices
                     TypeLimitedFindRequest nextFindRequestParameters = new TypeLimitedFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(serverName,
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
                                                               userId,
                                                               urlTemplate,
                                                               nextFindRequestParameters,
@@ -1989,7 +1997,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2072,7 +2080,8 @@ public class OMRSRepositoryRESTServices
                     TypeLimitedHistoricalFindRequest nextFindRequestParameters = new TypeLimitedHistoricalFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(serverName,
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
                                                               userId,
                                                               urlTemplate,
                                                               nextFindRequestParameters,
@@ -2116,7 +2125,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2205,7 +2214,8 @@ public class OMRSRepositoryRESTServices
                     EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(serverName,
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
                                                               userId,
                                                               urlTemplate,
                                                               nextFindRequestParameters,
@@ -2244,7 +2254,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2335,7 +2345,8 @@ public class OMRSRepositoryRESTServices
                     EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(serverName,
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
                                                               userId,
                                                               urlTemplate,
                                                               nextFindRequestParameters,
@@ -2374,7 +2385,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2462,7 +2473,8 @@ public class OMRSRepositoryRESTServices
 
                     PropertyMatchFindRequest nextFindRequestParameters = new PropertyMatchFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-                    response.setNextPageURL(formatNextPageURL(serverName,
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
                                                               userId,
                                                               urlTemplate,
                                                               nextFindRequestParameters,
@@ -2505,7 +2517,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2595,7 +2607,8 @@ public class OMRSRepositoryRESTServices
 
                     PropertyMatchHistoricalFindRequest nextFindRequestParameters = new PropertyMatchHistoricalFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
-                    response.setNextPageURL(formatNextPageURL(serverName,
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
                                                               userId,
                                                               urlTemplate,
                                                               nextFindRequestParameters,
@@ -2638,7 +2651,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2723,7 +2736,8 @@ public class OMRSRepositoryRESTServices
                     EntityPropertyFindRequest nextFindRequestParameters = new EntityPropertyFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(serverName,
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
                                                               userId,
                                                               urlTemplate,
                                                               nextFindRequestParameters,
@@ -2763,7 +2777,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2850,7 +2864,8 @@ public class OMRSRepositoryRESTServices
                     EntityPropertyHistoricalFindRequest nextFindRequestParameters = new EntityPropertyHistoricalFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(serverName,
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
                                                               userId,
                                                               urlTemplate,
                                                               nextFindRequestParameters,
@@ -2889,7 +2904,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -2941,7 +2956,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3020,7 +3035,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3085,7 +3100,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3170,7 +3185,8 @@ public class OMRSRepositoryRESTServices
                     PropertyMatchFindRequest nextFindRequestParameters = new PropertyMatchFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(serverName,
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
                                                               userId,
                                                               urlTemplate,
                                                               nextFindRequestParameters,
@@ -3209,7 +3225,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3296,7 +3312,8 @@ public class OMRSRepositoryRESTServices
                     PropertyMatchHistoricalFindRequest nextFindRequestParameters = new PropertyMatchHistoricalFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(serverName,
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
                                                               userId,
                                                               urlTemplate,
                                                               nextFindRequestParameters,
@@ -3335,7 +3352,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3415,7 +3432,8 @@ public class OMRSRepositoryRESTServices
                     TypeLimitedFindRequest nextFindRequestParameters = new TypeLimitedFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(serverName,
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
                                                               userId,
                                                               urlTemplate,
                                                               nextFindRequestParameters,
@@ -3455,7 +3473,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3537,7 +3555,8 @@ public class OMRSRepositoryRESTServices
                     TypeLimitedHistoricalFindRequest nextFindRequestParameters = new TypeLimitedHistoricalFindRequest(findRequestParameters);
                     nextFindRequestParameters.setOffset(fromRelationshipElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(serverName,
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
                                                               userId,
                                                               urlTemplate,
                                                               nextFindRequestParameters,
@@ -3577,7 +3596,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3665,7 +3684,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3755,7 +3774,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3858,7 +3877,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -3963,7 +3982,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4053,7 +4072,8 @@ public class OMRSRepositoryRESTServices
 
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(serverName,
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
                                                               userId,
                                                               urlTemplate,
                                                               nextFindRequestParameters,
@@ -4096,7 +4116,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4188,7 +4208,8 @@ public class OMRSRepositoryRESTServices
 
                     nextFindRequestParameters.setOffset(fromEntityElement + pageSize);
 
-                    response.setNextPageURL(formatNextPageURL(serverName,
+                    response.setNextPageURL(formatNextPageURL(methodName,
+                                                              serverName,
                                                               userId,
                                                               urlTemplate,
                                                               nextFindRequestParameters,
@@ -4231,7 +4252,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4334,7 +4355,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4401,7 +4422,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4471,7 +4492,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4541,7 +4562,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4603,7 +4624,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4680,7 +4701,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4758,7 +4779,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4825,7 +4846,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4906,7 +4927,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -4977,7 +4998,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5057,7 +5078,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5157,7 +5178,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5229,7 +5250,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5301,7 +5322,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5363,7 +5384,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5442,7 +5463,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5520,7 +5541,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5588,7 +5609,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5674,7 +5695,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5768,7 +5789,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5855,7 +5876,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -5937,7 +5958,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6027,7 +6048,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6115,7 +6136,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6207,7 +6228,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6294,7 +6315,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6380,7 +6401,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6472,7 +6493,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6561,7 +6582,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6648,7 +6669,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6751,7 +6772,7 @@ public class OMRSRepositoryRESTServices
         }
         catch (Throwable error)
         {
-            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName));
+            captureThrowable(response, error, methodName, instanceHandler.getAuditLog(userId, serverName, methodName));
         }
 
         log.debug("Returning from method: " + methodName + " with response: " + response.toString());
@@ -6787,7 +6808,7 @@ public class OMRSRepositoryRESTServices
 
         if (serverName != null)
         {
-            OMRSRepositoryServicesInstance instance = instanceHandler.getInstance(userId, serverName);
+            OMRSRepositoryServicesInstance instance = instanceHandler.getInstance(userId, serverName, methodName);
 
             if (instance != null)
             {
@@ -7240,13 +7261,15 @@ public class OMRSRepositoryRESTServices
     /**
      * Format the url for the next page of a request that includes paging.
      *
+     * @param methodName calling method
      * @param serverName name of the server
      * @param requestURLTemplate template of the request URL
      * @param requestBody requestBody to include
      * @param parameters parameters to include in the url
      * @return formatted string
      */
-    private String  formatNextPageURL(String    serverName,
+    private String  formatNextPageURL(String    methodName,
+                                      String    serverName,
                                       String    userId,
                                       String    requestURLTemplate,
                                       Object    requestBody,
@@ -7256,7 +7279,7 @@ public class OMRSRepositoryRESTServices
     {
         if (serverName != null)
         {
-            OMRSRepositoryServicesInstance  instance = instanceHandler.getInstance(userId, serverName);
+            OMRSRepositoryServicesInstance  instance = instanceHandler.getInstance(userId, serverName, methodName);
 
             if (instance != null)
             {
