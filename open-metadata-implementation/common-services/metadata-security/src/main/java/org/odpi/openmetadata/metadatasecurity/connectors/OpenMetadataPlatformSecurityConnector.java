@@ -1,19 +1,17 @@
 /* SPDX-License-Identifier: Apache 2.0 */
 /* Copyright Contributors to the ODPi Egeria project. */
-package org.odpi.openmetadata.metadatasecurity;
+package org.odpi.openmetadata.metadatasecurity.connectors;
 
-
+import org.odpi.openmetadata.frameworks.connectors.ConnectorBase;
 import org.odpi.openmetadata.frameworks.connectors.ffdc.UserNotAuthorizedException;
+import org.odpi.openmetadata.metadatasecurity.OpenMetadataPlatformSecurity;
 
 /**
- * OpenMetadataPlatformSecurity provides the interface for a security connector that validates whether a calling
- * user can access any service on an OMAG Server Platform.  It is called within the context of a specific
- * OMAG Server Platform request.
- *
- * Each OMAG Server can define its own plugin connector implementation and will have its own instance
- * of the connector.
+ * OpenMetadataPlatformSecurityConnector provides the base class for a connector that validates access to the
+ * platform services that are not specific to an OMAG Server.  This optional connector can be set up once the
+ * OMAGServerPlatform is running.
  */
-public interface OpenMetadataPlatformSecurity
+public class OpenMetadataPlatformSecurityConnector extends ConnectorBase implements OpenMetadataPlatformSecurity
 {
     /**
      * Check that the calling user is authorized to create new servers.
@@ -22,7 +20,10 @@ public interface OpenMetadataPlatformSecurity
      *
      * @throws UserNotAuthorizedException the user is not authorized to access this platform
      */
-    void  validateUserForNewServer(String   userId) throws UserNotAuthorizedException;
+    public void  validateUserForNewServer(String   userId) throws UserNotAuthorizedException
+    {
+
+    }
 
 
     /**
@@ -32,7 +33,10 @@ public interface OpenMetadataPlatformSecurity
      *
      * @throws UserNotAuthorizedException the user is not authorized to issue operator commands to this platform
      */
-    void  validateUserAsOperatorForPlatform(String   userId) throws UserNotAuthorizedException;
+    public void  validateUserAsOperatorForPlatform(String   userId) throws UserNotAuthorizedException
+    {
+
+    }
 
 
     /**
@@ -42,5 +46,8 @@ public interface OpenMetadataPlatformSecurity
      *
      * @throws UserNotAuthorizedException the user is not authorized to issue diagnostic commands to this platform
      */
-    void  validateUserAsInvestigatorForPlatform(String   userId) throws UserNotAuthorizedException;
+    public void  validateUserAsInvestigatorForPlatform(String   userId) throws UserNotAuthorizedException
+    {
+
+    }
 }
