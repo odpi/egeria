@@ -91,9 +91,9 @@ public class GovernanceProgramRESTServices
                 additionalProperties = requestBody.getAdditionalProperties();
             }
 
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName);
+            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUID(handler.createPersonalProfile(userId,
                                                            profileUserId,
                                                            employeeNumber,
@@ -170,9 +170,9 @@ public class GovernanceProgramRESTServices
                 additionalProperties = requestBody.getAdditionalProperties();
             }
 
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName);
+            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.updatePersonalProfile(userId,
                                           profileGUID,
                                           employeeNumber,
@@ -239,9 +239,9 @@ public class GovernanceProgramRESTServices
                 employeeNumber = requestBody.getEmployeeNumber();
             }
 
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName);
+            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.deletePersonalProfile(userId,
                                           profileGUID,
                                           employeeNumber);
@@ -293,9 +293,9 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName);
+            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setPersonalProfile(handler.getPersonalProfileByGUID(userId, profileGUID));
         }
         catch (InvalidParameterException error)
@@ -346,9 +346,9 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName);
+            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setPersonalProfile(handler.getPersonalProfileByEmployeeNumber(userId, employeeNumber));
         }
         catch (EmployeeNumberNotUniqueException error)
@@ -403,9 +403,9 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName);
+            PersonalProfileHandler handler = instanceHandler.getPersonalProfileHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setPersonalProfiles(handler.getPersonalProfilesByName(userId, name));
         }
         catch (InvalidParameterException error)
@@ -473,9 +473,9 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGUID(handler.createGovernanceOfficer(userId,
                                                              governanceDomain,
                                                              appointmentId,
@@ -552,9 +552,9 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.updateGovernanceOfficer(userId,
                                             governanceOfficerGUID,
                                             governanceDomain,
@@ -623,9 +623,9 @@ public class GovernanceProgramRESTServices
                 appointmentId = requestBody.getAppointmentId();
             }
 
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.deleteGovernanceOfficer(userId,
                                             governanceOfficerGUID,
                                             appointmentId,
@@ -678,9 +678,9 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGovernanceOfficer(handler.getGovernanceOfficerByGUID(userId, governanceOfficerGUID));
         }
         catch (InvalidParameterException error)
@@ -731,9 +731,9 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGovernanceOfficer(handler.getGovernanceOfficerByAppointmentId(userId, appointmentId));
         }
         catch (AppointmentIdNotUniqueException error)
@@ -784,9 +784,9 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGovernanceOfficers(handler.getGovernanceOfficers(userId));
         }
         catch (InvalidParameterException error)
@@ -833,9 +833,9 @@ public class GovernanceProgramRESTServices
 
         try
         {
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGovernanceOfficers(handler.getActiveGovernanceOfficers(userId));
         }
         catch (InvalidParameterException error)
@@ -894,9 +894,9 @@ public class GovernanceProgramRESTServices
                 governanceDomain = requestBody.getGovernanceDomain();
             }
 
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             response.setGovernanceOfficers(handler.getGovernanceOfficersByDomain(userId, governanceDomain));
         }
         catch (InvalidParameterException error)
@@ -957,9 +957,9 @@ public class GovernanceProgramRESTServices
                 startDate   = requestBody.getEffectiveDate();
             }
 
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.appointGovernanceOfficer(userId,
                                              governanceOfficerGUID,
                                              profileGUID,
@@ -1024,9 +1024,9 @@ public class GovernanceProgramRESTServices
                 endDate     = requestBody.getEffectiveDate();
             }
 
-            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName);
+            GovernanceOfficerHandler handler = instanceHandler.getGovernanceOfficerHandler(userId, serverName, methodName);
 
-            auditLog = instanceHandler.getAuditLog(userId, serverName);
+            auditLog = instanceHandler.getAuditLog(userId, serverName, methodName);
             handler.relieveGovernanceOfficer(userId,
                                              governanceOfficerGUID,
                                              profileGUID,
