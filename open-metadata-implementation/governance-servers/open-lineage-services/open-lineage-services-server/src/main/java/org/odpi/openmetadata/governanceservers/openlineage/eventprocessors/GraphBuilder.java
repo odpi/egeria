@@ -9,7 +9,7 @@ import org.apache.tinkerpop.gremlin.structure.io.graphml.GraphMLWriter;
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.AssetElement;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Connection;
-import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Element;
+import org.odpi.openmetadata.accessservices.assetlineage.model.event.Element;
 import org.odpi.openmetadata.accessservices.assetlineage.model.assetContext.Term;
 import org.odpi.openmetadata.accessservices.assetlineage.model.event.AssetContext;
 import org.odpi.openmetadata.governanceservers.openlineage.responses.ffdc.AssetType;
