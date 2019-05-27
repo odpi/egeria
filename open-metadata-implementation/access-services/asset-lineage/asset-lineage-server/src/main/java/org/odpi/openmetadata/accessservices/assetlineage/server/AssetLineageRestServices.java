@@ -21,6 +21,7 @@ public class AssetLineageRestServices {
      * Default constructor
      */
     public AssetLineageRestServices() {
+        instanceHandler.registerAccessService();
     }
 
 
