@@ -73,7 +73,7 @@ spec:
           command:
             - "/bin/bash"
             - "-c"
-            - "java -jar /access-services-user-interface.jar"
+            - "java -jar /opt/egeria/access-services-user-interface.jar"
           envFrom:
             - configMapRef:
                 name: {{ include "myapp.fullname" . }}-configmap
