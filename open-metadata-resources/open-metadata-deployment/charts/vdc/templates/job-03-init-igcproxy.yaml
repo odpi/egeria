@@ -99,6 +99,23 @@ spec:
             - "/bin/bash"
             - "-c"
             - >
+{{ if .Values.cts.enabled }}
+                curl -f --verbose --basic admin:admin -X POST
+                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/server-type?typeName=Conformance
+                &&
+                curl -f --verbose --basic admin:admin -X POST
+                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/event-bus?connectorProvider=org.odpi.openmetadata.adapters.eventbus.topic.kafka.KafkaOpenMetadataTopicProvider&topicURLRoot=OMRSTopic
+                &&
+                curl -f --verbose --basic admin:admin -X POST
+                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/cohorts/${EGERIA_COHORT}
+                &&
+                curl -f --verbose --basic admin:admin -X POST
+                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/conformance-suite-workbenches/repository-workbench/repositories/${IBMIGC_SERVER}
+                &&
+                curl -f --verbose --basic admin:admin -X POST
+                ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/cts/instance
+                &&
+{{ end }}
                 curl -f --verbose --basic admin:admin -X POST
                 ${IGCPROXY_ENDPOINT}/open-metadata/admin-services/users/${EGERIA_USER}/servers/${IBMIGC_SERVER}/server-type?typeName=IBM%20Information%20Governance%20Catalog
                 &&
